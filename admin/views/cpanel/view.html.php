@@ -19,9 +19,12 @@ class sportsmanagementViewcpanel extends JView
 		// Get data from the model
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
+        $model	= $this->getModel();
+        
 		jimport('joomla.html.pane');
 		$pane	=& JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
+        $this->assignRef( 'version', $model->getVersion() );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

@@ -220,7 +220,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td style="text-align: left; width: 33%;">
 			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW" ); ?></a>
 			<br/>
-			<a href="http://twitter.com/Joomla_CBE" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_TWITTER_FOLLOW" ); ?></a>
+			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
 			<br/>				
 			<a href="http://gplus.to/JoomlaCBE" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_GPLUS_FOLLOW" ); ?></a>
 			<br/>
@@ -229,7 +229,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td style="text-align: center; width: 33%;">
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_CBE_DESC" ); ?>
 			<br/>
-			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.joomla-cbe.de" target="_blank">Joomla-CBE</a>
+			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?>: <?php echo JText::sprintf( 'Version: %1$s', $this->version ); ?>
 		</td>
