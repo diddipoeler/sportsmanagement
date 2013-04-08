@@ -218,7 +218,7 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 	<tr>
 		<td style="text-align: left; width: 33%;">
-			<a href="http://www.facebook.com/pages/Joomla-CBE/115372148571797" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW" ); ?></a>
+			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW" ); ?></a>
 			<br/>
 			<a href="http://twitter.com/Joomla_CBE" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_TWITTER_FOLLOW" ); ?></a>
 			<br/>				
