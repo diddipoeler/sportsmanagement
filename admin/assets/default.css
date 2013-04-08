@@ -1,0 +1,237 @@
+/**
+ * Back end css stylesheet for CBE
+ **/
+div#templates-list
+{
+	padding: 3px;
+	background: #F3F6E9 none repeat scroll 0 0;
+	border-bottom: 1px solid #D5D5D5;
+	border-top: 1px solid #D5D5D5;
+}
+
+div#template-files
+{
+	margin: 20px 0 0 0;
+	padding: 3px;
+	background:#F3F6E9 none repeat scroll 0 0;
+	border-bottom:1px solid #D5D5D5;
+	border-top:1px solid #D5D5D5;
+}
+
+textarea.template-editor
+{
+	width:95%;
+	font-family:monospace;
+	font-size:13px;
+	padding-top:11px;
+	line-height:16px;
+	height: 500px; 
+	padding-left:30px;
+	background: url(line-numbers.png) no-repeat;
+	background-attachment: scroll; 
+	margin-right:26px
+}
+
+div.info
+{
+	background: #C3D2E5;
+	color: #0055BB;
+	padding: 10px;
+	border-bottom: 3px solid #84A7DB;
+	border-top: 3px solid #84A7DB;
+	font-weight: 700;
+}
+
+/** Custom title icons **/
+.icon-48-configuration
+{
+	background-image: url( icons/configuration.gif );
+}
+
+.icon-48-users
+{
+	background-image: url( icons/edit-user.gif );
+}
+.icon-48-events
+{
+	background-image: url( icons/event.gif );
+}
+.icon-48-eventcategories
+{
+	background-image: url( icons/eventcategories.gif );
+}
+.icon-48-profiles
+{
+	background-image: url( icons/profiles.gif );
+}
+
+.icon-48-groupcategories
+{
+	background-image: url( icons/groupcategories.gif );
+}
+
+.icon-48-groups
+{
+	background-image: url( icons/groups.gif );
+}
+
+.icon-48-templates
+{
+	background-image: url( icons/templates.gif );
+}
+
+.icon-48-applications
+{
+	background-image: url( icons/applications.gif );
+}
+
+.icon-48-about
+{
+	background-image: url( icons/about.gif );
+}
+
+.icon-48-mailq
+{
+	background-image: url( icons/mailq.gif );
+}
+
+.icon-48-cbe
+{
+	background-image: url( icons/cbe.png );
+}
+
+.icon-48-reports
+{
+	background-image: url( icons/reports.gif );
+}
+
+.icon-48-userpoints
+{
+	background-image: url( icons/userpoints.gif );
+}
+
+.icon-48-videoscategories
+{
+	background-image: url( icons/videos.gif );
+}
+
+.icon-48-messaging
+{
+	background-image: url( icons/message.gif );
+}
+
+.icon-48-activities
+{
+	background-image: url( icons/activities.gif );
+}
+
+.icon-48-memberlist
+{
+	background-image: url( icons/memberlist.gif );
+}
+
+.icon-48-multiprofile
+{
+	background-image: url( icons/multiprofile.gif );
+}
+
+.icon-32-csv
+{
+	background-image: url( icons/csv.png );
+}
+
+.icon-32-cbehome
+{
+	background-image: url( icons/cbehome.png );
+}
+
+.icon-32-cbehelp
+{
+	background-image: url( icons/cbehelp.png );
+}
+
+/* Update for Joomla 1.6 RC 1 */
+/* CSS Issue fixing */
+
+#content-box fieldset {
+	background: #fdfdfd;
+}
+
+#config-document td { /* General use */
+	float: left;
+	vertical-align: top;
+}
+	fieldset.adminform { /* General use */
+		margin: 5px;
+		overflow: hidden;
+	}
+	.admintable td.key { /* Key text - General use */
+		background-color: #F6F6F6;
+	/*	border-bottom: 1px solid #E9E9E9;
+		border-right: 1px solid #E9E9E9;
+	*/
+		color: #666666;
+		font-size: 12px;
+		font-weight: bold;
+		margin-right: 5px;
+		padding-right: 5px;
+		width: 150px;
+	}
+	.admintable td.key + td { /* Value text */
+		
+	}
+		.admintable td .radiobtn-no, .admintable td .radiobtn-yes, .admintable td .radiobtn-show, .admintable td .radiobtn-hide, .admintable td .radiobtn-sidebar, .admintable td label[class="radiobtn-main content"]{ /* Value text */
+			clear:none;
+			padding-right:5px;
+		}
+/* Page media tab */
+#page-media td.key + td div {
+	float: left;
+}
+/* Page Anti spam */
+#config-document #page-antispam td {
+	float:none;
+}
+/* Page Groups */
+#page-groups td {
+	float: none;
+}
+/* Page Events */
+#page-events td {
+	float: none;
+}
+/* Page Privacy */
+#page-privacy td {
+	float: none;
+}
+	#page-privacy .privacyfriends input , #page-privacy .privacyprofile input, #page-privacy .privacyphotos input {
+		margin:5px;
+		/*float:none;*/
+	}
+/* Page Network */
+#page-network td {
+	float:none;
+}
+/* Page Integration*/
+#page-integrations td {
+	float:none;
+}
+
+table.admintable td label{
+	clear: none;
+	min-width: 0;
+	display: inline;
+}
+
+/** Joomla! 1.6 bluestork admin theme override for some parts of CBE's admin page that have specific layout **/
+
+#com_karmaPoints {width: 380px;}
+#com_karmaPoints img {margin: 0; float: none;}
+#com_karmaPoints .admintable td {float:none;}
+#com_karmaPoints .admintable input[type=text] {margin: 0 5px 0 0;}
+#com_karmaPoints .admintable tr td table tr td {padding: 0; line-height: 19px;}
+#com_karmaPoints .admintable tr td table {margin: 0; padding: 0;}
+#com_karmaPoints .admintable td.key {width: 120px; background-color: transparent;}
+#com_karmaPoints .com_karmaNumber {width: 30px; display: inline-block;}
+
+div.current input, div.current textarea, div.current select{float: none !important; }

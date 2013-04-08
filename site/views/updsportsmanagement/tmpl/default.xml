@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_HELLOWORLD_UPDHELLOWORLD_VIEW_DEFAULT_TITLE">
+		<message>COM_HELLOWORLD_UPDHELLOWORLD_VIEW_DEFAULT_DESC</message>
+	</layout>
+	<fields name="params">
+		<fieldset name="request">
+			<field name="headingtxtcolor" type="text" default="#ff0000" size="40"
+				label="COM_HELLOWORLD_UPDHELLOWORLD_FIELD_HEADINGTXTCOLOR_LABEL"
+				description="COM_HELLOWORLD_UPDHELLOWORLD_FIELD_HEADINGTXTCOLOR_DESC" />
+			<field name="headingbgcolor" type="text" default="#0000ff" size="40"
+				label="COM_HELLOWORLD_UPDHELLOWORLD_FIELD_HEADINGBGCOLOR_LABEL"
+				description="COM_HELLOWORLD_UPDHELLOWORLD_FIELD_HEADINGBGCOLOR_DESC" />
+		</fieldset>
+	</fields>
+</metadata>
+

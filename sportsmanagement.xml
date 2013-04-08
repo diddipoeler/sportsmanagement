@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+ 
+	<name>COM_SPORTSMANAGEMENT</name>
+	<!-- The following elements are optional and free of formatting conttraints -->
+	<creationDate>November 2009</creationDate>
+	<author>John Doe</author>
+	<authorEmail>john.doe@example.org</authorEmail>
+	<authorUrl>http://www.example.org</authorUrl>
+	<copyright>Copyright Info</copyright>
+	<license>License Info</license>
+	<!--  The version string is recorded in the components table -->
+	<version>0.0.19</version>
+	<!-- The description is optional and defaults to the name -->
+	<description>COM_HELLOWORLD_DESCRIPTION</description>
+ 
+	<!-- Runs on install/uninstall/update; New in 1.6 -->
+	<scriptfile>script.php</scriptfile>
+ 
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update> <!-- Runs on update; New in 1.6 -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+ 
+	<!-- Site Main File Copy Section -->
+	<!-- Note the folder attribute: This attribute describes the folder
+		to copy FROM in the package to install therefore files copied
+		in this section are copied from /site/ in the package -->
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>sportsmanagement.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>controllers</folder>
+		<folder>language</folder>
+	</files>
+ 
+	<media destination="com_sportsmanagement" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+	</media>
+
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu img="../media/com_sportsmanagement/images/tux-16x16.png">COM_HELLOWORLD_MENU</menu>
+		<!-- Administration Main File Copy Section -->
+		<!-- Note the folder attribute: This attribute describes the folder
+			to copy FROM in the package to install therefore files copied
+			in this section are copied from /admin/ in the package -->
+		<files folder="admin">
+			<!-- Admin Main File Copy Section -->
+			<filename>index.html</filename>
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>
+			<filename>sportsmanagement.php</filename>
+			<filename>controller.php</filename>
+			<!-- assets files section -->
+			<folder>assets</folder>
+			<!-- SQL files section -->
+			<folder>sql</folder>
+			<!-- tables files section -->
+			<folder>tables</folder>
+			<!-- models files section -->
+			<folder>models</folder>
+			<!-- views files section -->
+			<folder>views</folder>
+			<!-- controllers files section -->
+			<folder>controllers</folder>
+			<!-- helpers files section -->
+			<folder>helpers</folder>
+		</files>
+ 
+		<languages folder="admin">
+			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
+			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.sys.ini</language>
+		</languages>
+	</administration>
+ 
+	<!-- UPDATESERVER DEFINITION -->
+	<updateservers>
+		<!-- Note: No spaces or linebreaks allowed between the server tags -->
+		<server type="extension" priority="1" name="HelloWorld Update Site">http://yourdomain.com/update/helloworld-update.xml</server>
+	</updateservers>
+ 
+</extension>

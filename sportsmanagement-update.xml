@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+   <update>
+      <name>HelloWorld</name>
+      <description>HelloWorld Component</description>
+      <element>com_helloworld</element>
+      <type>component</type>
+      <version>1.5.0</version>
+ 
+      <infourl title="HalloWorld URL">http://yourdomain.com</infourl>
+      <downloads>
+         <downloadurl type="full" format="tgz">http://yourdomain.com/files/com_helloworld-1.5.0-final.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+ 
+      <maintainer>HelloWorld Inc.</maintainer>
+      <maintainerurl>http://yourdomain.com</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="1.6" />
+   </update>
+ 
+    <update>
+      <name>HelloWorld</name>
+      <description>HelloWorld Component</description>
+      <element>com_helloworld</element>
+      <type>component</type>
+      <version>1.5.1</version>
+ 
+      <infourl title="HalloWorld URL">http://yourdomain.com</infourl>
+      <downloads>
+         <downloadurl type="full" format="tgz">http://yourdomain.com/files/com_helloworld-1.5.1-final.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+ 
+      <maintainer>HelloWorld Inc.</maintainer>
+      <maintainerurl>http://yourdomain.com</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="1.6" />
+   </update>
+ 
+</updates>
