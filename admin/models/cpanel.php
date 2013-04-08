@@ -3,20 +3,20 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+jimport('joomla.application.component.model');
  
 /**
  * 
  */
-class sportsmanagementModelcpanel extends JModelAdmin
+class sportsmanagementModelcpanel extends JModel
 {
 
 public function getVersion() 
 	{
 	   $mainframe =& JFactory::getApplication();
-	   $this->db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
-       $params = json_decode( $db->loadResult(), true );
-	$mainframe->enqueueMessage(JText::_('params<br><pre>'.print_r($params,true).'</pre>'   ),'');	
+	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
+       $manifest_cache = json_decode( $this->_db->loadResult(), true );
+	$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');	
 	}
 
 
