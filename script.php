@@ -72,15 +72,36 @@ class com_sportsmanagementInstallerScript
 	$jRegistry = new JRegistry();
     $jRegistry->loadString($params->toString('ini'), 'ini');
   $newparams = $jRegistry->toString();
-  // store the combined new and existing values back as a JSON string
-                                  
-                        $db->setQuery('UPDATE #__extensions SET params = ' .
-                                $db->quote( $newparams ) .
-                                ' WHERE name = "com_sportsmanagement"' );
-                                $db->query();
+  $this->setParams( $newparams );
                                 
     
     
         
 	}
+    
+    /*
+    * sets parameter values in the component's row of the extension table
+    */
+    function setParams($param_array) {
+                        $db = JFactory::getDbo();
+                        
+                                
+                if ( count($param_array) > 0 ) {
+                        // read the existing component value(s)
+                        $db = JFactory::getDbo();
+                        $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
+                        $params = json_decode( $db->loadResult(), true );
+                        // add the new variable(s) to the existing one(s)
+                        foreach ( $param_array as $name => $value ) {
+                                $params[ (string) $name ] = (string) $value;
+                        }
+                        // store the combined new and existing values back as a JSON string
+                        $paramsString = json_encode( $params );
+                        $db->setQuery('UPDATE #__extensions SET params = ' .
+                                $db->quote( $paramsString ) .
+                                ' WHERE name = "com_sportsmanagement"' );
+                                $db->query();
+                }
+                
+        }      
 }
