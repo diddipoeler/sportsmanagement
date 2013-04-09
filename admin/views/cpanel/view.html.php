@@ -6,12 +6,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * HelloWorlds View
+ *  View
  */
 class sportsmanagementViewcpanel extends JView
 {
 	/**
-	 * HelloWorlds view display method
+	 *  view display method
 	 * @return void
 	 */
 	function display($tpl = null) 
@@ -25,6 +25,7 @@ class sportsmanagementViewcpanel extends JView
 		$pane	=& JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
         $this->assignRef( 'version', $model->getVersion() );
+        $this->assignRef( 'githubrequest', $model->getGithubRequests() );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -52,7 +53,7 @@ class sportsmanagementViewcpanel extends JView
 	protected function addToolBar() 
 	{
 		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLDS'), 'helloworld');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
 		if ($canDo->get('core.create')) 
 		{
 			JToolBarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
@@ -79,7 +80,7 @@ class sportsmanagementViewcpanel extends JView
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_HELLOWORLD_ADMINISTRATION'));
+		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
 	}
 	
 	public function addIcon( $image , $url , $text , $newWindow = false )

@@ -20,7 +20,12 @@ public function getVersion()
        return $manifest_cache['version'];	
 	}
 
+public function getGithubRequests()
+{
 
+
+    
+}
     
 }
 

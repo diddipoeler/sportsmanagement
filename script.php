@@ -3,9 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
  
 /**
- * Script file of HelloWorld component
+ * Script file of com_sportsmanagement component
  */
-class com_helloWorldInstallerScript
+class com_sportsmanagementInstallerScript
 {
 	/**
 	 * method to install the component
@@ -26,7 +26,7 @@ class com_helloWorldInstallerScript
 	function uninstall($parent) 
 	{
 		// $parent is the class calling this method
-		echo '<p>' . JText::_('COM_HELLOWORLD_UNINSTALL_TEXT') . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 	}
  
 	/**
@@ -37,7 +37,7 @@ class com_helloWorldInstallerScript
 	function update($parent) 
 	{
 		// $parent is the class calling this method
-		echo '<p>' . JText::_('COM_HELLOWORLD_UPDATE_TEXT') . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . '</p>';
 	}
  
 	/**
@@ -49,7 +49,7 @@ class com_helloWorldInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_HELLOWORLD_PREFLIGHT_' . $type . '_TEXT') . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT') . '</p>';
 	}
  
 	/**
@@ -61,6 +61,6 @@ class com_helloWorldInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_HELLOWORLD_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
 	}
 }
