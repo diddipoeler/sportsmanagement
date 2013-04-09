@@ -28,8 +28,10 @@ $mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.prin
 
 
 // Load the parameters
-		$uname		= $paramsdata->get('cfg_github_username', '');
-		$repo		= $paramsdata->get('cfg_github_repository', '');
+        $uname = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username','');
+        $repo = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository','');
+		//$uname		= $paramsdata->get('cfg_github_username', '');
+		//$repo		= $paramsdata->get('cfg_github_repository', '');
 
 		// Convert the list name to a useable string for the JSON
 		if ($repo)
@@ -106,8 +108,10 @@ $mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.prin
 		$i = 0;
 
 		// Load the parameters
-		$uname		= $params->get('cfg_github_username', '');
-		$repo		= $params->get('cfg_github_repository', '');
+        $uname = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username','');
+        $repo = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository','');
+		//$uname		= $params->get('cfg_github_username', '');
+		//$repo		= $params->get('cfg_github_repository', '');
 		$count		= 15;
 
 		// Convert the list name to a useable string for the JSON

@@ -72,6 +72,7 @@ class com_sportsmanagementInstallerScript
 	$jRegistry = new JRegistry();
     $jRegistry->loadString($params->toString('ini'), 'ini');
   $newparams = $jRegistry->toString();
+  $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
   $this->setParams( $newparams );
                                 
     
@@ -93,6 +94,7 @@ class com_sportsmanagementInstallerScript
                         $db = JFactory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
+                        $mainframe->enqueueMessage(JText::_('setParams params<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
