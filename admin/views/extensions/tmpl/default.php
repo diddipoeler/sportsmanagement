@@ -24,7 +24,10 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="100%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('dfb-key.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION'));?>
+				<?php echo $this->addIcon('dfb-key.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));?>
+        		<?php echo $this->addIcon('tippspiel.gng','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION'));?>
+                <?php echo $this->addIcon('dbb.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));?>
+                <?php echo $this->addIcon('lmo.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));?>
 
 			</div>
 		</td>
