@@ -76,7 +76,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmangement&task=club.edit&cid[]='.$row->id);
+					$link=JRoute::_('index.php?option=com_sportsmangement&view=club&task=club.edit&cid[]='.$row->id);
 					$link2=JRoute::_('index.php?option=com_sportsmangement&view=teams&task=team.display&cid='.$row->id);
 					$checked= JHTML::_('grid.checkedout',$row,$i);
 					?>

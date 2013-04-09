@@ -31,7 +31,8 @@ class sportsmanagementModelClubs extends JModelList
 	
     protected function getListQuery()
 	{
-		// Create a new query object.		
+		$mainframe = JFactory::getApplication();
+        // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
@@ -40,6 +41,11 @@ class sportsmanagementModelClubs extends JModelList
 		$query->from('#__sportsmanagement_club as a');
         $query->where(self::_buildContentWhere());
 		$query->order(self::_buildContentOrderBy());
+        
+$mainframe->enqueueMessage(JText::_('getListQuery _buildContentWhere<br><pre>'.print_r(self::_buildContentWhere(),true).'</pre>'   ),'');
+$mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'.print_r(self::_buildContentOrderBy(),true).'</pre>'   ),'');        
+
+
 //        self::_buildContentWhere();
 //        self::_buildContentOrderBy();
         
