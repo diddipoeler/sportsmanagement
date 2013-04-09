@@ -72,13 +72,13 @@ class sportsmanagementViewClubs extends JView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_TITLE'),'clubs');
 
-		JLToolBarHelper::addNew('club.add');
-		JLToolBarHelper::editList('club.edit');
-		JLToolBarHelper::custom('club.import','upload','upload',JText::_('COM_JOOMLEAGUE_GLOBAL_CSV_IMPORT'),false);
-		JLToolBarHelper::archiveList('club.export',JText::_('COM_JOOMLEAGUE_GLOBAL_XML_EXPORT'));
-		JLToolBarHelper::deleteList('', 'club.remove');
+		JToolBarHelper::addNew('club.add');
+		JToolBarHelper::editList('club.edit');
+		JToolBarHelper::custom('club.import','upload','upload',JText::_('COM_JOOMLEAGUE_GLOBAL_CSV_IMPORT'),false);
+		JToolBarHelper::archiveList('club.export',JText::_('COM_JOOMLEAGUE_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::deleteList('', 'club.remove');
 		JToolBarHelper::divider();
-		JLToolBarHelper::onlinehelp();
+		JToolBarHelper::onlinehelp();
 		
 	}
 }
