@@ -42,8 +42,8 @@ class sportsmanagementModelClubs extends JModelList
         $query->where(self::_buildContentWhere());
 		$query->order(self::_buildContentOrderBy());
         
-$mainframe->enqueueMessage(JText::_('getListQuery _buildContentWhere<br><pre>'.print_r(self::_buildContentWhere(),true).'</pre>'   ),'');
-$mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'.print_r(self::_buildContentOrderBy(),true).'</pre>'   ),'');        
+//$mainframe->enqueueMessage(JText::_('getListQuery _buildContentWhere<br><pre>'.print_r(self::_buildContentWhere(),true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'.print_r(self::_buildContentOrderBy(),true).'</pre>'   ),'');        
 
 
 //        self::_buildContentWhere();
@@ -75,11 +75,11 @@ $mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'a_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order == 'a.ordering')
 		{
-			$orderby=' ORDER BY a.ordering '.$filter_order_Dir;
+			$orderby=' a.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',a.ordering ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',a.ordering ';
 		}
 		return $orderby;
 	}
@@ -117,7 +117,7 @@ $mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'
 				$where[]='a.published=0';
 			}
 		}
-		$where=(count($where) ? ' WHERE '. implode(' AND ',$where) : '');
+		$where=(count($where) ? ' '. implode(' AND ',$where) : ' ');
 		return $where;
 	}
 
