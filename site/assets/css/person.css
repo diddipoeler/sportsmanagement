@@ -1,0 +1,81 @@
+@CHARSET "UTF-8";
+
+.plgeneralinfo {
+	width: 100%;
+}
+
+.plgeneralinfo td.picture {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.plgeneralinfo td.info {
+	width: 50%;
+	text-align: center;
+	vertical-align: top;
+}
+
+.plinfo {
+	width: 100%;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.plinfo td.label {
+	width: 50%;
+	text-align: left;
+	font-weight: bold;
+	vertical-align: top;
+}
+
+.plinfo td.data {
+	width: 60%;
+	text-align: left;
+}
+
+.status {
+	width: 100%;
+}
+
+.status td.label {
+	width: 20%;
+	text-align: left;
+	font-weight: bold;
+	color: red;
+}
+
+.status td.data {
+	width: 80%;
+	text-align: left;
+}
+
+.gameshistory {
+	width: 100%;
+}
+
+.td_l {
+	text-align: left;
+}
+
+.td_c {
+	text-align: center !important;
+}
+
+.td_r {
+	text-align: right;
+}
+
+#gameshistory,#playercareer,#playerhistory {
+	width: 100%;
+	text-align: center;
+	cellspacing: 0;
+	cellpadding: 0;
+	border: 0;
+}
+
+div.playerinfo {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 2em;
+}

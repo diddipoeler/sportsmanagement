@@ -1,0 +1,229 @@
+#jl_rosterholder, #jl_roster_staff_holder {
+	margin: 5px auto;
+	overflow: hidden;
+}
+
+.jl_rosterpersonrow {
+	overflow: hidden;
+	margin: 0;
+	padding: 5px;
+}
+
+#jl_rosterholder, #jl_roster_staff_holder .jl_rp0 h3 {
+	margin: 0 10px 20px;
+	font-size: 110%;
+}
+
+#jl_rosterholder, #jl_roster_staff_holder .jl_rp1 h3 {
+	margin: 0 10px 20px;
+	font-size: 110%;
+	text-align: right;
+}
+
+.jl_rosterperson {
+	padding: 7px;
+	border-radius: 5px 5px 5px 5px;
+	border: 5px groove #141D70;
+}
+
+.jl_rp0 {
+	float: left;
+	overflow: hidden;
+	width: 47%;
+}
+
+.jl_rp1 {
+	float: right;
+	overflow: hidden;
+	width: 47%;
+}
+
+.jl_rp0 .jl_rosterperson_staffpicture_column, .jl_roster_staffperson_pic > img, .jl_roster_staffperson_pic {
+	float: left;
+}
+
+.jl_rp0 .jl_roster_staffperson_detail_column {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.jl_rp1 .jl_rosterperson_staffpicture_column, .jl_roster_staffperson_pic > img, .jl_roster_staffperson_pic {
+	float: right;
+}
+
+.jl_rp1 .jl_roster_staffperson_detail_column {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.jl_rp0 .jl_rosterperson_picture_column, .jl_rosterperson_pic > img, .jl_rosterperson_pic {
+	float: left;
+}
+
+.jl_rp0 .jl_rosterperson_detail_column {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.jl_rp1 .jl_rosterperson_picture_column, .jl_rosterperson_pic > img, .jl_rosterperson_pic {
+	float: right;
+}
+
+.jl_rp1 .jl_rosterperson_detail_column {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.jl_rp1 .jl_roster_in_out {
+	color: #DDDDDD;
+	float: right;
+	padding-left: 15px;
+	border: 3px solid #CCCCCC;
+	margin: 2px;
+	text-align: right;
+}
+
+.jl_rp1 .jl_roster_event {
+	color: #000000;
+	float: left;
+	padding-left: 13px;
+	border: 3px solid #CCCCCC;
+	margin: 2px;
+	text-align: right;
+}
+
+.jl_rp0 .jl_roster_in_out {
+	color: #DDDDDD;
+	float: left;
+	padding-left: 15px;
+	border: 3px solid #CCCCCC;
+	margin: 2px;
+	text-align: right;
+}
+
+.jl_rp0 .jl_roster_event {
+	color: #000000;
+	float: right;
+	padding-left: 13px;
+	border: 3px solid #CCCCCC;
+	margin: 2px;
+	text-align: right;
+}
+
+.jl_rosterpersonname {
+	text-transform: uppercase;
+	font-size: 130%;
+	font-weight: bold;
+}
+
+.jl_rosterpersoncountry {
+	height: 16px;
+}
+
+.jl_rp0 .jl_rosterperson_position_number {
+	float: right;
+}
+
+.jl_rp1 .jl_rosterperson_position_number {
+	float: left;
+}
+
+.jl_rosterperson_name {
+	font-size: 110%;
+	font-style: italic;
+	font-weight: bold;
+	text-transform: uppercase;
+	width: 100%;
+/*	text-decoration: underline;*/
+}
+
+div.jl_roster_persondetails {
+	display: block;
+	font-size: 90%;
+	overflow: hidden;
+	border-top: 2px solid #DDDDDD;
+	margin: 0 10px;
+}
+
+div.jl_roster_persondetails > div {
+	overflow: hidden;
+	border-bottom: 2px solid #DDDDDD;
+}
+
+.jl_roster_persondetails_label {
+	float: left;
+	width: 150px;
+	text-align: left;
+}
+
+.jl_roster_persondetails_data {
+	float: right;
+}
+
+.jl_roster_persondetails_data img {
+	height: 20px;
+}
+
+.jl_rosterperson_position_number {
+	border: 3px solid #CCCCCC;
+	margin: 2px;
+	color: #000000;
+	float: right;
+	font-size: 110%;
+	font-weight: bold;
+	text-align: center;
+	background-color: #00AA00;
+	background-image: url("../images/shirt.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.jl_rosterstats {
+	color: #3C3C3C;
+	font-size: 130%;
+	font-weight: bold;
+	float: none;
+	clear: both;
+}
+
+.jl_rosternostats {
+	width: 100%;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	text-align: center !important;
+}
+
+.jl_rosterposition {
+	border-bottom: 1px solid #818181;
+	border-right: 1px solid #818181;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	padding-bottom: 5px;
+	padding-top: 10px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 100%;
+	background-color: #0A345E;
+	color: #FFFFFF;
+}
+
+.jl_roster_staffheading {
+	border-bottom: 1px solid #818181;
+	border-right: 1px solid #818181;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	padding-bottom: 5px;
+	padding-top: 10px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 100%;
+	background-color: #0A345E;
+	color: #FFFFFF;
+}
+

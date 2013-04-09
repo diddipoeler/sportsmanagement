@@ -1,0 +1,94 @@
+.joomleague .pagenav {
+	text-align: center;
+}
+
+.joomleague .col0 {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #DCDCDC;
+	padding: 4px;
+	text-align: center;
+}
+
+.joomleague .col1 {
+	background: none repeat scroll 0 0 #FAFAFA;
+	border: 1px solid #DCDCDC;
+	padding: 4px;
+	text-align: center;
+}
+
+.joomleague .rankheader {
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+}
+
+.joomleague .teamheader {
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+}
+
+.joomleague .headers {
+	vertical-align: middle;
+	text-align: center;
+	padding: 5px;
+}
+
+.joomleague .rankingrow {
+	vertical-align: middle;
+	text-align: center;
+	padding: 5px;
+}
+
+.joomleague .rankingrow_rank {
+	vertical-align: middle;
+	width: 15px;
+	padding: 5px;
+}
+.joomleague .rankingrow_lastrankimg {
+	vertical-align: middle;
+	width: 15px;
+	padding: 5px;
+}
+
+.joomleague .rankingrow_lastrank {
+	vertical-align: middle;
+	text-align: right;
+	width: 10px;	
+	padding: 5px;
+	font-size:90%;
+}
+
+.joomleague .rankingrow_logo {
+	vertical-align: middle;	
+	text-align: center;	
+}
+
+.joomleague .rankingrow_teamname {
+	vertical-align: middle;
+	width: 250px;
+	padding: 5px;
+	text-align: left;	
+}
+
+.joomleague .rankingrow_played {
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.joomleague .rankingrow_points {
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.joomleague .rankingrow.lastgames {
+	white-space:nowrap;
+}
+
+.joomleague .rankingrow.lastgames img {
+	padding: 0 2px 0 2px;
+}

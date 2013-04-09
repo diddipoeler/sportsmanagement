@@ -1,0 +1,30 @@
+tr.rosterheader {
+
+}
+
+tr.totals td.td_l,
+tr.totals td.td_c,
+tr.totals td.td_r {
+	padding-bottom:25px;
+}
+
+.td_l {
+	text-align: left;
+	width: 50%;
+}
+
+.td_c {
+	text-align: center !important;
+}
+
+.td_r {
+	text-align: right !important;
+}
+
+.playername {
+	font-weight: bold;
+}
+
+.staffname {
+	font-weight: bold;
+}

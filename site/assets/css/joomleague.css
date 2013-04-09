@@ -1,0 +1,33 @@
+div.joomleague {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	/*overflow: auto;*/
+	/*if you like rounded corners uncomment
+	-moz-border-radius: 20px 20px 20px 20px; 
+	padding: 10px; 
+	border: 1px solid #000;
+	*/
+}
+
+div.joomleague .jl_listing_item {
+	text-align: left;
+	font-weight: bold;
+	float: left;
+	vertical-align: middle;
+}
+
+div.joomleague .jl_listing_value {
+	text-align: left;
+	float: right;
+	vertical-align: middle;
+}
+
+div.joomleague .jl_defaultview_spacing {
+	height: 25px;
+	width: 100%;
+	float: left;
+}
+
+.label {
+	font-weight: bold;
+}

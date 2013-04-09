@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+.matrix {
+	width: 100%;
+}
+
+.matrix th.headerspacer {
+	width: 50px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.matrix th.teamsheader {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.matrix th.teamsleft {
+	text-align: right;
+	vertical-align: middle;
+}
+
+.matrix td.result {
+	text-align: center;
+	vertical-align: middle;
+	white-space: no-wrap;
+}

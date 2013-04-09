@@ -1,54 +1,25 @@
 <?php
-// No direct access to this file
-defined('_JEXEC') or die;
- 
 /**
- * HelloWorld component helper.
+ * @copyright	Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
+ * @license		GNU/GPL,see LICENSE.php
+ * Joomla! is free software. This version may have been modified pursuant
+ * to the GNU General Public License,and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
  */
-abstract class sportsmanagementHelper
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+/*
+if( !defined('THUMBLIB_BASE_PATH') ) {
+	require_once(JLG_PATH_SITE.DS.'assets'.DS.'classes'.DS.'PHPThumb'.DS.'ThumbLib.inc.php');
+}
+*/
+
+class sportsmanagementHelper
 {
-	/**
-	 * Configure the Linkbar.
-	 */
-	public static function addSubmenu($submenu) 
-	{
-		JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
-		JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
-		// set some global property
-		$document = JFactory::getDocument();
-		$document->addStyleDeclaration('.icon-48-helloworld {background-image: url(../media/com_sportsmanagement/images/tux-48x48.png);}');
-		if ($submenu == 'extensions') 
-		{
-			$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
-		}
-	}
-	/**
-	 * Get the actions
-	 */
-	public static function getActions($messageId = 0)
-	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
- 
-		if (empty($messageId)) {
-			$assetName = 'com_sportsmanagement';
-		}
-		else {
-			$assetName = 'com_sportsmanagement.message.'.(int) $messageId;
-		}
- 
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.delete'
-		);
- 
-		foreach ($actions as $action) {
-			$result->set($action,	$user->authorise($action, $assetName));
-		}
- 
-		return $result;
-	}
-    
-    
+
 	/**
 	 * Method to return a project array (id,name)
 	 *
@@ -1221,5 +1192,6 @@ abstract class sportsmanagementHelper
 		else {
 			return ($result1 > $result2) ? -1 : 1;
 		}
-	}    
+	}
 }
+?>

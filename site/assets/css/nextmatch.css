@@ -1,0 +1,53 @@
+.nextmatch {
+	clear: both;
+	color: #666666;
+	font-size: 100%;
+	margin: 5px 0 18px;
+	width: 100%;
+}
+
+.nextmatch td.result,.nextmatch td.teamlogo {
+	width: 50%;
+	text-align: center;
+}
+
+.nextmatch td.result,.nextmatch td.vs {
+	width: 2%;
+	text-align: center;
+}
+
+.nextmatch td.result,.nextmatch td.team {
+	width: 50%;
+	font-size: 150%;
+	font-weight: bold;
+	text-align: center;
+}
+
+.notice {
+	background-color: #FFF0A5;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-weight: bold;
+	text-align: center;
+	width: 75%;
+	margin: 0 auto;
+}
+
+.h2h {
+	text-align: center;
+}
+
+/*head-to-head*/
+tr.sectiontableentry1 td.valueleft,tr.sectiontableentry2 td.valueleft {
+	text-align: center;
+}
+
+tr.sectiontableentry1 td.statlabel,tr.sectiontableentry2 td.statlabel {
+	text-align: center;
+	font-weight: bold;
+}
+
+tr.sectiontableentry1 td.valueright,tr.sectiontableentry2 td.valueright
+	{
+	text-align: center;
+}

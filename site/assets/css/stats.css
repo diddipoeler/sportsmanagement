@@ -1,0 +1,23 @@
+div.jl_substats {
+	float: left;
+	width: 48%;
+	margin: 0 10px 15px 0;
+}
+
+div.jl_substats th {
+	
+}
+
+div.jl_substats td {
+	text-align: right;
+	padding: 3px 5px;
+}
+
+div.jl_substats td.statlabel {
+	white-space: nowrap;
+	text-align: left;
+}
+
+div.jl_substats td.statvalue {
+	text-align: right;
+}

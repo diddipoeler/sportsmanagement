@@ -1,0 +1,59 @@
+body {
+  background: #666;
+  font-family: "Arial";
+  font-size: 12px;
+}
+
+div#main {
+  width: 780px;
+  background: #FFF;
+  float: left;
+  padding: 10px;
+}
+h1, h2 { clear: both; }
+div.demo {
+  overflow: auto;
+}
+
+ul#issues {
+  width: 80%;
+}
+ul#issues li {
+  margin: 5px;
+}
+
+pre {
+  overflow: hidden;
+}
+
+table {
+  border: 1px solid #999;
+  margin: 5px 0;
+}
+
+td {
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+tr:first-child {
+  background-color: #9F9;
+}
+
+/* overwrite and patch syntaxhighlight module styles */
+.syntaxhighlighter { overflow-y: hidden !important; }
+.syntaxhighlighter,
+.syntaxhighlighter .line,
+.syntaxhighlighter .line.alt1,
+.syntaxhighlighter .line.alt2,
+.syntaxhighlighter .gutter .line.highlighted {
+  background-color: #EEE !important;
+}
+
+span.fix {
+  background-color: #090;
+  color: #FFF;
+  border-radius: 3px;
+  padding: 2px;
+  margin: 2px;
+}

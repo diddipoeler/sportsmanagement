@@ -1,0 +1,25 @@
+.td_r {
+	text-align: right;
+}
+
+.td_r_t {
+	text-align: right;
+	vertical-align: top;
+}
+
+.td_c {
+	text-align: center;
+}
+
+table.venueinfo th {
+	white-space: nowrap;
+	padding-right: 3px;
+}
+
+div.venuecontent {
+	padding: 10px 20px;
+}
+
+div.picture {
+	text-align: center;
+}

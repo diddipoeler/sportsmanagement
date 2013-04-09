@@ -1,0 +1,120 @@
+table.fixtures {
+	width: 100%;
+	text-align: center;
+	vertical-align: top;
+	border: none;
+	padding: 0px;
+	margin: 0;
+	border-spacing: 0px;
+	white-space: nowrap;
+}
+
+table.fixtures th.right,table.fixtures td.right {
+	text-align: right;
+}
+
+table.fixtures th.left,table.fixtures td.left {
+	text-align: left;
+}
+
+table.fixtures th.center,table.fixtures td.center {
+	text-align: center;
+}
+
+table.fixtures tr.events td {
+	padding: 0 !important;
+}
+
+.td_l {
+	text-align: left;
+}
+
+/* tabs */
+dl.tabs {
+	float: left;
+	margin: 10px 0 -1px 0;
+	z-index: 50;
+}
+
+dl.tabs dt {
+	float: left;
+	padding: 4px 10px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	margin-left: 3px;
+	background: #f0f0f0;
+	color: #666;
+}
+
+dl.tabs dt.open {
+	background: #F9F9F9;
+	border-bottom: 1px solid #F9F9F9;
+	z-index: 100;
+	color: #000;
+}
+
+div.current {
+	clear: both;
+	border: 1px solid #ccc;
+	padding: 10px 10px;
+}
+
+div.current dd {
+	padding: 0;
+	margin: 0;
+}
+
+.matchreport {
+	clear: both;
+	color: #666666;
+	font-size: 100%;
+	margin: 5px 0 10px;
+	width: 100%;
+}
+
+.matchreport dt.list {
+	text-align: center;
+}
+
+table.matchreport td {
+	vertical-align: top;
+}
+
+.matchreport td.list {
+	width: 50%;
+	text-align: left;
+	vertical-align: top;
+}
+
+.matchreport td.list-left {
+	width: 50%;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.matchreport td.list-right {
+	width: 50%;
+	text-align: left;
+	white-space: nowrap;
+}
+
+table.matchreport td ul {
+	padding : 0 0 0 20px;
+	margin-top : 0;
+	margin-bottom : 0;
+	list-style-type: none;
+}
+
+li.events {
+	text-align: left;
+}
+
+li.events img {
+	vertical-align: middle;
+	padding: 3px 3px 3px 0px;
+}
+
+li.list {
+	text-align: left;
+}

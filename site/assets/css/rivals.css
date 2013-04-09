@@ -1,0 +1,23 @@
+.name_row {
+	text-align: left;
+}
+
+.match_row {
+	text-align: center;
+}
+
+.win_row {
+	text-align: center;
+}
+
+.tie_row {
+	text-align: center;
+}
+
+.los_row {
+	text-align: center;
+}
+
+.goals_row {
+	text-align: center;
+}

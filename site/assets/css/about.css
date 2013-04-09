@@ -1,0 +1,19 @@
+.td_r {
+	text-align: right;
+}
+
+.td_r_t {
+	text-align: right;
+	vertical-align: top;
+}
+
+table.about {
+	width: 96%;
+	align: center;
+	border: none;
+	padding: 3px 0px 0px 20px;
+}
+
+table.about td {
+	width: 70px;
+}
