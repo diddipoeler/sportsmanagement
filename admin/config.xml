@@ -18,11 +18,17 @@
 		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>
 		
-	  <field name="cfg_github_server" type="text" default="https://github.com/diddipoeler/sportsmanagement"
+	  <field name="cfg_github_username" type="text" default="diddipoeler"
 		size="100"
     label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
 		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>	
+		
+		<field name="cfg_github_repository" type="text" default="sportsmanagement"
+		size="100"
+    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
+		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+		</field>
 		
   </fieldset>
 	
