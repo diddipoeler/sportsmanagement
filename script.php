@@ -80,6 +80,11 @@ class com_sportsmanagementInstallerScript
     $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
     $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
     
+    $jRegistry = new JRegistry();
+    $jRegistry->loadString($params->toString('ini'), 'ini');
+    $newparams = $jRegistry->toString();
+    $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
+  
     /*
     $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 	$jRegistry = new JRegistry();
