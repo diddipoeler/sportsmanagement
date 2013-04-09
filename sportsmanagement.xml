@@ -3,16 +3,16 @@
  
 	<name>COM_SPORTSMANAGEMENT</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
-	<creationDate>November 2009</creationDate>
-	<author>John Doe</author>
+	<creationDate>April 2013</creationDate>
+	<author>diddipoeler. johncage, svdoldie</author>
 	<authorEmail>john.doe@example.org</authorEmail>
-	<authorUrl>http://www.example.org</authorUrl>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>0.0.19</version>
+	<version>1.0.00</version>
 	<!-- The description is optional and defaults to the name -->
-	<description>COM_HELLOWORLD_DESCRIPTION</description>
+	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
 	<!-- Runs on install/uninstall/update; New in 1.6 -->
 	<scriptfile>script.php</scriptfile>

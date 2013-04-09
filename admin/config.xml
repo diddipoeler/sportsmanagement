@@ -15,7 +15,21 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-	</fieldset>
+	
+  <field name="cfg_update_server_file" type="text" default="https://github.com/diddipoeler/sportsmanagement/archive/master.zip"
+		size="100"
+    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
+		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+		</field>
+		
+	  <field name="cfg_github_server" type="text" default="https://github.com/diddipoeler/sportsmanagement"
+		size="100"
+    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
+		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+		</field>	
+		
+  </fieldset>
+	
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
@@ -28,7 +42,7 @@
 			class="inputbox"
 			validate="rules"
 			filter="rules"
-			component="com_helloworld"
+			component="com_sportsmanagement"
 			section="component"
 		/>
 	</fieldset>
