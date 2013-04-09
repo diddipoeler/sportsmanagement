@@ -55,7 +55,7 @@
 
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu img="../media/com_sportsmanagement/images/tux-16x16.png">COM_HELLOWORLD_MENU</menu>
+		<menu img="../media/com_sportsmanagement/images/tux-16x16.png">COM_SPORTSMANAGEMENT_MENU</menu>
 		<!-- Administration Main File Copy Section -->
 		<!-- Note the folder attribute: This attribute describes the folder
 			to copy FROM in the package to install therefore files copied
