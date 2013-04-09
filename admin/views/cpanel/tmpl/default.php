@@ -24,25 +24,17 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="55%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION'));?>
-				<?php echo $this->addIcon('edit-user.gif','index.php?option=com_sportsmanagement&view=users', JText::_('COM_SPORTSMANAGEMENT_USERS'));?>
-				<?php echo $this->addIcon('multiprofile.gif','index.php?option=com_sportsmanagement&view=multiprofile', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION_MULTIPROFILES'));?>
-				<?php echo $this->addIcon('profiles.gif','index.php?option=com_sportsmanagement&view=profiles', JText::_('COM_SPORTSMANAGEMENT_CUSTOM_PROFILES'));?>
-				<?php echo $this->addIcon('groups.gif','index.php?option=com_sportsmanagement&view=groups', JText::_('COM_SPORTSMANAGEMENT_GROUPS'));?>
-				<?php echo $this->addIcon('groupcategories.gif','index.php?option=com_sportsmanagement&view=groupcategories', JText::_('COM_SPORTSMANAGEMENT_GROUP_CATEGORIES'));?>
-				<?php echo $this->addIcon('videos.gif','index.php?option=com_sportsmanagement&view=videoscategories', JText::_('COM_SPORTSMANAGEMENT_VIDEO_CATEGORIES'));?>
-				<?php echo $this->addIcon('templates.gif','index.php?option=com_sportsmanagement&view=templates', JText::_('COM_SPORTSMANAGEMENT_TEMPLATES'));?>
-				<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=applications', JText::_('COM_SPORTSMANAGEMENT_APPLICATIONS'));?>
-				<?php echo $this->addIcon('event.gif','index.php?option=com_sportsmanagement&view=events', JText::_('COM_SPORTSMANAGEMENT_EVENTS'));?>
-				<?php echo $this->addIcon('eventcategories.gif','index.php?option=com_sportsmanagement&view=eventcategories', JText::_('COM_SPORTSMANAGEMENT_EVENT_CATEGORIES'));?>
-				<?php echo $this->addIcon('mailq.gif','index.php?option=com_sportsmanagement&view=mailqueue', JText::_('COM_SPORTSMANAGEMENT_MAIL_QUEUE'));?>
-				<?php echo $this->addIcon('reports.gif','index.php?option=com_sportsmanagement&view=reports', JText::_('COM_SPORTSMANAGEMENT_REPORTINGS')); ?>
-				<?php echo $this->addIcon('userpoints.gif','index.php?option=com_sportsmanagement&view=userpoints', JText::_('COM_SPORTSMANAGEMENT_USERPOINTS')); ?>
-				<?php echo $this->addIcon('message.gif','index.php?option=com_sportsmanagement&view=messaging', JText::_('COM_SPORTSMANAGEMENT_MASSMESSAGING')); ?>
-				<?php echo $this->addIcon('activities.gif','index.php?option=com_sportsmanagement&view=activities', JText::_('COM_SPORTSMANAGEMENT_ACTIVITIES')); ?>
-				<?php echo $this->addIcon('memberlist.gif','index.php?option=com_sportsmanagement&view=memberlist', JText::_('COM_SPORTSMANAGEMENT_MEMBERLIST')); ?>
-				<?php echo $this->addIcon('about.gif','index.php?option=com_sportsmanagement&view=about', JText::_('COM_SPORTSMANAGEMENT_ABOUT')); ?>
-				<?php echo $this->addIcon('help.gif','http://www.joomla-cbe.de/cbe-online-doukumentation.html', JText::_('COM_SPORTSMANAGEMENT_HELP'), true ); ?>
+				<?php echo $this->addIcon('icon-48-clubs.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION'));?>
+				<?php echo $this->addIcon('icon-48-teams.png','index.php?option=com_sportsmanagement&view=users', JText::_('COM_SPORTSMANAGEMENT_USERS'));?>
+				<?php echo $this->addIcon('icon-48-leagues.png','index.php?option=com_sportsmanagement&view=multiprofile', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION_MULTIPROFILES'));?>
+				<?php echo $this->addIcon('icon-48-seasons.png','index.php?option=com_sportsmanagement&view=profiles', JText::_('COM_SPORTSMANAGEMENT_CUSTOM_PROFILES'));?>
+				<?php echo $this->addIcon('icon-48-playground.png','index.php?option=com_sportsmanagement&view=groups', JText::_('COM_SPORTSMANAGEMENT_GROUPS'));?>
+				<?php echo $this->addIcon('icon-48-positions.png','index.php?option=com_sportsmanagement&view=groupcategories', JText::_('COM_SPORTSMANAGEMENT_GROUP_CATEGORIES'));?>
+				<?php echo $this->addIcon('icon-48-statistics.png','index.php?option=com_sportsmanagement&view=videoscategories', JText::_('COM_SPORTSMANAGEMENT_VIDEO_CATEGORIES'));?>
+				<?php echo $this->addIcon('icon-48-sportstypes.png','index.php?option=com_sportsmanagement&view=templates', JText::_('COM_SPORTSMANAGEMENT_TEMPLATES'));?>
+				<?php echo $this->addIcon('icon-48-events.png','index.php?option=com_sportsmanagement&view=applications', JText::_('COM_SPORTSMANAGEMENT_APPLICATIONS'));?>
+				
+				
 			</div>
 		</td>
 		<td width="45%" valign="top">
