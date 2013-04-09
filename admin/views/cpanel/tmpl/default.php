@@ -184,20 +184,30 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 			<?php
 				echo $this->pane->endPanel();
-				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_CBENEWS') , 'NEWS' );
+                
+				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_NEWS') , 'NEWS' );
 			?>
 			<table class="adminlist">
 				<tr>
 					<td>
 
-					coming soon
+<ul class="GH-commit<?php echo $moduleclass_sfx;?>">
+	<?php foreach ($github as $o) { ?>
+	<li><?php echo $o->commit->message.$o->commit->author;
+	if (isset($o->commit->committer)) {
+		echo $o->commit->committer;
+	}
+	echo $o->commit->time; ?>
+	</li>
+	<?php } ?>
+</ul>
 						
 					</td>
 				</tr>
 			</table>
 			<?php
 				echo $this->pane->endPanel();	
-				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_CBEFORUM') , 'FORUM' );
+				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_FORUM') , 'FORUM' );
 			?>
 			<table class="adminlist">
 				<tr>
