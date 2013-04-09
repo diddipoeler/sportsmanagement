@@ -192,7 +192,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 
 <ul class="GH-commit<?php echo $moduleclass_sfx;?>">
-	<?php foreach ($github as $o) { ?>
+	<?php foreach ($this->githubrequest  as $o) { ?>
 	<li><?php echo $o->commit->message.$o->commit->author;
 	if (isset($o->commit->committer)) {
 		echo $o->commit->committer;
