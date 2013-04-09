@@ -21,7 +21,7 @@ jimport('joomla.filesystem.file');
  * @package	JoomLeague
  * @since	0.1
  */
-class sportsmanagementControllerClub extends JoomleagueController
+class sportsmanagementControllerClub extends JController
 {
 	protected $view_list = 'clubs';
 	
@@ -69,7 +69,7 @@ class sportsmanagementControllerClub extends JoomleagueController
 	{
 		$mainframe = JFactory::getApplication();
     // Check for request forgeries
-		JRequest::checkToken() or die('COM_JOOMLEAGUE_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		$address_parts = array();
 		$post=JRequest::get('post');
@@ -137,7 +137,7 @@ class sportsmanagementControllerClub extends JoomleagueController
 		
 		if ($model->store($post))
 		{
-			$msg=JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_CTRL_SAVED');
+			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
 			$createTeam=JRequest::getVar('createTeam');
 			if ($createTeam)
 			{
@@ -153,7 +153,7 @@ class sportsmanagementControllerClub extends JoomleagueController
 		}
 		else
 		{
-			$msg=JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_CTRL_ERROR_SAVE').$model->getError();
+			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE').$model->getError();
 		}
 		// Check the table in so it can be edited.... we are done with it anyway
 		$model->checkin();
@@ -170,11 +170,11 @@ class sportsmanagementControllerClub extends JoomleagueController
 
 	function remove()
 	{
-		JRequest::checkToken() or die('COM_JOOMLEAGUE_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$cid=JRequest::getVar('cid',array(),'post','array');
 		$msg='';
 		JArrayHelper::toInteger($cid);
-		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_CTRL_SELECT_TO_DELETE'));}
+		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SELECT_TO_DELETE'));}
 		$model=$this->getModel('club');
 		if(!$model->delete($cid))
 		{
@@ -183,7 +183,7 @@ class sportsmanagementControllerClub extends JoomleagueController
 		}
 		else
 		{
-			$msg=JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_CTRL_DELETED');
+			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_DELETED');
 		}
 		$this->setRedirect('index.php?option=com_joomleague&view=clubs&task=club.display',$msg);
 	}
@@ -205,11 +205,11 @@ class sportsmanagementControllerClub extends JoomleagueController
 
 	function export()
 	{
-		JRequest::checkToken() or die('COM_JOOMLEAGUE_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$post=JRequest::get('post');
 		$cid=JRequest::getVar('cid',array(),'post','array');
 		JArrayHelper::toInteger($cid);
-		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_TO_EXPORT'));}
+		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_EXPORT'));}
 		$model = $this->getModel("club");
 		$model->export($cid, "club", "Club");
 	}
@@ -223,7 +223,7 @@ class sportsmanagementControllerClub extends JoomleagueController
 	 * @return	object	The model.
 	 * @since	1.6
 	 */
-	function getModel($name = 'Club', $prefix = 'JoomleagueModel', $config = array('ignore_request' => true))
+	function getModel($name = 'Club', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 		return $model;
