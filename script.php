@@ -77,6 +77,7 @@ class com_sportsmanagementInstallerScript
 	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
 	$params = new JParameter( $paramsdata, $paramsdefs );
 	
+    $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
     $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
     
     /*
