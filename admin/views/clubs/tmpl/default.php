@@ -129,7 +129,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 												$imageTitle,'title= "'.$imageTitle.'"');
 
 							}
-							elseif ($row->logo_big == sportsmanagement::getDefaultPlaceholder("clublogobig"))
+							elseif ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
@@ -155,7 +155,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
-							elseif ($row->logo_middle == sportsmanagement::getDefaultPlaceholder("clublogomedium"))
+							elseif ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
@@ -181,7 +181,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
-							elseif ($row->logo_small == sportsmanagement::getDefaultPlaceholder("clublogosmall"))
+							elseif ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
