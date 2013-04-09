@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="100%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION'));?>
+				<?php echo $this->addIcon('dfb-key.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_CONFIGURATION'));?>
 
 			</div>
 		</td>
