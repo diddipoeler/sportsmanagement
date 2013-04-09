@@ -37,7 +37,7 @@ class sportsmanagementViewClubs extends JView
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'a_search_mode',		'search_mode',		'',				'string');
 		$search				= JString::strtolower($search);
 
-		$items		=& $this->get('Data');
+		$items		=& $this->get('Items');
 		$total		=& $this->get('Total');
 		$pagination =& $this->get('Pagination');
 

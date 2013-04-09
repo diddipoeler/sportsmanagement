@@ -28,7 +28,20 @@ class sportsmanagementModelClubs extends JModelList
 {
 	var $_identifier = "clubs";
 	
-	function _buildQuery()
+	
+    protected function getListQuery()
+	{
+		// Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('id,name');
+		// From the hello table
+		$query->from('#__sportsmanagement_club');
+		return $query;
+	}
+    
+    function _buildQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where=$this->_buildContentWhere();
