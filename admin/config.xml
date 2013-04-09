@@ -5,7 +5,12 @@
 		label="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_LABEL"
 		description="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_DESC"
 	>
-		
+	
+  <field name="cfg_help_server" type="text" default="http://joomleaguewiki.grammatikas-grill.de/index.php/"
+		size="100"
+    label="COM_JOOMLEAGUE_SETTINGS_HELPSERVER"
+		description="COM_JOOMLEAGUE_SETTINGS_HELPSERVER_DESC">
+		</field>	
 	
   <field name="cfg_update_server_file" type="text" default="https://github.com/diddipoeler/sportsmanagement/archive/master.zip"
 		size="100"
