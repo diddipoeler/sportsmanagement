@@ -71,16 +71,22 @@ class com_sportsmanagementInstallerScript
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $this->release . '</p>';
         
-    $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
+    //$paramsdata = JComponentHelper::getParams('com_sportsmanagement');
+    $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
+    $paramsdata = json_decode( $db->loadResult(), true );
 	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
 	$params = new JParameter( $paramsdata, $paramsdefs );
-	$mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
+	
+    $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
+    
+    /*
+    $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 	$jRegistry = new JRegistry();
     $jRegistry->loadString($params->toString('ini'), 'ini');
   $newparams = $jRegistry->toString();
   $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
   $this->setParams( $newparams );
-                                
+  */                              
     
     
         
