@@ -12,8 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
+// import the Joomla modellist library
+jimport('joomla.application.component.modellist');
+
+//jimport('joomla.application.component.model');
+//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 /**
  * Joomleague Component Clubs Model
@@ -21,7 +24,7 @@ require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueModelClubs extends JoomleagueModelList
+class sportsmanagementModelClubs extends JModelList
 {
 	var $_identifier = "clubs";
 	
@@ -31,7 +34,7 @@ class JoomleagueModelClubs extends JoomleagueModelList
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
 		$query='	SELECT a.*,u.name AS editor
-					FROM #__joomleague_club AS a
+					FROM #__sportsmanagement_club AS a
 					LEFT JOIN #__users AS u ON u.id=a.checked_out '
 					. $where
 					. $orderby;

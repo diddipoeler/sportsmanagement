@@ -21,7 +21,7 @@ jimport('joomla.filesystem.file');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueViewClubs extends JLGView
+class sportsmanagementViewClubs extends JView
 {
 
 	function display($tpl=null)

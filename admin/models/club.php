@@ -11,9 +11,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+// import Joomla modelform library
+jimport('joomla.application.component.modeladmin');
 
-jimport('joomla.application.component.model');
-require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
+//jimport('joomla.application.component.model');
+//require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
 /**
  * Joomleague Component Club Model
@@ -21,7 +23,7 @@ require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueModelClub extends JoomleagueModelItem
+class sportsmanagementModelClub extends JModelAdmin
 {
 	
   /* interfaces */
@@ -324,7 +326,7 @@ class JoomleagueModelClub extends JoomleagueModelItem
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
+		$form = $this->loadForm('com_sportsmanager.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
 		{

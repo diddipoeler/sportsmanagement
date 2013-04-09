@@ -21,7 +21,7 @@ jimport('joomla.filesystem.file');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueControllerClub extends JoomleagueController
+class sportsmanagementControllerClub extends JoomleagueController
 {
 	protected $view_list = 'clubs';
 	
