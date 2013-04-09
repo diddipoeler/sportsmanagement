@@ -141,7 +141,7 @@ class sportsmangementViewClub extends JView
 	*/
 	protected function addToolbar()
 	{
-		JLToolBarHelper::save('club.save');
+		JToolBarHelper::save('club.save');
 
 		if (!$this->edit)
 		{
