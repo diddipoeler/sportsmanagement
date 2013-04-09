@@ -7,7 +7,13 @@ defined('_JEXEC') or die('Restricted access');
  */
 class com_sportsmanagementInstallerScript
 {
-	/**
+	/*
+     * The release value would ideally be extracted from <version> in the manifest file,
+     * but at preflight, the manifest file exists only in the uploaded temp folder.
+     */
+    private $release = '1.0.00';
+    
+    /**
 	 * method to install the component
 	 *
 	 * @return void
@@ -37,7 +43,7 @@ class com_sportsmanagementInstallerScript
 	function update($parent) 
 	{
 		// $parent is the class calling this method
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT' . $this->release) . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
 	}
  
 	/**
@@ -49,7 +55,7 @@ class com_sportsmanagementInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' . $this->release) . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $this->release . '</p>';
 	}
  
 	/**
@@ -63,7 +69,7 @@ class com_sportsmanagementInstallerScript
     $db = JFactory::getDbo();
         // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' . $this->release) . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $this->release . '</p>';
         
     $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
