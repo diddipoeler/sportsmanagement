@@ -185,7 +185,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 				echo $this->pane->endPanel();
                 
-				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_NEWS') , 'NEWS' );
+				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_GITHUB_REQUESTS') , 'GITHUBREQUESTS' );
 			?>
 			<table class="adminlist">
 				<tr>

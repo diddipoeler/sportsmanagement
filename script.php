@@ -68,7 +68,7 @@ class com_sportsmanagementInstallerScript
     $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
 	$params = new JParameter( $paramsdata, $paramsdefs );
-	
+	$mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 	$jRegistry = new JRegistry();
     $jRegistry->loadString($params->toString('ini'), 'ini');
   $newparams = $jRegistry->toString();
