@@ -12,14 +12,14 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_('COM_JOOMLEAGUE_GLOBAL_FILTER');
+				echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER');
 				?>&nbsp;<input	type="text" name="search" id="search"
 								value="<?php echo $this->lists['search']; ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_GO'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_GO'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('COM_JOOMLEAGUE_GLOBAL_RESET');
+					echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET');
 					?>
 				</button>
 			</td>
@@ -37,35 +37,35 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 					<th width="50">&nbsp;</th>
 					<th class="title">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_NAME_OF_CLUB','a.name',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NAME_OF_CLUB','a.name',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th>
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_WEBSITE','a.website',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE','a.website',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_L_LOGO','a.logo_big',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO','a.logo_big',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_M_LOGO','a.logo_middle',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_M_LOGO','a.logo_middle',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_S_LOGO','a.logo_small',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO','a.logo_small',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_CLUBS_COUNTRY','a.country',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','a.country',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_JOOMLEAGUE_GLOBAL_ORDER','a.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ORDER','a.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'club.saveorder');
 						?>
 					</th>
 					<th width="1%">
-						<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_GLOBAL_ID','a.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ID','a.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -96,14 +96,14 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
                                 <a href="<?php echo $link2; ?>">
 									<?php
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_SHOW_TEAMS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/icon-16-Teams.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -124,23 +124,23 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							<?php
 							if ($row->logo_big == '')
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 
 							}
 							elseif ($row->logo_big == JoomleagueHelper::getDefaultPlaceholder("clublogobig"))
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_DEFAULT_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_big)) {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_CUSTOM_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
@@ -151,22 +151,22 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							<?php
 							if ($row->logo_middle == '')
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
 							elseif ($row->logo_middle == JoomleagueHelper::getDefaultPlaceholder("clublogomedium"))
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_DEFAULT_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_middle)) {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_CUSTOM_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
@@ -177,22 +177,22 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							<?php
 							if ($row->logo_small == '')
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
 							elseif ($row->logo_small == JoomleagueHelper::getDefaultPlaceholder("clublogosmall"))
 							{
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_DEFAULT_IMAGE');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
 				  								$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_small)) {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_CUSTOM_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_CLUBS_NO_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
@@ -202,10 +202,10 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'club.orderup','COM_JOOMLEAGUE_GLOBAL_ORDER_UP',true); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'club.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',true); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'club.orderdown','COM_JOOMLEAGUE_GLOBAL_ORDER_DOWN',true);
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'club.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',true);
 								$disabled=true ?  '' : 'disabled="disabled"';
 								?>
 							</span>
