@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 	<tr>
-		<td style="text-align: left; width: 33%;">
+		<td style="text-align: left; width: 50%;">
 			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW" ); ?></a>
 			<br/>
 			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
@@ -45,14 +45,13 @@ defined('_JEXEC') or die('Restricted access');
 			<br/>
 			<a href="http://extensions.joomla.org/extensions/owner/JoomlaCBE" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_JED_FEEDBACK" ); ?></a>
 		</td>
-		<td style="text-align: center; width: 33%;">
+		<td style="text-align: center; width: 50%;">
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_CBE_DESC" ); ?>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?>: <?php echo JText::sprintf( 'Version: %1$s', $this->version ); ?>
 		</td>
-		<td style="text-align: right; width: 33%;">
-		</td>
+		
 	</tr>
 </table>
