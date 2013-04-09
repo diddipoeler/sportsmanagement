@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
         		<?php echo $this->addIcon('tippspiel.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION'));?>
                 <?php echo $this->addIcon('dbb.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));?>
                 <?php echo $this->addIcon('lmo.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));?>
+                <?php echo $this->addIcon('sis.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'));?>
 
 			</div>
 		</td>
