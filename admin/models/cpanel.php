@@ -24,7 +24,7 @@ public function getGithubRequests()
 {
 $mainframe =& JFactory::getApplication();    
 $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
-$mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
 
 // Load the parameters

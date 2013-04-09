@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 			<br/>
 			<a href="http://extensions.joomla.org/extensions/owner/JoomlaCBE" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_JED_FEEDBACK" ); ?></a>
 		</td>
-		<td style="text-align: center; width: 50%;">
+		<td style="text-align: left; width: 50%;">
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_CBE_DESC" ); ?>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>

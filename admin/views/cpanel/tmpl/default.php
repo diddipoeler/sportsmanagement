@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="55%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('icon-48-clubs.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>
+				<?php echo $this->addIcon('icon-48-clubs.png','index.php?option=com_sportsmanagement&view=clubs', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>
 				<?php echo $this->addIcon('icon-48-teams.png','index.php?option=com_sportsmanagement&view=users', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS'));?>
 				<?php echo $this->addIcon('icon-48-leagues.png','index.php?option=com_sportsmanagement&view=multiprofile', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>
 				<?php echo $this->addIcon('icon-48-seasons.png','index.php?option=com_sportsmanagement&view=profiles', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>
