@@ -42,6 +42,7 @@
 		<filename>sportsmanagement.php</filename>
 		<filename>controller.php</filename>
 		<folder>views</folder>
+		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
