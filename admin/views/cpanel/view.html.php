@@ -54,7 +54,8 @@ class sportsmanagementViewcpanel extends JView
 	{
 		$canDo = sportsmanagementHelper::getActions();
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
-		if ($canDo->get('core.create')) 
+		/*
+        if ($canDo->get('core.create')) 
 		{
 			JToolBarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
 		}
@@ -66,6 +67,7 @@ class sportsmanagementViewcpanel extends JView
 		{
 			JToolBarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
 		}
+        */
 		if ($canDo->get('core.admin')) 
 		{
 			JToolBarHelper::divider();

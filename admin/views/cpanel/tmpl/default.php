@@ -7,10 +7,10 @@
  */
  
 ;##################################################################
-;/* CBE
+;/* 
 ;* Modified by 
 ;*  
-;* email: info@joomla-cbe.de
+;* email: 
 ;* date: 2013
 ;* Release: 1.0
 ;* License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 
