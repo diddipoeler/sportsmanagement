@@ -5,16 +5,7 @@
 		label="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_LABEL"
 		description="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_DESC"
 	>
-		<field
-			name="show_category"
-			type="radio"
-			label="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_LABEL"
-			description="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_DESC"
-			default="0"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
+		
 	
   <field name="cfg_update_server_file" type="text" default="https://github.com/diddipoeler/sportsmanagement/archive/master.zip"
 		size="100"

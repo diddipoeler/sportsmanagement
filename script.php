@@ -82,8 +82,10 @@ class com_sportsmanagementInstallerScript
     /*
     * sets parameter values in the component's row of the extension table
     */
-    function setParams($param_array) {
-                        $db = JFactory::getDbo();
+    function setParams($param_array) 
+    {
+        $mainframe =& JFactory::getApplication();
+        $db = JFactory::getDbo();
                         
                                 
                 if ( count($param_array) > 0 ) {
