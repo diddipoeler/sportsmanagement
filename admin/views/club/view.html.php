@@ -20,7 +20,7 @@ jimport('joomla.application.component.view');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueViewClub extends JLGView
+class sportsmangementViewClub extends JView
 {
 
 	function display($tpl=null)
@@ -43,7 +43,7 @@ class JoomleagueViewClub extends JLGView
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut($user->get('id')))
 		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_JOOMLEAGUE_ADMIN_CLUB'),$club->name);
+			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB'),$club->name);
 			$mainframe->redirect('index.php?option='.$option,$msg);
 		}
 
@@ -66,7 +66,7 @@ class JoomleagueViewClub extends JLGView
 		$lists['ordering'] 	= JHTML::_('list.specificordering',$club,$club->id,$query,1);
 
 		//build the html select list for countries
-		$countries[]=JHTML::_('select.option','',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_COUNTRY'));
+		$countries[]=JHTML::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res =& Countries::getCountryOptions())
 		{
 			$countries=array_merge($countries,$res);
@@ -81,7 +81,7 @@ class JoomleagueViewClub extends JLGView
 		unset($countries);
 
 		//build the html select list for playgrounds
-		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_PLAYGROUND'));
+		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
 		if ($res =& $model->getPlaygrounds())
 		{
 			$playgrounds=array_merge($playgrounds,$res);
@@ -145,22 +145,22 @@ class JoomleagueViewClub extends JLGView
 
 		if (!$this->edit)
 		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_ADD_NEW'),'clubs');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADD_NEW'),'clubs');
 			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('club.cancel');
+			JToolBarHelper::cancel('club.cancel');
 		}
 		else
 		{
 			// for existing items the button is renamed `close` and the apply button is showed
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_CLUB_EDIT'),'clubs');
-			JLToolBarHelper::apply('club.apply');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EDIT'),'clubs');
+			JToolBarHelper::apply('club.apply');
 			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('club.cancel','COM_JOOMLEAGUE_GLOBAL_CLOSE');
+			JToolBarHelper::cancel('club.cancel','COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
 		}
 		
 		JToolBarHelper::divider();
 		JToolBarHelper::back();
-		JLToolBarHelper::onlinehelp();		
+		//JLToolBarHelper::onlinehelp();		
 	}	
 }
 ?>
