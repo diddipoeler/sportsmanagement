@@ -71,6 +71,8 @@
 			<filename>controller.php</filename>
 			<!-- assets files section -->
 			<folder>assets</folder>
+			<!-- elements files section -->
+			<folder>elements</folder>
 			<!-- SQL files section -->
 			<folder>sql</folder>
 			<!-- tables files section -->

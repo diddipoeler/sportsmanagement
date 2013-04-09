@@ -38,9 +38,15 @@ class sportsmanagementModelClubs extends JModelList
 		$query->select('a.*');
 		// From the hello table
 		$query->from('#__sportsmanagement_club as a');
+        $query->where(self::_buildContentWhere());
+		$query->order(self::_buildContentOrderBy());
+//        self::_buildContentWhere();
+//        self::_buildContentOrderBy();
+        
 		return $query;
 	}
-    
+
+/*    
     function _buildQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
@@ -53,6 +59,7 @@ class sportsmanagementModelClubs extends JModelList
 					. $orderby;
 		return $query;
 	}
+*/
 
 	function _buildContentOrderBy()
 	{
