@@ -59,8 +59,28 @@ class com_sportsmanagementInstallerScript
 	 */
 	function postflight($type, $parent) 
 	{
-		// $parent is the class calling this method
+	$mainframe =& JFactory::getApplication();
+    $db = JFactory::getDbo();
+        // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
+        
+    $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
+	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
+	$params = new JParameter( $paramsdata, $paramsdefs );
+	
+	$jRegistry = new JRegistry();
+    $jRegistry->loadString($params->toString('ini'), 'ini');
+  $newparams = $jRegistry->toString();
+  // store the combined new and existing values back as a JSON string
+                                  
+                        $db->setQuery('UPDATE #__extensions SET params = ' .
+                                $db->quote( $newparams ) .
+                                ' WHERE name = "com_sportsmanagement"' );
+                                $db->query();
+                                
+    
+    
+        
 	}
 }
