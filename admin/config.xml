@@ -30,6 +30,12 @@
 		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>
 		
+    <field name="show_debug_info" type="radio" default="0"
+			label="COM_JOOMLEAGUE_SETTINGS_SHOW_DEBUG_TITLE" description="COM_JOOMLEAGUE_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">COM_JOOMLEAGUE_GLOBAL_NO</option>
+			<option value="1">COM_JOOMLEAGUE_GLOBAL_YES</option>
+		</field>
+		
   </fieldset>
 	
 	<fieldset
