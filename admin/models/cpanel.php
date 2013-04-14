@@ -136,15 +136,15 @@ $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 				if ($o['author']['id'] != $o['committer']['id'])
 				{
 					// The committer name formatted with link
-					$github[$i]->commit->committer	= JText::_('MOD_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
+					$github[$i]->commit->committer	= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
 
 					// The author wasn't the committer
-					$github[$i]->commit->author		= JText::_('MOD_GITHUB_AUTHORED_BY');
+					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
 				}
 				else
 				{
 					// The author is also the committer
-					$github[$i]->commit->author		= JText::_('MOD_GITHUB_COMMITTED_BY');
+					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
 				}
 
 				// The author name formatted with link
@@ -159,7 +159,7 @@ $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 
 					// Load the JavaScript; first ensure we have MooTools Core
 					JHtml::_('behavior.framework');
-					JHtml::script('administrator/modules/mod_joomleague_github/media/js/prettydate.js', false, false);
+					JHtml::script(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/js/prettydate.js', false, false);
 					$github[$i]->commit->time = ' <span class="commit-time" title="'.$ISOtime.'">'.JHtml::date($date, 'D M d H:i:s O Y').'</span>';
 				}
 				else
