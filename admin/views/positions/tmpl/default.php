@@ -165,10 +165,10 @@ JHTML::_('behavior.modal');
 					<td class="center"><?php echo $published; ?></td>
 					<td class="order">
 						<span>
-							<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'position.orderup','JGRID_HEADING_ORDERING_UP',true); ?>
+							<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'position.orderup','JLIB_HTML_MOVE_UP',true); ?>
 						</span>
 						<span>
-							<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'position.orderdown','JGRID_HEADING_ORDERING_DOWN',true); ?>
+							<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'position.orderdown','JLIB_HTML_MOVE_DOWN',true); ?>
 							<?php
 							$disabled=true ? '' : 'disabled="disabled"';
 							?>

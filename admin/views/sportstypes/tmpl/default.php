@@ -99,11 +99,11 @@ JHTML::_('behavior.modal');
 						</td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JGRID_HEADING_ORDERING_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
 							</span>
 							<span>
 								<?php
-								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','JGRID_HEADING_ORDERING_DOWN',$ordering);
+								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','JLIB_HTML_MOVE_DOWN',$ordering);
 								?>
 								<?php $disabled=true ? '' : 'disabled="disabled"'; ?>
 							</span>

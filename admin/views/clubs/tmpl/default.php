@@ -203,10 +203,10 @@ JHTML::_('behavior.modal');
 						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'club.orderup','JGRID_HEADING_ORDERING_UP',true); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'club.orderup','JLIB_HTML_MOVE_UP',true); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'club.orderdown','JGRID_HEADING_ORDERING_DOWN',true);
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'club.orderdown','JLIB_HTML_MOVE_DOWN',true);
 								$disabled=true ?  '' : 'disabled="disabled"';
 								?>
 							</span>
