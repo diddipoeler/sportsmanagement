@@ -13,14 +13,14 @@ JHTML::_('behavior.modal');
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_FILTER');
+				echo JText::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="search" id="search"
 								value="<?php echo $this->lists['search']; ?>"
 								class="text_area" onchange="document.adminForm.submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_GO'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_RESET');
+					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
 			</td>
@@ -55,14 +55,14 @@ JHTML::_('behavior.modal');
           
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_GLOBAL_ORDER','objassoc.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo '<br />';
 						//echo JHTML::_('grid.order',$this->items);
 						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'jlextassociations.saveorder');
 						?>
 					</th>
 					<th width="20" style="vertical-align: top; ">
-						<?php echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_GLOBAL_ID','objassoc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','objassoc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
