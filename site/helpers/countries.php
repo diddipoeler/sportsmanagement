@@ -18,13 +18,13 @@ jimport( 'joomla.utilities.arrayhelper' );
 class Countries
 {
 	function Countries() {
-		$lang = JFactory::getLanguage();
-		$extension = "com_sportsmanagement_countries";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+//      $lang = JFactory::getLanguage();
+//		$extension = "com_sportsmanagement_countries";
+//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+//		||	$lang->load($extension, $source, null, false, false)
+//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 	}	
 	
 	// Hints:
@@ -44,13 +44,13 @@ class Countries
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
 		$db = Jfactory::getDBO();
-    $lang = JFactory::getLanguage();
-		$extension = "com_sportsmanagement_countries";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+//    $lang = JFactory::getLanguage();
+//		$extension = "com_sportsmanagement_countries";
+//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+//		||	$lang->load($extension, $source, null, false, false)
+//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = "SELECT alpha3,name from #__sportsmanagement_countries";
 		$db->setQuery($query);
@@ -133,13 +133,13 @@ class Countries
 	public static function getCountryName($iso3)
 	{
 	$db = Jfactory::getDBO();
-		$lang = JFactory::getLanguage();
-		$extension = "com_sportsmanagement_countries";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+//		$lang = JFactory::getLanguage();
+//		$extension = "com_sportsmanagement_countries";
+//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+//		||	$lang->load($extension, $source, null, false, false)
+//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = "SELECT name from #__sportsmanagement_countries
     where alpha3 like '".$iso3."'";
@@ -158,13 +158,13 @@ class Countries
    */
 	public static function getShortCountryName($iso3)
 	{
-		$lang = JFactory::getLanguage();
-		$extension = "com_sportsmanagement_countries";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+//		$lang = JFactory::getLanguage();
+//		$extension = "com_sportsmanagement_countries";
+//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+//		||	$lang->load($extension, $source, null, false, false)
+//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		$full=self::getCountryName($iso3);
 		if (empty($full)){return false;}
 		$parts=explode(',', $full);
