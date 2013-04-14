@@ -49,12 +49,12 @@ defined('_JEXEC') or die('Restricted access');
 					<tr align="center">
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('cbehome.png','http://www.joomla-cbe.de', JText::_('COM_SPORTSMANAGEMENT_DASHBOARD_CBESITE_LINK'), true); ?>
+							<?php echo $this->addIcon('cbehome.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
 						</td>
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('cbehelp.png','http://www.joomla-cbe.de/cbe-online-doukumentation.html', JText::_('COM_SPORTSMANAGEMENT_DASHBOARD_HELP_LINK'), true); ?>
+							<?php echo $this->addIcon('cbehelp.png','http://joomleaguewiki.grammatikas-grill.de/index.php/Hauptseite', JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'), true); ?>
 							</div>
 						</td>					
 					</tr>
@@ -73,15 +73,10 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JText::_('COM_SPORTSMANAGEMENT_GREAT_COMPONENT_MSG');?>
 						</div>
 						<p>
-							If you require professional support just head on to the forums at 
-							<a href="http://www.joomla-cbe.de/forum/" target="_blank">
-							http://www.joomla-cbe.de/forum/
-							</a>
-							For developers, you can browse through the documentations at 
-							<a href="http://www.joomla-cbe.de/cbe-online-doukumentation.html" target="_blank">http://www.joomla-cbe.de/cbe-online-doukumentation.html</a>
+							
 						</p>
 						<p>
-							If you found any bugs, just drop us an email at bugs@joomla-cbe.de
+							
 						</p>
 					</td>
 				</tr>
@@ -231,7 +226,7 @@ defined('_JEXEC') or die('Restricted access');
 			
 		</td>
 		<td style="text-align: center; width: 33%;">
-			<?php echo JText::_( "COM_SPORTSMANAGEMENT_CBE_DESC" ); ?>
+			<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 			<br/>
