@@ -44,12 +44,12 @@ JHTML::_('behavior.modal');
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ORDER','s.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'sportstypes.saveorder');
 						?>
 					</th>
 					<th>
-						<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ID','s.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','s.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -99,11 +99,11 @@ JHTML::_('behavior.modal');
 						</td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JGRID_HEADING_ORDERING_UP',$ordering); ?>
 							</span>
 							<span>
 								<?php
-								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',$ordering);
+								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','JGRID_HEADING_ORDERING_DOWN',$ordering);
 								?>
 								<?php $disabled=true ? '' : 'disabled="disabled"'; ?>
 							</span>

@@ -92,7 +92,7 @@ jimport('joomla.filesystem.file');
 					</th>
 					<th class="nowrap">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 				</tr>
