@@ -18,7 +18,7 @@ JHTML::_( 'behavior.mootools' );
  *
  * in the xml field, the following fields must be defined:
  * - depends: list of fields name this field depends on, separated by comma (e.g: "p, tid")
- * - task: the task used to return the query, using defined depends field names as parameters for query (=> 'index.php?option=com_joomleague&controller=ajax&task=<task>&p=1&tid=34')
+ * - task: the task used to return the query, using defined depends field names as parameters for query (=> 'index.php?option=com_sportsmanagement&controller=ajax&task=<task>&p=1&tid=34')
  * @package Joomleague
  * @subpackageParameter
  * @since1.5
@@ -67,12 +67,12 @@ class JFormFieldDependSQL extends JFormField
 		$attribs	.= ' current="'.$this->value.'"';
 		
 		$lang = JFactory::getLanguage();
-		$lang->load("com_joomleague", JPATH_ADMINISTRATOR);
+		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 		if ($required) {
 			$options = array();
 		}
 		else {
-			$options = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT'), $key, JText::_($val)));
+			$options = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
 		}
 
 		$query = $this->element['query'];
@@ -86,7 +86,7 @@ class JFormFieldDependSQL extends JFormField
 		if ($depends)
 		{
 			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::base() . 'components/com_joomleague/assets/js/depend.js' );
+			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		return JHTML::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);

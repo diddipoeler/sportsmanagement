@@ -19,7 +19,7 @@ class Countries
 {
 	function Countries() {
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague_countries";
+		$extension = "com_sportsmanagement_countries";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
@@ -45,14 +45,14 @@ class Countries
 	{
 		$db = Jfactory::getDBO();
     $lang = JFactory::getLanguage();
-		$extension = "com_joomleague_countries";
+		$extension = "com_sportsmanagement_countries";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = "SELECT alpha3,name from #__joomleague_countries";
+		$query = "SELECT alpha3,name from #__sportsmanagement_countries";
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
     
@@ -72,7 +72,7 @@ class Countries
 	{
 	$db = Jfactory::getDBO();
 	  
-		$query = "SELECT alpha3 from #__joomleague_countries
+		$query = "SELECT alpha3 from #__sportsmanagement_countries
     where alpha2 like '".$iso_code_2."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -86,7 +86,7 @@ class Countries
 	public static function convertIso3to2($iso_code_3)
 	{
 	$db = Jfactory::getDBO();
-	  $query = "SELECT alpha2 from #__joomleague_countries
+	  $query = "SELECT alpha2 from #__sportsmanagement_countries
     where alpha3 like '".$iso_code_3."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -104,7 +104,7 @@ class Countries
 		$iso2=Countries::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			$path=JURI::root().'media/com_joomleague/flags/'.strtolower($iso2).'.png';
+			$path=JURI::root().'media/com_sportsmanagement/flags/'.strtolower($iso2).'.png';
 			return $path;
 		}
 		return null;
@@ -134,14 +134,14 @@ class Countries
 	{
 	$db = Jfactory::getDBO();
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague_countries";
+		$extension = "com_sportsmanagement_countries";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = "SELECT name from #__joomleague_countries
+		$query = "SELECT name from #__sportsmanagement_countries
     where alpha3 like '".$iso3."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -159,7 +159,7 @@ class Countries
 	public static function getShortCountryName($iso3)
 	{
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague_countries";
+		$extension = "com_sportsmanagement_countries";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
@@ -206,7 +206,7 @@ Türkiye
 									$zipcode='',
 									$location='',
 									$country='',
-									$addressString='COM_JOOMLEAGUE_ADDRESS_FORM')
+									$addressString='COM_SPORTSMANAGEMENT_ADDRESS_FORM')
 	{
 		$resultString='';
 

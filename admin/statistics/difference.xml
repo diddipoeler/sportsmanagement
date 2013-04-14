@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fields name="params">
+		<fieldset name="typefields_base" 
+		          label="COM_JOOMLEAGUE_STAT_PARAMS_GROUP_SETTINGS" 
+		          description="COM_JOOMLEAGUE_STAT_DIFFERENCE_DESC">
+		          
+			<field  name="add_ids" type="text" value="" 
+					label="COM_JOOMLEAGUE_STAT_DIFFERENCE_ADD_IDS" 
+					description="COM_JOOMLEAGUE_STAT_DIFFERENCE_ADD_IDS_DESC">
+			</field>		
+			<field 	name="sub_ids" type="text" value="" 
+					label="COM_JOOMLEAGUE_STAT_DIFFERENCE_SUB_IDS" 
+					description="COM_JOOMLEAGUE_STAT_DIFFERENCE_SUB_IDS_DESC">
+			</field>
+			<field 	name="precision" type="text" value="2"
+			label="COM_JOOMLEAGUE_STAT_PRECISION"
+				description="COM_JOOMLEAGUE_STAT_PRECISION_DESC">
+			</field>
+			<field name="statistic_views" type="list" default="roster,matchreport,player" multiple="multiple" 
+					label="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_IDS"
+					description="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_DESC">
+				<option value="nowhere">COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_OPTION_NOWHERE</option>
+				<option value="roster">roster</option>
+				<option value="matchreport">matchreport</option>
+				<option value="player">player</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

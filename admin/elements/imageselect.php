@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
  * 
  * creates a selector to upload, select, reset, clear an image path
  * @author And_One
- * @see administrator/components/com_joomleague/helpers/imageselect.php
+ * @see administrator/components/com_sportsmanagement/helpers/imageselect.php
  *
  */
 class JFormFieldImageSelect extends JFormField
@@ -29,7 +29,7 @@ class JFormFieldImageSelect extends JFormField
 		$filename = array_pop($arrPathes);
 		$targetfolder = array_pop($arrPathes);
 		$output  = ImageSelect::getSelector($this->name, $this->name.'_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
-		$output .= '<img class="imagepreview" src="'.JURI::root(true).'/media/com_joomleague/jl_images/spinner.gif" '; 
+		$output .= '<img class="imagepreview" src="'.JURI::root(true).'/media/com_sportsmanagement/jl_images/spinner.gif" '; 
 		$output .= ' name="'.$this->name.'_preview" id="'.$this->name.'_preview" border="3" alt="Preview" title="Preview" />';
 		$output .= '<input type="hidden" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';
 		return $output;

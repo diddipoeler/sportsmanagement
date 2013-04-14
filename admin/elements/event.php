@@ -19,7 +19,7 @@ class JFormFieldEvent extends JFormField
 	function getInput() {
 		$db = &JFactory::getDBO();
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague";
+		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
@@ -27,10 +27,10 @@ class JFormFieldEvent extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 
-		$query = 'SELECT e.id, e.name FROM #__joomleague_eventtype e WHERE published=1 ORDER BY name';
+		$query = 'SELECT e.id, e.name FROM #__sportsmanagement_eventtype e WHERE published=1 ORDER BY name';
 		$db->setQuery( $query );
 		$events = $db->loadObjectList();
-		$mitems = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT')));
+		$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $events as $event ) {
 			$mitems[] = JHTML::_('select.option',  $event->id, '&nbsp;'.JText::_($event->name). ' ('.$event->id.')' );

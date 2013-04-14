@@ -49,11 +49,26 @@
 		<folder>language</folder>
 	</files>
  
-	<media destination="com_sportsmanagement" folder="media">
+	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
 		<filename>index.html</filename>
-		<folder>css</folder>
-		<folder>images</folder>
+		<folder>clubs</folder>
+		<folder>events</folder>
+		<folder>event_icons</folder>
+    <folder>flags</folder>
+		<folder>flags_associations</folder>
+		<folder>jl_images</folder>
+		<folder>person_playground</folder>
+		<folder>placeholders</folder>
+		<folder>rosterground</folder>
+		<folder>teamplayers</folder>
+		<folder>treebracket</folder>
 	</media>
+	
+	
+	
+	
+	
+	
 
 	<administration>
 		<!-- Administration Menu Section -->
@@ -71,6 +86,8 @@
 			<filename>controller.php</filename>
 			<!-- assets files section -->
 			<folder>assets</folder>
+			<!-- statistics files section -->
+			<folder>statistics</folder>
 			<!-- elements files section -->
 			<folder>elements</folder>
 			<!-- SQL files section -->

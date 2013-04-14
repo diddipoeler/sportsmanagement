@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fields name="params">
+		<fieldset name="typefields_base" 
+		          label="COM_JOOMLEAGUE_STAT_SUMSTAT_BASE_LABEL" 
+		          description="COM_JOOMLEAGUE_STAT_SUMSTAT_DESC">
+			<field name="stat_ids" type="text" value="" 
+					label="COM_JOOMLEAGUE_STAT_SUMSTAT_STAT_IDS" 
+					description="COM_JOOMLEAGUE_STAT_SUMSTAT_STAT_IDS_DESC">
+			</field>
+			<field 	name="precision" type="text" value="2"
+					label="COM_JOOMLEAGUE_STAT_PRECISION"
+					description="COM_JOOMLEAGUE_STAT_PRECISION_DESC">
+			</field>
+			<field name="statistic_views" type="list" default="roster,player" multiple="multiple" 
+					label="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_IDS"
+					description="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_DESC">
+				<option value="nowhere">COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_OPTION_NOWHERE</option>
+				<option value="roster">roster</option>
+				<option value="matchreport">matchreport</option>
+				<option value="player">player</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

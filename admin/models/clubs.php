@@ -57,20 +57,7 @@ class sportsmanagementModelClubs extends JModelList
 		return $query;
 	}
 
-/*    
-    function _buildQuery()
-	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-		$query='	SELECT a.*,u.name AS editor
-					FROM #__sportsmanagement_club AS a
-					LEFT JOIN #__users AS u ON u.id=a.checked_out '
-					. $where
-					. $orderby;
-		return $query;
-	}
-*/
+
 
 	function _buildContentOrderBy()
 	{
@@ -142,7 +129,7 @@ class sportsmanagementModelClubs extends JModelList
 		{
 			JArrayHelper::toInteger($cid);
 			$cids=implode(',',$cid);
-			$query="DELETE FROM #__joomleague_club WHERE id IN ($cids)";
+			$query="DELETE FROM #__sportsmanagement_club WHERE id IN ($cids)";
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{

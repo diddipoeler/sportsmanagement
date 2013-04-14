@@ -34,9 +34,9 @@ class JFormFieldColorpicker extends JFormField
 			// add javascript
 		//$method = (stripos($node->_attributes['name'] , 'JL_EXT') !== false)? 'extended' : 'params';
 		$document = JFactory::getDocument();
-		$document->addStylesheet(JURI::base().'components/com_joomleague/assets/js/js_color_picker_v2/js_color_picker_v2.css');
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/js_color_picker_v2/color_functions.js');
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/js_color_picker_v2/js_color_picker_v2.js');
+		$document->addStylesheet(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.css');
+		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/color_functions.js');
+		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.js');
 		$output  = "<input type=\"text\" style=\"background-color: ".$this->value."\" 
 					name=\"".$this->name."\" value=\"".$this->value."\">"; 
 		$output .= "<input type=\"button\" value=\"#\" 

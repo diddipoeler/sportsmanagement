@@ -11,7 +11,7 @@ class com_sportsmanagementInstallerScript
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
-    private $release = '1.0.00';
+    //private $release = '1.0.00';
     
     /**
 	 * method to install the component
@@ -43,7 +43,7 @@ class com_sportsmanagementInstallerScript
 	function update($parent) 
 	{
 		// $parent is the class calling this method
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $parent->get('manifest')->version . '</p>';
 	}
  
 	/**
@@ -55,7 +55,7 @@ class com_sportsmanagementInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $this->release . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
 	}
  
 	/**
@@ -69,8 +69,9 @@ class com_sportsmanagementInstallerScript
     $db = JFactory::getDbo();
         // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $this->release . '</p>';
-        
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+
+/*        
     //$paramsdata = JComponentHelper::getParams('com_sportsmanagement');
     $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
     $paramsdata = json_decode( $db->loadResult(), true );
@@ -78,12 +79,36 @@ class com_sportsmanagementInstallerScript
 	$params = new JParameter( $paramsdata, $paramsdefs );
 	
     $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
-    $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
+        
+        $params = JComponentHelper::getParams('com_sportsmanagement');
+		$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
+		
+		$jRegistry = new JRegistry;
+		$jRegistry->loadString($params->toString('ini'), 'ini');
+		$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
+		$form->bind($jRegistry);
+        $paramsString = json_encode( $form );
+  
     
+    $mainframe->enqueueMessage(JText::_('postflight paramsString<br><pre>'.print_r($paramsString,true).'</pre>'   ),'');
+*/
+    
+    $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
+  $paramsdata = json_decode( $db->loadResult(), true );
+  $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+  $jRegistry = new JRegistry;
+		$jRegistry->loadString($paramsdata, 'ini');
+// 		$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> 'params'));
+// 		$form->bind($jRegistry);
+//     $paramsString = json_encode( $form );
+//     $mainframe->enqueueMessage(JText::_('postflight paramsString<br><pre>'.print_r($paramsString,true).'</pre>'   ),'');
+    
+  /*  
     $jRegistry = new JRegistry();
     $jRegistry->loadString($params->toString('ini'), 'ini');
     $newparams = $jRegistry->toString();
     $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
+  */
   
     /*
     $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');

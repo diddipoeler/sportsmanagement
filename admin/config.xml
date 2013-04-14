@@ -8,35 +8,94 @@
 	
   <field name="cfg_help_server" type="text" default="http://joomleaguewiki.grammatikas-grill.de/index.php/"
 		size="100"
-    label="COM_JOOMLEAGUE_SETTINGS_HELPSERVER"
-		description="COM_JOOMLEAGUE_SETTINGS_HELPSERVER_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
 		</field>	
 	
   <field name="cfg_update_server_file" type="text" default="https://github.com/diddipoeler/sportsmanagement/archive/master.zip"
 		size="100"
-    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
-		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>
 		
 	  <field name="cfg_github_username" type="text" default="diddipoeler"
 		size="100"
-    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
-		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>	
 		
 		<field name="cfg_github_repository" type="text" default="sportsmanagement"
 		size="100"
-    label="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE"
-		description="COM_JOOMLEAGUE_SETTINGS_UPDATESERVER_FILE_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
 		</field>
-		
+		<field name="cfg_which_media_tool" type="radio"
+			default="imageselect" label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESCR">
+			<option value="picture">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
+			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
+		</field>
     <field name="show_debug_info" type="radio" default="0"
-			label="COM_JOOMLEAGUE_SETTINGS_SHOW_DEBUG_TITLE" description="COM_JOOMLEAGUE_SETTINGS_SHOW_DEBUG_DESCR">
-			<option value="0">COM_JOOMLEAGUE_GLOBAL_NO</option>
-			<option value="1">COM_JOOMLEAGUE_GLOBAL_YES</option>
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_NO</option>
+			<option value="1">COM_SPORTSMANAGEMENT_GLOBAL_YES</option>
 		</field>
 		
   </fieldset>
+	
+	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+		
+		<field name="ph_flags" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_FLAGS" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_field_DESCR_PH_FLAGS"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
+		<field name="ph_icon" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_21.png" 
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_ICON"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_ICON"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
+		<field name="ph_logo_small" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_SMALL" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_SMALL"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		<field name="ph_logo_medium" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_50.png" 
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_MEDIUM"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_MEDIUM"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		<field name="ph_logo_big" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_150.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_BIG" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_BIG"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		<field name="ph_player" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		<field name="ph_team" type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_TEAM" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_TEAM"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+	</fieldset>
 	
 	<fieldset
 		name="permissions"

@@ -3,11 +3,12 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'a.ordering');
 
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
 
 
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
 		<tr>
 			<td align="left" width="100%">
@@ -61,7 +62,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 					<th width="10%">
 						<?php
 						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ORDER','a.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'club.saveorder');
+						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'clubs.saveorder');
 						?>
 					</th>
 					<th width="1%">
@@ -76,8 +77,8 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmangement&view=club&task=club.edit&cid[]='.$row->id);
-					$link2=JRoute::_('index.php?option=com_sportsmangement&view=teams&task=team.display&cid='.$row->id);
+					$link=JRoute::_('index.php?option=com_sportsmangement&task=club.edit&id='.$row->id);
+					$link2=JRoute::_('index.php?option=com_sportsmangement&view=teams&cid='.$row->id);
 					$checked= JHTML::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
@@ -97,14 +98,14 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
                                 <a href="<?php echo $link2; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/icon-16-Teams.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -125,23 +126,23 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							if ($row->logo_big == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 
 							}
 							elseif ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_big)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 							}
@@ -152,22 +153,22 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							if ($row->logo_middle == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
 							elseif ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_middle)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 							}
@@ -178,22 +179,22 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 							if ($row->logo_small == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 							}
 							elseif ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"))
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/information.png',
+								echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 				  								$imageTitle,'title= "'.$imageTitle.'"');
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_small)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/ok.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/delete.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 							}

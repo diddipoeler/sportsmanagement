@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	
+<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+<field 	name="JL_EXT_KEGELN_DATA_HOME_VOLLE" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_HOME_VOLLE"
+				description="JL_EXT_KEGELN_DATA_DESC_HOME_VOLLE">
+		</field>
+		
+		<field 	name="JL_EXT_KEGELN_DATA_AWAY_VOLLE" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_AWAY_VOLLE"
+				description="JL_EXT_KEGELN_DATA_DESC_AWAY_VOLLE">
+		</field>
+		
+		<field 	name="JL_EXT_KEGELN_DATA_HOME_ABR" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_HOME_ABR"
+				description="JL_EXT_KEGELN_DATA_DESC_HOME_ABR">
+		</field>
+		
+		<field 	name="JL_EXT_KEGELN_DATA_AWAY_ABR" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_AWAY_ABR"
+				description="JL_EXT_KEGELN_DATA_DESC_AWAY_ABR">
+		</field>
+		
+		<field 	name="JL_EXT_KEGELN_DATA_HOME_FW" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_HOME_FW"
+				description="JL_EXT_KEGELN_DATA_DESC_HOME_FW">
+		</field>
+		
+		<field 	name="JL_EXT_KEGELN_DATA_AWAY_FW" type="text"
+				label="JL_EXT_KEGELN_DATA_LABEL_AWAY_FW"
+				description="JL_EXT_KEGELN_DATA_DESC_AWAY_FW">
+		</field>	
+		
+		
+	</fieldset>
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+		<field name="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION" type="textarea"
+			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION"
+			description="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION_DESC" backendonly="">
+		</field>
+	</fieldset>
+</config>

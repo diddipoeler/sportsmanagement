@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+		<field
+			name="alias"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+			class="inputbox"/>				
+		<field
+			name="sports_type_id"
+			type="sql"
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			query="SELECT id AS value, name AS sports_type_id FROM #__joomleague_sports_type ORDER BY name ASC"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+		<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>		
+		<field
+			name="persontype"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE_DESC">
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_F_PLAYERS</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_F_TEAM_STAFF</option>
+			<option
+				value="3">
+				COM_SPORTSMANAGEMENT_F_REFEREES</option>
+			<option
+				value="4">
+				COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
+		</field>		
+	</fieldset>				
+</form>

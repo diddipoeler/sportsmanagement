@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTREFEREE_DATE_SINCE" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PROJECTREFEREE_DATE_SINCE" description="Player since">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTREFEREE_DATE_UNTIL" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PROJECTREFEREE_DATE_UNTIL" description="Player until">
+		</field>
+	</fieldset>
+</config>

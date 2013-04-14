@@ -17,16 +17,16 @@ class JFormFieldTeamNameFormat extends JFormField
 
 	function getInput() {
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague";
+		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		$mitems = array();
-		$mitems[] = JHTML::_('select.option', 0, JText::_('COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
-		$mitems[] = JHTML::_('select.option', 1, JText::_('COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
-		$mitems[] = JHTML::_('select.option', 2, JText::_('COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_FULL'));
+		$mitems[] = JHTML::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
+		$mitems[] = JHTML::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
+		$mitems[] = JHTML::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
 
 		$output= JHTML::_('select.genericlist',  $mitems,
 				$this->name,

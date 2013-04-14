@@ -78,11 +78,11 @@ class JLGView extends JView
 		$strings 	= &$props['strings'];
 		foreach ($strings as $key => $value) {
 			if($app->isAdmin()) {
-				if(strpos($key, 'COM_JOOMLEAGUE_ADMIN_'.strtoupper($this->getName()).'_CSJS') !== false) {
+				if(strpos($key, 'COM_SPORTSMANAGEMENT_ADMIN_'.strtoupper($this->getName()).'_CSJS') !== false) {
 					JText::script($key, true);
 				}
 			} else {
-				if(strpos($key, 'COM_JOOMLEAGUE_'.strtoupper($this->getName()).'_CSJS_')  !== false) {
+				if(strpos($key, 'COM_SPORTSMANAGEMENT_'.strtoupper($this->getName()).'_CSJS_')  !== false) {
 					JText::script($key, true);
 				}
 			}

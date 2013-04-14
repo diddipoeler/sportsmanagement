@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+
+	</fieldset>			
+
+	<fieldset name="picture">			
+		<field 	
+			name="icon" 
+			type="media" 
+			default="com_sportsmanagement/database/placeholders/placeholder_21.png"				
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
+			class="inputbox"
+			directory="com_sportsmanagement/database/sport_types"
+			preview="show"
+			>
+		</field>
+	</fieldset>
+  
+  <fieldset name="imageselect">			
+		<field 	
+			name="icon" 
+			type="imageselect" 
+			default="com_sportsmanagement/database/placeholders/placeholder_21.png"				
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
+			class="inputbox"
+			directory="com_sportsmanagement/database/sport_types"
+			targetfolder="sport_types"
+			preview="show"
+			>
+		</field>
+	</fieldset>
+  
+  <fields name="extended">
+		<fieldset
+			name="extended"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+		
+		</fieldset>
+	</fields>	
+  
+  			
+</form>

@@ -62,7 +62,7 @@ class sportsmanagementModelsportsmanagement extends JModelAdmin
 	 */
 	public function getScript() 
 	{
-		return 'administrator/components/com_helloworld/models/forms/sportsmanagement.js';
+		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
 	/**
 	 * Method to get the data that should be injected in the form.
@@ -73,7 +73,7 @@ class sportsmanagementModelsportsmanagement extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_v.edit.sportsmanagement.data', array());
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.sportsmanagement.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();

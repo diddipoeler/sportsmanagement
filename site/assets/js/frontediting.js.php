@@ -82,7 +82,7 @@ var containerid = "details" + matchid;
 var cidid = "cb"+cidnummer;
 if (document.getElementById(containerid).style.display=='none') {
 	document.getElementById(containerid).style.display='block';
-	var url="<?php echo 'index2.php?option=com_joomleague&task=editmatch.load&p='.$joomleague->id.'&mid=';?>"+matchid;
+	var url="<?php echo 'index2.php?option=com_sportsmanagement&task=editmatch.load&p='.$joomleague->id.'&mid=';?>"+matchid;
 	document.getElementById(cidid).checked=true;
 	document.getElementById('checkmycontainers').value = parseInt(document.getElementById('checkmycontainers').value)+1;
 	isChecked(document.getElementById(cidid));
@@ -90,8 +90,8 @@ if (document.getElementById(containerid).style.display=='none') {
 }
 else {
 	
-	var url="<?php echo 'index2.php?option=com_joomleague&task=editmatch.cancel&p='.$joomleague->id."&mid=";?>"+matchid;
-	var answer = confirm ("<?php echo JText::_('COM_JOOMLEAGUE_EDIT_FORM_RESULTS_CONFIRM');?>")
+	var url="<?php echo 'index2.php?option=com_sportsmanagement&task=editmatch.cancel&p='.$joomleague->id."&mid=";?>"+matchid;
+	var answer = confirm ("<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_FORM_RESULTS_CONFIRM');?>")
 	if (answer) {
 		document.getElementById(cidid).checked=false;
 		isChecked(document.getElementById(cidid));

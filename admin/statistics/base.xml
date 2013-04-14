@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fields name="baseparams">
+		<fieldset name="base" label="COM_JOOMLEAGUE_ADMIN_STAT_GENERAL_PARAMS">
+			<field name="ranking_order" type="list" default="DESC" 
+					label="COM_JOOMLEAGUE_STAT_RANKING_ORDER" 
+					description="COM_JOOMLEAGUE_STAT_RANKING_ORDER_DESC">
+				<option value="ASC">COM_JOOMLEAGUE_GLOBAL_ASCENDING</option>
+				<option value="DESC">COM_JOOMLEAGUE_GLOBAL_DESCENDING</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

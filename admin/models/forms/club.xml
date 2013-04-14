@@ -1,61 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-	addrulepath="/administrator/components/com_joomleague/models/rules"
-	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
 		<field
 			name="name"
 			type="text"
-			label="COM_JOOMLEAGUE_GLOBAL_NAME"
-			description="COM_JOOMLEAGUE_GLOBAL_NAME_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required="true"/>
 		<field
 			name="alias"
 			type="text"
-			label="COM_JOOMLEAGUE_GLOBAL_ALIAS"
-			description="COM_JOOMLEAGUE_GLOBAL_ALIAS_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
 			class="inputbox"/>	
 		<field
 			name="admin"
 			type="user"
 			class="inputbox"
 			default="0"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_ADMIN"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_ADMIN_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC"
 			/>
 
 		<field
 			name="address"
 			type="textarea"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_ADDRESS"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_ADDRESS_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
 			class="inputbox"/>		
 		<field
 			name="zipcode"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_POSTAL_CODE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_POSTAL_CODE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
 			class="inputbox"/>	
 		<field
 			name="location"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_CITY"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_CITY_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
 			class="inputbox"/>	
 		<field
 			name="state"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_STATE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_STATE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
 			class="inputbox"/>				
 		<field
 			name="country"
 			type="country"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_COUNTRY"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_COUNTRY_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
 			class="inputbox">
-		<option value="">COM_JOOMLEAGUE_GLOBAL_SELECT_COUNTRY</option>
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
   
   <field
@@ -65,61 +69,61 @@
 			default="0"
       varname="cid"
       targettable="club"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_ASSOCIATION"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_ASSOCIATION_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ASSOCIATION_DESC"
 			class="inputbox">
       <option
 				value="0">
-				COM_JOOMLEAGUE_GLOBAL_SELECT_DO_NOT_USE</option>
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
       	
 	<field
 			name="phone"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_PHONE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_PHONE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC"
 			class="inputbox"/>	
 	<field
 			name="fax"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_FAX"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_FAX_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC"
 			class="inputbox"/>	
 	<field
 			name="email"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_EMAIL"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_EMAIL_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC"
 			class="inputbox"/>		
 	<field
 			name="website"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_WEBSITE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_WEBSITE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
 			class="inputbox"/>	
 	<field
 			name="manager"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_GENERAL_MANAGER"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_GENERAL_MANAGER_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER_DESC"
 			class="inputbox"/>	
 	<field
 			name="president"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_PRESIDENT"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_PRESIDENT_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC"
 			class="inputbox"/>		
 	<field
 			name="founded"
 			type="calendar"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_FOUNDED"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_FOUNDED_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
 			class="inputbox"/>	
 	<field
 			name="dissolved"
 			type="calendar"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_DISSOLVED"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_DISSOLVED_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
 			class="inputbox"/>	
 	<field
 			name="standard_playground"
@@ -127,33 +131,33 @@
 			class="inputbox"
 			default="0"
 			size="1"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_VENUE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_VENUE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC"
 			query="SELECT id AS value, name AS standard_playground FROM #__joomleague_playground ORDER BY name ASC">
 			<option
 				value="0">
-				COM_JOOMLEAGUE_GLOBAL_SELECT_PLAYGROUND</option>
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
 		</field>	
 
     <field
 			name="merge_teams"
 			type="teamlist"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_TEAM_MERGE"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_TEAM_MERGE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE_DESC"
 			multiple="true"
 			size="15"
 			class="inputbox">
       <option
 				value="">
-				COM_JOOMLEAGUE_GLOBAL_SELECT_DO_NOT_USE</option>
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>	
 		
     <field 
 			name="enable_sb" 
 			type="radio" 
 			default="0"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_KUNENA" 
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_KUNENA_DESC">
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -164,34 +168,34 @@
 			class="inputbox"
 			size="5"
 			multiple="false"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_KUNENA_FORUM_ID"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_KUNENA_FORUM_ID_DESC"/>
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID_DESC"/>
 
     
     <field
 			name="founded_year"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_FOUNDED_YEAR"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_FOUNDED_YEAR_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC"
 			class="inputbox"/>	
 	<field
 			name="dissolved_year"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_DISSOLVED_YEAR"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_DISSOLVED_YEAR_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC"
 			class="inputbox"/>	
   
   <field
 			name="unique_id"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_UNIQUE_ID"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_UNIQUE_ID_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID_DESC"
 			class="inputbox"/>
   <field
 			name="new_club_id"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_CLUB_NEW_CLIB_ID"
-			description="COM_JOOMLEAGUE_ADMIN_CLUB_NEW_CLIB_ID_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
 			class="inputbox"/>        
 
                   	
@@ -201,49 +205,49 @@
 			<field
 				name="logo_small"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_small.gif"				
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_SMALL"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_SMALL_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif"				
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/small"/>	
+				directory="com_sportsmanagement/database/clubs/small"/>	
 			<field
 				name="logo_middle"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_50.png" 
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_MIDDLE"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_MIDDLE_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_50.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/medium"/>				
+				directory="com_sportsmanagement/database/clubs/medium"/>				
 			<field
 				name="logo_big"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_150.png"
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_LARGE"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_LARGE_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_150.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/large"/>				
+				directory="com_sportsmanagement/database/clubs/large"/>				
 		   
        <field
 				name="trikot_home"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_HOME"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_HOME_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/trikot_home"/>				
+				directory="com_sportsmanagement/database/clubs/trikot_home"/>				
 			<field
 				name="trikot_away"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png"
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_AWAY"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/trikot_away"/>	
+				directory="com_sportsmanagement/database/clubs/trikot_away"/>	
 	</fieldset>	
 	
 	<fieldset name="imageselect">
@@ -251,55 +255,115 @@
 			<field
 				name="logo_small"
 				type="imageselect"
-				default="images/com_joomleague/database/placeholders/placeholder_small.gif"				
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_SMALL"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_SMALL_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif"				
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="clubs_small"
-				directory="com_joomleague/database/clubs/small"/>	
+				directory="com_sportsmanagement/database/clubs/small"/>	
 			<field
 				name="logo_middle"
 				type="imageselect"
-				default="images/com_joomleague/database/placeholders/placeholder_50.png" 
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_MIDDLE"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_MIDDLE_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_50.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="clubs_medium"
-				directory="com_joomleague/database/clubs/medium"/>				
+				directory="com_sportsmanagement/database/clubs/medium"/>				
 			<field
 				name="logo_big"
 				type="imageselect"
-				default="images/com_joomleague/database/placeholders/placeholder_150.png"
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_LARGE"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_LARGE_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_150.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="clubs_large"
-				directory="com_joomleague/database/clubs/large"/>				
+				directory="com_sportsmanagement/database/clubs/large"/>				
 		  
       <field
 				name="trikot_home"
 				type="imageselect"
 				targetfolder="clubs_trikot_home"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_HOME"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_HOME_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/trikot_home"/>				
+				directory="com_sportsmanagement/database/clubs/trikot_home"/>				
 			<field
 				name="trikot_away"
 				type="imageselect"
 				targetfolder="clubs_trikot_away"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png"
-				label="COM_JOOMLEAGUE_ADMIN_CLUB_TRIKOT_AWAY"
-				description="COM_JOOMLEAGUE_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/clubs/trikot_away"/>
+				directory="com_sportsmanagement/database/clubs/trikot_away"/>
 				
 	</fieldset>	
 	
+	<fields name="extended">
+		<fieldset
+			name="extended"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+<field name="COM_SPORTSMANAGEMENT_CLUB_RSS_FEED" type="textarea"
+	rows="4" cols="100"
+			label="COM_SPORTSMANAGEMENT_CLUB_RSS_FEED" description="COM_SPORTSMANAGEMENT_CLUB_RSS_FEED_DESCR">
+		</field>
+		
+		<field name="COM_SPORTSMANAGEMENT_EXT_CLUB_YOUTHMANAGER" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_CLUB_YOUTHMANAGER" description="Youth Manager">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_CLUB_YOUTHTREASURER" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_CLUB_YOUTHTREASURER" description="Youth treasurer">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_CLUB_CLUBTREASURER" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_CLUB_CLUBTREASURER" description="Club treasurer">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW" type="link"
+			label="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW" description="Second website"
+			backendonly="">
+		</field>
+		
+		
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_DESC">
+		</field>                        
+    
+    <field 	name="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_DESC">
+		</field>		
+		</fieldset>
+	</fields>	
 </form>

@@ -21,14 +21,14 @@ class JFormFieldSportsTypes extends JFormField
 		$result = array();
 		$db = JFactory::getDBO();
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague_sport_types";
+		$extension = "COM_SPORTSMANAGEMENT_sport_types";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query='SELECT id, name FROM #__joomleague_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
@@ -40,7 +40,7 @@ class JFormFieldSportsTypes extends JFormField
 			$sportstype->name=JText::_($sportstype->name);
 		}
 		if($this->required == false) {
-			$mitems = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT')));
+			$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		
 		foreach ( $result as $item )

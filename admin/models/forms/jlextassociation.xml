@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="details">	
+	<field
+			name="id"
+			type="hidden"
+		/>
+  <field
+			name="parent_id"
+			type="associationslist"
+			class="inputbox"
+			size="30"
+			multiple="false"
+			label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST"
+			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
+			
+	<field
+			name="website"
+			type="text"
+			class="inputbox"
+			
+			
+			label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE"
+			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>		
+</fieldset>
+			
+	<fieldset 	name="picture">
+				
+		<field 	name="assocflag" 
+				type="media" 
+				directory="com_sportsmanagement/database/flags_associations"
+				preview="show"				
+				label="COM_SPORTSMANGEMENT_GLOBAL_FLAG" 
+				description="COM_SPORTSMANGEMENT_GLOBAL_FLAG">
+		</field>
+		<field 	name="picture" 
+				type="media" 
+				directory="com_sportsmanagement/database/associations"
+				preview="show"				
+				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
+				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
+		</field>
+	</fieldset>
+  
+  <fieldset 	name="imageselect">
+				
+		<field 	name="assocflag" 
+				type="imageselect" 
+				directory="com_sportsmanagement/database/flags_associations"
+				preview="show"	
+        targetfolder="flags_associations"			
+				label="COM_SPORTSMANGEMENT_GLOBAL_FLAG" 
+				description="COM_SPORTSMANGEMENT_GLOBAL_FLAG">
+		</field>
+		<field 	name="picture" 
+				type="imageselect" 
+				directory="com_sportsmanagement/database/associations"
+				preview="show"	
+        targetfolder="associations"			
+				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
+				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
+		</field>
+	</fieldset>
+  			
+</form>

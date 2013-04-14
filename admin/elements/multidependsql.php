@@ -18,7 +18,7 @@ JHTML::_( 'behavior.mootools' );
  *
  * in the xml element, the following elements must be defined:
  * - depends: list of elements name this element depends on, separated by comma (e.g: "p, tid")
- * - task: the task used to return the query, using defined depends element names as parameters for query (=> 'index.php?option=com_joomleague&controller=ajax&task=<task>&p=1&tid=34')
+ * - task: the task used to return the query, using defined depends element names as parameters for query (=> 'index.php?option=com_sportsmanagement&controller=ajax&task=<task>&p=1&tid=34')
  * @package Joomleague
  * @subpackageParameter
  * @since1.5
@@ -97,7 +97,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		if ($depends)
 		{
 			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::base() . 'components/com_joomleague/assets/js/depend.js' );
+			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		// Render the HTML SELECT list.

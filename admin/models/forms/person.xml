@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
+	
+		<field
+			name="firstname"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_F_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_F_NAME_DESC"
+			class="inputbox"/>
+		<field
+			name="lastname"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
+			class="inputbox"
+			required="true"/>		
+		<field
+			name="nickname"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME_DESC"
+			class="inputbox"/>		
+		<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>			
+		<field
+			name="alias"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+			class="inputbox"/>	
+		<field
+			name="jl_users"
+			type="user"
+			class="inputbox"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_JOOMLA_USER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_JOOMLA_USER_DESC"
+			>
+		</field>		
+		<field
+			name="position_id"
+			type="sql"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION_DESC"
+			query="SELECT	pos.id AS value,
+							pos.name AS position_id,
+							s.name AS sName
+					FROM #__joomleague_position pos
+					INNER JOIN #__joomleague_sports_type AS s ON s.id=pos.sports_type_id
+					WHERE pos.published=1
+					ORDER BY pos.ordering,pos.name">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+		</field>			
+		<field
+			name="birthday"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>
+		<field
+			name="deathday"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>
+	<field
+			name="height"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_HEIGHT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_HEIGHT_DESC"
+			class="inputbox"/>	
+	<field
+			name="weight"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_WEIGHT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_WEIGHT_DESC"
+			class="inputbox"/>	
+		<field
+			name="info"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INFO"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INFO_DESC"
+			class="inputbox"/>	
+		<field
+			name="knvbnr"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER_DESC"
+			class="inputbox"/>				
+			
+		<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+		</field>
+    <field
+			name="associations"
+			type="countryassociation" 
+      size="10"
+			default="0"
+      varname="cid"
+      targettable="person"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>	
+		<field
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
+			class="inputbox"/>		
+		<field
+			name="zipcode"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
+			class="inputbox"/>	
+		<field
+			name="location"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
+			class="inputbox"/>	
+		<field
+			name="state"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE_DESC"
+			class="inputbox"/>				
+		<field
+			name="address_country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>	
+	<field
+			name="phone"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PHONE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PHONE_DESC"
+			class="inputbox"/>	
+	<field
+			name="mobile"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_MOBILE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_MOBILE_DESC"
+			class="inputbox"/>	
+	<field
+			name="email"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_EMAIL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_EMAIL_DESC"
+			class="inputbox"/>		
+	<field
+			name="website"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_WEBSITE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_WEBSITE_DESC"
+			class="inputbox"/>		
+	</fieldset>			
+	<fieldset name="picture">
+			<field
+				name="picture"
+				type="media"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"					
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_sportsmanagement/database/persons"/>		
+	</fieldset>	
+	<fieldset name="imageselect">
+			<field
+				name="picture"
+				type="imageselect"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"					
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_DESC"
+				class="inputbox"
+				preview="show"
+				targetfolder="persons"
+				directory="com_sportsmanagement/database/persons"/>		
+	</fieldset>	
+	<fieldset name="description">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>		
+	<fieldset name="advanced">		
+			<field
+				name="show_pic"
+				type="radio"
+				default="1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE_DESC">
+			<option value="0">JNO</option>	
+			<option value="1">JYES</option>	
+			</field>
+			<field
+				name="show_persdata"
+				type="radio"
+				default="1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA_DESC">
+			<option value="0">JNO</option>	
+			<option value="1">JYES</option>	
+			</field>
+			<field
+				name="show_teamdata"
+				type="radio"
+				default="1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA_DESC">
+			<option value="0">JNO</option>	
+			<option value="1">JYES</option>	
+			</field>
+			<field
+				name="show_on_frontend"
+				type="radio"
+				default="1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE">
+			<option value="0">JNO</option>	
+			<option value="1">JYES</option>	
+			</field>			
+	</fieldset>
+  
+  <fields name="extended">
+		<fieldset
+			name="extended"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_OCCUPATION" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_OCCUPATION" description="Occupation"
+			backendonly="1">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_PAGER" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_PAGER" description="Pager"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_FAX" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_FAX" description="Fax" backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER1" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER1" description="Messenger 1"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER2" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER2" description="Messenger 2"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_SINCE" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_SINCE" description="Clubmember since"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_UNTIL" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_UNTIL" description="Clubmember until"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_REASONFORLEAVE" type="textarea"
+			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_PERSON_REASONFORLEAVE"
+			description="Reason for leaving Club" backendonly="1">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER" description="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK" description="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN" type="link"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN" description="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE" description="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ" type="link"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ" description="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ_DESCRIPTION"
+			backendonly="">
+		</field>
+		
+		
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_DESC">
+		</field>                        
+    
+    <field 	name="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_DESC">
+		</field>
+		<field 	name="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME" type="text" 
+				label="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_DESC">
+		</field>
+		</fieldset>
+	</fields>	
+  			
+</form>

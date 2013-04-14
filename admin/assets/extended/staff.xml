@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_OCCUPATION" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_OCCUPATION" description="Occupation"
+			backendonly="1">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_PAGER" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_PAGER" description="Pager"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_FAX" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_FAX" description="Fax" backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER1" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER1" description="Messenger 1"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER2" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MESSENGER2" description="Messenger 2"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_SINCE" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_SINCE" description="Clubmember since"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_UNTIL" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_DATE_UNTIL" description="Clubmember until"
+			backendonly="0">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_REASONFORLEAVE" type="textarea"
+			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_PERSON_REASONFORLEAVE"
+			description="Reason for leaving Club" backendonly="1">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER" description="COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK" description="COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN" type="link"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN" description="COM_SPORTSMANAGEMENT_EXT_PERSON_MSN_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE"
+			type="link" label="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE" description="COM_SPORTSMANAGEMENT_EXT_PERSON_MYSPACE_DESCRIPTION"
+			backendonly="">
+		</field>
+		<field cssclass="" name="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ" type="link"
+			label="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ" description="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ_DESCRIPTION"
+			backendonly="">
+		</field>
+	</fieldset>
+</config>
+

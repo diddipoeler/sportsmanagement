@@ -19,17 +19,17 @@ class JFormFieldClubs extends JFormField
 	function getInput() {
 		$db = &JFactory::getDBO();
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague";
+		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT c.id, c.name FROM #__joomleague_club c ORDER BY name';
+		$query = 'SELECT c.id, c.name FROM #__sportsmanagement_club c ORDER BY name';
 		$db->setQuery( $query );
 		$clubs = $db->loadObjectList();
-		$mitems = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT')));
+		$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $clubs as $club ) {
 			$mitems[] = JHTML::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );

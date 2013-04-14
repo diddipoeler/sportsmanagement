@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+		<field name="COM_SPORTSMANAGEMENT_EXT_TEAMSTAFF_DATE_SINCE" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_TEAMSTAFF_DATE_SINCE" description="Staff of team since">
+		</field>
+		<field name="COM_SPORTSMANAGEMENT_EXT_TEAMSTAFF_DATE_UNTIL" type="calendar"
+			label="COM_SPORTSMANAGEMENT_EXT_TEAMSTAFF_DATE_UNTIL" description="Staff of team until">
+		</field>
+	</fieldset>
+</config>

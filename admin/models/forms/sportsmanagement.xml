@@ -21,7 +21,7 @@
 		<field
 			name="catid"
 			type="category"
-			extension="com_helloworld"
+			extension="com_sportmanagement"
 			class="inputbox"
 			default=""
 			label="COM_HELLOWORLD_HELLOWORLD_FIELD_CATID_LABEL"

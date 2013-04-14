@@ -34,6 +34,8 @@ class sportsmanagementViewsportsmanagement extends JView
  
 		// Set the toolbar
 		$this->addToolBar();
+		
+		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
  
 		// Display the template
 		parent::display($tpl);
@@ -97,7 +99,7 @@ class sportsmanagementViewsportsmanagement extends JView
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_v/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

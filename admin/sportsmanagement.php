@@ -12,6 +12,8 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
 JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
  
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
+require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
  

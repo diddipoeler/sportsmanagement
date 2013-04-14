@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	
+<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">	
+<field 	name="JL_EXT_TENNIS_DATA_HOME_POINTS" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_HOME_POINTS"
+				description="JL_EXT_TENNIS_DATA_DESC_HOME_POINTS">
+		</field>
+		
+		<field 	name="JL_EXT_TENNIS_DATA_AWAY_POINTS" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_AWAY_POINTS"
+				description="JL_EXT_TENNIS_DATA_DESC_AWAY_POINTS">
+		</field>
+		
+		<field 	name="JL_EXT_TENNIS_DATA_HOME_SETS" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_HOME_SETS"
+				description="JL_EXT_TENNIS_DATA_DESC_HOME_SETS">
+		</field>
+		
+		<field 	name="JL_EXT_TENNIS_DATA_AWAY_SETS" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_AWAY_SETS"
+				description="JL_EXT_TENNIS_DATA_DESC_AWAY_SETS">
+		</field>
+		
+		<field 	name="JL_EXT_TENNIS_DATA_HOME_MATCHES" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_HOME_MATCHES"
+				description="JL_EXT_TENNIS_DATA_DESC_HOME_MATCHES">
+		</field>
+		
+		<field 	name="JL_EXT_TENNIS_DATA_AWAY_MATCHES" type="text"
+				label="JL_EXT_TENNIS_DATA_LABEL_AWAY_MATCHES"
+				description="JL_EXT_TENNIS_DATA_DESC_AWAY_MATCHES">
+		</field>
+		
+	</fieldset>
+</config>

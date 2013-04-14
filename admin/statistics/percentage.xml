@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fields name="params">
+		<fieldset name="typefields_base" 
+		          label="COM_JOOMLEAGUE_STAT_PARAMS_GROUP_SETTINGS" 
+		          description="COM_JOOMLEAGUE_STAT_PERCENTAGE_DESC">
+
+			<field 	name="numerator_ids" type="text" value="" 
+					label="COM_JOOMLEAGUE_STAT_PERCENTAGE_NUMERATOR_IDS" 
+					description="COM_JOOMLEAGUE_STAT_PERCENTAGE_NUMERATOR_IDS_DESC">
+			</field>
+			<field 	name="denominator_ids" type="text" value="" 
+					label="COM_JOOMLEAGUE_STAT_PERCENTAGE_DENOMINATOR_IDS" 
+					description="COM_JOOMLEAGUE_STAT_PERCENTAGE_DENOMINATOR_IDS_DESC">
+			</field>
+			<field 	name="precision" type="text" value="2"
+					label="COM_JOOMLEAGUE_STAT_PRECISION"
+					description="COM_JOOMLEAGUE_STAT_PRECISION_DESC">
+			</field>
+			<field 	name="show_percent_symbol" type="radio" default="1" 
+					label="COM_JOOMLEAGUE_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL" 
+					description="COM_JOOMLEAGUE_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL_DESC">
+				<option value="0">COM_JOOMLEAGUE_GLOBAL_NO</option>
+				<option value="1">COM_JOOMLEAGUE_GLOBAL_YES</option>
+			</field>
+			<field name="statistic_views" type="list" default="roster,matchreport,player" multiple="multiple" 
+					label="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_IDS"
+					description="COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_DESC">
+				<option value="nowhere">COM_JOOMLEAGUE_STAT_SHOW_IN_VIEWS_OPTION_NOWHERE</option>
+				<option value="roster">roster</option>
+				<option value="matchreport">matchreport</option>
+				<option value="player">player</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

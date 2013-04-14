@@ -34,7 +34,7 @@ class sportsmanagementHelper
 		$query='	SELECT	id,
 							name
 
-					FROM #__joomleague_project
+					FROM #__sportsmanagement_project
 					ORDER BY ordering, name ASC';
 
 		$db->setQuery($query);
@@ -64,8 +64,8 @@ class sportsmanagementHelper
 							t.name AS text,
 							t.notes
 
-					FROM #__joomleague_team AS t
-					LEFT JOIN #__joomleague_project_team AS pt ON pt.team_id=t.id
+					FROM #__sportsmanagement_team AS t
+					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id=t.id
 					WHERE pt.project_id='.$project_id.'
 					ORDER BY name ASC ';
 
@@ -96,8 +96,8 @@ class sportsmanagementHelper
 							t.name AS text,
 							t.notes
 
-					FROM #__joomleague_team AS t
-					LEFT JOIN #__joomleague_project_team AS pt ON pt.team_id=t.id
+					FROM #__sportsmanagement_team AS t
+					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id=t.id
 					WHERE pt.project_id='.(int) $project_id.'
 					ORDER BY name ASC ';
 
@@ -123,7 +123,7 @@ class sportsmanagementHelper
 							fav_team_highlight_type,
 							fav_team_text_bold
 
-					FROM #__joomleague_project
+					FROM #__sportsmanagement_project
 					WHERE id='.(int) $project_id;
 
 		$db->setQuery($query);
@@ -148,7 +148,7 @@ class sportsmanagementHelper
 	function getSportsTypeName($sportsType)
 	{
 		$db = JFactory::getDBO();
-		$query='SELECT name FROM #__joomleague_sports_type WHERE id='.(int) $sportsType;
+		$query='SELECT name FROM #__sportsmanagement_sports_type WHERE id='.(int) $sportsType;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
 		{
@@ -168,7 +168,7 @@ class sportsmanagementHelper
 	function getSportsTypes()
 	{
 		$db = JFactory::getDBO();
-		$query='SELECT id, name FROM #__joomleague_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
@@ -192,14 +192,14 @@ class sportsmanagementHelper
 	{
 		switch ($personType)
 		{
-			case 2	:	$result =	JText::_('COM_JOOMLEAGUE_F_TEAM_STAFF');
+			case 2	:	$result =	JText::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF');
 			break;
-			case 3	:	$result =	JText::_('COM_JOOMLEAGUE_F_REFEREES');
+			case 3	:	$result =	JText::_('COM_SPORTSMANAGEMENT_F_REFEREES');
 			break;
-			case 4	:	$result =	JText::_('COM_JOOMLEAGUE_F_CLUB_STAFF');
+			case 4	:	$result =	JText::_('COM_SPORTSMANAGEMENT_F_CLUB_STAFF');
 			break;
 			default	:
-			case 1	:	$result =	JText::_('COM_JOOMLEAGUE_F_PLAYERS');
+			case 1	:	$result =	JText::_('COM_SPORTSMANAGEMENT_F_PLAYERS');
 			break;
 		}
 		return $result;
@@ -212,7 +212,7 @@ class sportsmanagementHelper
 	 */
 	function getExtension($project_id=0)
 	{
-		$option='com_joomleague';
+		$option='com_sportsmanagement';
 		if (!$project_id)
 		{
 			$app=&JFactory::getApplication();
@@ -223,7 +223,7 @@ class sportsmanagementHelper
 		}
 
 		$db=&JFactory::getDBO();
-		$query='SELECT extension FROM #__joomleague_project WHERE id='. $db->Quote((int)$project_id);
+		$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 		$db->setQuery($query);
 		$res=$db->loadResult();
 
@@ -232,12 +232,12 @@ class sportsmanagementHelper
 
 	public static function getExtensions($project_id)
 	{
-		$option='com_joomleague';
+		$option='com_sportsmanagement';
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
 			$db= JFactory::getDBO();
-			$query='SELECT extension FROM #__joomleague_project WHERE id='. $db->Quote((int)$project_id);
+			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -245,8 +245,8 @@ class sportsmanagementHelper
 				$excludeExtension = explode(",", $res->extension);
 			}
 		}
-		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions')) {
-			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions',
+		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
+			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
 													'.', false, false, $excludeExtension);
 			if($folderExtensions !== false) {
 				foreach ($folderExtensions as $ext)
@@ -261,12 +261,12 @@ class sportsmanagementHelper
 	
 		public static function getExtensionsOverlay($project_id)
 	{
-		$option='com_joomleague';
+		$option='com_sportsmanagement';
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
 			$db= JFactory::getDBO();
-			$query='SELECT extension FROM #__joomleague_project WHERE id='. $db->Quote((int)$project_id);
+			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -274,8 +274,8 @@ class sportsmanagementHelper
 				$excludeExtension = explode(",", $res->extension);
 			}
 		}
-		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions-overlay')) {
-			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions-overlay',
+		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions-overlay')) {
+			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions-overlay',
 													'.', false, false, $excludeExtension);
 			if($folderExtensions !== false) {
 				foreach ($folderExtensions as $ext)
@@ -348,12 +348,12 @@ class sportsmanagementHelper
 	 */
 	public static function getDefaultPlaceholder($type="player")
 	{	
-		$params		 	=	JComponentHelper::getParams('com_joomleague');
+		$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
 		$ph_player		=	$params->get('ph_player',0);
 		$ph_logo_big	=	$params->get('ph_logo_big',0);	
 		$ph_logo_medium	=	$params->get('ph_logo_medium',0);		
 		$ph_logo_small	=	$params->get('ph_logo_small',0);
-		$ph_icon		=	$params->get('ph_icon', 'images/com_joomleague/database/placeholders/placeholder_21.png');			
+		$ph_icon		=	$params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');			
 		$ph_team		=	$params->get('ph_team',0);
 		
 			//setup the different placeholders
@@ -396,7 +396,7 @@ class sportsmanagementHelper
 	{
 		$ret = "";
 		$picturepath 	= 	JPath::clean(JPATH_SITE.DS.str_replace(JPATH_SITE.DS, '', $picture));
-		$params		 	=	JComponentHelper::getParams('com_joomleague');
+		$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
 		$ph_player		=	$params->get('ph_player',0);
 		$ph_logo_big	=	$params->get('ph_logo_big',0);	
 		$ph_logo_medium	=	$params->get('ph_logo_medium',0);		
@@ -433,7 +433,7 @@ class sportsmanagementHelper
 		}
 		if (!empty($picture))
 		{
-			$params = JComponentHelper::getParams('com_joomleague');
+			$params = JComponentHelper::getParams('com_sportsmanagement');
 			$format = "JPG"; //PNG is not working in IE8
 			$format = $params->get('thumbformat', 'PNG');
 			$bUseThumbLib = $params->get('usethumblib', false);
@@ -479,7 +479,7 @@ class sportsmanagementHelper
 				//height and width set, let the browser resize it
 				$bUseHighslide = $params->get('use_highslide', false);
 				if($bUseHighslide && $type != 4) {
-					$title .= ' (' . JText::_('COM_JOOMLEAGUE_GLOBAL_CLICK_TO_ENLARGE') . ')';
+					$title .= ' (' . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLICK_TO_ENLARGE') . ')';
 					$ret .= '<a href="'.$picture.'" class="highslide">';
 				}
 				$ret .= '<img ';
@@ -650,8 +650,8 @@ class sportsmanagementHelper
 		if ($config['show_team_link'])
 		{
 			$link =JoomleagueHelperRoute::getPlayersRoute($projectSlug,$teamSlug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/team_icon.png';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -659,8 +659,8 @@ class sportsmanagementHelper
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
 			$link =JoomleagueHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/calendar_icon.gif';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -668,8 +668,8 @@ class sportsmanagementHelper
 		if ($config['show_curve_link'])
 		{
 			$link =JoomleagueHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/curve_icon.gif';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -678,8 +678,8 @@ class sportsmanagementHelper
 		{
 // 			$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
 			$link =JoomleagueHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug);
-      $title=JText::_('COM_JOOMLEAGUE_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/teaminfo_icon.png';
+      $title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -687,8 +687,8 @@ class sportsmanagementHelper
 		if ($config['show_club_link'])
 		{
 			$link =JoomleagueHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/mail.gif';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -696,8 +696,8 @@ class sportsmanagementHelper
 		if ($config['show_teamstats_link'])
 		{
 			$link =JoomleagueHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/teamstats_icon.png';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -705,8 +705,8 @@ class sportsmanagementHelper
 		if ($config['show_clubplan_link'])
 		{
 			$link =JoomleagueHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
-			$title=JText::_('COM_JOOMLEAGUE_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
-			$picture = 'media/com_joomleague/jl_images/clubplan_icon.png';
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHTML::link($link,$desc);
 		}
@@ -837,7 +837,7 @@ class sportsmanagementHelper
 		$favshow=JRequest::getVar('func','');
 		if (($favshow!='showCurve') && ($this->project->fav_team))
 		{
-			$fav=array('color'=>$this->project->fav_team_color,'description'=> JText::_('COM_JOOMLEAGUE_RANKING_FAVTEAM'));
+			$fav=array('color'=>$this->project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
 			array_push($colors,$fav);
 		}
 		foreach($colors as $color)
@@ -892,7 +892,7 @@ class sportsmanagementHelper
 		$database = JFactory::getDBO();
 
 		$query="SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version
-				  FROM #__joomleague_version 
+				  FROM #__sportsmanagement_version 
 				  ORDER BY date DESC LIMIT 1";
 		$database->setQuery($query);
 		$result=$database->loadResult();
@@ -1089,7 +1089,7 @@ class sportsmanagementHelper
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
 			// checks template image directory for image, if non found default are loaded
 			if ($config['show_icons'] == 1 ) {
-				$image = JHTML::_('image.site', 'printButton.png', 'media/com_joomleague/jl_images/', NULL, NULL, JText::_( 'Print' ));
+				$image = JHTML::_('image.site', 'printButton.png', 'media/com_sportsmanagement/jl_images/', NULL, NULL, JText::_( 'Print' ));
 			} else {
 				$image = JText::_( 'Print' );
 			}
@@ -1098,8 +1098,8 @@ class sportsmanagementHelper
 				$output = '<a href="javascript: void(0)" onclick="window.print();return false;">'.$image.'</a>';
 			} else {
 				//button in view
-				$overlib = JText::_( 'COM_JOOMLEAGUE_GLOBAL_PRINT_TIP' );
-				$text = JText::_( 'COM_JOOMLEAGUE_GLOBAL_PRINT' );
+				$overlib = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP' );
+				$text = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT' );
 				$sef = JFactory::getConfig()->getValue('config.sef', false);
 				$print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
@@ -1140,16 +1140,16 @@ class sportsmanagementHelper
 	{
 		$db = &JFactory::getDBO();
 		$query = ' SELECT id as value '
-		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_JOOMLEAGUE_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
+		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
-		       . ' FROM #__joomleague_round '
+		       . ' FROM #__sportsmanagement_round '
 		       . ' WHERE project_id= ' .$project_id
            . ' AND published =  1'
 		       . ' ORDER BY roundcode '.$ordering;
 	
 		$db->setQuery($query);
 		if(!$required) {
-			$mitems = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT')));
+			$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 			return array_merge($mitems, $db->loadObjectList());
 		} else {
 			return $db->loadObjectList();

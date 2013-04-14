@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+		
+    <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST" type="textarea"
+			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST"
+			description="Enter the tv broadcast info here.">
+		</field>
+		
+    <field name="Weather" type="list" label="COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER"
+			description="Weather">
+			<option value=""></option>
+			<option value="dry">Dry</option>
+			<option value="rainy">Rainy</option>
+			<option value="sunny">Sunny</option>
+			<option value="windy">Windy</option>
+			<option value="snowing">Snowing</option>
+		</field>
+		
+    <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE" type="text"
+			label="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE" description="Temperature">
+		</field>
+		
+    <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" type="list"
+			label="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" description="Field condition">
+			<option value=""></option>
+			<option value="normal">Normal</option>
+			<option value="dry">Dry</option>
+			<option value="wet">Wet</option>
+		</field>
+		
+<field name="formation1" type="sql"  label="Spielsystem-Heim" description="Spielsystem-Heim"
+query="SELECT name AS value, name AS formation1 FROM #__joomleague_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
+</field>
+
+<field name="formation2" type="sql"  label="Spielsystem-Gast" description="Spielsystem-Gast"
+query="SELECT name AS value, name AS formation2 FROM #__joomleague_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
+</field>
+
+	</fieldset>
+</config>
