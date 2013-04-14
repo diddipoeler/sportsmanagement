@@ -19,8 +19,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	<?php echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SEARCH' ).' '; ?>
 	<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onChange="document.getElementById('adminForm').submit();" />
-	<button onclick="this.form.submit();"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_GO' ); ?></button>
-	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' ); ?></button>
+	<button onclick="this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
+	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>
 
 </div>
 

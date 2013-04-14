@@ -11,14 +11,14 @@ JHTML::_('behavior.modal');
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER');
+				echo JText::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="search" id="search"
 								value="<?php echo $this->lists['search']; ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_GO'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET');
+					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
 			</td>
