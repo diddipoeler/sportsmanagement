@@ -62,7 +62,7 @@ JHTML::_('behavior.modal');
 					</th>
 					<th width="5%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','po.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JSTATUS','po.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">
