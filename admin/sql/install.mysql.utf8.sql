@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_club`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_club`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
 
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_eventtype`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_eventtype`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_eventtype` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -123,7 +123,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_league`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_league`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -153,7 +153,7 @@ DEFAULT CHARSET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_person`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_person`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -197,6 +197,12 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `associations` INT(11) NOT NULL DEFAULT '0',
   `extendeduser` TEXT NULL ,
+  
+  `bank_code_number` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `bank_account_number` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `iban` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `bank_identifier_code` VARCHAR(100) NOT NULL DEFAULT '' ,
+  
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -206,7 +212,7 @@ DEFAULT CHARSET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_playground`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_playground`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -240,7 +246,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_position`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_position`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_position` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -264,7 +270,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_season`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_season`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -284,7 +290,7 @@ DEFAULT CHARSET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_sports_type`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_sports_type`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_sports_type` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -301,7 +307,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_statistic`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_statistic`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_statistic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -328,7 +334,7 @@ ENGINE=MyISAM
 DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
--- Table `#__sportsmanagement_team`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_team`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,

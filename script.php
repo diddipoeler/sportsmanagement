@@ -96,8 +96,26 @@ class com_sportsmanagementInstallerScript
     $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
   $paramsdata = json_decode( $db->loadResult(), true );
   $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
-  $jRegistry = new JRegistry;
-		$jRegistry->loadString($paramsdata, 'ini');
+  
+$params = JComponentHelper::getParams('com_sportsmanagement');
+$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
+$jRegistry = new JRegistry;
+$jRegistry->loadString($params->toString('ini'), 'ini');
+$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
+$form->bind($jRegistry);
+$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($form,true).'</pre>'   ),'');
+
+$params = $form->getFieldsets('params');
+$mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
+
+//$instance = new JRegistry( $params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml' );
+//$mainframe->enqueueMessage(JText::_('postflight instance<br><pre>'.print_r($instance,true).'</pre>'   ),'');
+
+          
+//  $jRegistry = new JRegistry;
+//		$jRegistry->loadString($paramsdata, 'ini');
+        
+        
 // 		$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> 'params'));
 // 		$form->bind($jRegistry);
 //     $paramsString = json_encode( $form );

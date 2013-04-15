@@ -107,6 +107,8 @@
 		<languages folder="admin">
 			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
 			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
 		</languages>
 	</administration>
  

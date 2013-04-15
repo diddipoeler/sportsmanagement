@@ -265,6 +265,34 @@
 			</field>			
 	</fieldset>
   
+  <fieldset name="memberdata">
+  <field
+			name="bank_code_number"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BANK_CODE_NUMBER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BANK_CODE_NUMBER_DESC"
+			class="inputbox"/>	
+	<field
+			name="bank_account_number"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BANK_ACCOUNT_NUMBER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BANK_ACCOUNT_NUMBER_DESC"
+			class="inputbox"/>
+  <field
+			name="iban"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_IBAN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_IBAN_DESC"
+			class="inputbox"/>
+  <field
+			name="bank_identifier_code"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIC"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIC_DESC"
+			class="inputbox"/>        		
+			
+  </fieldset>
+  
   <fields name="extended">
 		<fieldset
 			name="extended"

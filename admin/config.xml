@@ -41,6 +41,23 @@
 			<option value="1">COM_SPORTSMANAGEMENT_GLOBAL_YES</option>
 		</field>
 		
+		<field name="max_import_time" type="text" default="480"
+			label="COM_JOOMLEAGUE_SETTINGS_MAX_IMPORT_TIME_TITLE" description="COM_JOOMLEAGUE_SETTINGS_MAX_IMPORT_TIME_DESCR">
+		</field>
+		<field name="max_import_memory" type="text" default="256M"
+			label="COM_JOOMLEAGUE_SETTINGS_MAX_IMPORT_MEMORY_TITLE" description="COM_JOOMLEAGUE_SETTINGS_MAX_IMPORT_MEMORY_DESCR">
+		</field>
+
+		<field name="modal_popup_width" type="text" default="900"
+			label="COM_JOOMLEAGUE_SETTINGS_MODALPOPUP_WIDTH" description="COM_JOOMLEAGUE_SETTINGS_MODALPOPUP_WIDTH_DESCR">
+		</field>
+		<field name="modal_popup_height" type="text" default="600"
+			label="COM_JOOMLEAGUE_SETTINGS_MODALPOPUP_HEIGHT" description="COM_JOOMLEAGUE_SETTINGS_MODALPOPUP_HEIGHT_DESCR">
+		</field>
+		
+		
+		
+		
   </fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
