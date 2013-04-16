@@ -17,8 +17,8 @@
 		<field
 			name="alias"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>	
 		<field
 			name="short_name"

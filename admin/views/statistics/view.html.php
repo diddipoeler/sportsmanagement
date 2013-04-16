@@ -95,7 +95,7 @@ class sportsmanagementViewStatistics extends JView
 		JToolBarHelper::addNew('statistic.add');
 		JToolBarHelper::custom('statistic.import','upload','upload',JText::_('COM_SPORTSMANGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('statistic.export',JText::_('COM_SPORTSMANGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::deleteList(JText::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_DELETE_WARNING'),'statistic.fulldelete',JTEXT::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_FULL_DELETE'));
+		//JToolBarHelper::deleteList(JText::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_DELETE_WARNING'),'statistic.fulldelete',JTEXT::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_FULL_DELETE'));
 		JToolBarHelper::divider();
 		
 		//JLToolBarHelper::onlinehelp();

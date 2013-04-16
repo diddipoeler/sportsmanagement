@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
         
         <?php echo $this->addIcon('world.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>
         <?php echo $this->addIcon('association.jpg','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>
-        <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=sportsmanagements', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEST'));?>
+        <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=extrafields', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS'));?>
 				
 				
 			</div>

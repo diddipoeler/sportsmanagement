@@ -46,7 +46,7 @@ class sportsmanagementViewsportsmanagements extends JView
 	protected function addToolBar() 
 	{
 		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLDS'), 'helloworld');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
 		if ($canDo->get('core.create')) 
 		{
 			JToolBarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');

@@ -16,7 +16,8 @@ class sportsmanagementViewPerson extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$model = $this->getModel();
+    // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -32,11 +33,15 @@ class sportsmanagementViewPerson extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'person');
-//		$this->assignRef( 'extended', $extended );
+
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
- 
+    $lists['ext_fields'] = $model->getExtraFields($this->item->id);
+    $this->assignRef('lists',		$lists);
+    
+    //echo 'ext_fields<br><pre>'.print_r($this->ext_fields, true).'</pre><br>';
+
+    
 		// Set the toolbar
 		$this->addToolBar();
  
@@ -57,7 +62,7 @@ class sportsmanagementViewPerson extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLD_NEW') : JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLD_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW') : JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{

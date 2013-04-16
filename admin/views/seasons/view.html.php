@@ -74,7 +74,7 @@ class sportsmanagementViewSeasons extends JView
 		}
 		if ($canDo->get('core.delete')) 
 		{
-			JToolBarHelper::deleteList('', 'season.delete', 'JTOOLBAR_DELETE');
+			JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');
 		}
 		
 		/*

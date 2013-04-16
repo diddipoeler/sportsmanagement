@@ -208,7 +208,7 @@ class sportsmanagementViewPersons extends JView
 		JToolBarHelper::addNew('person.add');
 		JToolBarHelper::custom('person.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('person.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DELETE_WARNING'),'person.remove');
+		JToolBarHelper::deleteList('','persons.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();
 	}

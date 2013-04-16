@@ -105,7 +105,7 @@ class sportsmanagementViewPositions extends JView
 		JToolBarHelper::addNew('position.add');
 		JToolBarHelper::custom('position.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('position.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::deleteList('','position.remove');
+		JToolBarHelper::deleteList('','position.delete');
 		JToolBarHelper::divider();
 
 		//JToolBarHelper::onlinehelp();

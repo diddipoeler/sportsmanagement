@@ -76,7 +76,7 @@ class sportsmanagementViewClubs extends JView
 		JToolBarHelper::editList('club.edit');
 		JToolBarHelper::custom('club.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('club.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::deleteList('', 'club.remove');
+		JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		////JToolBarHelper::onlinehelp();
 		

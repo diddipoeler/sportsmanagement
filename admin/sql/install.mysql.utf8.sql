@@ -1,7 +1,6 @@
 -- -----------------------------------------------------
 -- Tabellenstruktur für Tabelle `#__sportsmanagement_associations`
 -- -----------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(75) NOT NULL DEFAULT '',
@@ -119,6 +118,34 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_eventtype` (
   KEY `sports_type_id` (`sports_type_id`),
   UNIQUE KEY `name` (`name`,`parent`,`sports_type_id`)
   )
+ENGINE = MyISAM
+DEFAULT CHARSET = utf8;
+
+-- -----------------------------------------------------
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_extra_fields`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_extra_fields` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL default '',
+  `published` char(1) NOT NULL default '1',
+  `type` char(1) NOT NULL default '0',
+  `ordering` int(11) NOT NULL default '0',
+  `checked_out` INT(11) NOT NULL DEFAULT '0' ,
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
+  PRIMARY KEY  (`id`)
+)
+ENGINE = MyISAM
+DEFAULT CHARSET = utf8;
+
+-- -----------------------------------------------------
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_extra_values`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_extra_values` (
+  `f_id` int(11) NOT NULL default '0',
+  `uid` int(11) NOT NULL default '0',
+  `fvalue` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`f_id`,`uid`)
+)
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 

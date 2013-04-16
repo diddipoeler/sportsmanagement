@@ -19,6 +19,9 @@ $params = $this->form->getFieldsets('params');
 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA'), 'panel7');
 		echo $this->loadTemplate('member_data');
 
+    echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'), 'panel8');
+		echo $this->loadTemplate('extra_fields');
+    
 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
 		echo $this->loadTemplate('picture');
     

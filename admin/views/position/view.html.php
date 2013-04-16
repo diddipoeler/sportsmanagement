@@ -52,7 +52,7 @@ class sportsmanagementViewPosition extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLD_NEW') : JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLD_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW') : JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
