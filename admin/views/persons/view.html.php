@@ -201,6 +201,7 @@ class sportsmanagementViewPersons extends JView
 // 		JToolBarHelper::unpublishList('person.unpublish');
 		JToolBarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        JToolBarHelper::checkin('persons.checkin');
 		JToolBarHelper::divider();
 		
 		JToolBarHelper::apply('person.saveshort');
