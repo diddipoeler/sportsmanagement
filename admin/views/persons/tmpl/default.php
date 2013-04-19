@@ -121,7 +121,7 @@ jimport('joomla.filesystem.file');
 								$inputappend=' disabled="disabled" ';
 								?><td class="center">
                                 	<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'persons.', $canCheckin); ?>
 					<?php endif; ?>
                     </td><?php
 							}
