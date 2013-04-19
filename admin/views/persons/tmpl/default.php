@@ -113,7 +113,7 @@ $userId		= $user->get('id');
 					{
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
 						$checked    = JHTML::_('grid.checkedout',$row,$i);
-                        $canCheckin	= $user->authorise('core.manage','com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+                        $canCheckin	= $user->authorise('core.manage','com_checkin') || $row->checked_out == $userId || $row->checked_out == 0;
 						$is_checked = JTable::isCheckedOut($this->user->get('id'),$row->checked_out);
                         $published  = JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
