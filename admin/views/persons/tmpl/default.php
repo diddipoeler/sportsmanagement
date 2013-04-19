@@ -126,7 +126,7 @@ $userId		= $user->get('id');
 								$inputappend=' disabled="disabled" ';
 								?><td class="center">
                                 	<?php if ($row->checked_out) : ?>
-						<?php echo JHTML::_('grid.checkedout', $i, $row->checked_out, $row->checked_out_time, 'persons.', $canCheckin); ?>
+						<?php echo JHTML::_('grid.checkedout', $row, $i, $row->checked_out_time, 'persons.', $canCheckin); ?>
 					<?php endif; ?>
                     </td><?php
 							}
