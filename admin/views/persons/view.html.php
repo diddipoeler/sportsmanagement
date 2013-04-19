@@ -194,7 +194,7 @@ class sportsmanagementViewPersons extends JView
 	*/
 	protected function addToolbar()
 	{
-		$user		= JFactory::getUser();
+		//$user		= JFactory::getUser();
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE'),'user');
 

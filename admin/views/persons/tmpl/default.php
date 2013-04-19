@@ -1,5 +1,10 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
+
+$user		= JFactory::getUser();
+$userId		= $user->get('id');
+
 ?>
 <script>
 	function searchPerson(val)
