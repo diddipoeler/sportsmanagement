@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 <form action="<?php JRequest::getURI(); ?>" method="post" id="adminForm">
 <div class="imghead">
 
-	<?php echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SEARCH' ).' '; ?>
+	<?php echo JText::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
 	<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onChange="document.getElementById('adminForm').submit();" />
 	<button onclick="this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
 	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>

@@ -35,7 +35,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<tbody>
 							<tr>
 								<td width="120">
-									<label for="username"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_USERNAME'); ?>:</label>
+									<label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?>:</label>
 								</td>
 								<td>
 									<input type="text" id="username" name="username" class="input_box" size="70" value="" />
@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							</tr>
 							<tr>
 								<td width="120">
-									<label for="password"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_PASSWORD'); ?>:</label>
+									<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?>:</label>
 								</td>
 								<td>
 									<input type="password" id="password" name="password" class="input_box" size="70" value="" />
@@ -66,11 +66,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							</tr>
 							<tr>
 	          			<td>
-							<legend><?php echo JText::_( 'SELECT IMAGE COPY' ); ?></legend>
+							<legend><?php echo JText::_( 'COM_INSTALLER_MSG_INSTALL_ENTER_A_URL' ); ?></legend>
               <input class="inputbox" type="text" id="linkaddress" name="linkaddress" size="50" maxlength="250" value="" />
               <br />
               
-							<input class="button" type="submit" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_UPLOAD') ?>" />
+							<input class="button" type="submit" value="<?php echo JText::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE') ?>" />
     			       	</td>
       				</tr>
 				</tbody>
@@ -87,9 +87,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr>
 	          			<td>
  							<b><?php
- 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_TARGET_DIRECTORY' ).':'; ?></b>
+ 							echo JText::_( 'COM_MEDIA_FIELD_PATH_IMAGE_FOLDER_LABEL' ).':'; ?></b>
 							<?php	echo "/images/com_sportsmanagement/database/".$this->folder;	?><br />
-							<b><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->params->get('image_max_size', 120); ?> kb<br />
+							<b><?php echo JText::_( 'COM_MEDIA_FILESIZE' ).':'; ?></b> <?php echo $this->params->get('image_max_size', 120); ?> kb<br />
 
 							<?php
 							if ( isset($gd_info) ) {

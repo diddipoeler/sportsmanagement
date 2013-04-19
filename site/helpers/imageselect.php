@@ -93,15 +93,15 @@ var $_foldertype = '';
 		$imageselect =	"\n&nbsp;<input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"60\" />";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_UPLOAD' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_UPLOAD' ) . "</a></div></div>\n";
+		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
+		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IMG' ) . "\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IMG' )."</a></div></div>\n";
+		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
+		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IMG' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' ) . "</a></div></div>\n";
+		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . JText::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_CLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_CLEAR' ) . "</a></div></div>\n";
+		JText::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . JText::_( 'JCLEAR' ) . "</a></div></div>\n";
 		$imageselect .=	"\n<input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" />";
 
 		return $imageselect;
