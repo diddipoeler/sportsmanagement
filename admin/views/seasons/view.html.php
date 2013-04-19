@@ -80,8 +80,8 @@ class sportsmanagementViewSeasons extends JView
 		/*
 		JToolBarHelper::addNew('season.add');
 		JToolBarHelper::editList('season.edit');
-		JToolBarHelper::custom('season.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('season.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('season.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('season.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'season.remove');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();

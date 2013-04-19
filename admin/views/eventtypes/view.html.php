@@ -94,8 +94,8 @@ class sportsmanagementViewEventtypes extends JView
 		
 		JToolBarHelper::addNew('eventtype.add');
 		JToolBarHelper::editList('eventtype.edit');
-		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('eventtype.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JLToolBarHelper::onlinehelp();

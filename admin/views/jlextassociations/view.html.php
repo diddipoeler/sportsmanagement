@@ -39,8 +39,8 @@ class sportsmanagementViewjlextassociations extends JView
 // 		JToolBarHelper::editListX();
 		JToolBarHelper::addNew('jlextassociation.add');
 		JToolBarHelper::editList('jlextassociation.edit');
-		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('jlextassociation.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('jlextassociation.export',JText::_('JTOOLBAR_EXPORT'));
 		//JToolBarHelper::deleteList();
 		JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();

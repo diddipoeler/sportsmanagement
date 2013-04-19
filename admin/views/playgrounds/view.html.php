@@ -69,8 +69,8 @@ class sportsmanagementViewPlaygrounds extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playground');
 		JToolBarHelper::editList('playground.edit');
 		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('playground.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 

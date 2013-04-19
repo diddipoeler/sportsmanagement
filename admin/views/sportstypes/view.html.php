@@ -67,8 +67,8 @@ class sportsmanagementViewSportsTypes extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE'),'sportstypes');
 		JToolBarHelper::addNewX('sportstype.add');
 		JToolBarHelper::editListX('sportstype.edit');
-		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('sportstype.export', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','sportstypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();

@@ -65,8 +65,8 @@ class sportsmanagementViewextrafields extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE'),'extrafields');
 		JToolBarHelper::addNew('extrafield.add');
 		JToolBarHelper::editList('extrafield.edit');
-		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('extrafield.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'extrafields.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();

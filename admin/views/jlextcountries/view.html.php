@@ -65,8 +65,8 @@ class sportsmanagementViewjlextcountries extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_TITLE'),'countries');
 		JToolBarHelper::addNew('jlextcountry.add');
 		JToolBarHelper::editList('jlextcountry.edit');
-		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('jlextcountry.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();

@@ -65,8 +65,8 @@ class sportsmanagementViewLeagues extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE'),'leagues');
 		JToolBarHelper::addNew('league.add');
 		JToolBarHelper::editList('league.edit');
-		JToolBarHelper::custom('league.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('league.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		//JToolBarHelper::onlinehelp();

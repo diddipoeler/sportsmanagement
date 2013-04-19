@@ -77,8 +77,8 @@ class sportsmanagementViewTeams extends JView
 		JToolBarHelper::addNew('team.add');
 		JToolBarHelper::editList('team.edit');
 		JToolBarHelper::custom('team.copysave','copy.png','copy_f2.png',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'),true);
-		JToolBarHelper::custom('team.import','upload','upload',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('team.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('team.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('team.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		////JToolBarHelper::onlinehelp();
