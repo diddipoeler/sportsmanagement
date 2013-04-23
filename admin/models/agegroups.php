@@ -23,7 +23,7 @@ jimport('joomla.application.component.modellist');
  */
 class sportsmanagementModelagegroups extends JModelList
 {
-	//var $_identifier = "agegroups";
+	var $_identifier = "agegroups";
 	
 	
 	
@@ -31,19 +31,25 @@ class sportsmanagementModelagegroups extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-         
+        $search	= $mainframe->getUserStateFromRequest($option.'l_search','search','','string');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
 		
-        // Get the WHERE and ORDER BY clauses for the query
-		$where = self::_buildContentWhere();
-		$orderby = self::_buildContentOrderBy();
-		$query='	SELECT	po.*,
-							pop.name AS parent_name,
-							st.name AS sportstype,
-							u.name AS editor
-					FROM	#__sportsmanagement_agegroup AS po
-					LEFT JOIN #__sportsmanagement_sports_type AS st ON st.id = po.sportstype_id
-					LEFT JOIN #__users AS u ON u.id = o.checked_out ' .
-		$where.$orderby;
+        // Select some fields
+		$query->select('obj.*');
+        // From table
+		$query->from('#__sportsmanagement_agegroup as obj');
+        $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
+        $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+        if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        
 		return $query;
         
 	}
@@ -80,20 +86,21 @@ class sportsmanagementModelagegroups extends JModelList
 		$where=array();
 		if ($filter_sports_type> 0)
 		{
-			$where[]='po.sports_type_id='.$this->_db->Quote($filter_sports_type);
+			$where[]='obj.sports_type_id='.$this->_db->Quote($filter_sports_type);
 		}
 		if ($search)
 		{
 			if ($search_mode)
 			{
-				$where[]='LOWER(po.name) LIKE '.$this->_db->Quote($search.'%');
+				$where[]='LOWER(obj.name) LIKE '.$this->_db->Quote($search.'%');
 			}
 			else
 			{
-				$where[]='LOWER(po.name) LIKE '.$this->_db->Quote('%'.$search.'%');
+				$where[]='LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 			}
 		}
-		if ($filter_state)
+		/*
+        if ($filter_state)
 		{
 			if ($filter_state == 'P')
 			{
@@ -104,38 +111,12 @@ class sportsmanagementModelagegroups extends JModelList
 				$where[]='po.published=0';
 			}
 		}
+        */
 		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
 		return $where;
 	}
 
-	/**
-	 * Method to return the positions array (id,name) 
-	 *
-	 * @access	public
-	 * @return	array
-	 * @since 0.1
-	 */
-	function getParentsPositions()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		//get positions already in project for parents list
-		//support only 2 sublevel, so parent must not have parents themselves
-		$query='	SELECT	pos.id AS value,
-							pos.name AS text
-					FROM #__sportsmanagement_position AS pos
-					WHERE pos.parent_id=0
-					ORDER BY pos.ordering ASC 
-					';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
+	
 
 }
 ?>
