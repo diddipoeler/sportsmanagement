@@ -36,11 +36,11 @@ class sportsmanagementViewPersons extends JView
 		
 		$model	= $this->getModel();
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'pl_filter_state', 'filter_state', '', 'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'pl_filter_order', 'filter_order', 'pl.ordering', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'pl_filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'pl_search', 'search', '', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'pl_search_mode', 'search_mode', '', 'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_state', 'filter_state', '', 'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order', 'filter_order', 'pl.ordering', 'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.search', 'search', '', 'string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.search_mode', 'search_mode', '', 'string');
 
 		$items =& $this->get('Items');
 		$total =& $this->get('Total');

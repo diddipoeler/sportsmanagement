@@ -14,12 +14,14 @@
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required="true"/>
+			
 		<field
 			name="alias"
 			type="text"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>				
+			class="inputbox"/>
+      				
 		<field
 			name="sports_type_id"
 			type="sql"
@@ -35,6 +37,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
+		
 		<field
 			name="published"
 			type="list"
@@ -49,7 +52,8 @@
 			<option
 				value="0">
 				JUNPUBLISHED</option>
-		</field>		
+		</field>	
+    	
 		<field
 			name="persontype"
 			type="list"
@@ -70,6 +74,7 @@
 			<option
 				value="4">
 				COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
-		</field>		
+		</field>
+    		
 	</fieldset>				
 </form>

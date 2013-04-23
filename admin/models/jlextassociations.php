@@ -33,7 +33,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'a_search','search','','string');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -57,8 +57,8 @@ class sportsmanagementModeljlextassociations extends JModelList
 		//$option='sportsmanagement';
 		$option = JRequest::getCmd('option');
 		$mainframe =& JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'lassoc_filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'lassoc_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order == 'objassoc.ordering')
 		{
 			$orderby=' objassoc.ordering '.$filter_order_Dir;
@@ -75,9 +75,9 @@ class sportsmanagementModeljlextassociations extends JModelList
 		//$option='sportsmanagement';
 		$option = JRequest::getCmd('option');
 		$mainframe =& JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'lassoc_filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'lassoc_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'lassoc_search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();
 		if ($search)

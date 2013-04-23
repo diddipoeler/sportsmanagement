@@ -47,8 +47,8 @@ class sportsmanagementModelTeams extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'t_filter_order','filter_order','t.ordering','cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'t_filter_order_Dir','filter_order_Dir','','word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order','filter_order','t.ordering','cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word' );
 
 		if ($filter_order == 't.ordering'){
 			$orderby 	= ' ORDER BY t.ordering '.$filter_order_Dir;
@@ -63,11 +63,11 @@ class sportsmanagementModelTeams extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
 
-		$filter_state		= $mainframe->getUserStateFromRequest( $option.'t_filter_state',		'filter_state',		'',				'word' );
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'t_filter_order',		'filter_order',		't.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'t_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search			= $mainframe->getUserStateFromRequest( $option.'t_search',			'search',			'',				'string' );
-		$search_mode		= $mainframe->getUserStateFromRequest( $option.'t_search_mode',			'search_mode',			'',				'string' );
+		$filter_state		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_state',		'filter_state',		'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order',		'filter_order',		't.ordering',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$search			= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.search',			'search',			'',				'string' );
+		$search_mode		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.search_mode',			'search_mode',			'',				'string' );
 		$search			= JString::strtolower( $search );
 
 		$where = array();
