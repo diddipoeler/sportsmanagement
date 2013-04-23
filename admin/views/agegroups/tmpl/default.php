@@ -35,23 +35,19 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_SHORT_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SHORT_NAME','obj.alias',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
+					
 					<th width="10%">
 						<?php
 						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'leagues.saveorder');
+						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'agegroups.saveorder');
 						?>
 					</th>
 					<th width="20">
@@ -66,7 +62,7 @@ JHTML::_('behavior.modal');
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=league.edit&id='.$row->id);
+					$link=JRoute::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id='.$row->id);
 					$checked=JHTML::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
@@ -85,7 +81,7 @@ JHTML::_('behavior.modal');
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_EDIT_DETAILS');
 									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -95,14 +91,14 @@ JHTML::_('behavior.modal');
 						}
 						?>
 						<td><?php echo $row->name; ?></td>
-						<td><?php echo $row->short_name; ?></td>
-						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+						<td><?php echo $row->alias; ?></td>
+						
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'league.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'agegroup.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'league.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'agegroup.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>

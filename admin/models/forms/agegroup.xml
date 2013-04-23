@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"  >
+	<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+	<field
+			name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			class="inputbox"/>		
+			
+	<field
+			name="info"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info_DESC"
+			class="inputbox"/>
+	<field
+			name="notes"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes_DESC"
+			class="inputbox"
+			required=""/>
+
+<field
+			name="age_from"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from_DESC"
+			class="inputbox"
+			required=""/>
+<field
+			name="age_to"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to_DESC"
+			class="inputbox"
+			required=""/>
+<field
+			name="deadline_day"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day_DESC"
+			class="inputbox"
+			required=""
+      format="%Y-%m-%d"/>            		
+	
+
+  
+      	
+	</fieldset>			
+
+<fieldset name="picture">
+			<field
+				name="picture"
+				type="media"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_21.png"				
+				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"				
+				directory="com_sportsmanagement/database/agegroups"/>
+	</fieldset>
+	
+	<fieldset name="imageselect">
+			<field
+				name="picture"
+				type="imageselect"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_21.png"					
+				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"
+				targetfolder="agegroups"
+				directory="com_sportsmanagement/database/agegroups"/>		
+	</fieldset>	
+  	
+  	<fields name="extended">
+		<fieldset
+			name="extended"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+		<field name="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION" type="textarea"
+			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION"
+			description="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION_DESC" backendonly="">
+		</field>
+		</fieldset>
+	</fields>	
+	
+</form>

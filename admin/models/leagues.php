@@ -27,7 +27,7 @@ class sportsmanagementModelLeagues extends JModelList
 	
 	protected function getListQuery()
 	{
-			$mainframe = JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'l_search','search','','string');
         // Create a new query object.		

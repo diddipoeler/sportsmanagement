@@ -299,6 +299,10 @@ var $_foldertype = '';
 			case	"venues":
 				return "venues";
 				break;
+                
+            case	"agegroups":
+				return "agegroups";
+				break;    
 				
 			default:
 				return "events/".$type;

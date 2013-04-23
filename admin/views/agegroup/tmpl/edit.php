@@ -24,7 +24,7 @@ echo JHTML::_('tabs.end');
 	
  
 	<div>
-		<input type="hidden" name="task" value="league.edit" />
+		<input type="hidden" name="task" value="agegroup.edit" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

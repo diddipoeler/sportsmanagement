@@ -29,33 +29,39 @@ class sportsmanagementModelagegroups extends JModelList
 	
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+         
+		
+        // Get the WHERE and ORDER BY clauses for the query
+		$where = self::_buildContentWhere();
+		$orderby = self::_buildContentOrderBy();
 		$query='	SELECT	po.*,
 							pop.name AS parent_name,
 							st.name AS sportstype,
 							u.name AS editor
 					FROM	#__sportsmanagement_agegroup AS po
-					LEFT JOIN #__sportsmanagement_sports_type AS st ON st.id=po.sportstype_id
-					LEFT JOIN #__users AS u ON u.id=po.checked_out ' .
+					LEFT JOIN #__sportsmanagement_sports_type AS st ON st.id = po.sportstype_id
+					LEFT JOIN #__users AS u ON u.id = o.checked_out ' .
 		$where.$orderby;
 		return $query;
+        
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'po_filter_order',		'filter_order',		'po.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'po_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		if ($filter_order == 'po.ordering')
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'ageg_filter_order',		'filter_order',		'po.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'ageg_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		
+        if ($filter_order == 'obj.ordering')
 		{
-			$orderby=' ORDER BY po.parent_id ASC,po.ordering '.$filter_order_Dir;
+			$orderby=' obj.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY po.parent_id ASC,'.$filter_order.' '.$filter_order_Dir.',po.ordering ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',obj.ordering ';
 		}
 		return $orderby;
 	}
