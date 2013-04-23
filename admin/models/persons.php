@@ -28,19 +28,34 @@ class sportsmanagementModelPersons extends JModelList
 
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-
-		$query = '	SELECT	pl.*, u.name AS editor
-					FROM #__sportsmanagement_person AS pl
-					LEFT JOIN #__users AS u
-					 ON u.id = pl.checked_out ';
-
-		$query .= $where;
-		$query .= $orderby;
-		//echo '<br />~' . $query . '~<br />';
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+		
+        // Select some fields
+		$query->select('pl.*');
+        // From table
+		$query->from('#__sportsmanagement_person as pl');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
+        
+        
+        if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
+        
+        
+        
 	}
 
 	function _buildContentOrderBy()

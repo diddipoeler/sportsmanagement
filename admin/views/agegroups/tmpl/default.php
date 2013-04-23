@@ -46,17 +46,17 @@ JHTML::_('behavior.modal');
                     
                     <th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from','obj.age_from',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM','obj.age_from',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                     <th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to','obj.age_to',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO','obj.age_to',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                     <th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day','obj.deadline_day',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY','obj.deadline_day',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                     

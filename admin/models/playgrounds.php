@@ -25,28 +25,49 @@ jimport('joomla.application.component.modellist');
  */
 class sportsmanagementModelPlaygrounds extends JModelList
 {
-	//var $_identifier = "playgrounds";
+	var $_identifier = "playgrounds";
 	
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-		$query='	SELECT v.*,c.name As club,u.name AS editor
-					FROM #__sportsmanagement_playground AS v
-					LEFT JOIN #__sportsmanagement_club AS c ON c.id=v.club_id
-					LEFT JOIN #__users AS u ON u.id=v.checked_out '
-					. $where
-					. $orderby;
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+		
+        // Select some fields
+		$query->select('v.*');
+        // From table
+		$query->from('#__sportsmanagement_playground as v');
+        // Join over the clubs
+		$query->select('c.name As club');
+		$query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = v.club_id');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
+        
+        
+        if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
+        
+        
+        
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order','filter_order','v.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir','filter_order_Dir','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','v.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order == 'v.ordering')
 		{
 			$orderby=' ORDER BY v.ordering '.$filter_order_Dir;
@@ -62,10 +83,10 @@ class sportsmanagementModelPlaygrounds extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'v_search_mode',		'search_mode',		'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'v.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode',		'search_mode',		'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();
 		if ($search)

@@ -28,10 +28,11 @@ class sportsmanagementViewagegroups extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order',		'filter_order',		'obj.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',		'filter_order',		'obj.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 
 		$items =& $this->get('Items');

@@ -32,6 +32,7 @@ class sportsmanagementViewjlextassociations extends JView
 		$document	=& JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
+    $model	= $this->getModel();
     $this->assignRef( 'optiontext',			$optiontext );
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'generic.png');
@@ -46,12 +47,14 @@ class sportsmanagementViewjlextassociations extends JView
 		JToolBarHelper::divider();
 
 		////JToolBarHelper::onlinehelp();
+        
+        //$mainframe->enqueueMessage(JText::_('Viewjlextassociations identifier<br><pre>'.print_r($model->_identifier,true).'</pre>'   ),'');
 
 		
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 
 		$items =& $this->get('Items');

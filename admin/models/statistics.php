@@ -27,18 +27,38 @@ class sportsmanagementModelStatistics extends JModelList
 	
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-
-		$query = "	SELECT	obj.*,
-							st.name AS sportstype,		
-							u.name AS editor
-					FROM #__sportsmanagement_statistic AS obj
-					LEFT JOIN #__sportsmanagement_sports_type AS st ON st.id=obj.sports_type_id					
-					LEFT JOIN #__users AS u ON u.id = obj.checked_out " .
-					$where . $orderby;
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+		
+        // Select some fields
+		$query->select('obj.*');
+        // From table
+		$query->from('#__sportsmanagement_statistic AS obj');
+        // Join over the sportstype
+		$query->select('st.name AS sportstype');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id	');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+        
+        
+        if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
+        
+        
+        
+        
 	}
 
 	function _buildContentOrderBy()

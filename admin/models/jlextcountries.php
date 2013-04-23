@@ -27,17 +27,36 @@ class sportsmanagementModeljlextcountries extends JModelList
 	
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-
-		$query='	SELECT	objcountry.*,
-							u.name AS editor
-					FROM #__sportsmanagement_countries AS objcountry
-					LEFT JOIN #__users AS u ON u.id=objcountry.checked_out ' .
-					$where .
-					$orderby;
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+		
+        // Select some fields
+		$query->select('objcountry.*');
+        // From table
+		$query->from('#__sportsmanagement_countries AS objcountry');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
+        
+        
+        if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
+        
+        
+        
+        
+        
 	}
 
 	function _buildContentOrderBy()
