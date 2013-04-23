@@ -43,6 +43,23 @@ JHTML::_('behavior.modal');
 						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_ALIAS','obj.alias',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
+                    
+                    <th>
+						<?php
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from','obj.age_from',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to','obj.age_to',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day','obj.deadline_day',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+                    
 					
 					<th width="10%">
 						<?php
@@ -92,6 +109,10 @@ JHTML::_('behavior.modal');
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->alias; ?></td>
+                        
+                        <td><?php echo $row->age_from; ?></td>
+                        <td><?php echo $row->age_to; ?></td>
+                        <td><?php echo $row->deadline_day; ?></td>
 						
 						<td class="order">
 							<span>

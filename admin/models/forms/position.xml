@@ -29,7 +29,7 @@
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
 			required="true"
-			query="SELECT id AS value, name AS sports_type_id FROM #__joomleague_sports_type ORDER BY name ASC"
+			query="SELECT id AS value, name AS sports_type_id FROM #__sportsmanagement_sports_type ORDER BY name ASC"
 			validate="superiorzero">
 			<option
 				value="0">
