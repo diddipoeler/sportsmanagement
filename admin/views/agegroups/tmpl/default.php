@@ -40,7 +40,7 @@ JHTML::_('behavior.modal');
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SHORT_NAME','obj.alias',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_ALIAS','obj.alias',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					

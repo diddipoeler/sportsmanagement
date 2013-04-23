@@ -49,7 +49,7 @@ class sportsmanagementModelagegroups extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        $mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
 	}
