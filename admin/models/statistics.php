@@ -53,7 +53,7 @@ class sportsmanagementModelStatistics extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('statistics query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
         
@@ -71,10 +71,10 @@ class sportsmanagementModelStatistics extends JModelList
 		
 		if ( $filter_order == 'obj.ordering')
 		{
-			$orderby 	= ' ORDER BY obj.ordering ' . $filter_order_Dir;
+			$orderby 	= ' obj.ordering ' . $filter_order_Dir;
 		} else
 		{
-			$orderby 	= ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , obj.ordering ';
+			$orderby 	= '  ' . $filter_order . ' ' . $filter_order_Dir . ' , obj.ordering ';
 		}
 
 		return $orderby;

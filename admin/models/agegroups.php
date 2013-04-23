@@ -13,7 +13,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 /**
  * Joomleague Component Teams Model

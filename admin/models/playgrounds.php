@@ -12,8 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// jimport('joomla.application.component.model');
-// require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 jimport('joomla.application.component.modellist');
 
@@ -55,7 +53,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('playgrounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
         
@@ -70,11 +68,11 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order == 'v.ordering')
 		{
-			$orderby=' ORDER BY v.ordering '.$filter_order_Dir;
+			$orderby='  v.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',v.ordering ';
+			$orderby='  '.$filter_order.' '.$filter_order_Dir.',v.ordering ';
 		}
 		return $orderby;
 	}

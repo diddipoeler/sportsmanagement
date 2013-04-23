@@ -24,22 +24,18 @@
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>		
 
+
 <field
+		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
 			name="sportstype_id"
-			type="sql"
-			class="inputbox validate-select-required"
+			type="sportstypes"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			query="SELECT id AS value, name AS sports_type_id FROM #__sportsmanagement_sports_type ORDER BY name ASC"
-			validate="superiorzero">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+			label="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			required="true">
 		</field>
-    			
+        			
 	<field
 			name="info"
 			type="text"
@@ -48,11 +44,13 @@
 			class="inputbox"/>
 	<field
 			name="notes"
-			type="text"
+			type="editor"
 			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes"
 			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes_DESC"
 			class="inputbox"
-			required=""/>
+			required=""
+      width="450" 
+			filter="safehtml"/>
 
 <field
 			name="age_from"

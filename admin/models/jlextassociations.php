@@ -41,13 +41,17 @@ class sportsmanagementModeljlextassociations extends JModelList
 		$query->select('objassoc.*');
 		// From the hello table
 		$query->from('#__sportsmanagement_associations as objassoc');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
         if ($search)
 		{
         $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
  
-		return $query;
+		//$mainframe->enqueueMessage(JText::_('jlextassociations query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        return $query;
 	}
 	
   

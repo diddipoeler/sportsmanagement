@@ -11,14 +11,14 @@ JHTML::_('behavior.modal');
 		<tr>
 			<td align='left' width='100%'>
 				<?php
-				echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_FILTER');
+				echo JText::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="search" id="search"
 								value="<?php echo $this->lists['search']; ?>"
 								class="text_area" onchange="$('adminForm').submit();" />
-				<button onclick="this.form.submit(); "><?php echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_GO'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_RESET');
+					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
 			</td>
@@ -37,36 +37,36 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_ADMIN_EVENTS_STANDARD_NAME_OF_EVENT','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_EVENTS_STANDARD_NAME_OF_EVENT','obj.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
-						<?php echo JText::_('COM_SPORTSMANGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
+						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_ADMIN_EVENTS_ICON','obj.icon',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_EVENTS_ICON','obj.icon',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_ADMIN_EVENTS_SPORTSTYPE','obj.sports_type_id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE','obj.sports_type_id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="1%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_GLOBAL_PUBLISHED','obj.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JSTATUS','obj.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_GLOBAL_ORDER','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'eventtypes.saveorder');
 						?>
 					</th>
 					<th width="5%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANGEMENT_GLOBAL_ID','obj.id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 				</tr>
@@ -99,7 +99,7 @@ JHTML::_('behavior.modal');
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANGEMENT_ADMIN_EVENTS_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_EDIT_DETAILS');
 									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle, 'title= "'.$imageTitle.'"');
 									?>

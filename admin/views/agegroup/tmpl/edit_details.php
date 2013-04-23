@@ -12,6 +12,10 @@
 			<td class="key"><?php echo $this->form->getLabel('alias'); ?></td>
 			<td><?php echo $this->form->getInput('alias'); ?></td>
 		</tr>
+        <tr>
+			<td class="key"><?php echo $this->form->getLabel('sportstype_id'); ?></td>
+			<td><?php echo $this->form->getInput('sportstype_id'); ?></td>
+		</tr>
 		<tr>
 			<td class="key"><?php echo $this->form->getLabel('info'); ?></td>
 			<td><?php echo $this->form->getInput('info'); ?></td>

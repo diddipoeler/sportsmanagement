@@ -48,7 +48,7 @@ class sportsmanagementModelSportsTypes extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('sportstypes query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
 	}
@@ -61,11 +61,11 @@ class sportsmanagementModelSportsTypes extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order == 's.ordering')
 		{
-			$orderby=' ORDER BY s.ordering '.$filter_order_Dir;
+			$orderby='  s.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',s.ordering ';
+			$orderby='  '.$filter_order.' '.$filter_order_Dir.',s.ordering ';
 		}
 		return $orderby;
 	}

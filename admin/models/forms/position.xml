@@ -21,21 +21,16 @@
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>
-      				
+		
 		<field
+		  addfieldpath="/administrator/components/com_sportsmanagement/elements"
 			name="sports_type_id"
-			type="sql"
-			class="inputbox validate-select-required"
+			type="sportstypes"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			query="SELECT id AS value, name AS sports_type_id FROM #__sportsmanagement_sports_type ORDER BY name ASC"
-			validate="superiorzero">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+			label="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			required="true">
 		</field>
 		
 		<field

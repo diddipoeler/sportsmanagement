@@ -12,8 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// jimport('joomla.application.component.model');
-// require_once(JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 jimport('joomla.application.component.modellist');
 
@@ -72,11 +70,11 @@ class sportsmanagementModelEventtypes extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order=='obj.ordering')
 		{
-			$orderby=' ORDER BY obj.ordering '.$filter_order_Dir;
+			$orderby='  obj.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',obj.ordering ';
+			$orderby='  '.$filter_order.' '.$filter_order_Dir.',obj.ordering ';
 		}
 		return $orderby;
 	}

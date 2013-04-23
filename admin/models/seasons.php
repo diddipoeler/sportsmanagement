@@ -46,7 +46,8 @@ class sportsmanagementModelSeasons extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
  
-		return $query;
+		//$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        return $query;
 	}
 	
   

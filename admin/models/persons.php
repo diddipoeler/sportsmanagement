@@ -51,7 +51,7 @@ class sportsmanagementModelPersons extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('persons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
         
@@ -68,11 +68,11 @@ class sportsmanagementModelPersons extends JModelList
 
 		if ( $filter_order == 'pl.lastname' )
 		{
-			$orderby 	= ' ORDER BY pl.lastname ' . $filter_order_Dir;
+			$orderby 	= '  pl.lastname ' . $filter_order_Dir;
 		}
 		else
 		{
-			$orderby 	= ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
+			$orderby 	= '  ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
 		}
 
 		return $orderby;

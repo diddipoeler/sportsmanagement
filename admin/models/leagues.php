@@ -37,13 +37,17 @@ class sportsmanagementModelLeagues extends JModelList
 		$query->select('obj.*');
 		// From the hello table
 		$query->from('#__sportsmanagement_league as obj');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         if ($search)
 		{
         $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
  
-		return $query;
+		//$mainframe->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        return $query;
 	}
 
   

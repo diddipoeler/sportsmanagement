@@ -23,7 +23,7 @@ jimport('joomla.application.component.modellist');
  */
 class sportsmanagementModelextrafields extends JModelList
 {
-	//var $_identifier = "jlextcountries";
+	var $_identifier = "extrafields";
 	
 	function getListQuery()
 	{

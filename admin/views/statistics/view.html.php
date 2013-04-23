@@ -55,7 +55,7 @@ class sportsmanagementViewStatistics extends JView
 		$lists['search']=$search;
 		
 				//build the html select list for sportstypes
-		$sportstypes[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();		
 		
@@ -87,15 +87,15 @@ class sportsmanagementViewStatistics extends JView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_TITLE'),'statistics');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE'),'statistics');
 		
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::divider();
 		JToolBarHelper::editList('statistic.edit');
 		JToolBarHelper::addNew('statistic.add');
-		JToolBarHelper::custom('statistic.import','upload','upload',JText::_('COM_SPORTSMANGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('statistic.export',JText::_('COM_SPORTSMANGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('statistic.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('statistic.export',JText::_('JTOOLBAR_EXPORT'));
 		//JToolBarHelper::deleteList(JText::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_DELETE_WARNING'),'statistic.fulldelete',JTEXT::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_FULL_DELETE'));
 		JToolBarHelper::divider();
 		
