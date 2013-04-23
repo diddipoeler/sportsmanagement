@@ -30,6 +30,7 @@ class sportsmanagementModelTeams extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$mainframe->enqueueMessage(JText::_('teams getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -101,7 +102,7 @@ class sportsmanagementModelTeams extends JModelList
                     $where[] = 'club_id ='. $cid;
                 }
 
-                $where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
+                $where 		= ( count( $where ) ? '  '. implode( ' AND ', $where ) : '' );
 		return $where;
 	}
 }

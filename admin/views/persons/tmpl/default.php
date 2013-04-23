@@ -13,7 +13,7 @@ $userId		= $user->get('id');
 		if(f)
 		{
 			f.elements['search'].value=val;
-			f.elements['search_mode'].value= 'matchfirst';
+			
 			f.submit();
 		}
 	}

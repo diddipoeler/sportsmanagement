@@ -14,7 +14,7 @@ JHTML::_('behavior.modal');
 		if(f)
 		{
 		f.elements['search'].value=val;
-		f.elements['search_mode'].value= 'matchfirst';
+		
 		f.submit();
 		}
 	}

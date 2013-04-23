@@ -30,6 +30,8 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$mainframe->enqueueMessage(JText::_('playgrounds getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
+        
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -98,7 +100,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
 				$where[]='LOWER(v.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 			}
 		}
-		$where=(count($where) ? ' WHERE '. implode(' AND ',$where) : '');
+		$where=(count($where) ? '  '. implode(' AND ',$where) : '');
 		return $where;
 	}
 

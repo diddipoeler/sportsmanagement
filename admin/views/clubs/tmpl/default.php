@@ -8,6 +8,21 @@ JHTML::_('behavior.modal');
 
 
 ?>
+<script>
+
+	function searchClub(val,key)
+	{
+		var f = $('adminForm');
+		if(f)
+		{
+		f.elements['search'].value=val;
+		
+		f.submit();
+		}
+	}
+
+</script>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
 		<tr>

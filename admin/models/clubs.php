@@ -33,13 +33,14 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'a_search','search','','string');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$mainframe->enqueueMessage(JText::_('clubs getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('a.*');
-		// From the hello table
+		// From the club table
 		$query->from('#__sportsmanagement_club as a');
         if ($search)
 		{
@@ -47,13 +48,8 @@ class sportsmanagementModelClubs extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-//$mainframe->enqueueMessage(JText::_('getListQuery _buildContentWhere<br><pre>'.print_r(self::_buildContentWhere(),true).'</pre>'   ),'');
-//$mainframe->enqueueMessage(JText::_('getListQuery _buildContentOrderBy<br><pre>'.print_r(self::_buildContentOrderBy(),true).'</pre>'   ),'');        
 
-
-//        self::_buildContentWhere();
-//        self::_buildContentOrderBy();
-        
+        //$mainframe->enqueueMessage(JText::_('clubs query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
 	}
 
@@ -63,8 +59,8 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'a_filter_order','filter_order','a.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'a_filter_order_Dir','filter_order_Dir','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','a.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order == 'a.ordering')
 		{
 			$orderby=' a.ordering '.$filter_order_Dir;
@@ -80,11 +76,11 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'a_filter_state',		'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'a_filter_order',		'filter_order',		'a.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'a_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'a_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'a_search_mode',		'search_mode',		'',				'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','a.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 		$where=array();
 		if ($search)
@@ -113,32 +109,6 @@ class sportsmanagementModelClubs extends JModelList
 		return $where;
 	}
 
-	/**
-	 * Method to remove a club
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.1
-	 */
-	/*
-  function delete($cid=array())
-	{
-		return false;
-		$result=false;
-		if (count($cid))
-		{
-			JArrayHelper::toInteger($cid);
-			$cids=implode(',',$cid);
-			$query="DELETE FROM #__sportsmanagement_club WHERE id IN ($cids)";
-			$this->_db->setQuery($query);
-			if(!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-		}
-		return true;
-	}
-  */
+	
 }
 ?>
