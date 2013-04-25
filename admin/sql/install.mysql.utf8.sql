@@ -229,7 +229,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `bank_account_number` VARCHAR(100) NOT NULL DEFAULT '' ,
   `iban` VARCHAR(100) NOT NULL DEFAULT '' ,
   `bank_identifier_code` VARCHAR(100) NOT NULL DEFAULT '' ,
-  
+  `agegroup_id` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)

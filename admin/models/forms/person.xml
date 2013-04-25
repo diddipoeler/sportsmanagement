@@ -69,7 +69,7 @@
 							pos.name AS position_id,
 							s.name AS sName
 					FROM #__joomleague_position pos
-					INNER JOIN #__joomleague_sports_type AS s ON s.id=pos.sports_type_id
+					INNER JOIN #__sportsmanagement_sports_type AS s ON s.id=pos.sports_type_id
 					WHERE pos.published=1
 					ORDER BY pos.ordering,pos.name">
 			<option
@@ -83,6 +83,22 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
 			format="%Y-%m-%d"/>
+			
+		<field
+			name="agegroup_id"
+			type="personagegroup" 
+      size="10"
+			default="0"
+      varname="id"
+      targettable="person"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+    	
 		<field
 			name="deathday"
 			type="calendar"

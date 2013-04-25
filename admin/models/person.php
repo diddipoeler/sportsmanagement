@@ -207,7 +207,20 @@ class sportsmanagementModelperson extends JModelAdmin
 	
   
   
-  
+  public function getAgeGroupID($age) 
+	{
+  $mainframe =& JFactory::getApplication();
+		$query = "SELECT id
+    FROM #__sportsmanagement_agegroup 
+    WHERE ".$age." >= age_from and ".$age." <= age_to";
+		
+    //$mainframe->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+		
+		$this->_db->setQuery($query);
+			$person_range = $this->_db->loadResult();
+            return $person_range;
+	}
+    
   public function getExtraFields($person_id) 
 	{
   $mainframe =& JFactory::getApplication();

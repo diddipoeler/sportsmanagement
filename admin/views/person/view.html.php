@@ -16,7 +16,8 @@ class sportsmanagementViewPerson extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		$model = $this->getModel();
+		$mainframe = JFactory::getApplication();
+        $model = $this->getModel();
     // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -38,6 +39,16 @@ class sportsmanagementViewPerson extends JView
  
     $lists['ext_fields'] = $model->getExtraFields($this->item->id);
     $this->assignRef('lists',		$lists);
+    
+    
+    $person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));
+//    $mainframe->enqueueMessage(JText::_('personagegroup person_age<br><pre>'.print_r($person_age,true).'</pre>'   ),'');
+    $person_range = $model->getAgeGroupID($person_age);
+//    $mainframe->enqueueMessage(JText::_('personagegroup person_range<br><pre>'.print_r($person_range,true).'</pre>'   ),'');
+    if ( $person_range )
+    {
+        $this->form->setValue('agegroup_id', null, $person_range);
+    }
     
     //echo 'ext_fields<br><pre>'.print_r($this->ext_fields, true).'</pre><br>';
 
