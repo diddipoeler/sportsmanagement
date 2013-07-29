@@ -75,6 +75,8 @@ $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 		$ch = curl_init($req);
 
 		// Set options
+        $t_vers = curl_version();
+        curl_setopt($ch, CURLOPT_USERAGENT, 'curl/' . $t_vers['version'] );
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
