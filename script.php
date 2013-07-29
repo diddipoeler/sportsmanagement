@@ -94,6 +94,7 @@ foreach($form->getFieldset($fieldset->name) as $field)
 switch ($type)        
     {
     case "install":
+    self::setParams($newparams);
 //    self::installComponentLanguages();
 //    self::installModules();
 //	  self::installPlugins();
