@@ -28,8 +28,8 @@ $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 
 
 // Load the parameters
-        $uname = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username','');
-        $repo = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository','');
+        $uname = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username','diddipoeler');
+        $repo = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository','sportsmanagement');
 		//$uname		= $paramsdata->get('cfg_github_username', '');
 		//$repo		= $paramsdata->get('cfg_github_repository', '');
 
