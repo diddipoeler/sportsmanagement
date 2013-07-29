@@ -70,75 +70,54 @@ class com_sportsmanagementInstallerScript
         // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
-
-/*        
-    //$paramsdata = JComponentHelper::getParams('com_sportsmanagement');
-    $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
-    $paramsdata = json_decode( $db->loadResult(), true );
-	$paramsdefs = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
-	$params = new JParameter( $paramsdata, $paramsdefs );
-	
-    $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
-        
-        $params = JComponentHelper::getParams('com_sportsmanagement');
-		$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';
-		
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($params->toString('ini'), 'ini');
-		$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-		$form->bind($jRegistry);
-        $paramsString = json_encode( $form );
-  
     
-    $mainframe->enqueueMessage(JText::_('postflight paramsString<br><pre>'.print_r($paramsString,true).'</pre>'   ),'');
-*/
-    
-    $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
-  $paramsdata = json_decode( $db->loadResult(), true );
-  $mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
-  
+$db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement" and type ="component"');
+$paramsdata = json_decode( $db->loadResult(), true );
+//$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
 $jRegistry = new JRegistry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 $form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 $form->bind($jRegistry);
-$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($form,true).'</pre>'   ),'');
-
-$params = $form->getFieldsets('params');
-$mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
-
-//$instance = new JRegistry( $params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml' );
-//$mainframe->enqueueMessage(JText::_('postflight instance<br><pre>'.print_r($instance,true).'</pre>'   ),'');
-
-          
-//  $jRegistry = new JRegistry;
-//		$jRegistry->loadString($paramsdata, 'ini');
+$newparams = array();
+foreach($form->getFieldset($fieldset->name) as $field)
+        {
+         //echo 'name -> '. $field->name.'<br>';
+         //echo ' -> '. $field->type.'<br>';
+         //echo ' -> '. $field->input.'<br>';
+         //echo 'value -> '. $field->value.'<br>';
+        $newparams[$field->name] = $field->value;
         
+        }
+
+switch ($type)        
+    {
+    case "install":
+//    self::installComponentLanguages();
+//    self::installModules();
+//	  self::installPlugins();
+//    self::createImagesFolder();
+//    self::migratePicturePath();
+//    self::deleteInstallFolders();
+//    self::sendInfoMail();
+    break;
+    case "update":
+//    self::installComponentLanguages();
+//    self::installModules();
+//    self::installPlugins();
+//    self::createImagesFolder();
+//    self::migratePicturePath();
+      self::setParams($newparams);
+//    self::deleteInstallFolders();
+//    self::sendInfoMail();
+    break;
+    case "discover_install":
+    break;
         
-// 		$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> 'params'));
-// 		$form->bind($jRegistry);
-//     $paramsString = json_encode( $form );
-//     $mainframe->enqueueMessage(JText::_('postflight paramsString<br><pre>'.print_r($paramsString,true).'</pre>'   ),'');
-    
-  /*  
-    $jRegistry = new JRegistry();
-    $jRegistry->loadString($params->toString('ini'), 'ini');
-    $newparams = $jRegistry->toString();
-    $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
-  */
-  
-    /*
-    $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params,true).'</pre>'   ),'');
-	$jRegistry = new JRegistry();
-    $jRegistry->loadString($params->toString('ini'), 'ini');
-  $newparams = $jRegistry->toString();
-  $mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
-  $this->setParams( $newparams );
-  */                              
-    
-    
-        
+    }
+
+
 	}
     
     /*
@@ -146,10 +125,20 @@ $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params
     */
     function setParams($param_array) 
     {
+        
         $mainframe =& JFactory::getApplication();
         $db = JFactory::getDbo();
-                        
-                                
+        if ( count($param_array) > 0 )
+        {
+            // store the combined new and existing values back as a JSON string
+                        $paramsString = json_encode( $param_array );
+                        $db->setQuery('UPDATE #__extensions SET params = ' .
+                                $db->quote( $paramsString ) .
+                                ' WHERE name = "com_sportsmanagement" and type ="component"' );
+                                $db->query();
+        $mainframe->enqueueMessage(JText::_('Sportsmanagement Konfiguration gesichert'),'');
+        }                
+                /*                
                 if ( count($param_array) > 0 ) {
                         // read the existing component value(s)
                         $db = JFactory::getDbo();
@@ -167,6 +156,6 @@ $mainframe->enqueueMessage(JText::_('postflight params<br><pre>'.print_r($params
                                 ' WHERE name = "com_sportsmanagement"' );
                                 $db->query();
                 }
-                
+                */
         }      
 }
