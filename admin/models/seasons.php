@@ -39,7 +39,7 @@ class sportsmanagementModelSeasons extends JModelList
 		// Select some fields
 		$query->select('s.*');
 		// From the seasons table
-		$query->from('#__sportsmanagement_season as s');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
         if ($search)
 		{
         $query->where(self::_buildContentWhere());

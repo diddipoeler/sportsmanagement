@@ -14,6 +14,10 @@ JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' .
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 
+$params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $params->get( 'cfg_which_database_table' ); 
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',		$database_table );
+		
 // import joomla controller library
 jimport('joomla.application.component.controller');
  
