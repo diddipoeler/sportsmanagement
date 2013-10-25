@@ -39,10 +39,10 @@ class sportsmanagementModelTeams extends JModelList
         // Select some fields
 		$query->select('t.*');
         // From table
-		$query->from('#__sportsmanagement_team AS t');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         // Join over the clubs
 		$query->select('c.name As clubname');
-		$query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');

@@ -37,14 +37,14 @@ class sportsmanagementModelPositions extends JModelList
 							st.name AS sportstype,
 							u.name AS editor,
 
-							(select count(*) FROM #__sportsmanagement_position_eventtype
+							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype
 							WHERE position_id=po.id) countEvents,
-							(select count(*) FROM #__sportsmanagement_position_statistic
+							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic
 							WHERE position_id=po.id) countStats
 
-					FROM	#__sportsmanagement_position AS po
-					LEFT JOIN #__sportsmanagement_sports_type AS st ON st.id=po.sports_type_id
-					LEFT JOIN #__sportsmanagement_position AS pop ON pop.id=po.parent_id
+					FROM	#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS po
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id=po.sports_type_id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pop ON pop.id=po.parent_id
 					LEFT JOIN #__users AS u ON u.id=po.checked_out ' .
 		$where.$orderby;
 		return $query;
@@ -125,7 +125,7 @@ class sportsmanagementModelPositions extends JModelList
 		//support only 2 sublevel, so parent must not have parents themselves
 		$query='	SELECT	pos.id AS value,
 							pos.name AS text
-					FROM #__sportsmanagement_position AS pos
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
 					WHERE pos.parent_id=0
 					ORDER BY pos.ordering ASC 
 					';

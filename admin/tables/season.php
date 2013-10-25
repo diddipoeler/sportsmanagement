@@ -35,7 +35,7 @@ class sportsmanagementTableSeason extends JTable
 	 */
 	function __construct(& $db)
 	{
-		parent::__construct( '#__sportsmanagement_season', 'id', $db );
+		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season', 'id', $db );
 	}
 
 	/**

@@ -41,7 +41,7 @@ class sportsmanagementModelClubs extends JModelList
 		// Select some fields
 		$query->select('a.*');
 		// From the club table
-		$query->from('#__sportsmanagement_club as a');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
         if ($search)
 		{
         $query->where(self::_buildContentWhere());

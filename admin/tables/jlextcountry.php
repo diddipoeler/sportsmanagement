@@ -32,7 +32,7 @@ class sportsmanagementTablejlextcountry extends JTable
 	 */
 	function __construct(& $db)
 	{
-		parent :: __construct( '#__sportsmanagement_countries', 'id', $db );
+		parent :: __construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries', 'id', $db );
 	}
 
 	/**

@@ -34,7 +34,7 @@ class sportsmanagementTableStatistic extends JTable
 	 */
 	function __construct(& $db)
 	{
-		parent::__construct('#__sportsmanagement_statistic', 'id', $db);
+		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic', 'id', $db);
 	}
 
 	/**

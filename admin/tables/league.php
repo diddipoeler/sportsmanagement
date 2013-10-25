@@ -32,7 +32,7 @@ class sportsmanagementTableLeague extends JTable
 	 */
 	function __construct(& $db)
 	{
-		parent :: __construct( '#__sportsmanagement_league', 'id', $db );
+		parent :: __construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league', 'id', $db );
 	}
 
 	/**

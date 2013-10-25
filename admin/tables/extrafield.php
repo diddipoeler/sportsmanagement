@@ -33,7 +33,7 @@ class sportsmanagementTableExtraField extends JTable
 	 * @since 1.0
 	 */
 	function __construct(& $db) {
-		parent::__construct('#__sportsmanagement_extra_fields', 'id', $db);
+		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_extra_fields', 'id', $db);
 	}
 
 	/**

@@ -33,7 +33,7 @@ class sportsmanagementTablePlayground extends JTable
 	 * @since 1.0
 	 */
 	function __construct(& $db) {
-		parent::__construct('#__sportsmanagement_playground', 'id', $db);
+		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground', 'id', $db);
 	}
 
 	/**

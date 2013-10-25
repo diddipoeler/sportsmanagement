@@ -41,7 +41,7 @@ class sportsmanagementModelPersons extends JModelList
         // Select some fields
 		$query->select('pl.*');
         // From table
-		$query->from('#__sportsmanagement_person as pl');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
@@ -152,13 +152,13 @@ class sportsmanagementModelPersons extends JModelList
 							s.name AS sname,
 							tt.id AS ttid,
 							pos.name AS position
-					FROM #__sportsmanagement_team_player AS pt
-					INNER JOIN #__sportsmanagement_project AS p ON p.id = pt.project_id
-					INNER JOIN #__sportsmanagement_season AS s ON s.id = p.season_id
-					INNER JOIN #__sportsmanagement_league AS l ON l.id = p.league_id
-					INNER JOIN #__sportsmanagement_team AS t ON t.id = pt.team_id
-					INNER JOIN #__sportsmanagement_project_team AS tt ON pt.team_id = tt.team_id AND pt.project_id = tt.project_id
-					INNER JOIN #__sportsmanagement_position AS pos ON pos.id = pt.project_position_id
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS pt
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id = pt.project_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_season AS s ON s.id = p.season_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_league AS l ON l.id = p.league_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t ON t.id = pt.team_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS tt ON pt.team_id = tt.team_id AND pt.project_id = tt.project_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos ON pos.id = pt.project_position_id
 					WHERE person_id='" . $person_id . "' " . $filter . "
 					GROUP BY pt.id	ORDER BY	s.ordering " . $order . ",
 												l.ordering " . $order . ",
@@ -192,13 +192,13 @@ class sportsmanagementModelPersons extends JModelList
 							s.name AS sname,
 							tt.id AS ttid,
 							pos.name AS position
-					FROM	#__sportsmanagement_team_staff AS ts
-					INNER JOIN #__sportsmanagement_project_team AS tt ON tt.id = ts.projectteam_id
-					INNER JOIN #__sportsmanagement_project AS p ON p.id = tt.project_id
-					INNER JOIN #__sportsmanagement_season AS s ON s.id = p.season_id
-					INNER JOIN #__sportsmanagement_league AS l ON l.id = p.league_id
-					INNER JOIN #__sportsmanagement_team AS t ON t.id = tt.team_id
-					INNER JOIN #__sportsmanagement_position AS pos ON pos.id = ts.project_position_id
+					FROM	#__".COM_SPORTSMANAGEMENT_TABLE."_team_staff AS ts
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS tt ON tt.id = ts.projectteam_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id = tt.project_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_season AS s ON s.id = p.season_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_league AS l ON l.id = p.league_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t ON t.id = tt.team_id
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos ON pos.id = ts.project_position_id
 					WHERE person_id= '" . $person_id . "' " . $filter . "
 					GROUP BY ts.teamstaff_id	ORDER BY	s.ordering " . $order . ",
 											l.ordering " . $order . ",
@@ -234,7 +234,7 @@ class sportsmanagementModelPersons extends JModelList
 		$query = '	SELECT	pl.id,
 							pl.firstname, pl.nickname,
 							pl.lastname
-					FROM #__sportsmanagement_person AS pl
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
 					WHERE pl.id IN (' . implode( ', ', $cid ) . ') AND pl.published = 1';
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -250,8 +250,8 @@ class sportsmanagementModelPersons extends JModelList
 	{
 		$query = '	SELECT	t.id AS value,
 							t.name AS text
-					FROM #__sportsmanagement_team AS t
-					INNER JOIN	#__sportsmanagement_project_team AS tt ON tt.team_id = t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.team_id = t.id
 					WHERE tt.project_id = ' . $this->_project_id . '
 					ORDER BY text ASC ';
 		#echo '<br />'.$query.'<br />';
@@ -271,7 +271,7 @@ class sportsmanagementModelPersons extends JModelList
 		{
 			return '';
 		}
-		$query = ' SELECT name FROM #__sportsmanagement_team WHERE id = ' . $team_id;
+		$query = ' SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team WHERE id = ' . $team_id;
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -288,8 +288,8 @@ class sportsmanagementModelPersons extends JModelList
 			return '';
 		}
 		$query = ' SELECT t.name
-					FROM #__sportsmanagement_team AS t
-					INNER JOIN #__sportsmanagement_project_team AS pt
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
 					ON t.id=pt.team_id
 					WHERE pt.id = '. $this->_db->Quote($project_team_id);
 		$this->_db->setQuery( $query );

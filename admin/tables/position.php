@@ -34,7 +34,7 @@ class sportsmanagementTablePosition extends JTable
 	 */
 	function __construct( & $db )
 	{
-		parent::__construct( '#__sportsmanagement_position', 'id', $db );
+		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position', 'id', $db );
 	}
 
 	/**
