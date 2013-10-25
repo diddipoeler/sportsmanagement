@@ -40,7 +40,7 @@ class sportsmanagementModelSportsTypes extends JModelList
         // Select some fields
 		$query->select('s.*');
         // From table
-		$query->from('#__sportsmanagement_sports_type AS s');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s');
         $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
         if ($search)
 		{
@@ -97,7 +97,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	public static function getSportsTypes()
 	{
 		$db = JFactory::getDBO();
-		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{

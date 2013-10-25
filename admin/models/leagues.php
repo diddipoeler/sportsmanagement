@@ -36,7 +36,7 @@ class sportsmanagementModelLeagues extends JModelList
 		// Select some fields
 		$query->select('obj.*');
 		// From the hello table
-		$query->from('#__sportsmanagement_league as obj');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as obj');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');

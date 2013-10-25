@@ -38,7 +38,7 @@ class sportsmanagementModeljlextcountries extends JModelList
         // Select some fields
 		$query->select('objcountry.*');
         // From table
-		$query->from('#__sportsmanagement_countries AS objcountry');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS objcountry');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
