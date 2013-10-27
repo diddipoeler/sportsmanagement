@@ -81,7 +81,7 @@ $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'con
 $jRegistry = new JRegistry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 //$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,false, false, "/config");
+$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
 $form->bind($jRegistry);
 $newparams = array();
 foreach($form->getFieldset($fieldset->name) as $field)
