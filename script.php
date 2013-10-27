@@ -129,6 +129,7 @@ switch ($type)
         
         $mainframe =& JFactory::getApplication();
         $db = JFactory::getDbo();
+        /*
         if ( count($param_array) > 0 )
         {
             // store the combined new and existing values back as a JSON string
@@ -141,8 +142,9 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                                 ' WHERE name = "com_sportsmanagement" and type ="component"' );
                                 $db->query();
         $mainframe->enqueueMessage(JText::_('Sportsmanagement Konfiguration gesichert'),'');
-        }                
-                /*                
+        }
+        */                
+                                
                 if ( count($param_array) > 0 ) {
                         // read the existing component value(s)
                         $db = JFactory::getDbo();
@@ -160,6 +162,6 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                                 ' WHERE name = "com_sportsmanagement"' );
                                 $db->query();
                 }
-                */
+                
         }      
 }
