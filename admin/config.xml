@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+<!-- register 1 -->	
 	<fieldset
 		name="greetings"
 		label="COM_SPORTSMANAGEMENT_CONFIG_SETTINGS_LABEL"
@@ -93,7 +94,8 @@
       description="COM_JOOMLEAGUE_SETTINGS_MODALPOPUP_HEIGHT_DESCR">
 		</field>
   </fieldset>
-	
+
+<!-- register 2 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		
@@ -160,7 +162,23 @@
 			preview="show">			
 		</field>
 	</fieldset>
-	
+
+<!-- register 3 -->	
+	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
+	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
+		addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+<field name="current_season" type="sql" default=""
+			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESCR"
+      query="	SELECT t.id as value, t.name as current_season FROM #__sportsmanagement_season t ORDER BY name DESC"
+      
+      />
+      		
+	</fieldset>
+  
+  		
+<!-- register ende -->		
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
