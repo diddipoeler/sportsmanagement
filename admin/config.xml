@@ -101,7 +101,7 @@
     type="media"
 			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_FLAGS" 
-			description="COM_SPORTSMANAGEMENT_SETTINGS_field_DESCR_PH_FLAGS"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_FLAGS"
 			directory="images/com_sportsmanagement/database/placeholders/"
 			preview="show">
 		</field>
