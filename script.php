@@ -150,6 +150,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                         $db = JFactory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
+                        $mainframe->enqueueMessage(JText::_('setParams params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
                         $mainframe->enqueueMessage(JText::_('setParams params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
