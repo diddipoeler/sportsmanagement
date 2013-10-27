@@ -2,8 +2,8 @@
 <config>
 	<fieldset
 		name="greetings"
-		label="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_LABEL"
-		description="COM_HELLOWORLD_CONFIG_GREETING_SETTINGS_DESC"
+		label="COM_SPORTSMANAGEMENT_CONFIG_SETTINGS_LABEL"
+		description="COM_SPORTSMANAGEMENT_CONFIG_SETTINGS_DESC"
 	>
 	
   <field name="cfg_help_server" 
@@ -26,16 +26,16 @@
     type="text" 
     default="diddipoeler"
 		size="100"
-    label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
-		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_GITHUB_USERNAME"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_GITHUB_USERNAME_DESC">
 		</field>	
 		
 		<field name="cfg_github_repository" 
     type="text" 
     default="sportsmanagement"
 		size="100"
-    label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
-		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
+    label="COM_SPORTSMANAGEMENT_SETTINGS_GITHUB_REP"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_GITHUB_REP_DESC">
 		</field>
 		
 		<field name="cfg_which_media_tool" 
