@@ -168,10 +168,12 @@
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 		addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
-<field name="current_season" type="sql" default=""
+<field name="current_season" 
+type="sql" 
+default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESCR"
-      query="	SELECT t.id as value, t.name as current_season FROM #__"."COM_SPORTSMANAGEMENT_TABLE"."_season t ORDER BY name DESC"
+      query="	SELECT t.id as value, t.name as current_season FROM #__COM_SPORTSMANAGEMENT_TABLE_season t ORDER BY name DESC"
       
       />
       		
