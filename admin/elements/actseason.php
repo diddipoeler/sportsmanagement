@@ -19,6 +19,9 @@ class JFormFieldactseason extends JFormField
 	protected function getInput() {
 		$db = &JFactory::getDBO();
 		$lang = JFactory::getLanguage();
+        // welche tabelle soll genutzt werden
+$params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $params->get( 'cfg_which_database_table' ); 
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
@@ -27,7 +30,7 @@ class JFormFieldactseason extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = 'SELECT s.id s.name as name 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s 
+					FROM #__'.$database_table.'_season AS s 
 					ORDER BY s.name DESC';
 		$db->setQuery( $query );
 		$projects = $db->loadObjectList();
