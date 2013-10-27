@@ -71,9 +71,11 @@ class com_sportsmanagementInstallerScript
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
     
-$db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement" and type ="component"');
-$paramsdata = json_decode( $db->loadResult(), true );
+//$db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement" and type ="component"');
+//$paramsdata = json_decode( $db->loadResult(), true );
+
 //$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
 $jRegistry = new JRegistry;
