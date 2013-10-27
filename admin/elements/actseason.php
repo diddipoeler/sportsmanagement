@@ -29,7 +29,7 @@ $database_table	= $params->get( 'cfg_which_database_table' );
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT s.id s.name as name 
+		$query = 'SELECT s.id, s.name as name 
 					FROM #__'.$database_table.'_season AS s 
 					ORDER BY s.name DESC';
 		$db->setQuery( $query );
