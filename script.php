@@ -133,6 +133,9 @@ switch ($type)
         {
             // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $param_array );
+
+echo '<pre>' . print_r($paramsString,true). '</pre><br>';
+                        
                         $db->setQuery('UPDATE #__extensions SET params = ' .
                                 $db->quote( $paramsString ) .
                                 ' WHERE name = "com_sportsmanagement" and type ="component"' );

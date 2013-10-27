@@ -40,7 +40,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 		// Select some fields
 		$query->select('objassoc.*');
 		// From the hello table
-		$query->from('#__sportsmanagement_associations as objassoc');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations as objassoc');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
@@ -92,29 +92,6 @@ class sportsmanagementModeljlextassociations extends JModelList
 		return $where;
 	}
 
-	/**
-	 * Method to return a leagues array (id,name)
-	 *
-	 * @access	public
-	 * @return	array seasons
-	 * @since	1.5.0a
-	 */
-	/*
-  function getLeagues()
-	{
-		$db =& JFactory::getDBO();
-		$query='SELECT id, name FROM #__sportsmanagement_associations ORDER BY name ASC ';
-		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
-		{
-			$this->setError($db->getErrorMsg());
-			return array();
-		}
-		foreach ($result as $league){
-			$league->name = JText::_($league->name); 
-		}
-		return $result;
-	}
-	*/
+	
 }
 ?>
