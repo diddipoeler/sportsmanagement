@@ -171,7 +171,7 @@
 <field name="current_season" type="sql" default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESCR"
-      query="	SELECT t.id as value, t.name as current_season FROM #__sportsmanagement_season t ORDER BY name DESC"
+      query="	SELECT t.id as value, t.name as current_season FROM #__"."COM_SPORTSMANAGEMENT_TABLE"."_season t ORDER BY name DESC"
       
       />
       		
