@@ -85,10 +85,10 @@ $form->bind($jRegistry);
 $newparams = array();
 foreach($form->getFieldset($fieldset->name) as $field)
         {
-         //echo 'name -> '. $field->name.'<br>';
-         //echo ' -> '. $field->type.'<br>';
-         //echo ' -> '. $field->input.'<br>';
-         //echo 'value -> '. $field->value.'<br>';
+         echo 'name -> '. $field->name.'<br>';
+         echo 'type -> '. $field->type.'<br>';
+         echo 'input -> '. $field->input.'<br>';
+         echo 'value -> '. $field->value.'<br>';
         $newparams[$field->name] = $field->value;
         
         }
