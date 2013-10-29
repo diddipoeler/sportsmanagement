@@ -90,7 +90,7 @@ class sportsmanagementViewProjects extends JView
 		//if ($res = $this->get('Seasons')){$seasons=array_merge($seasons,$res);}
 		
         $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
-		$allSeasons= $mdlLeagues->getSeasons();
+		$allSeasons= $mdlSeasons->getSeasons();
 		$seasons=array_merge($seasons,$allSeasons);
         
 		$lists['seasons']=JHtml::_( 'select.genericList',
