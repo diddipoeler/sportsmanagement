@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
-require_once ( JLG_PATH_ADMIN.DS. 'models' . DS . 'list.php' );
+
 
 /**
  * Joomleague Component Divisions Model
