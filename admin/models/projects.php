@@ -33,7 +33,8 @@ class sportsmanagementModelProjects extends JModelList
         
         
         // Create a new query object.
-        $query = $this->_db->getQuery(true);
+        $db = JFactory::getDBO();
+		$query = $db->getQuery(true);
         $query->select( array('p.*', 'st.name AS sportstype', 's.name AS season', 'l.name AS league', 'u.name AS editor') )
     ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p')
     ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id')
@@ -47,7 +48,7 @@ class sportsmanagementModelProjects extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
      
-     $mainframe->enqueueMessage(JText::_('projects query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+//     $mainframe->enqueueMessage(JText::_('projects query<br><pre>'.print_r($query,true).'</pre>'   ),'');
      
 		return $query;
         
