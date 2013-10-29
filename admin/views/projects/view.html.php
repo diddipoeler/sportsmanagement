@@ -30,13 +30,13 @@ class sportsmanagementViewProjects extends JView
 		$uri		= JFactory::getUri();
         $model	= $this->getModel();
 
-		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_league',		'filter_league','',					'int');
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_sports_type',	'filter_sports_type','',			'int');
-		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_season',		'filter_season','',					'int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_state',			'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order',			'filter_order',		'p.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.search',				'search',			'',				'string');
+		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_league',		'filter_league','',					'int');
+		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type',	'filter_sports_type','',			'int');
+		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_season',		'filter_season','',					'int');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state',			'filter_state',		'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',			'filter_order',		'p.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',				'search',			'',				'string');
 		$search=JString::strtolower($search);
 		
 		// Get data from the model

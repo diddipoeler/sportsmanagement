@@ -38,9 +38,9 @@ class sportsmanagementModelRounds extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('s.*');
+		$query->select('r.*');
 		// From the seasons table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as s');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
         if ($search)
 		{
         $query->where(self::_buildContentWhere());
@@ -57,16 +57,16 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 
-		if ($filter_order=='s.ordering')
+		if ($filter_order=='r.ordering')
 		{
-			$orderby=' s.ordering '.$filter_order_Dir;
+			$orderby=' r.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',s.ordering ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',r.ordering ';
 		}
 		return $orderby;
 	}
@@ -76,14 +76,14 @@ class sportsmanagementModelRounds extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();
 		if ($search)
 		{
-			$where[]=' LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%');
+			$where[]=' LOWER(r.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
 		$where=(count($where) ? '  '.implode(' AND ',$where) : ' ');
 		return $where;
