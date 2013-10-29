@@ -29,7 +29,10 @@ class sportsmanagementViewProject extends JView
 {
 	function display($tpl=null)
 	{
-		
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
 
 		// get the Data
 		$form = $this->get('Form');
@@ -46,6 +49,9 @@ class sportsmanagementViewProject extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        $extended = $this->getExtended($project->extended, 'project');		
+		$this->assignRef( 'extended', $extended );
+        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();
