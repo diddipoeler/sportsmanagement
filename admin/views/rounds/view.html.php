@@ -46,27 +46,28 @@ class sportsmanagementViewRounds extends JView
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
-		$matchday =& $this->get('Data');
+		$matchday =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
-		$model = $this->getModel();
-		$projectws =& $this->get('Data','projectws');
-
-		$state = $this->get('state');
 		
-		$filter_order	    = $state->get('filter_order');
-		$filter_order_Dir = $state->get('filter_order_Dir');
+        //$model = $this->getModel();
+		//$projectws =& $this->get('Data','projectws');
+
+		//$state = $this->get('state');
+		
+		//$filter_order	    = $state->get('filter_order');
+		//$filter_order_Dir = $state->get('filter_order_Dir');
 
 		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order']	    = $filter_order;
+		//$lists['order_Dir'] = $filter_order_Dir;
+		//$lists['order']	    = $filter_order;
                 
-		$massadd=JRequest::getVar('massadd');				
+		//$massadd=JRequest::getVar('massadd');				
 				
-		$this->assignRef('massadd',$massadd);				
+		//$this->assignRef('massadd',$massadd);				
 		$this->assignRef('lists',$lists);
 		$this->assignRef('matchday',$matchday);
-		$this->assignRef('projectws',$projectws);
+		//$this->assignRef('projectws',$projectws);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 
