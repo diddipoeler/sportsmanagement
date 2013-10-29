@@ -113,8 +113,8 @@ class sportsmanagementModelRounds extends JModelList
 	function getRoundsProject($project_id)
 	{
 		$query='SELECT *
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-				  WHERE project_id='.$project_id;
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
+				  WHERE id='.$project_id;
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
