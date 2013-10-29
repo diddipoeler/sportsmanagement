@@ -39,7 +39,7 @@ class sportsmanagementViewProjects extends JView
 		$search=JString::strtolower($search);
 		
 		// Get data from the model
-		$items		= $this->get('Data');
+		$items		= $this->get('Items');
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
