@@ -24,6 +24,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelSportsTypes extends JModelList
 {
 	var $_identifier = "sportstypes";
+    //var $setError = '';
 
 	function getListQuery()
 	{
