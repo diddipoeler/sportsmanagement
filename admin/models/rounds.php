@@ -103,6 +103,21 @@ class sportsmanagementModelRounds extends JModelList
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
+    
+    /**
+	 * return count of  project rounds
+	 *
+	 * @param int project_id
+	 * @return int
+	 */
+	function getRoundsProject($project_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+				  WHERE project_id='.$project_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 	
 	
 

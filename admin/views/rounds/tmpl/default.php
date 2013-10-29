@@ -19,9 +19,9 @@ window.addEvent('domready',function(){
 </script>
 <div id='alt_massadd_enter' style='display:<?php echo ($this->massadd == 0) ? 'none' : 'block'; ?>'>
 	<fieldset class='adminform'>
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 		<form id='copyform' method='post' style='display:inline' id='copyform'>
-			<input type='hidden' name='project_id' value='<?php echo $this->projectws->id; ?>' />
+			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='round.copyfrom' />
 			<?php echo JHTML::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
@@ -32,10 +32,10 @@ window.addEvent('domready',function(){
 		</form>
 	</fieldset>
 </div>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<table class="adminlist">
 				<thead>
 					<tr>
@@ -65,8 +65,8 @@ window.addEvent('domready',function(){
 					for ($i=0,$n=count($this->matchday); $i < $n; $i++)
 					{
 						$row =& $this->matchday[$i];
-						$link1=JRoute::_('index.php?option=com_joomleague&task=round.edit&cid[]='.$row->id);
-						$link2=JRoute::_('index.php?option=com_joomleague&view=matches&task=match.display&rid[]='.$row->id);
+						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id);
+						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=matches&task=match.display&rid='.$row->id);
 						$checked=JHTML::_('grid.checkedout',$row,$i);
             $published  = JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','round.');
 						?>
@@ -182,7 +182,7 @@ window.addEvent('domready',function(){
 			</table>
 		</fieldset>
 	</div>
-	<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
+	<input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="next_roundcode" value="<?php echo count($this->matchday) + 1; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

@@ -51,7 +51,8 @@ class sportsmanagementViewRounds extends JView
 		$pagination =& $this->get('Pagination');
         $project_id	= JRequest::getVar('pid');
 		
-        //$model = $this->getModel();
+        $model = $this->getModel();
+        $project = $model->getRoundsProject($project_id);
 		//$projectws =& $this->get('Data','projectws');
 
 		//$state = $this->get('state');
@@ -69,7 +70,7 @@ class sportsmanagementViewRounds extends JView
 		//$this->assignRef('massadd',$massadd);				
 		$this->assignRef('lists',$lists);
 		$this->assignRef('matchday',$matchday);
-		$this->assignRef('project_id',$project_id);
+		$this->assignRef('project',$project);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 
