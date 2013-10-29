@@ -12,7 +12,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 						<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 						<div class="cpanel" style="height:100px;padding:15px">
 							<?php
-	 						$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&cid[]='.$this->project->id);
+	 						$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$this->project->id);
 							$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS');
 							$imageFile='icon-48-ProjectSettings.png';
 							$linkParams="<span>$text</span>&nbsp;";
@@ -20,7 +20,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 							?>
 							<div class="icon-wrapper"><div class="icon"><?php echo JHTML::link($link,$image); ?></div></div>									
 							<?php
-	 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=templates&task=template.display&pid[]='.$this->project->id);
+	 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=templates&task=template.display&pid='.$this->project->id);
 							$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_FES');
 							$imageFile='icon-48-FrontendSettings.png';
 							$linkParams="<span>$text</span>&nbsp;";
