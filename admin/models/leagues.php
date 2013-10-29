@@ -84,6 +84,36 @@ class sportsmanagementModelLeagues extends JModelList
 		$where=(count($where) ? ' '.implode(' AND ',$where) : ' ');
 		return $where;
 	}
+    
+    /**
+     * Method to return a leagues array (id,name)
+     *
+     * @access	public
+     * @return	array seasons
+     * @since	1.5.0a
+     */
+    function getLeagues()
+    {
+        // Get a db connection.
+        $db = JFactory::getDBO();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('id', 'name'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league')
+        ->order('name ASC');
+
+        $db->setQuery($query);
+        if (!$result = $db->loadObjectList())
+        {
+            $this->setError($db->getErrorMsg());
+            return array();
+        }
+        foreach ($result as $league)
+        {
+            $league->name = JText::_($league->name);
+        }
+        return $result;
+    }
 
 	
 }
