@@ -74,7 +74,39 @@ class sportsmanagementViewProject extends JView
     // display control panel
 	function _displayPanel($tpl)
 	{
-	   
+	$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+	$uri = JFactory::getURI();
+	$user = JFactory::getUser();
+           
+	$project = $this->get('Item');
+       
+	$iProjectDivisionsCount = 0;
+	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($project->id);
+		
+	$iProjectPositionsCount = 0;
+	$mdlProjectPositions = JModel::getInstance("Projectposition", "sportsmanagementModel");
+	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($project->id);
+		
+	$iProjectRefereesCount = 0;
+	$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
+	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($project->id);
+		
+	$iProjectTeamsCount = 0;
+	$mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($project->id);
+		
+	$iMatchDaysCount = 0;
+	$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+	$iMatchDaysCount = $mdlRounds->getRoundsCount($project->id);
+		
+	$this->assignRef('project',$project);
+	$this->assignRef('count_projectdivisions',$iProjectDivisionsCount);
+	$this->assignRef('count_projectpositions',$iProjectPositionsCount);
+	$this->assignRef('count_projectreferees', $iProjectRefereesCount);
+	$this->assignRef('count_projectteams', $iProjectTeamsCount );
+	$this->assignRef('count_matchdays', $iMatchDaysCount);   
        
     parent::display($tpl);   
     }
