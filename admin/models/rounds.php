@@ -116,7 +116,7 @@ class sportsmanagementModelRounds extends JModelList
 				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 				  WHERE id='.$project_id;
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObject();
 	}
 	
 	
