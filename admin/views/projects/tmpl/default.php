@@ -89,8 +89,8 @@ JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&cid[]='.$row->id);
-					$link2=JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&&cid[]='.$row->id);
+					$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
+					$link2=JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
 					$link2panel=JRoute::_('index.php?option=com_sportsmanagement&task=joomleague.workspace&layout=panel&pid[]='.$row->id.'&stid[]='.$row->sports_type_id);
 
 					$checked    = JHtml::_('grid.checkedout',$row,$i);
