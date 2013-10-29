@@ -24,7 +24,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
-    var $_project_id;
+    var $_project_id = 0;
 	
     function __construct()
 	{
@@ -50,7 +50,8 @@ class sportsmanagementModelRounds extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
  
-		//$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+		//$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
         return $query;
 	}
 	
