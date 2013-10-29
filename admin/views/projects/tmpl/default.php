@@ -121,7 +121,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						?>
 						<td>
 							<?php
-							if (JLTable::_isCheckedOut($this->user->get('id'),$row->checked_out))
+							if (JTable::isCheckedOut($this->user->get('id'),$row->checked_out))
 							{
 								echo $row->name;
 							}
