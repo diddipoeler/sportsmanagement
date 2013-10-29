@@ -24,7 +24,14 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
+    var $_project_id;
 	
+    function __construct()
+	{
+	parent::__construct();
+    $this->_project_id	= JRequest::getVar('pid');
+    }
+    
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -77,6 +84,7 @@ class sportsmanagementModelRounds extends JModelList
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();
+        $where[]=' r.project_id = '.$this->_project_id;
 		if ($search)
 		{
 			$where[]=' LOWER(r.name) LIKE '.$this->_db->Quote('%'.$search.'%');

@@ -83,15 +83,15 @@ class sportsmanagementViewRounds extends JView
 		$model = $this->getModel();
 		$projectws =& $this->get('Data','projectws');
 		
-		$document->setTitle(JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_TITLE'));
+		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
 		//$version = urlencode(JoomleagueHelper::getVersion());
 		//$document->addScript('components/com_joomleague/assets/js/populate.js?v='.$version);
 
 		$lists = array();
 		
-		$options = array( JHTML::_('select.option', 0, Jtext::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
-		                  JHTML::_('select.option', 1, Jtext::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
-                      JHTML::_('select.option', 2, Jtext::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN')) 
+		$options = array( JHTML::_('select.option', 0, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
+		                  JHTML::_('select.option', 1, Jtext::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
+                      JHTML::_('select.option', 2, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN')) 
 		                  );
 		$lists['scheduling'] = JHTML::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
@@ -119,7 +119,7 @@ class sportsmanagementViewRounds extends JView
 	protected function addToolbar()
 	{ 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_TITLE'),'Matchdays');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE'),'Matchdays');
 
 		if (!$this->massadd)
 		{
@@ -128,21 +128,21 @@ class sportsmanagementViewRounds extends JView
       JToolBarHelper::publishList('round.publish');
 		  JToolBarHelper::unpublishList('round.unpublish');
 		  JToolBarHelper::divider();
-      JToolBarHelper::custom('round.populate','purge.png','purge_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_BUTTON'),false);
+      JToolBarHelper::custom('round.populate','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'),false);
       JToolBarHelper::divider();
       JToolBarHelper::apply('round.saveshort');
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('round.massadd','new.png','new_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_MASSADD_BUTTON'),false);
+			JToolBarHelper::custom('round.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'),false);
 			//JLToolBarHelper::addNew('round.populate','purge.png','purge_f2.png', JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList(JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_DELETE_WARNING'),'round.deletematches',JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_MASSDEL_BUTTON'));
-			JToolBarHelper::deleteList(JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_DELETE_WARNING'),'round.remove');
+			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_DELETE_WARNING'),'round.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_DELETE_WARNING'),'round.remove');
 			JToolBarHelper::divider();
 		}
 		else
 		{
-			JToolBarHelper::custom('round.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_MASSADD_CANCEL'),false);
+			JToolBarHelper::custom('round.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'),false);
 		}
 		//JLToolBarHelper::onlinehelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
