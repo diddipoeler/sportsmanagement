@@ -42,10 +42,10 @@ class sportsmanagementModelProjects extends JModelList
     ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id')
     ->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
-//    if ($search)
-//		{
+    if ($search)
+		{
         $query->where(self::_buildContentWhere());
-        //}
+        }
 		$query->order(self::_buildContentOrderBy());
      
 //     $mainframe->enqueueMessage(JText::_('projects query<br><pre>'.print_r($query,true).'</pre>'   ),'');
