@@ -2,7 +2,7 @@
 
 ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECT_DATE_PARAMS'); ?></legend>
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DATE_PARAMS'); ?></legend>
 			<table class="admintable">
 				<?php foreach ($this->form->getFieldset('date') as $field): ?>
 				<tr>

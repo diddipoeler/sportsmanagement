@@ -1,7 +1,7 @@
 <?php defined('_JEXEC')or die('Restricted access');
 ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECT_FAV_TEAM' ); ?></legend>
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_FAV_TEAM' ); ?></legend>
 			<table class="admintable">
 				<?php foreach ($this->form->getFieldset('favorite') as $field): ?>
 				<tr>

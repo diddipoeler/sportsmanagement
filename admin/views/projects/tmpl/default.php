@@ -65,7 +65,7 @@ JHtml::_('behavior.modal');
 					</th>
 					<th width="5%" class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','p.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','p.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%" class="title">
