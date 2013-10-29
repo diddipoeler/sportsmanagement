@@ -86,9 +86,6 @@ class sportsmanagementViewProjects extends JView
 		
 		//build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-
-		//if ($res = $this->get('Seasons')){$seasons=array_merge($seasons,$res);}
-		
         $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
 		$allSeasons= $mdlSeasons->getSeasons();
 		$seasons=array_merge($seasons,$allSeasons);

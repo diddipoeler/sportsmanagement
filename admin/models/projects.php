@@ -12,10 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-//jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
 // import the Joomla modellist library
 jimport('joomla.application.component.modellist');
 
@@ -25,7 +21,7 @@ jimport('joomla.application.component.modellist');
  * @package	JoomLeague
  * @since	0.1
  */
-class sportsmanagementModelprojects extends JModelList
+class sportsmanagementModelProjects extends JModelList
 {
 	var $_identifier = "projects";
 	
