@@ -87,7 +87,7 @@ window.addEvent('domready',function(){
 							</td>
 							<td class="center">
 								<?php
-								$date1= JoomleagueHelper::convertDate($row->round_date_first, 1);
+								$date1= sportsmanagementHelper::convertDate($row->round_date_first, 1);
 								$append='';
 								if (($date1 == '00-00-0000') || ($date1 == ''))
 								{
@@ -105,7 +105,7 @@ window.addEvent('domready',function(){
 							</td>
 							<td class="center">&nbsp;-&nbsp;</td>
 							<td class="center"><?php
-								$date2= JoomleagueHelper::convertDate($row->round_date_last, 1);
+								$date2= sportsmanagementHelper::convertDate($row->round_date_last, 1);
 								$append='';
 								if (($date2 == '00-00-0000') || ($date2 == ''))
 								{
