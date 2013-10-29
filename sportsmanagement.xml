@@ -47,6 +47,7 @@
 		<folder>models</folder>
 		<folder>settings</folder>
 		<folder>extensions</folder>
+		<folder>cronjobs</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
 	</files>
