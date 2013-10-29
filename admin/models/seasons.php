@@ -12,10 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-//jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
 // import the Joomla modellist library
 jimport('joomla.application.component.modellist');
 
@@ -47,7 +43,7 @@ class sportsmanagementModelSeasons extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
  
-		//$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+		$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
         return $query;
 	}
 	

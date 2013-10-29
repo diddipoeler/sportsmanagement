@@ -29,28 +29,8 @@ class sportsmanagementModelProjects extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        /*
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        // Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		// Select some fields
-		$query->select('p.*');
-		// From the seasons table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p');
-        if ($search)
-		{
-        $query->where(self::_buildContentWhere());
-        }
-		$query->order(self::_buildContentOrderBy());
- 
-		//$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        return $query;
-        */
         
-        // Get the WHERE and ORDER BY clauses for the query
-		$where      = $this->_buildContentWhere();
-		$orderby    = $this->_buildContentOrderBy();
         
         // Create a new query object.
         $query = $this->_db->getQuery(true);
@@ -60,15 +40,15 @@ class sportsmanagementModelProjects extends JModelList
     ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id')
     ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id')
     ->join('LEFT', '#__users AS u ON u.id = p.checked_out');
-    if ( $where )
-    {
-        $query->where($where);
-    }
-    if ( $orderby )
-    {
-        $query->order($orderby);
-    }
-
+  
+    if ($search)
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+     
+     $mainframe->enqueueMessage(JText::_('projects query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+     
 		return $query;
         
         
