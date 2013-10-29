@@ -99,7 +99,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td width="5%" class="center"><?php echo $checked; ?></td>
 						<?php
-						if (JTable::_isCheckedOut($this->user->get ('id'),$row->checked_out))
+						if (JTable::isCheckedOut($this->user->get ('id'),$row->checked_out))
 						{
 							$inputappend=' disabled="disabled"';
 							?><td class="center">&nbsp;</td><?php
