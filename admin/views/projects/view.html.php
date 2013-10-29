@@ -118,19 +118,19 @@ class sportsmanagementViewProjects extends JView
 	{ 
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'ProjectSettings');
-		JLToolBarHelper::publishList('project.publish');
-		JLToolBarHelper::unpublishList('project.unpublish');
+		JToolBarHelper::publishList('project.publish');
+		JToolBarHelper::unpublishList('project.unpublish');
 		JToolBarHelper::divider();
 		
-		JLToolBarHelper::addNew('project.add');
-		JLToolBarHelper::editList('project.edit');
-		JLToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JLToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JLToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'),false);
-		JLToolBarHelper::deleteList('', 'project.remove');
+		JToolBarHelper::addNew('project.add');
+		JToolBarHelper::editList('project.edit');
+		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
+		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'),false);
+		JToolBarHelper::deleteList('', 'project.remove');
 		JToolBarHelper::divider();
 		
-		JLToolBarHelper::onlinehelp();
+		//JLToolBarHelper::onlinehelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }
