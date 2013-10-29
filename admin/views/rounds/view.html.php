@@ -49,25 +49,27 @@ class sportsmanagementViewRounds extends JView
 		$matchday =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
+        $project_id	= JRequest::getVar('pid');
 		
         //$model = $this->getModel();
 		//$projectws =& $this->get('Data','projectws');
 
 		//$state = $this->get('state');
-		
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',			'filter_order',		'r.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
 		//$filter_order	    = $state->get('filter_order');
 		//$filter_order_Dir = $state->get('filter_order_Dir');
 
 		// table ordering
-		//$lists['order_Dir'] = $filter_order_Dir;
-		//$lists['order']	    = $filter_order;
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order']	    = $filter_order;
                 
 		//$massadd=JRequest::getVar('massadd');				
 				
 		//$this->assignRef('massadd',$massadd);				
 		$this->assignRef('lists',$lists);
 		$this->assignRef('matchday',$matchday);
-		//$this->assignRef('projectws',$projectws);
+		$this->assignRef('project_id',$project_id);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 

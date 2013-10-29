@@ -25,13 +25,7 @@ class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
     var $_project_id = 0;
-	/*
-    function __construct()
-	{
-	parent::__construct();
-    $this->_project_id	= JRequest::getVar('pid');
-    }
-    */
+	
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -52,7 +46,7 @@ class sportsmanagementModelRounds extends JModelList
 		$query->order(self::_buildContentOrderBy());
  
 		//$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        $mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
         return $query;
 	}
 	

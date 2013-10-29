@@ -182,7 +182,7 @@ window.addEvent('domready',function(){
 			</table>
 		</fieldset>
 	</div>
-	<input type="hidden" name="project_id" value="<?php echo $this->projectws->id; ?>" />
+	<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="next_roundcode" value="<?php echo count($this->matchday) + 1; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
