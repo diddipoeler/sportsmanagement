@@ -33,6 +33,13 @@ class sportsmanagementViewProject extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
+        
+        if ($this->getLayout() == 'panel')
+		{
+			$this->_displayPanel($tpl);
+			return;
+		}
+        
 
 		// get the Data
 		$form = $this->get('Form');
@@ -63,7 +70,16 @@ class sportsmanagementViewProject extends JView
 		$this->setDocument();
 	}
 	
-	/**
+	
+    // display control panel
+	function _displayPanel($tpl)
+	{
+	   
+       
+    parent::display($tpl);   
+    }
+       
+    /**
 	* Add the page title and toolbar.
 	*
 	* @since	1.7
