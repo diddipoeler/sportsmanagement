@@ -25,18 +25,19 @@ class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
     var $_project_id = 0;
-	
+	/*
     function __construct()
 	{
 	parent::__construct();
     $this->_project_id	= JRequest::getVar('pid');
     }
-    
+    */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $this->_project_id	= JRequest::getVar('pid');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -44,10 +45,10 @@ class sportsmanagementModelRounds extends JModelList
 		$query->select('r.*');
 		// From the seasons table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
-        if ($search)
-		{
+        //if ($search)
+		//{
         $query->where(self::_buildContentWhere());
-        }
+        //}
 		$query->order(self::_buildContentOrderBy());
  
 		//$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
