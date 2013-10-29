@@ -74,6 +74,7 @@ class sportsmanagementViewcpanel extends JView
 			JToolBarHelper::preferences('com_sportsmanagement');
 		}
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *
