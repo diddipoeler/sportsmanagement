@@ -1,42 +1,42 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name= "COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 			
 		<field 	name="show_projectheader" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_PROJECTHEADER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_PROJECTHEADER">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PROJECTHEADER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PROJECTHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_sectionheader" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_description" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RIVALS_PARAM_LABEL_SHOW_DESCRIPTION" 
-				description="COM_JOOMLEAGUE_FES_RIVALS_PARAM_DESCR_SHOW_DESCRIPTION">
+				label="COM_SPORTSMANAGEMENT_FES_RIVALS_PARAM_LABEL_SHOW_DESCRIPTION" 
+				description="COM_SPORTSMANAGEMENT_FES_RIVALS_PARAM_DESCR_SHOW_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 	</fieldset>
 
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 		
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_ODD">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
 		</field>
 		
 		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_EVEN">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
 					
 	</fieldset>	

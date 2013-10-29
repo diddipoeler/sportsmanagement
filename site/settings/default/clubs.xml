@@ -1,89 +1,89 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-		description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_sectionheader" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_clubs" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_CLUBS" description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_CLUBS">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUBS" description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUBS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 	</fieldset>
 
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
-		description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 
 		<field name="show_small_logo" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_SMALL_LOGO"
-			description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_SMALL_LOGO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_SMALL_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_SMALL_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_medium_logo" type="radio" default="0"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO"
-			description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_MEDIUM_LOGO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_MEDIUM_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_big_logo" type="radio" default="0"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO"
-			description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_BIG_LOGO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_BIG_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_address" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_ADDRESS"
-			description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_ADDRESS">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_ADDRESS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_club_teams" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBS_PARAM_LABEL_SHOW_CLUB_TEAMS"
-			description="COM_JOOMLEAGUE_FES_CLUBS_PARAM_DESCR_SHOW_CLUB_TEAMS">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUB_TEAMS"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUB_TEAMS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_picture" type="list" default="team_picture"
-				label="COM_JOOMLEAGUE_FES_TEAMINFO_SHOW_PICTURE"
-				description="COM_JOOMLEAGUE_FES_TEAMINFO_SHOW_PICTURE_DESC">
-			<option value="team_picture">COM_JOOMLEAGUE_FES_TEAMINFO_TEAM_PICTURE</option>
-			<option value="projectteam_picture">COM_JOOMLEAGUE_FES_TEAMINFO_PROJECTTEAM_PICTURE</option>
+				label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_SHOW_PICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_SHOW_PICTURE_DESC">
+			<option value="team_picture">COM_SPORTSMANAGEMENT_FES_TEAMINFO_TEAM_PICTURE</option>
+			<option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_TEAMINFO_PROJECTTEAM_PICTURE</option>
 		</field>
 
 		<field name="team_picture_width" type="text" default="150"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 
 		<field name="team_picture_height" type="text" default="150"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
 	</fieldset>
 
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 		
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_ODD">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
 		</field>
 		
 		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_EVEN">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
 					
 	</fieldset>		

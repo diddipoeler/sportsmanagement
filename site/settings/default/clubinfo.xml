@@ -1,148 +1,148 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-		description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		<field name="show_sectionheader" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_clubinfo_tabs" type="radio" default="no_tabs"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_RESULT_TABS"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_RESULT_TABS">
-			<option value="no_tabs">COM_JOOMLEAGUE_FES_CLUBINFO_NO_TABS</option>
-			<option value="show_tabs">COM_JOOMLEAGUE_FES_CLUBINFO_TABS</option>
-			<option value="show_slider">COM_JOOMLEAGUE_FES_CLUBINFO_SLIDER</option>
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RESULT_TABS"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RESULT_TABS">
+			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_CLUBINFO_NO_TABS</option>
+			<option value="show_tabs">COM_SPORTSMANAGEMENT_FES_CLUBINFO_TABS</option>
+			<option value="show_slider">COM_SPORTSMANAGEMENT_FES_CLUBINFO_SLIDER</option>
 		</field>
 		
 		<field name="show_club_internetadress_picture" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     
 		<field name="show_club_info" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUBINFO"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUBINFO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUBINFO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUBINFO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_club_rssfeed" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_RSSFEED"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_RSSFEED">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RSSFEED"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RSSFEED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_club_kunena_link" type="radio" default="0"
-			label="COM_JOOMLEAGUE_FES_OVERALL_PARAM_LABEL_SHOW_CLUB_KUNENA_LINK"
-			description="COM_JOOMLEAGUE_FES_OVERALL_PARAM_DESCR_SHOW_CLUB_KUNENA_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_CLUB_KUNENA_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_CLUB_KUNENA_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_extra_fields" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTRA_FIELDS"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTRA_FIELDS">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTRA_FIELDS"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTRA_FIELDS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_extended" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_extended_geo_values" type="radio" default="0"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED_GEO"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED_GEO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED_GEO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED_GEO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_maps" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_MAPS"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_MAPS">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_MAPS"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_MAPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_teams_of_club" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_teams_description_of_club" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_DESC_CLUB"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_DESC_CLUB">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_DESC_CLUB"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_DESC_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_teams_shortcut_of_club" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_SHORTCUT_CLUB"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_SHORTCUT_CLUB">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_SHORTCUT_CLUB"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_SHORTCUT_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_teams_trikot_of_club" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_TRIKOT_CLUB"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_TRIKOT_CLUB">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_TRIKOT_CLUB"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_TRIKOT_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 	</fieldset>
   
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
-		description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 		<field name="show_club_logo" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_LOGO">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="team_picture_width" type="text" default="150"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 
 <!--     
 		<field name="team_picture_height" type="text" default="150"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
 -->   
  
 		<field name="show_route" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_ROUTE">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_ROUTE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_playgrounds_of_club" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_VENUES_CLUB"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_VENUES_CLUB">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_VENUES_CLUB"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_VENUES_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_club_season_calendar" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_SEASON"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_SEASON">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SEASON"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SEASON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_club_shirt" type="radio" default="0"
-			label="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
-			description="COM_JOOMLEAGUE_FES_CLUBINFO_PARAM_DESCR_SHOW_SHIRT">
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SHIRT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>

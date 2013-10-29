@@ -1,88 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 <!-- reiter 1 -->
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_sectionheader" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_rankingnav" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_RANKINGNAV"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_RANKINGNAV">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_RANKINGNAV"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_RANKINGNAV">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_ranking" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_RANKING"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_RANKING">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_RANKING"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_RANKING">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field name="show_ranking_maps" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_RANKING_MAPS"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_RANKING_MAPS">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_RANKING_MAPS"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_RANKING_MAPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_colorlegend" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_LEGEND"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_LEGEND">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_LEGEND"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_LEGEND">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_explanation" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_EXPL" description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_EXPL" description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_pagnav" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_PAGNAV"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_PAGNAV">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_PAGNAV"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_PAGNAV">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_explanation" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_EXPL" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_EXPL" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_pagnav" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_PAGNAV" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_PAGNAV">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_PAGNAV" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_PAGNAV">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_notes" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_NOTES" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_NOTES">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_NOTES" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_NOTES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
         <field 	name="show_help" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_HELP" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_HELP">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_HELP" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_HELP">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
         
         <field 	name="show_half_of_season" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_HALF_OF_SEASON" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_HALF_OF_SEASON">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_HALF_OF_SEASON" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_HALF_OF_SEASON">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
@@ -91,37 +91,37 @@
 	</fieldset>
 
 <!-- reiter 2 -->
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
-		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 		<field 	name="column_sorting" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_COLUMN_SORT" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_COLUMN_SORT">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMN_SORT" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_COLUMN_SORT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="ranking_order" type="textarea" default="POINTS, PLAYEDASC, DIFF, FOR" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_RANKING_CRITERIA" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_RANKING_CRITERIA" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_RANKING_CRITERIA" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_RANKING_CRITERIA" 
 				rows="4" cols="70">
 		</field>
 		
 		<field 	name="ranking_sort_order" type="textarea" default="DESC, ASC, DESC, DESC" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_RANKING_SORT_CRITERIA" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_RANKING_SORT_CRITERIA" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_RANKING_SORT_CRITERIA" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_RANKING_SORT_CRITERIA" 
 				rows="4" cols="70">
 		</field>
 
 		<field 	name="ordered_columns" type="textarea" default="PLAYED, WINS, TIES, LOSSES, POINTS, SCOREFOR, SCOREAGAINST, DIFF" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS" 
 				rows="4" cols="70">
 		</field>
 		
 		<field 	name="ordered_columns_names" type="textarea" default="Pl, W, D, L, Pts, SF, SA, +/-" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_COLUMNS_NAMES" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_COLUMNS_NAMES" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMNS_NAMES" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_COLUMNS_NAMES" 
 				rows="4" cols="70">
 		</field>		
 <!-- is this still used?
@@ -133,77 +133,77 @@
 		</field>
 -->
 		<field	name="alternative_legs" type="text" default="" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_ALT_LEG"
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_ALT_LEG">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_ALT_LEG"
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_ALT_LEG">
 		</field>
 		
 		<field 	name="last_ranking" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_PREV_RANK" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_PREV_RANK">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_PREV_RANK" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_PREV_RANK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 				
 		<field	name="show_wdl_teamplan_link" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_WDL_TEAMPLAN_LINK"
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_WDL_TEAMPLAN_LINK">				
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_WDL_TEAMPLAN_LINK"
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_WDL_TEAMPLAN_LINK">				
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="nb_previous" type="text" default="5"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_NB_PREVIOUSX" description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_NB_PREVIOUSX">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_NB_PREVIOUSX" description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_NB_PREVIOUSX">
 		</field>	
 		
 		<field 	name="show_manipulations" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_MANIPULATIONS" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_MANIPULATIONS">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_MANIPULATIONS" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_MANIPULATIONS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 
 		<field 	name="colors" type="textarea" default="1,1,#bdd8be,Champions;2,2,#cee0ce,Champions League;3,3,#dce7dc,Qualification Champions League;4,5,#f7f6d0,Europa League;6,6,#fcfbed,UI Cup;16,18,#f6dfdb,Relegation;" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_TABLE_COLORS" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS" 
 				rows="4" cols="70">
 		</field>
 		<field 	name="use_background_row_color" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_USE_BACKGROUND_ROW_COLOR" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_USE_BACKGROUND_ROW_COLOR">
-			<option value="1">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION0_ROW</option>
-			<option value="0">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION1_POSITION</option>
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_USE_BACKGROUND_ROW_COLOR" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_USE_BACKGROUND_ROW_COLOR">
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_ROW</option>
+			<option value="0">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION1_POSITION</option>
 		</field>		
 
 	</fieldset>
 	
 <!-- reiter 3 -->
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_DIV_OPTIONS"
-		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_DIV_OPTIONS"
-		description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_DIV_OPTIONS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS"
+		description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DIV_OPTIONS">
 
 		<field name="default_division_view" type="list" default="0" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_VIEW" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_VIEW">
-			<option value="0">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION0_VIEW</option>
-			<option value="1">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION1_VIEW</option>
-			<option value="2">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION2_VIEW</option>
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_VIEW" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_VIEW">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_VIEW</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION1_VIEW</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION2_VIEW</option>
 		</field>
 
 	    <field 	name="show_project_table" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_PR_RANK" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_PR_RANK">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_PR_RANK" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_PR_RANK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_level1_table" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SUB1" description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SUB1">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SUB1" description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SUB1">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_level2_table" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SUB2" description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SUB2">
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SUB2" description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SUB2">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -211,97 +211,97 @@
 	</fieldset>
 	
 <!-- reiter 4 -->
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_TEAMOPTIONS"
-		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_TEAMOPTIONS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_TEAMOPTIONS"
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS"
 		addfieldpath="/administrator/components/com_joomleague/elements">
 
 		<field name="fav_highlight_type" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_FAV_HIGHLIGHT"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_FAV_HIGHLIGHT">
-			<option value="1">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION1_FAV_HIGHLIGHT
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_FAV_HIGHLIGHT"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_FAV_HIGHLIGHT">
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION1_FAV_HIGHLIGHT
 			</option>
-			<option value="0">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION0_FAV_HIGHLIGHT
+			<option value="0">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_FAV_HIGHLIGHT
 			</option>
 		</field>
 
 		<field name="show_logo_small_table" type="list" default="logo_small"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
-            <option value="logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
-            <option value="logo_middle">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
-            <option value="logo_big">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
-            <option value="projectteam_picture">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
-            <option value="team_picture">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
-            <option value="country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
-            <option value="logo_small_country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
-            <option value="country_flag_logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-            <option value="no_logo">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
+            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
+            <option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
+            <option value="team_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
+            <option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+            <option value="logo_small_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+            <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
 		</field>
 		
 
         <field name="team_picture_width" type="text" default="21"
-               label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
-               description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
+               description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
         </field>
 
         <field name="team_picture_height" type="text" default="21"
-               label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
-               description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
+               description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
         </field>
 
         <field	name="team_name_format" type="teamnameformat" default="2"
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_TYPE_NAME"
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_TYPE_NAME">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TYPE_NAME"
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TYPE_NAME">
 		</field>
 
 		<field type="spacer">
 		</field>
 
 		<field name="show_info_link" type="list" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_INFO_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_INFO_LINK">
-			<option value="0">COM_JOOMLEAGUE_FES_PARAM_OPTION0_SHOW_INFO_LINK</option>
-			<option value="1">COM_JOOMLEAGUE_FES_PARAM_OPTION1_SHOW_INFO_LINK</option>
-			<option value="2">COM_JOOMLEAGUE_FES_PARAM_OPTION2_SHOW_INFO_LINK</option>
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_INFO_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_INFO_LINK">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION0_SHOW_INFO_LINK</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION1_SHOW_INFO_LINK</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION2_SHOW_INFO_LINK</option>
 		</field>
 
 		<field name="show_club_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_CLUBINFO_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_CLUBINFO_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUBINFO_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUBINFO_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_team_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_ROSTER_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_ROSTER_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_teaminfo_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAMINFO_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAMINFO_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMINFO_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMINFO_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_teamstats_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAMSTATS_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAMSTATS_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMSTATS_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMSTATS_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_plan_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TEAMPLAN_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TEAMPLAN_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMPLAN_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMPLAN_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_clubplan_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_CLUBPLAN_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_CLUBPLAN_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUBPLAN_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUBPLAN_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_curve_link" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_CURVE_LINK" description="COM_JOOMLEAGUE_FES_PARAM_DESCR_CURVE_LINK">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CURVE_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CURVE_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -309,45 +309,45 @@
 	</fieldset>
 	
 <!-- reiter 5 -->	
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 			
 		<field 	name="style_class1" type="text" 
     default="sectiontableentry1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_ODD">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
 		</field>
 		
 		<field 	name="style_class2" type="text" 
     default="sectiontableentry2" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_EVEN">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
 		
 		<field 	name="table_text_1" type="text" 
     default="Voll" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TABLE_TEXT1" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TABLE_TEXT1">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT1" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT1">
 		</field>
 		<field 	name="table_text_2" type="text" 
     default="Heim" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TABLE_TEXT2" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TABLE_TEXT2">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT2" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT2">
 		</field>
 		<field 	name="table_text_3" type="text" 
     default="Ausw" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TABLE_TEXT3" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TABLE_TEXT3">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT3" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT3">
 		</field>
 		<field 	name="table_text_4" type="text" 
     default="Hin" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TABLE_TEXT4" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TABLE_TEXT4">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT4" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT4">
 		</field>
 		<field 	name="table_text_5" type="text" 
     default="Rück" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_TABLE_TEXT5" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_TABLE_TEXT5">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT5" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT5">
 		</field>
 		
 		

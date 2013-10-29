@@ -1,190 +1,190 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field 	name="show_sectionheader" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_info" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_INFO" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_INFO">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_INFO" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_INFO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_extended" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_EXTENDED"
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_EXTENDED">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_EXTENDED"
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 		
 		<field 	name="show_status" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_STATUS" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_STATUS">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_STATUS" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_STATUS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_description" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_DESCRIPTION" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_DESCRIPTION">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_DESCRIPTION" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field	name="show_careerstats" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_CAREER_STATS"
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_CAREER_STATS">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER_STATS"
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field	name="show_career" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_CAREER"
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_CAREER">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER"
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 	</fieldset>
 
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PERSONOPTIONS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PERSONOPTIONS"
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
 			addfieldpath="/administrator/components/com_joomleague/elements">
 
 		<field	name="name_format" type="nameformat" default="0"
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_NAME_FORMAT"
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_NAME_FORMAT">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_NAME_FORMAT"
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_NAME_FORMAT">
 		</field>
 
 		<field 	name="show_photo" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PHOTO" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PHOTO">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PHOTO" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PHOTO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="picture_width" type="text" default="150"
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_PICTURE_WIDTH" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_PICTURE_WIDTH">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_WIDTH" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_WIDTH">
 		</field>
 		
 		<field 	name="picture_height" type="text" default="150"
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_PICTURE_HEIGHT" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_PICTURE_HEIGHT">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_HEIGHT">
 		</field>
 		
 		<field 	name="show_nationality" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_NATIONALITY" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_NATIONALITY">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_NATIONALITY" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_NATIONALITY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
 		<field 	name="show_birthday" type="list" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_BIRTHDAY" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_BIRTHDAY">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_BIRTHDAY" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_BIRTHDAY">
 			<option value="0">JNO</option>
-			<option value="1">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION1_BIRTHDAY</option>
-			<option value="2">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION2_BIRTHDAY</option>
-			<option value="3">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION3_BIRTHDAY</option>
-			<option value="4">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION4_BIRTHDAY</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION1_BIRTHDAY</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION2_BIRTHDAY</option>
+			<option value="3">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION3_BIRTHDAY</option>
+			<option value="4">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION4_BIRTHDAY</option>
 		</field>
 
 		<field 	name="show_person_address" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_ADDRESS" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_ADDRESS">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_ADDRESS" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_ADDRESS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
 		<field 	name="show_person_phone" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_PHONE" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_PHONE">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_PHONE" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_PHONE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_person_mobile" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_MOBILE" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_MOBILE">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_MOBILE" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_MOBILE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
 		<field 	name="show_person_email" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_EMAIL" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_EMAIL">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_EMAIL" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_EMAIL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_person_website" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEBSITE" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEBSITE">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEBSITE" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEBSITE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
 		<field 	name="show_person_height" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_HEIGHT" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_HEIGHT">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_HEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 
 		<field 	name="show_person_weight" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEIGHT" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEIGHT">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 
 		<field 	name="show_person_regnr" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_REGNUMBER" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_REGNUMBER">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_REGNUMBER" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_REGNUMBER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 		
 		<field 	name="show_general_description" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_GEN_DESCRIPTION" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_GEN_DESCRIPTION">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_GEN_DESCRIPTION" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_GEN_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_user_profile" type="list" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_SHOW_USER_PROFILE" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_SHOW_USER_PROFILE">
-			<option value="0">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION0_USER_PROFILE</option>
-			<option value="1">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION1_USER_PROFILE</option>
-			<option value="2">COM_JOOMLEAGUE_FES_STAFF_PARAM_OPTION2_USER_PROFILE</option>
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_USER_PROFILE" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_USER_PROFILE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION0_USER_PROFILE</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION1_USER_PROFILE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION2_USER_PROFILE</option>
 		</field>
 
 		<field 	name="contact_cat_id" type="text" default="0" 
-				label="COM_JOOMLEAGUE_FES_STAFF_PARAM_LABEL_CONTACT_ID" 
-				description="COM_JOOMLEAGUE_FES_STAFF_PARAM_DESCR_CONTACT_ID">
+				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_CONTACT_ID" 
+				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_CONTACT_ID">
 		</field>
 	</fieldset>
 	
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
-			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 			
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_ODD">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
 		</field>
 		
 		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_EVEN">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
 		
 	</fieldset>		

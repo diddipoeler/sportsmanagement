@@ -164,22 +164,22 @@
 		</field>
 
 		<field name="show_logo_small_table" type="list" default="logo_big"
-			label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
-			description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
-            <option value="logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
-            <option value="logo_middle">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
-            <option value="logo_big">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
-            <option value="projectteam_picture">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
-            <option value="team_picture">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
-            <option value="country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
-            <option value="logo_small_country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
-            <option value="country_flag_logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-            <option value="no_logo">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
+            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
+            <option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
+            <option value="team_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
+            <option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+            <option value="logo_small_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+            <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
 		</field>
 
     <field	name="team_name_format" type="teamnameformat" default="2"
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_TYPE_NAME"
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_TYPE_NAME">
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TYPE_NAME"
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TYPE_NAME">
 				</field>
 		<field 	name="names" type="list" default="name" 
 				label="JL_FES_RANKING_PARAM_LABEL_TYPE_NAME" 

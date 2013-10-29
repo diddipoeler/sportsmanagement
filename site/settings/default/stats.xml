@@ -1,72 +1,72 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_sectionheader" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
-			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_general_stats" type="radio" default="1"
-			label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS"
-			description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
+			label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS"
+			description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="show_general_stats" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS" 
-				description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS" 
+				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="home_away_stats" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_HA_STATS" 
-				description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_HA_STATS">
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_HA_STATS" 
+				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_HA_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	
 		<field 	name="show_goals_stats" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_GOAL_STATS" 
-				description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_GOAL_STATS">
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GOAL_STATS" 
+				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GOAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_attendance_stats" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_STATS" 
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_STATS" 
 				description="Shows various attendance statistics, e.g. average number of spectators.">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_goals_stats_flash" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_FLASH" 
-				description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_FLASH">
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_FLASH" 
+				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_FLASH">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field 	name="show_attendance_ranking" type="radio" default="0" 
-				label="COM_JOOMLEAGUE_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_RANK" 
-				description="COM_JOOMLEAGUE_FES_STATS_PARAM_DESCR_SHOW_ATTENDANCE_RANK">
+				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_RANK" 
+				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_ATTENDANCE_RANK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field 	name="show_picture" type="list" default="team_picture"
-				label="COM_JOOMLEAGUE_FES_TEAMINFO_SHOW_PICTURE"
-				description="COM_JOOMLEAGUE_FES_TEAMINFO_SHOW_PICTURE_DESC">
-			<option value="">COM_JOOMLEAGUE_FES_TEAMINFO_NO_TEAM_PICTURE</option>
-			<option value="team_picture">COM_JOOMLEAGUE_FES_TEAMINFO_TEAM_PICTURE</option>
-			<option value="projectteam_picture">COM_JOOMLEAGUE_FES_TEAMINFO_PROJECTTEAM_PICTURE</option>
-			<option value="logo_small">COM_JOOMLEAGUE_FES_TEAMINFO_CLUB_LOGO_SMALL</option>
-			<option value="logo_middle">COM_JOOMLEAGUE_FES_TEAMINFO_CLUB_LOGO_MIDDLE</option>
-			<option value="logo_big">COM_JOOMLEAGUE_FES_TEAMINFO_CLUB_LOGO_BIG</option>
+				label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_SHOW_PICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_SHOW_PICTURE_DESC">
+			<option value="">COM_SPORTSMANAGEMENT_FES_TEAMINFO_NO_TEAM_PICTURE</option>
+			<option value="team_picture">COM_SPORTSMANAGEMENT_FES_TEAMINFO_TEAM_PICTURE</option>
+			<option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_TEAMINFO_PROJECTTEAM_PICTURE</option>
+			<option value="logo_small">COM_SPORTSMANAGEMENT_FES_TEAMINFO_CLUB_LOGO_SMALL</option>
+			<option value="logo_middle">COM_SPORTSMANAGEMENT_FES_TEAMINFO_CLUB_LOGO_MIDDLE</option>
+			<option value="logo_big">COM_SPORTSMANAGEMENT_FES_TEAMINFO_CLUB_LOGO_BIG</option>
 		</field>
 <!--		
 		<field 	name="show_events_stats" type="radio" default="0" 

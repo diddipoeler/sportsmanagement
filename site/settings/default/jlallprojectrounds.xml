@@ -2,58 +2,58 @@
 <form>
   
 
-	<fieldset group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-	name= "COM_JOOMLEAGUE_FES_ALL_PROJECT_ROUNDS_NAME"
-			description="COM_JOOMLEAGUE_FES_ALL_PROJECT_ROUNDS_DESCR">
+	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	name= "COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_NAME"
+			description="COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR">
 
 		<field	name="show_sectionheader" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
     <field	name="show_columns" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_COLUMNS" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_COLUMNS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COLUMNS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_COLUMNS">
 			<option value="0">COM_JOOMLEAGUE_1_COLUMNS</option>
 			<option value="1">COM_JOOMLEAGUE_2_COLUMNS</option>
 		</field>
 		
 		<field	name="show_firstroster" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_HOMEROSTER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEROSTER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_firstsubst" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_HOMESUBST" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMESUBST" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_firstevents" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_HOMEEVENTS" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEEVENTS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 		<field	name="show_secondroster" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_AWAYROSTER" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYROSTER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_secondsubst" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_AWAYSUBST" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYSUBST" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_secondevents" type="radio" default="1" 
-				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_AWAYEVENTS" 
-				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYEVENTS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
