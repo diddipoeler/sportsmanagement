@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<form>
+
+	<fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+			addpath="/administrator/components/com_joomleague/elements"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field	name="show_points" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="use_tipp_admin" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_USE_TIPP_ADMIN"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_USE_TIPP_ADMIN">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_tipp_tendence" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_TIPP_TENDENCE"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_TIPP_TENDENCE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_logo_small" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_LOGO_SMALL"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_LOGO_SMALL">
+			<option value="0">JNO</option>
+			<option value="1">COM_JOOMLEAGUE_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
+			<option value="2">COM_JOOMLEAGUE_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
+		</field>
+    
+    <field 	name="prediction_team_name" type="list" default="short_name" 
+				label="COM_JOOMLEAGUE_XML_PREDICTIONENTRY_TEAM_NAME_LABEL"
+				description="COM_JOOMLEAGUE_XML_PREDICTIONENTRY_TEAM_NAME_DESC">
+			<option value="short_name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_SHORT</option>
+			<option value="middle_name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_MEDIUM</option>
+			<option value="name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_FULL</option>
+		</field>
+
+		<field	name="show_help" type="list" default="3"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_HELP"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_HELP">
+			<option value="0">COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_OPTION0_SHOW_HELP</option>
+			<option value="1">COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_OPTION1_SHOW_HELP</option>
+			<option value="2">COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_OPTION2_SHOW_HELP</option>
+      <option value="3">COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_OPTION3_SHOW_HELP</option>
+		</field>
+
+		<field	name="color_home_win" type="colorpicker" size="8" maxlength="8" default="#507FAF"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_COLOR_HOME_WIN"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_COLOR_HOME_WIN" >
+		</field>
+
+		<field	name="color_draw" type="colorpicker" size="8" maxlength="8" default="#9F5770"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_COLOR_DRAW"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_COLOR_DRAW" >
+		</field>
+
+		<field	name="color_guest_win" type="colorpicker" size="8" maxlength="8" default="#6F7860"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_LABEL_COLOR_GUEST_WIN"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONENTRY_PARAM_DESCR_COLOR_GUEST_WIN" >
+		</field>
+
+	</fieldset>
+
+  <fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS_TIPRESULTS_MATCHES_EDIT"
+  name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS_TIPRESULTS_MATCHES_EDIT"
+  addpath="/components/com_joomleague/extensions/predictiongame/admin/elements"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS_TIPRESULTS_MATCHES_EDIT">
+	
+	<field	name="use_pred_select_matches" type="radio" default="0"
+				label="COM_JOOMLEAGUE_XML_PREDICTION_USE_SELECT_MATCH_LABEL"
+				description="COM_JOOMLEAGUE_XML_PREDICTION_USE_SELECT_MATCH_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+	<field name="predictionmatchid" type="matchid" depends="preid" task="prematchoptions" 
+				label="COM_JOOMLEAGUE_XML_PREDICTION_SELECT_MATCH_LABEL"
+				description="COM_JOOMLEAGUE_XML_PREDICTION_SELECT_MATCH_DESCR">
+	</field>
+			
+  </fieldset>
+  		
+</form>

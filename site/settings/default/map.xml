@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<form>
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field name="width" type="text" default="100%"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_WIDTH" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_WIDTH">
+		</field>
+
+		<field name="height" type="text" default="300"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_HEIGHT" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_HEIGHT">
+		</field>
+
+		<field name="map_zoom" type="text" default="13"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_ZOOM" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_ZOOM">
+		</field>
+
+		<field name="default_map_type" type="list" default="G_NORMAL_MAP"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_TYPE" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_TYPE">
+			<option value="G_NORMAL_MAP">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION0_TYPE
+			</option>
+			<option value="G_SATELLITE_MAP">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION1_TYPE
+			</option>
+			<option value="G_HYBRID_MAP">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION2_TYPE
+			</option>
+		</field>
+
+		<field name="map_control" type="list" default="LARGE_PAN_ZOOM"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_ZOOM" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_ZOOM">
+			<option value="NONE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION0_ZOOM
+			</option>
+			<option value="SMALL_ZOOM">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION1_ZOOM
+			</option>
+			<option value="SMALL_PAN_ZOOM">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION2_ZOOM
+			</option>
+			<option value="LARGE_PAN_ZOOM">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION3_ZOOM
+			</option>
+		</field>
+
+		<field name="map_icon_color" type="list" default="PACIFICA"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_ICON_COLOUR" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_ICON_COLOUR">
+			<option value="PACIFICA">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION0_ICON_COLOUR
+			</option>
+			<option value="YOSEMITE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION1_ICON_COLOUR
+			</option>
+			<option value="MOAB">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION2_ICON_COLOUR
+			</option>
+			<option value="GRANITE_PINE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION3_ICON_COLOUR
+			</option>
+			<option value="DESERT_SPICE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION4_ICON_COLOUR
+			</option>
+			<option value="CABO_SUNSET">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION5_ICON_COLOUR
+			</option>
+			<option value="TAHITI_SEA">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION6_ICON_COLOUR
+			</option>
+			<option value="POPPY">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION7_ICON_COLOUR
+			</option>
+			<option value="NAUTICA">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION8_ICON_COLOUR
+			</option>
+			<option value="DEEP_JUNGLE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION9_ICON_COLOUR
+			</option>
+			<option value="SLATE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION10_ICON_COLOUR
+			</option>
+		</field>
+
+		<field name="map_icon_style" type="list" default="FLAG"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_ICON_STYLE" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_ICON_STYLE">
+			<option value="FLAG">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION0_ICON_STYLE
+			</option>
+			<option value="GT_FLAT">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION1_ICON_STYLE
+			</option>
+			<option value="GT_PILLOW">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION2_ICON_STYLE
+			</option>
+			<option value="HOUSE">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION3_ICON_STYLE
+			</option>
+			<option value="PIN">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION4_ICON_STYLE
+			</option>
+			<option value="PUSH_PIN">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION5_ICON_STYLE
+			</option>
+			<option value="STAR">COM_JOOMLEAGUE_FES_MAP_PARAM_OPTION6_ICON_STYLE
+			</option>
+		</field>
+
+		<field name="map_type_select" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_TYPE_SELECT" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_TYPE_SELECT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="map_scale" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_SCALE" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_SCALE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_marker" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_MARKER" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_MARKER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="map_inset" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_INSET" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_INSET">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="cont_zoom" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_CONT_ZOOM" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_CONT_ZOOM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="dblclick_zoom" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_DCLICK_ZOOM" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_DCLICK_ZOOM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="center_link" type="radio" default="0"
+			label="COM_JOOMLEAGUE_FES_MAP_PARAM_LABEL_CENTER_LINK" description="COM_JOOMLEAGUE_FES_MAP_PARAM_DESCR_CENTER_LINK">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+</form>

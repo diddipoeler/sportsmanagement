@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<form>
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+
+		<field name="show_sectionheader" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_playground" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_INFO"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_INFO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_extended" type="radio" default="0"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_EXTENDED"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_EXTENDED">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="show_extended_geo_values" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_EXTENDED_GEO"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_EXTENDED_GEO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_picture" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_VENUE_PICTURE"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_VENUE_PICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_maps" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_MAPS"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_MAPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_description" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_DESCRIPTION"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_DESCRIPTION">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_teams" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_TEAMS"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_TEAMS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_matches" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_MATCHES"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_MATCHES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field name="show_route" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_ROUTE"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_ROUTE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_logo" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_LOGO"
+			description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_LOGO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_logo" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_LOGO" description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_LOGO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+                
+        <field 	name="show_shortname" type="radio" default="0" 
+            label="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_LABEL_SHOW_SHORTNAME" description="COM_JOOMLEAGUE_FES_PLAYGROUND_PARAM_DESCR_SHOW_SHORTNAME">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+	</fieldset>
+</form>

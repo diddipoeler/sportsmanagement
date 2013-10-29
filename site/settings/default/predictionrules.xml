@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<form>
+
+	<fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field	name="show_points" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONSRULES_PARAM_LABEL_SHOW_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONSRULES_PARAM_DESCR_SHOW_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+
+</form>

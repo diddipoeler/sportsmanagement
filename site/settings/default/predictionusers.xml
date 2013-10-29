@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<form>
+<!-- register 1 -->
+	<fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS"
+      addfieldpath="/administrator/components/com_joomleague/elements">
+
+		<field	name="show_photo" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_PHOTO"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_PHOTO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_image_from" type="avatarfromcomponent" default="prediction"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_PHOTO_FROM"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_PHOTO_FROM">
+			
+		</field>
+
+		<field	name="show_register_date" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_REGISTER_DATE"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_REGISTER_DATE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_fav_team" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FAV_TEAM"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FAV_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_slogan" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_SLOGAN"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_SLOGAN">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_lasttip" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_LASTTIP"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_LASTTIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_user_profile" type="list" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_USER_PROFILE"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_USER_PROFILE">
+			<option value="0">COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_OPTION0_SHOW_USER_PROFILE</option>
+			<option value="1">COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_OPTION1_SHOW_USER_PROFILE</option>
+			<option value="2">COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_OPTION2_SHOW_USER_PROFILE</option>
+		</field>
+
+		<field	name="contact_cat_id" type="text" size="6" maxlength="6" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_CONTACT_CAT_ID"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_CONTACT_CAT_ID" />
+
+		<field	name="show_ranking" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_RANKING"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_RANKING">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_totalpoints" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TOTAL_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TOTAL_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_lastpoints" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_LAST_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_LAST_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_counttipps" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_COUNT_TIPS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_COUNT_TIPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_averagepoints" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_AVERAGE_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_AVERAGE_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_toptipps" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TOP_TIPS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TOP_TIPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_difftipps" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_DIFF_TIPS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_DIFF_TIPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_tendtipps" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TEND_TIPS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TEND_TIPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_form" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FORM"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FORM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_flash_statistic_points" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FLASH_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FLASH_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_flash_statistic_ranks" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FLASH_RANKS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FLASH_RANKS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+
+<!-- register 2 -->
+	<fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PERSONAL_OPTIONS_EDIT">
+
+		<field	name="edit_favteam" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_FAV_TEAM"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_FAV_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="edit_slogan" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_SLOGAN"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_SLOGAN">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="edit_reminder" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="edit_avatar_upload" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_AVATAR_UPLOAD"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_AVATAR_UPLOAD">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="reminder_subject" type="text" size="100" maxlength="255"
+				default="Prediction reminder for round $ROUND$"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER_SUBJECT"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER_SUBJECT" />
+
+    		<field	name="reminder_intro" type="textarea"
+    				default="Hello $NAME$,$DL$in a few days round $ROUND$ begins. Please remember to make your predictions!"
+    				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER_INTRO"
+    				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER_INTRO" rows="3" cols="50"/>
+
+    		<field	name="reminder_footer" type="textarea"
+    				default="The team from $URL$ wishes you good luck!"
+    				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER_FOOTER"
+    				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER_FOOTER" rows="3" cols="50" />
+
+		<field	name="edit_receipt" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_RECEIPT"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_RECEIPT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="receipt_subject" type="text" size="100" maxlength="255"
+				default="Your predictions for round $ROUND$"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_RECEIPT_SUBJECT"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_RECEIPT_SUBJECT" />
+
+    		<field	name="receipt_intro" type="textarea"
+    				default="Hello $NAME$,$DL$following predictions were made by you on $DATE$ at $URL$:"
+    				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_RECEIPT_INTRO"
+    				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_RECEIPT_INTRO" rows="3" cols="50"/>
+
+    		<field	name="receipt_footer" type="textarea"
+    				default="The team from $URL$ wishes you good luck!"
+    				label="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_RECEIPT_FOOTER"
+    				description="COM_JOOMLEAGUE_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_RECEIPT_FOOTER" rows="3" cols="50"/>
+
+	</fieldset>
+
+</form>

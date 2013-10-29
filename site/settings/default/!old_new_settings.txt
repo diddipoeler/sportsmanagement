@@ -1,0 +1,33 @@
+	Description															New name of				Old name of
+																		settings-xml-file		settings file
+-------------------------------------------------------------------------------------------------------------------------
+1  	Club Information  	 												clubinfo  	 			show_club.tpl
+2 	Club plan page settings 											clubplan
+3 	Tips 																do_tipsl 				do_tips.tpl					tipdotips.xml
+4 	Events Stats Settings 												eventsranking			show_events_stats.tpl
+5 	Frontpage settings 													frontpage 				show_frontpage.tpl
+6 	Teams page settings 												teams					listteams.tpl
+7 	Google Maps Settings - valid for all selected project templates 	map 					map.tpl
+8 	Match reports 														matchreport 			show_report.tpl
+9 	Round Matrix 														matrix 					show_matrix.tpl
+10 	Match Preview 														nextmatch 				show_next_match.tpl
+11 	General Settings. Valid for all Templates of the selected Project. 	overall 				overall.tpl
+12 	Player Information page settings 									player 					show_player.tpl
+13 	Playground Information page settings 								playground 				show_playground.tpl
+14 	Standings page settings 											ranking 				show_table.tpl!!!!!!!
+15 	Referee Information page settings 									referee 				referee.tpl
+16 	referees Information page settings 									referees
+17 	Results page settings 												results 				show_results.tpl
+18 	Team roster page settings 											roster 					show_players.tpl
+19 	Staff Information page settings 									staff
+20 	Season Stats page settings 											stats 					show_stats.tpl
+21 	Stats Ranking Settings 												statsranking
+22 	Standings page settings 											table 					show_table.tpl
+23 	Team Information page settings 										teaminfo 				show_team_info.tpl
+24 	Match Schedule 														teamplan				show_plan.tpl
+25 	Teamstaff page settings 											teamstaff
+26 	Team Stats page settings 											teamstats
+27 	Prediction Game Ranking page settings 								tipranking 				show_tip_ranking.tpl
+28 	Prediction Results Overview page settings 							tipresults 				show_tip_results.tpl
+29 	Tree page settings 													tree
+30 	User Page of Prediction Game Participants settings 					user 					show_user.tpl				tipuser.xml

@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<form>
+
+<!-- reiter 1 -->
+	<fieldset group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+
+		<field name="show_prediction_heading" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_HEADING"
+			description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_HEADING">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_predictiongame_dropdown" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_GAME_SELECTOR"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_GAME_SELECTOR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field	name="show_pred_group_link" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_PRED_GROUP_LINK"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_PRED_GROUP_LINK">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<!--
+		<param	name="show_predictionproject_dropdown" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_PROJECT_SELECTOR"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_PROJECT_SELECTOR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+		
+
+		<param name="show_print_button" type="radio" default="0"
+			label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PRINT_BUTTON"
+			description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PRINT_BUTTON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+
+		<param name="show_pdf_button" type="radio" default="0"
+			label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PDF_BUTTON"
+			description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PDF_BUTTON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+
+		<param name="show_email_button" type="radio" default="0"
+			label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_EMAIL_BUTTON"
+			description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_EMAIL_BUTTON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+-->
+		<field name="show_back_button" type="list" default="0"
+			label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_BACK_BUTTON"
+			description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_BACK_BUTTON">
+			<option value="0">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SHOW_BACK_BUTTON</option>
+			<option value="1">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SHOW_BACK_BUTTON</option>
+			<option value="2">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SHOW_BACK_BUTTON</option>
+		</field>
+
+	</fieldset>
+
+<!-- reiter 2 -->
+	<fieldset	group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
+	name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PERSONAL_OPTIONS">
+
+		<field name="seperator" type="text" size="4" maxlength="4"
+				default=":"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SEPERATOR"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SEPERATOR" >
+		</field>
+
+		<field name="time_format" type="text" size="10" maxlength="15"
+				default="%H:%M"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_TIME_FORMAT"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_TIME_FORMAT" >
+		</field>
+
+		<field name="closing_time" type="text" size="10" maxlength="10" 
+				default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_CLOSING_TIME"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_CLOSING_TIME" >
+		</field>
+		
+		<field name="ownername" type="text" size="100" maxlength="255"
+				default="Prediction Game Sponsor of this Prediction Game"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SPONSOR"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SPONSOR" >
+		</field>
+
+		<field name="ownerlogo" type="text" size="100" maxlength="255" default=""
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_LOGO_SPONSOR"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_LOGO_SPONSOR" >
+		</field>
+
+		<field	name="show_full_name" type="list" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_FULL_NAME"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_FULL_NAME">
+			<option value="0">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SHOW_FULL_NAME</option>
+			<option value="1">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SHOW_FULL_NAME</option>
+		</field>
+
+		<field	name="allow_alias" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_ALLOW_ALIAS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_ALLOW_ALIAS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="input_alias_length" type="text" size="3" maxlength="3"
+				default="60"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_ALIAS_LENGTH"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_ALIAS_LENGTH" >
+		</field>
+    <field name="input_slogan_length" type="text" size="3" maxlength="3"
+				default="60"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SLOGAN_LENGTH"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SLOGAN_LENGTH" >
+		</field>
+
+
+	</fieldset>
+
+<!-- reiter 3 -->
+	<fieldset	group= "COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+	name= "COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field	name="sort_order_1" default="points" type="list"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SORT_ORDER_1"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SORT_ORDER_1">
+			<option value="points">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SORT_ORDER</option>
+			<option value="correct_tips">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SORT_ORDER</option>
+			<option value="correct_diffs">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SORT_ORDER</option>
+			<option value="correct_tend">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION3_SORT_ORDER</option>
+			<option value="count_tips_p">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION4_SORT_ORDER</option>
+			<option value="count_tips_m">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION5_SORT_ORDER</option>
+			<option value="none">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION6_SORT_ORDER</option>
+		</field>
+
+		<field	name="sort_order_2" default="correct_tips" type="list"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SORT_ORDER_2"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SORT_ORDER_2">
+			<option value="points">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SORT_ORDER</option>
+			<option value="correct_tips">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SORT_ORDER</option>
+			<option value="correct_diffs">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SORT_ORDER</option>
+			<option value="correct_tend">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION3_SORT_ORDER</option>
+			<option value="count_tips_p">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION4_SORT_ORDER</option>
+			<option value="count_tips_m">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION5_SORT_ORDER</option>
+			<option value="none">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION6_SORT_ORDER</option>
+		</field>
+
+		<field	name="sort_order_3" default="correct_diffs" type="list"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SORT_ORDER_3"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SORT_ORDER_3">
+			<option value="points">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SORT_ORDER</option>
+			<option value="correct_tips">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SORT_ORDER</option>
+			<option value="correct_diffs">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SORT_ORDER</option>
+			<option value="correct_tend">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION3_SORT_ORDER</option>
+			<option value="count_tips_p">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION4_SORT_ORDER</option>
+			<option value="count_tips_m">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION5_SORT_ORDER</option>
+			<option value="none">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION6_SORT_ORDER</option>
+		</field>
+
+		<field	name="sort_order_4" default="correct_tend" type="list"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SORT_ORDER_4"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SORT_ORDER_4">
+			<option value="points">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SORT_ORDER</option>
+			<option value="correct_tips">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SORT_ORDER</option>
+			<option value="correct_diffs">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SORT_ORDER</option>
+			<option value="correct_tend">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION3_SORT_ORDER</option>
+			<option value="count_tips_p">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION4_SORT_ORDER</option>
+			<option value="count_tips_m">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION5_SORT_ORDER</option>
+			<option value="none">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION6_SORT_ORDER</option>
+		</field>
+
+		<field	name="sort_order_5" default="count_tips_m" type="list"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_LABEL_SORT_ORDER_5"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_DESCR_SORT_ORDER_5">
+			<option value="points">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION0_SORT_ORDER</option>
+			<option value="correct_tips">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION1_SORT_ORDER</option>
+			<option value="correct_diffs">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION2_SORT_ORDER</option>
+			<option value="correct_tend">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION3_SORT_ORDER</option>
+			<option value="count_tips_p">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION4_SORT_ORDER</option>
+			<option value="count_tips_m">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION5_SORT_ORDER</option>
+			<option value="none">COM_JOOMLEAGUE_FES_PREDICTIONOVERALL_PARAM_OPTION6_SORT_ORDER</option>
+		</field>
+
+	</fieldset>
+
+</form>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<form>
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+
+		<field name="show_sectionheader" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
+			description="COM_JOOMLEAGUE_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_referees" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_SHOW_REFEREES"
+			description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_SHOW_REFEREES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS" description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS"
+		addfieldpath ="/administrator/components/com_joomleague/elements">
+
+		<field	name="name_format" type="nameformat" default="0"
+				label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_NAME_FORMAT"
+				description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_NAME_FORMAT">
+		</field>
+
+		<field 	name="show_birthday" type="list" default="1" 
+				label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_SHOW_BIRTHDAY" 
+				description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_SHOW_BIRTHDAY">
+			<option value="0">JNO</option>
+			<option value="1">COM_JOOMLEAGUE_FES_REFEREES_PARAM_OPTION1_SHOW_BIRTHDAY</option>
+			<option value="2">COM_JOOMLEAGUE_FES_REFEREES_PARAM_OPTION2_SHOW_BIRTHDAY</option>
+			<option value="3">COM_JOOMLEAGUE_FES_REFEREES_PARAM_OPTION3_SHOW_BIRTHDAY</option>
+			<option value="4">COM_JOOMLEAGUE_FES_REFEREES_PARAM_OPTION4_SHOW_BIRTHDAY</option>
+		</field>
+
+		<field name="show_icon" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_SHOW_ICON"
+			description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_SHOW_ICON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field 	name="referee_picture_width" type="text" default="40"
+				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_REF_PICTURE_WIDTH" 
+				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_REF_PICTURE_WIDTH">
+		</field>
+		
+		<field 	name="referee_picture_height" type="text" default="0"
+				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_REF_PICTURE_HEIGHT" 
+				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_REF_PICTURE_HEIGHT">
+		</field>
+
+		<field name="link_name" type="radio" default="1"
+			label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_LINK_NAME"
+			description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_LINK_NAME">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field 	name="show_games_count" type="radio" default="1" 
+				label="COM_JOOMLEAGUE_FES_REFEREES_PARAM_LABEL_SHOW_GAMES_COUNT" 
+				description="COM_JOOMLEAGUE_FES_REFEREES_PARAM_DESCR_SHOW_GAMES_COUNT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+	
+	<fieldset name="COM_JOOMLEAGUE_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+		
+		<field 	name="style_class1" type="text" default="sectiontableentry1" 
+				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_ODD" 
+				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_ODD">
+		</field>
+		
+		<field 	name="style_class2" type="text" default="sectiontableentry2" 
+				label="COM_JOOMLEAGUE_FES_PARAM_LABEL_STYLE_EVEN" 
+				description="COM_JOOMLEAGUE_FES_PARAM_DESCR_STYLE_EVEN">
+		</field>
+		
+	</fieldset>		
+</form>

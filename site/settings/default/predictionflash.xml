@@ -1,0 +1,268 @@
+<?xml version="1.0" ?>
+<form>
+
+	<fieldset group="COM_JOOMLEGAUE_FES_FLASH_PARAMS_GROUP_SETTINGS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_SETTINGS"  
+			addpath="/administrator/components/com_joomleague/elements"
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_SETTINGS">
+
+		<field 	name="bg_colour" type="colorpicker" default="#FFFFFF"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BG_COLOUR"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BG_COLOUR">
+		</field>
+			
+		<field 	name="color_legend_line_width" type="text" default="0.4"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_COLOUR_LEGEND_LINE_WIDTH"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_COLOUR_LEGEND_LINE_WIDTH">
+		</field>
+
+	</fieldset>
+
+  <fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_X_AXIS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_X_AXIS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_X_AXIS">	
+
+		<field 	name="x_axis_label" type="list" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_X_AXIS"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_X_AXIS">
+			<option value="0">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_X_AXIS</option>
+			<option value="1">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_X_AXIS</option>
+		</field>			
+			
+		<field 	name="x_axis_colour" type="colorpicker" default="#000000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_X_AXIS_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_X_AXIS_COLOUR">
+		</field>
+
+		<field 	name="x_axis_colour_inner" type="colorpicker" default="#778877"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_X_AXIS_COLOUR_INNER" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_X_AXIS_COLOUR_INNER">
+		</field>
+
+		<field 	name="x_axis_legend" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_X_AXIS_LEGEND"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_X_AXIS_LEGEND">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+	
+	<fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_Y_AXIS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_Y_AXIS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_Y_AXIS">		
+			
+		<field 	name="y_axis_colour" type="colorpicker" default="#000000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_Y_AXIS_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_Y_AXIS_COLOUR">
+		</field>
+
+		<field 	name="y_axis_colour_inner" type="colorpicker" default="#778877"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_Y_AXIS_COLOUR_INNER" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_Y_AXIS_COLOUR_INNER">
+		</field>
+
+		<field 	name="y_axis_legend" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_Y_AXIS_LEGEND"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_Y_AXIS_LEGEND">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+	
+	
+	<fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_LINE1_SETTINGS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_LINE1_SETTINGS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_LINE1_SETTINGS">				
+
+		<field 	name="line1" type="colorpicker" default="#FE0000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_COLOUR">
+		</field>
+
+		<field 	name="line1_strength" type="text" default="3"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_STRENGTH" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_STRENGTH">
+		</field>
+
+		<field 	name="line1_dot_strength" type="text" default="5"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_DOT_STRENGTH" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_DOT_STRENGTH">
+		</field>
+			
+		<field 	name="dotstyle_1" type="list" default="solid_dot"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_STYLE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_STYLE" >
+			<option value="dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_LINE1_STYLE</option>
+			<option value="solid_dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_LINE1_STYLE</option>
+			<option value="hollow_dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_LINE1_STYLE</option>
+			<option value="star">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_LINE1_STYLE</option>
+			<option value="bow">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_LINE1_STYLE</option>
+		</field>			
+
+		<field 	name="l_animation_1" type="list" default="mid-slide"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_ANIMATION"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_ANIMATION" >
+			<option value="pop-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_LINE1_ANIMATION</option>
+			<option value="explode">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_LINE1_ANIMATION</option>
+			<option value="mid-slide">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_LINE1_ANIMATION</option>
+			<option value="drop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_LINE1_ANIMATION</option>
+			<option value="fade-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_LINE1_ANIMATION</option>
+			<option value="shrink-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_LINE1_ANIMATION</option>
+		</field>
+		
+		<field 	name="l_delay_1" type="text" default="0.5"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_DELAY"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_DELAY">
+		</field>	
+
+		<field 	name="l_cascade_1" type="text" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE1_CASCADE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE1_CASCADE">
+		</field>
+			
+	</fieldset>
+	
+	<fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_LINE2_SETTINGS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_LINE2_SETTINGS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_LINE2_SETTINGS">				
+
+		<field 	name="line2" type="colorpicker" default="#000000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_COLOUR">
+		</field>
+
+		<field 	name="line2_strength" type="text" default="3"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_STRENGTH" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_STRENGTH">
+		</field>
+
+		<field 	name="line2_dot_strength" type="text" default="5"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_DOT_STRENGTH" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_DOT_STRENGTH">
+		</field>
+			
+		<field 	name="dotstyle_2" type="list" default="solid_dot"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_STYLE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_STYLE" >
+			<option value="dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_LINE2_STYLE</option>
+			<option value="solid_dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_LINE2_STYLE</option>
+			<option value="hollow_dot">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_LINE2_STYLE</option>
+			<option value="star">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_LINE2_STYLE</option>
+			<option value="bow">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_LINE2_STYLE</option>
+		</field>			
+
+		<field 	name="l_animation_2" type="list" default="mid-slide"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_ANIMATION"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_ANIMATION" >
+			<option value="pop-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_LINE2_ANIMATION</option>
+			<option value="explode">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_LINE2_ANIMATION</option>
+			<option value="mid-slide">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_LINE2_ANIMATION</option>
+			<option value="drop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_LINE2_ANIMATION</option>
+			<option value="fade-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_LINE2_ANIMATION</option>
+			<option value="shrink-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_LINE2_ANIMATION</option>
+		</field>
+		
+		<field 	name="l_delay_2" type="text" default="0.5"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_DELAY"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_DELAY">
+		</field>	
+
+		<field 	name="l_cascade_2" type="text" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_LINE2_CASCADE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_LINE2_CASCADE">
+		</field>
+			
+	</fieldset>
+	
+<fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_BAR1_SETTINGS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_BAR1_SETTINGS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_BAR1_SETTINGS">	
+
+		<field 	name="bar1" type="colorpicker" default="#000000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR1_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR1_COLOUR">
+		</field>
+
+		<field 	name="bartype_1" type="list" default="bar_glass"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR1_TYPE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR1_TYPE" >
+			<option value="bar">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_BAR1_TYPE</option>
+			<option value="bar_glass">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_BAR1_TYPE</option>
+			<option value="bar_3d">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_BAR1_TYPE</option>
+			<option value="bar_cylinder">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_BAR1_TYPE</option>
+			<option value="bar_cylinder_outline">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_BAR1_TYPE</option>
+			<option value="bar_rounded_glass">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_BAR1_TYPE</option>
+			<option value="bar_round">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION6_BAR1_TYPE</option>
+			<option value="bar_dome">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION7_BAR1_TYPE</option>	
+		</field>
+			
+		<field 	name="animation_1" type="list" default="pop"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR1_ANIMATION"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR1_ANIMATION" >
+			<option value="pop-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_BAR1_ANIMATION</option>
+			<option value="drop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_BAR1_ANIMATION</option>
+			<option value="fade-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_BAR1_ANIMATION</option>
+			<option value="grow-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_BAR1_ANIMATION</option>
+			<option value="grow-down">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_BAR1_ANIMATION</option>
+			<option value="pop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_BAR1_ANIMATION</option>
+		</field>
+
+		<field 	name="delay_1" type="text" default="0.5"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR1_DELAY"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR1_DELAY">
+		</field>
+
+		<field 	name="cascade_1" type="text" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR1_CASCADE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR1_CASCADE">
+		</field>
+
+	</fieldset>
+  
+<fieldset group="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_BAR2_SETTINGS"
+  name="COM_JOOMLEAGUE_FES_FLASH_PARAMS_GROUP_BAR2_SETTINGS"  
+			description="COM_JOOMLEAGUE_FES_FLASH_PARAMS_DESCR_BAR2_SETTINGS">	
+			
+		<field 	name="bar2" type="colorpicker" default="#FF0000"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR2_COLOUR" 
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR2_COLOUR">
+		</field>
+			
+		<field 	name="bartype_2" type="list" default="bar_glass"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR2_TYPE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR2_TYPE" >
+			<option value="bar">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_BAR2_TYPE</option>
+			<option value="bar_glass">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_BAR2_TYPE</option>
+			<option value="bar_3d">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_BAR2_TYPE</option>
+			<option value="bar_cylinder">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_BAR2_TYPE</option>
+			<option value="bar_cylinder_outline">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_BAR2_TYPE</option>
+			<option value="bar_rounded_glass">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_BAR2_TYPE</option>
+			<option value="bar_round">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION6_BAR2_TYPE</option>
+			<option value="bar_dome">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION7_BAR2_TYPE</option>	
+		</field>
+			
+		<field 	name="animation_2" type="list" default="pop"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR2_ANIMATION"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR2_ANIMATION" >
+			<option value="pop-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION0_BAR2_ANIMATION</option>
+			<option value="drop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION1_BAR2_ANIMATION</option>
+			<option value="fade-in">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION2_BAR2_ANIMATION</option>
+			<option value="grow-up">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION3_BAR2_ANIMATION</option>
+			<option value="grow-down">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION4_BAR2_ANIMATION</option>
+			<option value="pop">COM_JOOMLEAGUE_FES_FLASH_PARAM_OPTION5_BAR2_ANIMATION</option>
+		</field>
+
+		<field 	name="delay_2" type="text" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR2_DELAY"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR2_DELAY">
+		</field>
+
+		<field 	name="cascade_2" type="text" default="1"
+				label="COM_JOOMLEAGUE_FES_FLASH_PARAM_LABEL_BAR2_CASCADE"
+				description="COM_JOOMLEAGUE_FES_FLASH_PARAM_DESCR_BAR2_CASCADE">
+		</field>
+					
+	</fieldset>
+    	
+</form>

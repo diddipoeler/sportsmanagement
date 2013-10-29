@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<form>
+
+	<fieldset	group= "COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+	name= "COM_JOOMLEAGUE_FES_PARAMS_GROUP_OPTIONS"
+			description="COM_JOOMLEAGUE_FES_PARAMS_DESCR_OPTIONS">
+
+		<field	name="show_matchday_pagenav" type="list" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_PAGE_NAV"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_PAGE_NAV">
+			<option value="0">COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_OPTION0_SHOW_PAGE_NAV</option>
+			<option value="1">COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_OPTION1_SHOW_PAGE_NAV</option>
+		</field>
+
+		<field	name="show_all_user" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_ALL_USERS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_ALL_USERS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <!-- 
+		<field	name="limit" type="text" size="3" maxlength="2" default="10"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_LIMIT_USERS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_LIMIT_USERS" />
+         -->
+         
+		<field	name="link_name_to" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_LINK_USERS_TO"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_LINK_USERS_TO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field	name="show_pred_group" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_PRED_GROUP"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_PRED_GROUP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="show_user_icon" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_USERS_ICON"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_USERS_ICON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_average_points" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_AVERAGE_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_AVERAGE_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_points" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_POINTS"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_POINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_logo_small_overview" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_CLUB_ICON"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_CLUB_ICON">
+			<option value="0">JNO</option>
+			<option value="1">COM_JOOMLEAGUE_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
+			<option value="2">COM_JOOMLEAGUE_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
+		</field>
+
+    <field	name="show_team_names" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_TEAM_NAMES"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_TEAM_NAMES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="show_help" type="radio" default="0"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_HELP"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_HELP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_scoring" type="radio" default="1"
+				label="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_SCORING"
+				description="COM_JOOMLEAGUE_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_SCORING">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field	name="background_color_ranking" type="colorpicker" size="8" maxlength="8" default="#6F7860"
+label="COM_JOOMLEAGUE_FES_PREDICTIONRANKING_PARAM_LABEL_BACKGROUND_COLOR"
+description="COM_JOOMLEAGUE_FES_PREDICTIONRANKING_PARAM_DESCR_BACKGROUND_COLOR_GUEST_WIN" >
+</field>
+
+	</fieldset>
+
+</form>
