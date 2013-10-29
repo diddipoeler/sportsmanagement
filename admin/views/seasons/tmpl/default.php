@@ -5,7 +5,7 @@ $ordering=($this->lists['order'] == 's.ordering');
 
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.modal');
-//$this->request_url = 'index.php?option=com_sportsmanagement';
+
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>

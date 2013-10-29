@@ -1,19 +1,19 @@
 <?php defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LIST_FILTER');
+				echo JText::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="search" id="search"
 								value="<?php echo $this->lists['search']; ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_GO'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET');
+					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
 			</td>
@@ -69,7 +69,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					</th>
 					<th width="10%" class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_ORDER','p.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo JHtml::_('grid.order', $this->items, 'filesave.png', 'project.saveorder');
 						?>
 					</th>
@@ -143,8 +143,8 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						</td>
 						<td class="center"><?php echo $published; ?></td>
 						<td class="order">
-							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'project.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',true); ?></span>
-							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'project.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',true); ?></span>
+							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'project.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
+							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'project.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>
 							<?php $disabled=true ?  '' : 'disabled="disabled"';	?>
 							<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 						</td>
