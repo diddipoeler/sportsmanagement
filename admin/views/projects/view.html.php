@@ -28,6 +28,7 @@ class sportsmanagementViewProjects extends JView
 		$option 	= JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
 		$uri		= JFactory::getUri();
+        $model	= $this->getModel();
 
 		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_league',		'filter_league','',					'int');
 		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->get('identifier').'.filter_sports_type',	'filter_sports_type','',			'int');

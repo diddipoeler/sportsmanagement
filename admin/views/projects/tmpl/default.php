@@ -1,5 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
@@ -158,7 +159,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		</table>
 	</div>
 
-	<input type="hidden" name="view"				value="" />
+	
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />

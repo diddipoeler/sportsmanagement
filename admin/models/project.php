@@ -8,7 +8,7 @@ jimport('joomla.application.component.modeladmin');
 /**
  * HelloWorld Model
  */
-class sportsmanagementModelproject extends JModelAdmin
+class sportsmanagementModelProject extends JModelAdmin
 {
 	
   
