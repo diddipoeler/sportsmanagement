@@ -8,7 +8,7 @@ jimport('joomla.application.component.controllerform');
 /**
  * HelloWorld Controller
  */
-class sportsmanagementControllerseason extends JControllerForm
+class sportsmanagementControllerproject extends JControllerForm
 {
 
 
