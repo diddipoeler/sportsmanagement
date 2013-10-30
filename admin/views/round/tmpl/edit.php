@@ -14,7 +14,7 @@ JHTML::_('behavior.modal');
 	</div>
 	<div class="clr"></div>
 
-	
+	<input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="task" value="round.edit" />
 	<?php echo JHTML::_('form.token'); ?>
