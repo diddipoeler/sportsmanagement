@@ -3,7 +3,7 @@
 
 			<fieldset class="adminform">
 				<legend>
-					<?php echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE_DESCR',
+					<?php echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_DESCR',
 												'<i>' . $this->project_team->name . '</i>',
 												'<i>' . $this->projectws->name . '</i>'); ?>
 				</legend>
@@ -11,7 +11,7 @@
 					<tr>
 						<td class="key">
 							<label for="description">
-								<?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_INFO'); ?>:
+								<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INFO'); ?>:
 							</label>
 						</td>
 						<td>
@@ -21,7 +21,7 @@
 					<tr>
 						<td class="key">
 							<label for="description">
-								<?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_DESCRIPTION'); ?>:
+								<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DESCRIPTION'); ?>:
 							</label>
 						</td>
 						<td>

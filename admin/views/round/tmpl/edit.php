@@ -1,11 +1,12 @@
 <?php defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
 ?>
 <form action="index.php" method="post" id="adminForm">
 	<div class="col50">
 	<?php
 	echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
-	echo JHTML::_('tabs.panel',JText::_('COM_JOOMLEAGUE_TABS_DETAILS'), 'panel1');
+	echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
 	echo $this->loadTemplate('details');
 
 	echo JHTML::_('tabs.end');

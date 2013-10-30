@@ -3,7 +3,7 @@
 			<fieldset class="adminform">
 				<legend>
 					<?php
-                    echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE_TRAINING',
+                    echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_TRAINING',
 												'<i>' . $this->project_team->name . '</i>',
 												'<i>' . $this->projectws->name . '</i>');
 					
@@ -12,13 +12,13 @@
 				<table class='admintable'>
 					<tr>
 						<td class='key' nowrap='nowrap'>
-							<?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_ADD_NEW'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='' onchange='javascript:submitbutton("projectteam.apply");' />
+							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADD_NEW'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='' onchange='javascript:submitbutton("projectteam.apply");' />
 						</td>
-						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_DAY'); ?></td>
-						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_STARTTIME'); ?></td>
-						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_ENDTIME'); ?></td>
-						<td class='key' style='text-align:center;'><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_PLACE'); ?></td>
-						<td class='key' style='text-align:center;'><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_NOTES'); ?></td>
+						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
+						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
+						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
+						<td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
+						<td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
 					</tr>
 					<?php
 					if (!empty($this->trainingData))
@@ -37,7 +37,7 @@
 							?>
 							<tr>
 								<td class='key' nowrap='nowrap'>
-									<?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_DELETE');?>&nbsp;<input type='checkbox' name='delete_<?php echo $td->id; ?>' value='' onchange='javascript:submitbutton("projectteam.apply");' />
+									<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE');?>&nbsp;<input type='checkbox' name='delete_<?php echo $td->id; ?>' value='' onchange='javascript:submitbutton("projectteam.apply");' />
 								</td>
 								<td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
 								<td nowrap='nowrap' width='5%'>
