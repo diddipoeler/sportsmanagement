@@ -137,12 +137,12 @@ $uri=JURI::root();
 						</th>
 						<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','pref.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JSTATUS','pref.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 						</th>
 						<th width="10%">
 							<?php
-							echo JHTML::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ORDER'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHTML::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
 							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'projectreferee.saveorder');
 							?>
 						</th>
@@ -202,7 +202,7 @@ $uri=JURI::root();
 							}
 							?>
 							<td>
-								<?php echo JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 1) ?>
+								<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 1) ?>
 							</td>
 							<td class="center">
 								<?php
@@ -220,7 +220,7 @@ $uri=JURI::root();
 													'title= "'.$imageTitle.'"');
 
 								}
-								elseif ($row->picture == JoomleagueHelper::getDefaultPlaceholder("player"))
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
 										echo JHTML::_(	'image',
@@ -230,9 +230,9 @@ $uri=JURI::root();
 								}
 								elseif ($row->picture == !'')
 								{
-									$playerName = JoomleagueHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									$picture=JPATH_SITE.DS.$row->picture;
-									echo JoomleagueHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
+									echo sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
 								}
 								?>
 							</td>
@@ -275,12 +275,12 @@ $uri=JURI::root();
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon($i,$i > 0,'projectreferee.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',true);
+									echo $this->pagination->orderUpIcon($i,$i > 0,'projectreferee.orderup','JLIB_HTML_MOVE_UP',true);
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projectreferee.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',true);
+									echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projectreferee.orderdown','JLIB_HTML_MOVE_DOWN',true);
 									?>
 								</span>
 								<?php
