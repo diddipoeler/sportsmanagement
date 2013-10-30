@@ -86,6 +86,7 @@ class sportsmanagementViewSeason extends JView
 			JToolBarHelper::cancel('season.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *

@@ -26,12 +26,30 @@ class sportsmanagementViewRound extends JView
 {
 	function display($tpl=null)
 	{
-		if ($this->getLayout() == 'form')
+		// get the Data
+		$form = $this->get('Form');
+		$item = $this->get('Item');
+		$script = $this->get('Script');
+ 
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) 
 		{
-			$this->_displayForm($tpl);
-			return;
+			JError::raiseError(500, implode('<br />', $errors));
+			return false;
 		}
+		// Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+ 
+		// Set the toolbar
+		$this->addToolBar();
+ 
+		// Display the template
 		parent::display($tpl);
+ 
+		// Set the document
+		$this->setDocument();
 	}
 
 	function _displayForm($tpl)
@@ -77,6 +95,7 @@ class sportsmanagementViewRound extends JView
 		$this->addToolbar();		
 		parent::display($tpl);
 	}
+    
 	/**
 	* Add the page title and toolbar.
 	*
@@ -101,6 +120,21 @@ class sportsmanagementViewRound extends JView
 			JLToolBarHelper::cancel('round.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE');
 		}
 		JToolBarHelper::help('screen.joomleague', true);	
+	}
+    
+    /**
+	 * Method to set up the document properties
+	 *
+	 * @return void
+	 */
+	protected function setDocument() 
+	{
+		$isNew = $this->item->id == 0;
+		$document = JFactory::getDocument();
+		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->addScript(JURI::root() . $this->script);
+		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }
 ?>

@@ -25,85 +25,32 @@ class sportsmanagementViewProjectteam extends JView
 {
 	function display($tpl = null)
 	{
-		$option 	= JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState( $option . 'project' );
-		$uri 		= JFactory::getURI();
-		$user 		= JFactory::getUser();
-		$model		= $this->getModel();
-		$lists		= array();
-
-		//get the project_team
-		$project_team =& $this->get('data');
-		$isNew = ($project_team->id < 1);
-
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
+		// get the Data
+		$form = $this->get('Form');
+		$item = $this->get('Item');
+		$script = $this->get('Script');
+ 
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) 
 		{
-			$msg = JText::sprintf('DESCBEINGEDITTED',JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_THE_TEAM'),$project_team->name);
-			$mainframe->redirect('index.php?option=com_joomleague',$msg);
+			JError::raiseError(500, implode('<br />', $errors));
+			return false;
 		}
-
-		// Edit or Create?
-		if (!$isNew)
-		{
-			$model->checkout($user->get('id'));
-		}
-		else
-		{
-			// initialise new record
-			$project_team->order = 0;
-			// $project_team->parent_id = 0;
-		}
-		$projectws	=& $this->get('Data','projectws');
-
-		//build the html select list for days of week
-		if ($trainingData=$model->getTrainigData($project_team->id))
-		{
-			$daysOfWeek=array(	0 => JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT'),
-			1 => JText::_('COM_JOOMLEAGUE_GLOBAL_MONDAY'),
-			2 => JText::_('COM_JOOMLEAGUE_GLOBAL_TUESDAY'),
-			3 => JText::_('COM_JOOMLEAGUE_GLOBAL_WEDNESDAY'),
-			4 => JText::_('COM_JOOMLEAGUE_GLOBAL_THURSDAY'),
-			5 => JText::_('COM_JOOMLEAGUE_GLOBAL_FRIDAY'),
-			6 => JText::_('COM_JOOMLEAGUE_GLOBAL_SATURDAY'),
-			7 => JText::_('COM_JOOMLEAGUE_GLOBAL_SUNDAY'));
-			$dwOptions=array();
-			foreach($daysOfWeek AS $key => $value){$dwOptions[]=JHTML::_('select.option',$key,$value);}
-			foreach ($trainingData AS $td)
-			{
-				$lists['dayOfWeek'][$td->id]=JHTML::_('select.genericlist',$dwOptions,'dw_'.$td->id,'class="inputbox"','value','text',$td->dayofweek);
-			}
-			unset($daysOfWeek);
-			unset($dwOptions);
-		}
-
-		if ($projectws->project_type == 'DIVISIONS_LEAGUE') // No divisions
-		{
-			//build the html options for divisions
-			$division[]=JHTMLSelect::option('0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_DIVISION'));
-			$mdlDivisions = JModel::getInstance("divisions", "JoomLeagueModel");
-			if ($res =& $mdlDivisions->getDivisions($project_id)){
-				$division=array_merge($division,$res);
-			}
-			$lists['divisions']=$division;
-				
-			unset($res);
-			unset($divisions);
-		}
-
-		$this->assignRef('form'      	, $this->get('form'));	
-		$extended = $this->getExtended($project_team->extended, 'projectteam');
-		$this->assignRef( 'extended', $extended );
-		//$this->assignRef('imageselect',		$imageselect);
-		$this->assignRef('projectws',		$projectws);
-		$this->assignRef('lists',			$lists);
-		$this->assignRef('project_team',	$project_team);
-		$this->assignRef('trainingData',	$trainingData);
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
-		$this->addToolbar();
+		// Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+ 
+		// Set the toolbar
+		$this->addToolBar();
+ 
+		// Display the template
 		parent::display($tpl);
+ 
+		// Set the document
+		$this->setDocument();
 	}
+    
 	/**
 	* Add the page title and toolbar.
 	*
@@ -119,5 +66,21 @@ class sportsmanagementViewProjectteam extends JView
 		JToolBarHelper::divider();
 		JLToolBarHelper::onlinehelp();
 	}
+    
+    /**
+	 * Method to set up the document properties
+	 *
+	 * @return void
+	 */
+	protected function setDocument() 
+	{
+		$isNew = $this->item->id == 0;
+		$document = JFactory::getDocument();
+		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->addScript(JURI::root() . $this->script);
+		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+	}
+    
 }
 ?>
