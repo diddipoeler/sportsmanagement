@@ -3,8 +3,21 @@
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
+		  <field
+			name="projectteam_id"
+			type="hidden"
+		/>
 		<field
-			name="position_id"
+			name="person_id"
+			type="hidden"
+		/>
+		
+		<field
+			name="project_position_id"
 			type="sql"
 			class="inputbox"
 			default="0"

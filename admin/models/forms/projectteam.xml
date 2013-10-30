@@ -3,6 +3,18 @@
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="project_id"
+			type="hidden"
+		/>
+		<field
+			name="team_id"
+			type="hidden"
+		/>
 		<field
 			name="admin"
 			type="user"
