@@ -86,7 +86,7 @@ class sportsmanagementViewProject extends JView
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($project->id);
 		
 	$iProjectPositionsCount = 0;
-	$mdlProjectPositions = JModel::getInstance("Projectposition", "sportsmanagementModel");
+	$mdlProjectPositions = JModel::getInstance("Projectpositions", "sportsmanagementModel");
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($project->id);
 		
 	$iProjectRefereesCount = 0;

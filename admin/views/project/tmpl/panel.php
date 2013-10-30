@@ -54,7 +54,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 								<div class="icon-wrapper"><div class="icon"><?php echo JHTML::link($link,$image); ?></div></div>
 							<?php
 							}
-							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectposition&pid='.$this->project->id);
+							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions&pid='.$this->project->id);
 							$text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions);
 							$imageFile='icon-48-Positions.png';
 							$linkParams="<span>$text</span>&nbsp;";

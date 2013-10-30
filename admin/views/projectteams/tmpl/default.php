@@ -1,6 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
 $mainframe = JFactory::getApplication();
 
 //Ordering allowed ?
@@ -28,7 +29,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 <fieldset class="adminform">
 	<legend>
 	<?php
-	echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_QUICKADD_TEAM');
+	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_TEAM');
 	?>
 	</legend>
 	<form id="quickaddForm" action="<?php echo JRoute::_(JURI::root().'administrator/index.php?option=com_joomleague&task=quickadd.addteam'); ?>" method="post">
@@ -36,9 +37,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 	<input type="hidden" id="cteamid" name="cteamid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?></td>
+			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?></td>
 			<td><input type="text" name="quickadd" id="quickadd" size="50" /></td>
-			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_ADD');?>" /></td>
+			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /></td>
 		</tr>
 	</table>
 	<?php echo JHTML::_('form.token')."\n"; ?>
@@ -47,18 +48,18 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 			<?php $cell_count=22; ?>
 			<table class="adminlist">
 				<thead>
 					<tr>
-						<th width="5"><?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_NUM'); ?></th>
+						<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="20">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->lists['order_Dir'],$this->lists['order']); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -79,7 +80,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_joomleague/assets/images/mail.png';
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
 								$imageParams='title= "'.$imageTitle.'"';
 								$image=JHTML::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
@@ -88,9 +89,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								?>
 							</a>
 						</th>
-						<th colspan="2"><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
+						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->lists['order_Dir'],$this->lists['order']); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -111,7 +112,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_joomleague/assets/images/mail.png';
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
 								$imageParams='title= "'.$imageTitle.'"';
 								$image=JHTML::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
@@ -124,7 +125,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						{
 							$cell_count++;
 							?><th>
-								<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->lists['order_Dir'],$this->lists['order']);
+								<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->lists['order_Dir'],$this->lists['order']);
 									echo '<br>'.JHTML::_(	'select.genericlist',
 														$this->lists['divisions'],
 														'division',
@@ -135,19 +136,19 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						}
 						?>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_MA'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
-                        <th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_PENALTY_P'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_W'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_D'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_L'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_HG'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_GG'); ?></th>
-						<th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_DG'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
+                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PENALTY_P'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_W'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_D'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_L'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
 						<th width="1%">
 							<?php echo JHTML::_('grid.sort','TID','team_id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
@@ -183,7 +184,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								?>
 								<td style="text-align:center; "><?php
 									$imageFile='administrator/components/com_joomleague/assets/images/edit.png';
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams='title= "'.$imageTitle.'"';
 									$image=JHTML::image($imageFile,$imageTitle,$imageParams);
 									$linkParams='';
@@ -200,7 +201,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									$image = "players_edit.png";
 								}
 								$imageFile='administrator/components/com_joomleague/assets/images/'.$image;
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
 								$imageParams='title= "'.$imageTitle.'"';
 								$image=JHTML::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
 								$linkParams='';
@@ -213,7 +214,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									$image = "players_edit.png";
 								}
 								$imageFile='administrator/components/com_joomleague/assets/images/'.$image;
-								$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
 								$imageParams='title= "'.$imageTitle.'"';
 								$image=JHTML::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
 								$linkParams='';
@@ -246,19 +247,19 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo JHTML::image(	'administrator/components/com_joomleague/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == JoomleagueHelper::getDefaultPlaceholder("team"))
 								{
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 									echo JHTML::image('administrator/components/com_joomleague/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
 								{
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
 									$imageParams=array();
 									$imageParams['title']=$imageTitle ;
 									$imageParams['height']=30;
