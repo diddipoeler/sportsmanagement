@@ -14,10 +14,10 @@ JHTML::_('behavior.modal');
 		}
 	}
 </script>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<table class="adminlist">
 				<thead>
 					<tr>
@@ -167,6 +167,7 @@ JHTML::_('behavior.modal');
 		</fieldset>
 	</div>
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" />
+    <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />

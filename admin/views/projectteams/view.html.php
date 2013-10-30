@@ -39,6 +39,10 @@ class sportsmanagementViewprojectteams extends JView
 		$items =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -54,6 +58,7 @@ class sportsmanagementViewprojectteams extends JView
 		$this->assignRef('projectteam',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
+        $this->assignRef('project',$project);
 		$this->addToolbar();
 		parent::display($tpl);
 	}

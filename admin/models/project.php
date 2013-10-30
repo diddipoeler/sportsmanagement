@@ -111,5 +111,20 @@ class sportsmanagementModelProject extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * return 
+	 *
+	 * @param int project_id
+	 * @return int
+	 */
+	function getProject($project_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
+				  WHERE id='.$project_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 	
 }

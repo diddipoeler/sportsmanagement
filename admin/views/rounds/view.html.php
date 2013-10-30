@@ -49,10 +49,12 @@ class sportsmanagementViewRounds extends JView
 		$matchday =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
-        $project_id	= JRequest::getVar('pid');
-		
         $model = $this->getModel();
-        $project = $model->getRoundsProject($project_id);
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
+        
 		//$projectws =& $this->get('Data','projectws');
 
 		//$state = $this->get('state');

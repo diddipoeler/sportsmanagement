@@ -63,11 +63,11 @@ $uri=JURI::root();
 	<?php echo JHTML::_('form.token'); ?>
 	</form>
 </fieldset>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<fieldset class="adminform">
 		<legend>
 			<?php
-			echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->projectws->name.'</i>');
+			echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->project->name.'</i>');
 			?>
 		</legend>
 		<table>
@@ -301,6 +301,7 @@ $uri=JURI::root();
 		</div>
 	</fieldset>
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
+    <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
