@@ -51,7 +51,7 @@ JHTML::_('behavior.mootools');
 <fieldset class="adminform">
 	<legend>
 	<?php
-	echo JText::_("COM_JOOMLEAGUE_ADMIN_TEAMPLAYERS_QUICKADD_PLAYER");
+	echo JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYERS_QUICKADD_PLAYER");
 	?>
 	</legend>
 	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_joomleague&task=quickadd.addplayer" method="post">
@@ -59,7 +59,7 @@ JHTML::_('behavior.mootools');
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_TEAMPLAYERS_QUICKADD_DESCR');?>:</td>
+			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYERS_QUICKADD_DESCR');?>:</td>
 			<td><input type="text" name="quickadd" id="quickadd"  size="50"  /></td>
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
 		</tr>
@@ -71,7 +71,7 @@ JHTML::_('behavior.mootools');
 	<fieldset class="adminform">
 		<legend>
 			<?php
-			echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_TPLAYERS_TITLE2',
+			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE2',
 									'<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
 			?>
 		</legend>
@@ -79,19 +79,19 @@ JHTML::_('behavior.mootools');
 			<tr>
 				<td align="left" width="100%">
 					<?php
-					echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_FILTER' );
+					echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_FILTER' );
 					?>
 					<input	type="text" name="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="text_area"
 							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
 					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_GO' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_GO' );
 						?>
 					</button>
 					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_RESET' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
 						?>
 					</button>
 				</td>
@@ -111,7 +111,7 @@ JHTML::_('behavior.mootools');
 					<tr>
 						<th width="5">
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_NUM' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 							?>
 						</th>
 						<th width="20">
@@ -122,7 +122,7 @@ JHTML::_('behavior.mootools');
 						</th>
 						<th>
 							<?php
-							echo JHTML::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th>
@@ -132,37 +132,37 @@ JHTML::_('behavior.mootools');
 						</th>
 						<th>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_IMAGE' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE' );
 							?>
 						</th>
             <th width="20">
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_MARKET_VALUE' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE' );
 							?>
 						</th>
 						<th width="20">
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_SHIRTNR' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR' );
 							?>
 						</th>
 						<th width="20">
 							<?php
-							echo JHTML::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_POS', 'tp.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'tp.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_STATUS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS' );
 							?>
 						</th>
 						<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_JOOMLEAGUE_GLOBAL_PUBLISHED','tp.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','tp.published',$this->lists['order_Dir'],$this->lists['order']);
 						?></th>
 						<th width="10%">
 							<?php
-							//echo JHTML::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-                            echo JHTML::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'tp.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							//echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+                            echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'tp.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo JHTML::_( 'grid.order', $this->items, 'filesave.png', 'teamplayer.saveorder' );
 							?>
 						</th>
@@ -221,7 +221,7 @@ JHTML::_('behavior.mootools');
 								<td class="center">
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_EDIT_DETAILS' );
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
 										echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -232,7 +232,7 @@ JHTML::_('behavior.mootools');
 							}
 							?>
 							<td>
-								<?php echo JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
+								<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
 							</td>
 							<td class="center">
 								<?php
@@ -243,16 +243,16 @@ JHTML::_('behavior.mootools');
 								<?php
 								if ( $row->picture == '' )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_NO_IMAGE' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
 									echo JHTML::_(	'image',
 													'administrator/components/com_joomleague/assets/images/delete.png',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 
 								}
-								elseif ( $row->picture == JoomleagueHelper::getDefaultPlaceholder("player") )
+								elseif ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
-										$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
 										echo JHTML::_(	'image',
 														'administrator/components/com_joomleague/assets/images/information.png',
 														$imageTitle,
@@ -260,8 +260,8 @@ JHTML::_('behavior.mootools');
 								}
 								elseif ( $row->picture == !'')
 								{
-									$playerName = JoomleagueHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo JoomleagueHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 								}
 								?>
 							</td>
@@ -309,21 +309,21 @@ JHTML::_('behavior.mootools');
 								//$row->away = 1;
 								if ( $row->injury > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_INJURED' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
 									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/injured.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_SUSPENDED' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
 									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/suspension.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_AWAY' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
 									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/away.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
@@ -339,12 +339,12 @@ JHTML::_('behavior.mootools');
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamplayer.orderup', 'COM_JOOMLEAGUE_GLOBAL_ORDER_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamplayer.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamplayer.orderdown', 'COM_JOOMLEAGUE_GLOBAL_ORDER_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamplayer.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true );
 									?>
 								</span>
 								<?php

@@ -27,7 +27,7 @@ $uri = JUri::root();
 <fieldset class="adminform">
 	<legend>
 	<?php
-	echo JText::_("COM_JOOMLEAGUE_ADMIN_TEAMSTAFFS_QUICKADD_STAFF");
+	echo JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_QUICKADD_STAFF");
 	?>
 	</legend>
 	<form id="quickaddForm" action="<?php echo JUri::root(); ?>administrator/index.php?option=com_joomleague&task=quickadd.addstaff" method="post">
@@ -35,7 +35,7 @@ $uri = JUri::root();
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_TEAMSTAFFS_QUICKADD_DESCR');?>:</td>
+			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_QUICKADD_DESCR');?>:</td>
 			<td><input type="text" name="quickadd" id="quickadd" size="50" /></td>
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
 		</tr>
@@ -47,7 +47,7 @@ $uri = JUri::root();
 	<fieldset class="adminform">
 		<legend>
 			<?php
-			echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_TSTAFFS_TITLE2',
+			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE2',
 									'<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
 			?>
 		</legend>
@@ -55,19 +55,19 @@ $uri = JUri::root();
 			<tr>
 				<td align="left" width="100%">
 					<?php
-					echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_FILTER' );
+					echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_FILTER' );
 					?>
 					<input	type="text" name="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="text_area"
 							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
 					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_GO' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_GO' );
 						?>
 					</button>
 					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_RESET' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
 						?>
 					</button>
 				</td>
@@ -87,7 +87,7 @@ $uri = JUri::root();
 					<tr>
 						<th width="5" >
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_NUM' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 							?>
 						</th>
 						<th width="20" >
@@ -98,37 +98,37 @@ $uri = JUri::root();
 						</th>
 						<th class="title" class="nowrap" >
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th width="20" >
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_PID' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_PID' );
 							?>
 						</th>
 						<th class="title" class="nowrap" >
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_IMAGE' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_IMAGE' );
 							?>
 						</th>
 						<th class="title" class="nowrap" >
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_POS', 'ppl.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_POS', 'ppl.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th class="title" class="nowrap" >
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_STATUS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_STATUS' );
 							?>
 						</th>
 						<th class="title" class="nowrap">
 						<?php
-						echo JHtml::_('grid.sort','COM_JOOMLEAGUE_GLOBAL_PUBLISHED','ts.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','ts.published',$this->lists['order_Dir'],$this->lists['order']);
 						?></th>
 						<th width="10%" >
 							<?php
-							//echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-                            echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'ts.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+                            echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ts.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
 							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'teamstaff.saveorder');
 							?>
@@ -189,7 +189,7 @@ $uri = JUri::root();
 								<td class="center">
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_EDIT_DETAILS' );
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_EDIT_DETAILS' );
 										echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -200,7 +200,7 @@ $uri = JUri::root();
 							}
 							?>
 							<td>
-								<?php echo JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
+								<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
 							</td>
 							<td class="center">
 								<?php
@@ -211,16 +211,16 @@ $uri = JUri::root();
 								<?php
 								if ( $row->picture == '' )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_NO_IMAGE' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_NO_IMAGE' );
 									echo JHtml::_(	'image',
 													'administrator/components/com_joomleague/assets/images/delete.png',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 
 								}
-								elseif ( $row->picture == JoomleagueHelper::getDefaultPlaceholder("player"))
+								elseif ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-										$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_DEFAULT_IMAGE' );
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_DEFAULT_IMAGE' );
 										echo JHtml::_(	'image',
 														'administrator/components/com_joomleague/assets/images/information.png',
 														$imageTitle,
@@ -228,8 +228,8 @@ $uri = JUri::root();
 								}
 								elseif ( $row->picture == !'')
 								{
-									$playerName = JoomleagueHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo JoomleagueHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 								}
 								?>
 							</td>
@@ -269,21 +269,21 @@ $uri = JUri::root();
 								//$row->away = 1;
 								if ( $row->injury > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_INJURED' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_INJURED' );
 									echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/injured.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_SUSPENDED' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_SUSPENDED' );
 									echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/suspension.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
-									$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_AWAY' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_AWAY' );
 									echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/away.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
@@ -299,12 +299,12 @@ $uri = JUri::root();
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaff.orderup', 'COM_JOOMLEAGUE_GLOBAL_ORDER_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaff.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaff.orderdown', 'COM_JOOMLEAGUE_GLOBAL_ORDER_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaff.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true );
 									?>
 								</span>
 								<?php
