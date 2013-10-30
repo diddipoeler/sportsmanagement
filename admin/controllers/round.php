@@ -18,11 +18,11 @@ function save()
        $model = $this->getModel('round');
 	   if ($model->save($post))
 		{
-		//	$msg = JText::_('COM_JOOMLEAGUE_ADMIN_PERSON_CTRL_SAVED');
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_CTRL_SAVED');
     }
     else
 		{
-			//$msg = JText::_('COM_JOOMLEAGUE_ADMIN_PERSON_CTRL_ERROR_SAVE').$model->getError();
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_CTRL_ERROR_SAVE').$model->getError();
 		}
         
     if ($this->getTask() == 'save')
