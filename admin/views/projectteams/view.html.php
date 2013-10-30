@@ -66,13 +66,19 @@ class sportsmanagementViewprojectteams extends JView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playground');
-		JToolBarHelper::editList('playground.edit');
-		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'));
+        JToolBarHelper::deleteList('', 'projectteam.remove');
+
+		JToolBarHelper::apply('projectteam.saveshort');
+		JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
+		JToolBarHelper::custom('projectteam.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'),false);
+		JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'), true);
 		JToolBarHelper::divider();
+
+		//JLToolBarHelper::onlinehelp();
+    JToolBarHelper::preferences(JRequest::getCmd('option'));
+    
+        
 
 		//JToolBarHelper::onlinehelp();
 	}

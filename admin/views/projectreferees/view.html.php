@@ -65,14 +65,20 @@ class sportsmanagementViewprojectreferees extends JView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playground');
-		JToolBarHelper::editList('playground.edit');
-		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
+		
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE'),'Referees');
+		
+		JToolBarHelper::apply('projectreferee.saveshort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
+		JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
+		JToolBarHelper::custom('projectreferee.unassign','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
 		JToolBarHelper::divider();
+		
+		//JLToolBarHelper::onlinehelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+        
+        
+       
 
 		//JToolBarHelper::onlinehelp();
 	}
