@@ -22,7 +22,7 @@ jimport('joomla.filter.input');
 * @package	JoomLeague
 * @since	0.1
 */
-class TableProjectReferee extends JTable
+class sportsmanagementTableProjectReferee extends JTable
 {
 	/**
 	 * Constructor

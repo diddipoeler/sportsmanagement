@@ -17,12 +17,12 @@ jimport('joomla.database.table');
 jimport('joomla.filter.input');
 
 /**
-* projectteam Table class
+* Template Table class
 *
 * @package		Joomleague
 * @since 0.1
 */
-class sportsmanagementTableProjectteam extends JTable
+class sportsmanagementTableTemplate extends JTable
 {
 	/**
 	 * Constructor
@@ -30,40 +30,27 @@ class sportsmanagementTableProjectteam extends JTable
 	 * @param object Database connector object
 	 * @since 1.0
 	 */
-	function __construct(& $db)
-	{
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team', 'id', $db );
+	function __construct(& $db) {
+		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config', 'id', $db);
 	}
 
 	/**
-	 * Default delete method
-	 **
-	 * @access public
-	 * @return true if successful otherwise returns and error message
-	 */
-	function delete( $oid=null )
+	* Overloaded bind function
+	*
+	* @acces public
+	* @param array $hash named array
+	* @return null|string	null is operation was satisfactory, otherwise returns an error
+	* @see JTable:bind
+	* @since 1.5
+	*/
+	function bind($array, $ignore = '')
 	{
-		//TODO: check that there are no associated players / matches / events / trainingdata
-
-		$k = $this->_tbl_key;
-		if ($oid) {
-			$this->$k = intval( $oid );
+		if (key_exists( 'params', $array ) && is_array( $array['params'] )) {
+			$registry = new JRegistry();
+			$registry->loadArray($array['params']);
+			$array['params'] = $registry->toString('ini');
 		}
-
-		$query = 'DELETE FROM '.$this->getDbo()->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->getDbo()->Quote($this->$k);
-		$this->getDbo()->setQuery( $query );
-
-		if ($this->getDbo()->query())
-		{
-			return true;
-		}
-		else
-		{
-			$this->setError($this->getDbo()->getErrorMsg());
-			return false;
-		}
+		return parent::bind($array, $ignore);
 	}
-
 }
 ?>

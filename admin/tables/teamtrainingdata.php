@@ -10,19 +10,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
-jimport( 'joomla.filter.input' );
+jimport('joomla.filter.input');
 
 /**
-* Season Positionstool class
+* TeamTrainigData Table class
 *
 * @package	JoomLeague
-* @since	0.1
+* @since	1.5.0
 */
-class sportsmanagementTableProjectposition extends JTable
+class sportsmanagementTableTeamTrainingData extends JTable
 {
 	/**
 	 * Constructor
@@ -32,8 +32,7 @@ class sportsmanagementTableProjectposition extends JTable
 	 */
 	function __construct(& $db)
 	{
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position', 'id', $db );
+		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata','id',$db);
 	}
-
 }
 ?>
