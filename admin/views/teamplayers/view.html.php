@@ -21,26 +21,59 @@ jimport( 'joomla.application.component.view' );
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueViewteamPlayers extends JLGView
+class sportsmanagementViewteamPlayers extends JView
 {
 
 	function display( $tpl = null )
 	{
-		if ( $this->getLayout() == 'editlist' )
-		{
-			$this->_displayEditlist( $tpl );
-			return;
-		}
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $uri		= JFactory::getURI();
+		$document = &JFactory::getDocument();
+	
+		$baseurl    = JURI::root();
+		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.js');
+		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.Request.js');
+		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Observer.js');
+		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/quickaddperson.js');
+		$document->addStyleSheet($baseurl.'administrator/components/com_joomleague/assets/css/Autocompleter.css');			
 
-		if ( $this->getLayout() == 'default' )
-		{
-			$this->_displayDefault( $tpl );
-			return;
-		}
+		$filter_state		= $mainframe->getUserStateFromRequest( $option . 'tp_filter_state',		'filter_state',		'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'tp_filter_order',		'filter_order',		'ppl.ordering',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'tp_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$search				= $mainframe->getUserStateFromRequest( $option . 'ppl1_search',				'search',			'',				'string' );
+		$search_mode		= $mainframe->getUserStateFromRequest( $option . 'tp_search_mode',			'search_mode',		'',				'string' );
+        
+        $items =& $this->get('Items');
+		$total =& $this->get('Total');
+		$pagination =& $this->get('Pagination');
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
 
-		parent::display( $tpl );
+		// table ordering
+		$lists['order_Dir']=$filter_order_Dir;
+		$lists['order']=$filter_order;
+
+		// search filter
+		$lists['search']=$search;
+		$lists['search_mode']=$search_mode;
+
+		$this->assignRef('user',JFactory::getUser());
+		$this->assignRef('config',JFactory::getConfig());
+		$this->assignRef('lists',$lists);
+		$this->assignRef('items',$items);
+		$this->assignRef('pagination',$pagination);
+		$this->assignRef('request_url',$uri->toString());
+        $this->assignRef('project',$project);
+		$this->addToolbar();
+		parent::display($tpl);
+        
+        
 	}
 
+/*
 	function _displayEditlist_remove( $tpl )
 	{
 		$option = JRequest::getCmd('option');
@@ -156,7 +189,9 @@ class JoomleagueViewteamPlayers extends JLGView
 
 		parent::display( $tpl );
 	}
+*/
 
+/*
 	function _displayDefault( $tpl )
 	{
 		$mainframe	= JFactory::getApplication();
@@ -200,7 +235,7 @@ class JoomleagueViewteamPlayers extends JLGView
 		$lists['search_mode']	= $search_mode;
 
 		//build the html options for position
-		$position_id[] = JHTML::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_POSITION' ) );
+		$position_id[] = JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res =& $this->get('positions'))
 		{
 			$position_id = array_merge( $position_id, $res );
@@ -223,6 +258,8 @@ class JoomleagueViewteamPlayers extends JLGView
 		$this->addToolbar();		
 		parent::display( $tpl );
 	}
+    */
+    
 	/**
 	* Add the page title and toolbar.
 	*
@@ -232,21 +269,21 @@ class JoomleagueViewteamPlayers extends JLGView
 	{
 		// Set toolbar items for the page
 	
-		JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_TITLE' ) );
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE' ) );
 
-		JLToolBarHelper::publishList('teamplayer.publish');
-		JLToolBarHelper::unpublishList('teamplayer.unpublish');
-		JLToolBarHelper::apply( 'teamplayer.saveshort', JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_APPLY' ) );
+		JToolBarHelper::publishList('teamplayer.publish');
+		JToolBarHelper::unpublishList('teamplayer.unpublish');
+		JToolBarHelper::apply( 'teamplayer.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
 		JToolBarHelper::divider();
 
-		JLToolBarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_ASSIGN' ), false );
-		JLToolBarHelper::custom( 'teamplayer.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_UNASSIGN' ), false );
+		JToolBarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );
+		JToolBarHelper::custom( 'teamplayer.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
 		JToolBarHelper::divider();
 
-		JToolBarHelper::back( 'COM_JOOMLEAGUE_ADMIN_TPLAYERS_BACK', 'index.php?option=com_joomleague&view=projectteams&task=projectteam.display' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_joomleague&view=projectteams&task=projectteam.display' );
 		JToolBarHelper::divider();
 
-		JLToolBarHelper::onlinehelp();
+		//JLToolBarHelper::onlinehelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }

@@ -22,20 +22,52 @@ jimport( 'joomla.application.component.view' );
  * @package	JoomLeague
  * @since	1.5
  */
-class JoomleagueViewTeamStaffs extends JLGView
+class sportsmanagementViewTeamStaffs extends JView
 {
 
 	function display( $tpl = null )
 	{
-		if ( $this->getLayout() == 'default' )
-		{
-			$this->_displayDefault( $tpl );
-			return;
-		}
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$uri = JFactory::getURI();
+        $document = &JFactory::getDocument();
+        
+        $filter_state		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_state',		'filter_state',		'',				'word' );
+		//$filter_order		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order',		'filter_order',		'ppl.ordering',	'cmd' );
+        $filter_order		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order',		'filter_order',		'ts.ordering',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$search			= $mainframe->getUserStateFromRequest( $option . 'ts_search',			'search',			'',				'string' );
+		$search_mode		= $mainframe->getUserStateFromRequest( $option . 'ts_search_mode',		'search_mode',		'',				'string' );
+        
+        $items =& $this->get('Items');
+		$total =& $this->get('Total');
+		$pagination =& $this->get('Pagination');
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
 
-		parent::display( $tpl );
+		// table ordering
+		$lists['order_Dir']=$filter_order_Dir;
+		$lists['order']=$filter_order;
+
+		// search filter
+		$lists['search']=$search;
+		$lists['search_mode']=$search_mode;
+
+		$this->assignRef('user',JFactory::getUser());
+		$this->assignRef('config',JFactory::getConfig());
+		$this->assignRef('lists',$lists);
+		$this->assignRef('items',$items);
+		$this->assignRef('pagination',$pagination);
+		$this->assignRef('request_url',$uri->toString());
+        $this->assignRef('project',$project);
+		$this->addToolbar();
+		parent::display($tpl);
+        
 	}
 
+/*
 	function _displayDefault( $tpl )
 	{
 		$document = &JFactory::getDocument();
@@ -79,7 +111,7 @@ class JoomleagueViewTeamStaffs extends JLGView
 		$lists['search_mode']= $search_mode;
 
 		//build the html options for position
-		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_FUNCTION' ) );
+		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FUNCTION' ) );
 		if ( $res = & $model->getPositions() )
 		{
 			$position_id = array_merge( $position_id, $res );
@@ -102,6 +134,8 @@ class JoomleagueViewTeamStaffs extends JLGView
 		$this->addToolbar();		
 		parent::display( $tpl );
 	}
+    */
+    
 	/**
 	* Add the page title and toolbar.
 	*
@@ -110,22 +144,22 @@ class JoomleagueViewTeamStaffs extends JLGView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_TITLE' ) );
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' ) );
 
-		JLToolBarHelper::publishList('teamstaff.publish');
-		JLToolBarHelper::unpublishList('teamstaff.unpublish');
-		JLToolBarHelper::apply( 'teamstaff.saveshort', JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_APPLY' ) );
+		JToolBarHelper::publishList('teamstaff.publish');
+		JToolBarHelper::unpublishList('teamstaff.unpublish');
+		JToolBarHelper::apply( 'teamstaff.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_APPLY' ) );
 		JToolBarHelper::divider();
 
-		JLToolBarHelper::custom( 'teamstaff.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_ASSIGN' ), false );
-		JLToolBarHelper::custom( 'teamstaff.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_UNASSIGN' ), false );
+		JToolBarHelper::custom( 'teamstaff.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_ASSIGN' ), false );
+		JToolBarHelper::custom( 'teamstaff.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_UNASSIGN' ), false );
 		JToolBarHelper::divider();
 
-		JToolBarHelper::back( 'COM_JOOMLEAGUE_ADMIN_TSTAFFS_BACK', 'index.php?option=com_joomleague&view=projectteams&task=projectteam.display' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_BACK', 'index.php?option=com_joomleague&view=projectteams&task=projectteam.display' );
 		JToolBarHelper::divider();
 
 		
-		JLToolBarHelper::onlinehelp();
+		//JLToolBarHelper::onlinehelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 		
 	}
