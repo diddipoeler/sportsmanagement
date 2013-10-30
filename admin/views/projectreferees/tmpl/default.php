@@ -29,7 +29,7 @@ JHTML::_('behavior.mootools');
 </style>
 <script>
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_joomleague&task=quickadd.searchreferee';
+	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
 
 	function searchPlayer(val)
 	{
@@ -51,7 +51,7 @@ $uri=JURI::root();
 	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_joomleague&task=quickadd.addreferee" method="post">
+	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>
@@ -160,7 +160,7 @@ $uri=JURI::root();
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 						$row =& $this->items[$i];
-						$link=JRoute::_('index.php?option=com_joomleague&task=projectreferee.edit&id='.$row->id);
+						$link=JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id);
 						$checked=JHTML::_('grid.checkedout',$row,$i);
 						$inputappend='';
 						?>
@@ -192,7 +192,7 @@ $uri=JURI::root();
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
-										echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
+										echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
 										?>
@@ -215,7 +215,7 @@ $uri=JURI::root();
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
 									echo JHTML::_(	'image',
-													'administrator/components/com_joomleague/assets/images/delete.png',
+													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
 													'title= "'.$imageTitle.'"');
 
@@ -224,7 +224,7 @@ $uri=JURI::root();
 								{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
 										echo JHTML::_(	'image',
-														'administrator/components/com_joomleague/assets/images/information.png',
+														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
 								}
