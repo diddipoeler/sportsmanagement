@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-	addrulepath="/administrator/components/com_joomleague/models/rules"
-	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">
 		<field
 			name="admin"
@@ -119,62 +119,62 @@
 			<field
 				name="picture"
 				type="imageselect"
-				default="images/com_joomleague/database/placeholders/placeholder_450_2.png"					
+				default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"					
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="projectteams"
-				directory="com_joomleague/database/projectteams"/>
+				directory="com_sportsmanagement/database/projectteams"/>
       <field
 				name="trikot_home"
 				type="imageselect"
 				targetfolder="projectteams_trikot_home"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/projectteams/trikot_home"/>				
+				directory="com_sportsmanagement/database/projectteams/trikot_home"/>				
 			<field
 				name="trikot_away"
 				type="imageselect"
 				targetfolder="projectteams_trikot_away"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png"
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_LOGO_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/projectteams/trikot_away"/>  		
+				directory="com_sportsmanagement/database/projectteams/trikot_away"/>  		
 	</fieldset>		
 	
   <fieldset name="picture">	
 			<field
 				name="picture"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_450_2.png"				
+				default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"				
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/projectteams"/>
+				directory="com_sportsmanagement/database/projectteams"/>
       <field
 				name="trikot_home"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/projectteams/trikot_home"/>				
+				directory="com_sportsmanagement/database/projectteams/trikot_home"/>				
 			<field
 				name="trikot_away"
 				type="media"
-				default="images/com_joomleague/database/placeholders/placeholder_small.png"
+				default="images/com_sportsmanagement/database/placeholders/placeholder_small.png"
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_LOGO_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_joomleague/database/projectteams/trikot_away"/>	  					
+				directory="com_sportsmanagement/database/projectteams/trikot_away"/>	  					
 	</fieldset>		
 </form>
