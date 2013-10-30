@@ -72,7 +72,7 @@ JHTML::_('behavior.mootools');
 		<legend>
 			<?php
 			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE2',
-									'<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
+									'<i>' . $this->project_team->name . '</i>', '<i>' . $this->project->name . '</i>' );
 			?>
 		</legend>
 		<table>

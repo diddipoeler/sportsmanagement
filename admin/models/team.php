@@ -108,5 +108,20 @@ class sportsmanagementModelteam extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * return 
+	 *
+	 * @param int team_id
+	 * @return int
+	 */
+	function getTeam($team_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
+				  WHERE id='.$team_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 	
 }
