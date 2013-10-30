@@ -42,18 +42,18 @@ class sportsmanagementModelProjectteams extends JModelList
 							t.club_id,
 							c.email AS club_email,
 							(SELECT count(id)
-							FROM #__joomleague_team_player tp
+							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp
 							WHERE projectteam_id = projectteamid and tp.published=1) playercount,
 							(SELECT count(id)
-							FROM #__joomleague_team_staff ts
+							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts
 							WHERE projectteam_id = projectteamid and ts.published=1) staffcount,
 							tl.info
-					FROM #__joomleague_project_team AS tl
-					LEFT JOIN #__joomleague_team t on tl.team_id = t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t on tl.team_id = t.id
 					LEFT JOIN #__users u on tl.admin = u.id
-					LEFT JOIN #__joomleague_club c on t.club_id = c.id
-					LEFT JOIN #__joomleague_division d on d.id = tl.division_id
-					LEFT JOIN #__joomleague_playground plg on plg.id = tl.standard_playground ' .
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c on t.club_id = c.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground ' .
 		$where . $orderby;
 
 		return $query;
@@ -110,7 +110,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		if ( $peid == null )
 		{
 			$query = "	DELETE
-						FROM #__joomleague_project_team
+						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "'";
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
@@ -124,7 +124,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			JArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
 			$query = "	DELETE
-						FROM #__joomleague_project_team
+						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "' AND team_id NOT IN  (" . $peids . ")";
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
@@ -133,9 +133,9 @@ class sportsmanagementModelProjectteams extends JModelList
 				$result = false;
 			}
 
-			$query = "	UPDATE  #__joomleague_match
+			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
 						SET projectteam1_id = NULL 
-						WHERE projectteam1_id in (select id from #__joomleague_project_team 
+						WHERE projectteam1_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
 			$this->_db->setQuery( $query );
@@ -144,9 +144,9 @@ class sportsmanagementModelProjectteams extends JModelList
 				$this->setError( $this->_db->getErrorMsg() );
 				$result = false;
 			}
-			$query = "	UPDATE  #__joomleague_match
+			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
 						SET projectteam2_id = NULL 
-						WHERE projectteam2_id in (select id from #__joomleague_project_team 
+						WHERE projectteam2_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
 			$this->_db->setQuery( $query );
@@ -161,7 +161,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		for ( $x = 0; $x < count( $data['project_teamslist'] ); $x++ )
 		{
 			$query = "	INSERT IGNORE
-						INTO #__joomleague_project_team
+						INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						(project_id, team_id)
 						VALUES ( '" . $data['id'] . "', '".$data['project_teamslist'][$x] . "')";
 
@@ -229,7 +229,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query = '	SELECT	id AS value,
 							name AS text,
 							info
-					FROM #__joomleague_team
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
 					ORDER BY text ASC ';
 
 		$this->_db->setQuery( $query );
@@ -258,22 +258,22 @@ class sportsmanagementModelProjectteams extends JModelList
 			$project_team_id = $oldteamid[$a];
 			$project_team_id_new = $newteamid[$project_team_id];
 			$query = 'SELECT t.name
-					FROM #__joomleague_team as t
-					inner join #__joomleague_project_team as pt
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
+					inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt
 					on t.id = pt.team_id 
 					WHERE pt.id='.$project_team_id;
 			$this->_db->setQuery($query);
 			$old_team_name = $this->_db->loadResult();
 
 			$query = 'SELECT t.name
-					FROM #__joomleague_team as t
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
 					WHERE t.id='.$project_team_id_new;
 			$this->_db->setQuery($query);
 			$new_team_name = $this->_db->loadResult();
 
 			$mainframe->enqueueMessage(JText::sprintf('COM_JOOMLEAGUE_ADMIN_PROJECTTEAM_MODEL_ASSIGNED_OLD_TEAMNAME', $old_team_name, $new_team_name),'Notice');
 
-			$tabelle = '#__joomleague_project_team';
+			$tabelle = '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team';
 			// Objekt erstellen
 			$wertneu = new StdClass();
 			// Werte zuweisen
@@ -306,8 +306,8 @@ class sportsmanagementModelProjectteams extends JModelList
 		{
 			// jetzt brauchen wir noch das land der liga !
 			$querycountry = "SELECT l.country
-							from #__joomleague_league as l
-							inner join #__joomleague_project as p
+							from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
+							inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
 							on p.league_id = l.id
 							where p.id = '$pid'
 							";
@@ -318,8 +318,8 @@ class sportsmanagementModelProjectteams extends JModelList
       if ( $country )
       {
       $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
-					FROM #__joomleague_team as t
-					INNER JOIN #__joomleague_club as c
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
 					ON c.id = t.club_id
 					WHERE c.country = '$country'  
 					ORDER BY t.name ASC 
@@ -330,8 +330,8 @@ class sportsmanagementModelProjectteams extends JModelList
       $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_NO_LEAGUE_COUNTRY'),'Error');
       $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SELECT_ALL_TEAMS'),'Notice');
       $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
-					FROM #__joomleague_team as t
-					INNER JOIN #__joomleague_club as c
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
 					ON c.id = t.club_id
 					ORDER BY t.name ASC 
 					";
@@ -344,7 +344,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		else
 		{
 			$query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text 
-					FROM #__joomleague_team as t 
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t 
 					ORDER BY name ASC ";
 		}
 
@@ -375,8 +375,8 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query = '	SELECT	t.id AS value,
 							t.name AS text,
 							t.notes, pt.info
-					FROM #__joomleague_team AS t
-					LEFT JOIN #__joomleague_project_team AS pt ON pt.team_id = t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
 					WHERE pt.project_id = ' . $project_id . '
 					ORDER BY text ASC ';
 
@@ -413,9 +413,9 @@ class sportsmanagementModelProjectteams extends JModelList
 		}
 		
 		// first copy the teams
-		$query = ' INSERT INTO #__joomleague_project_team (team_id, project_id, info, picture, standard_playground, extended)' 
+		$query = ' INSERT INTO #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team (team_id, project_id, info, picture, standard_playground, extended)' 
 		       . ' SELECT team_id, '.$dest.', info, picture, standard_playground, extended '
-		       . ' FROM #__joomleague_project_team '
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team '
 		       . ' WHERE id IN (' . implode(',', $ptids).')';
 		$this->_db->setQuery($query);
 		$res = $this->_db->query();
@@ -427,21 +427,21 @@ class sportsmanagementModelProjectteams extends JModelList
 		}
 		
 		// now copy the players
-		$query = ' INSERT INTO #__joomleague_team_player (projectteam_id, person_id, jerseynumber, picture, extended, published) ' 
+		$query = ' INSERT INTO #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player (projectteam_id, person_id, jerseynumber, picture, extended, published) ' 
 		       . ' SELECT dest.id AS projectteam_id, tp.person_id, tp.jerseynumber, tp.picture, tp.extended,tp.published '
-		       . ' FROM #__joomleague_team_player AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = tp.projectteam_id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		       . ' WHERE pt.id IN (' . implode(',', $ptids).')';
 		$this->_db->setQuery($query);
 		$res = $this->_db->query();
 				
 		// and finally the staff
-		$query = ' INSERT INTO #__joomleague_team_staff (projectteam_id, person_id, picture, extended, published) '
+		$query = ' INSERT INTO #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff (projectteam_id, person_id, picture, extended, published) '
 				       . ' SELECT dest.id AS projectteam_id, tp.person_id, tp.picture, tp.extended,tp.published '
-				       . ' FROM #__joomleague_team_staff AS tp '
-				       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-				       . ' INNER JOIN #__joomleague_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
+				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp '
+				       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = tp.projectteam_id '
+				       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		. ' WHERE pt.id IN (' . implode(',', $ptids).')';
 		$this->_db->setQuery($query);
 		$res = $this->_db->query();

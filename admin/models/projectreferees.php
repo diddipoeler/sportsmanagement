@@ -46,8 +46,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 				'pref.project_position_id',
 				'u.name AS editor',
 				'pref.picture'))
-        ->from('#__joomleague_person AS p')
-        ->join('INNER', '#__joomleague_project_referee AS pref on pref.person_id=p.id')
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref on pref.person_id=p.id')
         ->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
 
         if ($where)
@@ -164,7 +164,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 				phone,
 				mobile,
 				email
-				FROM #__joomleague_person
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
 				WHERE published = 1
 				ORDER BY lastname ASC ';
 		$this->_db->setQuery($query);
@@ -191,8 +191,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$query='	SELECT	pp.id AS value,
 				name AS text
 
-				FROM #__joomleague_position AS p
-				LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
 				WHERE pp.project_id='.$project_id.'
 						ORDER BY ordering ';
 		$this->_db->setQuery($query);
@@ -224,8 +224,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$project_id=$mainframe->getUserState($option.'project');
 		$query='	SELECT	ppos.id AS value,
 				pos.name AS text
-				FROM #__joomleague_position AS pos
-				INNER JOIN #__joomleague_project_position AS ppos ON pos.id=ppos.position_id
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
 				WHERE ppos.project_id='. $this->_db->Quote($project_id).' AND pos.persontype=3';
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
@@ -254,8 +254,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 			return 0;
 		}
 		$query='	SELECT	pt.id
-				FROM #__joomleague_person AS pt
-				INNER JOIN #__joomleague_project_referee AS r ON r.person_id=pt.id
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id=pt.id
 				WHERE r.project_id='.$this->_db->Quote($this->_project_id).'
 						AND pt.published = 1';
 		$this->_db->setQuery($query);
@@ -274,7 +274,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 					continue;
 				}
 				//Get data from person
-				$query="SELECT picture FROM #__joomleague_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
+				$query="SELECT picture FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
 				$this->_db->setQuery($query);
 				$player=$this->_db->loadObject();
 				if ($player)
@@ -306,7 +306,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$removed=0;
 		for ($x=0; $x < count($cid); $x++)
 		{
-			$query='DELETE FROM #__joomleague_project_referee WHERE id='.$cid[$x];
+			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee WHERE id='.$cid[$x];
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{

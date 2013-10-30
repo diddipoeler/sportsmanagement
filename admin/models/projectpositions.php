@@ -42,15 +42,15 @@ class sportsmanagementModelProjectpositions extends JModelList
 
 							pid.name AS parent_name,
 
-							(select count(*) FROM #__joomleague_position_eventtype AS pe
+							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
 					 		WHERE pe.position_id=po.id) countEvents,
 
-							(select count(*) FROM #__joomleague_position_statistic
+							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic
 					 		WHERE position_id=po.id) countStats
 
-					FROM #__joomleague_project_position AS pt
-					LEFT JOIN #__joomleague_position po ON pt.position_id=po.id
-					LEFT JOIN #__joomleague_position pid ON po.parent_id=pid.id '.$where.$orderby;
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id '.$where.$orderby;
 		return $query;
 	}
 
@@ -96,14 +96,14 @@ class sportsmanagementModelProjectpositions extends JModelList
 		$peid=(isset($data['project_positionslist']));
 		if ($peid==null)
 		{
-			$query="DELETE FROM #__joomleague_project_position WHERE project_id=".$data['id'];
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id'];
 		}
 		else
 		{
 			$pidArray=$data['project_positionslist'];
 			JArrayHelper::toInteger($pidArray);
 			$peids=implode(",",$pidArray);
-			$query="DELETE FROM #__joomleague_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -113,7 +113,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 		}
 		for ($x=0; $x < count($data['project_positionslist']); $x++)
 		{
-			$query="INSERT IGNORE INTO #__joomleague_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
+			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{
@@ -137,7 +137,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 							name AS text,
 							sports_type_id AS type,
 							parent_id AS parentID
-					FROM #__joomleague_position
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position
 					WHERE published=1 AND sports_type_id='.$sports_type_id.'
 					ORDER BY parent_id ASC,name ASC ';
 		$this->_db->setQuery($query);
@@ -165,8 +165,8 @@ class sportsmanagementModelProjectpositions extends JModelList
 							p.name AS text,
 							p.sports_type_id AS type,
 							p.parent_id AS parentID
-					FROM #__joomleague_position AS p
-					LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
 					WHERE pp.project_id='.$project_id.'
 					ORDER BY p.parent_id ASC,p.name ASC ';
 		$this->_db->setQuery($query);
@@ -190,7 +190,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 		$old_id=(int)$post['old_id'];
 		$project_id=(int)$post['id'];
 		//copy positions
-		$query="SELECT * FROM #__joomleague_project_position WHERE project_id=".$old_id;
+		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$old_id;
 		$this->_db->setQuery($query);
 		if ($results=$this->_db->loadAssocList())
 		{
@@ -206,7 +206,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 					return false;
 				}
 				$newid = $this->getDbo()->insertid();
-				$query = "UPDATE #__joomleague_team_player " . 
+				$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player " . 
 							"SET project_position_id = " . $newid .
 							" WHERE project_position_id = " . $result['id'];
 				$this->_db->setQuery($query);

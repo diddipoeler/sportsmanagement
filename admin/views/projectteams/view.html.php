@@ -51,7 +51,7 @@ class sportsmanagementViewprojectteams extends JView
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
+		$this->assignRef('projectteam',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 		$this->addToolbar();

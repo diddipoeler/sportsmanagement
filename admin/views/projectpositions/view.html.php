@@ -51,7 +51,7 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
+		$this->assignRef('positiontool',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 		$this->addToolbar();
@@ -66,13 +66,13 @@ class sportsmanagementViewprojectpositions extends JView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playground');
-		JToolBarHelper::editList('playground.edit');
-		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'Positions');
+
+		JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
 		JToolBarHelper::divider();
+		//JLToolBarHelper::onlinehelp();
+        
+        
 
 		//JToolBarHelper::onlinehelp();
 	}

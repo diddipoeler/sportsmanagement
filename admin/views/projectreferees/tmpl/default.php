@@ -74,7 +74,7 @@ $uri=JURI::root();
 			<tr>
 				<td align="left" width="100%">
 					<?php
-					echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER');
+					echo JText::_('JSEARCH_FILTER_LABEL');
 					?>
 					<input	type="text" name="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="text_area"
@@ -160,7 +160,7 @@ $uri=JURI::root();
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 						$row =& $this->items[$i];
-						$link=JRoute::_('index.php?option=com_joomleague&task=projectreferee.edit&cid[]='.$row->id);
+						$link=JRoute::_('index.php?option=com_joomleague&task=projectreferee.edit&id='.$row->id);
 						$checked=JHTML::_('grid.checkedout',$row,$i);
 						$inputappend='';
 						?>
