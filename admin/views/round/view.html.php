@@ -37,6 +37,12 @@ class sportsmanagementViewRound extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
+        $this->assignRef('project',$project);
+        
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
@@ -52,49 +58,7 @@ class sportsmanagementViewRound extends JView
 		$this->setDocument();
 	}
 
-	function _displayForm($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$db = JFactory::getDBO();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-		$lists=array();
-
-		//get the matchday
-		$round =& $this->get('data');
-		$isNew=($round->id < 1);
-
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('The matchday'),$round->name);
-			$mainframe->redirect('index.php?option='.$option,$msg);
-		}
-
-		// Edit or Create?
-		if (!$isNew)
-		{
-			$model->checkout($user->get('id'));
-		}
-		else
-		{
-			// initialise new record
-			$round->order=0;
-		}
-
-		$projectws =& $this->get('Data','projectws');
-		$this->assignRef('projectws',$projectws);
-		 #$this->assignRef('lists',$lists);
-		$this->assignRef('matchday',$round);
-
-		$this->assignRef('form'      	, $this->get('form'));	
-		//$extended = $this->getExtended($round->extended, 'round');
-		//$this->assignRef( 'extended', $extended );		
-		$this->addToolbar();		
-		parent::display($tpl);
-	}
+	
     
 	/**
 	* Add the page title and toolbar.

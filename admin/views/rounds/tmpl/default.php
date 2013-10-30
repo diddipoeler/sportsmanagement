@@ -65,8 +65,8 @@ window.addEvent('domready',function(){
 					for ($i=0,$n=count($this->matchday); $i < $n; $i++)
 					{
 						$row =& $this->matchday[$i];
-						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id);
-						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=matches&task=match.display&rid='.$row->id);
+						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id.'&pid='.$this->project->id);
+						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=matches&task=match.display&rid='.$row->id.'&pid='.$this->project->id);
 						$checked=JHTML::_('grid.checkedout',$row,$i);
             $published  = JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
 						?>

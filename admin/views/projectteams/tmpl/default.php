@@ -164,9 +164,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 					for ($i=0, $n=count($this->projectteam); $i < $n; $i++)
 					{
 						$row = &$this->projectteam[$i];
-						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id);
-						$link2=JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.select&project_team_id='.$row->id."&team_id=".$row->team_id);
-						$link3=JRoute::_('index.php?option=com_sportsmanagement&task=teamstaff.select&project_team_id='.$row->id."&team_id=".$row->team_id);
+						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id);
+						$link2=JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.select&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+						$link3=JRoute::_('index.php?option=com_sportsmanagement&task=teamstaff.select&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
 						$checked=JHTML::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="<?php echo "row$k"; ?>">

@@ -29,7 +29,7 @@ echo $this->loadTemplate('extended');
 echo JHTML::_('tabs.end');
 ?>
 		<div class="clr"></div>
-		
+		<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="task" value="projectteam.edit" />
 	</div>
 	<?php echo JHTML::_('form.token'); ?>

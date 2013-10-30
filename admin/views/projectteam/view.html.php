@@ -36,6 +36,12 @@ class sportsmanagementViewProjectteam extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        $project_id	= JRequest::getVar('pid');
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($project_id);
+        $this->assignRef('project',$project);
+        
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
