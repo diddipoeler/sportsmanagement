@@ -24,10 +24,13 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelProjectteams extends JModelList
 {
 	var $_identifier = "pteams";
+    var $_project_id = 0;
 
-	function _buildQuery()
+	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$this->_project_id	= JRequest::getVar('pid');
+        // Get the WHERE and ORDER BY clauses for the query
+        
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
@@ -80,9 +83,9 @@ class sportsmanagementModelProjectteams extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
 		$where=array();
-		$project_id	= $mainframe->getUserState( $option.'project' );
+		
 		$division	= (int) $mainframe->getUserStateFromRequest($option.'tl_division', 'division', 0);
-		$where[] 	= ' tl.project_id = ' . $project_id;
+		$where[] 	= ' tl.project_id = ' . $this->_project_id;
 		$division=JString::strtolower($division);
 		if ($division>0)
 		{

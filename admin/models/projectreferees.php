@@ -25,10 +25,12 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelProjectReferees extends JModelList
 {
 	var $_identifier = "preferees";
+    var $_project_id = 0;
 
-	function _buildQuery()
+	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$this->_project_id	= JRequest::getVar('pid');
+        // Get the WHERE and ORDER BY clauses for the query
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
         
@@ -82,12 +84,12 @@ class sportsmanagementModelProjectReferees extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
+		
 		$search			= $mainframe->getUserStateFromRequest($option.'p_search',		'search',		'',		'string');
 		$search_mode	= $mainframe->getUserStateFromRequest($option.'p_search_mode',	'search_mode',	'',		'string');
 		$search=JString::strtolower($search);
 		$where=array();
-		$where[]='pref.project_id='.$project_id;
+		$where[]='pref.project_id='.$this->_project_id;
 		$where[]='p.published = 1';
 		if ($search)
 		{

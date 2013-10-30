@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modellist');
 
 
 /**
@@ -24,10 +24,13 @@ jimport('joomla.application.component.model');
 class sportsmanagementModelProjectposition extends JModelList
 {
 	var $_identifier = "pposition";
+    var $_project_id = 0;
 	
-	function _buildQuery()
+	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$this->_project_id	= JRequest::getVar('pid');
+        // Get the WHERE and ORDER BY clauses for the query
+        
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
 
@@ -73,8 +76,8 @@ class sportsmanagementModelProjectposition extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		$where =' WHERE  pt.project_id='.$project_id;
+		
+		$where =' WHERE  pt.project_id='.$this->_project_id;
 		return $where;
 	}
 
