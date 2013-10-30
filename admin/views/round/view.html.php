@@ -69,8 +69,8 @@ class sportsmanagementViewRound extends JView
 	{ 
 		// Set toolbar items for the page
 		$edit = JRequest::getVar('edit', true);
-		$text = !$edit ? JText::_('COM_JOOMLEAGUE_GLOBAL_NEW') : JText::_('COM_JOOMLEAGUE_GLOBAL_EDIT');
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_ROUND_TITLE'),'Matchdays');
+		$text = !$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_TITLE'),'Matchdays');
 
 		JToolBarHelper::save('round.save');
 		JToolBarHelper::apply('round.apply');
@@ -81,7 +81,7 @@ class sportsmanagementViewRound extends JView
 		else
 		{
 			// for existing items the button is renamed `close`
-			JToolBarHelper::cancel('round.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE');
+			JToolBarHelper::cancel('round.cancel', 'COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
 		}
 		//JToolBarHelper::help('screen.joomleague', true);	
 	}

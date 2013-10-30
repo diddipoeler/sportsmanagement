@@ -43,13 +43,13 @@ window.addEvent('domready',function(){
 						<th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 						<th width="20">&nbsp;</th>
  						<th width="20"><?php echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_ROUND_TITLE'); ?></th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE'); ?></th>
 						<th width="10%" class="center" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_STARTDATE'); ?></th>
 						<th width="1%">&nbsp;</th>
 						<th width="10%" class="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ENDDATE'); ?></th>
 						<th width="10%"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
 						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
-						<th width="20"><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
+						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
 						<th width="5%" class="title">
 						<?php
 						echo JHTML::_('grid.sort','JSTATUS','r.published',$this->lists['order_Dir'],$this->lists['order']);
