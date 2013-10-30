@@ -55,19 +55,19 @@ $uri = JUri::root();
 			<tr>
 				<td align="left" width="100%">
 					<?php
-					echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_FILTER' );
+					echo JText::_( 'JSEARCH_FILTER_LABEL' );
 					?>
 					<input	type="text" name="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="text_area"
 							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
 					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_GO' );
+						echo JText::_( 'JSEARCH_FILTER_SUBMIT' );
 						?>
 					</button>
 					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
+						echo JText::_( 'JSEARCH_FILTER_CLEAR' );
 						?>
 					</button>
 				</td>
@@ -123,12 +123,12 @@ $uri = JUri::root();
 						</th>
 						<th class="title" class="nowrap">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','ts.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','ts.published',$this->lists['order_Dir'],$this->lists['order']);
 						?></th>
 						<th width="10%" >
 							<?php
 							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-                            echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ts.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+                            echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ts.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
 							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'teamstaff.saveorder');
 							?>

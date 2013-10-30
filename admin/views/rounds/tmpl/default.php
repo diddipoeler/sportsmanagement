@@ -52,7 +52,7 @@ window.addEvent('domready',function(){
 						<th width="20"><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
 						<th width="5%" class="title">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED','r.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHTML::_('grid.sort','JSTATUS','r.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
             <th width="5%"><?php echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>

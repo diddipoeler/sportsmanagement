@@ -23,11 +23,19 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelTeamPlayers extends JModelList
 {
 	var $_identifier = "teamplayers";
+    var $_project_id = 0;
+    var $_team_id = 0;
+    var $_project_team_id = 0;
 
 	function getListQuery()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $this->_project_id	= JRequest::getVar('pid');
+        $this->_team_id	= JRequest::getVar('team_id');
+        $this->_project_team_id	= JRequest::getVar('project_team_id');
+        
+        
         // Get the WHERE and ORDER BY clauses for the query
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
@@ -73,14 +81,16 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		$team_id=$mainframe->getUserState($option.'project_team_id');
+		
+        //$project_id=$mainframe->getUserState($option.'project');
+		//$team_id=$mainframe->getUserState($option.'project_team_id');
+        
 		$filter_state	= $mainframe->getUserStateFromRequest( $option . 'tp_filter_state', 'filter_state', '', 'word' );
 		$search			= $mainframe->getUserStateFromRequest($option.'tp_search',		'search',		'',		'string');
 		$search_mode	= $mainframe->getUserStateFromRequest($option.'tp_search_mode','search_mode',	'',		'string');
 		$search=JString::strtolower($search);
 		$where=array();
-		$where[]='tp.projectteam_id= '.$team_id;
+		$where[]='tp.projectteam_id= '.$this->_team_id;
 		$where[]="ppl.published = '1'";
 		if ($search)
 		{
@@ -177,6 +187,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		return $result;
 	}
 
+
 	/**
 	 * Method to return a divisions array (id,name)
 	 *
@@ -184,6 +195,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	 * @return  array
 	 * @since 0.1
 	 */
+/*
 	function getDivisions()
 	{
 		$option = JRequest::getCmd('option');
@@ -201,6 +213,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		}
 		return $result;
 	}
+*/
 
 	/**
 	 * Method to return a positions array (id,position)
@@ -209,6 +222,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		* @return  array
 		* @since 0.1
 		*/
+/*
 	function getPositions()
 	{
 		$option = JRequest::getCmd('option');
@@ -229,12 +243,15 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		foreach ($result as $position){$position->text=JText::_($position->text);}
 		return $result;
 	}
+*/
 
 	/**
 	 * return list of project teams for select options
 	 *
 	 * @return array
 	 */
+
+/*
 	function getProjectTeamList()
 	{
 		$query='	SELECT	t.id AS value,
@@ -245,6 +262,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+*/
 
 	/**
 	 * add the specified persons to team
