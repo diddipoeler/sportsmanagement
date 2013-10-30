@@ -147,6 +147,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 	 * @return  array
 	 * @since 0.1
 	 */
+/*
 	function getPersons()
 	{
 		$query='	SELECT	id AS value,
@@ -175,7 +176,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 		}
 		return $result;
 	}
-
+*/
 	/**
 	 * Method to return a positions array (id,position)
 		*
@@ -183,6 +184,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 		* @return  array
 		* @since 0.1
 		*/
+/*
 	function getPositions()
 	{
 		$option = JRequest::getCmd('option');
@@ -209,6 +211,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 			return $result;
 		}
 	}
+*/
 
 	/**
 	 * Method to return a positions array of referees (id,position)
@@ -217,6 +220,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 	 * @return	array
 	 *
 	 */
+/*
 	function getRefereePositions()
 	{
 		$option = JRequest::getCmd('option');
@@ -241,6 +245,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 			return $result;
 		}
 	}
+*/
 
 	/**
 	 * add the specified persons to team
