@@ -48,7 +48,7 @@ $uri = JUri::root();
 		<legend>
 			<?php
 			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE2',
-									'<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
+									'<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 			?>
 		</legend>
 		<table>
@@ -299,12 +299,12 @@ $uri = JUri::root();
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaff.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaff.orderup', 'JLIB_HTML_MOVE_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaff.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaff.orderdown', 'JLIB_HTML_MOVE_DOWN', true );
 									?>
 								</span>
 								<?php
@@ -329,8 +329,9 @@ $uri = JUri::root();
 		</div>
 	</fieldset>
 	<input type="hidden" name="team" value="<?php echo $this->teamws->id; ?>" />
+    <input type="hidden" name="pid"		value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
-	<input type="hidden" name="task" value="teamstaff.display" />
+	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />

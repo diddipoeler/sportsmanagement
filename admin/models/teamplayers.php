@@ -161,6 +161,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	 * @return  array
 	 * @since 0.1
 	 */
+
+/*     
 	function getPersons()
 	{
 		$query="	SELECT	id AS value,
@@ -186,7 +188,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		}
 		return $result;
 	}
-
+*/
 
 	/**
 	 * Method to return a divisions array (id,name)
