@@ -41,6 +41,16 @@ class sportsmanagementViewProjectteam extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
+        $team_id	= JRequest::getVar('team_id');
+        $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+	    $project_team = $mdlTeam->getTeam($team_id);
+        
+        $extended = sportsmanagementHelper::getExtended($item->extended, 'projectteam');
+		$this->assignRef( 'extended', $extended );
+        $this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        
+        $this->assignRef('project',$project);
+        $this->assignRef('project_team',$project_team);
         
 		// Assign the Data
 		$this->form = $form;
