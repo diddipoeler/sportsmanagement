@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fieldset name="details">
+		<field
+			name="admin"
+			type="user"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADMIN_DESC"
+			class="inputbox"/>
+	<field
+			name="standard_playground"
+			type="sql"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE_DESC"
+			query="SELECT id AS value, name AS standard_playground FROM #__joomleague_playground ORDER BY name ASC">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+		</field>			
+		<field
+			name="is_in_score"
+			type="radio"
+			default="1"
+			class="radio"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="start_points"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INIT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INIT_POINTS_DESC"
+			class="inputbox validate-numeric"/>		
+		<field
+			name="reason"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_REASON_INIT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_REASON_INIT_POINTS_DESC"
+			class="inputbox"/>	
+		<field
+			name="use_finally"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"
+			class="radio">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="matches_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_MATCH"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_MATCH_DESC"
+			class="inputbox validate-numeric"/>				
+		<field
+			name="points_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_POINTS_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="neg_points_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_NEG_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_NEG_POINTS_DESC"
+			class="inputbox validate-numeric"/>
+    <field
+			name="penalty_points"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_PENALTY_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_PENALTY_POINTS_DESC"
+			class="inputbox validate-numeric"/>	  	
+		<field
+			name="won_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_WON"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_WON_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="draws_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DRAW"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DRAW_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="lost_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_LOST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_LOST_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="homegoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_HG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_HG_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="guestgoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_GG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_GG_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="diffgoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_DG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_DG_DESC"
+			class="inputbox validate-numeric"/>					
+	</fieldset>
+  <fieldset name="imageselect">
+			<field
+				name="picture"
+				type="imageselect"
+				default="images/com_joomleague/database/placeholders/placeholder_450_2.png"					
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
+				class="inputbox"
+				preview="show"
+				targetfolder="projectteams"
+				directory="com_joomleague/database/projectteams"/>
+      <field
+				name="trikot_home"
+				type="imageselect"
+				targetfolder="projectteams_trikot_home"
+				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_joomleague/database/projectteams/trikot_home"/>				
+			<field
+				name="trikot_away"
+				type="imageselect"
+				targetfolder="projectteams_trikot_away"
+				default="images/com_joomleague/database/placeholders/placeholder_small.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_LOGO_TRIKOT_AWAY_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_joomleague/database/projectteams/trikot_away"/>  		
+	</fieldset>		
+	
+  <fieldset name="picture">	
+			<field
+				name="picture"
+				type="media"
+				default="images/com_joomleague/database/placeholders/placeholder_450_2.png"				
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_joomleague/database/projectteams"/>
+      <field
+				name="trikot_home"
+				type="media"
+				default="images/com_joomleague/database/placeholders/placeholder_small.png" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_joomleague/database/projectteams/trikot_home"/>				
+			<field
+				name="trikot_away"
+				type="media"
+				default="images/com_joomleague/database/placeholders/placeholder_small.png"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_LOGO_TRIKOT_AWAY_DESC"
+				class="inputbox"
+				preview="show"
+				directory="com_joomleague/database/projectteams/trikot_away"/>	  					
+	</fieldset>		
+</form>
