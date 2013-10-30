@@ -108,18 +108,18 @@ class sportsmanagementViewRound extends JView
 		$text = !$edit ? JText::_('COM_JOOMLEAGUE_GLOBAL_NEW') : JText::_('COM_JOOMLEAGUE_GLOBAL_EDIT');
 		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_ROUND_TITLE'),'Matchdays');
 
-		JLToolBarHelper::save('round.save');
-		JLToolBarHelper::apply('round.apply');
+		JToolBarHelper::save('round.save');
+		JToolBarHelper::apply('round.apply');
 		if (!$edit)
 		{
-			JLToolBarHelper::cancel('round.cancel');
+			JToolBarHelper::cancel('round.cancel');
 		}
 		else
 		{
 			// for existing items the button is renamed `close`
-			JLToolBarHelper::cancel('round.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE');
+			JToolBarHelper::cancel('round.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE');
 		}
-		JToolBarHelper::help('screen.joomleague', true);	
+		//JToolBarHelper::help('screen.joomleague', true);	
 	}
     
     /**
