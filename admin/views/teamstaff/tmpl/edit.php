@@ -4,7 +4,7 @@
 $version = urlencode(JoomleagueHelper::getVersion());
 echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_joomleague/assets/js/' );
 ?>
-<form action="index.php" method="post" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 	<div class="col50">
 		<?php
 		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
