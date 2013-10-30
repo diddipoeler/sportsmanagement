@@ -23,10 +23,10 @@ echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components
 		echo JHtml::_('tabs.end');
 		?>	
 		<input type="hidden" name="eventschanges_check"	value="0" id="eventschanges_check" />
-		<input type="hidden" name="option"				value="com_joomleague" />
+		
 		<input type="hidden" name="team"				value="<?php echo $this->teamws->id; ?>" />
 		<input type="hidden" name="cid[]"				value="<?php echo $this->project_teamstaff->id; ?>" />
-		<input type="hidden" name="task"				value="" />
+		<input type="hidden" name="task"				value="teamstaff.edit" />
 	</div>
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
