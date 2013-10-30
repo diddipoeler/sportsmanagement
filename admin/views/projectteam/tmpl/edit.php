@@ -6,7 +6,7 @@
 $version = urlencode(JoomleagueHelper::getVersion());
 echo JHTML::script('JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
 ?>
-<form action="index.php" method="post" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
 
 	<div class="col50">
 <?php
@@ -29,11 +29,8 @@ echo $this->loadTemplate('extended');
 echo JHTML::_('tabs.end');
 ?>
 		<div class="clr"></div>
-		<input type="hidden" name="eventschanges_check"	value="0"	id="eventschanges_check" />
-		<input type="hidden" name="option"				value="com_joomleague" />
-		<input type="hidden" name="cid[]"				value="<?php echo $this->project_team->id; ?>" />
-		<input type="hidden" name="project_id"			value="<?php echo $this->projectws->id; ?>" />
-		<input type="hidden" name="task"				value="" id='task'/>
+		
+		<input type="hidden" name="task" value="projectteam.edit" />
 	</div>
 	<?php echo JHTML::_('form.token'); ?>
 
