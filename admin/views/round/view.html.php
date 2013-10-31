@@ -42,6 +42,7 @@ class sportsmanagementViewRound extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
+        JRequest::setVar('pid',$project);
         
 		// Assign the Data
 		$this->form = $form;
