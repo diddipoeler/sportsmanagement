@@ -77,6 +77,7 @@ class sportsmanagementViewTeamPlayer extends JView
         
         if ( $show_debug_info )
         {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project<br><pre>'.print_r($this->project,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
         }
  
@@ -235,10 +236,10 @@ class sportsmanagementViewTeamPlayer extends JView
 	*/
 	protected function addToolbar()
 	{ 
-	   $model		= $this->getModel();
+	   
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('project_team_id', $this->item->projectteam_id);
-        JRequest::setVar('pid', $model->_project_id);
+        JRequest::setVar('pid', $project_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
