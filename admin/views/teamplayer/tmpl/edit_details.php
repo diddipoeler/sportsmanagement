@@ -4,8 +4,8 @@
 			<legend>
 				<?php
 				echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_DETAILS_TITLE',
-				  JoomleagueHelper::formatName(null, $this->project_player->firstname, $this->project_player->nickname, $this->project_player->lastname, 0),
-				  '<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
+				  sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
+				  '<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 				?>
 			</legend>
 			<table class="admintable">
@@ -29,7 +29,7 @@
 					</td>
 					<td colspan="1">
 						<input	class="inputbox" type="text" name="jerseynumber" size="5" maxlength="6"
-								value="<?php echo $this->project_player->jerseynumber; ?>" />
+								value="<?php echo $this->item->jerseynumber; ?>" />
 					</td>
                     
                     <td width="20%" valign="top" align="right" class="key">
@@ -39,7 +39,7 @@
 					</td>
 					<td colspan="7">
 						<input	class="inputbox" type="text" name="market_value" size="20" maxlength="20"
-								value="<?php echo $this->project_player->market_value; ?>" />
+								value="<?php echo $this->item->market_value; ?>" />
 					</td>
                     
 				</tr>
@@ -84,7 +84,7 @@
 					</td>
 					<td>
 						<input	class="text_area" type="text" name="injury_detail" id="title" size="32" maxlength="250"
-						value="<?php echo $this->project_player->injury_detail; ?>" />
+						value="<?php echo $this->item->injury_detail; ?>" />
 					</td>
 				</tr>
 
@@ -128,7 +128,7 @@
 					</td>
 					<td>
 						<input	class="text_area" type="text" name="suspension_detail" id="title" size="32" maxlength="250"
-								value="<?php echo $this->project_player->suspension_detail; ?>" />
+								value="<?php echo $this->item->suspension_detail; ?>" />
 					</td>
 				</tr>
 
@@ -172,7 +172,7 @@
 					</td>
 					<td>
 						<input	class="text_area" type="text" name="away_detail" id="title" size="32" maxlength="250"
-								value="<?php echo $this->project_player->away_detail; ?>" />
+								value="<?php echo $this->item->away_detail; ?>" />
 					</td>
 				</tr>
 
