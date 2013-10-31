@@ -143,7 +143,7 @@ $uri=JURI::root();
 						<th width="10%">
 							<?php
 							echo JHTML::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
-							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'projectreferee.saveorder');
+							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
 							?>
 						</th>
 						<th width="5%">

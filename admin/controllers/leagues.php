@@ -10,6 +10,7 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerleagues extends JControllerAdmin
 {
+  
   /**
 	 * Save the manual order inputs from the categories list page.
 	 *
@@ -33,6 +34,7 @@ class sportsmanagementControllerleagues extends JControllerAdmin
 			return true;
 		}
 	}
+    
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
