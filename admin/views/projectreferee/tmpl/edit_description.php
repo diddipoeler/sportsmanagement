@@ -4,9 +4,9 @@
 <fieldset class="adminform">
 	<legend>
 		<?php
-		echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_P_REF_DESCR',
-				JoomleagueHelper::formatName(null, $this->projectreferee->firstname, $this->projectreferee->nickname, $this->projectreferee->lastname, 0),
-				$this->projectws->name);
+		echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_REF_DESCR',
+				sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
+				$this->project->name);
 		?>
 	</legend>
 	<table class="admintable">
