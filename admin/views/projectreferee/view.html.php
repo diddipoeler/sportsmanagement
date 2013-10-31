@@ -32,6 +32,7 @@ class sportsmanagementViewProjectReferee extends JView
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
+        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 
 		$lists=array();
         
@@ -58,12 +59,19 @@ class sportsmanagementViewProjectReferee extends JView
 		$this->script = $script;
         
         //build the html select list for positions
-		$refereepositions=array();
-		$refereepositions[]=JHTML::_('select.option',	'0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_POS'));
+		//$refereepositions = array();
+		$refereepositions[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_POS'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($project_id);
-        $refereepositions=array_merge($refereepositions,$project_ref_positions);
-        $lists['refereepositions']=JHTML::_(	'select.genericlist',
+        
+        if ( $this->show_debug_info )
+        {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+        }
+        
+        
+        $refereepositions = array_merge($refereepositions,$project_ref_positions);
+        $lists['refereepositions'] = JHTML::_(	'select.genericlist',
 												$refereepositions,
 												'project_position_id',
 												'class="inputbox" size="1"',

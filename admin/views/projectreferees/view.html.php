@@ -50,8 +50,8 @@ class sportsmanagementViewprojectreferees extends JView
 		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($project_id);
-        $position_id=array_merge($position_id,$project_ref_positions);
-		$lists['project_position_id']=$position_id;
+        $position_id = array_merge($position_id,$project_ref_positions);
+		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
 		// table ordering
