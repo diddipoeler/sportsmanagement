@@ -157,7 +157,7 @@ $uri = JUri::root();
 						$row =& $this->items[$i];
 #echo '<pre>'; print_r($row); echo '</pre>';
 						$link = JRoute::_(	'index.php?option=com_joomleague&task=teamstaff.edit&team=' .
-											$this->teamws->id . '&cid[]=' . $row->id );
+											$this->teamws->id . '&id=' . $row->id );
 						$checked = JHtml::_( 'grid.checkedout', $row, $i );
 						$inputappend = '';
 

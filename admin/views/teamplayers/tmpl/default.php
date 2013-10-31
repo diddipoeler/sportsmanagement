@@ -190,7 +190,7 @@ JHTML::_('behavior.mootools');
 					{
 						$row =& $this->items[$i];
 						$link			= JRoute::_('index.php?option=com_joomleague&task=teamplayer.edit&team=' .
-													$row->projectteam_id . '&cid[]=' . $row->id );
+													$row->projectteam_id . '&id=' . $row->id );
 						$checked		= JHTML::_( 'grid.checkedout', $row, $i );
 						$inputappend	= '';
 						?>
