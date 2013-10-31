@@ -47,16 +47,16 @@ class sportsmanagementViewProjectReferee extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+                      
+		// Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
         
         $project_id	= $this->item->project_id;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
-        
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
         
         //build the html select list for positions
 		//$refereepositions = array();
