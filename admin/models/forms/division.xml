@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details">
+	     <field
+			name="id"
+			type="hidden"
+		/>
+	     <field
+			name="project_id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+		<field
+			name="alias"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+			class="inputbox"/>	
+
+		<field
+			name="shortname"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME_DESC"
+			class="inputbox"/>	
+
+			
+	<field
+			name="notes"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR_DESC"
+			class="inputbox"/>	
+	</fieldset>		
+	
+	<fieldset name="picture">
+			<field
+				name="picture"
+				type="media"
+				default="com_sportsmanagement/database/placeholders/placeholder_21.png"				
+				label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"				
+				directory="com_sportsmanagement/database/divisions"/>
+	</fieldset>
+	
+	<fieldset name="imageselect">
+			<field
+				name="picture"
+				type="imageselect"
+				default="com_sportsmanagement/database/placeholders/placeholder_21.png"					
+				label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"
+				targetfolder="divisions"
+				directory="com_sportsmanagement/database/divisions"/>		
+	</fieldset>	
+</form>
