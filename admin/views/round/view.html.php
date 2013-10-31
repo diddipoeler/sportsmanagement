@@ -42,7 +42,7 @@ class sportsmanagementViewRound extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
-        JRequest::setVar('pid',$project);
+        
         
 		// Assign the Data
 		$this->form = $form;
@@ -107,28 +107,7 @@ class sportsmanagementViewRound extends JView
 			}
 			JToolBarHelper::cancel('round.cancel', 'JTOOLBAR_CLOSE');
 		}
-        
-        
-        
-        /*
-        // Set toolbar items for the page
-		$edit = JRequest::getVar('edit', true);
-		$text = !$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_TITLE'),'Matchdays');
 
-		JToolBarHelper::save('round.save');
-		JToolBarHelper::apply('round.apply');
-		if (!$edit)
-		{
-			JToolBarHelper::cancel('round.cancel');
-		}
-		else
-		{
-			// for existing items the button is renamed `close`
-			JToolBarHelper::cancel('round.cancel', 'COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
-		}
-		//JToolBarHelper::help('screen.joomleague', true);	
-        */
 	}
     
     /**

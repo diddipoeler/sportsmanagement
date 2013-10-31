@@ -43,7 +43,7 @@ $uri = JUri::root();
 	<?php echo JHtml::_( 'form.token' ); ?>
 	</form>
 </fieldset>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm"  name="adminForm">
 	<fieldset class="adminform">
 		<legend>
 			<?php

@@ -67,7 +67,7 @@ JHTML::_('behavior.mootools');
 	<?php echo JHTML::_( 'form.token' ); ?>
 	</form>
 </fieldset>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<fieldset class="adminform">
 		<legend>
 			<?php
@@ -189,7 +189,7 @@ JHTML::_('behavior.mootools');
 					for ( $i = 0, $n = count( $this->items ); $i < $n; $i++ )
 					{
 						$row =& $this->items[$i];
-						$link			= JRoute::_('index.php?option=com_joomleague&task=teamplayer.edit&team=' .
+						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.edit&team=' .
 													$row->projectteam_id . '&id=' . $row->id.'&pid=' .$this->project->id);
 						$checked		= JHTML::_( 'grid.checkedout', $row, $i );
 						$inputappend	= '';
