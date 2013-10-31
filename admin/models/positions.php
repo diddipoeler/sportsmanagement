@@ -137,6 +137,75 @@ class sportsmanagementModelPositions extends JModelList
 		}
 		return $result;
 	}
+    
+    
+    /**
+	 * Method to return a positions array (id,position)
+		*
+		* @access  public
+		* @return  array
+		* @since 0.1
+		*/
+
+	function getPositions($project_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		//$project_id=$mainframe->getUserState($option.'project');
+		$query='SELECT	pp.id AS value,
+				name AS text
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
+				WHERE pp.project_id='.$project_id.'
+						ORDER BY ordering ';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		else
+		{
+			foreach ($result as $position) {
+				$position->text=JText::_($position->text);
+			}
+			return $result;
+		}
+	}
+
+/**
+	 * Method to return a positions array of referees (id,position)
+	 *
+	 * @access	public
+	 * @return	array
+	 *
+	 */
+
+	function getRefereePositions($project_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		//$project_id=$mainframe->getUserState($option.'project');
+		$query='SELECT	ppos.id AS value,
+				pos.name AS text
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
+				WHERE ppos.project_id='. $this->_db->Quote($project_id).' AND pos.persontype=3';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		else
+		{
+			foreach ($result as $position) {
+				$position->text=JText::_($position->text);
+			}
+			return $result;
+		}
+	}
+
 
 }
 ?>

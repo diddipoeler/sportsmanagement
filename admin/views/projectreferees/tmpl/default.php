@@ -81,12 +81,12 @@ $uri=JURI::root();
 							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
 					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_GO');
+						echo JText::_('JSEARCH_FILTER_SUBMIT');
 						?>
 					</button>
 					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET');
+						echo JText::_('JSEARCH_FILTER_CLEAR');
 						?>
 					</button>
 				</td>

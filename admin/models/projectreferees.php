@@ -67,8 +67,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'p_filter_order',		'filter_order',		'p.lastname',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'p_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order',		'filter_order',		'p.lastname',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order=='p.lastname')
 		{
 			$orderby='p.lastname '.$filter_order_Dir;
@@ -85,8 +85,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		
-		$search			= $mainframe->getUserStateFromRequest($option.'p_search',		'search',		'',		'string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'p_search_mode',	'search_mode',	'',		'string');
+		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search',		'search',		'',		'string');
+		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode',	'search_mode',	'',		'string');
 		$search=JString::strtolower($search);
 		$where=array();
 		$where[]='pref.project_id='.$this->_project_id;
@@ -139,113 +139,6 @@ class sportsmanagementModelProjectReferees extends JModelList
 		}
 		return $result;
 	}
-
-	/**
-	 * Method to return the players array (projectid,teamid)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
-/*
-	function getPersons()
-	{
-		$query='	SELECT	id AS value,
-				lastname,
-				firstname,
-				info,
-				weight,
-				height,
-				picture,
-				birthday,
-				notes,
-				nickname,
-				knvbnr,
-				country,
-				phone,
-				mobile,
-				email
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
-				WHERE published = 1
-				ORDER BY lastname ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
-*/
-	/**
-	 * Method to return a positions array (id,position)
-		*
-		* @access  public
-		* @return  array
-		* @since 0.1
-		*/
-/*
-	function getPositions()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		$query='	SELECT	pp.id AS value,
-				name AS text
-
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
-				WHERE pp.project_id='.$project_id.'
-						ORDER BY ordering ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			foreach ($result as $position) {
-				$position->text=JText::_($position->text);
-			}
-			return $result;
-		}
-	}
-*/
-
-	/**
-	 * Method to return a positions array of referees (id,position)
-	 *
-	 * @access	public
-	 * @return	array
-	 *
-	 */
-/*
-	function getRefereePositions()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		$query='	SELECT	ppos.id AS value,
-				pos.name AS text
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-				WHERE ppos.project_id='. $this->_db->Quote($project_id).' AND pos.persontype=3';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			foreach ($result as $position) {
-				$position->text=JText::_($position->text);
-			}
-			return $result;
-		}
-	}
-*/
 
 	/**
 	 * add the specified persons to team

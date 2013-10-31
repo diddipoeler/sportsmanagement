@@ -295,6 +295,44 @@ class sportsmanagementModelPersons extends JModelList
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
+    
+    /**
+	 * Method to return the players array (projectid,teamid)
+	 *
+	 * @access  public
+	 * @return  array
+	 * @since 0.1
+	 */
+
+	function getPersons()
+	{
+		$query='SELECT	id AS value,
+				lastname,
+				firstname,
+				info,
+				weight,
+				height,
+				picture,
+				birthday,
+				notes,
+				nickname,
+				knvbnr,
+				country,
+				phone,
+				mobile,
+				email
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
+				WHERE published = 1
+				ORDER BY lastname ASC ';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result;
+	}
+
 
 }
 ?>

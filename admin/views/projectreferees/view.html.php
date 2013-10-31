@@ -29,11 +29,13 @@ class sportsmanagementViewprojectreferees extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode',		'search_mode',		'',				'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_state',		'filter_state',		'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order',		'filter_order',		'p.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search',			'search',			'',				'string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search_mode',		'search_mode',		'',				'string');
 		$search				= JString::strtolower($search);
 
 		$items =& $this->get('Items');
@@ -43,6 +45,14 @@ class sportsmanagementViewprojectreferees extends JView
         $project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
+        
+        //build the html options for position
+		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+	    $project_ref_positions = $mdlPositions->getRefereePositions($project_id);
+        $position_id=array_merge($position_id,$project_ref_positions);
+		$lists['project_position_id']=$position_id;
+		unset($position_id);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
