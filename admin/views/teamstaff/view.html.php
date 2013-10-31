@@ -22,7 +22,7 @@ jimport( 'joomla.application.component.view' );
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueViewTeamStaff extends JLGView
+class sportsmanagementViewTeamStaff extends JView
 {
 
 	function display( $tpl = null )
