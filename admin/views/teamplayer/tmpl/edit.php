@@ -1,23 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_TITLE' ) );
-
-// Set toolbar items for the page
-$edit = JRequest::getVar( 'edit', true );
-$text = !$edit ? JText::_( 'COM_JOOMLEAGUE_GLOBAL_NEW' ) : JText::_( 'COM_JOOMLEAGUE_GLOBAL_EDIT' );
-JLToolBarHelper::save('teamplayer.save');
-
-if ( !$edit )
-{
-	JLToolBarHelper::cancel('teamplayer.cancel');
-}
-else
-{
-	// for existing items the button is renamed `close` and the apply button is showed
-	JLToolBarHelper::apply('teamplayer.apply');
-	JLToolBarHelper::cancel( 'teamplayer.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
-}
-JLToolBarHelper::onlinehelp();
 
 ?>
 <!-- import the functions to move the events between selection lists	-->
