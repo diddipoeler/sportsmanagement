@@ -3,7 +3,7 @@
 
 		<fieldset class="adminform">
 			<legend>
-			<?php echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_DESCR_TITLE',
+			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_TITLE',
 										sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
 										'<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 			?>

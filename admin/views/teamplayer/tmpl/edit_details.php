@@ -3,7 +3,7 @@
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_DETAILS_TITLE',
+				echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DETAILS_TITLE',
 				  sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
 				  '<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 				?>
@@ -13,7 +13,7 @@
 					<td width="20%" valign="top" align="right" class="key">
 						<label for="position">
 							<?php
-								echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_POS' );
+								echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS' );
 							?>
 						</label>
 					</td>
@@ -24,7 +24,7 @@
 					</td>
 					<td width="20%" valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_JERSEYNR' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_JERSEYNR' );
 						?>
 					</td>
 					<td colspan="1">
@@ -34,7 +34,7 @@
                     
                     <td width="20%" valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_MARKET_VALUE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE' );
 						?>
 					</td>
 					<td colspan="7">
@@ -47,7 +47,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_INJURED' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -59,7 +59,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_INJURY_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE' );
 						?>
 					</td>
 					<td>
@@ -69,7 +69,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_INJURY_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END' );
 						?>
 					</td>
 					<td>
@@ -79,7 +79,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_INJURY_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE' );
 						?>
 					</td>
 					<td>
@@ -91,7 +91,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_SUSPENDED' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -103,7 +103,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_SUSPENSION_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE' );
 						?>
 					</td>
 					<td>
@@ -113,7 +113,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_SUSPENSION_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END' );
 						?>
 					</td>
 					<td>
@@ -123,7 +123,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_SUSPENSION_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE' );
 						?>
 					</td>
 					<td>
@@ -135,7 +135,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_AWAY' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -147,7 +147,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_AWAY_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE' );
 						?>
 					</td>
 					<td>
@@ -157,7 +157,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_AWAY_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END' );
 						?>
 					</td>
 					<td>
@@ -167,7 +167,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_AWAY_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE' );
 						?>
 					</td>
 					<td>
