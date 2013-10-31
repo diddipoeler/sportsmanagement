@@ -3,9 +3,9 @@
 
 		<fieldset class="adminform">
 			<legend>
-			<?php echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_DESCR_TITLE',
-										JoomleagueHelper::formatName(null, $this->project_teamstaff->firstname, $this->project_teamstaff->nickname, $this->project_teamstaff->lastname, 0),
-										'<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
+			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DESCR_TITLE',
+										sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
+										'<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 			?>
 			</legend>
 			<table class="admintable">

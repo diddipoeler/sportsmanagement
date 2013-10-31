@@ -4,8 +4,8 @@
 			<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_DETAILS_TITLE',
-				  JoomleagueHelper::formatName(null, $this->project_teamstaff->firstname, $this->project_teamstaff->nickname, $this->project_teamstaff->lastname, 0),
+				echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DETAILS_TITLE',
+				  sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
 				  $this->teamws->name, $this->projectws->name);
 				?>
 			</legend>
@@ -14,7 +14,7 @@
 					<td width="20%" valign="top" align="right" class="key">
 						<label for="position">
 							<?php
-								echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_POS' );
+								echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_POS' );
 							?>
 						</label>
 					</td>
@@ -28,7 +28,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURED' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURED' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -40,7 +40,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_DATE' );
 						?>
 					</td>
 					<td>
@@ -50,7 +50,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_END' );
 						?>
 					</td>
 					<td>
@@ -60,7 +60,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_TYPE' );
 						?>
 					</td>
 					<td>
@@ -72,7 +72,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENDED' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENDED' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -84,7 +84,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_DATE' );
 						?>
 					</td>
 					<td>
@@ -94,7 +94,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_END' );
 						?>
 					</td>
 					<td>
@@ -104,7 +104,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_TYPE' );
 						?>
 					</td>
 					<td>
@@ -116,7 +116,7 @@
 				<tr>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY' );
 						?>
 					</td>
 					<td class="nowrap">
@@ -128,7 +128,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_DATE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_DATE' );
 						?>
 					</td>
 					<td>
@@ -138,7 +138,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_END' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_END' );
 						?>
 					</td>
 					<td>
@@ -148,7 +148,7 @@
 					</td>
 					<td valign="top" align="right" class="key">
 						<?php
-						echo JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_TYPE' );
+						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_TYPE' );
 						?>
 					</td>
 					<td>
