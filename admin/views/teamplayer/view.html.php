@@ -45,7 +45,7 @@ class sportsmanagementViewTeamPlayer extends JView
 			return false;
 		}
         
-        $project_id	= $this->item->project_id;
+        $project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
@@ -55,6 +55,19 @@ class sportsmanagementViewTeamPlayer extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $projectpositions = array();
+		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
+        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+	    $project_ref_positions = $mdlPositions->getPlayerPositions($project_id);
+        $projectpositions = array_merge( $projectpositions, $project_ref_positions );
+        $lists['projectpositions'] = JHTML::_(	'select.genericlist',
+												$projectpositions,
+												'project_position_id',
+												'class="inputbox" size="1"',
+												'value',
+												'text', $this->item->project_position_id );
+		unset($projectpositions);
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->assignRef( 'extended', $extended );
@@ -215,7 +228,8 @@ class sportsmanagementViewTeamPlayer extends JView
 	protected function addToolbar()
 	{ 
 		JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->item->project_id);
+        JRequest::setVar('project_team_id', $this->item->projectteam_id);
+        JRequest::setVar('pid', JRequest::getVar('pid'));
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;

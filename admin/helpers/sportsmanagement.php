@@ -16,11 +16,13 @@ abstract class sportsmanagementHelper
 		$option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $project_id	= JRequest::getVar('pid');
+        $project_team_id	= JRequest::getVar('project_team_id');
         
         if ( $show_debug_info )
         {
             $mainframe->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JRequest::get('post'),true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
         }
         
 		
