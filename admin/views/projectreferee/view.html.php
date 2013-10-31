@@ -21,7 +21,7 @@ jimport('joomla.application.component.view');
  * @package	JoomLeague
  * @since	0.1
  */
-class JoomleagueViewProjectReferee extends JView
+class sportsmanagementViewProjectReferee extends JView
 {
 
 	function display($tpl=null)
