@@ -157,7 +157,7 @@ $uri = JUri::root();
 						$row =& $this->items[$i];
 #echo '<pre>'; print_r($row); echo '</pre>';
 						$link = JRoute::_(	'index.php?option=com_sportsmanagement&task=teamstaff.edit&project_team_id=' .
-											$this->teamws->id . '&id=' . $row->id. '&pid=' . $this->project->id );
+											$this->teamws->id . '&id=' . $row->id. '&pid=' . $this->project->id.'&team_id='.$this->team_id );
 						$checked = JHtml::_( 'grid.checkedout', $row, $i );
 						$inputappend = '';
 
@@ -328,8 +328,9 @@ $uri = JUri::root();
 			</table>
 		</div>
 	</fieldset>
-	<input type="hidden" name="team" value="<?php echo $this->teamws->id; ?>" />
-    <input type="hidden" name="pid"		value="<?php echo $this->project->id; ?>" />
+	<input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>" />
+    <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
+    <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

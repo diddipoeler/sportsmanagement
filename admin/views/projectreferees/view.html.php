@@ -42,14 +42,14 @@ class sportsmanagementViewprojectreferees extends JView
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
         
-        $project_id	= JRequest::getVar('pid');
+        $this->project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
+	    $project = $mdlProject->getProject($this->project_id);
         
         //build the html options for position
 		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
-	    $project_ref_positions = $mdlPositions->getRefereePositions($project_id);
+	    $project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
         $position_id = array_merge($position_id,$project_ref_positions);
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);

@@ -190,7 +190,7 @@ JHTML::_('behavior.mootools');
 					{
 						$row =& $this->items[$i];
 						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
-													$row->projectteam_id . '&id=' . $row->id.'&pid=' .$this->project->id);
+													$row->projectteam_id . '&id=' . $row->id.'&pid=' .$this->project->id.'&team_id='.$this->team_id);
 						$checked		= JHTML::_( 'grid.checkedout', $row, $i );
 						$inputappend	= '';
 						?>
@@ -368,11 +368,11 @@ JHTML::_('behavior.mootools');
 			</table>
 		</div>
 	</fieldset>
-	<input type="hidden" name="project_team_id"		value="<?php echo $this->teamws->id; ?>" />
-    <input type="hidden" name="pid"		value="<?php echo $this->project->id; ?>" />
+	<input type="hidden" name="project_team_id"		value="<?php echo $this->project_team_id; ?>" />
+    <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
+    <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
 	<input type="hidden" name="task"				value="" />
-	
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />

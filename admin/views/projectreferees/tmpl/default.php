@@ -301,7 +301,7 @@ $uri=JURI::root();
 		</div>
 	</fieldset>
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
-    <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
+    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />

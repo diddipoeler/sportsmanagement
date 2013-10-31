@@ -348,7 +348,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 		</fieldset>
 	</div>
 	<input type="hidden" name="task" value="" />
-    <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
+    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

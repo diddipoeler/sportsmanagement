@@ -40,9 +40,9 @@ class sportsmanagementViewprojectteams extends JView
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
         
-        $project_id	= JRequest::getVar('pid');
+        $this->project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
+	    $project = $mdlProject->getProject($this->project_id);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

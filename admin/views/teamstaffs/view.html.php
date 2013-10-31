@@ -43,17 +43,18 @@ class sportsmanagementViewTeamStaffs extends JView
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
         
-        $project_id	= JRequest::getVar('pid');
+        $this->project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
-        $team_id	= JRequest::getVar('team_id');
+	    $project = $mdlProject->getProject($this->project_id);
+        $this->project_team_id	= JRequest::getVar('project_team_id');
+        $this->team_id	= JRequest::getVar('team_id');
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
-	    $project_team = $mdlTeam->getTeam($team_id);
+	    $project_team = $mdlTeam->getTeam($this->team_id);
         
         //build the html options for position
 		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STAFF_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
-	    $project_ref_positions = $mdlPositions->getStaffPositions($project_id);
+	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
         $position_id = array_merge($position_id,$project_ref_positions);
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
