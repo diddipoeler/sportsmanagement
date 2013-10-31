@@ -47,7 +47,8 @@ class sportsmanagementViewTeamPlayer extends JView
 		}
         
         //$project_id	= JRequest::getVar('pid');
-        $project_id	= $model->_project_id;
+        //$project_id	= $model->_project_id;
+        $project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);

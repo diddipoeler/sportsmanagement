@@ -229,7 +229,28 @@ abstract class sportsmanagementHelper
 		}
 	}
 
-	/**
+	
+    /**
+	 * Method to return the project
+	 *
+	 * @access	public
+	 * @return	array project
+	 * @since	1.5
+	 */
+	function getTeamplayerProject($projectteam_id)
+	{
+		$db = JFactory::getDBO();
+		$query='SELECT project_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team WHERE id='.(int) $projectteam_id;
+		$db->setQuery($query);
+		if (!$result=$db->loadResult())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $result;
+	}
+    
+    /**
 	 * Method to return a SportsType name
 	 *
 	 * @access	public
