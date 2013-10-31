@@ -51,6 +51,8 @@ class sportsmanagementViewteamPlayers extends JView
         $project_id	= JRequest::getVar('pid');
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
+        
+        
         $team_id	= JRequest::getVar('team_id');
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam($team_id);

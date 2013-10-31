@@ -58,6 +58,9 @@ class sportsmanagementViewTeamStaff extends JView
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         
+        $project_team = $mdlProject->getProjectTeam($this->item->projectteam_id);
+        $this->assignRef('project_team',$project_team);
+        
         $person_id	= $this->item->person_id;;
         $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);

@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 				echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DETAILS_TITLE',
 				  sportsmanagementHelper::formatName(null, $this->project_person->firstname, $this->project_person->nickname, $this->project_person->lastname, 0),
-				  $this->teamws->name, $this->project->name);
+				  $this->project_team->name, $this->project->name);
 				?>
 			</legend>
 			<table class="admintable" border="0">

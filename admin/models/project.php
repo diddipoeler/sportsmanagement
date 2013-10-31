@@ -115,6 +115,23 @@ class sportsmanagementModelProject extends JModelAdmin
     /**
 	 * return 
 	 *
+	 * @param int team_id
+	 * @return int
+	 */
+	function getProjectTeam($projectteam_id)
+	{
+		$query='SELECT t.*
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
+                  INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt
+                  on t.id = pt.team_id 
+				  WHERE pt.id='.$projectteam_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
+    
+    /**
+	 * return 
+	 *
 	 * @param int project_id
 	 * @return int
 	 */
