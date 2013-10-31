@@ -5,8 +5,8 @@
 		<fieldset class="adminform">
 			<legend>
 			<?php echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_PIC_TITLE',
-										JoomleagueHelper::formatName(null, $this->project_player->firstname, $this->project_player->nickname, $this->project_player->lastname, 0),
-										'<i>' . $this->teamws->name . '</i>', '<i>' . $this->projectws->name . '</i>' );
+										sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
+										'<i>' . $this->teamws->name . '</i>', '<i>' . $this->project->name . '</i>' );
 			?>
 			</legend>
 			<table class="admintable">

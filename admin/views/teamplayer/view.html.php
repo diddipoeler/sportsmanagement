@@ -55,6 +55,9 @@ class sportsmanagementViewTeamPlayer extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
+		$this->assignRef( 'extended', $extended );
  
 		// Set the toolbar
 		$this->addToolBar();
