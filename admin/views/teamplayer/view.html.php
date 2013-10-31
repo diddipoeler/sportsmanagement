@@ -235,9 +235,10 @@ class sportsmanagementViewTeamPlayer extends JView
 	*/
 	protected function addToolbar()
 	{ 
+	   $model		= $this->getModel();
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('project_team_id', $this->item->projectteam_id);
-        JRequest::setVar('pid', JRequest::getVar('pid'));
+        JRequest::setVar('pid', $model->_project_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
