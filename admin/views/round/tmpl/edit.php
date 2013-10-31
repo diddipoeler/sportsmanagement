@@ -1,6 +1,9 @@
-<?php defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
 	<div class="col50">

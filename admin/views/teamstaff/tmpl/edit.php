@@ -1,4 +1,10 @@
-<?php defined('_JEXEC') or die('Restricted access');?>
+<?php 
+defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+?>
+
 <!-- import the functions to move the events between selection lists	-->
 <?php
 //$version = urlencode(JoomleagueHelper::getVersion());
