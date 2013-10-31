@@ -77,6 +77,7 @@ class sportsmanagementViewTeamPlayer extends JView
         
         if ( $show_debug_info )
         {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project<br><pre>'.print_r($this->project,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
         }
