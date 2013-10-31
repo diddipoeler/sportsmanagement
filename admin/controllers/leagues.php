@@ -17,6 +17,7 @@ class sportsmanagementControllerleagues extends JControllerAdmin
 	 * @return	void
 	 * @since	1.6
 	 */
+     /*
 	public function saveorder()
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -34,7 +35,7 @@ class sportsmanagementControllerleagues extends JControllerAdmin
 			return true;
 		}
 	}
-    
+    */
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6

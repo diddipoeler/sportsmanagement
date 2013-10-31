@@ -88,7 +88,7 @@ class sportsmanagementModelleague extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-     /*
+     
 	function saveorder($cid=array(),$order)
 	{
 		$row =& $this->getTable();
@@ -109,5 +109,5 @@ class sportsmanagementModelleague extends JModelAdmin
 		}
 		return true;
 	}
-    */
+    
 }
