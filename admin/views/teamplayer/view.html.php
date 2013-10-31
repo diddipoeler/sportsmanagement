@@ -32,6 +32,7 @@ class sportsmanagementViewTeamPlayer extends JView
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
 		$lists		= array();
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // get the Data
 		$form = $this->get('Form');
@@ -71,6 +72,12 @@ class sportsmanagementViewTeamPlayer extends JView
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->assignRef( 'extended', $extended );
+        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        
+        if ( $show_debug_info )
+        {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamPlayer project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+        }
  
 		// Set the toolbar
 		$this->addToolBar();

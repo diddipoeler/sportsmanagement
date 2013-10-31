@@ -28,10 +28,12 @@ class sportsmanagementViewTeamStaff extends JView
 	function display( $tpl = null )
 	{
 		$mainframe	= JFactory::getApplication();
+        $option = JRequest::getCmd('option');
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
 		$lists		= array();
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // get the Data
 		$form = $this->get('Form');
@@ -71,6 +73,12 @@ class sportsmanagementViewTeamStaff extends JView
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamstaff');
 		$this->assignRef( 'extended', $extended );
+        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        
+        if ( $show_debug_info )
+        {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeamStaff project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+        }
  
 		// Set the toolbar
 		$this->addToolBar();
