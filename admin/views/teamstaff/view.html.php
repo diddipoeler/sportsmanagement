@@ -53,9 +53,9 @@ class sportsmanagementViewTeamStaff extends JView
 		$this->script = $script;
         
         //$project_id	= JRequest::getVar('pid');
-        $project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
+        $this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
+	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         
         
@@ -64,7 +64,7 @@ class sportsmanagementViewTeamStaff extends JView
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
-	    $project_ref_positions = $mdlPositions->getStaffPositions($project_id);
+	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
         $projectpositions = array_merge( $projectpositions, $project_ref_positions );
         $lists['projectpositions'] = JHTML::_(	'select.genericlist',
 												$projectpositions,
@@ -238,7 +238,7 @@ class sportsmanagementViewTeamStaff extends JView
 	{
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('project_team_id', $this->item->projectteam_id);
-        JRequest::setVar('pid', $project_id);
+        JRequest::setVar('pid', $this->project_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
