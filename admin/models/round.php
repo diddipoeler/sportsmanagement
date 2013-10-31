@@ -81,14 +81,15 @@ class sportsmanagementModelround extends JModelAdmin
 		}
 		return $data;
 	}
-	
-	/**
+    
+    /**
 	 * Method to save item order
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
+/*     
 	function saveorder($cid=array(),$order)
 	{
 		$row =& $this->getTable();
@@ -109,4 +110,7 @@ class sportsmanagementModelround extends JModelAdmin
 		}
 		return true;
 	}
+*/    
+	
+	
 }
