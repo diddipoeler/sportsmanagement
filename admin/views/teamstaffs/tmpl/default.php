@@ -156,7 +156,7 @@ $uri = JUri::root();
 					{
 						$row =& $this->items[$i];
 #echo '<pre>'; print_r($row); echo '</pre>';
-						$link = JRoute::_(	'index.php?option=com_sportsmanagement&task=teamstaff.edit&team=' .
+						$link = JRoute::_(	'index.php?option=com_sportsmanagement&task=teamstaff.edit&project_team_id=' .
 											$this->teamws->id . '&id=' . $row->id. '&pid=' . $this->project->id );
 						$checked = JHtml::_( 'grid.checkedout', $row, $i );
 						$inputappend = '';

@@ -189,7 +189,7 @@ JHTML::_('behavior.mootools');
 					for ( $i = 0, $n = count( $this->items ); $i < $n; $i++ )
 					{
 						$row =& $this->items[$i];
-						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.edit&team=' .
+						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
 													$row->projectteam_id . '&id=' . $row->id.'&pid=' .$this->project->id);
 						$checked		= JHTML::_( 'grid.checkedout', $row, $i );
 						$inputappend	= '';

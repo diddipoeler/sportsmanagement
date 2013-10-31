@@ -298,7 +298,23 @@ class sportsmanagementModelperson extends JModelAdmin
 		}
 	}
 	
-	/**
+	
+    /**
+	 * return 
+	 *
+	 * @param int team_id
+	 * @return int
+	 */
+	function getPerson($person_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
+				  WHERE id='.$person_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
+    
+    /**
 	 * Method to save item order
 	 *
 	 * @access	public
