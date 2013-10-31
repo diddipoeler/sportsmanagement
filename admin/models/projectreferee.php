@@ -80,6 +80,34 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		}
 		return $data;
 	}
+    
+    /**
+	 * Method to save item order
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+	function saveorder($cid=array(),$order)
+	{
+		$row =& $this->getTable();
+		
+		// update ordering values
+		for ($i=0; $i < count($cid); $i++)
+		{
+			$row->load((int) $cid[$i]);
+			if ($row->ordering != $order[$i])
+			{
+				$row->ordering=$order[$i];
+				if (!$row->store())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	
 }
