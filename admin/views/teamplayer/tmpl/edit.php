@@ -31,8 +31,7 @@ echo JHTML::_('tabs.end');
 
 		<input type="hidden" name="eventschanges_check"	id="eventschanges_check" value="0" />
 		
-		<input type="hidden" name="team_id"				value="<?php echo $this->teamws->team_id; ?>" />
-		<input type="hidden" name="id"				value="<?php echo $this->project_player->id; ?>" />
+		
 		<input type="hidden" name="task"				value="teamplayer.edit" />
 	</div>
 	<?php echo JHTML::_( 'form.token' ); ?>

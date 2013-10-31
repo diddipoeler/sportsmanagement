@@ -24,8 +24,7 @@
 		?>	
 		<input type="hidden" name="eventschanges_check"	value="0" id="eventschanges_check" />
 		
-		<input type="hidden" name="team"				value="<?php echo $this->teamws->id; ?>" />
-		<input type="hidden" name="cid[]"				value="<?php echo $this->project_teamstaff->id; ?>" />
+		
 		<input type="hidden" name="task"				value="teamstaff.edit" />
 	</div>
 	<?php echo JHtml::_( 'form.token' ); ?>
