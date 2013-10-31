@@ -1,4 +1,5 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 ?>		
 		
 			<fieldset class="adminform">
@@ -6,7 +7,7 @@
 				<?php
 				echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DETAILS_TITLE',
 				  sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
-				  $this->teamws->name, $this->projectws->name);
+				  $this->teamws->name, $this->project->name);
 				?>
 			</legend>
 			<table class="admintable" border="0">
