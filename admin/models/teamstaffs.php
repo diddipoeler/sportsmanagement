@@ -94,7 +94,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$search_mode	= $mainframe->getUserStateFromRequest($option.'ts_search_mode','search_mode', '', 'string');
 		$search			= JString::strtolower($search);
 		$where=array();
-		$where[]='ts.projectteam_id='.$this->_team_id;
+		$where[]='ts.projectteam_id='.$this->_project_team_id;
 		$where[]="ppl.published = '1'";
 		if ($search)
 		{

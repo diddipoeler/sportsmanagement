@@ -54,6 +54,14 @@ class sportsmanagementViewteamPlayers extends JView
         $team_id	= JRequest::getVar('team_id');
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam($team_id);
+        
+        //build the html options for position
+		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
+        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+	    $project_ref_positions = $mdlPositions->getPlayerPositions($project_id);
+        $position_id = array_merge($position_id,$project_ref_positions);
+		$lists['project_position_id'] = $position_id;
+		unset($position_id);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

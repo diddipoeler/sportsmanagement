@@ -146,6 +146,65 @@ class sportsmanagementModelPositions extends JModelList
 		* @return  array
 		* @since 0.1
 		*/
+	function getStaffPositions($project_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		//$project_id=$mainframe->getUserState($option.'project');
+		$query="	SELECT ppos.id AS value, pos.name AS text
+					FROM #__joomleague_position AS pos
+					INNER JOIN #__joomleague_project_position AS ppos ON ppos.position_id=pos.id
+					WHERE ppos.project_id=$project_id AND pos.persontype=2
+					ORDER BY ordering ";
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		foreach ($result as $position){
+			$position->text=JText::_($position->text);
+		}
+		return $result;
+	}
+
+    
+    /**
+	 * Method to return a positions array (id,position)
+		*
+		* @access  public
+		* @return  array
+		* @since 0.1
+		*/
+	function getPlayerPositions($project_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		//$project_id=$mainframe->getUserState($option.'project');
+
+		$query="	SELECT pp.id AS value,name AS text
+					FROM #__joomleague_position AS p
+					LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
+					WHERE pp.project_id=$project_id AND p.persontype=1
+					ORDER BY ordering ";
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		foreach ($result as $position){$position->text=JText::_($position->text);}
+		return $result;
+	}
+
+
+    /**
+	 * Method to return a positions array (id,position)
+		*
+		* @access  public
+		* @return  array
+		* @since 0.1
+		*/
 
 	function getPositions($project_id)
 	{

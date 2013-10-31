@@ -47,7 +47,7 @@ class sportsmanagementViewprojectreferees extends JView
 	    $project = $mdlProject->getProject($project_id);
         
         //build the html options for position
-		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($project_id);
         $position_id = array_merge($position_id,$project_ref_positions);

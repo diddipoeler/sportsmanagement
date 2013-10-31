@@ -163,7 +163,7 @@ JHTML::_('behavior.mootools');
 							<?php
 							//echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
                             echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'tp.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-							echo JHTML::_( 'grid.order', $this->items, 'filesave.png', 'teamplayer.saveorder' );
+							echo JHTML::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
 							?>
 						</th>
 						<th width="5%">

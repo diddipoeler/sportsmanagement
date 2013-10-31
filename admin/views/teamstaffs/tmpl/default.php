@@ -130,7 +130,7 @@ $uri = JUri::root();
 							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
                             echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ts.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
-							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'teamstaff.saveorder');
+							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'teamstaffs.saveorder');
 							?>
 						</th>
 						<th width="5%" >
