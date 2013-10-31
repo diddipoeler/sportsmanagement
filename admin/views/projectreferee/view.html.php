@@ -113,8 +113,8 @@ class sportsmanagementViewProjectReferee extends JView
 
 
 		$this->assignRef('lists',			$lists);
-		$this->assignRef('projectreferee',	$projectreferee);
-		$extended = $this->getExtended($projectreferee->extended, 'projectreferee');		
+		$this->assignRef('projectreferee',	$item);
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'projectreferee');		
 		$this->assignRef( 'extended', $extended );
         $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
 		
