@@ -251,7 +251,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									echo JHTML::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
-								elseif ($row->picture == JoomleagueHelper::getDefaultPlaceholder("team"))
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 									echo JHTML::image('administrator/components/com_sportsmanagement/assets/images/information.png',

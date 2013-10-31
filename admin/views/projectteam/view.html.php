@@ -37,11 +37,16 @@ class sportsmanagementViewProjectteam extends JView
 			return false;
 		}
         
-        $project_id	= JRequest::getVar('pid');
+        // Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+        
+        $project_id	= $this->item->project_id;;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
-        $team_id	= JRequest::getVar('team_id');
+        $team_id	= $this->item->team_id;;
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam($team_id);
         
@@ -52,10 +57,7 @@ class sportsmanagementViewProjectteam extends JView
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
         
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -74,13 +76,57 @@ class sportsmanagementViewProjectteam extends JView
 	*/
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE'));
+		
+        JRequest::setVar('hidemainmenu', true);
+        JRequest::setVar('pid', $this->item->project_id);
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		$isNew = $this->item->id == 0;
+		$canDo = sportsmanagementHelper::getActions($this->item->id);
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_PROJECTTEAM_EDIT'), 'helloworld');
+		// Built the actions for new and existing records.
+		if ($isNew) 
+		{
+			// For new records, check the create permission.
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			}
+			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CANCEL');
+		}
+		else
+		{
+			if ($canDo->get('core.edit'))
+			{
+				// We can save the new record
+				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
+ 
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create')) 
+				{
+					JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::custom('projectteam.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
+			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CLOSE');
+		}
+        
+        
+        /*
+        JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE'));
 		
 		JToolBarHelper::save('projectteam.save');
 		JToolBarHelper::apply('projectteam.apply');
 		JToolBarHelper::cancel('projectteam.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
 		JToolBarHelper::divider();
 		//JLToolBarHelper::onlinehelp();
+        */
 	}
     
     /**
