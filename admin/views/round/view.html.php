@@ -38,7 +38,7 @@ class sportsmanagementViewRound extends JView
 			return false;
 		}
         
-        $project_id	= JRequest::getInt('pid');
+        $project_id	= $this->item->project_id;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);

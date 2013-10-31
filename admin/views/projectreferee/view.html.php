@@ -70,48 +70,7 @@ class sportsmanagementViewProjectReferee extends JView
 												'value',
 												'text',$this->item->project_position_id);
 		unset($refereepositions);
-        
-/*        
-		//get the projectreferee data of the project_team
-		$projectreferee =& $this->get('data');
-		$isNew=($projectreferee->id < 1);
-
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_JOOMLEAGUE_ADMIN_P_REF_THE_PREF'),$projectreferee->name);
-			$mainframe->redirect('index.php?option=com_joomleague',$msg);
-		}
-
-		// Edit or Create?
-		if ($isNew)
-		{
-			$projectreferee->order=0;
-		}
-
-		//build the html select list for positions
-		$refereepositions=array();
-		$refereepositions[]=JHTML::_('select.option',	'0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_REF_POS'));
-		if ($res=& $model->getRefereePositions())
-		{
-			$refereepositions=array_merge($refereepositions,$res);
-		}
-		$lists['refereepositions']=JHTML::_(	'select.genericlist',
-												$refereepositions,
-												'project_position_id',
-												'class="inputbox" size="1"',
-												'value',
-												'text',$projectreferee->project_position_id);
-		unset($refereepositions);
-                
-		$projectws	=& $this->get('Data','projectws');
-
-		$this->assignRef('form',			$this->get('form'));
-		$this->assignRef('projectws',		$projectws);
-*/
-
-
-
+  
 		$this->assignRef('lists',			$lists);
 		//$this->assignRef('projectreferee',	$item);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'projectreferee');		
