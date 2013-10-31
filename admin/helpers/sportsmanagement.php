@@ -12,6 +12,14 @@ abstract class sportsmanagementHelper
 	 */
 	public static function addSubmenu($submenu) 
 	{
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        if ( $show_debug_info )
+        {
+            $mainframe->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JRequest::get('post'),true).'</pre>'),'');
+        }
+        
 		$project_id	= JRequest::getVar('pid');
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
 		
