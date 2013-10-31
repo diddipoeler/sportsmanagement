@@ -5,7 +5,7 @@
 	<legend>
 		<?php
 		echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_REF_DESCR',
-				sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0),
+				sportsmanagementHelper::formatName(null, $this->project_person->firstname, $this->project_person->nickname, $this->project_person->lastname, 0),
 				$this->project->name);
 		?>
 	</legend>
