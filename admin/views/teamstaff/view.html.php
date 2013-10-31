@@ -47,16 +47,19 @@ class sportsmanagementViewTeamStaff extends JView
 			return false;
 		}
         
-        $project_id	= JRequest::getVar('pid');
+        // Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+        
+        //$project_id	= JRequest::getVar('pid');
+        $project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
         
         
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
         
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
@@ -235,7 +238,7 @@ class sportsmanagementViewTeamStaff extends JView
 	{
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('project_team_id', $this->item->projectteam_id);
-        JRequest::setVar('pid', JRequest::getVar('pid'));
+        JRequest::setVar('pid', $project_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;

@@ -46,6 +46,11 @@ class sportsmanagementViewTeamPlayer extends JView
 			return false;
 		}
         
+        // Assign the Data
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+        
         //$project_id	= JRequest::getVar('pid');
         //$project_id	= $model->_project_id;
         $project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
@@ -54,10 +59,7 @@ class sportsmanagementViewTeamPlayer extends JView
         $this->assignRef('project',$project);
         
         
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
         
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
