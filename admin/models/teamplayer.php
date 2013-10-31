@@ -14,10 +14,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
     var $_project_id = 0;
     var $_team_id = 0;
     var $_project_team_id = 0;
-    
-    
-    
-    
+  
     /**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -29,7 +26,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		$this->_project_id	= JRequest::getVar('pid');
+		//$this->_project_id	= JRequest::getVar('pid');
         // Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
