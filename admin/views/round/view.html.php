@@ -68,7 +68,50 @@ class sportsmanagementViewRound extends JView
 	*/
 	protected function addToolbar()
 	{ 
-		// Set toolbar items for the page
+		JRequest::setVar('hidemainmenu', true);
+        JRequest::setVar('pid', $this->item->project_id);
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		$isNew = $this->item->id == 0;
+		$canDo = sportsmanagementHelper::getActions($this->item->id);
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT'), 'helloworld');
+		// Built the actions for new and existing records.
+		if ($isNew) 
+		{
+			// For new records, check the create permission.
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::apply('round.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('round.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom('round.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			}
+			JToolBarHelper::cancel('round.cancel', 'JTOOLBAR_CANCEL');
+		}
+		else
+		{
+			if ($canDo->get('core.edit'))
+			{
+				// We can save the new record
+				JToolBarHelper::apply('round.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('round.save', 'JTOOLBAR_SAVE');
+ 
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create')) 
+				{
+					JToolBarHelper::custom('round.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::custom('round.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
+			JToolBarHelper::cancel('round.cancel', 'JTOOLBAR_CLOSE');
+		}
+        
+        
+        
+        /*
+        // Set toolbar items for the page
 		$edit = JRequest::getVar('edit', true);
 		$text = !$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_TITLE'),'Matchdays');
@@ -85,6 +128,7 @@ class sportsmanagementViewRound extends JView
 			JToolBarHelper::cancel('round.cancel', 'COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
 		}
 		//JToolBarHelper::help('screen.joomleague', true);	
+        */
 	}
     
     /**
