@@ -10,7 +10,15 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelteamplayer extends JModelAdmin
 {
-	/**
+	
+    var $_project_id = 0;
+    var $_team_id = 0;
+    var $_project_team_id = 0;
+    
+    
+    
+    
+    /**
 	 * Method override to check if you can edit an existing record.
 	 *
 	 * @param	array	$data	An array of input data.
@@ -21,7 +29,8 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
+		$this->_project_id	= JRequest::getVar('pid');
+        // Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 	/**
