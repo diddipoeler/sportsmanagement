@@ -269,18 +269,18 @@ $uri=JURI::root();
 							</td>
 							<td class="center">
 								<?php
-								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferee.');
+								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferees.');
 								?>
 							</td>
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon($i,$i > 0,'projectreferee.orderup','JLIB_HTML_MOVE_UP',true);
+									echo $this->pagination->orderUpIcon($i,$i > 0,'projectreferees.orderup','JLIB_HTML_MOVE_UP',true);
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projectreferee.orderdown','JLIB_HTML_MOVE_DOWN',true);
+									echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projectreferees.orderdown','JLIB_HTML_MOVE_DOWN',true);
 									?>
 								</span>
 								<?php

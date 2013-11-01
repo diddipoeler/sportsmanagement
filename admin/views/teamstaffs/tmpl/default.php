@@ -293,18 +293,18 @@ $uri = JUri::root();
 							</td>
 							<td class="center">
 								<?php
-								echo JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamstaff.');
+								echo JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamstaffs.');
 								?>
 							</td>
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaff.orderup', 'JLIB_HTML_MOVE_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamstaffs.orderup', 'JLIB_HTML_MOVE_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaff.orderdown', 'JLIB_HTML_MOVE_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamstaffs.orderdown', 'JLIB_HTML_MOVE_DOWN', true );
 									?>
 								</span>
 								<?php

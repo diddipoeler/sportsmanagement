@@ -333,18 +333,18 @@ JHTML::_('behavior.mootools');
 							</td>
 							<td class="center">
 								<?php
-								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamplayer.');
+								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamplayers.');
 								?>
 							</td>
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamplayer.orderup', 'JLIB_HTML_MOVE_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0, 'teamplayers.orderup', 'JLIB_HTML_MOVE_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamplayer.orderdown', 'JLIB_HTML_MOVE_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'teamplayers.orderdown', 'JLIB_HTML_MOVE_DOWN', true );
 									?>
 								</span>
 								<?php
