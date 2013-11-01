@@ -79,29 +79,29 @@ class sportsmanagementViewProject extends JView
 	$uri = JFactory::getURI();
 	$user = JFactory::getUser();
            
-	$project = $this->get('Item');
+	$this->project = $this->get('Item');
        
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
-	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($project->id);
+	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->project->id);
 		
 	$iProjectPositionsCount = 0;
 	$mdlProjectPositions = JModel::getInstance("Projectpositions", "sportsmanagementModel");
-	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($project->id);
+	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->project->id);
 		
 	$iProjectRefereesCount = 0;
 	$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
-	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($project->id);
+	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->project->id);
 		
 	$iProjectTeamsCount = 0;
 	$mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
-	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($project->id);
+	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project->id);
 		
 	$iMatchDaysCount = 0;
 	$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
-	$iMatchDaysCount = $mdlRounds->getRoundsCount($project->id);
+	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->project->id);
 		
-	$this->assignRef('project',$project);
+	$this->assignRef('project',$this->project);
 	$this->assignRef('count_projectdivisions',$iProjectDivisionsCount);
 	$this->assignRef('count_projectpositions',$iProjectPositionsCount);
 	$this->assignRef('count_projectreferees', $iProjectRefereesCount);

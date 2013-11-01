@@ -27,6 +27,8 @@ class sportsmanagementModelProject extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -40,6 +42,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -58,6 +61,7 @@ class sportsmanagementModelProject extends JModelAdmin
 		}
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -67,6 +71,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *

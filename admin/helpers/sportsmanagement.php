@@ -15,9 +15,16 @@ abstract class sportsmanagementHelper
 	   $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        $project_id	= JRequest::getVar('pid');
-        $project_team_id = JRequest::getVar('project_team_id');
-        $team_id = JRequest::getVar('team_id');
+        // retrieve the value of the state variable. If no value is specified,
+        // the specified default value will be returned.
+        // function syntax is getUserState( $key, $default );
+        $project_id = $mainframe->getUserState( "$option.pid", '0' );
+        $project_team_id = $mainframe->getUserState( "$option.$project_team_id", '0' );
+        $team_id = $mainframe->getUserState( "$option.team_id", '0' );
+        
+        //$project_id	= JRequest::getVar('pid');
+        //$project_team_id = JRequest::getVar('project_team_id');
+        //$team_id = JRequest::getVar('team_id');
         
         if ( $show_debug_info )
         {
