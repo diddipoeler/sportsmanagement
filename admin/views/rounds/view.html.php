@@ -51,9 +51,11 @@ class sportsmanagementViewRounds extends JView
 		$pagination =& $this->get('Pagination');
         $model = $this->getModel();
         
-        $project_id	= JRequest::getVar('pid');
+        //$project_id	= JRequest::getVar('pid');
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
+	    $project = $mdlProject->getProject($this->project_id);
         
 		//$projectws =& $this->get('Data','projectws');
 

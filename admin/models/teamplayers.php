@@ -32,8 +32,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->_team_id        = JRequest::getVar('team_id');
-        $this->_project_team_id        = JRequest::getVar('project_team_id');
+        $this->_team_id = JRequest::getVar('team_id');
+        $this->_project_team_id = JRequest::getVar('project_team_id');
         
         if ( !$this->_team_id )
         {

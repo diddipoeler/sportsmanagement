@@ -31,7 +31,10 @@ class sportsmanagementModelRounds extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        $this->_project_id	= JRequest::getVar('pid');
+        
+        //$this->_project_id	= JRequest::getVar('pid');
+        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

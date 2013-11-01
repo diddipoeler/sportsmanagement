@@ -48,8 +48,17 @@ class sportsmanagementViewTeamStaffs extends JView
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project_team_id	= JRequest::getVar('project_team_id');
         $this->team_id	= JRequest::getVar('team_id');
-        //$this->project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
-        //$this->team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+        
+        if ( !$this->team_id )
+        {
+            $this->team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+        }
+        if ( !$this->project_team_id )
+        {
+            $this->project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+        }
+        
+        
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam($this->team_id);
         
