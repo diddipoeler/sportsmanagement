@@ -41,7 +41,7 @@ echo JHTML::script('projectposition.js','administrator/components/com_sportsmana
 		<div class="clr"></div>
 		<input type="hidden" name="positionschanges_check" value="0" id="positionschanges_check" />
 		
-		<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 		<input type="hidden" name="task" value="" />
 	</div>
 	<?php echo JHTML::_('form.token')."\n"; ?>
