@@ -127,7 +127,7 @@ abstract class sportsmanagementHelper
 		$query='	SELECT	id,
 							name
 
-					FROM #__sportsmanagement_project
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 					ORDER BY ordering, name ASC';
 
 		$db->setQuery($query);
@@ -157,8 +157,8 @@ abstract class sportsmanagementHelper
 							t.name AS text,
 							t.notes
 
-					FROM #__sportsmanagement_team AS t
-					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id=t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
 					WHERE pt.project_id='.$project_id.'
 					ORDER BY name ASC ';
 
@@ -189,8 +189,8 @@ abstract class sportsmanagementHelper
 							t.name AS text,
 							t.notes
 
-					FROM #__sportsmanagement_team AS t
-					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id=t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
 					WHERE pt.project_id='.(int) $project_id.'
 					ORDER BY name ASC ';
 
@@ -216,7 +216,7 @@ abstract class sportsmanagementHelper
 							fav_team_highlight_type,
 							fav_team_text_bold
 
-					FROM #__sportsmanagement_project
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 					WHERE id='.(int) $project_id;
 
 		$db->setQuery($query);
@@ -262,7 +262,7 @@ abstract class sportsmanagementHelper
 	function getSportsTypeName($sportsType)
 	{
 		$db = JFactory::getDBO();
-		$query='SELECT name FROM #__sportsmanagement_sports_type WHERE id='.(int) $sportsType;
+		$query='SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type WHERE id='.(int) $sportsType;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
 		{
@@ -282,7 +282,7 @@ abstract class sportsmanagementHelper
 	function getSportsTypes()
 	{
 		$db = JFactory::getDBO();
-		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
@@ -337,7 +337,7 @@ abstract class sportsmanagementHelper
 		}
 
 		$db=&JFactory::getDBO();
-		$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
+		$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 		$db->setQuery($query);
 		$res=$db->loadResult();
 
@@ -351,7 +351,7 @@ abstract class sportsmanagementHelper
 		$excludeExtension = array();
 		if ($project_id) {
 			$db= JFactory::getDBO();
-			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
+			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -380,7 +380,7 @@ abstract class sportsmanagementHelper
 		$excludeExtension = array();
 		if ($project_id) {
 			$db= JFactory::getDBO();
-			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
+			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -1006,7 +1006,7 @@ abstract class sportsmanagementHelper
 		$database = JFactory::getDBO();
 
 		$query="SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version
-				  FROM #__sportsmanagement_version 
+				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_version 
 				  ORDER BY date DESC LIMIT 1";
 		$database->setQuery($query);
 		$result=$database->loadResult();
@@ -1256,7 +1256,7 @@ abstract class sportsmanagementHelper
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
-		       . ' FROM #__sportsmanagement_round '
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round '
 		       . ' WHERE project_id= ' .$project_id
            . ' AND published =  1'
 		       . ' ORDER BY roundcode '.$ordering;
