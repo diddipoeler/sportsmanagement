@@ -70,7 +70,7 @@ class sportsmanagementViewLeagues extends JView
 		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

@@ -99,7 +99,7 @@ class sportsmanagementViewStatistics extends JView
 		//JToolBarHelper::deleteList(JText::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_DELETE_WARNING'),'statistic.fulldelete',JTEXT::_('COM_SPORTSMANGEMENT_ADMIN_STATISTICS_FULL_DELETE'));
 		JToolBarHelper::divider();
 		
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

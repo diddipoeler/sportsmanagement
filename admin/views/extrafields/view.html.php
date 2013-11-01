@@ -69,7 +69,7 @@ class sportsmanagementViewextrafields extends JView
 		JToolBarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'extrafields.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

@@ -74,7 +74,7 @@ class sportsmanagementViewPlaygrounds extends JView
 		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

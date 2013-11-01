@@ -263,7 +263,7 @@ class sportsmanagementViewprojectpositions extends JView
 		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_EDIT_TITLE'),'Positions');
 		JToolBarHelper::save('projectposition.save_positionslist');
 		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
     
 }

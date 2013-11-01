@@ -80,7 +80,7 @@ class sportsmanagementViewprojectteams extends JView
 		JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'), true);
 		JToolBarHelper::divider();
 
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
     JToolBarHelper::preferences(JRequest::getCmd('option'));
     
         

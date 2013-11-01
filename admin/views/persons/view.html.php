@@ -212,7 +212,7 @@ class sportsmanagementViewPersons extends JView
 		JToolBarHelper::archiveList('person.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','persons.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

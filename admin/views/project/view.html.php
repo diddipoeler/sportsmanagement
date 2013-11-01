@@ -158,7 +158,7 @@ class sportsmanagementViewProject extends JView
 			// for existing items the button is renamed `close`
 			JToolBarHelper::cancel('project.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		}
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
     
     /**

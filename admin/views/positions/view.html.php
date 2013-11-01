@@ -108,7 +108,7 @@ class sportsmanagementViewPositions extends JView
 		JToolBarHelper::deleteList('','position.delete');
 		JToolBarHelper::divider();
 
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

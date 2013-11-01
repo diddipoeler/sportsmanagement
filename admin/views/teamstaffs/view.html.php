@@ -190,7 +190,7 @@ class sportsmanagementViewTeamStaffs extends JView
 		JToolBarHelper::divider();
 
 		
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 		
 	}

@@ -144,7 +144,7 @@ class sportsmanagementViewProjectReferee extends JView
 			}
 			JToolBarHelper::cancel('projectreferee.cancel', 'JTOOLBAR_CLOSE');
 		}
-        
+    sportsmanagementHelper::ToolbarButtonOnlineHelp();    
         
         /*
         JToolBarHelper::title(JText::_('Edit project depending referee data'),'Referees');

@@ -70,7 +70,7 @@ class sportsmanagementViewagegroups extends JView
 		JToolBarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'agegroups.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

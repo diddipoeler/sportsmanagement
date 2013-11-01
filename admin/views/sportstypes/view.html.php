@@ -72,7 +72,7 @@ class sportsmanagementViewSportsTypes extends JView
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','sportstypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

@@ -116,7 +116,7 @@ class sportsmanagementViewProjectteam extends JView
 			}
 			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CLOSE');
 		}
-        
+    sportsmanagementHelper::ToolbarButtonOnlineHelp();    
         
         /*
         JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE'));

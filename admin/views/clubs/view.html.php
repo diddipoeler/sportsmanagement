@@ -78,7 +78,7 @@ class sportsmanagementViewClubs extends JView
 		JToolBarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		////JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		
 	}
 }

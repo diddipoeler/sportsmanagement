@@ -70,7 +70,7 @@ class sportsmanagementViewjlextcountries extends JView
 		JToolBarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>

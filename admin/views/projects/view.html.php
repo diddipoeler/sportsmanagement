@@ -133,7 +133,7 @@ class sportsmanagementViewProjects extends JView
 		JToolBarHelper::deleteList('', 'project.remove');
 		JToolBarHelper::divider();
 		
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }

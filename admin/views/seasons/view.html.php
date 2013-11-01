@@ -77,7 +77,7 @@ class sportsmanagementViewSeasons extends JView
 		{
 			JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');
 		}
-		
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		/*
 		JToolBarHelper::addNew('season.add');
 		JToolBarHelper::editList('season.edit');

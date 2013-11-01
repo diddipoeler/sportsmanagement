@@ -99,7 +99,7 @@ class sportsmanagementViewEventtypes extends JView
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
-		//JLToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 }
 ?>
