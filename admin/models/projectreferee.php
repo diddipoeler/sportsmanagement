@@ -112,6 +112,36 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to update checked project referees
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort($cid,$data)
+	{
+		$result=true;
+		$record = JTable::getInstance('ProjectReferee', 'Table');
+		for ($x=0; $x < count($cid); $x++)
+		{
+			$record->id = $cid[$x];
+			$record->project_position_id = $data['project_position_id'.$cid[$x]];
+			$record->store();
+			if (!$record->check())
+			{
+				$this->setError($record->getError());
+				$result=false;
+			}
+			if (!$record->store())
+			{
+				$this->setError($record->getError());
+				$result=false;
+			}
+		}
+		return $result;
+	}
 	
 	
 }
