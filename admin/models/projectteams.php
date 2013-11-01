@@ -28,6 +28,8 @@ class sportsmanagementModelProjectteams extends JModelList
 
 	protected function getListQuery()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
 		$this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         // Get the WHERE and ORDER BY clauses for the query
         
