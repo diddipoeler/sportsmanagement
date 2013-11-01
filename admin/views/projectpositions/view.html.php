@@ -76,6 +76,7 @@ class sportsmanagementViewprojectpositions extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
+        $option = JRequest::getCmd('option');
         
         $items =& $this->get('Items');
         //build the html select list for project assigned positions
