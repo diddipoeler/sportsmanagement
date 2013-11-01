@@ -118,6 +118,11 @@ class sportsmanagementViewProject extends JView
 	*/
 	protected function addToolbar()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+    // store the variable that we would like to keep for next time
+    // function syntax is setUserState( $key, $value );
+    $mainframe->setUserState( "$option.pid", $this->project->id);
 		// Set toolbar items for the page
 		if ($this->copy)
 		{
