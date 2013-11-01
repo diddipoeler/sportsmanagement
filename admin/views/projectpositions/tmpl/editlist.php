@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 		</fieldset>
 		<div class="clr"></div>
 		<input type="hidden" name="positionschanges_check" value="0" id="positionschanges_check" />
-		<input type="hidden" name="option" value="com_joomleague" />
+		
 		<input type="hidden" name="cid[]" value="<?php echo $this->projectws->id; ?>" />
 		<input type="hidden" name="task" value="" />
 	</div>

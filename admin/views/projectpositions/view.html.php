@@ -76,6 +76,30 @@ class sportsmanagementViewprojectpositions extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
+        
+        $items =& $this->get('Items');
+        //build the html select list for project assigned positions
+		$ress=array();
+		$res1=array();
+		$notusedpositions=array();
+        
+        if ( $items )
+        {
+        foreach($items as $item)
+        {
+            $project_positionslist[] = JHTML::_('select.option',$item->id,JText::_($item->name));
+        }
+        $lists['project_positions']=JHTML::_(	'select.genericlist',
+													$project_positionslist,
+													'project_positionslist[]',
+													'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"',
+													'value',
+													'text');
+        }
+        else
+        {
+            $lists['project_positions']='<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+        }                                            
 
 /*
 		$projectws =& $this->get('Data','projectws');
@@ -152,7 +176,9 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 */
-		$this->addToolbar_Editlist();		
+		
+        $this->assignRef('lists',$lists);
+        $this->addToolbar_Editlist();		
 		parent::display($tpl);
 	}
     
