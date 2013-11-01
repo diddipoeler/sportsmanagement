@@ -34,8 +34,16 @@ class sportsmanagementModelTeamPlayers extends JModelList
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->_team_id        = JRequest::getVar('team_id');
         $this->_project_team_id        = JRequest::getVar('project_team_id');
-        //$this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
-        //$this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+        
+        if ( !$this->_team_id )
+        {
+            $this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+        }
+        if ( !$this->_project_team_id )
+        {
+            $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+        }
+                
         
         
         // Get the WHERE and ORDER BY clauses for the query
