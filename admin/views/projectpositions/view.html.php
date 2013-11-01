@@ -29,6 +29,12 @@ class sportsmanagementViewprojectpositions extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        
+        if ($this->getLayout()=='editlist')
+		{
+			$this->_displayEditlist($tpl);
+			return;
+		}
 
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
@@ -64,6 +70,92 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->addToolbar();
 		parent::display($tpl);
 	}
+    
+    function _displayEditlist($tpl)
+	{
+		$mainframe = JFactory::getApplication();
+		$uri = JFactory::getURI();
+		$model = $this->getModel();
+
+/*
+		$projectws =& $this->get('Data','projectws');
+
+		//build the html select list for project assigned positions
+		$ress=array();
+		$res1=array();
+		$notusedpositions=array();
+
+		if ($ress =& $model->getProjectPositions())
+		{ // select all already assigned positions to the project
+			foreach($ress as $res){$project_positionslist[]=JHTML::_('select.option',$res->value,JText::_($res->text));}
+			$lists['project_positions']=JHTML::_(	'select.genericlist',
+													$project_positionslist,
+													'project_positionslist[]',
+													' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($ress)).'"',
+													'value',
+													'text');
+		}
+		else
+		{
+			$lists['project_positions']='<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+
+		if ($ress1 =& $model->getSubPositions($projectws->sports_type_id))
+		{
+			if ($ress)
+			{
+				foreach ($ress1 as $res1)
+				{
+					if (!in_array($res1,$ress))
+					{
+						$res1->text=JText::_($res1->text);
+						$notusedpositions[]=$res1;
+					}
+				}
+			}
+			else
+			{
+				foreach ($ress1 as $res1)
+				{
+					$res1->text=JText::_($res1->text);
+					$notusedpositions[]=$res1;
+				}
+			}
+		}
+		else
+		{
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
+		}
+
+		//build the html select list for positions
+		if (count ($notusedpositions) > 0)
+		{
+			$lists['positions']=JHTML::_(	'select.genericlist',
+											$notusedpositions,
+											'positionslist[]',
+											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"',
+											'value',
+											'text');
+		}
+		else
+		{
+			$lists['positions']='<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+		unset($ress);
+		unset($ress1);
+		unset($notusedpositions);
+
+		$this->assignRef('user',JFactory::getUser());
+		$this->assignRef('lists',$lists);
+		$this->assignRef('positiontool',$positiontool);
+		$this->assignRef('projectws',$projectws);
+		$this->assignRef('pagination',$pagination);
+		$this->assignRef('request_url',$uri->toString());
+*/
+		$this->addToolbar_Editlist();		
+		parent::display($tpl);
+	}
+    
 
 	/**
 	 * Add the page title and toolbar.
@@ -82,5 +174,19 @@ class sportsmanagementViewprojectpositions extends JView
         sportsmanagementHelper::ToolbarButton('editlist');
 
 	}
+    
+    /**
+	* Add the page title and toolbar.
+	*
+	* @since	1.7
+	*/
+	protected function addToolbar_Editlist()
+	{ 
+		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_EDIT_TITLE'),'Positions');
+		JToolBarHelper::save('projectposition.save_positionslist');
+		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
+		//JLToolBarHelper::onlinehelp();
+	}
+    
 }
 ?>
