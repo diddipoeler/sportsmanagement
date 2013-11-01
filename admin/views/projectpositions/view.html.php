@@ -99,7 +99,55 @@ class sportsmanagementViewprojectpositions extends JView
         else
         {
             $lists['project_positions']='<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
-        }                                            
+        } 
+        
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id); 
+        
+        if ($ress1 =& $model->getSubPositions($project->sports_type_id))
+		{
+			if ($ress)
+			{
+				foreach ($ress1 as $res1)
+				{
+					if (!in_array($res1,$ress))
+					{
+						$res1->text=JText::_($res1->text);
+						$notusedpositions[]=$res1;
+					}
+				}
+			}
+			else
+			{
+				foreach ($ress1 as $res1)
+				{
+					$res1->text=JText::_($res1->text);
+					$notusedpositions[]=$res1;
+				}
+			}
+		}
+		else
+		{
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
+		}
+
+		//build the html select list for positions
+		if (count ($notusedpositions) > 0)
+		{
+			$lists['positions']=JHTML::_(	'select.genericlist',
+											$notusedpositions,
+											'positionslist[]',
+											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"',
+											'value',
+											'text');
+		}
+		else
+		{
+			$lists['positions']='<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+                                                  
 
 /*
 		$projectws =& $this->get('Data','projectws');
@@ -177,6 +225,9 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->assignRef('request_url',$uri->toString());
 */
 		
+        $this->assignRef('request_url',$uri->toString());
+        $this->assignRef('user',JFactory::getUser());
+        $this->assignRef('project',$project);
         $this->assignRef('lists',$lists);
         $this->addToolbar_Editlist();		
 		parent::display($tpl);
