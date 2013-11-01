@@ -77,16 +77,10 @@ class sportsmanagementViewprojectpositions extends JView
 
 		JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
 		JToolBarHelper::divider();
-        
-        
-        
-        
-        
-		sportsmanagementHelper::onlinehelp();
-        
-        
 
-		//JToolBarHelper::onlinehelp();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        sportsmanagementHelper::ToolbarButton();
+
 	}
 }
 ?>

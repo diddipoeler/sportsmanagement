@@ -1251,7 +1251,27 @@ abstract class sportsmanagementHelper
 		}
 	}
     
-    function onlinehelp()
+    
+    function ToolbarButton($layout = Null)
+	{
+	$option = JRequest::getCmd('option');
+	$mainframe =& JFactory::getApplication();
+    $view = JRequest::getVar( "view") ;
+    
+    $bar =& JToolBar::getInstance('toolbar');
+    $icon_image = 'myicon.png';
+    $alt_text = 'My Label';
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_mycomponent&view=myview&tmpl=component');
+    $width = 600;
+    $height = 400;
+    $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $width, $height);
+    
+    
+    
+    }
+    
+    
+    function ToolbarButtonOnlineHelp()
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe =& JFactory::getApplication();
