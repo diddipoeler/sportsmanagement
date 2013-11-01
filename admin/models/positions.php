@@ -152,8 +152,8 @@ class sportsmanagementModelPositions extends JModelList
 		$mainframe = JFactory::getApplication();
 		//$project_id=$mainframe->getUserState($option.'project');
 		$query="	SELECT ppos.id AS value, pos.name AS text
-					FROM #__joomleague_position AS pos
-					INNER JOIN #__joomleague_project_position AS ppos ON ppos.position_id=pos.id
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
 					WHERE ppos.project_id=$project_id AND pos.persontype=2
 					ORDER BY ordering ";
 		$this->_db->setQuery($query);
@@ -183,8 +183,8 @@ class sportsmanagementModelPositions extends JModelList
 		//$project_id=$mainframe->getUserState($option.'project');
 
 		$query="	SELECT pp.id AS value,name AS text
-					FROM #__joomleague_position AS p
-					LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
+					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS pp ON pp.position_id=p.id
 					WHERE pp.project_id=$project_id AND p.persontype=1
 					ORDER BY ordering ";
 		$this->_db->setQuery($query);

@@ -67,7 +67,7 @@ JHTML::_('behavior.modal');
 					for ($i=0, $n=count($this->positiontool); $i < $n; $i++)
 					{
 						$row =& $this->positiontool[$i];
-						$imageFileOk='administrator/components/com_joomleague/assets/images/ok.png';
+						$imageFileOk='administrator/components/com_sportsmanagement/assets/images/ok.png';
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -125,7 +125,7 @@ JHTML::_('behavior.modal');
 								<?php
 								if ($row->countEvents == 0)
 								{
-									$imageFile='administrator/components/com_joomleague/assets/images/error.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_EVENTS');
 									$imageParams='title= "'.$imageTitle.'"';
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);
@@ -142,7 +142,7 @@ JHTML::_('behavior.modal');
 								<?php
 								if ($row->countStats == 0)
 								{
-									$imageFile='administrator/components/com_joomleague/assets/images/error.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_STATISTICS');
 									$imageParams='title= "'.$imageTitle.'"';
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);

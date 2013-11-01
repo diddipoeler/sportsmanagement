@@ -91,7 +91,7 @@ class sportsmanagementViewRounds extends JView
 		
 		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
 		//$version = urlencode(JoomleagueHelper::getVersion());
-		//$document->addScript('components/com_joomleague/assets/js/populate.js?v='.$version);
+		//$document->addScript('components/com_sportsmanagement/assets/js/populate.js?v='.$version);
 
 		$lists = array();
 		

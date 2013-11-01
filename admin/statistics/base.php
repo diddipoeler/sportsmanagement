@@ -312,7 +312,7 @@ class JLGStatistic extends JObject {
 			$iconPath = $this->icon;
 			if ( !strpos( " " . $iconPath, "/"	) )
 			{
-				$iconPath = "images/com_joomleague/database/statistics/" . $iconPath;
+				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
 			return JHTML::image($iconPath, JText::_($this->name),	array( "title" => JText::_($this->name) ));
 		}

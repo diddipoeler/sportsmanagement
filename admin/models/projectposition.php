@@ -96,14 +96,14 @@ class sportsmanagementModelProjectposition extends JModelList
 		$peid=(isset($data['project_positionslist']));
 		if ($peid==null)
 		{
-			$query="DELETE FROM #__joomleague_project_position WHERE project_id=".$data['id'];
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id'];
 		}
 		else
 		{
 			$pidArray=$data['project_positionslist'];
 			JArrayHelper::toInteger($pidArray);
 			$peids=implode(",",$pidArray);
-			$query="DELETE FROM #__joomleague_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -113,7 +113,7 @@ class sportsmanagementModelProjectposition extends JModelList
 		}
 		for ($x=0; $x < count($data['project_positionslist']); $x++)
 		{
-			$query="INSERT IGNORE INTO #__joomleague_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
+			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{
@@ -190,7 +190,7 @@ class sportsmanagementModelProjectposition extends JModelList
 		$old_id=(int)$post['old_id'];
 		$project_id=(int)$post['id'];
 		//copy positions
-		$query="SELECT * FROM #__joomleague_project_position WHERE project_id=".$old_id;
+		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$old_id;
 		$this->_db->setQuery($query);
 		if ($results=$this->_db->loadAssocList())
 		{
@@ -206,7 +206,7 @@ class sportsmanagementModelProjectposition extends JModelList
 					return false;
 				}
 				$newid = $this->getDbo()->insertid();
-				$query = "UPDATE #__joomleague_team_player " . 
+				$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player " . 
 							"SET project_position_id = " . $newid .
 							" WHERE project_position_id = " . $result['id'];
 				$this->_db->setQuery($query);

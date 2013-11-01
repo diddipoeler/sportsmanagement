@@ -136,7 +136,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$result=true;
 		for ($x=0; $x < count($cid); $x++)
 		{
-			$query="	UPDATE #__joomleague_team_staff
+			$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_staff
 						SET project_position_id='".$data['project_position_id'.$cid[$x]]."',
                         
 							checked_out=0,
@@ -272,8 +272,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
 	{
 		if (!count($cid) || !$projectteam_id){return 0;}
 		$query="	SELECT	pt.id
-					FROM #__joomleague_person AS pt
-					INNER JOIN #__joomleague_team_staff AS r ON r.person_id=pt.id
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pt
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_staff AS r ON r.person_id=pt.id
 					WHERE r.projectteam_id=".(int)$projectteam_id." AND pt.published = '1'";
 		$this->_db->setQuery($query);
 		$current=$this->_db->loadResultArray();
@@ -301,13 +301,13 @@ class sportsmanagementModelTeamStaffs extends JModelList
 				}
 				//Get data from person
 				$query = "	SELECT picture, position_id
-							FROM #__joomleague_person AS pl
+							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl
 							WHERE pl.id=". $this->_db->Quote($pid)." pl.published = '1'";
 				$this->_db->setQuery( $query );
 				$person = $this->_db->loadObject();
 				if ( $person )
 				{
-					$query = "SELECT id FROM #__joomleague_project_position ";
+					$query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position ";
 					$query.= " WHERE position_id = " . $this->_db->Quote($person->position_id);
 					$query.= " AND project_id = " . $this->_db->Quote($tblProjectTeam->project_id);
 					$this->_db->setQuery($query);

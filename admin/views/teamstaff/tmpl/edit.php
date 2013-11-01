@@ -8,7 +8,7 @@ $params = $this->form->getFieldsets('params');
 <!-- import the functions to move the events between selection lists	-->
 <?php
 //$version = urlencode(JoomleagueHelper::getVersion());
-//echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_joomleague/assets/js/' );
+//echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_sportsmanagement/assets/js/' );
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 	<div class="col50">
@@ -29,7 +29,9 @@ $params = $this->form->getFieldsets('params');
 		echo JHtml::_('tabs.end');
 		?>	
 		<input type="hidden" name="eventschanges_check"	value="0" id="eventschanges_check" />
-		
+		<input type="hidden" name="project_team_id"		value="<?php echo $this->item->projectteam_id; ?>" />
+    <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
+    <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />
 		
 		<input type="hidden" name="task"				value="teamstaff.edit" />
 	</div>

@@ -75,7 +75,7 @@ window.addEvent('domready',function(){
 							<td class="center"><?php echo $checked; ?></td>
 							<td class="center"><?php
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
-								$imageFile='administrator/components/com_joomleague/assets/images/edit.png';
+								$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageParams="title='$imageTitle'";
 								echo JHTML::link($link1,JHTML::image($imageFile,$imageTitle,$imageParams));
 							?></td>
@@ -129,7 +129,7 @@ window.addEvent('domready',function(){
 								if (($row->countUnPublished == 0) && ($row->countMatches > 0))
 								{
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
-									$imageFile='administrator/components/com_joomleague/assets/images/ok.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);
 								}
@@ -143,7 +143,7 @@ window.addEvent('domready',function(){
 									{
 										$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_NR',$row->countUnPublished);
 									}
-									$imageFile='administrator/components/com_joomleague/assets/images/error.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);
 								}
@@ -152,7 +152,7 @@ window.addEvent('domready',function(){
 								if (($row->countNoResults == 0) && ($row->countMatches > 0))
 								{
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
-									$imageFile='administrator/components/com_joomleague/assets/images/ok.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);
 								}
@@ -166,7 +166,7 @@ window.addEvent('domready',function(){
 									{
 										$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULTS_MISSING',$row->countNoResults);
 									}
-									$imageFile='administrator/components/com_joomleague/assets/images/error.png';
+									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
 									echo JHTML::image($imageFile,$imageTitle,$imageParams);
 								}

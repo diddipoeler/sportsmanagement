@@ -35,7 +35,7 @@ JHTML::_('behavior.mootools');
 </style>
 
 <script>
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_joomleague&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
+	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
 		var f = $('adminForm');
@@ -54,7 +54,7 @@ JHTML::_('behavior.mootools');
 	echo JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYERS_QUICKADD_PLAYER");
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_joomleague&task=quickadd.addplayer" method="post">
+	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addplayer" method="post">
 	<input type="hidden" name="projectteam_id" id="projectteam_id" value="<?php echo $this->teamws->id; ?>" />
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
@@ -222,7 +222,7 @@ JHTML::_('behavior.mootools');
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
-										echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/edit.png',
+										echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
 										?>
@@ -245,7 +245,7 @@ JHTML::_('behavior.mootools');
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
 									echo JHTML::_(	'image',
-													'administrator/components/com_joomleague/assets/images/delete.png',
+													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 
@@ -254,7 +254,7 @@ JHTML::_('behavior.mootools');
 								{
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
 										echo JHTML::_(	'image',
-														'administrator/components/com_joomleague/assets/images/information.png',
+														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
 								}
@@ -310,21 +310,21 @@ JHTML::_('behavior.mootools');
 								if ( $row->injury > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
-									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/injured.gif',
+									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
-									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/suspension.gif',
+									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
-									echo JHTML::_(	'image', 'administrator/components/com_joomleague/assets/images/away.gif',
+									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}

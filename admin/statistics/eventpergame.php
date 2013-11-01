@@ -70,7 +70,7 @@ class JLGStatisticEventPergame extends JLGStatistic {
 		
 	/**
 	 * (non-PHPdoc)
-	 * @see administrator/components/com_joomleague/statistics/JLGStatistic#getPlayerStatsByProject($person_id, $project_id)
+	 * @see administrator/components/com_sportsmanagement/statistics/JLGStatistic#getPlayerStatsByProject($person_id, $project_id)
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{

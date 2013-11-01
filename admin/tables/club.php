@@ -7,6 +7,8 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
+ * '.COM_SPORTSMANAGEMENT_TABLE.'
+ * ".COM_SPORTSMANAGEMENT_TABLE."
  */
 
 // Check to ensure this file is included in Joomla!

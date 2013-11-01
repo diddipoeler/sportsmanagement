@@ -136,7 +136,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$result=true;
 		for ($x=0; $x < count($cid); $x++)
 		{
-			$query="	UPDATE #__joomleague_team_player
+			$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player
 						SET project_position_id='" .		$data['project_position_id'.$cid[$x]] .	"',
 							jerseynumber='" .		$data['jerseynumber'.$cid[$x]] .	"',
               market_value='" .		$data['market_value'.$cid[$x]] .	"',
@@ -281,8 +281,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
         
         if (!count($cid) || !$projectteam_id){return 0;}
 		$query="	SELECT	p.id
-					FROM #__joomleague_person AS p
-					INNER JOIN #__joomleague_team_player AS tp ON tp.person_id=p.id
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS p
+					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS tp ON tp.person_id=p.id
 					WHERE tp.projectteam_id=".$this->_db->Quote($projectteam_id)." AND p.published = '1'";
 		$this->_db->setQuery($query);
 		$current=$this->_db->loadResultArray();
@@ -312,13 +312,13 @@ class sportsmanagementModelTeamPlayers extends JModelList
 				}
 				// Get data from player
 				$query = "	SELECT picture, position_id
-							FROM #__joomleague_person AS pl
+							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl
 							WHERE pl.id=". $this->_db->Quote($pid);
 				$this->_db->setQuery( $query );
 				$person = $this->_db->loadObject();
 				if ( $person )
 				{
-					$query = "SELECT id FROM #__joomleague_project_position ";
+					$query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position ";
 					$query.= " WHERE position_id = " . $this->_db->Quote($person->position_id);
 					$query.= " AND project_id = " . $this->_db->Quote($tblProjectTeam->project_id);
 					$this->_db->setQuery($query);
@@ -333,7 +333,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 				}
 				$query = "	SELECT max(ordering) count
-							FROM #__joomleague_team_player";
+							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team_player";
 				$this->_db->setQuery( $query );
 				$tp = $this->_db->loadObject();
 				

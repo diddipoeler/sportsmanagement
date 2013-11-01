@@ -68,7 +68,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 	function canDelete($id)
 	{
 		// cannot be deleted if assigned to games
-		$query = ' SELECT COUNT(id) FROM #__joomleague_match_player '
+		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);
@@ -80,7 +80,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		}
 		
 		// cannot be deleted if has events
-		$query = ' SELECT COUNT(id) FROM #__joomleague_match_event '
+		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);
@@ -92,7 +92,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		}
 		
 		// cannot be deleted if has stats
-		$query = ' SELECT COUNT(id) FROM #__joomleague_match_statistic '
+		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);

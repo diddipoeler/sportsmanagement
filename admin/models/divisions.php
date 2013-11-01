@@ -33,8 +33,8 @@ class sportsmanagementModelDivisions extends JModelList
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select(array('dv.*', 'dvp.name AS parent_name','u.name AS editor'))
-        ->from('#__joomleague_division AS dv')
-        ->join('LEFT', '#__joomleague_division AS dvp ON dvp.id = dv.parent_id')
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv')
+        ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id')
         ->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
         if ($where)

@@ -23,7 +23,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 		}
 	}
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_joomleague&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
+	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
 
 </script>
 <fieldset class="adminform">

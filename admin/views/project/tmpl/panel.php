@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-$path='/administrator/components/com_joomleague/assets/images/';
+$path='/administrator/components/com_sportsmanagement/assets/images/';
 $user = JFactory::getUser();
 JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_TITLE'));
 //load navigation menu

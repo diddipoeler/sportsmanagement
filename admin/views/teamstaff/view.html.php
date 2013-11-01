@@ -53,6 +53,7 @@ class sportsmanagementViewTeamStaff extends JView
 		$this->script = $script;
         
         //$project_id	= JRequest::getVar('pid');
+        $this->team_id	= JRequest::getVar('team_id');
         $this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
@@ -82,6 +83,7 @@ class sportsmanagementViewTeamStaff extends JView
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamstaff');
 		$this->assignRef( 'extended', $extended );
+        $this->assignRef( 'lists', $lists );
         $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
         if ( $show_debug_info )
@@ -107,7 +109,7 @@ class sportsmanagementViewTeamStaff extends JView
 		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
 		{
 			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_THEPLAYER' ), $project_teamstaff->name );
-			$mainframe->redirect( 'index.php?option=com_joomleague', $msg );
+			$mainframe->redirect( 'index.php?option=com_sportsmanagement', $msg );
 		}
 
 		// Edit or Create?
@@ -245,6 +247,7 @@ class sportsmanagementViewTeamStaff extends JView
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('project_team_id', $this->item->projectteam_id);
         JRequest::setVar('pid', $this->project_id);
+        JRequest::setVar('team_id', $this->team_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
