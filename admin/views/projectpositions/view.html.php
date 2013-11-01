@@ -79,7 +79,7 @@ class sportsmanagementViewprojectpositions extends JView
 		JToolBarHelper::divider();
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        sportsmanagementHelper::ToolbarButton();
+        sportsmanagementHelper::ToolbarButton('editlist');
 
 	}
 }

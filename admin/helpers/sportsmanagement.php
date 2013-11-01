@@ -1257,14 +1257,14 @@ abstract class sportsmanagementHelper
 	$option = JRequest::getCmd('option');
 	$mainframe =& JFactory::getApplication();
     $view = JRequest::getVar( "view") ;
-    
+    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
     $bar =& JToolBar::getInstance('toolbar');
     $icon_image = 'myicon.png';
     $alt_text = 'My Label';
-    $page_url = JFilterOutput::ampReplace('index.php?option=com_mycomponent&view=myview&tmpl=component');
-    $width = 600;
-    $height = 400;
-    $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $width, $height);
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout);
+    
+    $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
     
     
