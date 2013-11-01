@@ -83,7 +83,7 @@ class sportsmanagementViewprojectreferees extends JView
 		
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE'),'Referees');
 		
-		JToolBarHelper::apply('projectreferee.saveshort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
+		JToolBarHelper::apply('projectreferees.saveshort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
 		JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
 		JToolBarHelper::custom('projectreferee.unassign','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
 		JToolBarHelper::divider();
@@ -91,11 +91,7 @@ class sportsmanagementViewprojectreferees extends JView
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
         
-        
-        
-       
 
-		//JToolBarHelper::onlinehelp();
 	}
 }
 ?>
