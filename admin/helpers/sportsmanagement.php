@@ -19,7 +19,7 @@ abstract class sportsmanagementHelper
         // the specified default value will be returned.
         // function syntax is getUserState( $key, $default );
         $project_id = $mainframe->getUserState( "$option.pid", '0' );
-        $project_team_id = $mainframe->getUserState( "$option.$project_team_id", '0' );
+        $project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
         $team_id = $mainframe->getUserState( "$option.team_id", '0' );
         
         //$project_id	= JRequest::getVar('pid');

@@ -300,7 +300,7 @@ class sportsmanagementViewteamPlayers extends JView
 		JToolBarHelper::custom( 'teamplayer.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
 		JToolBarHelper::divider();
 
-		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&task=projectteam.display' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );
 		JToolBarHelper::divider();
 
 		//JLToolBarHelper::onlinehelp();

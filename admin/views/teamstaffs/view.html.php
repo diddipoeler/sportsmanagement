@@ -177,7 +177,7 @@ class sportsmanagementViewTeamStaffs extends JView
 		JToolBarHelper::custom( 'teamstaff.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_UNASSIGN' ), false );
 		JToolBarHelper::divider();
 
-		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&task=projectteam.display' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );
 		JToolBarHelper::divider();
 
 		
