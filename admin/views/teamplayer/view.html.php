@@ -67,6 +67,7 @@ class sportsmanagementViewTeamPlayer extends JView
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
 		
+        $matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
@@ -80,6 +81,90 @@ class sportsmanagementViewTeamPlayer extends JView
 												'value',
 												'text', $this->item->project_position_id );
 		unset($projectpositions);
+        
+        // injury details
+		$myoptions = array();
+		$myoptions[]		= JHTML::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[]		= JHTML::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$lists['injury']	= JHTML::_( 'select.radiolist',
+										$myoptions,
+										'injury',
+										'class="inputbox" size="1"',
+										'value',
+										'text',
+										$this->item-->injury );
+		unset($myoptions);
+
+		$lists['injury_date']	 = JHTML::_( 'select.genericlist',
+											$matchdays,
+											'injury_date',
+											'class="inputbox" size="1"',
+											'value',
+											'text',
+											$this->item-->injury_date );
+		$lists['injury_end']	= JHTML::_( 'select.genericlist',
+											$matchdays,
+											'injury_end',
+											'class="inputbox" size="1"',
+											'value',
+											'text',
+											$this->item-->injury_end );
+
+		// suspension details
+		$myoptions		= array();
+		$myoptions[]	= JHTML::_('select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[]	= JHTML::_('select.option', '1', JText::_( 'JYES' ));
+		$lists['suspension']		= JHTML::_( 'select.radiolist',
+												$myoptions,
+												'suspension',
+												'class="radio" size="1"',
+												'value',
+												'text',
+												$this->item-->suspension );
+		unset($myoptions);
+
+		$lists['suspension_date']	 = JHTML::_( 'select.genericlist',
+												$matchdays,
+												'suspension_date',
+												'class="inputbox" size="1"',
+												'value',
+												'text',
+												$this->item-->suspension_date );
+		$lists['suspension_end']	= JHTML::_( 'select.genericlist',
+												$matchdays,
+												'suspension_end',
+												'class="inputbox" size="1"',
+												'value',
+												'text',
+												$this->item-->suspension_end );
+
+		// away details
+		$myoptions		= array();
+		$myoptions[]	= JHTML::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[]	= JHTML::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$lists['away']	= JHTML::_( 'select.radiolist',
+									$myoptions,
+									'away',
+									'class="inputbox" size="1"',
+									'value',
+									'text',
+									$this->item-->away );
+		unset($myoptions);
+
+		$lists['away_date'] = JHTML::_( 'select.genericlist',
+										$matchdays,
+										'away_date',
+										'class="inputbox" size="1"',
+										'value',
+										'text',
+										$this->item-->away_date );
+		$lists['away_end']	= JHTML::_( 'select.genericlist',
+										$matchdays,
+										'away_end',
+										'class="inputbox" size="1"',
+										'value',
+										'text',
+										$this->item-->away_end );
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->assignRef( 'extended', $extended );
