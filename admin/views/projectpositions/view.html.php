@@ -40,9 +40,11 @@ class sportsmanagementViewprojectpositions extends JView
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
         
-        $project_id	= JRequest::getVar('pid');
+        //$project_id	= JRequest::getVar('pid');
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
+	    $project = $mdlProject->getProject($this->project_id);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -75,7 +77,12 @@ class sportsmanagementViewprojectpositions extends JView
 
 		JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
 		JToolBarHelper::divider();
-		//JLToolBarHelper::onlinehelp();
+        
+        
+        
+        
+        
+		sportsmanagementHelper::onlinehelp();
         
         
 

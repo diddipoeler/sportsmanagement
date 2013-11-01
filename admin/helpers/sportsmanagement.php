@@ -1250,6 +1250,35 @@ abstract class sportsmanagementHelper
 			return false;
 		}
 	}
+    
+    function onlinehelp()
+	{
+	$option = JRequest::getCmd('option');
+	$mainframe =& JFactory::getApplication();
+    $view = JRequest::getVar( "view") ;
+    $view = ucfirst(strtolower($view));
+    
+    switch ($view)
+    {
+    case 'Template':
+    case 'Predictiontemplate':
+    $template_help = $mainframe->getUserState($option.'template_help');
+    $view = $view.'_'.$template_help;
+    break;
+    default:
+    break;
+    }
+    $cfg_help_server = JComponentHelper::getParams('com_joomleague')->get('cfg_help_server','') ;
+    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
+    $bar = JToolBar::getInstance('toolbar');
+    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
+         ' href="'.$cfg_help_server.'Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
+		// Add a help button.
+		$bar->appendButton('Custom',$send);	
+		//$bar->appendButton('Help', $ref, $com, $override, $component);
+	}
+    
 		
 	/**
 	* return project rounds as array of objects(roundid as value, name as text)
