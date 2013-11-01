@@ -1252,7 +1252,7 @@ abstract class sportsmanagementHelper
 	}
     
     
-    function ToolbarButton($layout = Null)
+    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label')
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe =& JFactory::getApplication();
@@ -1260,8 +1260,6 @@ abstract class sportsmanagementHelper
     $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
     $bar =& JToolBar::getInstance('toolbar');
-    $icon_image = 'myicon.png';
-    $alt_text = 'My Label';
     $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout);
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);

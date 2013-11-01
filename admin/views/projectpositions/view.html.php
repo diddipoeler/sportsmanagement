@@ -244,12 +244,14 @@ class sportsmanagementViewprojectpositions extends JView
 	{
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'Positions');
+        
+        sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 
-		JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
+		//JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
 		JToolBarHelper::divider();
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        sportsmanagementHelper::ToolbarButton('editlist');
+        
 
 	}
     
