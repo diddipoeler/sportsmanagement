@@ -106,7 +106,11 @@ class sportsmanagementViewProject extends JView
 	$this->assignRef('count_projectpositions',$iProjectPositionsCount);
 	$this->assignRef('count_projectreferees', $iProjectRefereesCount);
 	$this->assignRef('count_projectteams', $iProjectTeamsCount );
-	$this->assignRef('count_matchdays', $iMatchDaysCount);   
+	$this->assignRef('count_matchdays', $iMatchDaysCount);  
+    
+    // store the variable that we would like to keep for next time
+    // function syntax is setUserState( $key, $value );
+    $mainframe->setUserState( "$option.pid", $this->project->id); 
        
     parent::display($tpl);   
     }
