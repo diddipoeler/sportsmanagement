@@ -325,20 +325,23 @@ class sportsmanagementModelperson extends JModelAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-	function saveshort($cid,$post)
+	function saveshort()
 	{
-		$result=true;
-		for ($x=0; $x < count($cid); $x++)
+		// Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
 		{
-			$tblPerson = $this->getTable("person");
-			$tblPerson->id			= $cid[$x];
-			$tblPerson->firstname	= $post['firstname'.$cid[$x]];
-			$tblPerson->lastname	= $post['lastname'.$cid[$x]];
-			$tblPerson->nickname	= $post['nickname'.$cid[$x]];
-			$tblPerson->birthday	= JoomleagueHelper::convertDate($post['birthday'.$cid[$x]],0);
-			$tblPerson->deathday	= $post['deathday'.$cid[$x]];
-			$tblPerson->country		= $post['country'.$cid[$x]];
-			$tblPerson->position_id	= $post['position'.$cid[$x]];
+			$tblPerson = & $this->getTable();
+			$tblPerson->id			= $pks[$x];
+			$tblPerson->firstname	= $post['firstname'.$pks[$x]];
+			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
+			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
+			$tblPerson->birthday	= JoomleagueHelper::convertDate($post['birthday'.$pks[$x]],0);
+			$tblPerson->deathday	= $post['deathday'.$pks[$x]];
+			$tblPerson->country		= $post['country'.$pks[$x]];
+			$tblPerson->position_id	= $post['position'.$pks[$x]];
 			if(!$tblPerson->store()) {
 				$this->setError($this->_db->getErrorMsg());
 				$result=false;
