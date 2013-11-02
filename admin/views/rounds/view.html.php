@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2006-2013 JoomLeague.net. All rights reserved.
+ * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,7 @@ jimport('joomla.application.component.view');
  * HTML View class for the Joomleague component
  *
  * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	JoomLeague
+ * @package	Sportsmanagement
  * @since	0.1
  */
 class sportsmanagementViewRounds extends JView
@@ -133,8 +133,8 @@ class sportsmanagementViewRounds extends JView
 		{
 
       //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
-      JToolBarHelper::publishList('round.publish');
-		  JToolBarHelper::unpublishList('round.unpublish');
+      JToolBarHelper::publishList('rounds.publish');
+		  JToolBarHelper::unpublishList('rounds.unpublish');
 		  JToolBarHelper::divider();
       JToolBarHelper::custom('round.populate','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'),false);
       JToolBarHelper::divider();

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2006-2013 JoomLeague.net. All rights reserved.
+ * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
  * @license		GNU/GPL,see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License,and as distributed it includes or
@@ -16,10 +16,10 @@ jimport('joomla.application.component.modellist');
 
 
 /**
- * Joomleague Component projectreferees Model
+ * Sportsmanagement Component projectreferees Model
  *
  * @author	Kurt Norgaz
- * @package	JoomLeague
+ * @package	Sportsmanagement
  * @since	1.5.02a
 */
 class sportsmanagementModelProjectReferees extends JModelList

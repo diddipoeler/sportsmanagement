@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2006-2013 JoomLeague.net. All rights reserved.
+ * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,7 +19,7 @@ jimport( 'joomla.application.component.view' );
  *
  * @static
  * @author	Kurt Norgaz
- * @package	JoomLeague
+ * @package	Sportsmanagement
  * @since	1.5
  */
 class sportsmanagementViewTeamStaffs extends JView
@@ -177,8 +177,8 @@ class sportsmanagementViewTeamStaffs extends JView
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' ) );
 
-		JToolBarHelper::publishList('teamstaff.publish');
-		JToolBarHelper::unpublishList('teamstaff.unpublish');
+		JToolBarHelper::publishList('teamstaffs.publish');
+		JToolBarHelper::unpublishList('teamstaffs.unpublish');
 		JToolBarHelper::apply( 'teamstaff.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_APPLY' ) );
 		JToolBarHelper::divider();
 
