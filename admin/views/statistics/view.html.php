@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
 /**
- * HTML View class for the Joomleague component
+ * HTML View class for the Sportsmanagement Component
  *
  * @static
  * @packag	JoomLeague

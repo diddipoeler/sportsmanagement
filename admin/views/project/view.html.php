@@ -19,7 +19,7 @@ require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
 require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
 
 /**
- * HTML View class for the Joomleague component
+ * HTML View class for the Sportsmanagement Component
  *
  * @static
  * @package	Sportsmanagement

@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the Joomleague component
+ * HTML View class for the Sportsmanagement Component
  *
  * @static
  * @package	Sportsmanagement
@@ -205,7 +205,7 @@ class sportsmanagementViewPersons extends JView
         JToolBarHelper::checkin('persons.checkin');
 		JToolBarHelper::divider();
 		
-		JToolBarHelper::apply('person.saveshort');
+		JToolBarHelper::apply('persons.saveshort');
 		JToolBarHelper::editList('person.edit');
 		JToolBarHelper::addNew('person.add');
 		JToolBarHelper::custom('person.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

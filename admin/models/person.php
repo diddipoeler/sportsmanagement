@@ -150,7 +150,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		return false;
 	}
   
-  /**
+    /**
 	 * Method override to check if you can edit an existing record.
 	 *
 	 * @param	array	$data	An array of input data.
@@ -164,6 +164,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -177,6 +178,7 @@ class sportsmanagementModelperson extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -195,6 +197,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		}
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -313,6 +316,37 @@ class sportsmanagementModelperson extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObject();
 	}
+    
+    
+    /**
+	 * Method to update checked persons
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort($cid,$post)
+	{
+		$result=true;
+		for ($x=0; $x < count($cid); $x++)
+		{
+			$tblPerson = $this->getTable("person");
+			$tblPerson->id			= $cid[$x];
+			$tblPerson->firstname	= $post['firstname'.$cid[$x]];
+			$tblPerson->lastname	= $post['lastname'.$cid[$x]];
+			$tblPerson->nickname	= $post['nickname'.$cid[$x]];
+			$tblPerson->birthday	= JoomleagueHelper::convertDate($post['birthday'.$cid[$x]],0);
+			$tblPerson->deathday	= $post['deathday'.$cid[$x]];
+			$tblPerson->country		= $post['country'.$cid[$x]];
+			$tblPerson->position_id	= $post['position'.$cid[$x]];
+			if(!$tblPerson->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				$result=false;
+			}
+		}
+		return $result;
+	}
+    
     
     /**
 	 * Method to save item order

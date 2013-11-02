@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the Joomleague component
+ * HTML View class for the Sportsmanagement Component
  *
  * @author	Marco Vaninetti <martizva@tiscali.it>
  * @package	Sportsmanagement
