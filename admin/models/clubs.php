@@ -15,9 +15,6 @@ defined('_JEXEC') or die('Restricted access');
 // import the Joomla modellist library
 jimport('joomla.application.component.modellist');
 
-//jimport('joomla.application.component.model');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
 /**
  * Sportsmanagement Component Clubs Model
  *

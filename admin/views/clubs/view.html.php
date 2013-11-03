@@ -29,12 +29,13 @@ class sportsmanagementViewClubs extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri	= JFactory::getURI();
+        $model	= $this->getModel();
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'a_filter_state',		'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'a_filter_order',		'filter_order',		'a.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'a_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'a_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'a_search_mode',		'search_mode',		'',				'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state',		'filter_state',		'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order',		'filter_order',		'a.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search',			'search',			'',				'string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode',		'search_mode',		'',				'string');
 		$search				= JString::strtolower($search);
 
 		$items		=& $this->get('Items');
@@ -71,7 +72,6 @@ class sportsmanagementViewClubs extends JView
 	{
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE'),'clubs');
-
 		JToolBarHelper::addNew('club.add');
 		JToolBarHelper::editList('club.edit');
 		JToolBarHelper::custom('club.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
