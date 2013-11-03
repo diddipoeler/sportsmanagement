@@ -61,7 +61,7 @@ class sportsmanagementViewPersons extends JView
 
 		//build the html select list for positions
 		$positionsList[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModel::getInstance('person','sportsmanagementmodel')->getPositions();
+		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);

@@ -11,7 +11,13 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerpersons extends JControllerAdmin
 {
  
-    
+    /**
+	 * Method to update checked persons
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
     function saveshort()
 	{
 	   $model = $this->getModel();

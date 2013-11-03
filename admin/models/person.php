@@ -272,34 +272,7 @@ class sportsmanagementModelperson extends JModelAdmin
   
   }
   
-  /**
-	 * Method to return a positions array (id,position + (sports_type_name))
-	 *
-	 * @access	public
-	 * @return	array
-	 * @since 0.1
-	 */
-	function getPositions()
-	{
-		$query='	SELECT	pos.id AS value,
-							pos.name AS posName,
-							s.name AS sName
-					FROM #__sportsmanagement_position pos
-					INNER JOIN #__sportsmanagement_sports_type AS s ON s.id=pos.sports_type_id
-					WHERE pos.published=1
-					ORDER BY pos.ordering,pos.name';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return array();
-		}
-		else
-		{
-			foreach ($result as $position){$position->text=JText::_($position->posName).' ('.JText::_($position->sName).')';}
-			return $result;
-		}
-	}
+  
 	
 	
     /**
