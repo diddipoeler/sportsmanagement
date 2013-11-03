@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * HelloWorld View
+ * SportsManagement View
  */
 class sportsmanagementViewJlextcountry extends JView
 {

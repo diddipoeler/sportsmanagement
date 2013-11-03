@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
  
 /**
- * HelloWorld Controller
+ * SportsManagement Controller
  */
 class sportsmanagementControllerseason extends JControllerForm
 {

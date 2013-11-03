@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.view' );
  * HTML View class for the Sportsmanagement Component
  *
  * @static
- * @author	Kurt Norgaz
+ * @author	diddipoeler
  * @package	Sportsmanagement
  * @since	1.5
  */

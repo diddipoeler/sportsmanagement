@@ -3,7 +3,7 @@
 defined('_JEXEC') or die;
  
 /**
- * HelloWorld component helper.
+ * SportsManagement component helper.
  */
 abstract class sportsmanagementHelper
 {

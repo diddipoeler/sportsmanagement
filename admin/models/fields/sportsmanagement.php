@@ -7,7 +7,7 @@ jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
  
 /**
- * HelloWorld Form Field class for the HelloWorld component
+ * SportsManagement Form Field class for the SportsManagement component
  */
 class JFormFieldsportsmanagement extends JFormFieldList
 {

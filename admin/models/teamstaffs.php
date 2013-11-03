@@ -17,7 +17,7 @@ jimport('joomla.application.component.modellist');
 /**
  * Sportsmanagement Component TeamStaffs Model
  *
- * @author	Kurt Norgaz <kurtnorgaz@web.de>
+ * @author	diddipoeler <kurtnorgaz@web.de>
  * @package	Sportsmanagement
  * @since	1.5.01a
  */

@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
  
 /**
- * HelloWorld Model
+ * SportsManagement Model
  */
 class sportsmanagementModeljlextcountry extends JModelAdmin
 {

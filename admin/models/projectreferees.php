@@ -18,7 +18,7 @@ jimport('joomla.application.component.modellist');
 /**
  * Sportsmanagement Component projectreferees Model
  *
- * @author	Kurt Norgaz
+ * @author	diddipoeler
  * @package	Sportsmanagement
  * @since	1.5.02a
 */

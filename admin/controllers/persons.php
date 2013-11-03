@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
  
 /**
- * HelloWorlds Controller
+ * SportsManagements Controller
  */
 class sportsmanagementControllerpersons extends JControllerAdmin
 {
@@ -16,6 +16,7 @@ class sportsmanagementControllerpersons extends JControllerAdmin
 	{
 	   $model = $this->getModel();
        $model->saveshort();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
     
       

@@ -6,12 +6,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * HelloWorlds View
+ * SportsManagements View
  */
 class sportsmanagementViewsportsmanagements extends JView
 {
 	/**
-	 * HelloWorlds view display method
+	 * SportsManagements view display method
 	 * @return void
 	 */
 	function display($tpl = null) 

@@ -22,7 +22,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',		$database_table );
 // import joomla controller library
 jimport('joomla.application.component.controller');
  
-// Get an instance of the controller prefixed by HelloWorld
+// Get an instance of the controller prefixed by SportsManagement
 $controller = JController::getInstance('SportsManagement');
  
 // Perform the Request task
