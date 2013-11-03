@@ -47,10 +47,10 @@ class sportsmanagementModelPersons extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
         
         
-        //if ($search)
-		//{
+        if ($search)
+		{
         $query->where(self::_buildContentWhere());
-        //}
+        }
 		$query->order(self::_buildContentOrderBy());
         
         //$mainframe->enqueueMessage(JText::_('persons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
