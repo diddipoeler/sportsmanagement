@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: countries.php 5205 2010-09-24 08:00:00Z
-* @package		Joomleague
-* @copyright	Copyright (C) 2008 Julien Vonthron. All rights reserved.
+* @version		$Id: countries.php 
+* @package		SportsManagement
+* @copyright	Copyright (C) 2013 diddipoeler. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla Tracks is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -44,15 +44,9 @@ class Countries
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
 		$db = Jfactory::getDBO();
-//    $lang = JFactory::getLanguage();
-//		$extension = "com_sportsmanagement_countries";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+
 		
-		$query = "SELECT alpha3,name from #__sportsmanagement_countries";
+		$query = "SELECT alpha3,name from #__".COM_SPORTSMANAGEMENT_TABLE."_countries";
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
     
@@ -72,7 +66,7 @@ class Countries
 	{
 	$db = Jfactory::getDBO();
 	  
-		$query = "SELECT alpha3 from #__sportsmanagement_countries
+		$query = "SELECT alpha3 from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
     where alpha2 like '".$iso_code_2."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -86,7 +80,7 @@ class Countries
 	public static function convertIso3to2($iso_code_3)
 	{
 	$db = Jfactory::getDBO();
-	  $query = "SELECT alpha2 from #__sportsmanagement_countries
+	  $query = "SELECT alpha2 from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
     where alpha3 like '".$iso_code_3."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -133,15 +127,9 @@ class Countries
 	public static function getCountryName($iso3)
 	{
 	$db = Jfactory::getDBO();
-//		$lang = JFactory::getLanguage();
-//		$extension = "com_sportsmanagement_countries";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+
 		
-		$query = "SELECT name from #__sportsmanagement_countries
+		$query = "SELECT name from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
     where alpha3 like '".$iso3."'";
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -158,13 +146,7 @@ class Countries
    */
 	public static function getShortCountryName($iso3)
 	{
-//		$lang = JFactory::getLanguage();
-//		$extension = "com_sportsmanagement_countries";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+
 		$full=self::getCountryName($iso3);
 		if (empty($full)){return false;}
 		$parts=explode(',', $full);
