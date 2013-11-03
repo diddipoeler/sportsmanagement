@@ -12,6 +12,13 @@ class sportsmanagementControllerpersons extends JControllerAdmin
 {
  
     
+    function saveshort()
+	{
+	   $model = $this->getModel();
+       $model->saveshort();
+    } 
+    
+      
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
