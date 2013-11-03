@@ -338,7 +338,7 @@ class sportsmanagementModelperson extends JModelAdmin
 			$tblPerson->firstname	= $post['firstname'.$pks[$x]];
 			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
 			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
-			$tblPerson->birthday	= JoomleagueHelper::convertDate($post['birthday'.$pks[$x]],0);
+			$tblPerson->birthday	= sportsmanagementHelper::convertDate($post['birthday'.$pks[$x]],0);
 			$tblPerson->deathday	= $post['deathday'.$pks[$x]];
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
