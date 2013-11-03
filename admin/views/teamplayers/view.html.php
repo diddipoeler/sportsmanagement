@@ -303,7 +303,7 @@ class sportsmanagementViewteamPlayers extends JView
 
 		JToolBarHelper::publishList('teamplayers.publish');
 		JToolBarHelper::unpublishList('teamplayers.unpublish');
-		JToolBarHelper::apply( 'teamplayer.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
+		JToolBarHelper::apply( 'teamplayers.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
 		JToolBarHelper::divider();
 
 		JToolBarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );

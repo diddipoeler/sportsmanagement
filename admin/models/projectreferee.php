@@ -120,23 +120,22 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-	function saveshort($cid,$data)
+	function saveshort()
 	{
-		$result=true;
-		$record = JTable::getInstance('ProjectReferee', 'Table');
-		for ($x=0; $x < count($cid); $x++)
+		$mainframe =& JFactory::getApplication();
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
 		{
-			$record->id = $cid[$x];
-			$record->project_position_id = $data['project_position_id'.$cid[$x]];
-			$record->store();
-			if (!$record->check())
-			{
-				$this->setError($record->getError());
-				$result=false;
-			}
-			if (!$record->store())
-			{
-				$this->setError($record->getError());
+			$tblPerson = & $this->getTable();
+			$tblPerson->id			= $pks[$x];
+			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
+
+			if(!$tblPerson->store()) {
+				$this->setError($this->_db->getErrorMsg());
 				$result=false;
 			}
 		}

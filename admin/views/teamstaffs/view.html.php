@@ -179,7 +179,7 @@ class sportsmanagementViewTeamStaffs extends JView
 
 		JToolBarHelper::publishList('teamstaffs.publish');
 		JToolBarHelper::unpublishList('teamstaffs.unpublish');
-		JToolBarHelper::apply( 'teamstaff.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_APPLY' ) );
+		JToolBarHelper::apply( 'teamstaffs.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_APPLY' ) );
 		JToolBarHelper::divider();
 
 		JToolBarHelper::custom( 'teamstaff.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_ASSIGN' ), false );

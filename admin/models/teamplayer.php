@@ -90,7 +90,38 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 		return $data;
 	}
 	
-	/**
+	
+    /**
+	 * Method to update checked teamplayers
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort()
+	{
+		// Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblPerson = & $this->getTable();
+			$tblPerson->id			= $pks[$x];
+			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
+			$tblPerson->jerseynumber	= $post['jerseynumber'.$pks[$x]];
+			$tblPerson->market_value	= $post['market_value'.$pks[$x]];
+
+			if(!$tblPerson->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				$result=false;
+			}
+		}
+		return $result;
+	}
+    
+    
+    /**
 	 * Method to save item order
 	 *
 	 * @access	public

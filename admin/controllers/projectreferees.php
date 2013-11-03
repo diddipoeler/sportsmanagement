@@ -12,7 +12,19 @@ class sportsmanagementControllerprojectreferees extends JControllerAdmin
 {
 	
   
-  
+  /**
+	 * Method to update checked projectreferees
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+    function saveshort()
+	{
+	   $model = $this->getModel();
+       $model->saveshort();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    } 
   
   /**
 	 * Proxy for getModel.
