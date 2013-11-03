@@ -25,6 +25,7 @@ class sportsmanagementModelround extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -38,6 +39,7 @@ class sportsmanagementModelround extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -56,6 +58,7 @@ class sportsmanagementModelround extends JModelAdmin
 		}
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -65,6 +68,7 @@ class sportsmanagementModelround extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -89,7 +93,6 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-/*     
 	function saveorder($cid=array(),$order)
 	{
 		$row =& $this->getTable();
@@ -110,7 +113,41 @@ class sportsmanagementModelround extends JModelAdmin
 		}
 		return true;
 	}
-*/    
+    
+    /**
+	 * Method to update checked project referees
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort()
+	{
+		$mainframe =& JFactory::getApplication();
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        
+        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblRound = & $this->getTable();
+			$tblRound->id = $pks[$x];
+			$tblRound->name	= $post['name'.$pks[$x]];
+            $tblRound->round_date_first	= $post['round_date_first'.$pks[$x]];
+            $tblRound->round_date_last	= $post['round_date_last'.$pks[$x]];
+
+			if(!$tblRound->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				$result=false;
+			}
+		}
+		return $result;
+	}
+    
 	
 	
 }

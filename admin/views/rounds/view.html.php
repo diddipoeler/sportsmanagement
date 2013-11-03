@@ -138,7 +138,7 @@ class sportsmanagementViewRounds extends JView
 		  JToolBarHelper::divider();
       JToolBarHelper::custom('round.populate','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'),false);
       JToolBarHelper::divider();
-      JToolBarHelper::apply('round.saveshort');
+      JToolBarHelper::apply('rounds.saveshort');
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('round.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'),false);
 			//JLToolBarHelper::addNew('round.populate','purge.png','purge_f2.png', JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
