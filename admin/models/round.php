@@ -115,7 +115,7 @@ class sportsmanagementModelround extends JModelAdmin
 	}
     
     /**
-	 * Method to update checked project referees
+	 * Method to update checked project rounds
 	 *
 	 * @access	public
 	 * @return	boolean	True on success

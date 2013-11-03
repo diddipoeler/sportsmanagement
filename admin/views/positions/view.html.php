@@ -100,7 +100,7 @@ class sportsmanagementViewPositions extends JView
 		JToolBarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
 
-		JToolBarHelper::apply('position.saveshort');
+		JToolBarHelper::apply('positions.saveshort');
 		JToolBarHelper::editList('position.edit');
 		JToolBarHelper::addNew('position.add');
 		JToolBarHelper::custom('position.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
