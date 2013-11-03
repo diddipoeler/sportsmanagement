@@ -43,13 +43,18 @@ class Countries
 
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
-		$db = Jfactory::getDBO();
-
-		
-		$query = "SELECT alpha3,name from #__".COM_SPORTSMANAGEMENT_TABLE."_countries";
+		// Get a db connection.
+$db = JFactory::getDbo();
+ 
+// Create a new query object.
+$query = $db->getQuery(true);
+        // Select some fields
+		$query->select('alpha3,name from');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        // Reset the query using our newly populated query object.
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
-    
 		
 		$options=array();
 		foreach ($countries AS $k )
@@ -64,10 +69,17 @@ class Countries
 
 	public static function convertIso2to3($iso_code_2)
 	{
-	$db = Jfactory::getDBO();
-	  
-		$query = "SELECT alpha3 from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
-    where alpha2 like '".$iso_code_2."'";
+	// Get a db connection.
+$db = JFactory::getDbo();
+// Create a new query object.
+$query = $db->getQuery(true);
+	  // Select some fields
+		$query->select('alpha3');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        $query->where('alpha2 LIKE \''.$iso_code_2.'\'');
+        
+    
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		if ($res)
@@ -79,10 +91,20 @@ class Countries
 
 	public static function convertIso3to2($iso_code_3)
 	{
-	$db = Jfactory::getDBO();
-	  $query = "SELECT alpha2 from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
-    where alpha3 like '".$iso_code_3."'";
-		$db->setQuery($query);
+	// Get a db connection.
+$db = JFactory::getDbo();
+// Create a new query object.
+$query = $db->getQuery(true);
+// Select some fields
+		$query->select('alpha2');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        $query->where('alpha3 LIKE \''.$iso_code_3.'\'');
+        
+	  
+		
+        $db->setQuery($query);
+        
 		$res = $db->loadResult();
 		if ($res)
 		{
@@ -126,11 +148,18 @@ class Countries
    */
 	public static function getCountryName($iso3)
 	{
-	$db = Jfactory::getDBO();
-
+	// Get a db connection.
+$db = JFactory::getDbo();
+// Create a new query object.
+$query = $db->getQuery(true);
+// Select some fields
+		$query->select('name');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        $query->where('alpha3 LIKE \''.$iso3.'\'');
+        		
 		
-		$query = "SELECT name from #__".COM_SPORTSMANAGEMENT_TABLE."_countries
-    where alpha3 like '".$iso3."'";
+    
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		
@@ -172,16 +201,7 @@ class Countries
 	
 	return $result;
 	}
-	
-	
-/*
-Turkish Address-Way:
-John Deere Makinalari Limited Sirketi
 
-Centrum Is Merkezi Aydinevler Sanayi Cad. No.3 Kat 4
-Küçükyali / Maltepe / Istanbul 34854
-Türkiye
-*/
 	public static function convertAddressString(	$name='',
 									$address='',
 									$state='',
@@ -215,11 +235,6 @@ Türkiye
 		return $resultString;
 	}
 	
-/*
-captain77
-check if address fields not filled then remove that
-*/
-
 	public static function removeEmptyFields(	$name='',
 									$address='',
 									$state='',
