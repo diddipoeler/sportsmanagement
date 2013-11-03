@@ -30,10 +30,10 @@ class sportsmanagementViewprojectteams extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode',		'search_mode',		'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'tl_filter_order',		'filter_order',		't.name',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'tl_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'tl_search',			'search',			'',				'string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'tl_search_mode',		'search_mode',		'',				'string');
 		$search				= JString::strtolower($search);
 
 		$items =& $this->get('Items');
