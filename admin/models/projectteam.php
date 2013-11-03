@@ -108,4 +108,48 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to update checked project referees
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort()
+	{
+		$mainframe =& JFactory::getApplication();
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        
+        $mainframe->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblProjectteam = & $this->getTable();
+			$tblProjectteam->id	= $pks[$x];
+            $tblProjectteam->division_id = $post['division_id' . $pks[$x]];
+			$tblProjectteam->start_points = $post['start_points' .$pks[$x]];
+			$tblProjectteam->points_finally = $post['points_finally' .$pks[$x]];
+			$tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];
+            $tblProjectteam->penalty_points = $post['penalty_points' . $pks[$x]];
+			$tblProjectteam->matches_finally = $post['matches_finally' . $pks[$x]];
+			$tblProjectteam->won_finally = $post['won_finally' . $pks[$x]];
+			$tblProjectteam->draws_finally = $post['draws_finally' . $pks[$x]];
+			$tblProjectteam->lost_finally = $post['lost_finally' . $pks[$x]];
+			$tblProjectteam->homegoals_finally = $post['homegoals_finally' .$pks[$x]];
+			$tblProjectteam->guestgoals_finally = $post['guestgoals_finally' . $pks[$x]];
+			$tblProjectteam->diffgoals_finally = $post['diffgoals_finally' . $pks[$x]];
+
+			if(!$tblProjectteam->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				$result=false;
+			}
+		}
+		return $result;
+	}
+    
 }

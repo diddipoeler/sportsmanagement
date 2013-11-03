@@ -134,7 +134,7 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblPerson = & $this->getTable();
-			$tblPerson->id			= $pks[$x];
+			$tblPerson->id = $pks[$x];
 			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
 
 			if(!$tblPerson->store()) {

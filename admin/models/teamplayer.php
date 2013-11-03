@@ -112,10 +112,10 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblPerson = & $this->getTable();
-			$tblPerson->id			= $pks[$x];
+			$tblPerson->id = $pks[$x];
 			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
-			$tblPerson->jerseynumber	= $post['jerseynumber'.$pks[$x]];
-			$tblPerson->market_value	= $post['market_value'.$pks[$x]];
+			$tblPerson->jerseynumber = $post['jerseynumber'.$pks[$x]];
+			$tblPerson->market_value = $post['market_value'.$pks[$x]];
 
 			if(!$tblPerson->store()) {
 				$this->setError($this->_db->getErrorMsg());

@@ -74,7 +74,7 @@ class sportsmanagementViewprojectteams extends JView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'));
         JToolBarHelper::deleteList('', 'projectteam.remove');
 
-		JToolBarHelper::apply('projectteam.saveshort');
+		JToolBarHelper::apply('projectteams.saveshort');
 		JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
 		JToolBarHelper::custom('projectteam.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'),false);
 		JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'), true);
