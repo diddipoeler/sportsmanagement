@@ -57,6 +57,9 @@ class sportsmanagementModelProjectteams extends JModelList
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground ' .
 		$where . $orderby;
+        
+        $mainframe->enqueueMessage('getListQuery _project_id<br><pre>'.print_r($this->_project_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('getListQuery query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
 
 		return $query;
 	}
@@ -177,47 +180,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		return $result;
 	}
 
-	/**
-	 * Method to update checked project teams
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-	function storeshort( $cid, $data )
-	{
-		$result = true;
-		for ( $x = 0; $x < count( $cid ); $x++ )
-		{
-				
-			$tblProjectteam =& JTable::getInstance('Projectteam','Table');
-			$tblProjectteam->id = $cid[$x];
-			$tblProjectteam->division_id =			$data['division_id' . $cid[$x]];
-			$tblProjectteam->start_points =			$data['start_points' .$cid[$x]];
-			$tblProjectteam->points_finally =		$data['points_finally' .$cid[$x]];
-			$tblProjectteam->neg_points_finally =	$data['neg_points_finally' . $cid[$x]];
-            $tblProjectteam->penalty_points =	$data['penalty_points' . $cid[$x]];
-			$tblProjectteam->matches_finally =		$data['matches_finally' . $cid[$x]];
-			$tblProjectteam->won_finally = 			$data['won_finally' . $cid[$x]];
-			$tblProjectteam->draws_finally = 		$data['draws_finally' . $cid[$x]];
-			$tblProjectteam->lost_finally = 		$data['lost_finally' . $cid[$x]];
-			$tblProjectteam->homegoals_finally =	$data['homegoals_finally' .$cid[$x]];
-			$tblProjectteam->guestgoals_finally =	$data['guestgoals_finally' . $cid[$x]];
-			$tblProjectteam->diffgoals_finally =	$data['diffgoals_finally' . $cid[$x]];
-				
-			if (!$tblProjectteam->check())
-			{
-				$this->setError($tblProjectteam->getError());
-				$result = false;
-			}
-			if (!$tblProjectteam->store())
-			{
-				$this->setError($tblProjectteam->getError());
-				$result = false;
-			}
-		}
-		return $result;
-	}
+	
 
 	/**
 	 * Method to return the teams array (id, name)
