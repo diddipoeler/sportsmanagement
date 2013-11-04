@@ -148,5 +148,79 @@ class sportsmanagementModelProject extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObject();
 	}
+    
+    /**
+	 * Method to return the project teams array (id, name)
+	 *
+	 * @access  public
+	 * @return  array
+	 * @since 0.1
+	 */
+	function getProjectTeams($project_id)
+	{
+		$option = JRequest::getCmd('option');
+
+		$mainframe	= JFactory::getApplication();
+		$project_id = $mainframe->getUserState($option . 'project');
+
+		$query = '	SELECT	pt.id AS value,
+							t.name AS text,
+							t.short_name AS short_name,
+							t.notes
+
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
+					WHERE pt.project_id = ' . $project_id . '
+					ORDER BY text ASC ';
+
+		$this->_db->setQuery($query);
+
+		if (!$result = $this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		else
+		{
+			return $result;
+		}
+	}
+    
+    /**
+	 * @param int iDivisionId
+	 * return project teams as options
+	 * @return unknown_type
+	 */
+	function getProjectTeamsOptions($project_id,$iDivisionId=0)
+	{
+		$option = JRequest::getCmd('option');
+
+		$mainframe	= JFactory::getApplication();
+		$project_id = $mainframe->getUserState($option . 'project');
+
+		$query = ' SELECT	pt.id AS value, '
+		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
+		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
+		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
+		. ' WHERE pt.project_id = ' . $project_id;
+		if($iDivisionId>0)  {
+			$query .=' AND pt.division_id = ' .$iDivisionId;
+		}
+		$query .= ' ORDER BY text ASC ';
+
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
+		if ($result === FALSE)
+		{
+			JError::raiseError(0, $this->_db->getErrorMsg());
+			return false;
+		}
+		else
+		{
+			return $result;
+		}
+	}
+    
+    
 	
 }

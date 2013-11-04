@@ -96,7 +96,7 @@ fieldset button {
 					{
 						$row		=& $this->matches[$i];
 						$checked	= JHTML::_('grid.checkedout',$row,$i,'id');
-						$published	= JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','match.');
+						$published	= JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
 
 						list($date,$time)=explode(" ",$row->match_date);
 						$time=strftime("%H:%M",strtotime($time));
@@ -123,7 +123,7 @@ fieldset button {
 							</td>
 							<td class="center" nowrap="nowrap">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_joomleague&tmpl=component&task=match.edit&cid[]=<?php echo $row->id; ?>"
+									href="index.php?option=com_joomleague&tmpl=component&task=match.edit&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
 									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',

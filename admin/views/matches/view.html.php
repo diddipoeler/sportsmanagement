@@ -44,6 +44,28 @@ class sportsmanagementViewMatches extends JView
         $items =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
+        
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $projectws = $mdlProject->getProject($this->project_id);
+        
+		$roundws =& $this->get('Data','roundws');
+        
+        //build the html selectlist for rounds
+		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
+
+		foreach ($ress as $res)
+		{
+			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
+			$project_roundslist[]=JHTML::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
+		}
+		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid[]',
+				'class="inputbox" ' .
+				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
+				'document.roundForm.submit();" ',
+				'value','text',JRequest::getvar('rid', 0));
+
+		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',JRequest::getvar('rid', 0));
 
 
 
@@ -97,6 +119,8 @@ class sportsmanagementViewMatches extends JView
 			$lists['teams_'+$divhomeid] = $teams;
 			unset($teams);
 		}
+        
+        
 		//build the html selectlist for rounds
 		$model = $this->getModel('projectws');
 		$ress = sportsmanagementHelper::getRoundsOptions($model->_id, 'ASC', true);
@@ -212,8 +236,8 @@ class sportsmanagementViewMatches extends JView
 		$this->assignRef('lists',$lists);
 		$this->assignRef('matches',$items);
 		//$this->assignRef('ress',$ress);
-		//$this->assignRef('projectws',$projectws);
-		//$this->assignRef('roundws',$roundws);
+		$this->assignRef('projectws',$projectws);
+		$this->assignRef('roundws',$roundws);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
 		//$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
