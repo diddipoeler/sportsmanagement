@@ -11,8 +11,15 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllermatch extends JControllerForm
 {
 
-//	add a match to round
-	function addmatch()
+
+	/**
+	 * Method add a match to round
+	 *
+	 * @access	public
+	 * @return	
+	 * @since	0.1
+	 */
+    function addmatch()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -43,6 +50,24 @@ class sportsmanagementControllermatch extends JControllerForm
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
 		$this->setRedirect($link,$msg);
 	}
+    
+    
+    
+    /**
+	 * Method to remove a matchday
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function remove($pk=array())
+	{
+	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+	$result=false;
+        
+        
+   }     
     
 
 }
