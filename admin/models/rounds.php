@@ -48,9 +48,13 @@ class sportsmanagementModelRounds extends JModelList
         $query->where(self::_buildContentWhere());
         //}
 		$query->order(self::_buildContentOrderBy());
- 
-		//$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
+        
+        if ( $show_debug_info )
+        {
+ 		$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
+        }
+        
         return $query;
 	}
 	
