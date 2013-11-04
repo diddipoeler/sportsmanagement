@@ -44,56 +44,56 @@ class sportsmanagementModelMatches extends JModelList
 							t2.name AS team2,
 							u.name AS editor, 
 							(Select count(mp.id) 
-							 FROM #__sportsmanagement_match_player AS mp 
+							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp 
 							 WHERE mp.match_id = mc.id
 							   AND (came_in=0 OR came_in=1) 
 							   AND mp.teamplayer_id in (
 							     SELECT id 
-							     FROM #__sportsmanagement_team_player AS tp
+							     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp
 							     WHERE tp.projectteam_id = mc.projectteam1_id
 							   )
 							 ) AS homeplayers_count, 
 							(Select count(ms.id) 
-							 FROM #__sportsmanagement_match_staff AS ms
+							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms
 							 WHERE ms.match_id = mc.id
 							   AND ms.team_staff_id in (
 							     SELECT id 
-							     FROM #__sportsmanagement_team_staff AS ts
+							     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts
 							     WHERE ts.projectteam_id = mc.projectteam1_id
 							   )
 							) AS homestaff_count, 
 							(Select count(mp.id) 
-							 FROM #__sportsmanagement_match_player AS mp 
+							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp 
 							 WHERE mp.match_id = mc.id
 							   AND (came_in=0 OR came_in=1) 
 							   AND mp.teamplayer_id in (
 							     SELECT id 
-							     FROM #__sportsmanagement_team_player AS tp
+							     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp
 							     WHERE tp.projectteam_id = mc.projectteam2_id
 							   )
 							 ) AS awayplayers_count, 
 							(Select count(ms.id) 
-							 FROM #__sportsmanagement_match_staff AS ms
+							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms
 							 WHERE ms.match_id = mc.id
 							   AND ms.team_staff_id in (
 							     SELECT id 
-							     FROM #__sportsmanagement_team_staff AS ts
+							     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts
 							     WHERE ts.projectteam_id = mc.projectteam2_id
 							   )
 							) AS awaystaff_count,
 							(Select count(mr.id) 
-							  FROM #__sportsmanagement_match_referee AS mr 
+							  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr 
 							  WHERE mr.match_id = mc.id
 							) AS referees_count 
-					FROM #__sportsmanagement_match AS mc
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc
 					LEFT JOIN #__users u ON u.id = mc.checked_out
-					LEFT JOIN #__sportsmanagement_project_team AS pthome ON pthome.id = mc.projectteam1_id
-					LEFT JOIN #__sportsmanagement_project_team AS ptaway ON ptaway.id = mc.projectteam2_id
-					LEFT JOIN #__sportsmanagement_team AS t1 ON t1.id = pthome.id
-					LEFT JOIN #__sportsmanagement_team AS t2 ON t2.id = ptaway.id
-					LEFT JOIN #__sportsmanagement_round AS r ON r.id = mc.round_id 
-					LEFT JOIN #__sportsmanagement_division AS divaway ON divaway.id = ptaway.division_id 
-					LEFT JOIN #__sportsmanagement_division AS divhome ON divhome.id = pthome.division_id ' .
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.id = mc.projectteam1_id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS ptaway ON ptaway.id = mc.projectteam2_id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = pthome.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = ptaway.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = mc.round_id 
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divaway ON divaway.id = ptaway.division_id 
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divhome ON divhome.id = pthome.division_id ' .
 		
 		$where . $orderby;
 		return $query;
@@ -104,8 +104,8 @@ class sportsmanagementModelMatches extends JModelList
 		$option = JRequest::getCmd('option');
 
 		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option . 'mc_filter_order', 'filter_order', 'mc.match_date', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option . 'mc_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order', 'filter_order', 'mc.match_date', 'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'mc.match_number')
 		{
@@ -130,7 +130,7 @@ class sportsmanagementModelMatches extends JModelList
 		
 		$mainframe	= JFactory::getApplication();
 		// $project_id = $mainframe->getUserState($option . 'project');
-		$division	= (int) $mainframe->getUserStateFromRequest($option.'mc_division', 'division', 0);
+		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_division', 'division', 0);
 		$round_id = $mainframe->getUserState($option . 'round_id');
 
 		$where[] = ' mc.round_id = ' . $round_id;
@@ -176,8 +176,8 @@ class sportsmanagementModelMatches extends JModelList
 							t.short_name AS short_name,
 							t.notes
 
-					FROM #__sportsmanagement_team AS t
-					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
 					WHERE pt.project_id = ' . $project_id . '
 					ORDER BY text ASC ';
 
@@ -208,8 +208,8 @@ class sportsmanagementModelMatches extends JModelList
 
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
-		. ' FROM #__sportsmanagement_team AS t '
-		. ' LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id '
+		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
+		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
 		. ' WHERE pt.project_id = ' . $project_id;
 		if($iDivisionId>0)  {
 			$query .=' AND pt.division_id = ' .$iDivisionId;
@@ -231,7 +231,7 @@ class sportsmanagementModelMatches extends JModelList
 
 	function getMatchesByRound($roundId)
 	{
-		$query = 'SELECT * FROM #__sportsmanagement_match WHERE round_id='.$roundId;
+		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;
 		$this->_db->setQuery($query);
 		//echo($this->_db->getQuery());
 		$result = $this->_db->loadObjectList();
