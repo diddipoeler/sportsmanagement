@@ -21,10 +21,9 @@ abstract class sportsmanagementHelper
         $project_id = $mainframe->getUserState( "$option.pid", '0' );
         $project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
         $team_id = $mainframe->getUserState( "$option.team_id", '0' );
+        $club_id = $mainframe->getUserState( "$option.club_id", '0' );
+      
         
-        //$project_id	= JRequest::getVar('pid');
-        //$project_team_id = JRequest::getVar('project_team_id');
-        //$team_id = JRequest::getVar('team_id');
         
         if ( $show_debug_info )
         {
@@ -32,6 +31,7 @@ abstract class sportsmanagementHelper
             $mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
         }
         
 		
