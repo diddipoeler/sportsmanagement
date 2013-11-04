@@ -35,6 +35,10 @@ class sportsmanagementModelMatches extends JModelList
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         $this->_rid = JRequest::getvar('rid', 0);
+        if ( !$this->_rid )
+        {
+            $this->_rid	= $mainframe->getUserState( "$option.rid", '0' );
+        }
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
