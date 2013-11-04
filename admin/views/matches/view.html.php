@@ -66,6 +66,36 @@ class sportsmanagementViewMatches extends JView
 				'value','text',JRequest::getvar('rid', 0));
 
 		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',JRequest::getvar('rid', 0));
+        
+        //build the html options for teams
+		foreach ($items as $row)
+		{
+			if ( $row->divhomeid == '' )
+            {
+                $row->divhomeid = 0;
+            }
+            if ( $row->divawayid == '' )
+            {
+                $row->divawayid = 0;
+            }
+            
+            
+            $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+			$divhomeid = 0;
+			//apply the filter only if both teams are from the same division
+			//teams are not from the same division in tournament mode with divisions
+			if($row->divhomeid==$row->divawayid) {
+				$divhomeid = $row->divhomeid;
+			} else {
+				$row->divhomeid =0;
+				$row->divawayid =0;
+			}
+			if ($projectteams =& $model->getProjectTeamsOptions($divhomeid)){
+				$teams=array_merge($teams,$projectteams);
+			}
+			$lists['teams_'+$divhomeid] = $teams;
+			unset($teams);
+		}
 
 
 
