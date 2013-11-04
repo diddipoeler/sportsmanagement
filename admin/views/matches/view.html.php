@@ -247,7 +247,7 @@ class sportsmanagementViewMatches extends JView
 			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
 			JToolBarHelper::divider();
 
-			JToolBarHelper::back('JPREV','index.php?option=com_joomleague&view=rounds&task=round.display');
+			JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=rounds');
 		}
 		else
 		{

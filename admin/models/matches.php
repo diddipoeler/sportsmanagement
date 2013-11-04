@@ -122,8 +122,13 @@ class sportsmanagementModelMatches extends JModelList
 		$where . $orderby;
 */        
         
-        
+        if ( $show_debug_info )
+        {
+        $mainframe->enqueueMessage(JText::_('matches query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_('round_id project<br><pre>'.print_r($this->_rid,true).'</pre>'   ),'');
+        }
 		return $query;
+        
 	}
 
 	function _buildContentOrderBy()
