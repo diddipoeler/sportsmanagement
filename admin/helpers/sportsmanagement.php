@@ -1306,7 +1306,8 @@ abstract class sportsmanagementHelper
 	*/
 	function getRoundsOptions($project_id, $ordering='ASC', $required = false)
 	{
-		$db = &JFactory::getDBO();
+		$mainframe = JFactory::getApplication();
+        $db = &JFactory::getDBO();
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '

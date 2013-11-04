@@ -68,6 +68,14 @@ class sportsmanagementViewMatches extends JView
 				'value','text',$roundws->id);
 
 		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
+        // diddipoeler rounds for change in match
+        $project_change_roundslist = array();
+        if ( $ress =& sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true) )
+        {
+			$project_change_roundslist = array_merge($project_change_roundslist,$ress);
+		}
+		$lists['project_change_rounds'] = $project_change_roundslist;
+		unset($project_change_roundslist);
         
         //build the html options for teams
 		foreach ($items as $row)
