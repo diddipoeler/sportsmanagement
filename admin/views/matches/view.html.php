@@ -275,7 +275,7 @@ class sportsmanagementViewMatches extends JView
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('matches',$items);
-		//$this->assignRef('ress',$ress);
+		$this->assignRef('ress',$ress);
 		$this->assignRef('projectws',$projectws);
 		$this->assignRef('roundws',$roundws);
 		$this->assignRef('pagination',$pagination);
