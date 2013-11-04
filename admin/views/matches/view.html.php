@@ -99,11 +99,11 @@ class sportsmanagementViewMatches extends JView
 		}
 		//build the html selectlist for rounds
 		$model = $this->getModel('projectws');
-		$ress = JoomleagueHelper::getRoundsOptions($model->_id, 'ASC', true);
+		$ress = sportsmanagementHelper::getRoundsOptions($model->_id, 'ASC', true);
 
 		foreach ($ress as $res)
 		{
-			$datum = JoomleagueHelper::convertDate($res->round_date_first, 1).' - '.JoomleagueHelper::convertDate($res->round_date_last, 1);
+			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
 			$project_roundslist[]=JHTML::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
 		}
 		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid[]',
@@ -117,7 +117,7 @@ class sportsmanagementViewMatches extends JView
   
     // diddipoeler rounds for change in match
     $project_change_roundslist = array();
-    if ( $ress =& JoomleagueHelper::getRoundsOptions($model->_id, 'ASC', true) )
+    if ( $ress =& sportsmanagementHelper::getRoundsOptions($model->_id, 'ASC', true) )
     {
 			$project_change_roundslist = array_merge($project_change_roundslist,$ress);
 		}

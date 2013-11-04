@@ -381,7 +381,7 @@ class sportsmanagementViewTeamStaff extends JView
 		$option = JRequest::getCmd('option');
 		$params = JComponentHelper::getParams( $option );
 		$default_name_format = $params->get("name_format");
-		$name = JoomleagueHelper::formatName(null, $this->project_teamstaff->firstname, $this->project_teamstaff->nickname, $this->project_teamstaff->lastname, $default_name_format);
+		$name = sportsmanagementHelper::formatName(null, $this->project_teamstaff->firstname, $this->project_teamstaff->nickname, $this->project_teamstaff->lastname, $default_name_format);
 		$text = !$edit ? JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEW' ) : JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_TITLE' ). ': ' . $name;
 		JToolBarHelper::title( $text);
 		JLToolBarHelper::save('teamstaff.save');

@@ -5,7 +5,7 @@ JHTML::_('behavior.tooltip');
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
-//$version = urlencode(JoomleagueHelper::getVersion());
+//$version = urlencode(sportsmanagementHelper::getVersion());
 echo JHTML::script('projectposition.js','administrator/components/com_sportsmanagement/assets/js/');
 ?>
 <form action="index.php" method="post" id="adminForm">

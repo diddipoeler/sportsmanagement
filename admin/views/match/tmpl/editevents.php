@@ -33,7 +33,7 @@ foreach ($this->rosters['home'] as $player)
 {
 	$obj = new stdclass();
 	$obj->value = $player->value;
-	$obj->text  = JoomleagueHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
+	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
 }
 ?>
@@ -44,7 +44,7 @@ foreach ($this->rosters['away'] as $player)
 {
 	$obj = new stdclass();
 	$obj->value = $player->value;
-	$obj->text  = JoomleagueHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
+	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
 }
 ?>

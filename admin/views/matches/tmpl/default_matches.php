@@ -174,7 +174,7 @@ fieldset button {
 							</td>
 							<td class="center" nowrap="nowrap">
 								<?php
-								echo JHTML::calendar(	JoomleagueHelper::convertDate($date),
+								echo JHTML::calendar(	sportsmanagementHelper::convertDate($date),
 														'match_date'.$row->id,
 														'match_date'.$row->id,
 														'%d-%m-%Y',

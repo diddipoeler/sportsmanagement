@@ -85,7 +85,7 @@ class JLGStatistic extends JObject {
 		$classname = 'JLGStatistic'. ucfirst($class);
 		
 		// check for statistic in extensions
-		$extensions = JoomleagueHelper::getExtensions(0);
+		$extensions = sportsmanagementHelper::getExtensions(0);
 		foreach ($extensions as $type)
 		{
 			$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'admin'.DS.'statistics'.DS .$class.'.php';

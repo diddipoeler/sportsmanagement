@@ -174,7 +174,7 @@ class sportsmanagementViewteamPlayers extends JView
 				if ( $used == 0 )
 				{
 					$notusedplayers[] = JHTML::_(	'select.option', $res1->value,
-					  JoomleagueHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
+					  sportsmanagementHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
 													' (' . $res1->notes . ')' );
 				}
 			}
@@ -184,7 +184,7 @@ class sportsmanagementViewteamPlayers extends JView
 			foreach ( $ress1 as $res1 )
 			{
 				$notusedplayers[] = JHTML::_(	'select.option', $res1->value,
-				  JoomleagueHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
+				  sportsmanagementHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
 												' (' . $res1->notes . ')' );
 			}
 		}

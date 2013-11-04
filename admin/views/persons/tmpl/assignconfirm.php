@@ -25,7 +25,7 @@
 				?>
 				<li>
 					<input type="hidden" name="pid" value="<?php echo $p->id ?>" />
-					<?php echo JoomleagueHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, 0) ?>
+					<?php echo sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, 0) ?>
 				</li>
 				<?php
 			}

@@ -46,7 +46,7 @@
 						<input type="checkbox" id="cb_a<?php echo $i;?>" name="cid_a<?php echo $i;?>" value="cb_a" onclick="isChecked(this.checked);" />
 						</td>
 						<td style="text-align: left;">
-						<?php echo '('.JText::_($row->positionname).') - '.JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
+						<?php echo '('.JText::_($row->positionname).') - '.sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
 						</td>
 						<?php
 						//total events away player

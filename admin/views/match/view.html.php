@@ -208,7 +208,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$default_name_format = $params->get("name_format");
 
 		//add the js script
-		$version = urlencode(JoomleagueHelper::getVersion());
+		$version = urlencode(sportsmanagementHelper::getVersion());
 		$document->addScript(JURI::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
 
 		$model = $this->getModel();
@@ -233,7 +233,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			foreach ($projectreferees AS $referee)
 			{
 				$projectreferees2[]=JHTML::_('select.option',$referee->value,
-				  JoomleagueHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
+				  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
 				  ' - ('.strtolower(JText::_($referee->positionname)).')');
 			}
 		}
@@ -272,7 +272,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 					foreach ($referees AS $referee)
 					{
 						$temp[$key][]=JHTML::_('select.option',$referee->value,
-						  JoomleagueHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
+						  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
 					}
 				}
 				$lists['team_referees'.$key]=JHTML::_(	'select.genericlist',$temp[$key],'position'.$key.'[]',
@@ -298,7 +298,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$default_name_format = $params->get("name_format");
 
 		//add the js script
-		$version = urlencode(JoomleagueHelper::getVersion());
+		$version = urlencode(sportsmanagementHelper::getVersion());
 		$document->addScript(JURI::base().'components/com_joomleague/assets/js/editevents.js?v='.$version);
 
 		$model = $this->getModel();
@@ -423,7 +423,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$default_name_format = $params->get("name_format");
 
 		//add the js script
-		$version = urlencode(JoomleagueHelper::getVersion());
+		$version = urlencode(sportsmanagementHelper::getVersion());
 		$document->addScript(JURI::base().'components/com_joomleague/assets/js/editmatchstats.js?v='.$version);
 
 		$model = $this->getModel();
@@ -482,7 +482,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$default_name_format = $params->get("name_format");
 
 		//add the js script
-		$version = urlencode(JoomleagueHelper::getVersion());
+		$version = urlencode(sportsmanagementHelper::getVersion());
 		$document->addScript(JURI::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
 
 		$model = $this->getModel();
@@ -551,7 +551,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		foreach ((array) $not_assigned AS $p)
 		{
 			$not_assigned_options[] = JHTML::_( 'select.option',$p->value,'['.$p->jerseynumber.'] '.
-			  									JoomleagueHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
+			  									sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
 			  									' - ('.JText::_($p->positionname).')');
 		}
 		$lists['team_players']=JHTML::_(	'select.genericlist',$not_assigned_options,'roster[]',
@@ -569,7 +569,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		foreach ((array)$allplayers AS $player)
 		{
 			$playersoptions[]=JHTML::_('select.option',$player->value,
-			  JoomleagueHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
+			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
 		$lists['all_players']=JHTML::_(	'select.genericlist',$playersoptions,'roster[]',
 										'id="roster" style="font-size:12px;height:auto;min-width:15em;" class="inputbox" size="4"',
@@ -589,7 +589,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			foreach ((array) $players AS $p)
 			{
 				$options[]=JHTML::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
-				  JoomleagueHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
+				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
 			}
 
 			$lists['team_players'.$position_id]=JHTML::_(	'select.genericlist',$options,'position'.$position_id.'[]',
@@ -616,7 +616,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		foreach ((array) $not_assigned AS $p)
 		{
 			$not_assigned_options[]=JHTML::_('select.option',$p->value,
-				  JoomleagueHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' - ('.JText::_($p->positionname).')');
+				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' - ('.JText::_($p->positionname).')');
 		}
 		$lists['team_staffs']=JHTML::_(	'select.genericlist',$not_assigned_options,'staff[]',
 										'style="font-size:12px;height:auto;min-width:15em;" size="18" class="inputbox" multiple="true" size="18"',
@@ -633,7 +633,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 				if ($staff->project_position_id == $pos->pposid)
 				{
 					$options[]=JHTML::_('select.option',$staff->team_staff_id,
-					  JoomleagueHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
+					  sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
 				}
 			}
 			$lists['team_staffs'.$position_id]=JHTML::_(	'select.genericlist',$options,'staffposition'.$position_id.'[]',

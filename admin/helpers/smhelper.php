@@ -526,7 +526,7 @@ class sportsmanagementHelper
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$extensions = JoomleagueHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($templatesToLoad as $template)
 		{
 			$view->addTemplatePath(JPATH_COMPONENT . DS . 'views' . DS . $template . DS . 'tmpl');
@@ -578,7 +578,7 @@ class sportsmanagementHelper
 	 * return a date string
 	 * $direction == 1 means from convert from 0000-00-00 to 00-00-0000
 	 * $direction != 1 means from convert from 00-00-0000 to 0000-00-00
-	 * call by JoomleagueHelper::convertDate($date) inside the script
+	 * call by sportsmanagementHelper::convertDate($date) inside the script
 	 *
 	 * When no "-" are given in $date two short date formats (DDMMYYYY and DDMMYY) are supported
 	 * for example "31122011" or "311211" for 31 december 2011

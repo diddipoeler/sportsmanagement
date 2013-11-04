@@ -6,7 +6,7 @@ $uri = JFactory::getURI();
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
-$version = urlencode(JoomleagueHelper::getVersion());
+$version = urlencode(sportsmanagementHelper::getVersion());
 echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
 ?>
 <script>

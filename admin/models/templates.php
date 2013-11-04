@@ -147,7 +147,7 @@ class sportsmanagementModelTemplates extends JModelList
 		// add default folder
 		$xmldirs[]=$defaultpath.DS.'default';
 		
-		$extensions = JoomleagueHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($extensions as $e => $extension) {
 			$extensiontpath =  JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension;
 			if (is_dir($extensiontpath.DS.'settings'.DS.'default'))

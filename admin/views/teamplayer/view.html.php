@@ -225,7 +225,7 @@ class sportsmanagementViewTeamPlayer extends JView
 												'text', $selectedvalue );
 		unset($projectpositions);
 
-		$matchdays = JoomleagueHelper::getRoundsOptions($projectws->id, 'ASC', false);
+		$matchdays = sportsmanagementHelper::getRoundsOptions($projectws->id, 'ASC', false);
 
 		// injury details
 		$myoptions = array();

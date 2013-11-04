@@ -117,7 +117,7 @@ JHTML::_('behavior.modal');
 							<?php
 							/*
 							?>
-							<td class="center"><?php echo JText::_(JoomleagueHelper::getSportsTypeName($row->sports_type_id)); ?></td>
+							<td class="center"><?php echo JText::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id)); ?></td>
 							<?php
 							*/
 							?>

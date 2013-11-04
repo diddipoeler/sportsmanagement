@@ -46,7 +46,7 @@ class JFormFieldMatchdaylist extends JFormFieldList
 
 		if ($project_id)
 		{		
-			$options = & JoomleagueHelper::getRoundsOptions($project_id, 'ASC', true);
+			$options = & sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
 		}
 		
 		// Merge any additional options in the XML definition.

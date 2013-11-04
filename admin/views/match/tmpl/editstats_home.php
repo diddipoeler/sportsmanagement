@@ -38,7 +38,7 @@ $j = 0;
 					<input type="hidden" name="projectteam_id[]" value="<?php echo $row->projectteam_id;?>" />
 					<input type="checkbox" class="statcheck" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $i;?>" /></td>
 				<td style="text-align: left; width:200px;" >
-				<?php echo JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
+				<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
 				</td>
 				<?php	foreach ( $this->stats as $ev): ?>
 				<?php if (!$ev->getCalculated() && $ev->position_id == $position->value): ?>
@@ -92,7 +92,7 @@ $j = 0;
 					<input type="hidden" name="sprojectteam_id[]" value="<?php echo $row->projectteam_id;?>" />
 					<input type="checkbox" class="staffstatcheck" id="staffcb<?php echo $i;?>" name="staffcid[]" value="<?php echo $j;?>" /></td>
 				<td style="text-align: left;width:200px;">
-				<?php echo JoomleagueHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
+				<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
 				</td>
 				<?php	foreach ( $this->stats as $ev): ?>
 				<?php if (!$ev->getCalculated() && $ev->position_id == $position->value): ?>

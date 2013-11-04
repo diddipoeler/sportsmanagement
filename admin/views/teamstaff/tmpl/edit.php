@@ -7,7 +7,7 @@ $params = $this->form->getFieldsets('params');
 
 <!-- import the functions to move the events between selection lists	-->
 <?php
-//$version = urlencode(JoomleagueHelper::getVersion());
+//$version = urlencode(sportsmanagementHelper::getVersion());
 //echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_sportsmanagement/assets/js/' );
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">

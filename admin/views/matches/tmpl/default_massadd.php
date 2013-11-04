@@ -53,7 +53,7 @@
 														<td width="100" align="right" class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
 															<?php
-															echo JHTML::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
+															echo JHTML::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																					'match_date','match_date',
 																					'%d-%m-%Y','size="10" ');
                                                            ?>
@@ -84,7 +84,7 @@
 										<td width="100" align="right" class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_DEFAULT_DATE'); ?></td>
 										<td>
 											<?php
-											echo JHTML::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
+											echo JHTML::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																	'date','date',
 																	'%d-%m-%Y','size="10" ');
 											?>

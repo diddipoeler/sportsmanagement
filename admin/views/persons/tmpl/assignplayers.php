@@ -134,7 +134,7 @@
 														$imageTitle,'title= "'.$imageTitle.'"');
 
 									}
-									elseif ($row->picture == JoomleagueHelper::getDefaultPlaceholder("player"))
+									elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 									{
 											$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 											echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
@@ -142,12 +142,12 @@
 									}
 									elseif ($row->picture == !'')
 									{
-									$playerName = JoomleagueHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo JoomleagueHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 									}
 									?>
 								</td>
-								<td class="nowrap" class="center"><?php echo JoomleagueHelper::convertDate($row->birthday); ?></td>
+								<td class="nowrap" class="center"><?php echo sportsmanagementHelper::convertDate($row->birthday); ?></td>
 								<td class="nowrap" class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
 								<td align="center"><?php echo $row->id; ?></td>			
 							</tr>
