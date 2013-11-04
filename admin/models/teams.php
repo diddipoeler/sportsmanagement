@@ -29,7 +29,7 @@ class sportsmanagementModelTeams extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$mainframe->enqueueMessage(JText::_('teams getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -48,7 +48,7 @@ class sportsmanagementModelTeams extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
         
         
-        if ($search)
+        if (self::_buildContentWhere())
 		{
         $query->where(self::_buildContentWhere());
         }
