@@ -164,6 +164,14 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$tblMatch->id = $pks[$x];
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
             
+            $tblMatch->match_date	= $post['match_date'.$pks[$x]];
+            $tblMatch->match_time	= $post['match_time'.$pks[$x]];
+            $tblMatch->crowd	= $post['crowd'.$pks[$x]];
+            $tblMatch->round_id	= $post['round_id'.$pks[$x]];
+            $tblMatch->projectteam1_id	= $post['projectteam1_id'.$pks[$x]];
+            $tblMatch->projectteam2_id	= $post['projectteam2_id'.$pks[$x]];
+            $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
+            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
 
 			if(!$tblMatch->store()) {
 				$this->setError($this->_db->getErrorMsg());
