@@ -112,11 +112,11 @@ class sportsmanagementModelProjectteams extends JModelList
 
 		if ( $filter_order == 't.name' )
 		{
-			$orderby 	= ' ORDER BY t.name ' . $filter_order_Dir;
+			$orderby 	= ' t.name ' . $filter_order_Dir;
 		}
 		else
 		{
-			$orderby 	= ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , t.name ';
+			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , t.name ';
 		}
 
 		return $orderby;
@@ -135,7 +135,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		{
 			$where[]=' d.id = '.$this->_db->Quote($division);
 		}
-		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
+		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
 		
 		return $where;
 	}
