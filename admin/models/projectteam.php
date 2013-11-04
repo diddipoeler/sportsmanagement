@@ -123,12 +123,16 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	function saveshort()
 	{
 		$mainframe =& JFactory::getApplication();
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
+        if ( $show_debug_info )
+        {
         $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)

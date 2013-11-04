@@ -42,6 +42,10 @@ class sportsmanagementModelProjectteams extends JModelList
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
+        // count team player
+        $query->select('count(tp.id) as playercount');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp');
+        $query->where('tp.projectteam_id = tl.id and tp.published = 1');
         
         // Join over the team
 		$query->select('t.name,t.club_id');
