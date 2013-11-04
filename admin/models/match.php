@@ -246,6 +246,8 @@ class sportsmanagementModelMatch extends JModelAdmin
             $query->where('mpl.match_id IN ('.$cids.')');
             $db->setQuery($query);
             
+            $mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+            
             return parent::delete($pk);
         }    
    return true;     
