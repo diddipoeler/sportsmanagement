@@ -90,7 +90,7 @@ class sportsmanagementViewMatches extends JView
 				$row->divhomeid =0;
 				$row->divawayid =0;
 			}
-			if ($projectteams =& $model->getProjectTeamsOptions($divhomeid)){
+			if ($projectteams =& $mdlProject->getProjectTeamsOptions($this->project_id,$divhomeid)){
 				$teams=array_merge($teams,$projectteams);
 			}
 			$lists['teams_'+$divhomeid] = $teams;
