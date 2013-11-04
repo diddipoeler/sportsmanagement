@@ -40,6 +40,11 @@ class sportsmanagementViewTeam extends JView
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 		$this->assignRef( 'extended', $extended );
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        
+        if ( $show_debug_info )
+        {
+            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+        }
  
 		// Set the toolbar
 		$this->addToolBar();
