@@ -232,6 +232,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             $query->where('mpl.match_id IN ('.$cids.')');
             */
             
+            
             $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms');
             $query->where('ms.match_id IN ('.$cids.')');
             $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss');
@@ -245,6 +246,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl');
             $query->where('mpl.match_id IN ('.$cids.')');
             $db->setQuery($query);
+            $db->query();
             
             $mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
             
