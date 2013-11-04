@@ -82,7 +82,7 @@ fieldset button {
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
-						<th width="1%" ><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PUBLISHED'); ?></th>
+						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
 							<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
