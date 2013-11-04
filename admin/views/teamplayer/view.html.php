@@ -201,7 +201,7 @@ class sportsmanagementViewTeamPlayer extends JView
 		// fail if checked out not by 'me'
 		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
 		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMPLAYER_THEPLAYER' ), $project_player->name );
+			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_THEPLAYER' ), $project_player->name );
 			$mainframe->redirect( 'index.php?option=com_sportsmanagement', $msg );
 		}
 
@@ -212,7 +212,7 @@ class sportsmanagementViewTeamPlayer extends JView
 		#$selectedvalue = ( $project_player->position_id ) ? $project_player->position_id : $default_person->position_id;
 		$selectedvalue = $project_player->project_position_id;
 		$projectpositions = array();
-		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_POSITION' ) );
+		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res =& $model->getProjectPositions() )
 		{
 			$projectpositions = array_merge( $projectpositions, $res );

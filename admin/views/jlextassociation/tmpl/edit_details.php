@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 ?>
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_JOOMLEAGUEADMIN_ASSOCIATION_LEGEND'); ?>
+	<legend><?php echo JText::_('COM_SPORTSMANAGEMENTADMIN_ASSOCIATION_LEGEND'); ?>
 	</legend>
 	<table class="admintable">
 		<tr>

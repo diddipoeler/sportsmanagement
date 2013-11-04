@@ -5,7 +5,7 @@
 	<fieldset class="adminform">
 		<legend>
 		<?php
-		echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
+		echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
 		?>
 		</legend>
 		<table class="adminlist">
@@ -13,11 +13,11 @@
 				<tr>
 					<th class="title"><?PHP echo JText::_( '' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_CHANGE' ); ?>
+					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGE' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SELECT_OLD_TEAM' ); ?>
+					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_OLD_TEAM' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SELECT_NEW_TEAM' ); ?>
+					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_NEW_TEAM' ); ?>
 					</th>
 				</tr>
 			</thead>

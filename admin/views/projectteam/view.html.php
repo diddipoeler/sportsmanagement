@@ -119,11 +119,11 @@ class sportsmanagementViewProjectteam extends JView
     sportsmanagementHelper::ToolbarButtonOnlineHelp();    
         
         /*
-        JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_TEAM_TITLE'));
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE'));
 		
 		JToolBarHelper::save('projectteam.save');
 		JToolBarHelper::apply('projectteam.apply');
-		JToolBarHelper::cancel('projectteam.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
+		JToolBarHelper::cancel('projectteam.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		JToolBarHelper::divider();
 		//JLToolBarHelper::onlinehelp();
         */

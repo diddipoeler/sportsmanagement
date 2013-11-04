@@ -3,7 +3,7 @@
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( 'COM_JOOMLEAGUE_ADMIN_STAT_STAT' );
+				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_STAT_STAT' );
 				?>
 			</legend>
 			<table class="admintable">
@@ -35,7 +35,7 @@
 		  			<td class="key">
 		   				<label for="note">
 			  				<?php
-			  				echo JText::_( 'COM_JOOMLEAGUE_ADMIN_STAT_NOTE' );
+			  				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_STAT_NOTE' );
 			  				?>
 						</label>
 		  			</td>

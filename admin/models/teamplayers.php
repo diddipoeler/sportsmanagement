@@ -377,7 +377,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 			}
 			else
 			{
-				$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
+				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
 			}
 		}
 		return $count;

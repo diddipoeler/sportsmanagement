@@ -257,7 +257,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery($query);
 			$new_team_name = $this->_db->loadResult();
 
-			$mainframe->enqueueMessage(JText::sprintf('COM_JOOMLEAGUE_ADMIN_PROJECTTEAM_MODEL_ASSIGNED_OLD_TEAMNAME', $old_team_name, $new_team_name),'Notice');
+			$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_MODEL_ASSIGNED_OLD_TEAMNAME', $old_team_name, $new_team_name),'Notice');
 
 			$tabelle = '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team';
 			// Objekt erstellen
@@ -313,8 +313,8 @@ class sportsmanagementModelProjectteams extends JModelList
       }
       else
       {
-      $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_NO_LEAGUE_COUNTRY'),'Error');
-      $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_SELECT_ALL_TEAMS'),'Notice');
+      $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_LEAGUE_COUNTRY'),'Error');
+      $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_ALL_TEAMS'),'Notice');
       $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
 					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
 					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
@@ -388,13 +388,13 @@ class sportsmanagementModelProjectteams extends JModelList
 	{
 		if (!$dest)
 		{
-			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_Destination_project_required'));
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_Destination_project_required'));
 			return false;
 		}
 		
 		if (!is_array($ptids) || !count($ptids))
 		{
-			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_no_teams_to_copy'));
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_no_teams_to_copy'));
 			return false;
 		}
 		

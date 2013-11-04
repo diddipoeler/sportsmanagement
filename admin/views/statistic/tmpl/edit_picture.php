@@ -2,7 +2,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'COM_JOOMLEAGUE_ADMIN_STAT_PIC' );?>
+			<legend><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_STAT_PIC' );?>
 			</legend>
 			<table class="admintable">
 				<tr>

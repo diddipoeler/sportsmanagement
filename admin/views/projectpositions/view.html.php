@@ -131,7 +131,7 @@ class sportsmanagementViewprojectpositions extends JView
 		}
 		else
 		{
-			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
 		}
 
 		//build the html select list for positions
@@ -197,7 +197,7 @@ class sportsmanagementViewprojectpositions extends JView
 		}
 		else
 		{
-			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST').'<br /><br />');
 		}
 
 		//build the html select list for positions
@@ -262,9 +262,9 @@ class sportsmanagementViewprojectpositions extends JView
 	*/
 	protected function addToolbar_Editlist()
 	{ 
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_P_POSITION_EDIT_TITLE'),'Positions');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE'),'Positions');
 		JToolBarHelper::save('projectposition.save_positionslist');
-		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
+		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
     

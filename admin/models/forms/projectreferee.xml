@@ -21,8 +21,8 @@
 				name="picture"
 				type="media"
         default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
-				label="COM_JOOMLEAGUE_ADMIN_P_REF_PIC"
-				description="COM_JOOMLEAGUE_ADMIN_P_REF_PIC_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				directory="com_sportsmanagement/database/projectreferees"/>			
@@ -32,8 +32,8 @@
 				name="picture"
 				type="imageselect"
 				default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"					
-				label="COM_JOOMLEAGUE_ADMIN_P_REF_PIC"
-				description="COM_JOOMLEAGUE_ADMIN_P_REF_PIC_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="projectreferees"
@@ -43,8 +43,8 @@
 			<field
 				name="notes"
 				type="editor"
-				label="COM_JOOMLEAGUE_ADMIN_P_REF_DESCR"
-				description="COM_JOOMLEAGUE_ADMIN_P_REF_DESCR_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_P_REF_DESCR"
+				description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_DESCR_DESC"
 				width="450" 
 				filter="safehtml"/>			
 	</fieldset>		

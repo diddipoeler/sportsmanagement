@@ -40,7 +40,7 @@ echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->projectws->name . '</i>');
+				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->projectws->name . '</i>');
 				?>
 			</legend>
 			<table class="admintable" border="0">
@@ -48,7 +48,7 @@ echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/
 					<td>
 						<b>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS' );
 							?>
 						</b><br />
 						<?php
@@ -69,7 +69,7 @@ echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/
 					<td>
 						<b>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS' );
 							?>
 						</b><br />
 						<?php

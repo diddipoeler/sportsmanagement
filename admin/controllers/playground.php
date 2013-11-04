@@ -23,7 +23,7 @@ function __construct()
 function save()
 	{
   // Check for request forgeries
-		JRequest::checkToken() or die('COM_JOOMLEAGUE_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 
 		$post		= JRequest::get('post');
  		$pid		= JRequest::getInt('id');
@@ -72,11 +72,11 @@ function save()
 		
 		if ($model->save($post))
 		{
-			$msg = JText::_('COM_JOOMLEAGUE_ADMIN_PLAYGROUND_CTRL_SAVED');
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CTRL_SAVED');
     }
     else
 		{
-			$msg = JText::_('COM_JOOMLEAGUE_ADMIN_PLAYGROUND_CTRL_ERROR_SAVE').$model->getError();
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CTRL_ERROR_SAVE').$model->getError();
 		}
     
     //-------extra fields-----------//

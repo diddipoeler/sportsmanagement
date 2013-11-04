@@ -35,7 +35,7 @@
 							echo '$(\'adminForm\').leagueNew.disabled=false;';
 							echo '$(\'adminForm\').leagueNew.value='.''.'$(\'adminForm\').name.value} ';
 							echo 'else {$(\'adminForm\').league_id.disabled=false;$(\'adminForm\').leagueNew.disabled=true}" />';
-							echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECT_LEAGUE_NEW').'&nbsp;';
+							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEAGUE_NEW').'&nbsp;';
 							echo '<input type="text" name="leagueNew" id="leagueNew" size="16" disabled / >';
 						}
 						?>
@@ -53,7 +53,7 @@
 							 echo '$(\'adminForm\').seasonNew.disabled=false} ';
 							 echo ' else {$(\'adminForm\').season_id.disabled=false;';
 							 echo '$(\'adminForm\').seasonNew.disabled=true}" />';
-							 echo JText::_('COM_JOOMLEAGUE_ADMIN_PROJECT_SEASON_NEW'). "&nbsp;";
+							 echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SEASON_NEW'). "&nbsp;";
 							 echo '<input type="text" name="seasonNew" id="seasonNew" disabled />';
 						}
 						?>

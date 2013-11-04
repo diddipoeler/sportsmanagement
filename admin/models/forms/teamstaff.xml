@@ -21,8 +21,8 @@
 			class="inputbox"
 			default="0"
 			size="1"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_POS"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_POS_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_POS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_POS_DESC"
 			query="SELECT	pos.id AS value,
 							pos.name AS position_id,
 							s.name AS sName
@@ -32,14 +32,14 @@
 					ORDER BY pos.ordering,pos.name">
 			<option
 				value="0">
-				COM_JOOMLEAGUE_GLOBAL_SELECT_POSITION</option>
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
 		</field>			
 		<field
 			name="injury"
 			type="radio"
 			default="0"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURED"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURED_DESC">
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURED_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
@@ -48,29 +48,29 @@
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_DATE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_DATE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_DATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_DATE_DESC"
 			class="inputbox"/>			
 		<field
 			name="injury_end"
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_END"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_END_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_END_DESC"
 			class="inputbox"/>	
 		<field
 			name="injury_detail"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_TYPE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_INJURY_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_INJURY_TYPE_DESC"
 			class="inputbox"/>				
 		<field
 			name="suspension"
 			type="radio"
 			default="0"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENDED"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENDED_DESC">
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENDED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENDED_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>				
@@ -79,29 +79,29 @@
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_DATE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_DATE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_DATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_DATE_DESC"
 			class="inputbox"/>			
 		<field
 			name="suspension_end"
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_END"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_END_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_END_DESC"
 			class="inputbox"/>	
 		<field
 			name="suspension_detail"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_TYPE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_SUSPENSION_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_SUSPENSION_TYPE_DESC"
 			class="inputbox"/>				
 		<field
 			name="away"
 			type="radio"
 			default="0"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_DESC">
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>			
@@ -110,22 +110,22 @@
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_DATE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_DATE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_DATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_DATE_DESC"
 			class="inputbox"/>			
 		<field
 			name="away_end"
 			type="matchdaylist"
 			required="false"
 			varname="cid"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_END"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_END_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_END_DESC"
 			class="inputbox"/>	
 		<field
 			name="away_detail"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_TYPE"
-			description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_AWAY_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_AWAY_TYPE_DESC"
 			class="inputbox"/>				
 	</fieldset>			
 	<fieldset name="picture">		
@@ -133,8 +133,8 @@
 				name="picture"
 				type="media"
         default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
-				label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_PIC"
-				description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_PIC_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				directory="com_sportsmanagement/database/teamstaffs"/>			
@@ -144,8 +144,8 @@
 				name="picture"
 				type="imageselect"
 				default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"					
-				label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_PIC"
-				description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_PIC_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="teamstaffs"
@@ -155,8 +155,8 @@
 			<field
 				name="notes"
 				type="editor"
-				label="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_DESCR"
-				description="COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_DESCR_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DESCR"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_DESCR_DESC"
 				width="450" 
 				filter="safehtml"/>			
 	</fieldset>		

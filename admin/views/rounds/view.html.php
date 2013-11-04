@@ -132,7 +132,7 @@ class sportsmanagementViewRounds extends JView
 		if (!$this->massadd)
 		{
 
-      //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
+      //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
       JToolBarHelper::publishList('rounds.publish');
 		  JToolBarHelper::unpublishList('rounds.unpublish');
 		  JToolBarHelper::divider();
@@ -141,7 +141,7 @@ class sportsmanagementViewRounds extends JView
       JToolBarHelper::apply('rounds.saveshort');
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('round.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'),false);
-			//JLToolBarHelper::addNew('round.populate','purge.png','purge_f2.png', JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
+			//JLToolBarHelper::addNew('round.populate','purge.png','purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_DELETE_WARNING'),'round.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
@@ -162,7 +162,7 @@ class sportsmanagementViewRounds extends JView
 	*/
 	protected function addToolbar_Populate()
 	{ 	
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_ROUNDS_POPULATE_TITLE'));
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
 		JToolBarHelper::apply('round.startpopulate');
 		JToolBarHelper::back();
 		

@@ -197,7 +197,7 @@ class sportsmanagementViewTeamStaff extends JView
 		// fail if checked out not by 'me'
 		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
 		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_THEPLAYER' ), $project_teamstaff->name );
+			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_THEPLAYER' ), $project_teamstaff->name );
 			$mainframe->redirect( 'index.php?option=com_sportsmanagement', $msg );
 		}
 
@@ -207,7 +207,7 @@ class sportsmanagementViewTeamStaff extends JView
 		//build the html select list for positions
 		$selectedvalue = $project_teamstaff->project_position_id;
 		$projectpositions = array();
-		$projectpositions[] = JHtml::_('select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_FUNCTION' ) );
+		$projectpositions[] = JHtml::_('select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FUNCTION' ) );
 		if ( $res = & $model->getProjectPositions() )
 		{
 			$projectpositions = array_merge( $projectpositions, $res );
@@ -220,7 +220,7 @@ class sportsmanagementViewTeamStaff extends JView
 												'text', $selectedvalue );
 		unset($projectpositions);
 
-		$matchdays[] = JHtml::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_ROUND' ) );
+		$matchdays[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ROUND' ) );
 		if ( $res = & $model->getProjectMatchdays() )
 		{
 			$matchdays = array_merge( $matchdays, $res );
@@ -382,7 +382,7 @@ class sportsmanagementViewTeamStaff extends JView
 		$params = JComponentHelper::getParams( $option );
 		$default_name_format = $params->get("name_format");
 		$name = JoomleagueHelper::formatName(null, $this->project_teamstaff->firstname, $this->project_teamstaff->nickname, $this->project_teamstaff->lastname, $default_name_format);
-		$text = !$edit ? JText::_( 'COM_JOOMLEAGUE_GLOBAL_NEW' ) : JText::_( 'COM_JOOMLEAGUE_ADMIN_TEAMSTAFF_TITLE' ). ': ' . $name;
+		$text = !$edit ? JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEW' ) : JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_TITLE' ). ': ' . $name;
 		JToolBarHelper::title( $text);
 		JLToolBarHelper::save('teamstaff.save');
 			
@@ -394,7 +394,7 @@ class sportsmanagementViewTeamStaff extends JView
 		{
 			// for existing items the button is renamed `close` and the apply button is showed
 			JLToolBarHelper::apply('teamstaff.apply');
-			JLToolBarHelper::cancel( 'teamstaff.cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
+			JLToolBarHelper::cancel( 'teamstaff.cancel', 'COM_SPORTSMANAGEMENT_GLOBAL_CLOSE' );
 		}
 		JToolBarHelper::back();
 		JToolBarHelper::help( 'screen.joomleague', true );
