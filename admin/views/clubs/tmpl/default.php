@@ -93,7 +93,7 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmangement&task=club.edit&id='.$row->id);
-					$link2=JRoute::_('index.php?option=com_sportsmangement&view=teams&cid='.$row->id);
+					$link2=JRoute::_('index.php?option=com_sportsmangement&view=teams&club_id='.$row->id);
 					$checked= JHTML::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
@@ -218,10 +218,10 @@ JHTML::_('behavior.modal');
 						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'club.orderup','JLIB_HTML_MOVE_UP',true); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'clubs.orderup','JLIB_HTML_MOVE_UP',true); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'club.orderdown','JLIB_HTML_MOVE_DOWN',true);
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'clubs.orderdown','JLIB_HTML_MOVE_DOWN',true);
 								$disabled=true ?  '' : 'disabled="disabled"';
 								?>
 							</span>
