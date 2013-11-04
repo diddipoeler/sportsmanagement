@@ -15,7 +15,7 @@
 				echo '<div style="float: left; text-align: center;">';
 				if ($lv != "")
 				{
-					$query="option=com_joomleague&view=matches&task=match.display&rid[]=".$lv;
+					$query="option=com_joomleague&view=matches&rid=".$lv;
 					$link=JRoute::_('index.php?'.$query);
 					$prevlink=JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
@@ -31,7 +31,7 @@
 				echo '<div style="float: left; text-align: center;">';
 				if (($nv != "") && ($nv != $this->roundws->id))
 				{
-					$query="option=com_joomleague&view=matches&task=match.display&rid[]=".$nv;
+					$query="option=com_joomleague&view=matches&rid=".$nv;
 					$link=JRoute::_('index.php?'.$query);
 					$nextlink=JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;

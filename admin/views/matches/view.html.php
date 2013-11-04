@@ -46,10 +46,12 @@ class sportsmanagementViewMatches extends JView
 		$pagination =& $this->get('Pagination');
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->rid	= JRequest::getvar('rid', 0);
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
-		$roundws =& $this->get('Data','roundws');
+        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$roundws = $mdlRound->getRound($this->rid);;
         
         //build the html selectlist for rounds
 		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
@@ -63,9 +65,9 @@ class sportsmanagementViewMatches extends JView
 				'class="inputbox" ' .
 				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
 				'document.roundForm.submit();" ',
-				'value','text',JRequest::getvar('rid', 0));
+				'value','text',$roundws->id);
 
-		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',JRequest::getvar('rid', 0));
+		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
         
         //build the html options for teams
 		foreach ($items as $row)

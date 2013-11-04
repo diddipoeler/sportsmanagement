@@ -148,6 +148,19 @@ class sportsmanagementModelround extends JModelAdmin
 		return $result;
 	}
     
-	
+	/**
+	 * return 
+	 *
+	 * @param int round_id
+	 * @return int
+	 */
+	function getRound($round_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+				  WHERE id='.$round_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 	
 }
