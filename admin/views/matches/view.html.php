@@ -47,6 +47,10 @@ class sportsmanagementViewMatches extends JView
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->rid	= JRequest::getvar('rid', 0);
+        if ( !$this->rid )
+        {
+            $this->rid	= $mainframe->getUserState( "$option.rid", '0' );
+        }
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
