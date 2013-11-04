@@ -12,9 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-jimport('joomla.filesystem.folder');
-require_once(JPATH_COMPONENT.DS.'models'.DS.'list.php');
+jimport('joomla.application.component.modellist');
+
 
 /**
  * Sportsmanagement Component Matches Model
@@ -28,7 +27,7 @@ class sportsmanagementModelMatches extends JModelList
 {
 	var $_identifier = "matches";
 
-	function _buildQuery()
+	protected function getListQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildContentWhere();
