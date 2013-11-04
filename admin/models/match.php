@@ -203,6 +203,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pk);
             /* Der Query wird erstellt */
+            /*
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms');
             
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss');
@@ -228,6 +229,20 @@ class sportsmanagementModelMatch extends JModelAdmin
             $query->where('mst.match_id IN ('.$cids.')');
             $query->where('mev.match_id IN ('.$cids.')');
             $query->where('mre.match_id IN ('.$cids.')');
+            $query->where('mpl.match_id IN ('.$cids.')');
+            */
+            
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms');
+            $query->where('ms.match_id IN ('.$cids.')');
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss');
+            $query->where('mss.match_id IN ('.$cids.')');
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst');
+            $query->where('mst.match_id IN ('.$cids.')');
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev');
+            $query->where('mev.match_id IN ('.$cids.')');
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre');
+            $query->where('mre.match_id IN ('.$cids.')');
+            $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl');
             $query->where('mpl.match_id IN ('.$cids.')');
             $db->setQuery($query);
             
