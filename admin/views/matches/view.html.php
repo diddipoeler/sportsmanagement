@@ -61,7 +61,7 @@ class sportsmanagementViewMatches extends JView
 			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
 			$project_roundslist[]=JHTML::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
 		}
-		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid[]',
+		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid',
 				'class="inputbox" ' .
 				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
 				'document.roundForm.submit();" ',
