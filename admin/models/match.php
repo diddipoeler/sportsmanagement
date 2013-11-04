@@ -205,30 +205,30 @@ class sportsmanagementModelMatch extends JModelAdmin
             /* Der Query wird erstellt */
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms');
             
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss on mss.match_id = ms.match_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss');
             
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst on mst.match_id = ms.match_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst');
             
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev on mev.match_id = ms.match_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev');
             
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre on mre.match_id = ms.match_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre');
             
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl on mpl.match_id = ms.match_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl');
             
-            $query->delete('ms,mss,mst,mev,mre,mpl');
-            //$query->delete('ms');
-            //$query->delete('mss');
-            //$query->delete('mst');
-            //$query->delete('mev');
-            //$query->delete('mre');
-            //$query->delete('mpl');
+            //$query->delete('ms,mss,mst,mev,mre,mpl');
+            $query->delete('ms');
+            $query->delete('mss');
+            $query->delete('mst');
+            $query->delete('mev');
+            $query->delete('mre');
+            $query->delete('mpl');
             
             $query->where('ms.match_id IN ('.$cids.')');
-            //$query->where('mss.match_id IN ('.$cids.')');
-            //$query->where('mst.match_id IN ('.$cids.')');
-            //$query->where('mev.match_id IN ('.$cids.')');
-            //$query->where('mre.match_id IN ('.$cids.')');
-            //$query->where('mpl.match_id IN ('.$cids.')');
+            $query->where('mss.match_id IN ('.$cids.')');
+            $query->where('mst.match_id IN ('.$cids.')');
+            $query->where('mev.match_id IN ('.$cids.')');
+            $query->where('mre.match_id IN ('.$cids.')');
+            $query->where('mpl.match_id IN ('.$cids.')');
             $db->setQuery($query);
             
             return parent::delete($pk);
