@@ -60,11 +60,15 @@ class sportsmanagementControllermatch extends JControllerForm
 	 * @return	boolean	True on success
 	 * @since	0.1
 	 */
-	function remove($pk=array())
+	function remove()
 	{
 	$mainframe =& JFactory::getApplication();
-    $mainframe->enqueueMessage(JText::_('delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
-	$result=false;
+    $pks = JRequest::getVar('cid', array(), 'post', 'array');
+    $model = $this->getModel('match');
+    $model->delete($pks);
+	//JArrayHelper::toInteger($cid);
+    //$mainframe->enqueueMessage(JText::_('delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+	//$result=false;
         
         
    }     

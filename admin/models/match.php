@@ -181,5 +181,27 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $result;
 	}
     
+    /**
+	 * Method to remove a matchday
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function delete($pk=array())
+	{
+	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+	$result=false;
+    if (count($pk))
+		{
+			//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pk);
+            
+            return parent::delete($pk);
+        }    
+   return true;     
+   }     
+    
 }
 ?>
