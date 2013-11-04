@@ -191,13 +191,28 @@ class sportsmanagementModelMatch extends JModelAdmin
 	function delete($pk=array())
 	{
 	$mainframe =& JFactory::getApplication();
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    
     $mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
-	$result=false;
+	$result = false;
     if (count($pk))
 		{
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pk);
+            /* Der Query wird erstellt */
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic AS mss ON mss.match_id = ms.match_id');
             
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mst ON mst.match_id = ms.match_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS mev ON mev.match_id = ms.match_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mre ON mre.match_id = ms.match_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mpl ON mpl.match_id = ms.match_id');
+            
+            $query->delete('ms,mss,mst,mev,mre,mpl');
+            $query->where('ms.match_id IN ('.$cids.')');
             return parent::delete($pk);
         }    
    return true;     

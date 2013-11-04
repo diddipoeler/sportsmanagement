@@ -66,10 +66,8 @@ class sportsmanagementControllermatch extends JControllerForm
     $pks = JRequest::getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
-	//JArrayHelper::toInteger($cid);
-    //$mainframe->enqueueMessage(JText::_('delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
-	//$result=false;
-        
+	
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=matches');    
         
    }     
     
