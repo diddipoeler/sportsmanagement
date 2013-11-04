@@ -16,7 +16,10 @@ class sportsmanagementViewTeam extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -32,7 +35,7 @@ class sportsmanagementViewTeam extends JView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->item->club_id = JRequest::getvar('club_id', 0);
+        $this->item->club_id = $mainframe->getUserState( "$option.club_id", '0' );;
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 		$this->assignRef( 'extended', $extended );

@@ -101,7 +101,7 @@ class sportsmanagementModelTeams extends JModelList
 
                 if ($cid    =   JRequest::getvar('club_id', 0, 'GET', 'INT')) 
                 {
-                    JRequest::setVar('club_id', $cid);
+                    $mainframe->setUserState( "$option.club_id", $cid); 
                     $where[] = 'club_id ='. $cid;
                 }
 
