@@ -63,8 +63,8 @@
 </fieldset>
 <?php
 
-$model = $this->getModel();
-$teams= $model->getProjectTeams();
+$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+$teams= $mdlProject->getProjectTeams($this->project_id);
 $matrix ='';
 
 // diddipoeler

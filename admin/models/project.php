@@ -159,9 +159,8 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProjectTeams($project_id)
 	{
 		$option = JRequest::getCmd('option');
-
 		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState($option . 'project');
+		//$project_id = $mainframe->getUserState($option . 'project');
 
 		$query = '	SELECT	pt.id AS value,
 							t.name AS text,
@@ -194,9 +193,8 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProjectTeamsOptions($project_id,$iDivisionId=0)
 	{
 		$option = JRequest::getCmd('option');
-
 		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState($option . 'project');
+		//$project_id = $mainframe->getUserState($option . 'project');
 
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
