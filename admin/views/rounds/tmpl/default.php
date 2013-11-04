@@ -32,6 +32,7 @@ window.addEvent('domready',function(){
 		</form>
 	</fieldset>
 </div>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
@@ -58,7 +59,7 @@ window.addEvent('domready',function(){
             <th width="5%"><?php echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+				<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 				<tbody>
 					<?php
 					$k=0;
