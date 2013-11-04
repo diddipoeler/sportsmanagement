@@ -33,6 +33,7 @@ class sportsmanagementModelProjectteams extends JModelList
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         $subQuery= $db->getQuery(true);
+        $subQuery2= $db->getQuery(true);
 		$user = JFactory::getUser(); 
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 		$this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
@@ -48,10 +49,10 @@ class sportsmanagementModelProjectteams extends JModelList
         $subQuery->where('tp.published = 1 and tp.projectteam_id  = tl.id');
         $query->select('(' . $subQuery . ') AS playercount');
         // count team staff
-        $subQuery->select('count(ts.id)');
-        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
+        $subQuery2->select('count(ts.id)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
         $subQuery->where('ts.published = 1 and ts.projectteam_id  = tl.id');
-        $query->select('(' . $subQuery . ') AS staffcount');
+        $query->select('(' . $subQuery2 . ') AS staffcount');
         
         // Join over the team
 		$query->select('t.name,t.club_id');
