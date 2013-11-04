@@ -11,7 +11,21 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllermatches extends JControllerAdmin
 {
   
-  
+  /**
+	 * Method to update checked rounds
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+    function saveshort()
+	{
+	   $model = $this->getModel();
+       $model->saveshort();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    } 
+    
+    
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
