@@ -32,10 +32,10 @@ class sportsmanagementModelProjectteams extends JModelList
 		$mainframe = JFactory::getApplication();
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
+        $subQuery= $db->getQuery(true);
 		$user = JFactory::getUser(); 
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 		$this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
-        // Get the WHERE and ORDER BY clauses for the query
         
         // Select some fields
 		$query->select('tl.id AS projectteamid,tl.*');
@@ -43,9 +43,15 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
         // count team player
-        $query->select('count(tp.id) as playercount');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp');
-        $query->where('tp.projectteam_id = tl.id and tp.published = 1');
+        $subQuery->select('count(tp.id)');
+        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp');
+        $subQuery->where('tp.published = 1 and tp.projectteam_id  = tl.id');
+        $query->select('(' . $subQuery . ') AS playercount');
+        // count team staff
+        $subQuery->select('count(ts.id)');
+        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
+        $subQuery->where('ts.published = 1 and ts.projectteam_id  = tl.id');
+        $query->select('(' . $subQuery . ') AS staffcount');
         
         // Join over the team
 		$query->select('t.name,t.club_id');
@@ -63,41 +69,12 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->select('u.name AS editor,u.email AS email');
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
-        
-        
-        
-        
         if (self::_buildContentWhere())
 		{
         $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
 
-/*        
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-		$query = '	SELECT	tl.id AS projectteamid,
-							tl.*,
-							u.name AS editor,
-							u.email AS email,
-							t.name,
-							t.club_id,
-							c.email AS club_email,
-							(SELECT count(id)
-							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp
-							WHERE projectteam_id = projectteamid and tp.published=1) playercount,
-							(SELECT count(id)
-							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts
-							WHERE projectteam_id = projectteamid and ts.published=1) staffcount,
-							tl.info
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t on tl.team_id = t.id
-					LEFT JOIN #__users u on tl.admin = u.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c on t.club_id = c.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground ' .
-		$where . $orderby;
-*/
         if ( $show_debug_info )
         {
         $mainframe->enqueueMessage('getListQuery _project_id<br><pre>'.print_r($this->_project_id, true).'</pre><br>','Notice');
