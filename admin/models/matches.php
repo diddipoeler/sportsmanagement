@@ -43,10 +43,28 @@ class sportsmanagementModelMatches extends JModelList
 		$query->select('mc.*');
 		// From the seasons table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc');
-        //if ($search)
-		//{
+        
+        
+        
+        
+        
+        // Join over the users for the checked out user.
+		$query->select('u.name AS editor');
+		$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.id = mc.projectteam1_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS ptaway ON ptaway.id = mc.projectteam2_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = pthome.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = ptaway.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = mc.round_id ');
+        $query->select('divaway.id as divawayid');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divaway ON divaway.id = ptaway.division_id');
+        $query->select('divhome.id as divhomeid'); 
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divhome ON divhome.id = pthome.division_id');
+                    
+        if (self::_buildContentWhere())
+		{
         $query->where(self::_buildContentWhere());
-        //}
+        }
 		$query->order(self::_buildContentOrderBy());
  
  
