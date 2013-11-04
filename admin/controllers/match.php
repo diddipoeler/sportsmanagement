@@ -20,15 +20,27 @@ class sportsmanagementControllermatch extends JControllerForm
 		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
 		$model = $this->getModel('match');
-		if ($model->store($post))
+        $row =& $model->getTable();
+        // bind the form fields to the table
+        if (!$row->bind($post)) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+        }
+         // make sure the record is valid
+        if (!$row->check()) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+        }
+        // store to the database
+		if ($row->store($post))
 		{
-			$msg = JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ADD_MATCH');
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
 		}
 		else
 		{
-			$msg = JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
 		}
-		$link = 'index.php?option=com_joomleague&view=matches';
+		$link = 'index.php?option=com_sportsmanagement&view=matches';
 		$this->setRedirect($link,$msg);
 	}
     
