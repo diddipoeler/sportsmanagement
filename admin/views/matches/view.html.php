@@ -299,11 +299,11 @@ class sportsmanagementViewMatches extends JView
 
 		if (!$massadd)
 		{
-			JToolBarHelper::publishList('match.publish');
-			JToolBarHelper::unpublishList('match.unpublish');
+			JToolBarHelper::publishList('matches.publish');
+			JToolBarHelper::unpublishList('matches.unpublish');
 			JToolBarHelper::divider();
 
-			JToolBarHelper::apply('match.saveshort');
+			JToolBarHelper::apply('matches.saveshort');
 			JToolBarHelper::divider();
 
 			JToolBarHelper::custom('match.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'),false);
@@ -317,7 +317,8 @@ class sportsmanagementViewMatches extends JView
 		{
 			JToolBarHelper::custom('match.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'),false);
 		}
-		//JLToolBarHelper::onlinehelp();
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }
