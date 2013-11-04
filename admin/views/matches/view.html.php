@@ -292,15 +292,23 @@ class sportsmanagementViewMatches extends JView
 	 */
 	protected function addToolbar()
 	{
-		$massadd=JRequest::getInt('massadd',0);
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        // store the variable that we would like to keep for next time
+        // function syntax is setUserState( $key, $value );
+        $mainframe->setUserState( "$option.rid", $this->rid );
+        
+        $massadd=JRequest::getInt('massadd',0);
 
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'),'Matchdays');
 
 		if (!$massadd)
 		{
-			JToolBarHelper::publishList('matches.publish');
-			JToolBarHelper::unpublishList('matches.unpublish');
+			//JToolBarHelper::publishList('matches.publish');
+			//JToolBarHelper::unpublishList('matches.unpublish');
+            JToolBarHelper::publish('matches.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolBarHelper::unpublish('matches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();
 
 			JToolBarHelper::apply('matches.saveshort');
