@@ -149,6 +149,11 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
+                        
+                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
+                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
+                        
+                        
 						<th width="1%">
 							<?php echo JHTML::_('grid.sort','TID','team_id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
@@ -222,7 +227,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								?></td>
 							<td class="center"><?php echo $row->editor; ?></td>
 							<?php
-							if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
+							if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 							{
 								?>
 								<td class="nowrap" class="center">
@@ -335,6 +340,29 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 																	value="<?php echo $row->diffgoals_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
+                            
+                            <td class="center">
+									<?php
+									echo JHTML::_(	'select.genericlist',
+													$this->lists['is_in_score'],
+													'is_in_score'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->is_in_score);
+									?>
+								</td>
+                            <td class="center">
+									<?php
+									echo JHTML::_(	'select.genericlist',
+													$this->lists['use_finally'],
+													'use_finally'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->use_finally);
+									?>
+								</td>
+                            
+                            
 							<td class="center"><?php echo $row->team_id; ?></td>
 							<td class="center"><?php echo $row->id; ?></td>
 						</tr>

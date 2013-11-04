@@ -138,6 +138,10 @@ class sportsmanagementModelprojectteam extends JModelAdmin
             $tblProjectteam->division_id = $post['division_id' . $pks[$x]];
 			$tblProjectteam->start_points = $post['start_points' .$pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' .$pks[$x]];
+            
+            $tblProjectteam->is_in_score = $post['is_in_score' .$pks[$x]];
+            $tblProjectteam->use_finally = $post['use_finally' .$pks[$x]];
+            
 			$tblProjectteam->points_finally = $post['points_finally' .$pks[$x]];
 			$tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' . $pks[$x]];

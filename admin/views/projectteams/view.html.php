@@ -51,6 +51,12 @@ class sportsmanagementViewprojectteams extends JView
 		// search filter
 		$lists['search']=$search;
 		$lists['search_mode']=$search_mode;
+        
+        $myoptions = array();
+		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$lists['is_in_score'] = $myoptions;
+        $lists['use_finally'] = $myoptions;
 
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('config',JFactory::getConfig());
