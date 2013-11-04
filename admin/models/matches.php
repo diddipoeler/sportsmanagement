@@ -26,10 +26,34 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelMatches extends JModelList
 {
 	var $_identifier = "matches";
+    var $_rid = 0;
 
 	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        $this->_rid    =   JRequest::getvar('rid', 0);
+        
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('mc.*');
+		// From the seasons table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc');
+        //if ($search)
+		//{
+        $query->where(self::_buildContentWhere());
+        //}
+		$query->order(self::_buildContentOrderBy());
+ 
+ 
+ 
+ 
+ /*       
+        // Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
@@ -96,28 +120,30 @@ class sportsmanagementModelMatches extends JModelList
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divhome ON divhome.id = pthome.division_id ' .
 		
 		$where . $orderby;
+*/        
+        
+        
 		return $query;
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
-
 		$mainframe	= JFactory::getApplication();
 		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order', 'filter_order', 'mc.match_date', 'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'mc.match_number')
 		{
-			$orderby    = ' ORDER BY mc.match_number +0 '. $filter_order_Dir .', divhome.id, divaway.id ' ;
+			$orderby    = ' mc.match_number +0 '. $filter_order_Dir .', divhome.id, divaway.id ' ;
 		}
 		elseif ($filter_order == 'mc.match_date')
 		{
-			$orderby 	= ' ORDER BY mc.match_date '. $filter_order_Dir .', divhome.id, divaway.id ';
+			$orderby 	= ' mc.match_date '. $filter_order_Dir .', divhome.id, divaway.id ';
 		}
 		else
 		{
-			$orderby 	= ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , mc.match_date, divhome.id, divaway.id';
+			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , mc.match_date, divhome.id, divaway.id';
 		}
 
 		return $orderby;
@@ -127,18 +153,17 @@ class sportsmanagementModelMatches extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$where=array();
-		
 		$mainframe	= JFactory::getApplication();
 		// $project_id = $mainframe->getUserState($option . 'project');
 		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_division', 'division', 0);
-		$round_id = $mainframe->getUserState($option . 'round_id');
+		//$round_id = $mainframe->getUserState($option . 'round_id');
 
-		$where[] = ' mc.round_id = ' . $round_id;
+		$where[] = ' mc.round_id = ' . $this->_rid ;
 		if ($division>0)
 		{
 			$where[]=' divhome.id = '.$this->_db->Quote($division);
 		}
-		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
+		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
 		
 		return $where;
 	}

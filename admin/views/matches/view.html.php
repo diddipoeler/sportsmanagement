@@ -192,6 +192,9 @@ class sportsmanagementViewMatches extends JView
 		unset($divisions);
         */
         
+        
+        
+        
         // state filter
 		$lists['state']=JHTML::_('grid.state',$filter_state);
 
@@ -203,17 +206,17 @@ class sportsmanagementViewMatches extends JView
 		$lists['search']=$search;
 		$lists['search_mode']=$search_mode;
         
-		$this->assignRef('division',$division);
+		//$this->assignRef('division',$division);
 
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
-		$this->assignRef('matches',$matches);
-		$this->assignRef('ress',$ress);
-		$this->assignRef('projectws',$projectws);
-		$this->assignRef('roundws',$roundws);
+		$this->assignRef('matches',$items);
+		//$this->assignRef('ress',$ress);
+		//$this->assignRef('projectws',$projectws);
+		//$this->assignRef('roundws',$roundws);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
-		$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
+		//$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
 		$this->addToolbar();
 		parent::display($tpl);
 	}

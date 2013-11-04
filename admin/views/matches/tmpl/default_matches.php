@@ -1,4 +1,5 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.mootools');
 $modalheight = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900);
@@ -17,9 +18,10 @@ fieldset button {
 <div id="editcell">
 	<fieldset class="adminform">
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
-		<?php echo $this->loadTemplate('roundselect'); ?>	 
+		<?php echo $this->loadTemplate('roundselect'); ?>
+        	 
 		<!-- Start games list -->
-		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm'>
+		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
 			<?php
 			$colspan=($this->projectws->allow_add_time) ? 16 : 15;
 			?>
@@ -468,10 +470,10 @@ fieldset button {
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
 			<input type='hidden' name='filter_order' value='<?php echo $this->lists['order']; ?>' />
 			<input type='hidden' name='filter_order_Dir' value='' />
-			<input type='hidden' name='rid[]' value='<?php echo $this->roundws->id; ?>' />
+			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type='hidden' name='act' value='' />
-			<input type='hidden' name='task' value='match.display' id='task' />
+			<input type='hidden' name='task' value='' />
 			<?php echo JHTML::_('form.token')."\n"; ?>
 		</form>
 	</fieldset>
