@@ -52,6 +52,7 @@ class sportsmanagementModelTeams extends JModelList
 		{
         $query->where(self::_buildContentWhere());
         }
+        
 		$query->order(self::_buildContentOrderBy());
         
         //$mainframe->enqueueMessage(JText::_('teams query<br><pre>'.print_r($query,true).'</pre>'   ),'');
@@ -98,7 +99,9 @@ class sportsmanagementModelTeams extends JModelList
 				$where[] = 'LOWER(t.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
 
-                if ($cid    =   JRequest::getvar('club_id', 0, 'GET', 'INT')) {
+                if ($cid    =   JRequest::getvar('club_id', 0, 'GET', 'INT')) 
+                {
+                    JRequest::setVar('club_id', $cid);
                     $where[] = 'club_id ='. $cid;
                 }
 

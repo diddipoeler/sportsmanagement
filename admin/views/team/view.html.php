@@ -32,7 +32,7 @@ class sportsmanagementViewTeam extends JView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->item->club_id = JRequest::getvar('club_id', 0, 'GET', 'INT');
+        $this->item->club_id = JRequest::getvar('club_id', 0);
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 		$this->assignRef( 'extended', $extended );
