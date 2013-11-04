@@ -30,12 +30,48 @@ class sportsmanagementModelProjectteams extends JModelList
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 		$this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         // Get the WHERE and ORDER BY clauses for the query
         
+        // Select some fields
+		$query->select('tl.id AS projectteamid,tl.*');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
+        
+        
+        // Join over the team
+		$query->select('t.name,t.club_id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t on tl.team_id = t.id');
+        // Join over the club
+		$query->select('c.email AS club_email');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c on t.club_id = c.id');
+        
+        // Join over the playground
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground');
+        // Join over the division
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id');
+        
+        // Join over the users for the checked out user.
+		$query->select('u.name AS editor,u.email AS email');
+		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
+        
+        
+        
+        
+        
+        if (self::_buildContentWhere())
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+
+/*        
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
-
 		$query = '	SELECT	tl.id AS projectteamid,
 							tl.*,
 							u.name AS editor,
@@ -57,9 +93,12 @@ class sportsmanagementModelProjectteams extends JModelList
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground ' .
 		$where . $orderby;
-        
+*/
+        if ( $show_debug_info )
+        {
         $mainframe->enqueueMessage('getListQuery _project_id<br><pre>'.print_r($this->_project_id, true).'</pre><br>','Notice');
         $mainframe->enqueueMessage('getListQuery query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+        }
 
 		return $query;
 	}
