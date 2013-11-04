@@ -30,11 +30,11 @@ class sportsmanagementModelProjectteams extends JModelList
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser(); 
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-		$this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+		$this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
         // Get the WHERE and ORDER BY clauses for the query
         
         // Select some fields
@@ -107,8 +107,8 @@ class sportsmanagementModelProjectteams extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'tl_filter_order',		'filter_order',		't.name',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'tl_filter_order_Dir',	'filter_order_Dir',	'',			'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order',		'filter_order',		't.name',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order_Dir',	'filter_order_Dir',	'',			'word' );
 
 		if ( $filter_order == 't.name' )
 		{
