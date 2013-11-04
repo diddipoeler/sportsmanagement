@@ -21,7 +21,7 @@ jimport('joomla.filter.input');
 /**
 * Season Table class
 *
-* @package		Joomleague
+* @package SportsManagement
 * @since 0.1
 */
 class sportsmanagementTableTeam extends JTable
