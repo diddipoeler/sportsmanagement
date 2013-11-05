@@ -114,10 +114,10 @@ JHTML::_('behavior.modal');
             </td>
             <td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'jlextassociation.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'jlextassociations.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'jlextassociation.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'jlextassociations.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
