@@ -16,7 +16,10 @@ class sportsmanagementViewSportsType extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -31,6 +34,8 @@ class sportsmanagementViewSportsType extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $mainframe->enqueueMessage(JText::_('sportsmanagementViewSportsType item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
  
 		// Set the toolbar
 		$this->addToolBar();
