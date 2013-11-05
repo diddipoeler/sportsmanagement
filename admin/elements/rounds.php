@@ -21,6 +21,10 @@ class JFormFieldRounds extends JFormField
 		$order 		= $this->element['order'] == 'DESC' ? 'DESC' : 'ASC';
 		$db 		= JFactory::getDBO();
 		$lang 		= JFactory::getLanguage();
+        // welche tabelle soll genutzt werden
+        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $database_table	= $params->get( 'cfg_which_database_table' );
+        
 		$extension 	= "com_sportsmanagement";
 		$source 	= JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
@@ -31,7 +35,7 @@ class JFormFieldRounds extends JFormField
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
-		       . ' FROM #__sportsmanagement_round '
+		       . ' FROM #__'.$database_table.'_round '
 		       . ' WHERE project_id= ' .$project_id
 		       . ' ORDER BY roundcode '.$order;
 		$db->setQuery( $query );

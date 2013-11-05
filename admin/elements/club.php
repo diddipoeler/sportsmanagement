@@ -19,6 +19,10 @@ class JFormFieldClub extends JFormField
 	function getInput() {
 		$db = &JFactory::getDBO();
 		$lang = JFactory::getLanguage();
+        // welche tabelle soll genutzt werden
+        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $database_table	= $params->get( 'cfg_which_database_table' );
+        
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
@@ -26,7 +30,7 @@ class JFormFieldClub extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT c.id, c.name FROM #__sportsmanagement_club c ORDER BY name';
+		$query = 'SELECT c.id, c.name FROM #__'.$database_table.'_club c ORDER BY name';
 		$db->setQuery( $query );
 		$clubs = $db->loadObjectList();
 		$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));

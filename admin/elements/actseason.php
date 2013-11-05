@@ -20,8 +20,9 @@ class JFormFieldactseason extends JFormField
 		$db = &JFactory::getDBO();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
-$params =& JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' ); 
+        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $database_table	= $params->get( 'cfg_which_database_table' );
+         
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
