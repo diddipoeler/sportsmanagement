@@ -42,6 +42,9 @@ JHTML::_('behavior.modal');
 					<th width="10%" class="title">
 						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_ICON'); ?>
 					</th>
+                    <th width="10%" class="title">
+						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_SPORTSART'); ?>
+					</th>
 					<th width="10%">
 						<?php
 						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->lists['order_Dir'],$this->lists['order']);
@@ -97,6 +100,7 @@ JHTML::_('behavior.modal');
 							echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 							?>
 						</td>
+                        <td><?php echo $row->sportsart; ?></td>
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
