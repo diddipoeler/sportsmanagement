@@ -15,7 +15,7 @@ class sportsmanagementControllerjlextassociation extends JControllerAdmin
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'Jlextassociation', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'jlextassociation', $prefix = 'sportsmanagementModel') 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
