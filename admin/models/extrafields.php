@@ -36,7 +36,7 @@ class sportsmanagementModelextrafields extends JModelList
 		// Select some fields
 		$query->select('objcountry.*');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_extra_fields AS objcountry');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields AS objcountry');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
