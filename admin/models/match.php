@@ -292,6 +292,11 @@ class sportsmanagementModelMatch extends JModelAdmin
             WHERE m.match_id IN ('.$cids.')';
             $db->setQuery($query);
             $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'   ),'');
+            }
+            
             $mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
             
             return parent::delete($pk);
