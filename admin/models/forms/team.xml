@@ -47,14 +47,14 @@
 			class="inputbox"/>	
 	<field
 			name="club_id"
-			type="sql"
+			type="clublist"
 			class="inputbox"
 			default="0"
 			size="1"
 			required="true"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC"
-			query="SELECT id AS value, name AS club_id FROM #__joomleague_club ORDER BY name ASC">
+
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>

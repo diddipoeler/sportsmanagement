@@ -18,13 +18,13 @@ JFormHelper::loadFieldClass('list');
 /**
  * Session form field class
  */
-class JFormFieldClublist extends JFormFieldList
+class JFormFieldplaygroundlist extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'Clublist';
+	public $type = 'playgroundlist';
 
 	/**
 	 * Method to get the field options.
@@ -42,7 +42,7 @@ class JFormFieldClublist extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
 			$query->order('name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
