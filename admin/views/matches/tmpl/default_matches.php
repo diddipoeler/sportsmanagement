@@ -132,7 +132,7 @@ fieldset button {
 									?>
 								</a>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.picture&cid[]=<?php echo $row->id; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.picture&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
 									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
@@ -238,7 +238,7 @@ fieldset button {
 							<td class="right"  nowrap="nowrap">
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.editlineup&cid[]=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
 									 class="modal openroster-team1<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
 									 <?php
@@ -284,7 +284,7 @@ fieldset button {
 								?>
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.editlineup&cid[]=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
 									class="modal open-starting-away"
 									title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
 									 <?php
@@ -378,7 +378,7 @@ fieldset button {
 							<td class="center">
                             
                             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&task=match.pressebericht&cid[]=<?php echo $row->id; ?>"
+									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=<?php echo $row->id; ?>"
 									 class="modal open-pressebericht"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'); ?>">
 									 <?php
@@ -388,7 +388,7 @@ fieldset button {
 								</a>
                                 
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&task=match.editevents&cid[]=<?php echo $row->id; ?>"
+									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=<?php echo $row->id; ?>"
 									 class="modal open-editevents"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'); ?>">
 									 <?php
@@ -401,7 +401,7 @@ fieldset button {
 								//start add several events in one operation:
 								?>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&task=match.editeventsbb&cid[]=<?php echo $row->id; ?>"
+									 href="index.php?option=com_sportsmanagement&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'); ?>">
 									 <?php
 									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',
@@ -417,7 +417,7 @@ fieldset button {
 								//start statistics:
 								?>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&task=match.editstats&cid[]=<?php echo $row->id; ?>"
+									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=<?php echo $row->id; ?>"
 									 class="modal open-editstats"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'); ?>">
 									 <?php
@@ -428,7 +428,7 @@ fieldset button {
 							</td>
 							<td class="center">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.editreferees&cid[]=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
 									 class="modal open-editreferees"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'); ?>">
 									 <?php
