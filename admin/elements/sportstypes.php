@@ -20,6 +20,7 @@ class JFormFieldSportsTypes extends JFormField
 	{
 		$result = array();
 		$db = JFactory::getDBO();
+        $mainframe =& JFactory::getApplication();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -32,11 +33,12 @@ class JFormFieldSportsTypes extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__'.$database_table.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			$mainframe->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$this->setError($db->getErrorMsg());
 			return false;
 		}
 		foreach ($result as $sportstype)
