@@ -53,12 +53,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
     
     //$mainframe->enqueueMessage(JText::_('personagegroup select_id<br><pre>'.print_r($select_id,true).'</pre>'   ),'');
     //$mainframe->enqueueMessage(JText::_('personagegroup agegroup_id<br><pre>'.print_r($agegroup_id,true).'</pre>'   ),'');
-        
-
-
-			
-
-
+ 
       $query->select('id AS value, concat(name, \' von: \',age_from,\' bis: \',age_to,\' Stichtag: \',deadline_day) AS text');
 			$query->from('#__sportsmanagement_agegroup');
 			$query->order('name');

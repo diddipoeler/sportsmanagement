@@ -51,7 +51,7 @@ class JFormFieldCurrentround extends JFormFieldList
 			
 			$query->select('id AS value');
 			$query->select('CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text ');
-			$query->from('#__sportsmanagement_round ');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
 			$query->where('project_id = '.$project_id);
 			$query->order('roundcode');
 			$db->setQuery($query);

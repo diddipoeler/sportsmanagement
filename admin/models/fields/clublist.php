@@ -38,33 +38,13 @@ class JFormFieldClublist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-    /*
-		$varname = (string) $this->element['varname'];
-		$project_id = JRequest::getVar($varname);
-		if (is_array($project_id)) {
-			$project_id = $project_id[0];
-		}
-		
-		if ($project_id)
-		{		
-			$db = &JFactory::getDbo();
-			$query = $db->getQuery(true);
-			
-			$query->select('pt.team_id AS value, t.name AS text');
-			$query->from('#__sportsmanagement_team AS t');
-			$query->join('inner', '#__sportsmanagement_project_team AS pt ON pt.team_id=t.id');
-			$query->where('pt.project_id = '.$project_id);
-			$query->order('t.name');
-			$db->setQuery($query);
-			$options = $db->loadObjectList();
-		}
-		*/
+    
     
     $db = &JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');
-			$query->from('#__sportsmanagement_club');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
 			$query->order('name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
