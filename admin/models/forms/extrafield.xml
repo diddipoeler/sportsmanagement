@@ -12,12 +12,20 @@
 			description="COM_SPORTSMANGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required="true"/>
-		<field
-			name="e_table_view"
-			type="text"
-			label="COM_SPORTSMANGEMENT_GLOBAL_EXTRAFIELD_TABLE"
-			description="COM_SPORTSMANGEMENT_GLOBAL_EXTRAFIELD_TABLE_DESC"
-			class="inputbox"/>		
+		
+      
+      <field
+			name="template_backend"
+			type="list"
+			default="0"
+			label="COM_SPORTSMANGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND"
+			description="COM_SPORTSMANGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND_DESC">
+		<option value="club">Verein</option>
+		<option value="team">Mannschaft</option>
+		<option value="person">Personen</option>
+		</field>		
+    
+    		
 	</fieldset>		
   
   
