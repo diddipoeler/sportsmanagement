@@ -133,33 +133,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		return $where;
 	}
 
-	/**
-	 * Method to update checked project teams
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-	function storeshort($cid,$data)
-	{
-		$result=true;
-		for ($x=0; $x < count($cid); $x++)
-		{
-			$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_staff
-						SET project_position_id='".$data['project_position_id'.$cid[$x]]."',
-                        
-							checked_out=0,
-							checked_out_time=0
-							WHERE id=".$cid[$x];
-			$this->_db->setQuery($query);
-			if(!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				$result= false;
-			}
-		}
-		return $result;
-	}
+	
 
 	/**
 	 * Method to return the teams array (id,name)

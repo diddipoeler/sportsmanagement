@@ -75,25 +75,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
         {
             $query->order($orderby);
         }
-        
-        /*        
-        // Select some fields
-        $query->select('ppl.firstname,ppl.lastname,ppl.nickname,ppl.height,ppl.weight, ppl.id, ppl.id AS person_id');
-		// From the person table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
-        // Select some fields
-        $query->select('tp.id as tpid,tp.*,tp.project_position_id');
-		// From the team_player table
-		$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = ppl.id');
-        // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = tp.checked_out');
-        // Get the WHERE and ORDER BY clauses for the query
-        $query->where(self::_buildContentWhere());
-		$query->order(self::_buildContentOrderBy());
-        */
-       
-       
+
 		return $query;
 	}
 
@@ -105,11 +87,11 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='ppl.lastname')
 		{
-			$orderby=' ORDER BY ppl.lastname '.$filter_order_Dir;
+			$orderby=' ppl.lastname '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',ppl.lastname ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',ppl.lastname ';
 		}
 		return $orderby;
 	}
@@ -157,39 +139,11 @@ class sportsmanagementModelTeamPlayers extends JModelList
 			}
 		}
 
-		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
+		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
 		return $where;
 	}
 
-	/**
-	 * Method to update checked project teams
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-	function storeshort($cid,$data)
-	{
-		$result=true;
-		for ($x=0; $x < count($cid); $x++)
-		{
-			$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player
-						SET project_position_id='" .		$data['project_position_id'.$cid[$x]] .	"',
-							jerseynumber='" .		$data['jerseynumber'.$cid[$x]] .	"',
-              market_value='" .		$data['market_value'.$cid[$x]] .	"',
-              
-							checked_out=0,
-							checked_out_time=0
-							WHERE id=" .			$cid[$x];
-			$this->_db->setQuery($query);
-			if(!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				$result= false;
-			}
-		}
-		return $result;
-	}
+	
 
 	/**
 	 * Method to return the players array (projectid,teamid)
