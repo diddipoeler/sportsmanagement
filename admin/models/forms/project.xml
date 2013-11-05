@@ -66,14 +66,14 @@
 		
 		<field
 			name="league_id"
-			type="sql"
+			type="leaguelist"
 			class="inputbox validate-select-required"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE_DESC"
 			required="true"
-			query="SELECT id AS value, name AS league_id FROM #__joomleague_league ORDER BY name ASC"
+			
 			validate="superiorzero">
 			<option
 				value="0">
