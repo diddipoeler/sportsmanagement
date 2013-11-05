@@ -4,14 +4,12 @@
 	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_LEGEND'); ?>
 	</legend>
 	<table class="admintable">
-		<tr>
-			<td class="key"><?php echo $this->form->getLabel('name'); ?></td>
-			<td><?php echo $this->form->getInput('name'); ?></td>
-		</tr>
-		<tr>
-			<td class="key"><?php echo $this->form->getLabel('e_table_view'); ?></td>
-			<td><?php echo $this->form->getInput('e_table_view'); ?></td>
-		</tr>
+		<?php foreach ($this->form->getFieldset('details') as $field): ?>
+					<tr>
+						<td class="key"><?php echo $field->label; ?></td>
+						<td><?php echo $field->input; ?></td>
+					</tr>					
+					<?php endforeach; ?>
 
 		
 	</table>

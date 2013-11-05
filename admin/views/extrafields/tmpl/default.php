@@ -38,6 +38,16 @@ JHTML::_('behavior.modal');
 						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_NAME','objcountry.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
+                    <th>
+						<?php
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_BACKEND','objcountry.template_backend',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_FRONTEND','objcountry.template_frontend',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
 
           <th width="5%">
 						<?php
@@ -93,6 +103,9 @@ JHTML::_('behavior.modal');
 						}
 						?>
 						<td><?php echo $row->name; ?></td>
+                        <td><?php echo $row->template_backend; ?></td>
+                        <td><?php echo $row->template_frontend; ?></td>
+                        
 						<td class="center"><?php echo $published; ?></td>
 						
 						<td class="order">
