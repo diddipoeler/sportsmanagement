@@ -278,18 +278,18 @@ class sportsmanagementModelMatch extends JModelAdmin
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
-            ON ms.match_id = m.match_id
+            ON ms.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
-            ON mss.match_id = m.match_id
+            ON mss.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
-            ON mst.match_id = m.match_id
+            ON mst.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev
-            ON mev.match_id = m.match_id
+            ON mev.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
-            ON mre.match_id = m.match_id
+            ON mre.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
-            ON mpl.match_id = m.match_id
-            WHERE m.match_id IN ('.$cids.')';
+            ON mpl.match_id = m.id
+            WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
             $db->query();
             if (!$db->query()) 
