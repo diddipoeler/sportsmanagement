@@ -249,6 +249,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             $db->query();
             */
             
+            /*
             $query->delete('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst')->where('mst.match_id IN ('.$cids.')');
             $db->setQuery($query);
             $db->query();
@@ -257,6 +258,23 @@ class sportsmanagementModelMatch extends JModelAdmin
             $db->setQuery($query);
             $db->query();
             unset($query);
+            */
+            
+            $query = 'DELETE ms.*,mss.*,mst.*,mev.*,mre.*,mpl.*
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
+            ON mss.match_id = ms.match_id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
+            ON mst.match_id = ms.match_id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev
+            ON mev.match_id = ms.match_id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
+            ON mre.match_id = ms.match_id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
+            ON mpl.match_id = ms.match_id
+            WHERE ms.match_id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
             $mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
             
             return parent::delete($pk);
