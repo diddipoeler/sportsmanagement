@@ -66,7 +66,6 @@ class sportsmanagementModelStatistics extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'obj.ordering',	'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		

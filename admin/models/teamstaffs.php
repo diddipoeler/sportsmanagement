@@ -32,6 +32,10 @@ class sportsmanagementModelTeamStaffs extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->_team_id        = JRequest::getVar('team_id');
         $this->_project_team_id        = JRequest::getVar('project_team_id');
@@ -46,19 +50,17 @@ class sportsmanagementModelTeamStaffs extends JModelList
         }
         
         // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
+		$where = $this->_buildContentWhere();
+		$orderby = $this->_buildContentOrderBy();
         
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
         $query->select(array('ppl.firstname',
 							'ppl.lastname',
 							'ppl.nickname',
 							'ts.*',
 							'ts.project_position_id',
 							'u.name AS editor'))
-        ->from('#__joomleague_person AS ppl')
-        ->join('INNER', '#__joomleague_team_staff AS ts on ts.person_id=ppl.id')
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id=ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');
 
         if ($where)
@@ -70,8 +72,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
             $query->order($orderby);
         }
         
-
-					return $query;
+        return $query;
 	}
 
 	function _buildContentOrderBy()
@@ -79,8 +80,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'ts_filter_order',		'filter_order',		'ppl.ordering',	'cmd');
-        $filter_order		= $mainframe->getUserStateFromRequest($option.'ts_filter_order',		'filter_order',		'ts.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'ts_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+        $filter_order		= $mainframe->getUserStateFromRequest($option.'ts_filter_order','filter_order','ts.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'ts_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='ppl.lastname')
 		{
 			$orderby='ppl.lastname '.$filter_order_Dir;
@@ -98,9 +99,9 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$mainframe		= JFactory::getApplication();
 		//$project_id		= $mainframe->getUserState($option.'project');
 		//$team_id		= $mainframe->getUserState($option.'project_team_id');
-		$filter_state	= $mainframe->getUserStateFromRequest( $option . 'ts_filter_state', 'filter_state', '', 'word' );
-		$search			= $mainframe->getUserStateFromRequest($option.'ts_search', 'search', '', 'string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'ts_search_mode','search_mode', '', 'string');
+		$filter_state	= $mainframe->getUserStateFromRequest( $option . 'ts_filter_state','filter_state','','word');
+		$search			= $mainframe->getUserStateFromRequest($option.'ts_search', 'search','','string');
+		$search_mode	= $mainframe->getUserStateFromRequest($option.'ts_search_mode','search_mode','','string');
 		$search			= JString::strtolower($search);
 		$where=array();
 		$where[]='ts.projectteam_id='.$this->_project_team_id;

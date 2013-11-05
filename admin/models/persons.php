@@ -64,9 +64,8 @@ class sportsmanagementModelPersons extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order', 'filter_order', 'pl.lastname', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order_Dir',	'filter_order_Dir', '',	'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order','filter_order','pl.lastname','cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order_Dir','filter_order_Dir','','word' );
 
 		if ( $filter_order == 'pl.lastname' )
 		{
@@ -84,12 +83,11 @@ class sportsmanagementModelPersons extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_state', 'filter_state', '', 'word' );
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order', 'filter_order', 'pl.lastname', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order_Dir',	'filter_order_Dir', '',	'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.search', 'search',	'', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.search_mode', 'search_mode', '', 'string');
+		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_state','filter_state','','word');
+		//$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order', 'filter_order', 'pl.lastname', 'cmd' );
+		//$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order_Dir',	'filter_order_Dir', '',	'word' );
+		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.search_mode','search_mode','','string');
 		$project_id			= $mainframe->getUserState( $option . 'project' );
 		$team_id			= $mainframe->getUserState( $option . 'team_id' );
 		$project_team_id	= $mainframe->getUserState( $option . 'project_team_id' );

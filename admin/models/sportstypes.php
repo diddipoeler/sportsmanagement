@@ -30,7 +30,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -41,7 +41,7 @@ class sportsmanagementModelSportsTypes extends JModelList
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s');
         $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
-        if (self::_buildContentWhere())
+        if ($search)
 		{
         $query->where(self::_buildContentWhere());
         }
@@ -73,8 +73,8 @@ class sportsmanagementModelSportsTypes extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
+		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();

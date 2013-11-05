@@ -31,7 +31,7 @@ class sportsmanagementModelRounds extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         
         //$this->_project_id	= JRequest::getVar('pid');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -43,10 +43,10 @@ class sportsmanagementModelRounds extends JModelList
 		$query->select('r.*');
 		// From the seasons table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
-        //if ($search)
-		//{
+        if ($search)
+		{
         $query->where(self::_buildContentWhere());
-        //}
+        }
 		$query->order(self::_buildContentOrderBy());
         
         if ( $show_debug_info )
@@ -64,8 +64,8 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','r.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 
 		if ( $filter_order == 'r.ordering' )
 		{
@@ -82,10 +82,9 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
+		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
+		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 		$where=array();
         $where[]=' r.project_id = '.$this->_project_id;

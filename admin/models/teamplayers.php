@@ -31,6 +31,10 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		        
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->_team_id = JRequest::getVar('team_id');
         $this->_project_team_id = JRequest::getVar('project_team_id');
@@ -44,38 +48,31 @@ class sportsmanagementModelTeamPlayers extends JModelList
             $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
         }
                 
-        
-        
+        // Select some fields
+        $query->select('ppl.firstname,ppl.lastname,ppl.nickname,ppl.height,ppl.weight, ppl.id, tp.id as tpid,ppl.id AS person_id');
+		// From the person table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
+        // Select some fields
+        $query->select('tp.id as tpid,tp.*,tp.project_position_id');
+		// From the team_player table
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = ppl.id');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = tp.checked_out');
         // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-        
-        //$mainframe->enqueueMessage(JText::_('JoomleagueModelTeamPlayers orderby<br><pre>'.print_r($orderby,true).'</pre>'),'');
-        
-		$query='	SELECT	ppl.firstname,
-							ppl.lastname,
-							ppl.nickname,
-							ppl.height,
-							ppl.weight, ppl.id, tp.id as tpid, 
-							ppl.id AS person_id,
-							tp.*,
-							tp.project_position_id,
-							u.name AS editor
-					FROM #__joomleague_person AS ppl
-					INNER JOIN #__joomleague_team_player AS tp ON tp.person_id = ppl.id
-					LEFT JOIN #__users AS u ON u.id=tp.checked_out '
-					. $where
-					. $orderby;
-					return $query;
+        $query->where(self::_buildContentWhere());
+		$query->order(self::_buildContentOrderBy());
+       
+       
+		return $query;
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'tp_filter_order',		'filter_order',		'ppl.ordering',	'cmd');
-        $filter_order		= $mainframe->getUserStateFromRequest($option.'tp_filter_order',		'filter_order',		'tp.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'tp_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+        $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order','filter_order','tp.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='ppl.lastname')
 		{
 			$orderby=' ORDER BY ppl.lastname '.$filter_order_Dir;
@@ -95,9 +92,9 @@ class sportsmanagementModelTeamPlayers extends JModelList
         //$project_id=$mainframe->getUserState($option.'project');
 		//$team_id=$mainframe->getUserState($option.'project_team_id');
         
-		$filter_state	= $mainframe->getUserStateFromRequest( $option . 'tp_filter_state', 'filter_state', '', 'word' );
-		$search			= $mainframe->getUserStateFromRequest($option.'tp_search',		'search',		'',		'string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'tp_search_mode','search_mode',	'',		'string');
+		$filter_state	= $mainframe->getUserStateFromRequest( $option . '.'.$this->_identifier.'.tp_filter_state','filter_state','','word' );
+		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search','search','','string');
+		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where=array();
 		$where[]='tp.projectteam_id= '.$this->_project_team_id;

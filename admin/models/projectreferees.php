@@ -33,8 +33,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$option = JRequest::getCmd('option');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
+		$where = $this->_buildContentWhere();
+		$orderby = $this->_buildContentOrderBy();
         
         // Create a new query object.
         $query = $this->_db->getQuery(true);

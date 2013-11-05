@@ -89,8 +89,8 @@ class sportsmanagementModelProjectteams extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order',		'filter_order',		't.name',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order_Dir',	'filter_order_Dir',	'',			'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word' );
 
 		if ( $filter_order == 't.name' )
 		{
