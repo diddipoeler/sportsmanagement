@@ -51,7 +51,7 @@ class sportsmanagementModelProjectteams extends JModelList
         // count team staff
         $subQuery2->select('count(ts.id)');
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
-        $subQuery->where('ts.published = 1 and ts.projectteam_id  = tl.id');
+        $subQuery2->where('ts.published = 1 and ts.projectteam_id  = tl.id');
         $query->select('(' . $subQuery2 . ') AS staffcount');
         
         // Join over the team
