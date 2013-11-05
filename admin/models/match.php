@@ -196,7 +196,8 @@ class sportsmanagementModelMatch extends JModelAdmin
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
     
-    $mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+    
 	$result = false;
     if (count($pk))
 		{
@@ -225,7 +226,7 @@ class sportsmanagementModelMatch extends JModelAdmin
                 $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             }
             
-            $mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+            //$mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
             
             return parent::delete($pk);
         }    
