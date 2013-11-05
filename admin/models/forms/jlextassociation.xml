@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
+addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">	
 	<field
 			name="id"
 			type="hidden"
 		/>
+		
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+	<field
+			name="middle_name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME_DESC"
+			class="inputbox"/>
+	<field
+			name="short_name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+	<field
+			name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			class="inputbox"/>	
+		
+		
   <field
 			name="parent_id"
 			type="associationslist"
@@ -18,10 +49,19 @@
 			name="website"
 			type="text"
 			class="inputbox"
-			
-			
-			label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE"
-			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>		
+   		label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE"
+			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>	
+      
+      <field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>	
+  
+  	
 </fieldset>
 			
 	<fieldset 	name="picture">
@@ -43,7 +83,6 @@
 	</fieldset>
   
   <fieldset 	name="imageselect">
-				
 		<field 	name="assocflag" 
 				type="imageselect" 
 				directory="com_sportsmanagement/database/flags_associations"
