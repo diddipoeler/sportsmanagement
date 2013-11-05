@@ -31,22 +31,10 @@ class sportsmanagementViewjlextassociations extends JView
 		$uri =& JFactory::getURI();
 		$document	=& JFactory::getDocument();
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
+   
     $model	= $this->getModel();
-    $this->assignRef( 'optiontext',			$optiontext );
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'generic.png');
-// 		JToolBarHelper::addNewX();
-// 		JToolBarHelper::editListX();
-		JToolBarHelper::addNew('jlextassociation.add');
-		JToolBarHelper::editList('jlextassociation.edit');
-		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('jlextassociation.export',JText::_('JTOOLBAR_EXPORT'));
-		//JToolBarHelper::deleteList();
-		JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+   
+		
         
         //$mainframe->enqueueMessage(JText::_('Viewjlextassociations identifier<br><pre>'.print_r($model->_identifier,true).'</pre>'   ),'');
 
@@ -73,9 +61,35 @@ class sportsmanagementViewjlextassociations extends JView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assignRef('request_url',$uri->toString());
+        
+        $this->addToolbar();
 
 		parent::display($tpl);
 	}
+    
+    /**
+	* Add the page title and toolbar.
+	*
+	* @since	1.7
+	*/
+	protected function addToolbar()
+	{
+	// Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'generic.png');
+// 		JToolBarHelper::addNewX();
+// 		JToolBarHelper::editListX();
+		JToolBarHelper::addNew('jlextassociation.add');
+		JToolBarHelper::editList('jlextassociation.edit');
+		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::archiveList('jlextassociation.export',JText::_('JTOOLBAR_EXPORT'));
+		//JToolBarHelper::deleteList();
+		JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
+		JToolBarHelper::divider();
+
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+	}
+    
+    
 
 }
 ?>

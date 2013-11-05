@@ -1,6 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-$user =& JFactory::getUser();
 
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'objassoc.ordering');

@@ -33,7 +33,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -44,7 +44,7 @@ class sportsmanagementModeljlextassociations extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
-        if ($search)
+        if (self::_buildContentWhere())
 		{
         $query->where(self::_buildContentWhere());
         }
