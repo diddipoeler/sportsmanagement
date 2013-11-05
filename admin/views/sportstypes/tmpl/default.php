@@ -100,7 +100,14 @@ JHTML::_('behavior.modal');
 							echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 							?>
 						</td>
-                        <td><?php echo $row->sportsart; ?></td>
+                        <td>
+                        <?php
+                        $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo JHTML::_(	'select.genericlist',$this->lists['sportart'],'sportstype_id'.$row->id,
+												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->sportsart);
+                        //echo $row->sportsart; 
+                        ?>
+                        </td>
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>

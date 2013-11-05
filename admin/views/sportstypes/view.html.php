@@ -39,6 +39,10 @@ class sportsmanagementViewSportsTypes extends JView
 		$items =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
+        
+        $myoptions = array();
+		$myoptions[]		= JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[]		= JHTML::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -46,6 +50,9 @@ class sportsmanagementViewSportsTypes extends JView
 
 		// search filter
 		$lists['search']=$search;
+        
+        // sportart filter
+		$lists['sportart']=$myoptions;
 
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

@@ -18,7 +18,7 @@
   <field
 				name="sportsart"
 				type="radio"
-				default="1"
+				default="0"
 				label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART"
 				description="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_DESC">
 			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM</option>	
