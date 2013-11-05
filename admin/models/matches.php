@@ -43,6 +43,11 @@ class sportsmanagementModelMatches extends JModelList
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $subQuery1= $db->getQuery(true);
+        $subQuery2= $db->getQuery(true);
+        $subQuery3= $db->getQuery(true);
+        $subQuery4= $db->getQuery(true);
+        $subQuery5= $db->getQuery(true);
 		// Select some fields
 		$query->select('mc.*');
 		// From the seasons table
@@ -50,7 +55,11 @@ class sportsmanagementModelMatches extends JModelList
         
         
         
-        
+        // count match referee
+        $subQuery5->select('count(mr.id)');
+        $subQuery5->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ');
+        $subQuery5->where('mr.match_id = mc.id');
+        $query->select('('.$subQuery5.') AS referees_count');
         
         // Join over the users for the checked out user.
 		$query->select('u.name AS editor');
@@ -89,7 +98,8 @@ class sportsmanagementModelMatches extends JModelList
 						t1.name AS team1,
 							t2.name AS team2,
 							u.name AS editor, 
-							(Select count(mp.id) 
+							
+                            (Select count(mp.id) 
 							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp 
 							 WHERE mp.match_id = mc.id
 							   AND (came_in=0 OR came_in=1) 
@@ -99,7 +109,8 @@ class sportsmanagementModelMatches extends JModelList
 							     WHERE tp.projectteam_id = mc.projectteam1_id
 							   )
 							 ) AS homeplayers_count, 
-							(Select count(ms.id) 
+							
+                            (Select count(ms.id) 
 							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms
 							 WHERE ms.match_id = mc.id
 							   AND ms.team_staff_id in (
@@ -108,7 +119,8 @@ class sportsmanagementModelMatches extends JModelList
 							     WHERE ts.projectteam_id = mc.projectteam1_id
 							   )
 							) AS homestaff_count, 
-							(Select count(mp.id) 
+							
+                            (Select count(mp.id) 
 							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp 
 							 WHERE mp.match_id = mc.id
 							   AND (came_in=0 OR came_in=1) 
@@ -118,7 +130,9 @@ class sportsmanagementModelMatches extends JModelList
 							     WHERE tp.projectteam_id = mc.projectteam2_id
 							   )
 							 ) AS awayplayers_count, 
-							(Select count(ms.id) 
+							
+                            
+                            (Select count(ms.id) 
 							 FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms
 							 WHERE ms.match_id = mc.id
 							   AND ms.team_staff_id in (
@@ -127,10 +141,14 @@ class sportsmanagementModelMatches extends JModelList
 							     WHERE ts.projectteam_id = mc.projectteam2_id
 							   )
 							) AS awaystaff_count,
-							(Select count(mr.id) 
+							
+                            
+                            (Select count(mr.id) 
 							  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr 
 							  WHERE mr.match_id = mc.id
 							) AS referees_count 
+                            
+                            
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc
 					LEFT JOIN #__users u ON u.id = mc.checked_out
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.id = mc.projectteam1_id
@@ -157,8 +175,8 @@ class sportsmanagementModelMatches extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order', 'filter_order', 'mc.match_date', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order','filter_order','mc.match_date','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
 
 		if ($filter_order == 'mc.match_number')
 		{
