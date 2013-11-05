@@ -17,7 +17,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 JHTML::_( 'behavior.tooltip' );
-
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
 ?>
 <?php
 //save and close 
@@ -58,10 +60,10 @@ if($close == 1) {
 		echo JHTML::_('tabs.end');
 		?>
 		
-		<input type="hidden" name="option" value="com_joomleague" />
+		<input type="hidden" name="option" value="" />
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="close" id="close" value="0" />
-		<input type="hidden" name="task" id="match.savestats" value="" />
+		<input type="hidden" name="task" id="" value="" />
 		<input type="hidden" name="project_id"	value="<?php echo $this->match->project_id; ?>" />
 		<input type="hidden" name="match_id"	value="<?php echo $this->match->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />

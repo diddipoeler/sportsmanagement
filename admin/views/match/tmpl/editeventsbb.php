@@ -16,9 +16,12 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
 
-JHTML::_( 'behavior.tooltip' );
-JHTML::_( 'behavior.modal' );
+//JHTML::_( 'behavior.tooltip' );
+//JHTML::_( 'behavior.modal' );
 ?>
 <div id="gamesevents">
 	<form method="post" id="adminForm">
@@ -32,9 +35,9 @@ JHTML::_( 'behavior.modal' );
 		
 		echo JHTML::_('tabs.end');
 		?>
-		<input type="hidden" name="task" value="match.saveeventbb" />
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="view" value="match" />
-		<input type="hidden" name="option" value="com_joomleague" id="option" />
+		<input type="hidden" name="option" value="" id="" />
 		<input type="hidden" name="boxchecked"	value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 	</form>

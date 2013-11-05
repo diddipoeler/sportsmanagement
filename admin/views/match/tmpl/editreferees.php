@@ -9,6 +9,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+
 ?>
 <?php
 //save and close 
@@ -99,13 +103,13 @@ if($close == 1) {
 		</fieldset>
 		<br/>
 		<br/>
-		<input type="hidden" name="task" value="match.savereferees" />
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="view" value="match" />
 		<input type="hidden" name="close" id="close" value="0" />
 		<input type="hidden" name="cid[]" value="<?php echo $this->match->id; ?>" />
 		<input type="hidden" name="project" value="<?php echo $this->project_id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
-		<input type="hidden" name="option" value="com_joomleague" id="option" />
+		<input type="hidden" name="option" value="" id="" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</form>
