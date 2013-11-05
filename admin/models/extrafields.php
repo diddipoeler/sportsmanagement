@@ -58,11 +58,11 @@ class sportsmanagementModelextrafields extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order == 'objcountry.ordering')
 		{
-			$orderby=' ORDER BY objcountry.ordering '.$filter_order_Dir;
+			$orderby=' objcountry.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',objcountry.ordering ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',objcountry.ordering ';
 		}
 		return $orderby;
 	}
@@ -80,7 +80,7 @@ class sportsmanagementModelextrafields extends JModelList
 		{
 			$where[]='LOWER(objcountry.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
+		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
 		return $where;
 	}
 
