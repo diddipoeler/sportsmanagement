@@ -50,17 +50,16 @@ class sportsmanagementModelTeamStaffs extends JModelList
         }
         
         // Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildContentWhere();
-		$orderby = $this->_buildContentOrderBy();
+		$where = self::_buildContentWhere();
+		$orderby = self::_buildContentOrderBy();
         
         $query->select(array('ppl.firstname',
 							'ppl.lastname',
 							'ppl.nickname',
 							'ts.*',
-							'ts.project_position_id',
 							'u.name AS editor'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id=ppl.id')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');
 
         if ($where)

@@ -47,21 +47,51 @@ class sportsmanagementModelTeamPlayers extends JModelList
         {
             $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
         }
-                
+        
+        // Get the WHERE and ORDER BY clauses for the query
+		$where = self::_buildContentWhere();
+		$orderby = self::_buildContentOrderBy();
+        
+        $query->select(array('ppl.firstname',
+							'ppl.lastname',
+							'ppl.nickname',
+                            'ppl.height',
+                            'ppl.weight',
+                            'ppl.id',
+                            'ppl.id AS person_id',
+							'tp.*',
+                            'tp.id as tpid',
+							'u.name AS editor'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id')
+        ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
+
+        
+        if ($where)
+        {
+            $query->where($where);
+        }
+        if ($orderby)
+        {
+            $query->order($orderby);
+        }
+        
+        /*        
         // Select some fields
-        $query->select('ppl.firstname,ppl.lastname,ppl.nickname,ppl.height,ppl.weight, ppl.id, tp.id as tpid,ppl.id AS person_id');
+        $query->select('ppl.firstname,ppl.lastname,ppl.nickname,ppl.height,ppl.weight, ppl.id, ppl.id AS person_id');
 		// From the person table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
         // Select some fields
         $query->select('tp.id as tpid,tp.*,tp.project_position_id');
 		// From the team_player table
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = ppl.id');
+		$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = ppl.id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = tp.checked_out');
         // Get the WHERE and ORDER BY clauses for the query
         $query->where(self::_buildContentWhere());
 		$query->order(self::_buildContentOrderBy());
+        */
        
        
 		return $query;
