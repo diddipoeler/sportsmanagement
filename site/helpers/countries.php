@@ -49,7 +49,7 @@ $db = JFactory::getDbo();
 // Create a new query object.
 $query = $db->getQuery(true);
         // Select some fields
-		$query->select('alpha3,name from');
+		$query->select('alpha3,name');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
         // Reset the query using our newly populated query object.
