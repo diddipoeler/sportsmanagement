@@ -23,13 +23,13 @@
 			class="inputbox"/>
 	<field
 			name="standard_playground"
-			type="sql"
+			type="playgroundlist"
 			class="inputbox"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE_DESC"
-			query="SELECT id AS value, name AS standard_playground FROM #__joomleague_playground ORDER BY name ASC">
+			>
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>

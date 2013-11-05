@@ -17,19 +17,13 @@
 		/>
 		<field
 			name="project_position_id"
-			type="sql"
+			type="positionlist"
 			class="inputbox"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_POS"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_POS_DESC"
-			query="SELECT	pos.id AS value,
-							pos.name AS position_id,
-							s.name AS sName
-					FROM #__joomleague_position pos
-					INNER JOIN #__joomleague_sports_type AS s ON s.id=pos.sports_type_id
-					WHERE pos.published=1
-					ORDER BY pos.ordering,pos.name">
+			>
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>

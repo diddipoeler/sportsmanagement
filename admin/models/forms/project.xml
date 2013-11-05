@@ -50,14 +50,14 @@
 		
 		<field
 			name="sports_type_id"
-			type="sql"
+			type="sportstypelist"
 			class="inputbox validate-select-required"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
 			required="true"
-			query="SELECT id AS value, name AS sports_type_id FROM #__joomleague_sports_type ORDER BY name ASC"
+			
 			validate="superiorzero">
 			<option
 				value="0">
@@ -82,14 +82,14 @@
 		
 		<field
 			name="season_id"
-			type="sql"
+			type="seasonlist"
 			class="inputbox validate-select-required"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
 			required="true"
-			query="SELECT id AS value, name AS season_id FROM #__joomleague_season ORDER BY name ASC"
+			
 			validate="superiorzero">
 			<option
 				value="0">
@@ -142,15 +142,13 @@
 				
 		<field
 			name="master_template"
-			type="sql"
+			type="templatelist"
 			class="inputbox"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES_DESC"
-			query="SELECT id AS value,name AS master_template  FROM #__joomleague_project 
-					WHERE master_template=0 
-					ORDER BY name ASC">
+			>
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEMPLATE</option>

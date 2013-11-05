@@ -32,13 +32,13 @@
 		
 		<field
 			name="sports_type_id"
-			type="sql"
+			type="sportstypelist"
 			class="inputbox"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-			query="SELECT id AS value, name AS sports_type_id FROM #__sportsmanagement_sports_type ORDER BY name ASC"
+			
 			required="true">
 			<option
 				value="">

@@ -174,7 +174,80 @@
       
       
       />
-      		
+
+<field name="show_debug_info_clubs" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_clubs" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_debug_info_teams" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_teams" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_leagues" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_leagues" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_seasons" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_seasons" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_playgrounds" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_playgrounds" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_positions" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_positions" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_statistics" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_statistics" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_sportstypes" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_sportstypes" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field name="show_debug_info_eventtypes" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_eventtypes" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>    
+          		
 	</fieldset>
   
   		
