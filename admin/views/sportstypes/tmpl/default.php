@@ -36,9 +36,7 @@ JHTML::_('behavior.modal');
 						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME','s.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
-					<th class="title">
-						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TRANSLATION'); ?>
-					</th>
+					
 					<th width="10%" class="title">
 						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_ICON'); ?>
 					</th>
@@ -92,7 +90,7 @@ JHTML::_('behavior.modal');
 						}
 						?>
 						<td><?php echo $row->name; ?></td>
-						<td><?php if ($row->name != JText::_($row->name)){echo JText::_($row->name);} ?></td>
+						
 						<td class="center">
 							<?php
 							$picture=JPATH_SITE.DS.$row->icon;
