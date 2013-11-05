@@ -15,7 +15,15 @@
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required="true"/>
-
+  <field
+				name="sportsart"
+				type="radio"
+				default="1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART"
+				description="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_DESC">
+			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM</option>	
+			<option value="1">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE</option>	
+			</field>
 	</fieldset>			
 
 	<fieldset name="picture">			
