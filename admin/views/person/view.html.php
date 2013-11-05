@@ -37,7 +37,13 @@ class sportsmanagementViewPerson extends JView
 
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
-    $lists['ext_fields'] = $model->getExtraFields($this->item->id);
+    $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        if ( $this->checkextrafields )
+        {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+        }
+        
     $this->assignRef('lists',		$lists);
     
     

@@ -1361,5 +1361,56 @@ abstract class sportsmanagementHelper
 		else {
 			return ($result1 > $result2) ? -1 : 1;
 		}
-	}    
+	}
+    
+    /**
+	 * Method to check extra fields
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+    function checkUserExtraFields()
+    {
+    $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
+			//echo '<pre>'.print_r($query,true).'</pre>';
+			$this->_db->setQuery($query);
+			if ($this->_db->loadResult())
+			{
+				return true;
+			}
+            else
+            {
+                return false;
+            }    
+        
+    }
+    
+    /**
+	 * Method to get extra fields
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+    function getUserExtraFields($jlid)
+    {
+    	$query = "SELECT ef.*,
+        ev.fieldvalue as fvalue,
+        ev.id as value_id 
+        FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
+        LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields_values as ev 
+        ON ef.id = ev.field_id 
+        AND ev.jl_id = ".$jlid." 
+        WHERE ef.template_backend LIKE '".JRequest::getVar('view')."'  
+        ORDER BY ef.ordering";    
+        $this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result;
+    
+    }    
 }

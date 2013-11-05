@@ -19,6 +19,12 @@ echo $this->loadTemplate('picture');
 echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
 echo $this->loadTemplate('extended');
 
+if ( $this->checkextrafields )
+{
+    echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'), 'panel4');
+    echo $this->loadTemplate('extra_fields');
+}
+
 echo JHTML::_('tabs.end');
 ?>	
  

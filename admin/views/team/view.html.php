@@ -41,6 +41,13 @@ class sportsmanagementViewTeam extends JView
 		$this->assignRef( 'extended', $extended );
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
         
+        $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        if ( $this->checkextrafields )
+        {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+        }
+        
         if ( $show_debug_info )
         {
             $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');

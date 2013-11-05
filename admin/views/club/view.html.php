@@ -16,7 +16,12 @@ class sportsmanagementViewClub extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$uri	= JFactory::getURI();
+        $model	= $this->getModel();
+        
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -35,6 +40,13 @@ class sportsmanagementViewClub extends JView
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
 		$this->assignRef( 'extended', $extended );
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        
+        $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        if ( $this->checkextrafields )
+        {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+        }
  
  
 		// Set the toolbar
