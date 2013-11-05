@@ -23,7 +23,7 @@
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS_DESC"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS_DESC" >
 			
 			<option
 				value="0">
