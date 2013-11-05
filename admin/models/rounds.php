@@ -67,13 +67,13 @@ class sportsmanagementModelRounds extends JModelList
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 
-		if ($filter_order=='r.ordering')
+		if ( $filter_order == 'r.ordering' )
 		{
-			$orderby=' r.ordering '.$filter_order_Dir;
+			$orderby = ' r.ordering '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',r.ordering ';
+			$orderby = ' '.$filter_order.' '.$filter_order_Dir.',r.ordering ';
 		}
 		return $orderby;
 	}

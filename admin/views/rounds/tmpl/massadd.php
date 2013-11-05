@@ -10,20 +10,44 @@
  */
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+//JHtml::_('behavior.formvalidation');
+
+//$params = $this->form->getFieldsets('params');
+//save and close 
+$close = JRequest::getInt('close',0);
+if($close == 1) {
+	?><script>
+	window.addEvent('domready', function() {
+		$('cancel').onclick();	
+	});
+	</script>
+	<?php 
+}
 
 ?>
-<div id='alt_massadd_enter' style='display:<?php echo ($this->massadd == 0) ? 'none' : 'block'; ?>'>
+
+<div id='alt_massadd_enter' style='display:block'>
 	<fieldset class='adminform'>
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-		<form id='copyform' method='post' style='display:inline' id='copyform'>
-			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
-			<input type='hidden' name='task' value='round.copyfrom' />
+		<form  action="index.php?option=com_sportsmanagement&view=rounds" id='component-form' method='post' style='display:inline' name='adminform' >
+        
+        <fieldset>
+		<div class="fltrt">
+			<button type="button" onclick="this.form.submit();window.parent.SqueezeBox.close();">
+				<?php echo JText::_('JSAVE');?></button>
+			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+				<?php echo JText::_('JCANCEL');?></button>
+		</div>
+		
+	</fieldset>
+    
+			<input type='hidden' name='project_id' value='<?php echo $this->project->is; ?>' />
+			<input type='hidden' name='task' value='round.massadd' />
 			<?php echo JHTML::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
 				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td><input type='text' name='add_round_count' id='add_round_count' value='0' size='3' class='inputbox' /></td>
-				<td><input type='submit' class='button' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_SUBMIT_BUTTON'); ?>' onclick='this.form.submit();' /></td>
+				
 			</tr></tbody></table>
 		</form>
 	</fieldset>

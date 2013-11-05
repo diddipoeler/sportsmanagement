@@ -37,8 +37,27 @@ class sportsmanagementViewRounds extends JView
 			$this->_displayPopulate($tpl);
 			return;
 		}
+        else if ($this->getLayout()=='massadd')
+		{
+			$this->_displayMassadd($tpl);
+			return;
+		}
 		parent::display($tpl);
 	}
+    
+    function _displayMassadd($tpl)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$db = JFactory::getDBO();
+		$uri = JFactory::getURI();
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id);
+        $this->assignRef('project',$project);
+        parent::display($tpl);
+    }    
 
 	function _displayDefault($tpl)
 	{
