@@ -1,6 +1,6 @@
 <?php
 /**
-* @copyright	Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
+* @copyright	Copyright (C) 2013 fussballineuropa.de All rights reserved.
 * @license	GNU/GPL,see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License,and as distributed it includes or
@@ -10,11 +10,15 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+
 /**
  * Match Form
  *
- * @author Marco Vaninetti <martizva@tiscali.it>
- * @package	 JoomLeague
+ * @author diddipoeler
+ * @package	 SportManagement
  * @since 0.1
  */
 ?>
