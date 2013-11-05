@@ -13,10 +13,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
+
 
 /**
- * Sportsmanagement Component Seasons Model
+ * Sportsmanagement Component extrafields Model
  *
  * @package	Sportsmanagement
  * @since	0.1
@@ -27,25 +27,35 @@ class sportsmanagementModelextrafields extends JModelList
 	
 	function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-
-		$query='	SELECT	objcountry.*,
-							u.name AS editor
-					FROM #__sportsmanagement_extra_fields AS objcountry
-					LEFT JOIN #__users AS u ON u.id=objcountry.checked_out ' .
-					$where .
-					$orderby;
-		return $query;
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('objcountry.*');
+		// From the hello table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_extra_fields AS objcountry');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
+		
+        if (self::_buildContentWhere())
+		{
+        $query->where(self::_buildContentWhere());
+        }
+		$query->order(self::_buildContentOrderBy());
+        
+        return $query;
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'co_filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		if ($filter_order == 'objcountry.ordering')
 		{
 			$orderby=' ORDER BY objcountry.ordering '.$filter_order_Dir;
@@ -61,9 +71,9 @@ class sportsmanagementModelextrafields extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'co_filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'co_search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_search',			'search',			'',				'string');
 		$search=JString::strtolower($search);
 		$where=array();
 		if ($search)
