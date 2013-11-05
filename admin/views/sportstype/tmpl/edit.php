@@ -14,13 +14,9 @@ echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel
 echo $this->loadTemplate('details');
 echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
 echo $this->loadTemplate('picture');
-
-
 echo JHTML::_('tabs.end');
 		?>
 	</div>		
- 
-	
  
 	<div>
 		<input type="hidden" name="task" value="sportstype.edit" />
