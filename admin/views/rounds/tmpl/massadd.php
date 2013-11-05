@@ -1,0 +1,34 @@
+<?php
+/**
+ * @copyright  Copyright (C) 2013 fussballineuropa.de All rights reserved.
+ * @license    GNU/GPL,see LICENSE.php
+ * Joomla! is free software. This version may have been modified pursuant
+ * to the GNU General Public License,and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+
+?>
+<div id='alt_massadd_enter' style='display:<?php echo ($this->massadd == 0) ? 'none' : 'block'; ?>'>
+	<fieldset class='adminform'>
+		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
+		<form id='copyform' method='post' style='display:inline' id='copyform'>
+			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
+			<input type='hidden' name='task' value='round.copyfrom' />
+			<?php echo JHTML::_('form.token')."\n"; ?>
+			<table class='admintable'><tbody><tr>
+				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
+				<td><input type='text' name='add_round_count' id='add_round_count' value='0' size='3' class='inputbox' /></td>
+				<td><input type='submit' class='button' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_SUBMIT_BUTTON'); ?>' onclick='this.form.submit();' /></td>
+			</tr></tbody></table>
+		</form>
+	</fieldset>
+</div>
+
+<?PHP
+
+?>
