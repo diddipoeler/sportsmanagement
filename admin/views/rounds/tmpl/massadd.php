@@ -33,7 +33,7 @@ if($close == 1) {
         
         <fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('round.massadd', this.form)">
+			<button type="button" onclick="Joomla.submitform('rounds.massadd', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
