@@ -155,6 +155,26 @@ class sportsmanagementModelround extends JModelAdmin
 	/**
 	 * return 
 	 *
+	 * @param int project_id
+	 * @return int
+	 */
+    function getMaxRound($project_id)
+	{
+		$result=0;
+		if ($project_id > 0)
+		{
+			$query='SELECT COUNT(roundcode) 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
+					WHERE project_id='.(int) $project_id;
+			$this->_db->setQuery($query);
+			$result=$this->_db->loadResult();
+		}
+		return $result;
+	}
+    
+    /**
+	 * return 
+	 *
 	 * @param int round_id
 	 * @return int
 	 */

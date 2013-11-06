@@ -33,7 +33,7 @@ if($close == 1) {
         
         <fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('round.massadd', this.form);window.parent.SqueezeBox.close();">
+			<button type="button" onclick="Joomla.submitform('round.massadd', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
@@ -41,7 +41,7 @@ if($close == 1) {
 		
 	</fieldset>
     
-			<input type='hidden' name='project_id' value='<?php echo $this->project->is; ?>' />
+			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='round.massadd' />
 			<?php echo JHTML::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
@@ -51,7 +51,7 @@ if($close == 1) {
                 </td>
 				
 			</tr></tbody></table>
-            <input type='hidden' name='project_id' value='<?php echo $this->projectws->id; ?>' />
+            <input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
             <input type="hidden" name="task" value="" />
 		</form>
 	</fieldset>
