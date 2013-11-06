@@ -39,10 +39,10 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo $this->addIcon('association.jpg','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>
         <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=extrafields', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS'));?>
 				
-		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports', JText::_('COM_SPORTSMANAGEMENT_M_MENU_XML_IMPORT'));?>
-                <?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_M_MENU_TOOLS'));?>
-                <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENTM_MENU_UPDATES'));?>
-                <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_ROSTER_POSITION'));?>		
+		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
+                <?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
+                <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES'));?>
+                <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>		
 			</div>
 		</td>
 		<td width="45%" valign="top">
