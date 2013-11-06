@@ -12,6 +12,17 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 {
 	
   
+  
+  
+  
+  
+  /**
+	 * Method to add mass rounds
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
   function massadd()
 	{
 		

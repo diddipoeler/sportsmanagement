@@ -236,5 +236,101 @@ class sportsmanagementModelround extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObject();
 	}
+    
+    
+    /**
+	 * Method to remove matchdays from round
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function deleteRoundMatches($pk=array())
+	{
+	$mainframe =& JFactory::getApplication();
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    
+    //$mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+    
+	$result = false;
+    if (count($pk))
+		{
+			//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pk);
+            // wir löschen mit join
+            $query = 'DELETE m,ms,mss,mst,mev,mre,mpl
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
+            ON ms.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
+            ON mss.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
+            ON mst.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev
+            ON mev.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
+            ON mre.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
+            ON mpl.match_id = m.id
+            WHERE m.round_id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            }
+            
+            //$mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+            
+            
+        }    
+   return true;     
+   }
+    
+   /**
+	 * Method to remove rounds
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function delete($pk=array())
+	{
+	$mainframe =& JFactory::getApplication();
+    $this->deleteRoundMatches($pk);  
+            
+    return parent::delete($pk);
+         
+   } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 }
