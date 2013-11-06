@@ -30,7 +30,7 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         
         //$this->_project_id	= JRequest::getVar('pid');
@@ -51,8 +51,8 @@ class sportsmanagementModelRounds extends JModelList
         
         if ( $show_debug_info )
         {
- 		$mainframe->enqueueMessage(JText::_('rounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        $mainframe->enqueueMessage(JText::_('rounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
+ 		$mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
         }
         
         return $query;

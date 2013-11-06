@@ -15,8 +15,11 @@ function massadd()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
-		$post=JRequest::get('post');
-		$model=$this->getModel('round');
+		$post = JRequest::get('post');
+		$model = $this->getModel('round');
+        $model->massadd();
+        
+        /*
 		$add_round_count=(int)$post['add_round_count'];
 		$max=0;
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
@@ -41,6 +44,7 @@ function massadd()
 				$max++;
 			}
 		}
+        */
 		$link='index.php?option=com_sportsmanagement&view=rounds';
 		$this->setRedirect($link,$msg);
 	}

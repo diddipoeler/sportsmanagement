@@ -11,6 +11,8 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelround extends JModelAdmin
 {
+    var $_identifier = "rounds";
+    
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -152,7 +154,26 @@ class sportsmanagementModelround extends JModelAdmin
 		return $result;
 	}
     
-	/**
+	
+    function massadd()
+	{
+	$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
+    $post = JRequest::get('post');
+    $project_id	= $mainframe->getUserState( "$option.pid", '0' );
+    $add_round_count = (int)$post['add_round_count'];
+    
+    
+    if ( $show_debug_info )
+    {
+ 	$mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd runden<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd project<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+    }
+       
+    }
+    
+    /**
 	 * return 
 	 *
 	 * @param int project_id
