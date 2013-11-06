@@ -7,7 +7,7 @@
  */
 
 defined('_JEXEC') or die;
-
+jimport('joomla.application.component.view');
 /**
  * This view is displayed after successfull saving of config data.
  * Use it to show a message informing about success or simply close a modal window.
@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Administrator
  * @subpackage	com_config
  */
-class sportsmanagementViewClose extends JViewLegacy
+class sportsmanagementViewClose extends JView
 {
 	/**
 	 * Display the view
