@@ -159,7 +159,7 @@ class sportsmanagementModelround extends JModelAdmin
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
-    $row =& $this->getTable();
+    
     $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     $post = JRequest::get('post');
     $project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -174,11 +174,12 @@ class sportsmanagementModelround extends JModelAdmin
 			for ($x=0; $x < $add_round_count; $x++)
 			{
 				$i++;
-                $post['project_id'] = $project_id;
-				$post['roundcode'] = $max;
-				$post['name'] = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME',$max);
+                $tblRound =& $this->getTable();
+                $tblRound->project_id = $project_id;
+				$tblRound->roundcode = $max;
+				$tblRound->name = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME',$max);
 
-				if ($row->store($post))
+				if ( $tblRound->store() )
 				{
 					$msg = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUNDS_ADDED',$i);
 				}
