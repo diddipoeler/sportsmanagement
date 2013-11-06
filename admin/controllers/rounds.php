@@ -51,6 +51,9 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 		$link='index.php?option=com_sportsmanagement&view=rounds';
 		$this->setRedirect($link,$msg);
         */
+        
+        $model = $this->getModel();
+       $model->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 	}
     
