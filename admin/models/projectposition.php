@@ -11,8 +11,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+// import Joomla modelform library
+jimport('joomla.application.component.modeladmin');
 
-jimport('joomla.application.component.modellist');
 
 
 /**
@@ -21,65 +22,115 @@ jimport('joomla.application.component.modellist');
  * @package	Sportsmanagement
  * @since	0.1
  */
-class sportsmanagementModelProjectposition extends JModelList
+class sportsmanagementModelProjectposition extends JModelAdmin
 {
 	var $_identifier = "pposition";
     var $_project_id = 0;
 	
-	protected function getListQuery()
+	/**
+	 * Method override to check if you can edit an existing record.
+	 *
+	 * @param	array	$data	An array of input data.
+	 * @param	string	$key	The name of the key for the primary key.
+	 *
+	 * @return	boolean
+	 * @since	1.6
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
 	{
-		$this->_project_id	= JRequest::getVar('pid');
-        // Get the WHERE and ORDER BY clauses for the query
-        
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-
-		$query='	SELECT	pt.id AS positiontoolid,
-							pt.*,
-
-							po.name AS name,
-							po.*,
-
-							pid.name AS parent_name,
-
-							(select count(*) FROM #__joomleague_position_eventtype AS pe
-					 		WHERE pe.position_id=po.id) countEvents,
-
-							(select count(*) FROM #__joomleague_position_statistic
-					 		WHERE position_id=po.id) countStats
-
-					FROM #__joomleague_project_position AS pt
-					LEFT JOIN #__joomleague_position po ON pt.position_id=po.id
-					LEFT JOIN #__joomleague_position pid ON po.parent_id=pid.id '.$where.$orderby;
-		return $query;
+		// Check specific edit permission then general edit permission.
+		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
-
-	function _buildContentOrderBy()
+    
+	/**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	JTable	A database object
+	 * @since	1.6
+	 */
+	public function getTable($type = 'projectposition', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'po_filter_order',		'filter_order',		'po.name',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'po_filter_order_Dir',	'filter_order_Dir',	'',			'word');
-
-		if ($filter_order=='po.name')
-		{
-			$orderby=' ORDER BY po.parent_id,po.name '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',po.name ';
-		}
-		return $orderby;
+		return JTable::getInstance($type, $prefix, $config);
 	}
-
-	function _buildContentWhere()
+    
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @return	mixed	A JForm object on success, false on failure
+	 * @since	1.6
+	 */
+	public function getForm($data = array(), $loadData = true) 
 	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		// Get the form.
+		$form = $this->loadForm('com_sportsmanagement.projectposition', 'projectposition', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form)) 
+		{
+			return false;
+		}
+		return $form;
+	}
+    
+	/**
+	 * Method to get the script that have to be included on the form
+	 *
+	 * @return string	Script files
+	 */
+	public function getScript() 
+	{
+		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
+	}
+    
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return	mixed	The data for the form.
+	 * @since	1.6
+	 */
+	protected function loadFormData() 
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.projectposition.round.data', array());
+		if (empty($data)) 
+		{
+			$data = $this->getItem();
+		}
+		return $data;
+	}
+    
+    /**
+	 * Method to save item order
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+	function saveorder($cid=array(),$order)
+	{
+		$row =& $this->getTable();
 		
-		$where =' WHERE  pt.project_id='.$this->_project_id;
-		return $where;
+		// update ordering values
+		for ($i=0; $i < count($cid); $i++)
+		{
+			$row->load((int) $cid[$i]);
+			if ($row->ordering != $order[$i])
+			{
+				$row->ordering=$order[$i];
+				if (!$row->store())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+			}
+		}
+		return true;
 	}
+	
+	
 
 	/**
 	 * Method to update project positions list

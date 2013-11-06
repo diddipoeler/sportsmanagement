@@ -24,7 +24,7 @@ class sportsmanagementControllerprojectpositions extends JControllerAdmin
         // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 
-        //$model = $this->getModel();
+        $model = $this->getModel();
        //$msg = $model->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
