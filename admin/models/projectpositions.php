@@ -31,8 +31,41 @@ class sportsmanagementModelProjectpositions extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        // Get the WHERE and ORDER BY clauses for the query
         
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $subQuery1= $db->getQuery(true);
+        $subQuery2= $db->getQuery(true);
+        
+        // Select some fields
+		$query->select('pt.*,pt.id AS positiontoolid');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt');
+        // Select some fields
+		$query->select('po.*');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id');
+        // Select some fields
+		$query->select('pid.name AS parent_name');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id');
+        // count 
+        $subQuery1->select('count(*)');
+        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ');
+        $subQuery1->where('pe.position_id=po.id');
+        $query->select('('.$subQuery1.') AS countEvents');
+        // count 
+        $subQuery2->select('count(*)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ');
+        $subQuery2->where('ps.position_id=po.id');
+        $query->select('('.$subQuery2.') AS countStats');
+
+
+
+
+/*        
+        // Get the WHERE and ORDER BY clauses for the query
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
 
@@ -53,23 +86,27 @@ class sportsmanagementModelProjectpositions extends JModelList
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id '.$where.$orderby;
-		return $query;
+		*/
+
+        $query->where(self::_buildContentWhere());
+		$query->order(self::_buildContentOrderBy());
+        return $query;
 	}
 
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'po_filter_order',		'filter_order',		'po.name',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'po_filter_order_Dir',	'filter_order_Dir',	'',			'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.name','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
 
 		if ($filter_order=='po.name')
 		{
-			$orderby=' ORDER BY po.parent_id,po.name '.$filter_order_Dir;
+			$orderby=' po.parent_id,po.name '.$filter_order_Dir;
 		}
 		else
 		{
-			$orderby=' ORDER BY '.$filter_order.' '.$filter_order_Dir.',po.name ';
+			$orderby=' '.$filter_order.' '.$filter_order_Dir.',po.name ';
 		}
 		return $orderby;
 	}
@@ -79,7 +116,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		
-		$where =' WHERE  pt.project_id='.$this->_project_id;
+		$where =' pt.project_id='.$this->_project_id;
 		return $where;
 	}
 

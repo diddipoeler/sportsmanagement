@@ -36,11 +36,11 @@ class sportsmanagementViewprojectpositions extends JView
 			return;
 		}
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode',		'search_mode',		'',				'string');
-		$search				= JString::strtolower($search);
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
+		//$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.v_search',			'search',			'',				'string');
+		//$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.t_search_mode',		'search_mode',		'',				'string');
+		//$search				= JString::strtolower($search);
 
 		$items =& $this->get('Items');
 		$total =& $this->get('Total');
@@ -57,8 +57,8 @@ class sportsmanagementViewprojectpositions extends JView
 		$lists['order']=$filter_order;
 
 		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
+		//$lists['search']=$search;
+		//$lists['search_mode']=$search_mode;
 
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('config',JFactory::getConfig());
