@@ -3,17 +3,7 @@
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.modal');
 ?>
-<script>
-	function searchposition(val,key)
-	{
-		var form = $('adminForm');
-		if(form) {
-			form.elements['search'].value=val;
-			form.elements['search_mode'].value= 'matchfirst';
-			form.submit();
-		}
-	}
-</script>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
@@ -166,7 +156,7 @@ JHTML::_('behavior.modal');
 			</table>
 		</fieldset>
 	</div>
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" />
+	
     <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

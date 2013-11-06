@@ -61,33 +61,6 @@ class sportsmanagementModelProjectpositions extends JModelList
         $subQuery2->where('ps.position_id=po.id');
         $query->select('('.$subQuery2.') AS countStats');
 
-
-
-
-/*        
-        // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-
-		$query='	SELECT	pt.id AS positiontoolid,
-							pt.*,
-
-							po.name AS name,
-							po.*,
-
-							pid.name AS parent_name,
-
-							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
-					 		WHERE pe.position_id=po.id) countEvents,
-
-							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic
-					 		WHERE position_id=po.id) countStats
-
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id '.$where.$orderby;
-		*/
-
         $query->where(self::_buildContentWhere());
 		$query->order(self::_buildContentOrderBy());
         return $query;

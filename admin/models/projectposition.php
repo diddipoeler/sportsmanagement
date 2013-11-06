@@ -94,7 +94,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.projectposition.round.data', array());
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.projectposition.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
