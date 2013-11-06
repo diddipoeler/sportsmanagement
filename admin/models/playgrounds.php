@@ -103,6 +103,28 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$where=(count($where) ? '  '. implode(' AND ',$where) : '');
 		return $where;
 	}
+    
+    
+    /**
+	 * Method to return a playground/venue array (id,text)
+		*
+		* @access	public
+		* @return	array
+		* @since 0.1
+		*/
+	function getPlaygrounds()
+	{
+		$query='SELECT id AS value, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY text ASC ';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result;
+	}
+    
+    
 
 	
 }

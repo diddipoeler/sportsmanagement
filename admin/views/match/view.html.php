@@ -43,6 +43,28 @@ class sportsmanagementViewMatch extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        $mdlPlaygrounds = JModel::getInstance("Playgrounds", "sportsmanagementModel");
+        
+        //build the html select list for playgrounds
+		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_PLAYGROUND'));
+		if ($res =& $mdlPlaygrounds->getPlaygrounds())
+		{
+			$playgrounds=array_merge($playgrounds,$res);
+		}
+		$lists['playgrounds']=JHTML::_(	'select.genericlist',$playgrounds,'playground_id','class="inputbox" size="1"','value',
+										'text',$item->playground_id);
+
+		// build the html select booleanlist for cancel
+		$lists['cancel']=JHTML::_('select.booleanlist','cancel','class="inputbox"',$item->cancel);
+
+		// build the html select booleanlist for show_report
+		$lists['show_report']=JHTML::_('select.booleanlist','show_report','class="inputbox"',$item->show_report);
+
+		// build the html select booleanlist for count match result
+		$lists['count_result']=JHTML::_('select.booleanlist','count_result','class="inputbox"',$item->count_result);
+        
+        
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
@@ -50,6 +72,7 @@ class sportsmanagementViewMatch extends JView
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
 		$this->assignRef( 'extended', $extended );
+        $this->assignRef('lists',$lists);
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
  

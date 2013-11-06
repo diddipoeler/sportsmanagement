@@ -87,10 +87,10 @@ $params = $this->form->getFieldsets('params');
 		?>
 		<!-- Additional Details Table END -->
 		<div class="clr"></div>
-		<input type="hidden" name="option" value="com_joomleague"/>
-		<input type="hidden" name="task" value="match.savedetails"/>
+		<input type="hidden" name="option" value="com_sportsmanagement"/>
+		<input type="hidden" name="task" value=""/>
 		<input type="hidden" name="close" id="close" value="0"/>
-		<input type="hidden" name="cid[]" value="<?php echo $this->match->id; ?>"/>
+		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>"/>
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</div>
 </form>
