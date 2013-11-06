@@ -45,11 +45,11 @@ class sportsmanagementModelProjectpositions extends JModelList
         // Select some fields
 		$query->select('po.*');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id');
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id');
         // Select some fields
 		$query->select('pid.name AS parent_name');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id');
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id');
         // count 
         $subQuery1->select('count(*)');
         $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ');
