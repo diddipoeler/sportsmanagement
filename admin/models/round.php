@@ -174,6 +174,7 @@ class sportsmanagementModelround extends JModelAdmin
 			for ($x=0; $x < $add_round_count; $x++)
 			{
 				$i++;
+                $post['project_id'] = $project_id;
 				$post['roundcode'] = $max;
 				$post['name'] = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME',$max);
 
@@ -195,6 +196,8 @@ class sportsmanagementModelround extends JModelAdmin
  	$mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd runden<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
     $mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd project<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
     }
+    
+    return $msg;
        
     }
     
