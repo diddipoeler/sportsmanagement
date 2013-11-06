@@ -44,9 +44,11 @@ function massadd()
 				$max++;
 			}
 		}
-        */
+        
 		$link='index.php?option=com_sportsmanagement&view=rounds';
 		$this->setRedirect($link,$msg);
+        */
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 	}
 
 }

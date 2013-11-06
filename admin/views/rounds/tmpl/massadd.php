@@ -29,7 +29,7 @@ if($close == 1) {
 <div id='alt_massadd_enter' style='display:block'>
 	<fieldset class='adminform'>
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-		<form  action="index.php?option=com_sportsmanagement&view=rounds" id='component-form' method='post' style='display:inline' name='adminform' >
+		<form  action="index.php?option=com_sportsmanagement" id='component-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
 		<div class="fltrt">

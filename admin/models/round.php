@@ -164,6 +164,30 @@ class sportsmanagementModelround extends JModelAdmin
     $project_id	= $mainframe->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     
+        $max=0;
+		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
+		{
+			$max=$model->getMaxRound($project_id);
+			$max++;
+			$i=0;
+			for ($x=0; $x < $add_round_count; $x++)
+			{
+				$i++;
+				$post['roundcode']=$max;
+				$post['name']=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME',$max);
+//echo '<pre>'.print_r($post,true).'</pre>';
+				if ($model->store($post))
+				{
+					$msg=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUNDS_ADDED',$i);
+				}
+				else
+				{
+					$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ERROR_ADD').$model->getError();
+				}
+				$max++;
+			}
+		}
+        
     
     if ( $show_debug_info )
     {
