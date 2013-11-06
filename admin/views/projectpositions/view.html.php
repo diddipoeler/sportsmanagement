@@ -38,15 +38,11 @@ class sportsmanagementViewprojectpositions extends JView
 
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
-		//$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.v_search',			'search',			'',				'string');
-		//$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.t_search_mode',		'search_mode',		'',				'string');
-		//$search				= JString::strtolower($search);
-
+		
 		$items =& $this->get('Items');
 		$total =& $this->get('Total');
 		$pagination =& $this->get('Pagination');
-        
-        //$project_id	= JRequest::getVar('pid');
+                
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
@@ -55,11 +51,7 @@ class sportsmanagementViewprojectpositions extends JView
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
-
-		// search filter
-		//$lists['search']=$search;
-		//$lists['search_mode']=$search_mode;
-
+		
 		$this->assignRef('user',JFactory::getUser());
 		$this->assignRef('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);

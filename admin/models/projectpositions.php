@@ -43,7 +43,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt');
         // Select some fields
-		$query->select('po.*');
+		$query->select('po.*,po.name AS name');
 		// From the table
 		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id');
         // Select some fields
@@ -88,7 +88,6 @@ class sportsmanagementModelProjectpositions extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		
 		$where =' pt.project_id='.$this->_project_id;
 		return $where;
 	}
