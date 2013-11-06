@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Administrator
  * @subpackage	com_config
  */
-class ConfigViewClose extends JViewLegacy
+class sportsmanagementViewClose extends JViewLegacy
 {
 	/**
 	 * Display the view
