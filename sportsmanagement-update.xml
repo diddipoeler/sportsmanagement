@@ -18,7 +18,7 @@
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
    </update>
-   <updates>
+   
    <update>
       <name>Sports-Management</name>
       <description>Sports-Management Component</description>
@@ -37,7 +37,7 @@
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
    </update>
-   <updates>
+   
    <update>
       <name>Sports-Management</name>
       <description>Sports-Management Component</description>
@@ -56,7 +56,7 @@
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
    </update>
-   <updates>
+   
    <update>
       <name>Sports-Management</name>
       <description>Sports-Management Component</description>
@@ -75,7 +75,7 @@
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
    </update>
-   <updates>
+   
    <update>
       <name>Sports-Management</name>
       <description>Sports-Management Component</description>
@@ -94,7 +94,7 @@
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
    </update>
-   <updates>
+   
    <update>
       <name>Sports-Management</name>
       <description>Sports-Management Component</description>
