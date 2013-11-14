@@ -30,13 +30,13 @@ class sportsmanagementViewProjects extends JView
 		$uri		= JFactory::getUri();
         $model	= $this->getModel();
 
-		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_league',		'filter_league','',					'int');
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type',	'filter_sports_type','',			'int');
-		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_season',		'filter_season','',					'int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state',			'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',			'filter_order',		'p.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',				'search',			'',				'string');
+		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_league','filter_league','','int');
+		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
+		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_season','filter_season','','int');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','p.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 		
 		// Get data from the model
@@ -130,7 +130,7 @@ class sportsmanagementViewProjects extends JView
 		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
 		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'),false);
-		JToolBarHelper::deleteList('', 'project.remove');
+		JToolBarHelper::deleteList('', 'projects.delete');
 		JToolBarHelper::divider();
 		
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

@@ -29,6 +29,7 @@ class sportsmanagementViewprojectpositions extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        $model	= $this->getModel();
         
         if ($this->getLayout()=='editlist')
 		{
@@ -36,12 +37,12 @@ class sportsmanagementViewprojectpositions extends JView
 			return;
 		}
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
 		
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
                 
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
@@ -52,12 +53,12 @@ class sportsmanagementViewprojectpositions extends JView
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
 		
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('positiontool',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
 		$this->addToolbar();
 		parent::display($tpl);
@@ -69,8 +70,9 @@ class sportsmanagementViewprojectpositions extends JView
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
         $option = JRequest::getCmd('option');
+        $document = JFactory::getDocument();
         
-        $items =& $this->get('Items');
+        $items = $this->get('Items');
         //build the html select list for project assigned positions
 		$ress=array();
 		$res1=array();
@@ -99,7 +101,7 @@ class sportsmanagementViewprojectpositions extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id); 
         
-        if ($ress1 =& $model->getSubPositions($project->sports_type_id))
+        if ($ress1 = $model->getSubPositions($project->sports_type_id))
 		{
 			if ($ress)
 			{
@@ -218,8 +220,9 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->assignRef('request_url',$uri->toString());
 */
 		
-        $this->assignRef('request_url',$uri->toString());
-        $this->assignRef('user',JFactory::getUser());
+        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/projectposition.js');
+        $this->assign('request_url',$uri->toString());
+        $this->assign('user',JFactory::getUser());
         $this->assignRef('project',$project);
         $this->assignRef('lists',$lists);
         $this->addToolbar_Editlist();		

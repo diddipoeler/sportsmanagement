@@ -1,8 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.mootools');
-$modalheight = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900);
+$modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
 <style>
 fieldset input, 
@@ -34,7 +34,7 @@ fieldset button {
 						</th>
 						<th width="20" >&nbsp;</th>
             <?php
-            if ( JComponentHelper::getParams('com_joomleague')->get('cfg_be_extension_single_match',0) )
+            if ( JComponentHelper::getParams($this->option)->get('cfg_be_extension_single_match',0) )
             {
             ?>
             <th width="20" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH'); ?></th>
@@ -126,7 +126,7 @@ fieldset button {
 									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.edit&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
+									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS').'"');
 									?>

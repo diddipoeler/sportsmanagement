@@ -49,12 +49,38 @@ class sportsmanagementModelclub extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.club', 'club', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('logo_small', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/small');
+        $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('logo_middle', 'default', JComponentHelper::getParams($option)->get('ph_logo_medium',''));
+        $form->setFieldAttribute('logo_middle', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/medium');
+        $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('logo_big', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
+        $form->setFieldAttribute('logo_big', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/large');
+        $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_home');
+        $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_away');
+        $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
+        
+        
 		return $form;
 	}
     
@@ -92,14 +118,14 @@ class sportsmanagementModelclub extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];

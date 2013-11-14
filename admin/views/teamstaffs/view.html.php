@@ -30,18 +30,18 @@ class sportsmanagementViewTeamStaffs extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
+        $model	= $this->getModel();
         
-        $filter_state		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_state',		'filter_state',		'',				'word' );
-		//$filter_order		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order',		'filter_order',		'ppl.ordering',	'cmd' );
-        $filter_order		= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order',		'filter_order',		'ts.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'ts_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search			= $mainframe->getUserStateFromRequest( $option . 'ts_search',			'search',			'',				'string' );
-		$search_mode		= $mainframe->getUserStateFromRequest( $option . 'ts_search_mode',		'search_mode',		'',				'string' );
+        $filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ts_filter_state','filter_state','','word');
+        $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ts_filter_order','filter_order','ts.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ts_filter_order_Dir',	'filter_order_Dir','','word');
+		$search			= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ts_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ts_search_mode','search_mode','','string');
         
-        $items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
@@ -66,7 +66,10 @@ class sportsmanagementViewTeamStaffs extends JView
 		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STAFF_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
+        if ( $project_ref_positions )
+        {
         $position_id = array_merge($position_id,$project_ref_positions);
+        }
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
@@ -78,12 +81,12 @@ class sportsmanagementViewTeamStaffs extends JView
 		$lists['search']=$search;
 		$lists['search_mode']=$search_mode;
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
 		$this->addToolbar();
@@ -182,8 +185,10 @@ class sportsmanagementViewTeamStaffs extends JView
 		JToolBarHelper::apply( 'teamstaffs.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_APPLY' ) );
 		JToolBarHelper::divider();
 
-		JToolBarHelper::custom( 'teamstaff.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_ASSIGN' ), false );
-		JToolBarHelper::custom( 'teamstaff.unassign', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_UNASSIGN' ), false );
+		//JToolBarHelper::custom( 'teamstaff.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_ASSIGN' ), false );
+        sportsmanagementHelper::ToolbarButton('assignplayers','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_ASSIGN'),'persons',1);
+		//JToolBarHelper::custom( 'teamstaffs.delete', 'cancel.png', 'cancel_f2.png', JText::_( 'JTOOLBAR_DELETE' ), false );
+        JToolBarHelper::deleteList('', 'teamstaffs.delete');
 		JToolBarHelper::divider();
 
 		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );

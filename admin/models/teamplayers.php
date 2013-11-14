@@ -264,7 +264,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	 * @param int team id
 	 * @return int number of row inserted
 	 */
-	function storeAssigned($cid,$projectteam_id)
+	/*
+    function storeAssigned($cid,$projectteam_id)
 	{
 		$mainframe = JFactory::getApplication();
         //$mainframe->enqueueMessage(JText::_('storeAssigned cid-> '.'<pre>'.print_r($cid,true).'</pre>' ),'');
@@ -340,7 +341,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 		return $added;
 	}
-
+*/
 	/**
 	 * remove specified players from team
 	 * @param $cids player ids

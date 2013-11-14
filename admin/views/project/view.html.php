@@ -56,7 +56,7 @@ class sportsmanagementViewProject extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-        $extended = sportsmanagementHelper::getExtended($project->extended, 'project');		
+        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
         $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
@@ -124,8 +124,56 @@ class sportsmanagementViewProject extends JView
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+    
+    
+    JRequest::setVar('hidemainmenu', true);
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		$isNew = $this->item->id == 0;
+		$canDo = sportsmanagementHelper::getActions($this->item->id);
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT'), 'helloworld');
+		// Built the actions for new and existing records.
+		if ($isNew) 
+		{
+			//$this->project->name = $this->item->name ;
+            // For new records, check the create permission.
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::apply('project.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('project.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom('project.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			}
+			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CANCEL');
+		}
+		else
+		{
+			$mainframe->setUserState( "$option.pid", $this->item->id);
+            
+            if ($canDo->get('core.edit'))
+			{
+				// We can save the new record
+				JToolBarHelper::apply('project.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('project.save', 'JTOOLBAR_SAVE');
+ 
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create')) 
+				{
+					JToolBarHelper::custom('project.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::custom('project.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
+			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CLOSE');
+		}
+        
+        
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
+    
+    
+    /*
     $mainframe->setUserState( "$option.pid", $this->project->id);
 		// Set toolbar items for the page
 		if ($this->copy)
@@ -158,6 +206,9 @@ class sportsmanagementViewProject extends JView
 			// for existing items the button is renamed `close`
 			JToolBarHelper::cancel('project.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		}
+        */
+        
+        JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
     

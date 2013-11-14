@@ -35,9 +35,10 @@ class sportsmanagementViewSportsType extends JView
 		$this->item = $item;
 		$this->script = $script;
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewSportsType item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewSportsType item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
  
-		// Set the toolbar
+		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        // Set the toolbar
 		$this->addToolBar();
  
 		// Display the template

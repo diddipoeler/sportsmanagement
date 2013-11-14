@@ -11,6 +11,10 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerteamstaffs extends JControllerAdmin
 {
 	
+  
+ 
+
+   
   /**
 	 * Method to update checked teamstaffs
 	 *

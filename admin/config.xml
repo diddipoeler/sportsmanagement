@@ -44,7 +44,7 @@
 			default="imageselect" 
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESCR">
-			<option value="picture">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
+			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
 			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
 		</field>
 		

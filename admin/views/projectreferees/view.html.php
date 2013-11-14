@@ -31,16 +31,16 @@ class sportsmanagementViewprojectreferees extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_state',		'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order',		'filter_order',		'p.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search_mode',		'search_mode',		'',				'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order','filter_order','p.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'p_search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
@@ -50,7 +50,10 @@ class sportsmanagementViewprojectreferees extends JView
 		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
+        if ( $project_ref_positions )
+        {
         $position_id = array_merge($position_id,$project_ref_positions);
+        }
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
@@ -62,12 +65,12 @@ class sportsmanagementViewprojectreferees extends JView
 		$lists['search']=$search;
 		$lists['search_mode']=$search_mode;
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
 		$this->addToolbar();
 		parent::display($tpl);
@@ -84,8 +87,10 @@ class sportsmanagementViewprojectreferees extends JView
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE'),'Referees');
 		
 		JToolBarHelper::apply('projectreferees.saveshort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
-		JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
-		JToolBarHelper::custom('projectreferee.unassign','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
+		//JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
+        sportsmanagementHelper::ToolbarButton('assignplayers','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',2);
+		//JToolBarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
+        JToolBarHelper::deleteList('', 'projectreferees.delete');
 		JToolBarHelper::divider();
 		
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

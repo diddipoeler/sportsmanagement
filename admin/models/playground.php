@@ -162,6 +162,7 @@ class sportsmanagementModelplayground extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -175,6 +176,7 @@ class sportsmanagementModelplayground extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -185,14 +187,24 @@ class sportsmanagementModelplayground extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.playground', 'playground', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
-		return $form;
+		
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/playgrounds');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
+        return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -202,6 +214,7 @@ class sportsmanagementModelplayground extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -226,14 +239,14 @@ class sportsmanagementModelplayground extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -246,4 +259,58 @@ class sportsmanagementModelplayground extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $post=JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
+    
+    	/**
+	 * Method to get a single record.
+	 *
+	 * @param	integer	$pk	The id of the primary key.
+	 *
+	 * @return	mixed	Object on success, false on failure.
+	 * @since	1.6
+	 */
+     /*
+	public function getItem($pk = null)
+	{
+		if ($item = parent::getItem($pk)) {
+			// Convert the params field to an array.
+			$registry = new JRegistry;
+			//$registry->loadString($item->extended);
+            $registry->loadJSON($item->extended);
+			$item->extended = $registry->toArray();
+		}
+
+		return $item;
+	}
+    */   
+    
+    
 }

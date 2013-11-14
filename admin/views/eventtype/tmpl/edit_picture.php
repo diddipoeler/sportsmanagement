@@ -2,7 +2,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO' );?>
+			<legend><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_EVENTTYPE_PIC' );?>
 			</legend>
 			<table class="admintable">
 					<?php foreach ($this->form->getFieldset($this->cfg_which_media_tool) as $field): ?>

@@ -19,7 +19,8 @@
 			description="COM_SPORTSMANGEMENT_GLOBAL_ALIAS_DESC"
 			class="inputbox"/>		
 	</fieldset>		
-  
+
+<!--  
   <fields name="extended">
 		<fieldset
 			name="extended"
@@ -28,5 +29,6 @@
 		
 		</fieldset>
 	</fields>	
+-->
   		
 </form>

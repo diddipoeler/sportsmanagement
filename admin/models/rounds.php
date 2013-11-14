@@ -39,14 +39,36 @@ class sportsmanagementModelRounds extends JModelList
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $subQuery1= $db->getQuery(true);
+        $subQuery2= $db->getQuery(true);
+        $subQuery3= $db->getQuery(true);
+        
 		// Select some fields
 		$query->select('r.*');
-		// From the seasons table
+		// From the rounds table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
-        //if ($search)
-		//{
+        // join match
+        $subQuery1->select('count(published)');
+        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery1->where('round_id=r.id and published=0');
+        // join match
+        $subQuery2->select('count(*)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery2->where('round_id=r.id AND cancel=0 AND (team1_result is null OR team2_result is null)');
+        // join match
+        $subQuery3->select('count(*)');
+        $subQuery3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery3->where('round_id=r.id');
+        
+        $query->select('('.$subQuery1.') AS countUnPublished');
+        $query->select('('.$subQuery2.') AS countNoResults');
+        $query->select('('.$subQuery3.') AS countMatches');
+        
+        
+       
+        
+       
         $query->where(self::_buildContentWhere());
-        //}
 		$query->order(self::_buildContentOrderBy());
         
         if ( $show_debug_info )

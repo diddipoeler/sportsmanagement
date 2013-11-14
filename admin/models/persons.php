@@ -30,16 +30,28 @@ class sportsmanagementModelPersons extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $this->_type = JRequest::getInt('type');
+        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );;
+        $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );;
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$mainframe->enqueueMessage(JText::_('persons getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+        
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _type<br><pre>'.print_r($this->_type,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery search<br><pre>'.print_r($search,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'Notice');
         
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
+        $Subquery	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('pl.*');
+		$query->select('pl.*, pl.id as id2');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
         // Join over the users for the checked out user.
@@ -47,13 +59,42 @@ class sportsmanagementModelPersons extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
         
         
-        if ($search)
+        if ($search || $search_nation)
 		{
         $query->where(self::_buildContentWhere());
         }
+        
+        if ( JRequest::getVar('layout') == 'assignplayers')
+        {
+            switch ($this->_type)
+            {
+                case 0:
+                $Subquery->select('person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
+                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND tp.person_id = pl.id');
+                $query->where('pl.id NOT IN ('.$Subquery.')');
+                break;
+                case 1:
+                $Subquery->select('person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND ts.person_id = pl.id');
+                $query->where('pl.id NOT IN ('.$Subquery.')');
+                break;
+                case 2:
+                $Subquery->select('person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
+                $Subquery->where('project_id = '.$this->_project_id.' AND pr.person_id = pl.id');
+                $query->where('pl.id NOT IN ('.$Subquery.')');
+                break;
+                
+            }
+            
+            
+        }
+        
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('persons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        
 		return $query;
         
         
@@ -79,11 +120,14 @@ class sportsmanagementModelPersons extends JModelList
 		return $orderby;
 	}
 
+
+
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
 		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_state','filter_state','','word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
 		//$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order', 'filter_order', 'pl.lastname', 'cmd' );
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.filter_order_Dir',	'filter_order_Dir', '',	'word' );
 		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. '.search','search','','string');
@@ -111,7 +155,12 @@ class sportsmanagementModelPersons extends JModelList
 			}
 		}
 
-		if ( $filter_state )
+		if ( $search_nation )
+		{
+		  $where[] = "pl.country = '".$search_nation."'";
+        }
+          
+        if ( $filter_state )
 		{
 			if ( $filter_state == 'P' )
 			{
@@ -127,7 +176,11 @@ class sportsmanagementModelPersons extends JModelList
 		return $where;
 	}
 
-	/**
+	
+    
+    
+    
+    /**
 	 * get person history across all projects, with team, season, position,... info
 	 *
 	 * @param int $person_id
@@ -330,7 +383,9 @@ class sportsmanagementModelPersons extends JModelList
 		}
 		return $result;
 	}
-
+    
+    
+    
 
 }
 ?>

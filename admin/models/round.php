@@ -95,14 +95,14 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -123,35 +123,42 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-	function saveshort()
+	public function saveshort()
 	{
 		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
+        if ( !$pks )
+        {
+            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE_NO_SELECT');
+        }
         $post = JRequest::get('post');
         
         if ( $show_debug_info )
         {
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('sportsmanagementModelround saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('sportsmanagementModelround saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
-        $result=true;
+        //$result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblRound = & $this->getTable();
 			$tblRound->id = $pks[$x];
+            $tblRound->roundcode	= $post['roundcode'.$pks[$x]];
 			$tblRound->name	= $post['name'.$pks[$x]];
-            $tblRound->round_date_first	= $post['round_date_first'.$pks[$x]];
-            $tblRound->round_date_last	= $post['round_date_last'.$pks[$x]];
+            $tblRound->round_date_first	= sportsmanagementHelper::convertDate($post['round_date_first'.$pks[$x]], 0);
+            $tblRound->round_date_last	= sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
 
-			if(!$tblRound->store()) {
-				$this->setError($this->_db->getErrorMsg());
-				$result=false;
+			if(!$tblRound->store()) 
+            {
+				//$this->setError($this->_db->getErrorMsg());
+				return $this->_db->getErrorMsg();
 			}
 		}
-		return $result;
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
 	}
     
 	
@@ -245,26 +252,28 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	0.1
 	 */
-	function deleteRoundMatches($pk=array())
+	public function deleteRoundMatches($pks)
 	{
 	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
     
-    //$mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
-    
-	$result = false;
-    if (count($pk))
+	//$result = false;
+    if (count($pks))
 		{
 			//JArrayHelper::toInteger($cid);
-			$cids = implode(',',$pk);
+			$cids = implode(',',$pks);
+            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
-            $query = 'DELETE m,ms,mss,mst,mev,mre,mpl
+            $query = 'DELETE m,ms,mc,mss,mst,mev,mre,mpl
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
             ON ms.match_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary as mc
+            ON m.id = mc.match_id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
             ON mss.match_id = m.id
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
@@ -280,11 +289,9 @@ class sportsmanagementModelround extends JModelAdmin
             $db->query();
             if (!$db->query()) 
             {
-                $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $mainframe->enqueueMessage(JText::_('deleteRoundMatches getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                return false; 
             }
-            
-            //$mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-            
             
         }    
    return true;     
@@ -297,12 +304,16 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	0.1
 	 */
-	function delete($pk=array())
+	public function delete(&$pks)
 	{
 	$mainframe =& JFactory::getApplication();
-    $this->deleteRoundMatches($pk);  
-            
-    return parent::delete($pk);
+    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    $success = $this->deleteRoundMatches($pks);  
+    
+    if ( $success )
+    {        
+    return parent::delete($pks);
+    }
          
    } 
     

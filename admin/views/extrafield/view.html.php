@@ -57,7 +57,7 @@ class sportsmanagementViewextrafield extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT__NEW') : JText::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW') : JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{

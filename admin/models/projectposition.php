@@ -141,20 +141,21 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	 */
 	function store($data)
 	{
-		//echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
+		$mainframe = JFactory::getApplication();
+        echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
 		$result=true;
 		//$peid=(isset($data['project_teamslist']));
 		$peid=(isset($data['project_positionslist']));
 		if ($peid==null)
 		{
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id'];
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id'];
 		}
 		else
 		{
 			$pidArray=$data['project_positionslist'];
 			JArrayHelper::toInteger($pidArray);
 			$peids=implode(",",$pidArray);
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
+			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id']." AND position_id NOT IN ($peids)";
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -164,7 +165,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		}
 		for ($x=0; $x < count($data['project_positionslist']); $x++)
 		{
-			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
+			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['project_id']."','".$data['project_positionslist'][$x]."')";
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{

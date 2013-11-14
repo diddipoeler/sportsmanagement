@@ -18,6 +18,7 @@ class sportsmanagementViewPerson extends JView
 	{
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel();
+        $option = JRequest::getCmd('option');
     // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -34,10 +35,12 @@ class sportsmanagementViewPerson extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
+        $extended = sportsmanagementHelper::getExtended($item->extended, 'person');
+		$this->assignRef( 'extended', $extended );
 
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
-    $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+    $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
@@ -112,6 +115,11 @@ class sportsmanagementViewPerson extends JView
 			}
 			JToolBarHelper::cancel('person.cancel', 'JTOOLBAR_CLOSE');
 		}
+        
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        
+        
 	}
 	/**
 	 * Method to set up the document properties

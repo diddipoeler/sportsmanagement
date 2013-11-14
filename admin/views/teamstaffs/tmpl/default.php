@@ -4,7 +4,7 @@
 //$ordering = ( $this->lists['order'] == 'ppl.ordering' );
 $ordering = ( $this->lists['order'] == 'ts.ordering' );
 
-$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'joomleague' );
+//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'joomleague' );
 ?>
 <script>
 
@@ -12,13 +12,9 @@ $this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'joomleague' );
 
 	function searchTeamStaff(val)
 	{
-		var f = $('adminForm');
-		if(f)
-		{
-			f.elements['search'].value = val;
-			f.elements['search_mode'].value = 'matchfirst';
-			f.submit();
-		}
+        var s= document.getElementById("search");
+        s.value = val;
+        Joomla.submitform('', this.form)
 	}
 </script>
 <?php
@@ -157,7 +153,7 @@ $uri = JUri::root();
 						$row =& $this->items[$i];
 #echo '<pre>'; print_r($row); echo '</pre>';
 						$link = JRoute::_(	'index.php?option=com_sportsmanagement&task=teamstaff.edit&project_team_id=' .
-											$this->teamws->id . '&id=' . $row->id. '&pid=' . $this->project->id.'&team_id='.$this->team_id );
+											$this->project_team_id . '&id=' . $row->id. '&pid=' . $this->project->id.'&team_id='.$this->team_id );
 						$checked = JHtml::_( 'grid.checkedout', $row, $i );
 						$inputappend = '';
 

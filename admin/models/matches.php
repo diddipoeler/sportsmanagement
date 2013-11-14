@@ -43,6 +43,10 @@ class sportsmanagementModelMatches extends JModelList
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $subQueryPlayerHome= $db->getQuery(true);
+        $subQueryStaffHome= $db->getQuery(true);
+        $subQueryPlayerAway= $db->getQuery(true);
+        $subQueryStaffAway= $db->getQuery(true);
         $subQuery1= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);
         $subQuery3= $db->getQuery(true);
@@ -50,10 +54,49 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery5= $db->getQuery(true);
 		// Select some fields
 		$query->select('mc.*');
-		// From the seasons table
+		// From the match table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc');
         
+        // join player
+        $subQueryPlayerHome->select('id');
+        $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
+        $subQueryPlayerHome->where('tp.projectteam_id = mc.projectteam1_id');
+        // join staff
+        $subQueryStaffHome->select('id');
+        $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+        $subQueryStaffHome->where('ts.projectteam_id = mc.projectteam1_id');
+        // join player
+        $subQueryPlayerAway->select('id');
+        $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
+        $subQueryPlayerAway->where('tp.projectteam_id = mc.projectteam2_id');
+        // join staff
+        $subQueryStaffAway->select('id');
+        $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+        $subQueryStaffAway->where('ts.projectteam_id = mc.projectteam2_id');
         
+        // count match homeplayers
+        $subQuery1->select('count(mp.id)');
+        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
+        $subQuery1->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerHome.')');
+        $query->select('('.$subQuery1.') AS homeplayers_count');
+        
+        // count match homestaffs
+        $subQuery2->select('count(ms.id)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
+        $subQuery2->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffHome.')');
+        $query->select('('.$subQuery2.') AS homestaff_count');
+        
+        // count match awayplayers
+        $subQuery3->select('count(mp.id)');
+        $subQuery3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
+        $subQuery3->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerAway.')');
+        $query->select('('.$subQuery3.') AS awayplayers_count');
+        
+        // count match awaystaffs
+        $subQuery4->select('count(ms.id)');
+        $subQuery4->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
+        $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
+        $query->select('('.$subQuery4.') AS awaystaff_count');
         
         // count match referee
         $subQuery5->select('count(mr.id)');
@@ -79,7 +122,6 @@ class sportsmanagementModelMatches extends JModelList
         $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
- 
  
  
  

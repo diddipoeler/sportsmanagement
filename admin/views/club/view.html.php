@@ -39,9 +39,9 @@ class sportsmanagementViewClub extends JView
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
 		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
-        $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);

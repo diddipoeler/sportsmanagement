@@ -54,7 +54,8 @@
 			>
 		</field>
 	</fieldset>
-  
+
+<!--  
   <fields name="extended">
 		<fieldset
 			name="extended"
@@ -63,6 +64,6 @@
 		
 		</fieldset>
 	</fields>	
-  
+-->  
   			
 </form>

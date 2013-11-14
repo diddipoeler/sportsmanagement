@@ -12,6 +12,26 @@ class sportsmanagementControllerpersons extends JControllerAdmin
 {
  
     /**
+	 * Method to assign persons
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+  function assign()
+	{
+		$post = JRequest::get('post');
+        // Check for request forgeries
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+
+        $model = $this->getModel();
+       $msg = $model->storeAssign($post);
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
+    
+    
+    
+    /**
 	 * Method to update checked persons
 	 *
 	 * @access	public

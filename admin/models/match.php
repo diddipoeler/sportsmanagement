@@ -115,14 +115,14 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -146,6 +146,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	function saveshort()
 	{
 		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
@@ -153,8 +154,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         if ( $show_debug_info )
         {
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         $result=true;
@@ -231,7 +232,56 @@ class sportsmanagementModelMatch extends JModelAdmin
             return parent::delete($pk);
         }    
    return true;     
-   }     
+   }
+   
+   
+/**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $mainframe->enqueueMessage(JText::_('sportsmanagementModelMatch save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       
+        // Proceed with the save
+		return parent::save($data);   
+    }   
+    
+     /**
+	 * Method to load content matchday data
+	 *
+	 * @access	private
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+	function getMatchData($match_id)
+	{
+		
+			$query=' SELECT	m.*,
+							CASE m.time_present
+							when NULL then NULL
+							else DATE_FORMAT(m.time_present, "%H:%i")
+							END AS time_present,
+							t1.name AS hometeam, t1.id AS t1id,
+							t2.name as awayteam, t2.id AS t2id,
+							pt1.project_id,
+							m.extended as matchextended
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=m.projectteam1_id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
+						WHERE m.id='.(int) $match_id;
+			$this->_db->setQuery($query);
+			//$this->_data=$this->_db->loadObject();
+			return $this->_db->loadObject();
+		
+	}
+         
     
 }
 ?>

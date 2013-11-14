@@ -9,32 +9,6 @@ JHTML::_('behavior.tooltip');
 //echo JHTML::script('projectposition.js','administrator/components/com_sportsmanagement/assets/js/');
 ?>
 
-<script type="text/javascript">
-function moveSelectedItems(source, destination){
-	var selected = $(source+' option:selected').remove();
-	var sorted = $.makeArray($(destination+' option').add(selected)).sort(function(a,b){
-		return $(a).text() > $(b).text() ? 1:-1;
-	});
-	$(destination).empty().append(sorted);
-}
-
-$(document).ready(function(){
-	$('#t1add').click(function(){
-		moveSelectedItems('#positionslist', '#project_positionslist');
-	});
-	$('#t1remove').click(function(){
-		moveSelectedItems('#project_positionslist', '#positionslist');
-	});
-	$('#t1addAll').click(function(){
-		$('#positionslist option').attr('selected', 'true');
-		moveSelectedItems('#positionslist', '#project_positionslist');
-	});
-	$('#t1removeAll').click(function(){
-		$('#project_positionslist option').attr('selected', 'true');
-		moveSelectedItems('#project_positionslist', '#positionslist');
-	});
-});
-</script>
 
 
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
@@ -63,10 +37,11 @@ $(document).ready(function(){
 				<tr>		
 					<td><?php echo $this->lists['positions']; ?></td>				
 					<td style="text-align:center;">
-<input id="t1add" type="button" value=">" />
-<input id="t1addAll" type="button" value=">>" />
-<input id="t1removeAll"  type="button" value="<<" />
-<input id="t1remove" type="button" value="<" />
+<input id="moveright" type="button" value="Move Right" onclick="move_list_items('positionslist','project_positionslist');" />
+<input id="moverightall" type="button" value="Move Right All" onclick="move_list_items_all('positionslist','project_positionslist');" />
+<input id="moveleft" type="button" value="Move Left" onclick="move_list_items('project_positionslist','positionslist');" />
+<input id="moveleftall" type="button" value="Move Left All" onclick="move_list_items_all('project_positionslist','positionslist');" />
+
 					</td>
 					<td><?php echo $this->lists['project_positions']; ?></td>
 				</tr>

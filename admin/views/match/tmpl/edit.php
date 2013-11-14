@@ -23,7 +23,8 @@ $params = $this->form->getFieldsets('params');
  */
 ?>
 <div id="matchdetails">
-	<form method="post" id="adminForm">
+	
+    <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
 		<!-- Score Table START -->
 		<?php
 		//save and close 
@@ -39,9 +40,9 @@ $params = $this->form->getFieldsets('params');
 		?>
 			<fieldset>
 				<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('match.savedetails');">
+					<button type="button" onclick="Joomla.submitform('match.apply', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
-					<button type="button" onclick="$('close').value=1; Joomla.submitform('match.savedetails');">
+					<button type="button" onclick="$('close').value=1; Joomla.submitform('match.save', this.form);">
 						<?php echo JText::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
@@ -87,10 +88,11 @@ $params = $this->form->getFieldsets('params');
 		?>
 		<!-- Additional Details Table END -->
 		<div class="clr"></div>
-		<input type="hidden" name="option" value="com_sportsmanagement"/>
-		<input type="hidden" name="task" value=""/>
+		
+		<input type="hidden" name="task" value="match.edit"/>
 		<input type="hidden" name="close" id="close" value="0"/>
-		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>"/>
+        <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
+		<input type="hidden" name="component" value="" />
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</div>
 </form>

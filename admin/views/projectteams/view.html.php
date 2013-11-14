@@ -29,18 +29,19 @@ class sportsmanagementViewprojectteams extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_filter_order',		'filter_order',		't.name',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_search_mode',		'search_mode',		'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
-        $this->project_id	= JRequest::getVar('pid');
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
 
@@ -58,12 +59,12 @@ class sportsmanagementViewprojectteams extends JView
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('projectteam',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
 		$this->addToolbar();
 		parent::display($tpl);
@@ -81,9 +82,11 @@ class sportsmanagementViewprojectteams extends JView
         JToolBarHelper::deleteList('', 'projectteam.remove');
 
 		JToolBarHelper::apply('projectteams.saveshort');
-		JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
-		JToolBarHelper::custom('projectteam.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'),false);
-		JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'), true);
+		//JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
+        sportsmanagementHelper::ToolbarButton('changeteams','move',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
+		//JToolBarHelper::custom('projectteam.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'),false);
+		sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
+        JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'), true);
 		JToolBarHelper::divider();
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

@@ -33,13 +33,9 @@ JHTML::_('behavior.mootools');
 
 	function searchPlayer(val)
 	{
-		var f = $('adminForm');
-		if(f)
-		{
-			f.elements['search'].value=val;
-			f.elements['search_mode'].value='matchfirst';
-			f.submit();
-		}
+        var s= document.getElementById("search");
+        s.value = val;
+        Joomla.submitform('', this.form)
 	}
 </script>
 <?php

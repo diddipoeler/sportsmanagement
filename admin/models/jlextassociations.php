@@ -60,7 +60,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 	{
 		//$option='sportsmanagement';
 		$option = JRequest::getCmd('option');
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','objassoc.ordering','cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order == 'objassoc.ordering')
@@ -78,7 +78,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 	{
 		//$option='sportsmanagement';
 		$option = JRequest::getCmd('option');
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');

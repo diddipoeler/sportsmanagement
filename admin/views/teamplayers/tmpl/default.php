@@ -4,7 +4,7 @@
 //$ordering = ( $this->lists['order'] == 'ppl.ordering' );
 $ordering = ( $this->lists['order'] == 'tp.ordering' );
 
-$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
+//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
 JHTML::_('behavior.mootools');
 ?>
@@ -38,13 +38,9 @@ JHTML::_('behavior.mootools');
 	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
-		var f = $('adminForm');
-		if(f)
-		{
-			f.elements['search'].value = val;
-			f.elements['search_mode'].value = 'matchfirst';
-			f.submit();
-		}
+        var s= document.getElementById("search");
+        s.value = val;
+        Joomla.submitform('', this.form)
 	}
 </script>
 

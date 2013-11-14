@@ -95,12 +95,15 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public static function getSportsTypes()
 	{
-		$db = JFactory::getDBO();
+		$mainframe = JFactory::getApplication();
+        $db = JFactory::getDBO();
 		$query='SELECT id, name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			//$this->setError($db->getErrorMsg());COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT
+            //$mainframe->enqueueMessage(JText::_('getSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
 		foreach ($result as $sportstype){

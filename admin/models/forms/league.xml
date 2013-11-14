@@ -62,28 +62,16 @@
 <fieldset name="picture">
 			<field
 				name="picture"
-				type="media"
-				default="images/com_sportsmanagement/database/placeholders/placeholder_21.png"				
+				type=""
+				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
 				class="inputbox"
 				preview="show"				
-				directory="com_sportsmanagement/database/leagues"/>
+				directory=""/>
 	</fieldset>
-	
-	<fieldset name="imageselect">
-			<field
-				name="picture"
-				type="imageselect"
-				default="images/com_sportsmanagement/database/placeholders/placeholder_21.png"					
-				label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"
-				targetfolder="leagues"
-				directory="com_sportsmanagement/database/leagues"/>		
-	</fieldset>	
-  	
+
+  <!--
   	<fields name="extended">
 		<fieldset
 			name="extended"
@@ -95,5 +83,6 @@
 		</field>
 		</fieldset>
 	</fields>	
+-->
 	
 </form>

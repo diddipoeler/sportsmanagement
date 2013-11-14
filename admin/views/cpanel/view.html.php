@@ -22,10 +22,10 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         
 		jimport('joomla.html.pane');
-		$pane	=& JPane::getInstance('sliders');
+		$pane	= JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
-        $this->assignRef( 'version', $model->getVersion() );
-        $this->assignRef( 'githubrequest', $model->getGithubRequests() );
+        $this->assign( 'version', $model->getVersion() );
+        $this->assign( 'githubrequest', $model->getGithubRequests() );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -88,7 +88,7 @@ class sportsmanagementViewcpanel extends JView
 	
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
-		$lang		=& JFactory::getLanguage();
+		$lang		= JFactory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
 ?>
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">

@@ -24,6 +24,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -37,6 +38,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -47,14 +49,24 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.agegroup', 'agegroup', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+                
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/agegroups');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -64,6 +76,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -88,14 +101,14 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];

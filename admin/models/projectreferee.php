@@ -92,14 +92,14 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -127,8 +127,8 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelprojectreferee saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelprojectreferee saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -144,6 +144,53 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		}
 		return $result;
 	}
+    
+    /**
+	 * Method to remove projectreferee
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	public function delete(&$pks)
+	{
+	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    
+	$result = false;
+    if (count($pks))
+		{
+		//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pks);
+            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            // wir löschen mit join
+            $query = 'DELETE mre
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as m    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
+            ON mre.project_referee_id = m.id
+            WHERE m.id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                return false; 
+            }
+            
+            
+        }  
+    
+    
+    //if ( $result )
+    //{        
+    //return parent::delete($pks);
+    //}
+      return parent::delete($pks);   
+   } 
 	
 	
 }

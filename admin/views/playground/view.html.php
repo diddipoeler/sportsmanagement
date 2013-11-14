@@ -16,7 +16,8 @@ class sportsmanagementViewPlayground extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$mainframe = JFactory::getApplication();
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -32,9 +33,35 @@ class sportsmanagementViewPlayground extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
-//		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
+		$this->assignRef( 'extended', $extended );
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display form<br><pre>'.print_r($this->form,true).'</pre>'),'Notice');
+        
+/*        
+$params = $item->extended;
+$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'assets'.DS.'extended'.DS.  'playground.xml';  
+$jRegistry = new JRegistry;
+$jRegistry->loadString($params->toString('ini'), 'ini');
+$form2 =& JForm::getInstance('extended', $xmlfile,array('control'=> ''), false, "/config");
+$form2->bind($jRegistry);
+*/
+
+        // Convert the params field to an array.
+			//$registry = new JRegistry;
+//			$registry->loadString($item->extended);
+//			$item->extended = $registry->toArray();
+            
+        // Convert the params field to a registry.
+			//$params = new JRegistry;
+			//$params->loadJSON($item->extended);
+			//$params->toArray($this->extended);
+            //$item->extended = $params->toArray($item->extended);
+                
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($item->extended,true).'</pre>'),'Notice');    
+        //$this->assignRef( 'extended', $item->extended );
+//		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
  
 		// Set the toolbar

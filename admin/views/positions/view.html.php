@@ -30,16 +30,16 @@ class sportsmanagementViewPositions extends JView
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
 		
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type',	'filter_sports_type','',			'int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state',			'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',			'filter_order',		'po.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',				'search',			'',				'string');
+		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','po.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 		// state filter
 		$lists['state']=JHTML::_('grid.state', $filter_state);
@@ -53,12 +53,13 @@ class sportsmanagementViewPositions extends JView
 
 		//build the html options for parent position
 		$parent_id[]=JHTML::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
-		if ($res =& $model->getParentsPositions())
+		if ($res = $model->getParentsPositions())
 		{
 			foreach ($res as $re){$re->text=JText::_($re->text);}
 			$parent_id=array_merge($parent_id,$res);
 		}
 		$lists['parent_id']=$parent_id;
+        //$lists['parents']=$parent_id;
 		unset($parent_id);
 
 		//build the html select list for sportstypes
@@ -74,12 +75,12 @@ class sportsmanagementViewPositions extends JView
 										'name',
 										$filter_sports_type);
 		unset($sportstypes);
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 		$this->addToolbar();
 		parent::display($tpl);
 	}

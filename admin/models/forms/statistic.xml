@@ -93,7 +93,8 @@
 				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
 		</field>
 	</fieldset>
-  
+
+<!--  
   <fields name="extended">
 		<fieldset
 			name="extended"
@@ -102,5 +103,6 @@
 		
 		</fieldset>
 	</fields>	
+-->
   			
 </form>

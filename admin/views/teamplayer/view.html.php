@@ -171,7 +171,7 @@ class sportsmanagementViewTeamPlayer extends JView
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->assignRef( 'extended', $extended );
         $this->assignRef( 'lists', $lists );
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
         if ( $show_debug_info )
         {

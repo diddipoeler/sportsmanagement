@@ -13,7 +13,7 @@
 					<td class="key"><?php echo $this->form->getLabel('alias'); ?></td>
 					<td><?php echo $this->form->getInput('alias'); ?></td>
 				</tr>
-				<?php if (!$this->edit): ?>
+				<?php if (!$this->item->id): ?>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM')?></td>
 						<td><input type="checkbox" name="createTeam" /></td>

@@ -38,7 +38,7 @@ class JFormFieldpositionlist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = &JFactory::getDbo();
+    $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');

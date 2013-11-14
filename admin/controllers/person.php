@@ -19,13 +19,15 @@ function __construct()
 		$this->registerTask('apply','save');
 	}
 
-function save()
+function save($key = NULL, $urlVar = NULL)
 	{
   // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 
 		$post		= JRequest::get('post');
  		$pid		= JRequest::getInt('id');
+        $address_parts = array();
+        
  		//$post['id'] = $pid; //map cid to table pk: id
     
     $post = JRequest::getVar('jform', array(), 'post', 'array');

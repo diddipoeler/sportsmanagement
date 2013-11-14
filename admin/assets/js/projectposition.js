@@ -1,26 +1,11 @@
-Joomla.submitbutton = function(pressbutton) {
-	var form = $('adminForm');
-	if (pressbutton == 'projectposition.cancel') {
-		Joomla.submitform(pressbutton);
-		return;
-	}
-	if($('project_positionslist')) {
-		var mylist = $('project_positionslist');
-		for ( var i = 0; i < mylist.length; i++) {
-			mylist[i].selected = true;
-		}
-	}
-	Joomla.submitform(pressbutton);
-}
+//this will move selected items from source list to destination list   
+function move_list_items(sourceid, destinationid)
+  {
+    jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
+  }
 
-function handleLeftToRight() {
-	$('positionschanges_check').value = 1;
-	move($('positionslist'), $('project_positionslist'));
-	selectAll($('project_positionslist'));
-}
-
-function handleRightToLeft() {
-	$('positionschanges_check').value = 1;
-	move($('project_positionslist'), $('positionslist'));
-	selectAll($('project_positionslist'));
-}
+  //this will move all selected items from source list to destination list
+  function move_list_items_all(sourceid, destinationid)
+  {
+    jQuery("#"+sourceid+" option").appendTo("#"+destinationid);
+  }

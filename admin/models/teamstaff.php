@@ -49,12 +49,21 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamstaff', 'teamstaff', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teamstaffs');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     
@@ -146,4 +155,56 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to remove teamstaff
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	public function delete(&$pks)
+	{
+	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    //$pks = JRequest::getVar('cid', array(), 'post', 'array');
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    //$pks	= (array) $pks;
+    
+	$result = false;
+    if (count($pks))
+		{
+		//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pks);
+            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            // wir löschen mit join
+            $query = 'DELETE mp,ms
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as m    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mp
+            ON mp.team_staff_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as ms
+            ON ms.team_staff_id = m.id
+            WHERE m.id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                return false; 
+            }
+            
+        }  
+    
+    
+    //if ( $result )
+    //{        
+    return parent::delete($pks);
+    //}
+    
+         
+   } 
+   
 }

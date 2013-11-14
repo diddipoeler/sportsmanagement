@@ -38,9 +38,9 @@ class sportsmanagementViewClubs extends JView
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode',		'search_mode',		'',				'string');
 		$search				= JString::strtolower($search);
 
-		$items		=& $this->get('Items');
-		$total		=& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items		= $this->get('Items');
+		$total		= $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 		// state filter
 		$lists['state'] = JHTML::_('grid.state',$filter_state);
@@ -53,12 +53,12 @@ class sportsmanagementViewClubs extends JView
 		$lists['search'] = $search;
 		$lists['search_mode'] = $search_mode;
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 		$this->addToolbar();
 		parent::display($tpl);
 	}

@@ -6,7 +6,7 @@ JHtml::_('behavior.formvalidation');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 <fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DESC','<i>'.$this->project->name.'</i>'); ?></legend>
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DESC','<i>'.$this->item->name.'</i>'); ?></legend>
 	<div class="col50">
 	<?php
 	echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
@@ -36,9 +36,9 @@ JHtml::_('behavior.formvalidation');
 	<div class="clr"></div>
 	
 	<input type="hidden" name="task" value="project.edit" /> 
-	<input type="hidden"name="oldseason" value="<?php echo $this->project->season_id; ?>" />
-	<input type="hidden" name="oldleague" value="<?php echo $this->project->league_id; ?>" /> 
-	<input type="hidden" name="cid[]" value="<?php echo $this->project->id; ?>" />
+	<input type="hidden"name="oldseason" value="<?php echo $this->item->season_id; ?>" />
+	<input type="hidden" name="oldleague" value="<?php echo $this->item->league_id; ?>" /> 
+	<input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
 	<?php echo JHTML::_('form.token')."\n"; ?>
 	</div>
 	</fieldset>

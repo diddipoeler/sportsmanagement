@@ -91,7 +91,7 @@ abstract class sportsmanagementHelper
 	 * @param string $file
 	 * @return object
 	 */
-	function getExtended($data='', $file, $format='ini') {
+	static function getExtended($data='', $file, $format='ini') {
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		
     /*
@@ -111,8 +111,10 @@ abstract class sportsmanagementHelper
 		/*
 		 * extended data
 		*/
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($data, $format);
+		
+        $jRegistry = new JRegistry;
+		//$jRegistry->loadString($data, $format);
+        $jRegistry->loadJSON($data);
 		$extended = JForm::getInstance('extended', $xmlfile,
 				array('control'=> 'extended'),
 				false, '/config');
@@ -1252,15 +1254,22 @@ abstract class sportsmanagementHelper
 	}
     
     
-    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label')
+    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
+    
+    //$mainframe->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
+    
+    if ( !$view )
+    {
     $view = JRequest::getVar( "view") ;
-    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
-    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
-    $bar =& JToolBar::getInstance('toolbar');
-    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout);
+    }
+    $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+    $bar = JToolBar::getInstance('toolbar');
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type );
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
@@ -1269,10 +1278,10 @@ abstract class sportsmanagementHelper
     }
     
     
-    function ToolbarButtonOnlineHelp()
+    static function ToolbarButtonOnlineHelp()
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $view = JRequest::getVar( "view") ;
     $view = ucfirst(strtolower($view));
     
@@ -1286,9 +1295,9 @@ abstract class sportsmanagementHelper
     default:
     break;
     }
-    $cfg_help_server = JComponentHelper::getParams('com_joomleague')->get('cfg_help_server','') ;
-    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
-    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
+    $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+    $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
@@ -1307,7 +1316,7 @@ abstract class sportsmanagementHelper
 	function getRoundsOptions($project_id, $ordering='ASC', $required = false)
 	{
 		$mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
@@ -1370,12 +1379,15 @@ abstract class sportsmanagementHelper
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-    function checkUserExtraFields()
+    static function checkUserExtraFields()
     {
+         $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $db = JFactory::getDBO();
     $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
 			//echo '<pre>'.print_r($query,true).'</pre>';
-			$this->_db->setQuery($query);
-			if ($this->_db->loadResult())
+			$db->setQuery($query);
+			if ($db->loadResult())
 			{
 				return true;
 			}

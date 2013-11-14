@@ -16,7 +16,11 @@ class sportsmanagementViewPosition extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$uri = JFactory::getURI();
+        $model = $this->getModel();
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -31,6 +35,22 @@ class sportsmanagementViewPosition extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        //build the html options for parent position
+		$parent_id[]=JHTML::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+	    
+        if ($res = $mdlPositions->getParentsPositions())
+		{
+			foreach ($res as $re){$re->text=JText::_($re->text);}
+			$parent_id=array_merge($parent_id,$res);
+		}
+		$lists['parents']=$parent_id;
+        //$lists['parents']=$parent_id;
+		unset($parent_id);
+        
+        $this->assignRef('lists',$lists);
+        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();

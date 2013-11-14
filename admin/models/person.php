@@ -189,12 +189,21 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.person', 'person', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     
@@ -212,7 +221,7 @@ class sportsmanagementModelperson extends JModelAdmin
   
   public function getAgeGroupID($age) 
 	{
-  $mainframe =& JFactory::getApplication();
+  $mainframe = JFactory::getApplication();
 		$query = "SELECT id
     FROM #__sportsmanagement_agegroup 
     WHERE ".$age." >= age_from and ".$age." <= age_to";
@@ -325,20 +334,109 @@ class sportsmanagementModelperson extends JModelAdmin
     
     
     /**
+	 * Method to save assign persons
+	 *
+	 * @access	
+	 * @return	
+	 * @since	
+	 */
+    function storeAssign($post)
+    {
+    $option = JRequest::getCmd('option');
+	$mainframe	= JFactory::getApplication();  
+    $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );;
+    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );;
+    $cid = $post['cid'];
+          
+    $mdlPerson = JModel::getInstance("person", "sportsmanagementModel");
+    $mdlPersonTable = $mdlPerson->getTable();
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons storeAssign post<br><pre>'.print_r($post,true).'</pre>'),'');    
+    
+    switch ($post['type'])
+            {
+                case 0:
+                $mdl = JModel::getInstance("teamplayer", "sportsmanagementModel");
+                $mdlTable = $mdl->getTable();
+                for ($x=0; $x < count($cid); $x++)
+                {
+                $mdlPersonTable->load($cid[$x]);    
+                $mdlTable = $mdl->getTable();
+                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->published = 1;
+                $mdlTable->person_id = $cid[$x];   
+                if ($mdlTable->store()===false)
+				{
+				}
+				else
+				{
+				}
+                 
+		        }
+                break;
+                case 1:
+                $mdl = JModel::getInstance("teamstaff", "sportsmanagementModel");
+                $mdlTable = $mdl->getTable();
+                for ($x=0; $x < count($cid); $x++)
+                {
+                $mdlPersonTable->load($cid[$x]); 
+                $mdlTable = $mdl->getTable();
+                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->published = 1;
+                $mdlTable->person_id = $cid[$x];   
+                if ($mdlTable->store()===false)
+				{
+				}
+				else
+				{
+				}
+                 
+		        }
+                break;
+                case 2:
+                $mdl = JModel::getInstance("projectreferee", "sportsmanagementModel");
+                $mdlTable = $mdl->getTable();
+                for ($x=0; $x < count($cid); $x++)
+                {
+                $mdlPersonTable->load($cid[$x]); 
+                $mdlTable = $mdl->getTable();
+                $mdlTable->project_id = $this->_project_id;
+                $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->person_id = $cid[$x];   
+                if ($mdlTable->store()===false)
+				{
+				}
+				else
+				{
+				}
+                 
+		        }
+                break;
+                
+            }
+    
+    
+    
+    return true;    
+    }
+    
+    /**
 	 * Method to save item order
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];

@@ -69,8 +69,9 @@ class sportsmanagementTablePlayground extends JTable
 	 * @see JTable:bind
 	 * @since 1.5
 	 */
+/*
 	public function bind($array, $ignore = '') 
-	{
+    {
 		if (isset($array['extended']) && is_array($array['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -80,6 +81,7 @@ class sportsmanagementTablePlayground extends JTable
 		}
 		return parent::bind($array, $ignore);
 	}
+    */
  
 	/**
 	 * Overloaded load function
@@ -89,7 +91,9 @@ class sportsmanagementTablePlayground extends JTable
 	 * @return      boolean
 	 * @see JTable:load
 	 */
-	public function load($pk = null, $reset = true) 
+	
+    /*
+    public function load($pk = null, $reset = true) 
 	{
 		if (parent::load($pk, $reset)) 
 		{
@@ -107,6 +111,6 @@ class sportsmanagementTablePlayground extends JTable
 			return false;
 		}
 	}
-	
+	*/
 }
 ?>

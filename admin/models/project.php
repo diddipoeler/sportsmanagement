@@ -96,14 +96,14 @@ class sportsmanagementModelProject extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -218,6 +218,105 @@ class sportsmanagementModelProject extends JModelAdmin
 			return $result;
 		}
 	}
+    
+    
+    /**
+	 * Method to remove projects
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	public function delete(&$pks)
+	{
+	$mainframe =& JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+    $success = $this->deleteProjectsData($pks);  
+    
+    if ( $success )
+    {
+    $mainframe->setUserState( "$option.pid", 0 );     
+    return parent::delete($pks);
+    }
+         
+   }
+   
+    /**
+	 * Method to remove all project datas
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function deleteProjectsData($pk=array())
+	{
+	$mainframe =& JFactory::getApplication();
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    
+	$result = false;
+    if (count($pk))
+		{
+			//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pk);
+            // wir löschen mit join
+            $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
+            ON t1.project_id = p.id   
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as t2
+            ON t2.project_id = p.id   
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as t3
+            ON t3.round_id = t1.id  
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary as t4
+            ON t4.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as t5
+            ON t5.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as t6
+            ON t6.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as t7
+            ON t7.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as t8
+            ON t8.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as t9
+            ON t9.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as t10
+            ON t10.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as t11
+            ON t11.project_id = p.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as t12
+            ON t12.project_id = p.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as t13
+            ON t13.project_id = p.id    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as t14
+            ON t14.projectteam_id = t13.id    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as t15
+            ON t15.projectteam_id = t13.id    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata as t16
+            ON t16.project_id = p.id    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t17
+            ON t17.project_id = p.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto as t18
+            ON t18.project_id = p.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_match as t19
+            ON t19.match_id = t3.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
+            ON t20.treeto_id = t18.id
+            
+            WHERE p.id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('deleteProjectsData getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                return false; 
+            }
+            
+        }    
+   return true;     
+   } 
     
     
 	

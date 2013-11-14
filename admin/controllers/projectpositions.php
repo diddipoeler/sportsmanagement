@@ -20,12 +20,12 @@ class sportsmanagementControllerprojectpositions extends JControllerAdmin
 	 */
   function store()
 	{
-		
+		$post = JRequest::get('post');
         // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 
         $model = $this->getModel();
-       //$msg = $model->massadd();
+       $msg = $model->store($post);
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
   

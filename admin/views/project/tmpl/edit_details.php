@@ -1,7 +1,7 @@
 <?php defined('_JEXEC')or die('Restricted access');
 ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DETAILS','<i>'.$this->project->name.'</i>'); ?></legend>
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DETAILS','<i>'.$this->item->name.'</i>'); ?></legend>
 			<table class="admintable">
 				<tr>
 					<td class="key"><?php echo $this->form->getLabel('name'); ?></td>
@@ -27,7 +27,7 @@
 					<td class="key"><?php echo $this->form->getLabel('league_id'); ?></td>
 					<td><?php echo $this->form->getInput('league_id'); ?>
 						<?php
-						if (!$this->edit)
+						if (!$this->item->id)
 						{
 							echo "<br />";
 							echo '<input type="checkbox" name="newLeagueCheck" value="1"';
@@ -45,7 +45,7 @@
 					<td class="key"><?php echo $this->form->getLabel('season_id'); ?></td>
 					<td><?php echo $this->form->getInput('season_id'); ?>
 						<?php
-						if (!$this->edit)
+						if (!$this->item->id)
 						{
 							 echo '<br />';
 							 echo '<input type="checkbox" name="newSeasonCheck" value="1"';
