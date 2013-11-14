@@ -1,4 +1,4 @@
-sportsmanagement
+Sports-Management
 ================
 
-die neue sports management komponente für joomla 2.5
+Die neue Sports-Management Komponente für Joomla 2.5
