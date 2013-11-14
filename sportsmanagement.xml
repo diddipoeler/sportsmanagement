@@ -118,7 +118,7 @@
 	<!-- UPDATESERVER DEFINITION -->
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" priority="1" name="HelloWorld Update Site">http://yourdomain.com/update/helloworld-update.xml</server>
+		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.github.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml</server>
 	</updateservers>
  
 </extension>
