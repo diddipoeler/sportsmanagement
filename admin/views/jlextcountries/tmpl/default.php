@@ -128,8 +128,12 @@ JHTML::_('behavior.modal');
 						}
 						?>
 						<td><?php echo $row->name; ?></td>
-						<td><?php echo JHTML::_(	'image',$row->picture,
-													JText::_($row->name),'title= "'.JText::_($row->name).'"');; ?></td>
+						<td>
+                        <?php 
+                        //echo JHTML::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
+                        echo Countries::getCountryFlag($row->alpha3);
+                        ?>
+                        </td>
 						<td><?php echo $row->alpha2; ?></td>
 						<td><?php echo $row->alpha3; ?></td>
 						

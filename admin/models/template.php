@@ -112,4 +112,76 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $post=JRequest::get('post');
+       
+       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
+    
+    function getAllTemplatesList($project_id,$master_id)
+	{
+		
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query1	= $db->getQuery(true);
+        $query2	= $db->getQuery(true);
+        $query3	= $db->getQuery(true);
+        $Subquery	= $db->getQuery(true);
+        
+        // Select some fields
+		$query1->select('template');
+        // From table
+		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query1->where('project_id='.$project_id);
+        $db->setQuery($query1);
+		$current = $db->loadResultArray();
+        $current = implode("','",$current);
+        // Select some fields
+		$query2->select('id as value, title as text');
+        // From table
+		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query2->where('project_id='.$master_id.' and template NOT IN (\''.$current.'\') ');
+        $db->setQuery($query2);
+        $result1 = $db->loadObjectList();
+        // Select some fields
+		$query3->select('id as value, title as text');
+        // From table
+		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query3->where('project_id='.$project_id);
+        $query3->order('title');
+        $db->setQuery($query3);
+		$result2 = $db->loadObjectList();
+        
+		return array_merge($result2,$result1);
+	}
+    
+    
+    
+    
 }

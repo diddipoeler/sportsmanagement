@@ -129,7 +129,7 @@ class sportsmanagementViewProjects extends JView
 		JToolBarHelper::editList('project.edit');
 		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_COPY'),false);
+		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
 		JToolBarHelper::deleteList('', 'projects.delete');
 		JToolBarHelper::divider();
 		

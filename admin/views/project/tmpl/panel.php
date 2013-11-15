@@ -29,7 +29,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 							<div class="icon-wrapper"><div class="icon"><?php echo JHTML::link($link,$image); ?></div></div>
 							<?php
 							if ((isset($this->project->project_type)) &&
-								 (($this->project->project_type == PROJECT_DIVISIONS) ||
+								 (($this->project->project_type == 'PROJECT_DIVISIONS') ||
 								   ($this->project->project_type == 'DIVISIONS_LEAGUE')))
 							{
 								$link=JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project->id);

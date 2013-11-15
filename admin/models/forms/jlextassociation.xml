@@ -67,38 +67,23 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	<fieldset 	name="picture">
 				
 		<field 	name="assocflag" 
-				type="media" 
-				directory="com_sportsmanagement/database/flags_associations"
+				type="" 
+				default=""
+				directory=""
 				preview="show"				
 				label="COM_SPORTSMANGEMENT_GLOBAL_FLAG" 
 				description="COM_SPORTSMANGEMENT_GLOBAL_FLAG">
 		</field>
 		<field 	name="picture" 
-				type="media" 
-				directory="com_sportsmanagement/database/associations"
+				type=""
+        default=""  
+				directory=""
 				preview="show"				
 				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
 				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
 		</field>
 	</fieldset>
   
-  <fieldset 	name="imageselect">
-		<field 	name="assocflag" 
-				type="imageselect" 
-				directory="com_sportsmanagement/database/flags_associations"
-				preview="show"	
-        targetfolder="flags_associations"			
-				label="COM_SPORTSMANGEMENT_GLOBAL_FLAG" 
-				description="COM_SPORTSMANGEMENT_GLOBAL_FLAG">
-		</field>
-		<field 	name="picture" 
-				type="imageselect" 
-				directory="com_sportsmanagement/database/associations"
-				preview="show"	
-        targetfolder="associations"			
-				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
-				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
-		</field>
-	</fieldset>
+  
   			
 </form>

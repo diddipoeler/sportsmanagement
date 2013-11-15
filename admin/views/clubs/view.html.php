@@ -31,11 +31,11 @@ class sportsmanagementViewClubs extends JView
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state',		'filter_state',		'',				'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order',		'filter_order',		'a.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode',		'search_mode',		'',				'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order','filter_order','a.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 
 		$items		= $this->get('Items');

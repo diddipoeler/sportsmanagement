@@ -101,7 +101,7 @@ switch ($type)
 //    self::installComponentLanguages();
 //    self::installModules();
 //	  self::installPlugins();
-//    self::createImagesFolder();
+    self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
 //    self::sendInfoMail();
@@ -110,7 +110,7 @@ switch ($type)
 //    self::installComponentLanguages();
 //    self::installModules();
 //    self::installPlugins();
-//    self::createImagesFolder();
+    self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
 //    self::deleteInstallFolders();
@@ -123,6 +123,39 @@ switch ($type)
 
 
 	}
+    
+    
+    public function createImagesFolder()
+	{
+		echo JText::_('Creating new Image Folder structure');
+		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
+		$update = JFolder::exists($dest);
+		$folders = array('clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
+							'flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
+              'associations','rosterground','matchreport','seasons','sport_types', 'teams','flags','teamplayers','teamstaffs','venues', 'statistics');
+		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
+		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
+		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
+		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
+		foreach ($folders as $folder) {
+			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
+			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+		}
+		foreach ($folders as $folder) {
+			$from = JPath::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
+			if(JFolder::exists($from)) {
+				$to = JPath::clean($dest.'/database/'.$folder);
+				if(!JFolder::exists($to)) {
+					$ret = JFolder::move($from, $to);
+				} else {
+					$ret = JFolder::copy($from, $to, '', true);
+					//$ret = JFolder::delete($from);
+				}
+			}
+		}
+		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+	}
+    
     
     /*
     * sets parameter values in the component's row of the extension table

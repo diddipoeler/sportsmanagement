@@ -32,7 +32,7 @@ class sportsmanagementViewJlextassociation extends JView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();

@@ -80,26 +80,15 @@
 <fieldset name="picture">
 			<field
 				name="picture"
-				type="media"
-				default="com_sportsmanagement/database/placeholders/placeholder_flags.png"				
+				type=""
+				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
 				class="inputbox"
 				preview="show"				
-				directory="com_sportsmanagement/database/flags"/>
+				directory=""/>
 	</fieldset>
 	
-	<fieldset name="imageselect">
-			<field
-				name="picture"
-				type="imageselect"
-				default="com_sportsmanagement/database/placeholders/placeholder_flags.png"					
-				label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"
-				targetfolder="flags"
-				directory="com_sportsmanagement/database/flags"/>		
-	</fieldset>	
+	
   	
 </form>
