@@ -58,7 +58,7 @@ class sportsmanagementViewProject extends JView
 		$this->script = $script;
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -167,46 +167,6 @@ class sportsmanagementViewProject extends JView
 			}
 			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CLOSE');
 		}
-        
-        
-    // store the variable that we would like to keep for next time
-    // function syntax is setUserState( $key, $value );
-    
-    
-    /*
-    $mainframe->setUserState( "$option.pid", $this->project->id);
-		// Set toolbar items for the page
-		if ($this->copy)
-		{
-			$toolbarTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_COPY_PROJECT');
-		}
-		else
-		{
-			$toolbarTitle=(!$this->edit) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT');
-			JToolBarHelper::divider();
-		}
-		JToolBarHelper::title($toolbarTitle,'ProjectSettings');
-		
-		if (!$this->copy)
-		{
-			JToolBarHelper::apply('project.apply');
-			JToolBarHelper::save('project.save');
-		}
-		else
-		{
-			JToolBarHelper::save('project.copysave');
-		}
-		JToolBarHelper::divider();
-		if ((!$this->edit) || ($this->copy))
-		{
-			JToolBarHelper::cancel('project.cancel');
-		}
-		else
-		{
-			// for existing items the button is renamed `close`
-			JToolBarHelper::cancel('project.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		}
-        */
         
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

@@ -4,6 +4,10 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
 	<fieldset name="details">
+	<field
+			name="id"
+			type="hidden"
+		/>
 		<field
 			name="name"
 			type="text"
@@ -393,25 +397,14 @@
 		<fieldset name="picture">
 			<field
 				name="picture"
-				type="media"
-				default="images/COM_SPORTSMANAGEMENT/database/placeholders/placeholder_150.png"				
+				type=""
+				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
 				class="inputbox"
 				preview="show"				
-				directory="COM_SPORTSMANAGEMENT/database/projects"/>
+				directory=""/>
 	</fieldset>
 	
-	<fieldset name="imageselect">
-			<field
-				name="picture"
-				type="imageselect"
-				default="images/COM_SPORTSMANAGEMENT/database/placeholders/placeholder_150.png"					
-				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"
-				targetfolder="projects"
-				directory="COM_SPORTSMANAGEMENT/database/projects"/>		
-	</fieldset>	
+	
 </form>
