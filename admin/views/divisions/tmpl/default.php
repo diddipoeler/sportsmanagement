@@ -1,6 +1,10 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_( 'behavior.tooltip' );
+//Ordering allowed ?
+$ordering=($this->lists['order'] == 'dv.ordering');
+
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<fieldset class="adminform">
@@ -72,7 +76,7 @@ JHtml::_( 'behavior.tooltip' );
 							<?php
 							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'dv.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
-							echo JHtml::_( 'grid.order', $this->items );
+							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'divisions.saveorder');
 							?>
 						</th>
 						<th style="vertical-align: top; ">
