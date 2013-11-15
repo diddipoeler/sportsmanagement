@@ -100,7 +100,7 @@ class sportsmanagementViewDivisions extends JView
 		
 		JToolBarHelper::addNew('division.add');
 		JToolBarHelper::editList('division.edit');
-        JToolBarHelper::deleteList('', 'division.delete', 'JTOOLBAR_DELETE');
+        JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		
 		

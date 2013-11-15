@@ -169,7 +169,7 @@ class sportsmanagementModeldivision extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$mainframe =& JFactory::getApplication();
-    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);
     
