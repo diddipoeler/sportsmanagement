@@ -3,7 +3,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC' );?>
+			<legend><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_DIVISION_PICTURE' );?>
 			</legend>
 			<table class="admintable">
 					<?php foreach ($this->form->getFieldset('picture') as $field): ?>
@@ -13,4 +13,4 @@
 					</tr>					
 					<?php endforeach; ?>
 			</table>
-		</fieldset>		
+		</fieldset>

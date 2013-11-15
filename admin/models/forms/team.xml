@@ -98,20 +98,6 @@
 				filter="safehtml"/>			
 	</fieldset>
   
-<!--  
-  <fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" type="calendar"
-			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" description="since">
-		</field>
-		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" type="calendar"
-			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" description="until">
-		</field>
-		</fieldset>
-	</fields>	
--->  
+
   		
 </form>

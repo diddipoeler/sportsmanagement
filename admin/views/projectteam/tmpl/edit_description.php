@@ -5,7 +5,7 @@
 				<legend>
 					<?php echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_DESCR',
 												'<i>' . $this->project_team->name . '</i>',
-												'<i>' . $this->projectws->name . '</i>'); ?>
+												'<i>' . $this->project->name . '</i>'); ?>
 				</legend>
 				<table class="admintable" border="0">
 					<tr>

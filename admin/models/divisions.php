@@ -11,9 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.model' );
-
+jimport('joomla.application.component.modellist');
 
 /**
  * Sportsmanagement Component Divisions Model
@@ -24,10 +22,17 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelDivisions extends JModelList
 {
 	var $_identifier = "divisions";
+    var $_project_id = 0;
 	
-	function _buildQuery()
+	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+        
+        // Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
         // Create a new query object.
@@ -37,10 +42,10 @@ class sportsmanagementModelDivisions extends JModelList
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id')
         ->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
-        if ($where)
-        {
+        //if ($where)
+        //{
             $query->where($where);
-        }
+        //}
         if ($orderby)
         {
             $query->order($orderby);
@@ -53,10 +58,9 @@ class sportsmanagementModelDivisions extends JModelList
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
-
 		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'dv_filter_order',		'filter_order',		'dv.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'dv_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
 
 		if ( $filter_order == 'dv.ordering' )
 		{
@@ -73,16 +77,15 @@ class sportsmanagementModelDivisions extends JModelList
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
-
  		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState( $option . 'project' );
+		//$project_id = $mainframe->getUserState( $option . 'project' );
 		$where = array();
 
-		$where[]	= ' dv.project_id = ' . $project_id;
+		$where[]	= ' dv.project_id = ' . $this->_project_id;
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'dv_filter_order',		'filter_order',		'dv.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'dv_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option . 'dv_search',			'search',			'',				'string' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_search','search','','string');
 		$search				= JString::strtolower( $search );
 
 		if ( $search )

@@ -20,10 +20,12 @@ echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'pane
 echo $this->loadTemplate('extended');
 echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DESCRIPTION'), 'panel4');
 echo $this->loadTemplate('description');
+echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_TRAINING'), 'panel6');
+echo $this->loadTemplate('training');
 
 if ( $this->checkextrafields )
 {
-    echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'), 'panel4');
+    echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'), 'panel5');
     echo $this->loadTemplate('extra_fields');
 }
 

@@ -49,12 +49,30 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.projectteam', 'projectteam', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projectteams');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projectteams/trikot_home');
+        $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projectteams/trikot_away');
+        $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     
@@ -164,5 +182,46 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		}
 		return $result;
 	}
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       $post = JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        if ( $post['delete'] )
+        {
+            $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam->DeleteTrainigData($post['delete'][0]);
+        }
+        if ( $post['tdids'] )
+        {
+        $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam->UpdateTrainigData($post);
+        }
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
     
 }

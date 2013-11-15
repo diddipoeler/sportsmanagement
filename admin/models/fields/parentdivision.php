@@ -18,13 +18,13 @@ JFormHelper::loadFieldClass('list');
 /**
  * Session form field class
  */
-class JFormFieldcountryassociation extends JFormFieldList
+class JFormFieldparentdivision extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'countryassociation';
+	public $type = 'parentdivision';
 
 	/**
 	 * Method to get the field options.
@@ -35,29 +35,23 @@ class JFormFieldcountryassociation extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$option = JRequest::getCmd('option');
+		$mainframe= JFactory::getApplication();
+        $project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
+        // Initialize variables.
 		$options = array();
-    //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
-		$varname = (string) $this->element['varname'];
-    $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar($varname);
- 		if (is_array($select_id)) {
- 			$select_id = $select_id[0];
- 		}
-		
-		if ($select_id)
-		{		
-			$db = &JFactory::getDbo();
-			$query = $db->getQuery(true);
-			
-			$query->select('t.id AS value, t.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS t');
- 			$query->join('inner', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$vartable.' AS wt ON wt.country = t.country ');
-			$query->where('wt.id = '.$select_id);
-			$query->order('t.name');
+        $db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+                            
+        $query->select('dv.id AS value, dv.name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv');
+        $query->where('dv.project_id = '.$project_id .' AND dv.parent_id=0 ');
+			$query->order('dv.ordering ASC');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
-		}
+                        
+        
 		
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

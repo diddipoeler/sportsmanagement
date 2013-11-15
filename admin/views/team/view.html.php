@@ -18,6 +18,7 @@ class sportsmanagementViewTeam extends JView
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        $model		= $this->getModel();
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // get the Data
 		$form = $this->get('Form');
@@ -52,6 +53,32 @@ class sportsmanagementViewTeam extends JView
         {
             $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         }
+        
+        //build the html select list for days of week
+		if ($trainingData = $model->getTrainigData($this->item->id))
+		{
+			$daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+			1 => JText::_('MONDAY'),
+			2 => JText::_('TUESDAY'),
+			3 => JText::_('WEDNESDAY'),
+			4 => JText::_('THURSDAY'),
+			5 => JText::_('FRIDAY'),
+			6 => JText::_('SATURDAY'),
+			7 => JText::_('SUNDAY'));
+			$dwOptions=array();
+			foreach($daysOfWeek AS $key => $value)
+            {
+                $dwOptions[]=JHTML::_('select.option',$key,$value);
+            }
+			foreach ($trainingData AS $td)
+			{
+				$lists['dayOfWeek'][$td->id]=JHTML::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
+			}
+			unset($daysOfWeek);
+			unset($dwOptions);
+		}
+        $this->assignRef('trainingData',	$trainingData);
+        $this->assignRef('lists',	$lists);
  
 		// Set the toolbar
 		$this->addToolBar();

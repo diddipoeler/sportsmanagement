@@ -235,7 +235,8 @@ class sportsmanagementModelMatch extends JModelAdmin
    }
    
    
-/**
+    
+    /**
 	 * Method to save the form data.
 	 *
 	 * @param	array	The form data.
@@ -245,11 +246,25 @@ class sportsmanagementModelMatch extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
-       $mainframe->enqueueMessage(JText::_('sportsmanagementModelMatch save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       $post=JRequest::get('post');
        
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
         // Proceed with the save
 		return parent::save($data);   
-    }   
+    }
+      
     
      /**
 	 * Method to load content matchday data

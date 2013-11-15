@@ -3,16 +3,15 @@
 			<fieldset class="adminform">
 				<legend>
 					<?php
-                    echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_TRAINING',
-												'<i>' . $this->project_team->name . '</i>',
-												'<i>' . $this->project->name . '</i>');
+                    echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TEAM_TITLE_TRAINING',
+												'<i>' . $this->item->name . '</i>');
 					
 					?>
 				</legend>
 				<table class='admintable'>
 					<tr>
 						<td class='key' nowrap='nowrap'>
-							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADD_NEW'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='' onchange='javascript:submitbutton("projectteam.apply");' />
+							<?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("team.apply");' />
 						</td>
 						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
 						<td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
@@ -37,7 +36,7 @@
 							?>
 							<tr>
 								<td class='key' nowrap='nowrap'>
-									<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE');?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("projectteam.apply");' />
+									<?php echo JText::_('JACTION_DELETE');?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("team.apply");' />
 								</td>
 								<td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
 								<td nowrap='nowrap' width='5%'>

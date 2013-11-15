@@ -8,7 +8,7 @@ jimport('joomla.application.component.modeladmin');
 /**
  * SportsManagement Model
  */
-class sportsmanagementModeleventtype extends JModelAdmin
+class sportsmanagementModeltrainingdata extends JModelAdmin
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -24,7 +24,6 @@ class sportsmanagementModeleventtype extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
-    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -34,11 +33,10 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'eventtype', $prefix = 'sportsmanagementTable', $config = array()) 
+	public function getTable($type = 'rainingdata ', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-    
 	/**
 	 * Method to get the record form.
 	 *
@@ -50,14 +48,13 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.eventtype', 'eventtype', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_sportsmanagement.rainingdata ', 'rainingdata ', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
 		return $form;
 	}
-    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -67,7 +64,6 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
-    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -77,7 +73,7 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.eventtype.data', array());
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.rainingdata .data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -112,35 +108,4 @@ class sportsmanagementModeleventtype extends JModelAdmin
 		}
 		return true;
 	}
-    
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $mainframe = JFactory::getApplication();
-       $post=JRequest::get('post');
-       
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		return parent::save($data);   
-    }
-    
-    
 }
