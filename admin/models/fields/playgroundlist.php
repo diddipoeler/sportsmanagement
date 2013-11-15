@@ -38,7 +38,7 @@ class JFormFieldplaygroundlist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = &JFactory::getDbo();
+    $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');

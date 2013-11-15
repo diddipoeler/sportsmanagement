@@ -12,6 +12,8 @@ class sportsmanagementControllertemplates extends JControllerAdmin
 {
   
 	
+    
+    
     public function changetemplate() 
 	{
 	$post=JRequest::get('post');

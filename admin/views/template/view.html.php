@@ -194,6 +194,7 @@ class sportsmanagementViewTemplate extends JView
 			{
 				// We can save the new record
 				JToolBarHelper::apply('template.apply', 'JTOOLBAR_APPLY');
+                //JToolBarHelper::apply('templates.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('template.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.

@@ -77,7 +77,20 @@
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
-		</field>				
+		</field>	
+    
+<field
+			name="latitude"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_latitude"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_latitude_DESC"
+			class="inputbox"/>  
+<field
+			name="longitude"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_longitude"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_longitude_DESC"
+			class="inputbox"/>      			
 	</fieldset>			
 	<fieldset name="picture">
 			<field

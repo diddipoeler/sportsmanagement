@@ -9,15 +9,7 @@ $params = $this->form->getFieldsets('params');
 
 $i    = 1;
 ?>
-<style type="text/css">
-	<!--
-	fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelform span.faux-label {
-		max-width: 255px;
-		min-width: 255px;
-		padding: 0 5px 0 0;
-	}
-	-->
-</style>
+
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.(int) $this->template->id); ?>" method="post" id="adminForm" name="adminForm" >
 	<div style='text-align: right;'>
 		<?php echo $this->lists['templates']; ?>
@@ -68,6 +60,7 @@ $i    = 1;
 		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
 		
 		<input type="hidden" name="task" value="template.edit"/>
+        
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

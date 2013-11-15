@@ -125,8 +125,8 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $post=JRequest::get('post');
        
-       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -136,7 +136,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -152,7 +152,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		$query1	= $db->getQuery(true);
         $query2	= $db->getQuery(true);
         $query3	= $db->getQuery(true);
-        $Subquery	= $db->getQuery(true);
+        
         
         // Select some fields
 		$query1->select('template');

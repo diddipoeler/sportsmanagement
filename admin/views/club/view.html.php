@@ -45,8 +45,10 @@ class sportsmanagementViewClub extends JView
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
+        
+        $this->assignRef( 'lists', $lists );
  
  
 		// Set the toolbar

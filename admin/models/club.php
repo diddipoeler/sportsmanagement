@@ -149,11 +149,60 @@ class sportsmanagementModelclub extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $address_parts = array();
        $post=JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       // wurden jahre mitgegeben ?
+        $founded_year = date('Y',strtotime($data['founded']));
+        $dissolved_year = date('Y',strtotime($data['dissolved']));
+        if ( $founded_year != '0000' )
+        {
+            $data['founded_year'] = $founded_year;
+        }
+        if ( $dissolved_year != '0000' )
+        {
+            $data['dissolved_year'] = $dissolved_year;
+        }
+        
+        if (!empty($data['address']))
+		{
+			$address_parts[] = $data['address'];
+		}
+		if (!empty($data['state']))
+		{
+			$address_parts[] = $data['state'];
+		}
+		if (!empty($data['location']))
+		{
+			if (!empty($data['zipcode']))
+			{
+				$address_parts[] = $data['zipcode']. ' ' .$data['location'];
+			}
+			else
+			{
+				$address_parts[] = $data['location'];
+			}
+		}
+		if (!empty($data['country']))
+		{
+			$address_parts[] = Countries::getShortCountryName($data['country']);
+		}
+		$address = implode(', ', $address_parts);
+		$coords = sportsmanagementHelper::resolveLocation($address);
+		
+		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }
+		
+		$data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -162,7 +211,10 @@ class sportsmanagementModelclub extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        //-------extra fields-----------//
+        sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
         // Proceed with the save
 		return parent::save($data);   

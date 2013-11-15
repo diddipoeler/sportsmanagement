@@ -177,6 +177,8 @@ class sportsmanagementModelteam extends JModelAdmin
         }
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
+        //-------extra fields-----------//
+        sportsmanagementHelper::saveExtraFields($post,$data['id']);
         // Proceed with the save
 		return parent::save($data);   
     }
