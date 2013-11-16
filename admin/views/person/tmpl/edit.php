@@ -40,12 +40,7 @@ if ( $this->checkextrafields )
 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ASSIGN'), 'panel6');
 		echo $this->loadTemplate('assign');
 
-    /*
-		if (!$this->edit):// add a selection to assign a person directly to a project and team
-			echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ASSIGN'), 'panel6');
-			echo $this->loadTemplate('assign');
-		endif;
-		*/
+   
 
 		echo JHTML::_('tabs.end');
 		?>

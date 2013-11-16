@@ -9,6 +9,7 @@
 		/>
 		<field
 			name="name"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
@@ -16,6 +17,7 @@
 			required="true"/>
 		<field
 			name="alias"
+			size="100"
 			type="text"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
@@ -37,18 +39,21 @@
 			class="inputbox"/>		
 		<field
 			name="zipcode"
+			size="10"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
 			class="inputbox"/>	
 		<field
 			name="location"
+			size="50"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
 			class="inputbox"/>	
 		<field
 			name="state"
+			size="50"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
@@ -79,36 +84,42 @@
       	
 	<field
 			name="phone"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC"
 			class="inputbox"/>	
 	<field
 			name="fax"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC"
 			class="inputbox"/>	
 	<field
 			name="email"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC"
 			class="inputbox"/>		
 	<field
 			name="website"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
 			class="inputbox"/>	
 	<field
 			name="manager"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER_DESC"
 			class="inputbox"/>	
 	<field
 			name="president"
+			size="100"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC"

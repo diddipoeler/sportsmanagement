@@ -67,12 +67,6 @@
 		<folder>treebracket</folder>
 	</media>
 	
-	
-	
-	
-	
-	
-
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu img="../media/com_sportsmanagement/images/tux-16x16.png">COM_SPORTSMANAGEMENT_MENU</menu>
@@ -113,6 +107,7 @@
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
 		</languages>
+		
 	</administration>
  
 	<!-- UPDATESERVER DEFINITION -->
