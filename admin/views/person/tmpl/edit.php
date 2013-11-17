@@ -14,7 +14,24 @@ $params = $this->form->getFieldsets('params');
 		echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
 		
 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
-		echo $this->loadTemplate('details');
+		
+?>
+<div style="position:relative" class="width-60 fltlft">
+<?PHP
+echo $this->loadTemplate('details');
+?>
+</div>
+
+<div style="position:relative" class="width-40 fltrt">
+<?PHP
+if ( $this->map )
+{
+echo $this->loadTemplate('maps');
+}
+?>
+</div>
+
+<?PHP        
         
 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA'), 'panel7');
 		echo $this->loadTemplate('member_data');

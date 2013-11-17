@@ -34,6 +34,16 @@ class sportsmanagementViewPerson extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        if ( $this->item->latitude == 255 )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->map = false;
+        }
+        else
+        {
+            $this->map = true;
+        }
 		
         $extended = sportsmanagementHelper::getExtended($item->extended, 'person');
 		$this->assignRef( 'extended', $extended );

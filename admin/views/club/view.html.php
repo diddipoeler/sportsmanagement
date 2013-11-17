@@ -18,6 +18,7 @@ class sportsmanagementViewClub extends JView
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $document = JFactory::getDocument();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         
@@ -32,10 +33,29 @@ class sportsmanagementViewClub extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        if ( $item->latitude != 255 )
+        {
+            $this->googlemap = true;
+        }
+        else
+        {
+            $this->googlemap = false;
+        }
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        if ( $this->item->latitude == 255 )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->map = false;
+        }
+        else
+        {
+            $this->map = true;
+        }
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
 		$this->assignRef( 'extended', $extended );
@@ -49,7 +69,7 @@ class sportsmanagementViewClub extends JView
         }
         
         $this->assignRef( 'lists', $lists );
- 
+
  
 		// Set the toolbar
 		$this->addToolBar();
