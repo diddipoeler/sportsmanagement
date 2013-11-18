@@ -17,7 +17,14 @@ $fieldsets = $this->form->getFieldsets();
 			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('details') as $field) :?>
 				<li><?php echo $field->label; ?>
-				<?php echo $field->input; ?></li>
+				<?php echo $field->input; 
+                
+                if ( $field->name == 'jform[country]' || $field->name == 'jform[address_country]' )
+                {
+                echo Countries::getCountryFlag($field->value);    
+                }
+                
+                ?></li>
 			<?php endforeach; ?>
 			</ul>
 		</fieldset>

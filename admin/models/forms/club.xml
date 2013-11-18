@@ -214,14 +214,14 @@
 <field
 			name="latitude"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_latitude"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_latitude_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
 			class="inputbox"/>  
 <field
 			name="longitude"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_longitude"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_longitude_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
 			class="inputbox"/>  
                               	
 	</fieldset>			

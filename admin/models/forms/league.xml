@@ -2,7 +2,9 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"  >
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
 	<field
 			name="id"
 			type="hidden"
@@ -59,7 +61,9 @@
       	
 	</fieldset>			
 
-<fieldset name="picture">
+<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -71,18 +75,10 @@
 				directory=""/>
 	</fieldset>
 
-  <!--
-  	<fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-		<field name="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION" type="textarea"
-			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION"
-			description="COM_SPORTSMANAGEMENT_EXT_LEAGUE_DESCRIPTION_DESC" backendonly="">
-		</field>
-		</fieldset>
-	</fields>	
--->
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset> 
 	
 </form>
