@@ -711,7 +711,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `jos_joomleague_rosterposition`
+-- Tabellenstruktur für Tabelle `jos_sportsmanagement_rosterposition`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (
@@ -1276,7 +1276,7 @@ DEFAULT CHARSET = utf8;
 -- -----------------------------------------------------
 -- Table `#__sportsmanagement_prediction_groups`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `#__joomleague_prediction_groups` (
+CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(75) NOT NULL DEFAULT '' ,
   `alias` VARCHAR(75) NOT NULL DEFAULT '' ,
@@ -1295,7 +1295,7 @@ DEFAULT CHARSET = utf8;
 -- -----------------------------------------------------
 -- Table `#__sportsmanagement_prediction_member`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `#__joomleague_prediction_member` (
+CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_member` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `prediction_id` INT(11) NOT NULL DEFAULT '0' ,
   `user_id` INT(11) NOT NULL DEFAULT '0' ,
