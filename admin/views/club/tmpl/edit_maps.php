@@ -3,6 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $document = JFactory::getDocument();
 $document->addScript('http://maps.google.com/maps/api/js?&sensor=false');
 
+// relative
+// absolute
+// width-40 fltrt
 ?>
 <script language="javascript" type="text/javascript">
 var map;
@@ -35,9 +38,9 @@ function initialize() {
 	
 	} 
 </script>
+
 <fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS' );?>
-			</legend>
+			
 <body onLoad="initialize()">              
 
 <div id="map" style="width:400px; height:400px;"></div>

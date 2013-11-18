@@ -22,6 +22,8 @@ class sportsmanagementViewClub extends JView
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         
+        $this->option = $option;
+        
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');

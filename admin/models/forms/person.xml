@@ -2,7 +2,9 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details">
+	<fieldset name="details"
+    label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -216,10 +218,32 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_longitude"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_longitude_DESC"
 			class="inputbox"/>  
-      
-            	
-	</fieldset>			
-	<fieldset name="picture">
+       	
+	</fieldset>
+	
+<fieldset name="maps"
+  label="COM_SPORTSMANAGEMENT_TABS_MAP"
+  description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+  </fieldset>
+  
+	<fieldset name="description"
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>	
+  
+
+  
+      			
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -231,16 +255,21 @@
 				directory=""/>		
 	</fieldset>	
 
-	<fieldset name="description">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
-				width="450" 
-				filter="safehtml"/>			
-	</fieldset>		
-	<fieldset name="advanced">		
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
+
+  <fieldset name="extra_fields"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+  </fieldset>
+  	
+	<fieldset name="frontend"
+  label="COM_SPORTSMANAGEMENT_TABS_FRONTEND"
+  description="COM_SPORTSMANAGEMENT_TABS_FRONTEND_DESC">		
 			<field
 				name="show_pic"
 				type="radio"
@@ -279,7 +308,9 @@
 			</field>			
 	</fieldset>
   
-  <fieldset name="memberdata">
+  <fieldset name="memberdata"
+  label="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA"
+  description="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA_DESC">
   <field
 			name="bank_code_number"
 			type="text"

@@ -100,7 +100,8 @@ JHTML::_('behavior.modal');
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td class="center"><?php echo $checked; ?></td>
 						<?php
-						if (JTable::isCheckedOut($this->user->get('id'),$row->checked_out))
+                        $checkedOut	= !($row->checked_out == 0 || $row->checked_out == $this->user->get('id'));
+						if ($checkedOut)
 						{
 							$inputappend=' disabled="disabled"';
 							?><td class="center">&nbsp;</td><?php

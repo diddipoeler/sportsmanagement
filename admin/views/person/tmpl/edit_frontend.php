@@ -2,10 +2,9 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADVANCED' );?>
-			</legend>
+			
 			<table class="admintable">
-					<?php foreach ($this->form->getFieldset('advanced') as $field): ?>
+					<?php foreach ($this->form->getFieldset('frontend') as $field): ?>
 					<tr>
 						<td class="key"><?php echo $field->label; ?></td>
 						<td><?php echo $field->input; ?></td>

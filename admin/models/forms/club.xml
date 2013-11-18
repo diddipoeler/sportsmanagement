@@ -2,7 +2,10 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details">
+	
+  <fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -222,8 +225,15 @@
 			class="inputbox"/>  
                               	
 	</fieldset>			
-	<fieldset name="picture">
-		
+
+  <fieldset name="maps"
+  label="COM_SPORTSMANAGEMENT_TABS_MAP"
+  description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+  </fieldset>	
+  
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
+  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC">
 			<field
 				name="logo_small"
 				type=""
@@ -272,7 +282,16 @@
 				directory=""/>	
 	</fieldset>	
 
+  <fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
 
-
+  <fieldset name="extra_fields"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+  </fieldset>
 
 </form>

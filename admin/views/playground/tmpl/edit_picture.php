@@ -2,8 +2,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE' );?>
-			</legend>
+			
 			<table class="admintable">
 					<?php 
                     //foreach ($this->form->getFieldset($this->cfg_which_media_tool) as $field): 

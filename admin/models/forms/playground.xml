@@ -2,7 +2,9 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -91,8 +93,33 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_longitude"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_longitude_DESC"
 			class="inputbox"/>      			
-	</fieldset>			
-	<fieldset name="picture">
+	
+  </fieldset>	
+  
+ <fieldset name="maps"
+  label="COM_SPORTSMANAGEMENT_TABS_MAP"
+  description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+  </fieldset> 
+  
+<fieldset name="description"
+label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">
+		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>	  
+
+
+  
+    		
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -104,89 +131,20 @@
 				directory=""/>				
 	</fieldset>
 
-
-	
-	<fieldset name="description">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_DESCRIPTION_DESC"
-				width="450" 
-				filter="safehtml"/>			
-	</fieldset>	
-
-<!--
-  <fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-		 </fieldset>
-	</fields>	
--->
-
-	
-<!--  
-  <fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-    <field name="COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_NICKNAME" type="text"
-			label="COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_NICKNAME" description="Nickname">
-		</field>
-		
-		<field name="COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND" type="list" label="COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND_LABEL"
-			description="COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND_DESC">
-			<option value=""></option>
-			<option value="Kunstrasen">Kunstrasen</option>
-			<option value="Naturrasen">Naturrasen</option>
-			<option value="Hyprid-Rasen">Hyprid-Rasen (Kunstrasen/Naturrasen-Mix)</option>
-			<option value="TennenHartplatz">Tennen/Hartplatz (Grand/Asche...)</option>
-			
-			
-			<option value="Grand">Grand</option>
-			<option value="Asche">Asche</option>
-			<option value="Gummiplatz">Gummiplatz</option>
-			
-		</field>
-		
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME_DESC">
-		</field>                        
-    
-    <field 	name="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME_DESC">
-		</field>
-		<field 	name="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME" type="text" 
-				label="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_LABEL"
-				description="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_DESC">
-		</field>
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
   </fieldset>
-	</fields>	
--->
+
+  <fieldset name="extra_fields"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+  </fieldset>
+	
+	
+
+
   	
 </form>
