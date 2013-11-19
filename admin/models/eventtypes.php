@@ -114,6 +114,61 @@ class sportsmanagementModelEventtypes extends JModelList
 		$where=(count($where) ? ' WHERE '. implode(' AND ',$where) : '');
 		return $where;
 	}
+    
+    /**
+	* Method to return a events array (id,name)
+	*
+	* @access  public
+	* @return  array
+	* @since 0.1
+	*/
+	function getEvents()
+	{
+		$query='SELECT evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text 
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS evt 
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = evt.sports_type_id 
+				WHERE evt.published=1 
+				ORDER BY evt.name ASC ';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		foreach ($result as $position){$position->text=JText::_($position->text);}
+		return $result;
+	}
+    
+    /**
+	* Method to return the position events array (id,name)
+	*
+	* @access  public
+	* @return  array
+	* @since 0.1
+	*/
+	function getEventsPosition($id)
+	{
+		$query='	SELECT	p.id AS value,
+							concat(p.name, " (" , st.name, ")") AS text 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
+						ON pe.eventtype_id=p.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id 
+					WHERE pe.position_id='. $id.'
+					ORDER BY pe.ordering ASC ';
+
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		foreach ($result as $event){$event->text=JText::_($event->text);}
+		return $result;
+	}
+    
+    
+    
 
 }
 ?>

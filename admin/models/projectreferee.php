@@ -52,6 +52,7 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
@@ -60,6 +61,7 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 		{
 			return false;
 		}
+        
         
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projectreferees');

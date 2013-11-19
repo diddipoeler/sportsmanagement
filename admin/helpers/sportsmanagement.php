@@ -1633,5 +1633,29 @@ if (!$db->query())
 		return false;
 	}
     
+    static function getPictureClub($id)
+    {
+        $db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('logo_big'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club')
+        ->where('id = '.$id);    
+        $db->setQuery($query);
+		return $db->loadResult();
+    }
+    
+    static function getPicturePlayground($id)
+    {
+        $db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('picture'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground')
+        ->where('id = '.$id);    
+        $db->setQuery($query);
+		return $db->loadResult();    
+        
+    }
         
 }

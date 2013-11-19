@@ -90,9 +90,9 @@ var $_foldertype = '';
 
 		JHTML::_( 'behavior.modal', 'a.modal' );
 
-		$imageselect =	"\n&nbsp;<input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
-		$value . "\" disabled=\"disabled\" size=\"60\" />";
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
+		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
+		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
+		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
 		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
 		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
@@ -101,8 +101,8 @@ var $_foldertype = '';
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
 		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . JText::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		JText::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . JText::_( 'JCLEAR' ) . "</a></div></div>\n";
-		$imageselect .=	"\n<input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" />";
+		JText::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . JText::_( 'JCLEAR' ) . "</a></div></div></td></tr>\n";
+		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
 
 		return $imageselect;
 	}

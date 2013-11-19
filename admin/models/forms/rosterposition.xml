@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	
+addrulepath="/administrator/components/com_joomleague/models/rules"
+	addfieldpath="/administrator/components/com_joomleague/models/fields">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+   <field
+			name="id"
+			type="hidden"
+		/>
+<field
+			name="name"
+			type="text"
+			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_NAME"
+			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_NAME"
+			class="inputbox"
+			required="true"/>
+
+<field
+			name="short_name"
+			type="list"
+			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
+			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
+			class="inputbox"
+      default="HOME_POS"
+      size="2"
+			>
+      <option
+				value="HOME_POS">
+				HOME_POS</option>
+			<option
+				value="AWAY_POS">
+				AWAY_POS</option>
+		</field>
+		
+		<field
+			name="players"
+			type="text"
+			class="inputbox"
+			default="11"
+			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_PLAYERS"
+			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_PLAYERS"
+			/>
+			
+<field
+			name="country"
+			type="country"
+			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY"
+			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY"
+			class="inputbox">
+		<option value="">COM_JOOMLEAGUE_GLOBAL_SELECT_COUNTRY</option>
+	</field>
+                
+<field name="picture" 
+type="imagelist" 
+default="spielfeld_578x1050.png" 
+
+label="COM_JOOMLEAGUE_FES_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
+description="COM_JOOMLEAGUE_FES_DESC_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
+directory="images/com_sportsmanagement/database/rosterground" 
+/>	
+</fieldset>	
+  			
+</form>

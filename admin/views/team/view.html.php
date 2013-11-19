@@ -37,12 +37,14 @@ class sportsmanagementViewTeam extends JView
 		$this->script = $script;
         
         $this->item->club_id = $mainframe->getUserState( "$option.club_id", '0' );;
-		
+		//$this->item->season_ids = explode(",", $this->item->season_ids);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
+        
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 		$this->assignRef( 'extended', $extended );
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
         
-        $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);

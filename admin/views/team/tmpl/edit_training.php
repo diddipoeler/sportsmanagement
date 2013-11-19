@@ -1,13 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 ?>		
 			<fieldset class="adminform">
-				<legend>
-					<?php
-                    echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_TEAM_TITLE_TRAINING',
-												'<i>' . $this->item->name . '</i>');
-					
-					?>
-				</legend>
+				
 				<table class='admintable'>
 					<tr>
 						<td class='key' nowrap='nowrap'>

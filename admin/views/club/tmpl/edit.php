@@ -38,6 +38,16 @@ $fieldsets = $this->form->getFieldsets();
                 echo Countries::getCountryFlag($field->value);    
                 }
                 
+                if ( $field->name == 'jform[standard_playground]' )
+                {
+                //echo sportsmanagementHelper::getPicturePlayground($field->value);
+                $picture = sportsmanagementHelper::getPicturePlayground($field->value);
+                //echo $picture;
+                //echo JHTML::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
+                echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50px' )); 
+                     
+                }
+                
                 ?></li>
 			<?php endforeach; ?>
 			</ul>

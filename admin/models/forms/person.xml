@@ -238,7 +238,19 @@
 				filter="safehtml"/>			
 	</fieldset>	
   
+  <fieldset name="seasons" 
+  label="COM_SPORTSMANAGEMENT_TABS_SEASON"
+  description="COM_SPORTSMANAGEMENT_TABS_SEASON_DESC">		
 
+		<field
+			name="season_ids"
+			type="seasoncheckbox"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SEASONLIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SEASONLIST_DESC"
+			class="inputbox"/>	
+
+
+	</fieldset>
   
       			
 	<fieldset name="picture"

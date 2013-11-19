@@ -2,8 +2,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_DETAILS' );?>
-			</legend>
+			
 			<table class="admintable">
 					<?php foreach ($this->form->getFieldset('details') as $field): ?>
 					<tr>

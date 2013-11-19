@@ -25,6 +25,14 @@ $fieldsets = $this->form->getFieldsets();
                 {
                 echo Countries::getCountryFlag($field->value);    
                 }
+                if ( $field->name == 'jform[club_id]' )
+                {
+                //echo sportsmanagementHelper::getPictureClub($field->value); 
+                $picture = sportsmanagementHelper::getPictureClub($field->value);
+                //echo $picture;
+                //echo JHTML::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
+                echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));  
+                }
                 
                 ?></li>
 			<?php endforeach; ?>

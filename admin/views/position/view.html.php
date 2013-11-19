@@ -20,6 +20,7 @@ class sportsmanagementViewPosition extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
+        $document = JFactory::getDocument();
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -49,8 +50,71 @@ class sportsmanagementViewPosition extends JView
         //$lists['parents']=$parent_id;
 		unset($parent_id);
         
+        $mdlEventtypes = JModel::getInstance("Eventtypes", "sportsmanagementModel");
+        //build the html select list for events
+		$res=array();
+		$res1=array();
+		$notusedevents=array();
+		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
+		{
+			$lists['position_events']=JHTML::_(	'select.genericlist',$res,'position_eventslist[]',
+								' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($res)).'"',
+								'value','text');
+		}
+		else
+		{
+			$lists['position_events']='<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+		$res1 = $mdlEventtypes->getEvents();
+		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
+		{
+			if($res1!="")
+			foreach ($res1 as $miores1)
+			{
+				$used=0;
+				foreach ($res as $miores)
+				{
+					if ($miores1->text == $miores->text){$used=1;}
+				}
+				if ($used == 0){$notusedevents[]=$miores1;}
+			}
+		}
+		else
+		{
+			$notusedevents=$res1;
+		}
+
+		//build the html select list for events
+		if (($notusedevents) && (count($notusedevents) > 0))
+		{
+			$lists['events']=JHTML::_(	'select.genericlist',$notusedevents,'eventslist[]',
+							' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($notusedevents)).'"',
+							'value','text');
+		}
+		else
+		{
+			$lists['events']='<select name="eventslist[]" id="eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+		unset($res);
+		unset($res1);
+		unset($notusedevents);
+        
+        // position statistics
+        $mdlStatistics = JModel::getInstance("Statistics", "sportsmanagementModel");
+		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
+		$lists['position_statistic']=JHTML::_(	'select.genericlist',$position_stats,'position_statistic[]',
+							' style="width:250px; height:300px;" class="inputbox" id="position_statistic" multiple="true" size="'.max(10,count($position_stats)).'"',
+							'value','text');
+        $available_stats = $mdlStatistics->getAvailablePositionStatsOptions($this->item->id);
+		$lists['statistic']=JHTML::_(	'select.genericlist',$available_stats,'statistic[]',
+						' style="width:250px; height:300px;" class="inputbox" id="statistic" multiple="true" size="'.max(10,count($available_stats)).'"',
+						'value','text');
+                        
+                        
+        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        
         $this->assignRef('lists',$lists);
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();

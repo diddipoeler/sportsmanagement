@@ -7,11 +7,11 @@
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EXISTING_EVENTS'); ?></b><br /><?php echo $this->lists['events']; ?></td>
 			<td style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="moveLeftToRightEvents();"
+						onclick="move_list_items('eventslist','position_eventslist');"
 						value="&gt;&gt;" />
 				<br /><br />
 				<input  type="button" class="inputbox"
-						onclick="moveRightToLeftEvents();"
+						onclick="move_list_items('position_eventslist','eventslist');"
 						value="&lt;&lt;" />
 			</td>
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_ASSIGNED_EVENTS_TO_POS'); ?></b><br /><?php echo $this->lists['position_events']; ?></td>

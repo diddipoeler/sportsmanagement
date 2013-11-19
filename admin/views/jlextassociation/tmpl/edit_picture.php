@@ -2,8 +2,7 @@
 ?>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_PIC' );?>
-			</legend>
+			
 			<table class="admintable">
 					<?php foreach ($this->form->getFieldset('picture') as $field): ?>
 					<tr>

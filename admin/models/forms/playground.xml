@@ -127,7 +127,8 @@ label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_DESC"
 				class="inputbox"
-				preview="show"				
+				preview="show"	
+        targetfolder="playgrounds"			
 				directory=""/>				
 	</fieldset>
 

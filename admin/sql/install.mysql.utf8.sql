@@ -447,6 +447,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `associations` INT(11) NOT NULL DEFAULT '0',
   `extendeduser` TEXT NULL ,
+  `season_ids` TEXT NULL ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -848,6 +849,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `merge_clubs` VARCHAR(255) NOT NULL DEFAULT '' ,
   `extendeduser` TEXT NULL ,
+  `season_ids` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   INDEX `fk_club` (`club_id` ASC)

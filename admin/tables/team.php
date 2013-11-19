@@ -74,7 +74,18 @@ class sportsmanagementTableTeam extends JTable
 		return true;
 	}
 	
-	
+    public function bind($array, $ignore = '')
+   {
+      $mainframe = JFactory::getApplication();
+      $option = JRequest::getCmd('option');
+      //$mainframe->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array,true).'</pre>'   ),'');
+      //$mainframe->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array['season_ids'],true).'</pre>'   ),'');
+        
+      if (isset($array['season_ids']) && is_array($array['season_ids'])) {
+         $array['season_ids'] = implode(',', $array['season_ids']);
+      }
+      return parent::bind($array, $ignore);
+   }
     
     
 	

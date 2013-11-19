@@ -49,12 +49,21 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.eventtype', 'eventtype', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($option)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/events');
+        $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     

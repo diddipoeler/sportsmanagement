@@ -2,7 +2,9 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -72,10 +74,40 @@
 				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>	
+		
+		
+			
 	</fieldset>	
   
-  		
-	<fieldset name="picture">
+  <fieldset name="seasons" 
+  label="COM_SPORTSMANAGEMENT_TABS_SEASON"
+  description="COM_SPORTSMANAGEMENT_TABS_SEASON_DESC">		
+
+		<field
+			name="season_ids"
+			type="seasoncheckbox"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SEASONLIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SEASONLIST_DESC"
+			class="inputbox"/>	
+
+
+	</fieldset>		
+	
+  <fieldset name="description" 
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>		
+	
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -87,17 +119,23 @@
 				directory=""/>			
 	</fieldset>	
 
-	
-	<fieldset name="description">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
-				width="450" 
-				filter="safehtml"/>			
-	</fieldset>
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
+  </fieldset>
+
+  <fieldset name="extra_fields"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+  </fieldset>	
+	
+<fieldset name="training"
+  label="COM_SPORTSMANAGEMENT_TABS_TRAINING"
+  description="COM_SPORTSMANAGEMENT_TABS_TRAINING_DESC">
+  
+  </fieldset>	  
 
   		
 </form>

@@ -10,10 +10,6 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelperson extends JModelAdmin
 {
-
-    
-  
-  
   
     /**
 	 * Method override to check if you can edit an existing record.

@@ -242,6 +242,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="clubs_small"
 				directory=""/>	
 			<field
 				name="logo_middle"
@@ -251,6 +252,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="clubs_medium"
 				directory=""/>				
 			<field
 				name="logo_big"
@@ -260,6 +262,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="clubs_large"
 				directory=""/>				
 		   
        <field
@@ -270,6 +273,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="clubs_trikot_home"
 				directory=""/>				
 			<field
 				name="trikot_away"
@@ -279,6 +283,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="clubs_trikot_away"
 				directory=""/>	
 	</fieldset>	
 

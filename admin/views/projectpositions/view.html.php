@@ -220,7 +220,7 @@ class sportsmanagementViewprojectpositions extends JView
 		$this->assignRef('request_url',$uri->toString());
 */
 		
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/projectposition.js');
+        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         $this->assign('request_url',$uri->toString());
         $this->assign('user',JFactory::getUser());
         $this->assignRef('project',$project);

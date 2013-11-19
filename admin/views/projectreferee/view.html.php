@@ -62,14 +62,7 @@ class sportsmanagementViewProjectReferee extends JView
         $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
-        
-        //build the html select list for positions
-		//$refereepositions = array();
-		$refereepositions[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_POS'));
-        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
-	    $project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
-        
-        
+                      
         
         if ( $this->show_debug_info )
         {
@@ -77,16 +70,6 @@ class sportsmanagementViewProjectReferee extends JView
         }
         
         
-        $refereepositions = array_merge($refereepositions,$project_ref_positions);
-        $lists['refereepositions'] = JHTML::_(	'select.genericlist',
-												$refereepositions,
-												'project_position_id',
-												'class="inputbox" size="1"',
-												'value',
-												'text',$this->item->project_position_id);
-		unset($refereepositions);
-  
-		$this->assignRef('lists',			$lists);
 		//$this->assignRef('projectreferee',	$item);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'projectreferee');		
 		$this->assignRef( 'extended', $extended );
@@ -144,30 +127,12 @@ class sportsmanagementViewProjectReferee extends JView
 			}
 			JToolBarHelper::cancel('projectreferee.cancel', 'JTOOLBAR_CLOSE');
 		}
-    sportsmanagementHelper::ToolbarButtonOnlineHelp();    
-        
-        /*
-        JToolBarHelper::title(JText::_('Edit project depending referee data'),'Referees');
-
-		// Set toolbar items for the page
-		$edit=JRequest::getVar('edit',true);
-		$text=!$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
+    JToolBarHelper::divider();
 		
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));   
         
-        JToolBarHelper::save('projectreferee.save');
-
-		if (!$edit)
-		{
-			JToolBarHelper::cancel('projectreferee.cancel');
-		}
-		else
-		{
-			// for existing items the button is renamed `close` and the apply button is showed
-			JToolBarHelper::apply('projectreferee.apply');
-			JToolBarHelper::cancel('projectreferee.cancel','COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
-		}
-		//JLToolBarHelper::onlinehelp();
-        */
+        
 	}
     
     /**

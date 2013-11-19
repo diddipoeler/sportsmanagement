@@ -90,6 +90,7 @@ class sportsmanagementViewLeague extends JView
 			JToolBarHelper::cancel('league.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *
