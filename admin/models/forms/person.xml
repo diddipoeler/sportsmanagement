@@ -251,8 +251,115 @@
 
 
 	</fieldset>
+ 
+  <fieldset name="injury" 
+  label="COM_SPORTSMANAGEMENT_TABS_INJURY"
+  description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
+  <field
+			name="injury"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+  <field
+				name="injury_detail"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>	
+  <field
+			name="injury_date_start"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>
+	<field
+			name="injury_date_end"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>		
+	</fieldset>
+ 
+   <fieldset name="suspension" 
+  label="COM_SPORTSMANAGEMENT_TABS_SUSPENSION"
+  description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
+  <field
+			name="suspension"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>		
+  <field
+				name="suspension_detail"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>	
+  <field
+			name="susp_date_start"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>
+	<field
+			name="susp_date_end"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>		
+
+	</fieldset>
   
-      			
+<fieldset name="away" 
+  label="COM_SPORTSMANAGEMENT_TABS_AWAY"
+  description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
+  <field
+			name="away"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+  <field
+				name="away_detail"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>	
+  <field
+			name="away_date_start"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>
+	<field
+			name="away_date_end"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END_DESC"
+			class="inputbox"
+			format="%Y-%m-%d"/>		
+
+	</fieldset>
+  
+        			
 	<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">

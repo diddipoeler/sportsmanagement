@@ -3,7 +3,7 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 {
 	?>
 	<fieldset class="adminform">
-	<legend><?php echo JText::_($fieldset->name); ?></legend>
+	
 	<?php
 	$fields = $this->extended->getFieldset($fieldset->name);
 	

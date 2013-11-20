@@ -1,8 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 ?>
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_LEGEND'); ?>
-	</legend>
+	
 	<table class="admintable">
 	<tr>
 			<td class="key"><?php echo $this->form->getLabel('name'); ?></td>

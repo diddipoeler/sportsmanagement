@@ -68,8 +68,30 @@ class sportsmanagementViewTeamPlayer extends JView
         $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
-		
-        $matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
+        
+        // personendaten setzen
+        $this->form->setValue('injury',null,$project_person->injury);
+        $this->form->setValue('injury_date',null,$project_person->injury_date);
+        $this->form->setValue('injury_end',null,$project_person->injury_end);
+        $this->form->setValue('injury_detail',null,$project_person->injury_detail);
+        $this->form->setValue('injury_date_start',null,$project_person->injury_date_start);
+        $this->form->setValue('injury_date_end',null,$project_person->injury_date_end);
+        
+        $this->form->setValue('suspension',null,$project_person->suspension);
+        $this->form->setValue('suspension_date',null,$project_person->suspension_date);
+        $this->form->setValue('suspension_end',null,$project_person->suspension_end);
+        $this->form->setValue('suspension_detail',null,$project_person->suspension_detail);
+        $this->form->setValue('susp_date_start',null,$project_person->susp_date_start);
+        $this->form->setValue('susp_date_end',null,$project_person->susp_date_end);
+        
+        $this->form->setValue('away',null,$project_person->away);
+		$this->form->setValue('away_date',null,$project_person->away_date);
+        $this->form->setValue('away_end',null,$project_person->away_end);
+        $this->form->setValue('away_detail',null,$project_person->away_detail);
+        $this->form->setValue('away_date_start',null,$project_person->away_date_start);
+        $this->form->setValue('away_date_end',null,$project_person->away_date_end);
+        
+        //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
@@ -87,7 +109,7 @@ class sportsmanagementViewTeamPlayer extends JView
 												'text', $this->item->project_position_id );
 		unset($projectpositions);
         
-        
+/*        
         // injury details
 		$myoptions = array();
 		$myoptions[]		= JHTML::_( 'select.option', '0', JText::_( 'JNO' ) );
@@ -115,20 +137,7 @@ class sportsmanagementViewTeamPlayer extends JView
 											'value',
 											'text',
 											$this->item-->injury_end );
-/*
-		// suspension details
-		$myoptions		= array();
-		$myoptions[]	= JHTML::_('select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]	= JHTML::_('select.option', '1', JText::_( 'JYES' ));
-		$lists['suspension']		= JHTML::_( 'select.radiolist',
-												$myoptions,
-												'suspension',
-												'class="radio" size="1"',
-												'value',
-												'text',
-												$this->item-->suspension );
-		unset($myoptions);
-*/
+
 		$lists['suspension_date']	 = JHTML::_( 'select.genericlist',
 												$matchdays,
 												'suspension_date',
@@ -143,6 +152,8 @@ class sportsmanagementViewTeamPlayer extends JView
 												'value',
 												'text',
 												$this->item-->suspension_end );
+*/
+
 /*
 		// away details
 		$myoptions		= array();

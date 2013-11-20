@@ -224,10 +224,47 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $post=JRequest::get('post');
-       
+       $db		= $this->getDbo();
+	   $query	= $db->getQuery(true);
+        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       // update personendaten
+       // Fields to update.
+    $fields = array(
+    $db->quoteName('injury') .'=\''.$data['injury'].'\'',
+        $db->quoteName('injury_date') .'=\''.$data['injury_date'].'\'',
+        $db->quoteName('injury_end') .'=\''.$data['injury_end'].'\'',
+        $db->quoteName('injury_detail') .'=\''.$data['injury_detail'].'\'',
+        $db->quoteName('injury_date_start') .'=\''.$data['injury_date_start'].'\'',
+        $db->quoteName('injury_date_end') .'=\''.$data['injury_date_end'].'\'',
+        $db->quoteName('suspension') .'=\''.$data['suspension'].'\'',
+        $db->quoteName('suspension_date') .'=\''.$data['suspension_date'].'\'',
+        $db->quoteName('suspension_end') .'=\''.$data['suspension_end'].'\'',
+        $db->quoteName('suspension_detail') .'=\''.$data['suspension_detail'].'\'',
+        $db->quoteName('susp_date_start') .'=\''.$data['susp_date_start'].'\'',
+        $db->quoteName('susp_date_end') .'=\''.$data['susp_date_end'].'\'',
+        $db->quoteName('away') .'=\''.$data['away'].'\'',
+		$db->quoteName('away_date') .'=\''.$data['away_date'].'\'',
+        $db->quoteName('away_end') .'=\''.$data['away_end'].'\'',
+        $db->quoteName('away_detail') .'=\''.$data['away_detail'].'\'',
+        $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
+        $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\''
+        );
+     // Conditions for which records should be updated.
+    $conditions = array(
+    $db->quoteName('id') .'='. $data['person_id']
+    );
+     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $db->setQuery($query);   
+ 
+ if (!$db->query())
+		{
+		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+ 
+        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.

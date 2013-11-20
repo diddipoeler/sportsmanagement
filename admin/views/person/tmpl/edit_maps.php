@@ -21,7 +21,7 @@ function initialize() {
       position: start,
       map: map,
       icon: image,
-      title: '<?php echo $this->item->name?>'
+      title: '<?php echo $this->item->lastname.'-'.$this->item->firstname?>'
   });
     
     kartenwerte();
@@ -36,8 +36,7 @@ function initialize() {
 	} 
 </script>
 <fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS' );?>
-			</legend>
+			
 <body onLoad="initialize()">              
 
 <div id="map" style="width:400px; height:400px;"></div>

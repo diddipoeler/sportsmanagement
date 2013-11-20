@@ -28,6 +28,16 @@ class sportsmanagementViewrosterposition extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $document = JFactory::getDocument();
+        
+        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
+        {
+            $mainframe->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+        }
+        
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -50,6 +60,57 @@ class sportsmanagementViewrosterposition extends JView
         $mdlRosterpositions = JModel::getInstance("rosterpositions", "sportsmanagementModel");
         $bildpositionenhome = $mdlRosterpositions->getRosterHome();
         $bildpositionenaway = $mdlRosterpositions->getRosterAway();
+     
+     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition extended<br><pre>'.print_r($this->item->extended,true).'</pre>'),'Notice');
+     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterHome<br><pre>'.print_r($bildpositionenhome,true).'</pre>'),'Notice');
+     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
+     
+     if ( $this->item->id )   
+     {   
+        // bearbeiten positionen übergeben
+    $position = 1;
+    //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+		$jRegistry = new JRegistry;
+		$jRegistry->loadString($this->item->extended, 'ini');
+    
+    if ( !$this->item->extended )
+    {
+    $position = 1;
+    switch ($this->item->alias)
+    {
+    case 'HOME_POS':
+    for($a=0; $a < 11; $a++)
+    {
+    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenhome[$this->item->name][$a]['heim']['oben']);
+    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenhome[$this->item->name][$a]['heim']['links']);
+    $position++;
+    }
+    $this->assignRef('bildpositionen',$bildpositionenhome);
+    break;
+    case 'AWAY_POS':
+    for($a=0; $a < 11; $a++)
+    {
+    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenaway[$this->item->name][$a]['heim']['oben']);
+    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenaway[$this->item->name][$a]['heim']['links']);
+    $position++;
+    }
+    $this->assignRef('bildpositionen',$bildpositionenaway);
+    break;
+    }
+        
+    }
+    
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+    
+    for($a=0; $a < 11; $a++)
+    {
+    $bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
+    $bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
+    $position++;
+    }
+    $this->assignRef('bildpositionen',$bildpositionen);  
+    }
+    
         /*
         if ( !$this->item->extended )
         {
@@ -91,8 +152,8 @@ $javascript .= '    jQuery("#draggable_'.$a.'").draggable({stop: function(event,
     	// Show dropped position.
     	var Stoppos = jQuery(this).position();
     	jQuery("div#stop").text("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
-    	jQuery("#extended_COM_JOOMLEAGUE_EXT_ROSTERPOSITIONS_'.$a.'_TOP").val(Stoppos.top);
-      jQuery("#extended_COM_JOOMLEAGUE_EXT_ROSTERPOSITIONS_'.$a.'_LEFT").val(Stoppos.left);
+    	jQuery("#extended_COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$a.'_TOP").val(Stoppos.top);
+      jQuery("#extended_COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$a.'_LEFT").val(Stoppos.left);
     }});' . "\n";    
 }
 
@@ -360,20 +421,7 @@ $javascript .= "\n";
 		}
 		else
 		{
-		// bearbeiten positionen übergeben
-    $position = 1;
-    //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($this->item->extended, 'ini');
-    
-    for($a=0; $a < 11; $a++)
-    {
-    $bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_JOOMLEAGUE_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
-    $bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_JOOMLEAGUE_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionen);  
-          
+		          
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record
