@@ -1,105 +1,64 @@
 <?php
-/**
-* @copyright	Copyright (C) 2007-2012 JoomLeague.net. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 jimport('joomla.form.form');
 
-/**
- * HTML View class for the Joomleague component
- *
- * @author	Kurt Norgaz
- * @package	Joomleague
- * @since	1.5.01a
- */
 
-class JoomleagueViewPredictionTemplate extends JLGView
+/**
+ * sportsmanagementViewPredictionTemplate
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
+class sportsmanagementViewPredictionTemplate extends JView
 {
 	function display( $tpl = null )
 	{
 		$mainframe	=& JFactory::getApplication();
 
-		if ( $this->getLayout() == 'form' )
-		{
-			$this->_displayForm( $tpl );
-			return;
-		}
-
-		//get the prediction template
-		//$predictionTemplate =& $this->get( 'data' );
-
-		parent::display( $tpl );
-	}
-
-	function _displayForm( $tpl )
-	{
-		$mainframe			=& JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-
-		$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
-		$lists				= array();
-		$db					=& JFactory::getDBO();
-		$uri				=& JFactory::getURI();
-		$user 				=& JFactory::getUser();
-    $model = $this->getModel();
-        
-		$predictionTemplate	=& $this->get( 'Data' );
-        $mainframe->setUserState($option.'template_help',$predictionTemplate->template);
-        
-		$predictionGame		=$model->getPredictionGame( $prediction_id );
-		//$predictionGame		=& $this->getModel()->getPredictionGame( $prediction_id );
-		//$defaultpath		= JPATH_COMPONENT_SITE . DS . 'extensions'.DS.'predictiongame'.DS.'settings';
-		//$defaultpath		= JPATH_COMPONENT_SITE . DS . 'settings';
-		//$extensiontpath		= JPATH_COMPONENT_SITE . DS . 'extensions' . DS;
-		$isNew				= ( $predictionTemplate->id < 1 );
-
-		// fail if checked out not by 'me'
-		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
-		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_JOOMLEAGUE_ADMIN_PTMPL_THE_PTMPL' ), $predictionTemplate->name );
-			$app->redirect( 'index.php?option=' . $option, $msg );
-		}
-
-		// Edit or Create?
-		if ( !$isNew ) { $this->getModel()->checkout( $user->get( 'id' ) ); }
-
 		
+        
+        	// get the Data
+		//$form = $this->get('Form');
+		$item = $this->get('Item');
+		$script = $this->get('Script');
+ 
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) 
+		{
+			JError::raiseError(500, implode('<br />', $errors));
+			return false;
+		}
+		// Assign the Data
+        $templatepath=JPATH_COMPONENT_SITE.DS.'settings';
+    $xmlfile=$templatepath.DS.'default'.DS.$item->template.'.xml';
     
-    $templatepath=JPATH_COMPONENT_SITE.DS.'settings';
-    $xmlfile=$templatepath.DS.'default'.DS.$predictionTemplate->template.'.xml';
-    $jRegistry = new JRegistry;
-		$jRegistry->loadString($predictionTemplate->params, 'ini');
-		$form =& JForm::getInstance($predictionTemplate->template, $xmlfile, 
-									array('control'=> 'params'));
-		$form->bind($jRegistry);
-		
-		$this->assignRef('request_url',$uri->toString());
-		$this->assignRef('template',$predictionTemplate);
-		$this->assignRef('form',$form);
-		$this->assignRef('user',$user);
-		
-// 		$params = new JLParameter( $predictionTemplate->params, $xmlfile );
-//     $this->assignRef('form'      	, $this->get('form'));
-// 		$this->assignRef( 'predictionTemplate',	$predictionTemplate );
- 		$this->assignRef( 'predictionGame',		$predictionGame );
-// 		$this->assignRef( 'pred_id',			$prediction_id );
-// 		$this->assignRef( 'params',				$params );
-// 		$this->assignRef( 'lists',				$lists );
-// 		$this->assignRef( 'user',				$user );
-    $this->addToolbar();
+    //$jRegistry = new JRegistry;
+//		$jRegistry->loadString($item->params, 'ini');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
+        
+        //$jRegistry->loadJSON($item->params);
+        //$item->params = $jRegistry->toArray($item->params);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
+        
+		$form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
+		//$form->bind($jRegistry);
+        $form->bind($item->params);
+		$this->form = $form;
+		$this->item = $item;
+		$this->script = $script;
+        $this->assign('user',JFactory::getUser() );
+$this->addToolbar();
 		parent::display( $tpl );
 	}
+
+	
 
   /**
 	* Add the page title and toolbar.
@@ -108,26 +67,50 @@ class JoomleagueViewPredictionTemplate extends JLGView
 	*/
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
-		$edit=JRequest::getVar('edit',true);
-	
-		JLToolBarHelper::save('predictiontemplate.save');
-		JLToolBarHelper::apply('predictiontemplate.apply');
-
-		if (!$edit)
+		
+        
+        JRequest::setVar('hidemainmenu', true);
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		$isNew = $this->item->id == 0;
+		$canDo = sportsmanagementHelper::getActions($this->item->id);
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT'), 'helloworld');
+		// Built the actions for new and existing records.
+		if ($isNew) 
 		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PREDICTION_TEMPLATE_ADD_NEW'));
-			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('predictiontemplate.cancel');
-		}		
-		else
-		{		
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PREDICTION_TEMPLATE_EDIT'),'FrontendSettings');
-			JToolBarHelper::divider();
-			// for existing items the button is renamed `close`
-			JLToolBarHelper::cancel('predictiontemplate.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
+			// For new records, check the create permission.
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::apply('predictiontemplate.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('predictiontemplate.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom('predictiontemplate.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			}
+			JToolBarHelper::cancel('predictiontemplate.cancel', 'JTOOLBAR_CANCEL');
 		}
-		JLToolBarHelper::onlinehelp();
+		else
+		{
+			if ($canDo->get('core.edit'))
+			{
+				// We can save the new record
+				JToolBarHelper::apply('predictiontemplate.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('predictiontemplate.save', 'JTOOLBAR_SAVE');
+ 
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create')) 
+				{
+					JToolBarHelper::custom('predictiontemplate.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) 
+			{
+				JToolBarHelper::custom('predictiontemplate.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
+			JToolBarHelper::cancel('predictiontemplate.cancel', 'JTOOLBAR_CLOSE');
+		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences('com_sportsmanagement');
+        
 	}		
 	
 }

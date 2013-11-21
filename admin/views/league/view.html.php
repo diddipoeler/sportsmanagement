@@ -89,6 +89,9 @@ class sportsmanagementViewLeague extends JView
 			}
 			JToolBarHelper::cancel('league.cancel', 'JTOOLBAR_CLOSE');
 		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences('com_sportsmanagement');
 	}
     
 	/**

@@ -1,7 +1,4 @@
 <?php
-
-
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -9,6 +6,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.modeladmin');
 
 
+/**
+ * sportsmanagementModelPredictionTemplate
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementModelPredictionTemplate extends JModelAdmin
 {
 
@@ -93,7 +99,37 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 		return $data;
 	}
 
-	
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $post=JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['params']) && is_array($post['params'])) 
+		{
+			// Convert the params field to a string.
+			//$parameter = new JRegistry;
+			//$parameter->loadArray($post['params']);
+            $paramsString = json_encode( $post['params'] );
+			//$data['params'] = (string)$parameter;
+            $data['params'] = $paramsString;
+            
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
 	
 	
 

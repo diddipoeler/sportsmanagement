@@ -140,7 +140,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	{
 		$query = '	SELECT	*
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game
-					WHERE id = ' . (int) $id;
+					WHERE id = ' .  $id;
 
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObject() )

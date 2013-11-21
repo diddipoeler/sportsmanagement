@@ -18,7 +18,11 @@ class sportsmanagementViewPredictionTemplates extends JView
     $option = JRequest::getCmd('option');
     $model = $this->getModel();
     
-		$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
+		//$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
+        
+        $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id_select', '0' );
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplates prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+        
         //$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
 		$lists				= array();
 		
@@ -29,13 +33,23 @@ class sportsmanagementViewPredictionTemplates extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 		
+        //$this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         $mdlPredictionGame = JModel::getInstance("PredictionGame", "sportsmanagementModel");
         $mdlPredictionGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
+        $mdlPredictionTemplates = JModel::getInstance("PredictionTemplates", "sportsmanagementModel");
+        
+        
+        
+        if ( $this->prediction_id )
+        {
+        $checkTemplates  = $mdlPredictionTemplates->checklist($this->prediction_id);    
         $predictiongame		= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
+        }
         
 //echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order',		'filter_order',		'tmpl.title',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
+        
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -47,15 +61,19 @@ class sportsmanagementViewPredictionTemplates extends JView
         { 
             $predictions = array_merge( $predictions, $res ); 
             }
+            //$this->prediction_id = 0;
+
             
 		$lists['predictions'] = JHTML::_(	'select.genericlist',
 											$predictions,
-											'prediction_id',
+											'prediction_id_select',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
 											$this->prediction_id
 										);
+
+                                        
 		unset( $res );
 /*
 		// Set toolbar items for the page

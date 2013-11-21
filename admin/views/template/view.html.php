@@ -42,13 +42,15 @@ class sportsmanagementViewTemplate extends JView
 		//$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
-        
+ 
+ /*       
         if (is_array($item->params))
         {
         $mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');  
         $item->params = json_encode($item->params,true);  
         $mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');
         }
+ */
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -61,80 +63,25 @@ class sportsmanagementViewTemplate extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
-        $templatepath=JPATH_COMPONENT_SITE.DS.'settings';
-        $xmlfile=$templatepath.DS.'default'.DS.$item->template.'.xml';
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
+        $templatepath = JPATH_COMPONENT_SITE.DS.'settings';
+        $xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
         
-        $jRegistry = new JRegistry;
-		//$jRegistry->loadString($data, $format);
-        $jRegistry->loadJSON($item->params);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
-        if ( JForm::getInstance($item->template, $xmlfile,array('control'=> 'params')) )
-        {
         $form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
-		$form->bind($jRegistry);    
-        }
-		
+		//$form->bind($jRegistry);
+        $form->bind($item->params);
         
+        
+             
         
         // Assign the Data
-		//$this->form = $form;
+		$this->form = $form;
 		//$this->item = $item;
 		$this->script = $script;
         
-/*
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATE_THETEMPLATE'),$template->name);
-			$app->redirect('index.php?option='.$option,$msg);
-		}
 
-		$projectws =& $this->get('Data','projectws');
-		$templatepath=JPATH_COMPONENT_SITE.DS.'settings';
-		$xmlfile=$templatepath.DS.'default'.DS.$template->template.'.xml';
-		
-		$mainframe->setUserState($option.'template_help',$template->template);
-		
-		$extensions = JoomleagueHelper::getExtensions(JRequest::getInt('p'));
-		foreach ($extensions as $e => $extension) {
-			$extensiontpath =  JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension;
-			if (is_dir($extensiontpath.DS.'settings'.DS.'default'))
-			{
-				if (file_exists($extensiontpath.DS.'settings'.DS.'default'.DS.$template->template.'.xml'))
-				{
-					$xmlfile=$extensiontpath.DS.'settings'.DS.'default'.DS.$template->template.'.xml';
-				}
-			}
-		}
-		
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($template->params, 'ini');
-
-		$form =& JForm::getInstance($template->template, $xmlfile, 
-									array('control'=> 'params'));
-		$form->bind($jRegistry);
-		$form_value = $form->getValue('person_events');
-        if ( $form_value )
-        {
-            $form->setValue('person_events', null,explode(",",$form_value));
-        }
-        
-        
-		$master_id=($projectws->master_template) ? $projectws->master_template : '-1';
-		$templates=array();
-		//$templates[]=JHTML::_('select.option','0',JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATE_OTHER_TEMPLATE' ),'value','text');
-		if ($res=$model->getAllTemplatesList($projectws->id,$master_id)){$templates=array_merge($templates,$res);}
-		$lists['templates']=JHTMLSelect::genericlist(	$templates,
-														'select_id',
-														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'template.apply\');"',
-														'value',
-														'text',
-														$template->id);
-		unset($res);
-		unset($templates);
-*/
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
         $templates=array();
         $res = $model->getAllTemplatesList($project->id,$master_id);
@@ -149,7 +96,6 @@ class sportsmanagementViewTemplate extends JView
         
         $this->assign('request_url',$uri->toString());
 		$this->assignRef('template',$item);
-		$this->assignRef('form',$form);
 		$this->assignRef('project',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('user',$user);

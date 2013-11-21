@@ -1,8 +1,9 @@
 <?php defined('_JEXEC') or die('Restricted access');
-
+/*
 JHTMLBehavior::formvalidation();
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
-
+JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
+*/
 //$component_text = 'COM_JOOMLEAGUE_';
 
 $i    = 1;
@@ -16,7 +17,7 @@ $i    = 1;
 	}
 	-->
 </style>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
 	
 	<?php
 	
@@ -59,8 +60,8 @@ $i    = 1;
     <?php echo JHtml::_('tabs.end'); ?>
 	<div>		
 		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
-		<input type="hidden" name="cid[]" value="<?php echo $this->template->id; ?>"/>
-		<input type="hidden" name="task" value=""/>
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
+		<input type="hidden" name="task" value="predictiontemplate.edit"/>
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

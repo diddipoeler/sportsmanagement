@@ -125,18 +125,20 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $post=JRequest::get('post');
        
-       $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
-       if (isset($post['extended']) && is_array($post['extended'])) 
+       if (isset($post['params']) && is_array($post['params'])) 
 		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
+			// Convert the params field to a string.
+			//$parameter = new JRegistry;
+			//$parameter->loadArray($post['params']);
+            $paramsString = json_encode( $post['params'] );
+			//$data['params'] = (string)$parameter;
+            $data['params'] = $paramsString;
 		}
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

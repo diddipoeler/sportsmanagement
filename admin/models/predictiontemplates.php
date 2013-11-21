@@ -1,7 +1,4 @@
 <?php
-
-
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -9,6 +6,15 @@ jimport( 'joomla.application.component.modellist' );
 
 
 
+/**
+ * sportsmanagementModelPredictionTemplates
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementModelPredictionTemplates extends JModelList
 {
 
@@ -48,12 +54,13 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order',		'filter_order',		'tmpl.title',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
 
 		$where = array();
-		$prediction_id = (int) $mainframe->getUserState( 'com_joomleague' . 'prediction_id' );
-		if ( $prediction_id > 0 )
+		$prediction_id = (int) $mainframe->getUserState( 'com_joomleague' . 'prediction_id_select' );
+		//$prediction_id = $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier, 'prediction_id_select', '0' );
+        if ( $prediction_id > 0 )
 		{
 			$where[] = 'tmpl.prediction_id = ' . $prediction_id;
 		}
@@ -67,8 +74,8 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order',		'filter_order',		'tmpl.title',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
 
 		if ( $filter_order == 'tmpl.title' )
 		{
@@ -89,11 +96,11 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 	 * check that all prediction templates in default location have a corresponding record, except if game has a master template
 	 *
 	 */
-	function checklist()
+	function checklist($prediction_id)
 	{
-	  $mainframe		=& JFactory::getApplication();
+	  $mainframe		= JFactory::getApplication();
       $option = JRequest::getCmd('option');
-		$prediction_id	= $this->_prediction_id;
+		//$prediction_id	= $this->_prediction_id;
 		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DS.'settings';
 		$defaultpath	= JPATH_COMPONENT_SITE.DS.'settings';
     //$extensionspath	= JPATH_COMPONENT_SITE . DS . 'extensions' . DS;
@@ -107,7 +114,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 
 		// get info from prediction game
 		$query = 'SELECT master_template 
-					FROM #__joomleague_prediction_game 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game 
 					WHERE id = ' . (int) $prediction_id;
 
 		$this->_db->setQuery($query);
@@ -118,7 +125,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 
 		// otherwise, compare the records with the files // get records
 		$query = 'SELECT template 
-					FROM #__joomleague_prediction_template 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
 					WHERE prediction_id = ' . (int) $prediction_id;
 
 		$this->_db->setQuery($query);
@@ -190,13 +197,16 @@ class sportsmanagementModelPredictionTemplates extends JModelList
                             
 //$mainframe->enqueueMessage(JText::_('defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>' ),'');
                             
-							$defaultvalues = ereg_replace('"', '', $defaultvalues);
+							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
                             //$defaultvalues = preg_replace('"', '', $defaultvalues);
 							//$defaultvalues = implode('\n', $defaultvalues);
 							//echo 'defaultvalues<br /><pre>~' . print_r($defaultvalues,true) . '~</pre><br />';
 							
-							$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
-							$tblTemplate_Config->template = $template;
+							//$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
+                            $mdl = JModel::getInstance("predictiontemplate", "sportsmanagementModel");
+                            $tblTemplate_Config = $mdl->getTable();
+							
+                            $tblTemplate_Config->template = $template;
                             if ( $attributetitle )
                             {
                                 $tblTemplate_Config->title = $attributetitle;
