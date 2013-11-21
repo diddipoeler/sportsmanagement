@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 
 
 
-class sportsmanagementViewPredictionGame extends JView
+class sportsmanagementViewpredictionproject extends JView
 {
 	function display($tpl=null)
 	{
@@ -39,8 +39,8 @@ class sportsmanagementViewPredictionGame extends JView
 		$item = $this->get('Item');
 		$script = $this->get('Script');
         
-        $pred_admins = $model->getAdmins($item->id);
-		$pred_projects = $model->getPredictionProjectIDs($item->id);
+        //$pred_admins = $model->getAdmins($item->id);
+		//$pred_projects = $model->getPredictionProjectIDs($item->id);
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -53,8 +53,8 @@ class sportsmanagementViewPredictionGame extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
-        $this->form->setValue('user_ids',null,$pred_admins);
-        $this->form->setValue('project_ids',null,$pred_projects);
+        //$this->form->setValue('user_ids',null,$pred_admins);
+        //$this->form->setValue('project_ids',null,$pred_projects);
         
 		//$extended = sportsmanagementHelper::getExtended($item->extended, 'predictiongame');
 		//$this->assignRef( 'extended', $extended );

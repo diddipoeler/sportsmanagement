@@ -180,8 +180,8 @@ JHTML::_('behavior.modal');
 						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW' ); ?></th>
 						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER' ); ?></th>
 						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP' ); ?></th>
-						<th class='title'><?php echo JText::_( 'JL_GLOBAL_PUBLISHED' ); ?></th>
-						<th class='title'><?php echo JText::_( 'JL_GLOBAL_ID' ); ?></th>
+						<th class='title'><?php echo JText::_( 'JSTATUS' ); ?></th>
+						<th class='title'><?php echo JText::_( 'JGRID_HEADING_ID' ); ?></th>
 					</tr>
 				</thead>
 				<?php
@@ -194,14 +194,18 @@ JHTML::_('behavior.modal');
 						//echo '<br />#<pre>'; print_r( $pred_project ); echo '</pre>#<br />';
 						$link = JRoute::_(	'index.php?option=com_sportsmanagement&' .
 											'' .
-											'task=predictiongame.predsettings&cid[]=' . $pred_project['id'] );
+											'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'] );
+                                            
+                                            
 						?>
 						<tr class='<?php echo "row$k"; ?>'>
 							<td style='text-align:right; '>&nbsp;</td>
 							<td style='text-align:center; '><?php echo $ii+1; ?></td>
 							<td style='text-align:center; '>&nbsp;</td>
 							<td>
-								<a	href='<?php echo $link; ?>'
+								<a class="modal"	
+                                rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
+                                href='<?php echo $link; ?>'
 									title='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS' ); ?>' />
 									<?php echo $pred_project['project_name']; ?>
 								</a>
@@ -289,7 +293,7 @@ JHTML::_('behavior.modal');
 		?>
 	</div>
 
-	
+<input type="hidden" name="option" value="<?php echo $this->option; ?>" />	
 <input type="hidden" name="task" value="" />
 	<input type='hidden' name='boxchecked'			value='0' />
 	<input type='hidden' name='filter_order'		value='<?php echo $this->lists['order']; ?>' />

@@ -1,6 +1,4 @@
 <?php
-
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -20,8 +18,13 @@ class sportsmanagementViewPredictionGames extends JView
     $uri = JFactory::getURI();
     
 		//$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-         $this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
-		//echo '#' . $prediction_id . '#<br />';
+        //$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
+        $modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 600);
+        $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
+		$this->assignRef( 'modalheight',$modalheight );
+        $this->assignRef( 'modalwidth',$modalwidth );
+        
+        //echo '#' . $prediction_id . '#<br />';
     
     
 		$lists				= array();
@@ -33,6 +36,9 @@ class sportsmanagementViewPredictionGames extends JView
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
 		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_search','search','','string');
 		$search				= JString::strtolower( $search );
+        
+        $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
 
 $items = $this->get('Items');
 		$total = $this->get('Total');
@@ -109,6 +115,7 @@ $items = $this->get('Items');
 */
 		$this->assign( 'user',			JFactory::getUser() );
 		$this->assignRef( 'lists',			$lists );
+        $this->assignRef( 'option',			$option );
 		$this->assignRef( 'items',			$items );
 		$this->assignRef( 'dPredictionID',	$this->prediction_id );
 		$this->assignRef( 'pagination',		$pagination );
@@ -136,13 +143,7 @@ $items = $this->get('Items');
 		
         JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'pred-cpanel' );
 		
-     /*   
-		JToolBarHelper::addNew('predictiongroup.add');
-		JToolBarHelper::editList('predictiongroup.edit');
-		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
-        */
+    
         
         JToolBarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);

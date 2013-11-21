@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
+/*
 // Set toolbar items for the page
 $edit=JRequest::getVar('edit',true);
 $text=!$edit ? 'Add new settings' : 'Change settings of Prediction-Project';
@@ -34,6 +35,7 @@ else
 	JToolBarHelper::cancel('predictiongame.cancel',JText::_('JL_GLOBAL_CLOSE'));
 }
 JLToolBarHelper::onlinehelp();
+*/
 
 ?>
 <script type="text/javascript">
@@ -112,7 +114,9 @@ function change_champ () {
 <form method='post' name='adminForm' id='adminForm'>
 	<div class='col50'>
 		<?php
-		$pane =& JPane::getInstance('tabs',array('startOffset'=>0));
+		
+        /*
+        $pane =& JPane::getInstance('tabs',array('startOffset'=>0));
 		echo $pane->startPane('pane');
 		echo $pane->startPanel(JText::_('JL_TABS_DETAILS'),'panel1');
 		echo $this->loadTemplate('details');
@@ -123,6 +127,8 @@ function change_champ () {
 		echo $pane->endPanel();
 		
 		echo $pane->endPane();
+        */
+        
 		?>
 
 		<div class='clr'></div>

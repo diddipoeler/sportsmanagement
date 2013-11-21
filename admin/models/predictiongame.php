@@ -93,6 +93,32 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		return $data;
 	}
 	
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $option = JRequest::getCmd('option');
+	$mainframe	= JFactory::getApplication();
+    // Get a db connection.
+        $db = JFactory::getDbo();
+       $post=JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       self::storePredictionAdmins($data);
+       self::storePredictionProjects($data);
+       
+       // Proceed with the save
+		return parent::save($data);   
+    }   
+    
     function import()
     {
         $mainframe = JFactory::getApplication();
@@ -135,11 +161,11 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	* @return  array
 	* @since 0.1
 	*/
-	function getPredictionProjectIDs()
+	function getPredictionProjectIDs($prediction_id)
 	{
 		$query = 'SELECT project_id 
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project 
-					WHERE prediction_id=' . (int) $this->_id;
+					WHERE prediction_id=' . $prediction_id;
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
@@ -164,7 +190,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		}
 	}
 
-	function getAdmins($list=false)
+	function getAdmins($prediction_id,$list=false)
 	{
 		$as_what = '';
 		if ( $list )
@@ -172,8 +198,8 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$as_what = ' AS value';
 		}
 		$query = "SELECT user_id" . $as_what . " 
-					FROM #__joomleague_prediction_admin 
-					WHERE prediction_id = " . (int) $this->_id;
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin 
+					WHERE prediction_id = " . $prediction_id;
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
 		if ( $list )
@@ -186,32 +212,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		}
 	}
 
-	/**
-	 * Method to return a joomla users array (id, name)
-	 *
-	 * @access	public
-	 * @return	array
-	 *
-	 */
-	function getJLUsers()
-	{
-		$query = "	SELECT	id AS value,
-							name AS text
-					FROM #__users
-					ORDER by name";
 
-		$this->_db->setQuery( $query );
-
-		if ( !$result = $this->_db->loadObjectList() )
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
-	}
 
 
 
@@ -245,12 +246,14 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 	function storePredictionAdmins($data)
 	{
- 		$result	= true;
+ 		$option = JRequest::getCmd('option');
+	$mainframe	= JFactory::getApplication();
+         $result	= true;
 		$peid	= ( isset( $data['user_ids'] ) ? $data['user_ids'] : array() );
 		JArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 
-		$query = 'DELETE FROM #__joomleague_prediction_admin WHERE prediction_id = ' . $data['id'];
+		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin WHERE prediction_id = ' . $data['id'];
 		if ( count( $peid ) ) { $query .= ' AND user_id NOT IN (' . $peids . ')'; }
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
@@ -259,24 +262,11 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->setError( $this->_db->getErrorMsg() );
 			$result = false;
 		}
-
-		/*
-		for ( $x = 0; $x < count( $peid ); $x++ )
-		{
-			$query = "	UPDATE	#__joomleague_prediction_admin
-						SET ordering='$x' WHERE prediction_id = '" . $data['id'] . "' AND user_id = '" . $peid[$x] . "'";
- 			$this->_db->setQuery( $query );
-			if( !$this->_db->query() )
-			{
-				$this->setError( $this->_db->getErrorMsg() );
-				$result= false;
-			}
-		}
-		*/
+	
 
 		for ( $x = 0; $x < count( $peid ); $x++ )
 		{
-			$query = "INSERT IGNORE INTO #__joomleague_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
+			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
 //echo $query . '<br />';
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
@@ -285,59 +275,26 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 				$result= false;
 			}
 		}
-	/*
- 		$result	= true;
-		$peid	= (isset($data['position_statistic']) ? $data['position_statistic'] : array());
-		JArrayHelper::toInteger( $peid );
-		$peids = implode( ',', $peid );
-
-		$query = ' DELETE	FROM #__joomleague_position_statistic '
-		       . ' WHERE position_id = ' . $data['id']
-		       ;
-		if (count($peid)) {
-			$query .= '   AND statistic_id NOT IN  (' . $peids . ')';
-		}
-
-		$this->_db->setQuery( $query );
-		if( !$this->_db->query() )
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			$result = false;
-		}
-
-		for ( $x = 0; $x < count($peid); $x++ )
-		{
-			$query = "UPDATE #__joomleague_position_statistic SET ordering='$x' WHERE position_id = '" . $data['id'] . "' AND statistic_id = '" . $peid[$x] . "'";
- 			$this->_db->setQuery( $query );
-			if( !$this->_db->query() )
-			{
-				$this->setError( $this->_db->getErrorMsg() );
-				$result= false;
-			}
-		}
-		for ( $x = 0; $x < count($peid); $x++ )
-		{
-			$query = "INSERT IGNORE INTO #__joomleague_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "','" . $x . "')";
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
-			{
-				$this->setError( $this->_db->getErrorMsg() );
-				$result= false;
-			}
-		}
-*/
+        
+        if ( $result )
+        {
+            $mainframe->enqueueMessage(JText::_('Admins zum Tippspiel gespeichern'),'Notice');
+        }
+	
 
 		return $result;
 	}
 
 	function storePredictionProjects($data)
 	{
- 		$result	= true;
+ 		$option = JRequest::getCmd('option');
+	$mainframe	= JFactory::getApplication();
+         $result	= true;
 		$peid	= (isset($data['project_ids']) ? $data['project_ids'] : array());
 		JArrayHelper::toInteger($peid);
 		$peids = implode(',',$peid);
 
-		$query = 'DELETE FROM #__joomleague_prediction_project WHERE prediction_id = ' . $data['id'];
+		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project WHERE prediction_id = ' . $data['id'];
 		if (count($peid)){$query .= ' AND project_id NOT IN (' . $peids . ')';}
 		$this->_db->setQuery($query);
 		if(!$this->_db->query())
@@ -348,7 +305,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 		for ($x=0; $x < count($peid); $x++)
 		{
-			$query = "INSERT IGNORE INTO #__joomleague_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
+			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
@@ -356,6 +313,11 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 				$result= false;
 			}
 		}
+        
+        if ( $result )
+        {
+            $mainframe->enqueueMessage(JText::_('Projekte zum Tippspiel gespeichern'),'Notice');
+        }
 
 		return $result;
 	}
