@@ -91,7 +91,7 @@ abstract class sportsmanagementHelper
 	 * @param string $file
 	 * @return object
 	 */
-	function getExtended($data='', $file, $format='ini') {
+	static function getExtended($data='', $file, $format='ini') {
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		
     /*
@@ -111,8 +111,10 @@ abstract class sportsmanagementHelper
 		/*
 		 * extended data
 		*/
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($data, $format);
+		
+        $jRegistry = new JRegistry;
+		//$jRegistry->loadString($data, $format);
+        $jRegistry->loadJSON($data);
 		$extended = JForm::getInstance('extended', $xmlfile,
 				array('control'=> 'extended'),
 				false, '/config');
@@ -1252,15 +1254,22 @@ abstract class sportsmanagementHelper
 	}
     
     
-    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label')
+    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
+    
+    //$mainframe->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
+    
+    if ( !$view )
+    {
     $view = JRequest::getVar( "view") ;
-    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
-    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
-    $bar =& JToolBar::getInstance('toolbar');
-    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout);
+    }
+    $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+    $bar = JToolBar::getInstance('toolbar');
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type );
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
@@ -1269,10 +1278,10 @@ abstract class sportsmanagementHelper
     }
     
     
-    function ToolbarButtonOnlineHelp()
+    static function ToolbarButtonOnlineHelp()
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $view = JRequest::getVar( "view") ;
     $view = ucfirst(strtolower($view));
     
@@ -1286,9 +1295,9 @@ abstract class sportsmanagementHelper
     default:
     break;
     }
-    $cfg_help_server = JComponentHelper::getParams('com_joomleague')->get('cfg_help_server','') ;
-    $modal_popup_width = JComponentHelper::getParams('com_joomleague')->get('modal_popup_width',0) ;
-    $modal_popup_height = JComponentHelper::getParams('com_joomleague')->get('modal_popup_height',0) ;
+    $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+    $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+    $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
@@ -1307,7 +1316,7 @@ abstract class sportsmanagementHelper
 	function getRoundsOptions($project_id, $ordering='ASC', $required = false)
 	{
 		$mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
@@ -1370,12 +1379,15 @@ abstract class sportsmanagementHelper
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-    function checkUserExtraFields()
+    static function checkUserExtraFields()
     {
+         $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $db = JFactory::getDBO();
     $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
 			//echo '<pre>'.print_r($query,true).'</pre>';
-			$this->_db->setQuery($query);
-			if ($this->_db->loadResult())
+			$db->setQuery($query);
+			if ($db->loadResult())
 			{
 				return true;
 			}
@@ -1393,9 +1405,10 @@ abstract class sportsmanagementHelper
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-    function getUserExtraFields($jlid)
+    static function getUserExtraFields($jlid)
     {
-    	$query = "SELECT ef.*,
+    	$db = JFactory::getDBO();
+        $query = "SELECT ef.*,
         ev.fieldvalue as fvalue,
         ev.id as value_id 
         FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
@@ -1404,13 +1417,245 @@ abstract class sportsmanagementHelper
         AND ev.jl_id = ".$jlid." 
         WHERE ef.template_backend LIKE '".JRequest::getVar('view')."'  
         ORDER BY ef.ordering";    
-        $this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+        $db->setQuery($query);
+		if (!$result=$db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($db->getErrorMsg());
 			return false;
 		}
 		return $result;
     
-    }    
+    }
+    
+    
+    function saveExtraFields($post,$pid)
+  {
+    $mainframe = JFactory::getApplication();
+       $address_parts = array();
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+    
+    $db = JFactory::getDBO();
+  //-------extra fields-----------//
+		if(isset($post['extraf']) && count($post['extraf']))
+    {
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
+			for($p=0;$p<count($post['extraf']);$p++)
+            {
+                // Create a new query object.
+                $query = $db->getQuery(true);
+// delete all
+$conditions = array(
+    $db->quoteName('field_id') . '='.$post['extra_id'][$p],
+    $db->quoteName('jl_id') . '='.$pid
+);
+ 
+$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values'));
+$query->where($conditions);
+ 
+$db->setQuery($query);  
+
+if (!$db->query())
+		{
+			
+            $mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        
+// Create a new query object.
+        $query = $db->getQuery(true);
+        // Insert columns.
+        $columns = array('field_id','jl_id','fieldvalue');
+        // Insert values.
+        $values = array($post['extra_id'][$p],$pid,'\''.$post['extraf'][$p].'\'');
+        // Prepare the insert query.
+        $query
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        $db->setQuery($query);
+
+if (!$db->query())
+		{
+			
+            $mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        
+/*
+				$query = "DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_values WHERE f_id = ".$post['extra_id'][$p]." AND uid = ".$pid;
+				$db->setQuery($query);
+				$db->query();
+                */
+                /*
+				$query = "INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_values(f_id,uid,fvalue) VALUES(".$post['extra_id'][$p].",".$pid.",'".$post['extraf'][$p]."')";
+				$db->setQuery($query);
+				$db->query();
+                */
+			}
+		}
+  
+  }
+    
+    /**
+	* Fetch google map data refere to
+	* http://code.google.com/apis/maps/documentation/geocoding/#Geocoding	 
+	*/	 	
+	public function getAddressData($address)
+	{
+
+		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address='.urlencode($address) .'&sensor=false&language=de';
+		$content = self::getContent($url);
+		
+		$status = null;	
+		if(!empty($content))
+		{
+			$json = new Services_JSON();
+			$status = $json->decode($content);
+		}
+
+		return $status;
+	}
+    
+    public function resolveLocation($address)
+	{
+		$mainframe = JFactory::getApplication();
+    $coords = array();
+		$data = self::getAddressData($address);
+		//$mainframe->enqueueMessage(JText::_('google -> '.'<pre>'.print_r($data,true).'</pre>' ),'');
+		if($data){
+			if($data->status == 'OK')
+			{
+				$this->latitude  = $data->results[0]->geometry->location->lat;
+				$coords['latitude'] = $data->results[0]->geometry->location->lat; 
+				$this->longitude = $data->results[0]->geometry->location->lng;
+				$coords['longitude'] = $data->results[0]->geometry->location->lng;
+				
+				for ($a=0; $a < sizeof($data->results[0]->address_components); $a++ )
+				{
+        switch($data->results[0]->address_components[$a]->types[0])
+        {
+        case 'administrative_area_level_1':
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
+        break;
+        
+        case 'administrative_area_level_2':
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
+        break;
+        
+        case 'administrative_area_level_3':
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+        $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
+        break;
+
+        case 'locality':
+        $coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+        break;
+        
+        case 'sublocality':
+        $coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+        break;
+                        
+        }
+                
+        
+        }
+				
+				
+				return $coords;
+			}
+		}
+	}
+    
+    // Return content of the given url
+	static public function getContent($url , $raw = false , $headerOnly = false)
+	{
+		if (!$url)
+			return false;
+		
+		if (function_exists('curl_init'))
+		{
+			$ch			= curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_HEADER, true );
+			
+			if($raw){
+				curl_setopt($ch, CURLOPT_BINARYTRANSFER, true );
+			}
+
+			$response	= curl_exec($ch);
+			
+			$curl_errno	= curl_errno($ch);
+			$curl_error	= curl_error($ch);
+			
+			if ($curl_errno!=0)
+			{
+				$mainframe	= JFactory::getApplication();
+				$err		= 'CURL error : '.$curl_errno.' '.$curl_error;
+				$mainframe->enqueueMessage($err, 'error');
+			}
+			
+			$code		= curl_getinfo( $ch , CURLINFO_HTTP_CODE );
+
+			// For redirects, we need to handle this properly instead of using CURLOPT_FOLLOWLOCATION
+			// as it doesn't work with safe_mode or openbase_dir set.
+			if( $code == 301 || $code == 302 )
+			{
+				list( $headers , $body ) = explode( "\r\n\r\n" , $response , 2 );
+				
+				preg_match( "/(Location:|URI:)(.*?)\n/" , $headers , $matches );
+				
+				if( !empty( $matches ) && isset( $matches[2] ) )
+				{
+					$url	= JString::trim( $matches[2] );
+					curl_setopt( $ch , CURLOPT_URL , $url );
+					curl_setopt( $ch , CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt( $ch , CURLOPT_HEADER, true );
+					$response	= curl_exec( $ch );
+				}
+			}
+			
+			
+			if(!$raw){
+				list( $headers , $body )	= explode( "\r\n\r\n" , $response , 2 );
+			}
+			
+			$ret	= $raw ? $response : $body;
+			$ret	= $headerOnly ? $headers : $ret;
+			
+			curl_close($ch);
+			return $ret;
+		}
+	
+		// CURL unavailable on this install
+		return false;
+	}
+    
+    static function getPictureClub($id)
+    {
+        $db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('logo_big'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club')
+        ->where('id = '.$id);    
+        $db->setQuery($query);
+		return $db->loadResult();
+    }
+    
+    static function getPicturePlayground($id)
+    {
+        $db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('picture'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground')
+        ->where('id = '.$id);    
+        $db->setQuery($query);
+		return $db->loadResult();    
+        
+    }
+        
 }

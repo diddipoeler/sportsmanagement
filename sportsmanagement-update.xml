@@ -1,45 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
    <update>
-      <name>HelloWorld</name>
-      <description>HelloWorld Component</description>
-      <element>com_helloworld</element>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
       <type>component</type>
-      <version>1.5.0</version>
- 
-      <infourl title="HalloWorld URL">http://yourdomain.com</infourl>
+      <version>1.0.00</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
       <downloads>
-         <downloadurl type="full" format="tgz">http://yourdomain.com/files/com_helloworld-1.5.0-final.zip</downloadurl>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
       </downloads>
       <tags>
          <tag>some-tag</tag>
       </tags>
- 
-      <maintainer>HelloWorld Inc.</maintainer>
-      <maintainerurl>http://yourdomain.com</maintainerurl>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
-      <targetplatform name="joomla" version="1.6" />
+      <targetplatform name="joomla" version="2.5" />
    </update>
- 
-    <update>
-      <name>HelloWorld</name>
-      <description>HelloWorld Component</description>
-      <element>com_helloworld</element>
+   
+   <update>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
       <type>component</type>
-      <version>1.5.1</version>
- 
-      <infourl title="HalloWorld URL">http://yourdomain.com</infourl>
+      <version>1.0.01</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
       <downloads>
-         <downloadurl type="full" format="tgz">http://yourdomain.com/files/com_helloworld-1.5.1-final.zip</downloadurl>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
       </downloads>
       <tags>
          <tag>some-tag</tag>
       </tags>
- 
-      <maintainer>HelloWorld Inc.</maintainer>
-      <maintainerurl>http://yourdomain.com</maintainerurl>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
-      <targetplatform name="joomla" version="1.6" />
+      <targetplatform name="joomla" version="2.5" />
    </update>
+   
+   <update>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
+      <type>component</type>
+      <version>1.0.02</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
+      <downloads>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="2.5" />
+   </update>
+   
+   <update>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
+      <type>component</type>
+      <version>1.0.03</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
+      <downloads>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="2.5" />
+   </update>
+   
+   <update>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
+      <type>component</type>
+      <version>1.0.04</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
+      <downloads>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="2.5" />
+   </update>
+   
+   <update>
+      <name>Sports-Management</name>
+      <description>Sports-Management Component</description>
+      <element>com_sportsmanagement</element>
+      <type>component</type>
+      <version>1.0.05</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
+      <downloads>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="2.5" />
+   </update>
+ 
+    
  
 </updates>

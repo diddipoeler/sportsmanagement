@@ -59,7 +59,7 @@ class sportsmanagementViewImagehandler extends JView  {
 
 		//get images
 		$images 	= $this->get('Images');
-		$pageNav 	= & $this->get('Pagination');
+		$pageNav 	= $this->get('Pagination');
 
 		if (count($images) > 0 || $search) {
 			$this->assignRef('images', 	$images);
@@ -76,7 +76,7 @@ class sportsmanagementViewImagehandler extends JView  {
 			//no images in the folder, redirect to uploadscreen and raise notice
 			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
 			$this->setLayout('upload');
-			$this->assignRef('form'      	, $this->get('form'));
+			$this->assign('form'      	, $this->get('form'));
 			$this->_displayupload($tpl);
 			return;
 		}
@@ -106,7 +106,7 @@ class sportsmanagementViewImagehandler extends JView  {
 		//initialise variables
 		$document	= JFactory::getDocument();
 		$uri 		= JFactory::getURI();
-		$params 	= & JComponentHelper::getParams('com_sportsmanagement');
+		$params 	= JComponentHelper::getParams($option);
 		$type     	= JRequest::getVar( 'type' );
 		$folder 	= ImageSelect::getfolder($type);
 		$field  	= JRequest::getVar( 'field' );
@@ -116,11 +116,11 @@ class sportsmanagementViewImagehandler extends JView  {
 		$task 		= JRequest::getVar( 'task' );
 
 		jimport('joomla.client.helper');
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
+		$ftp = JClientHelper::setCredentialsFromRequest('ftp');
 
 		//assign data to template
 		$this->assignRef('params'  	, $params);
-		$this->assignRef('request_url'	, $uri->toString());
+		$this->assign('request_url'	, $uri->toString());
 		$this->assignRef('ftp'			, $ftp);
 		$this->assignRef('folder'      , $folder);
 		$this->assignRef('field',   $field);

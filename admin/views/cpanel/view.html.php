@@ -5,9 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
-/**
- *  View
- */
+
 class sportsmanagementViewcpanel extends JView
 {
 	/**
@@ -22,10 +20,10 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         
 		jimport('joomla.html.pane');
-		$pane	=& JPane::getInstance('sliders');
+		$pane	= JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
-        $this->assignRef( 'version', $model->getVersion() );
-        $this->assignRef( 'githubrequest', $model->getGithubRequests() );
+        $this->assign( 'version', $model->getVersion() );
+        $this->assign( 'githubrequest', $model->getGithubRequests() );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -54,23 +52,13 @@ class sportsmanagementViewcpanel extends JView
 	{
 		$canDo = sportsmanagementHelper::getActions();
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
-		/*
-        if ($canDo->get('core.create')) 
-		{
-			JToolBarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
-		}
-		if ($canDo->get('core.edit')) 
-		{
-			JToolBarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
-		}
-		if ($canDo->get('core.delete')) 
-		{
-			JToolBarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
-		}
-        */
+		
 		if ($canDo->get('core.admin')) 
 		{
-			JToolBarHelper::divider();
+			//JToolBarHelper::custom('cpanel.import','upload','upload',JText::_('JTOOLBAR_INSTALL'),false);
+            sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
+            JToolBarHelper::divider();
+            sportsmanagementHelper::ToolbarButtonOnlineHelp();
 			JToolBarHelper::preferences('com_sportsmanagement');
 		}
 	}
@@ -88,7 +76,7 @@ class sportsmanagementViewcpanel extends JView
 	
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
-		$lang		=& JFactory::getLanguage();
+		$lang		= JFactory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
 ?>
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">

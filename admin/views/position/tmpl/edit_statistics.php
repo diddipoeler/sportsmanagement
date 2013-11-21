@@ -7,11 +7,11 @@
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EXISTING_STATISTICS'); ?></b><br /><?php echo $this->lists['statistic']; ?></td>
 			<td style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="moveLeftToRightStats();"
+						onclick="move_list_items('statistic','position_statistic');"
 						value="&gt;&gt;" />
 				<br /><br />
 				<input  type="button" class="inputbox"
-						onclick="moveRightToLeftStats();"
+						onclick="move_list_items('position_statistic','statistic');"
 						value="&lt;&lt;" />
 			</td>
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_ASSIGNED_STATS_TO_POS'); ?></b><br /><?php echo $this->lists['position_statistic']; ?></td>

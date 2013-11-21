@@ -49,14 +49,34 @@ class sportsmanagementViewProjectteam extends JView
         $team_id	= $this->item->team_id;;
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam($team_id);
+        $trainingdata = $mdlTeam->getTrainigData($team_id);
         
+        $daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+			1 => JText::_('MONDAY'),
+			2 => JText::_('TUESDAY'),
+			3 => JText::_('WEDNESDAY'),
+			4 => JText::_('THURSDAY'),
+			5 => JText::_('FRIDAY'),
+			6 => JText::_('SATURDAY'),
+			7 => JText::_('SUNDAY'));
+        $dwOptions=array();
+			foreach($daysOfWeek AS $key => $value)
+            {
+                $dwOptions[]=JHTML::_('select.option',$key,$value);
+            }
+			foreach ($trainingdata AS $td)
+			{
+				$lists['dayOfWeek'][$td->id]=JHTML::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
+			}    
+            
         $extended = sportsmanagementHelper::getExtended($item->extended, 'projectteam');
 		$this->assignRef( 'extended', $extended );
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
         
         $this->assignRef('project',$project);
+        $this->assignRef('lists',	$lists);
         $this->assignRef('project_team',$project_team);
-        
+        $this->assignRef('trainingData',$trainingdata);
 		
  
 		// Set the toolbar

@@ -15,7 +15,7 @@ class SportsManagementController extends JController
 	 *
 	 * @return void
 	 */
-	function display($cachable = false) 
+	function display($cachable = false, $urlparams = false) 
 	{
 		// set default view if not set
 		//JRequest::setVar('view', JRequest::getCmd('view', 'SportsManagements'));

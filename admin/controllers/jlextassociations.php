@@ -8,7 +8,7 @@ jimport('joomla.application.component.controlleradmin');
 /**
  * SportsManagements Controller
  */
-class sportsmanagementControllerjlextassociation extends JControllerAdmin
+class sportsmanagementControllerjlextassociations extends JControllerAdmin
 {
   
 	/**

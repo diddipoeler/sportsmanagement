@@ -33,18 +33,20 @@ class sportsmanagementViewPersons extends JView
 		}
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $user	= JFactory::getUser();
 		
 		$model	= $this->getModel();
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state', 'filter_state', '', 'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order', 'filter_order', 'pl.ordering', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search', 'search', '', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode', 'search_mode', '', 'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 		$mainframe->setUserState($option.'task','');
 
@@ -68,16 +70,31 @@ class sportsmanagementViewPersons extends JView
 
 		//build the html options for nation
 		$nation[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
-		if ($res =& Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
-		$lists['nation']=$nation;
-		unset($nation);
+		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		
+        $lists['nation']=$nation;
+        $lists['nation2']= JHTMLSelect::genericlist(	$nation,
+																'search_nation',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$search_nation);
+        /*$lists['nation2']=JHTML::_( 'select.genericList',
+										$nation,
+										'filter_nation',
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+										'id',
+										'name',
+										$filter_nation);
+		*/
+        unset($nation);
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('user',JFactory::getUser());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',JFactory::getURI()->toString());
+		$this->assign('request_url',JFactory::getURI()->toString());
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -86,19 +103,27 @@ class sportsmanagementViewPersons extends JView
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $user	= JFactory::getUser();
 		$model = $this->getModel();
-		$project_id = $mainframe->getUserState($option.'project');
-		$mdlProject = JModel::getInstance("project", "JoomLeagueModel");
-		$project_name = $mdlProject->getProjectName($project_id);
+		//$project_id = $mainframe->getUserState($option.'project');
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+		$mdlProject = JModel::getInstance("project", "sportsmanagementModel");
+        $project = $mdlProject->getProject($this->project_id);
+		$project_name = $project->name;
 		$project_team_id = $mainframe->getUserState($option.'project_team_id');
 		$team_name = $model->getProjectTeamName($project_team_id);
-		$mdlQuickAdd =& JLGModel::getInstance('Quickadd','JoomleagueModel');
+		//$mdlQuickAdd = JModel::getInstance('Quickadd','sportsmanagementModel');
+        
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
+        
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'pl_filter_state', 'filter_state', '', 'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'pl_filter_order', 'filter_order', 'pl.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'pl_filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$search			= $mainframe->getUserStateFromRequest($option.'pl_search', 'search', '', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'pl_search_mode',	'search_mode', '', 'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
 
 		//save icon should be replaced by the apply
 		JToolBarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
@@ -108,34 +133,36 @@ class sportsmanagementViewPersons extends JView
 		if ($type==0)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&task=teamplayer.display&view=teamplayers');
+                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
                     JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
-                    $items = $mdlQuickAdd->getNotAssignedPlayers(JString::strtolower($search),$project_team_id);
+                    //$items = $model->getNotAssignedPlayers(JString::strtolower($search),$project_team_id);
 		}
 		elseif ($type==1)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&task=teamstaff.display&view=teamstaffs');
+                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
                     JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
-                    $items = $mdlQuickAdd->getNotAssignedStaff(JString::strtolower($search),$project_team_id);
+                    //$items = $model->getNotAssignedStaff(JString::strtolower($search),$project_team_id);
 		}
 		elseif ($type==2)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees&task=projectreferee.display');
+                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
                     JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
-                    $items = $mdlQuickAdd->getNotAssignedReferees(JString::strtolower($search),$project_id);
+                    //$items = $model->getNotAssignedReferees(JString::strtolower($search),$this->project_id);
 		}
 
 		//JToolBarHelper::onlinehelp();		
 		
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit','limit',$mainframe->getCfg('list_limit'),'int');
+		//$limit = $mainframe->getUserStateFromRequest('global.list.limit','limit',$mainframe->getCfg('list_limit'),'int');
 
-		jimport('joomla.html.pagination');
-		$pagination = new JPagination($mdlQuickAdd->_total,JRequest::getVar('limitstart',0,'','int'),$limit);
-		$mdlQuickAdd->_pagination=$pagination;
+		//jimport('joomla.html.pagination');
+		//$pagination = new JPagination($mdlQuickAdd->_total,JRequest::getVar('limitstart',0,'','int'),$limit);
+		//$mdlQuickAdd->_pagination=$pagination;
 
-		// table ordering
+		// state filter
+		$lists['state']=JHTML::_('grid.state',$filter_state);
+        // table ordering
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
 
@@ -143,15 +170,16 @@ class sportsmanagementViewPersons extends JView
 		$lists['search']=$search;
 		$lists['search_mode']=$search_mode;
 
-		$this->assignRef('prjid',$project_id);
+		$this->assignRef('prjid',$this->project_id);
 		$this->assignRef('prj_name',$project_name);
 		$this->assignRef('team_id',$team_id);
 		$this->assignRef('team_name',$team_name);
 		$this->assignRef('project_team_id',$project_team_id);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
+        $this->assignRef('user',$user);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',JFactory::getURI()->toString());
+		$this->assign('request_url',JFactory::getURI()->toString());
 		$this->assignRef('type',$type);
 
 		parent::display($tpl);

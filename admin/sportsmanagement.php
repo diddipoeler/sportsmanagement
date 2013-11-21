@@ -13,12 +13,22 @@ JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' .
  
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
+require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'JSON.php');
 
 // welche tabelle soll genutzt werden
-$params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' ); 
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',		$database_table );
-		
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+
+if ( $database_table == 'sportsmanagement' )		
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',true);    
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
+}
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
  

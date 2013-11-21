@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo $this->addIcon('association.jpg','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>
         <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=extrafields', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS'));?>
 				
-		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
+		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
                 <?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
                 <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES'));?>
                 <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>		
@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr align="center">
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('cbehome.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							<?php echo $this->addIcon('ploeger_dieter.jpg','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
 						</td>
 						<td width="50%" >
@@ -200,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 			</table>
 			<?php
-				echo $this->pane->endPanel();	
+				echo $this->pane->endPanel();
 				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_FORUM') , 'FORUM' );
 			?>
 			<table class="adminlist">

@@ -65,9 +65,9 @@ class sportsmanagementViewRounds extends JView
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
-		$matchday =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$matchday = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         $model = $this->getModel();
         
         //$project_id	= JRequest::getVar('pid');
@@ -79,8 +79,8 @@ class sportsmanagementViewRounds extends JView
 		//$projectws =& $this->get('Data','projectws');
 
 		//$state = $this->get('state');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',			'filter_order',		'r.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',		'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','r.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		//$filter_order	    = $state->get('filter_order');
 		//$filter_order_Dir = $state->get('filter_order_Dir');
 
@@ -95,7 +95,7 @@ class sportsmanagementViewRounds extends JView
 		$this->assignRef('matchday',$matchday);
 		$this->assignRef('project',$project);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 
 		$this->addToolbar();		
 		parent::display($tpl);
@@ -165,8 +165,8 @@ class sportsmanagementViewRounds extends JView
             
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_DELETE_WARNING'),'round.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
-			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_DELETE_WARNING'),'round.remove');
+			JToolBarHelper::deleteList('','rounds.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+			JToolBarHelper::deleteList('','rounds.delete');
 			JToolBarHelper::divider();
 		}
 		else

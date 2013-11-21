@@ -121,7 +121,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								?></a>
 						</th>
 						<?php
-						if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
+						if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 						{
 							$cell_count++;
 							?><th>
@@ -343,6 +343,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
                             
                             <td class="center">
 									<?php
+                                    $append=' style="background-color:#bbffff"';
 									echo JHTML::_(	'select.genericlist',
 													$this->lists['is_in_score'],
 													'is_in_score'.$row->id,
@@ -353,6 +354,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								</td>
                             <td class="center">
 									<?php
+                                    $append=' style="background-color:#bbffff"';
 									echo JHTML::_(	'select.genericlist',
 													$this->lists['use_finally'],
 													'use_finally'.$row->id,

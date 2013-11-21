@@ -20,10 +20,11 @@ class JFormFieldSportsTypes extends JFormField
 	{
 		$result = array();
 		$db = JFactory::getDBO();
-        $mainframe =& JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
+        $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = JComponentHelper::getParams( $option );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "COM_SPORTSMANAGEMENT_sport_types";

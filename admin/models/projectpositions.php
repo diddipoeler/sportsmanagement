@@ -43,7 +43,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt');
         // Select some fields
-		$query->select('po.*');
+		$query->select('po.*,po.name AS name');
 		// From the table
 		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id');
         // Select some fields
@@ -60,33 +60,6 @@ class sportsmanagementModelProjectpositions extends JModelList
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ');
         $subQuery2->where('ps.position_id=po.id');
         $query->select('('.$subQuery2.') AS countStats');
-
-
-
-
-/*        
-        // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-
-		$query='	SELECT	pt.id AS positiontoolid,
-							pt.*,
-
-							po.name AS name,
-							po.*,
-
-							pid.name AS parent_name,
-
-							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
-					 		WHERE pe.position_id=po.id) countEvents,
-
-							(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic
-					 		WHERE position_id=po.id) countStats
-
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id=po.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id=pid.id '.$where.$orderby;
-		*/
 
         $query->where(self::_buildContentWhere());
 		$query->order(self::_buildContentOrderBy());
@@ -115,53 +88,11 @@ class sportsmanagementModelProjectpositions extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		
 		$where =' pt.project_id='.$this->_project_id;
 		return $where;
 	}
 
-	/**
-	 * Method to update project positions list
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-	function store($data)
-	{
-		//echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
-		$result=true;
-		//$peid=(isset($data['project_teamslist']));
-		$peid=(isset($data['project_positionslist']));
-		if ($peid==null)
-		{
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id'];
-		}
-		else
-		{
-			$pidArray=$data['project_positionslist'];
-			JArrayHelper::toInteger($pidArray);
-			$peids=implode(",",$pidArray);
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['id']." AND position_id NOT IN ($peids)";
-		}
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			$result=false;
-		}
-		for ($x=0; $x < count($data['project_positionslist']); $x++)
-		{
-			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['id']."','".$data['project_positionslist'][$x]."')";
-			$this->_db->setQuery($query);
-			if(!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				$result=false;
-			}
-		}
-		return $result;
-	}
+	
 
 	/**
 	 * Method to return the positions which are subpositions and are equal to a sportstype array (id,name)

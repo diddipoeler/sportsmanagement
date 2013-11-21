@@ -2,7 +2,7 @@
 
 	?>
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_JOOMLEAGUE_USER_EXTRA_FIELDS'); ?></legend>
+	
 	<table>
     <?php
 	for($p=0;$p<count($this->lists['ext_fields']);$p++)

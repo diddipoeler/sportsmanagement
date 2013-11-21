@@ -35,15 +35,19 @@ class JFormFieldFavteam extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        // Initialize variables.
 		$options = array();
 
 		$varname = (string) $this->element['varname'];
+        $project_id = $mainframe->getUserState( "$option.pid", '0' );;
+        /*
 		$project_id = JRequest::getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}
-		
+		*/
 		if ($project_id)
 		{		
 			$db = &JFactory::getDbo();

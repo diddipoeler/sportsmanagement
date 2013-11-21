@@ -54,12 +54,21 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamplayer', 'teamplayer', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teamplayers');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     
@@ -153,4 +162,123 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to remove teamplayer
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	public function delete(&$pks)
+	{
+	$mainframe =& JFactory::getApplication();
+    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    /* Ein Datenbankobjekt beziehen */
+    $db = JFactory::getDbo();
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    
+	$result = false;
+    if (count($pks))
+		{
+		//JArrayHelper::toInteger($cid);
+			$cids = implode(',',$pks);
+            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            // wir löschen mit join
+            $query = 'DELETE mp,ms,me
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as m    
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mp
+            ON mp.teamplayer_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
+            ON ms.teamplayer_id = m.id
+            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me
+            ON me.teamplayer_id = m.id
+            WHERE m.id IN ('.$cids.')';
+            $db->setQuery($query);
+            $db->query();
+            if (!$db->query()) 
+            {
+                $mainframe->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                return false; 
+            }
+            
+        }  
+    
+    
+    //if ( $result )
+    //{        
+    return parent::delete($pks);
+    //}
+     
+   } 
+   
+   /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $post=JRequest::get('post');
+       $db		= $this->getDbo();
+	   $query	= $db->getQuery(true);
+        
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       // update personendaten
+       // Fields to update.
+    $fields = array(
+    $db->quoteName('injury') .'=\''.$data['injury'].'\'',
+        $db->quoteName('injury_date') .'=\''.$data['injury_date'].'\'',
+        $db->quoteName('injury_end') .'=\''.$data['injury_end'].'\'',
+        $db->quoteName('injury_detail') .'=\''.$data['injury_detail'].'\'',
+        $db->quoteName('injury_date_start') .'=\''.$data['injury_date_start'].'\'',
+        $db->quoteName('injury_date_end') .'=\''.$data['injury_date_end'].'\'',
+        $db->quoteName('suspension') .'=\''.$data['suspension'].'\'',
+        $db->quoteName('suspension_date') .'=\''.$data['suspension_date'].'\'',
+        $db->quoteName('suspension_end') .'=\''.$data['suspension_end'].'\'',
+        $db->quoteName('suspension_detail') .'=\''.$data['suspension_detail'].'\'',
+        $db->quoteName('susp_date_start') .'=\''.$data['susp_date_start'].'\'',
+        $db->quoteName('susp_date_end') .'=\''.$data['susp_date_end'].'\'',
+        $db->quoteName('away') .'=\''.$data['away'].'\'',
+		$db->quoteName('away_date') .'=\''.$data['away_date'].'\'',
+        $db->quoteName('away_end') .'=\''.$data['away_end'].'\'',
+        $db->quoteName('away_detail') .'=\''.$data['away_detail'].'\'',
+        $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
+        $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\''
+        );
+     // Conditions for which records should be updated.
+    $conditions = array(
+    $db->quoteName('id') .'='. $data['person_id']
+    );
+     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $db->setQuery($query);   
+ 
+ if (!$db->query())
+		{
+		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+ 
+        
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
+    
+    
+   
 }

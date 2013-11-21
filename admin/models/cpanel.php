@@ -5,15 +5,13 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.model');
  
-/**
- * 
- */
+
 class sportsmanagementModelcpanel extends JModel
 {
 
 public function getVersion() 
 	{
-	   $mainframe =& JFactory::getApplication();
+	   $mainframe = JFactory::getApplication();
 	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
        $manifest_cache = json_decode( $this->_db->loadResult(), true );
 	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
@@ -22,14 +20,15 @@ public function getVersion()
 
 public function getGithubRequests()
 {
-$mainframe =& JFactory::getApplication();    
-$paramsdata = JComponentHelper::getParams('com_sportsmanagement');
+$mainframe = JFactory::getApplication(); 
+$option = JRequest::getCmd('option');   
+$paramsdata = JComponentHelper::getParams($option);
 //$mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
 
 // Load the parameters
-        $uname = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username','diddipoeler');
-        $repo = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository','sportsmanagement');
+        $uname = JComponentHelper::getParams($option)->get('cfg_github_username','diddipoeler');
+        $repo = JComponentHelper::getParams($option)->get('cfg_github_repository','sportsmanagement');
 		//$uname		= $paramsdata->get('cfg_github_username', '');
 		//$repo		= $paramsdata->get('cfg_github_repository', '');
 
@@ -129,6 +128,7 @@ $paramsdata = JComponentHelper::getParams('com_sportsmanagement');
 			if ($i <= $count)
 			{
 				// Initialize a new object
+                //$github[$i]->commit	= '';
 				$github[$i]->commit	= new stdClass;
 
 				// The commit message linked to the commit

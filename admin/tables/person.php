@@ -73,6 +73,8 @@ class sportsmanagementTablePerson extends JTable
 	 */
 	function bind($array, $ignore = '')
 	{
+	   $mainframe = JFactory::getApplication();
+      $option = JRequest::getCmd('option');
 		
     if (isset($array['extended']) && is_array($array['extended'])) 
 		{
@@ -81,6 +83,11 @@ class sportsmanagementTablePerson extends JTable
 			$parameter->loadArray($array['extended']);
 			$array['extended'] = (string)$parameter;
 		}
+        
+    if (isset($array['season_ids']) && is_array($array['season_ids'])) {
+         $array['season_ids'] = implode(',', $array['season_ids']);
+      }
+          
 		return parent::bind($array, $ignore);
     
     

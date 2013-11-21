@@ -24,6 +24,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -37,6 +38,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -55,6 +57,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		}
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -64,6 +67,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -88,14 +92,14 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function saveorder($cid=array(),$order)
+	function saveorder($pks = NULL, $order = NULL)
 	{
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($cid); $i++)
+		for ($i=0; $i < count($pks); $i++)
 		{
-			$row->load((int) $cid[$i]);
+			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
 				$row->ordering=$order[$i];
@@ -108,4 +112,78 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $post=JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['params']) && is_array($post['params'])) 
+		{
+			// Convert the params field to a string.
+			//$parameter = new JRegistry;
+			//$parameter->loadArray($post['params']);
+            $paramsString = json_encode( $post['params'] );
+			//$data['params'] = (string)$parameter;
+            $data['params'] = $paramsString;
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        // Proceed with the save
+		return parent::save($data);   
+    }
+    
+    function getAllTemplatesList($project_id,$master_id)
+	{
+		
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query1	= $db->getQuery(true);
+        $query2	= $db->getQuery(true);
+        $query3	= $db->getQuery(true);
+        
+        
+        // Select some fields
+		$query1->select('template');
+        // From table
+		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query1->where('project_id='.$project_id);
+        $db->setQuery($query1);
+		$current = $db->loadResultArray();
+        $current = implode("','",$current);
+        // Select some fields
+		$query2->select('id as value, title as text');
+        // From table
+		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query2->where('project_id='.$master_id.' and template NOT IN (\''.$current.'\') ');
+        $db->setQuery($query2);
+        $result1 = $db->loadObjectList();
+        // Select some fields
+		$query3->select('id as value, title as text');
+        // From table
+		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query3->where('project_id='.$project_id);
+        $query3->order('title');
+        $db->setQuery($query3);
+		$result2 = $db->loadObjectList();
+        
+		return array_merge($result2,$result1);
+	}
+    
+    
+    
+    
 }

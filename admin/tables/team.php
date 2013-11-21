@@ -74,57 +74,20 @@ class sportsmanagementTableTeam extends JTable
 		return true;
 	}
 	
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-	 * @see JTable:bind
-	 * @since 1.5
-	 */
-	function bind($array, $ignore = '')
-	{
-		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['extended']);
-			$array['extended'] = (string) $registry;
-		}
-		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['extendeduser']);
-			$array['extendeduser'] = (string) $registry;
-		}
-		return parent::bind($array, $ignore);
-	}
+    public function bind($array, $ignore = '')
+   {
+      $mainframe = JFactory::getApplication();
+      $option = JRequest::getCmd('option');
+      //$mainframe->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array,true).'</pre>'   ),'');
+      //$mainframe->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array['season_ids'],true).'</pre>'   ),'');
+        
+      if (isset($array['season_ids']) && is_array($array['season_ids'])) {
+         $array['season_ids'] = implode(',', $array['season_ids']);
+      }
+      return parent::bind($array, $ignore);
+   }
     
-    /**
-	 * Overloaded load function
-	 *
-	 * @param       int $pk primary key
-	 * @param       boolean $reset reset data
-	 * @return      boolean
-	 * @see JTable:load
-	 */
-	public function load($pk = null, $reset = true) 
-	{
-		if (parent::load($pk, $reset)) 
-		{
-			// Convert the params field to a registry.
-			$params = new JRegistry;
-			$params->loadJSON($this->extended);
-			//$params->toArray($this->extended);
-            $this->extended = $params->toArray($this->extended);
-            
-			return true;
-			
-		}
-		else
-		{
-			return false;
-		}
-	}
+    
 	
 	
 }

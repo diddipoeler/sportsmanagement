@@ -25,39 +25,22 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelTemplates extends JModelList
 {
 	var $_identifier = "templates";
+	var $_project_id=0;
+
 	
-	var $_project_id=null;
-
-	function __construct()
+	
+	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
-
-		parent::__construct();
-		$project_id=$mainframe->getUserState('com_joomleague'.'project',0);
-		$this->set('_project_id',$project_id);
-		$this->set('_getALL',0);
-	}
-
-	function setProjectId($project_id)
-	{
-		$this->set('_project_id',$project_id);
-	}
-
-	function getData()
-	{
-		$this->checklist();
-		return parent::getData();
-	}
-
-	function _buildQuery()
-	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        // Get the WHERE and ORDER BY clauses for the query
 		$where=$this->_buildContentWhere();
 		$orderby=$this->_buildContentOrderBy();
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select(array('tmpl.*', 'u.name AS editor','(0) AS isMaster'))
-        ->from('#__joomleague_template_config AS tmpl')
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
 
         if ($where)
@@ -76,7 +59,7 @@ class sportsmanagementModelTemplates extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		$project_id=$mainframe->getUserState($option.'project');
+		//$project_id=$mainframe->getUserState($option.'project');
 
 		$where=array();
 		$where[]=' tmpl.project_id='.(int) $this->_project_id;
@@ -97,8 +80,8 @@ class sportsmanagementModelTemplates extends JModelList
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'tmpl_filter_order',		'filter_order',		'tmpl.template',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'tmpl_filter_order_Dir',	'filter_order_Dir',	'',					'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order','filter_order','tmpl.template','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order_Dir','filter_order_Dir','','word');
 
 		if ($filter_order=='tmpl.template')
 		{

@@ -63,7 +63,7 @@ $query = $db->getQuery(true);
 		}
 		
 		//Now Sort the countries
-		$options=Countries::sortCountryArray($options,"text");
+		$options = self::sortCountryArray($options,"text");
 		return $options;
 	}
 
@@ -186,7 +186,7 @@ $query = $db->getQuery(true);
    * @param array:
    * @return array:
    */	
-	function sortCountryArray($array,$index)
+	static function sortCountryArray($array,$index)
 	{
 	$sort=array() ;
 	$result=array() ;

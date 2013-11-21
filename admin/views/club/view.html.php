@@ -18,8 +18,11 @@ class sportsmanagementViewClub extends JView
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $document = JFactory::getDocument();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
+        
+        $this->option = $option;
         
         // get the Data
 		$form = $this->get('Form');
@@ -32,22 +35,43 @@ class sportsmanagementViewClub extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        if ( $item->latitude != 255 )
+        {
+            $this->googlemap = true;
+        }
+        else
+        {
+            $this->googlemap = false;
+        }
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        if ( $this->item->latitude == 255 )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->map = false;
+        }
+        else
+        {
+            $this->map = true;
+        }
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
 		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
-        $this->assignRef( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
- 
+        
+        $this->assignRef( 'lists', $lists );
+
  
 		// Set the toolbar
 		$this->addToolBar();

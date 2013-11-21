@@ -100,7 +100,7 @@ JHTML::_('behavior.modal');
 						</td>
                         <td>
                         <?php
-                        $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        $append = ' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 								echo JHTML::_(	'select.genericlist',$this->lists['sportart'],'sportstype_id'.$row->id,
 												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->sportsart);
                         //echo $row->sportsart; 

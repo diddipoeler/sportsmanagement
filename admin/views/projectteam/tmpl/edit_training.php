@@ -1,11 +1,12 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 ?>		
 			<fieldset class="adminform">
 				<legend>
 					<?php
                     echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_TRAINING',
 												'<i>' . $this->project_team->name . '</i>',
-												'<i>' . $this->projectws->name . '</i>');
+												'<i>' . $this->project->name . '</i>');
 					
 					?>
 				</legend>
@@ -37,20 +38,20 @@
 							?>
 							<tr>
 								<td class='key' nowrap='nowrap'>
-									<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE');?>&nbsp;<input type='checkbox' name='delete_<?php echo $td->id; ?>' value='' onchange='javascript:submitbutton("projectteam.apply");' />
+									<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE');?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("projectteam.apply");' />
 								</td>
 								<td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
 								<td nowrap='nowrap' width='5%'>
-									<input class='text' type='text' name='time_start_<?php echo $td->id; ?>' size='8' maxlength='5' value='<?php echo $startTime; ?>' />
+									<input class='text' type='text' name='time_start[<?php echo $td->id; ?>]' size='8' maxlength='5' value='<?php echo $startTime; ?>' />
 								</td>
 								<td nowrap='nowrap' width='5%'>
-									<input class='text' type='text' name='time_end_<?php echo $td->id; ?>' size='8' maxlength='5' value='<?php echo $endTime; ?>' />
+									<input class='text' type='text' name='time_end[<?php echo $td->id; ?>]' size='8' maxlength='5' value='<?php echo $endTime; ?>' />
 								</td>
 								<td>
-									<input class='text' type='text' name='place_<?php echo $td->id; ?>' size='40' maxlength='255' value='<?php echo $td->place; ?>' />
+									<input class='text' type='text' name='place[<?php echo $td->id; ?>]' size='40' maxlength='255' value='<?php echo $td->place; ?>' />
 								</td>
 								<td>
-									<textarea class='text_area' name='notes_<?php echo $td->id; ?>' rows='3' cols='40' value='' /><?php echo $td->notes; ?></textarea>
+									<textarea class='text_area' name='notes[<?php echo $td->id; ?>]' rows='3' cols='40' value='' /><?php echo $td->notes; ?></textarea>
 									<input type='hidden' name='tdids[]' value='<?php echo $td->id; ?>' />
 								</td>
 							</tr>

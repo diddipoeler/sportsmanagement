@@ -251,6 +251,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 	 * @param int team id
 	 * @return int number of row inserted
 	 */
+/*     
 	function storeAssigned($cid,$projectteam_id)
 	{
 		if (!count($cid) || !$projectteam_id){return 0;}
@@ -314,7 +315,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		}
 		return $added;
 	}
-
+*/
 	/**
 	 * remove staffs from team
 	 * @param $cids staff ids

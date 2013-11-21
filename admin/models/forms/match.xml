@@ -2,7 +2,10 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+	<field
+			name="id"
+			type="hidden"
+		/>
 	<fieldset name="matchpreview">
 		<field
 				name="preview"

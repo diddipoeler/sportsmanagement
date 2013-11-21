@@ -5,34 +5,26 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
-/**
- * SportsManagements Controller
- */
+
 class sportsmanagementControllerprojectpositions extends JControllerAdmin
 {
 	
   /**
-	 * Save the manual order inputs from the categories list page.
+	 * Method to store projectpositions
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
 	 */
-	public function saveorder()
+  function store()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$post = JRequest::get('post');
+        // Check for request forgeries
+		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 
-		// Get the arrays from the Request
-		$order	= JRequest::getVar('order',	null, 'post', 'array');
-		$originalOrder = explode(',', JRequest::getString('original_order_values'));
-
-		// Make sure something has changed
-		if (!($order === $originalOrder)) {
-			parent::saveorder();
-		} else {
-			// Nothing to reorder
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-			return true;
-		}
+        $model = $this->getModel();
+       $msg = $model->store($post);
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
   
   

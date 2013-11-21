@@ -32,7 +32,14 @@ class sportsmanagementViewMatch extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $user = JFactory::getUser();
+		$model = $this->getModel();
+        
+        //JRequest::setVar('hidemainmenu', true);
+        
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -43,18 +50,45 @@ class sportsmanagementViewMatch extends JView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
+        
+        $mdlPlaygrounds = JModel::getInstance("Playgrounds", "sportsmanagementModel");
+        
+        //build the html select list for playgrounds
+		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_PLAYGROUND'));
+		if ($res = $mdlPlaygrounds->getPlaygrounds())
+		{
+			$playgrounds=array_merge($playgrounds,$res);
+		}
+		$lists['playgrounds']=JHTML::_(	'select.genericlist',$playgrounds,'playground_id','class="inputbox" size="1"','value',
+										'text',$item->playground_id);
+
+		// build the html select booleanlist for cancel
+		$lists['cancel']=JHTML::_('select.booleanlist','cancel','class="inputbox"',$item->cancel);
+
+		// build the html select booleanlist for show_report
+		$lists['show_report']=JHTML::_('select.booleanlist','show_report','class="inputbox"',$item->show_report);
+
+		// build the html select booleanlist for count match result
+		$lists['count_result']=JHTML::_('select.booleanlist','count_result','class="inputbox"',$item->count_result);
+        
+        
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-		
+        
+		$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+        
+        $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
 		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+        $this->assignRef('lists',$lists);
+        $this->assignRef('match',$match);
+		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
  
 		// Set the toolbar
-		$this->addToolBar();
+		//$this->addToolBar();
 		
 //		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
  
@@ -209,7 +243,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		//add the js script
 		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
+		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/startinglineup.js?v='.$version);
 
 		$model = $this->getModel();
 		$match =& $this->get('data');

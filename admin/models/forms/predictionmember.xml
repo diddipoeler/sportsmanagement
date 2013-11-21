@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+    label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+	<field
+			name="id"
+			type="hidden"
+		/>
+	<field
+			name="group_id"
+			type="sql"
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_PREDICTION_MEMBER_GROUP"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_PREDICTION_MEMBER_GROUP_DESC"
+			required="true"
+			query="SELECT id AS value, name AS group_id FROM #__joomleague_prediction_groups ORDER BY name ASC"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP</option>
+		</field>
+    
+    <field
+			name="reminder"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+		<field
+			name="receipt"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+		<field
+			name="show_profile"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+		<field
+			name="admintipp"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+		<field
+			name="approved"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>	
+		
+    
+    
+    	
+	</fieldset>				
+</form>

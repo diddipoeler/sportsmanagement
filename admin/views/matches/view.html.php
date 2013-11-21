@@ -30,20 +30,20 @@ class sportsmanagementViewMatches extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model		= $this->getModel();
-		$params =& JComponentHelper::getParams( $option );
+		$params = JComponentHelper::getParams( $option );
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_filter_state',	'filter_state', 	'', 'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_filter_order',	'filter_order', 	'mc.match_number', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_filter_order_Dir','filter_order_Dir', '', 'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_search', 'search',					'', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_search_mode',		'search_mode',		'', 'string');
-		$division			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_division',		'division',			'',	'string');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_state','filter_state','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order','filter_order','mc.match_number','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search_mode','search_mode','','string');
+		$division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_division','division','','string');
 		
 		$search				= JString::strtolower($search);
         
-        $items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->rid	= JRequest::getvar('rid', 0);
@@ -74,7 +74,7 @@ class sportsmanagementViewMatches extends JView
 		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
         // diddipoeler rounds for change in match
         $project_change_roundslist = array();
-        if ( $ress =& sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true) )
+        if ( $ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true) )
         {
 			$project_change_roundslist = array_merge($project_change_roundslist,$ress);
 		}
@@ -104,7 +104,7 @@ class sportsmanagementViewMatches extends JView
 				$row->divhomeid =0;
 				$row->divawayid =0;
 			}
-			if ($projectteams =& $mdlProject->getProjectTeamsOptions($this->project_id,$divhomeid)){
+			if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id,$divhomeid)){
 				$teams=array_merge($teams,$projectteams);
 			}
 			$lists['teams_'+$divhomeid] = $teams;
@@ -276,14 +276,15 @@ class sportsmanagementViewMatches extends JView
         
 		//$this->assignRef('division',$division);
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
+		$this->assign('user',JFactory::getUser());
+        $this->assignRef('lists',$lists);
+		$this->assignRef('option',$option);
 		$this->assignRef('matches',$items);
 		$this->assignRef('ress',$ress);
 		$this->assignRef('projectws',$projectws);
 		$this->assignRef('roundws',$roundws);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 		//$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
 		$this->addToolbar();
 		parent::display($tpl);

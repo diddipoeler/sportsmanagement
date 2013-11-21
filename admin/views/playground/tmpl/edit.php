@@ -3,30 +3,64 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+jimport('joomla.html.pane');
 $params = $this->form->getFieldsets('params');
+
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
+
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
  
-	<div class="col50">
-<?php
-echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
-echo $this->loadTemplate('details');
-
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
-echo $this->loadTemplate('picture');
-
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DESCRIPTION'), 'panel3');
-echo $this->loadTemplate('description');
-
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel4');
-echo $this->loadTemplate('extended');
-
-echo JHTML::_('tabs.end');
-?>
- </div>
 	
- 
+<div class="width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
+			<ul class="adminformlist">
+			<?php foreach($this->form->getFieldset('details') as $field) :?>
+				<li><?php echo $field->label; ?>
+				<?php echo $field->input; 
+                
+                if ( $field->name == 'jform[country]' )
+                {
+                echo Countries::getCountryFlag($field->value);    
+                }
+                if ( $field->name == 'jform[club_id]' )
+                {
+                //echo sportsmanagementHelper::getPictureClub($field->value); 
+                $picture = sportsmanagementHelper::getPictureClub($field->value);
+                //echo $picture;
+                //echo JHTML::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
+                echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));  
+                }
+                
+                ?></li>
+			<?php endforeach; ?>
+			</ul>
+		</fieldset>
+	</div>
+
+<div class="width-40 fltrt">
+		<?php
+		echo JHtml::_('sliders.start');
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'details') :
+				continue;
+			endif;
+			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+		if (isset($fieldset->description) && !empty($fieldset->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+			endif;
+		echo $this->loadTemplate($fieldset->name);
+		endforeach; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
+
+	
+	</div>    
+    
+    
+	
+ <div class="clr"></div>
 	<div>
 		<input type="hidden" name="task" value="playground.edit" />
 		<?php echo JHtml::_('form.token'); ?>

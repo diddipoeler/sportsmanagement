@@ -35,12 +35,15 @@ class JFormFieldAssociationsList extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$mainframe->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
+        // Initialize variables.
 		$options = array();
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		//$varname = (string) $this->element['varname'];
 //    $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar('cid');
+		$select_id = JRequest::getVar('id');
 //echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
  			$select_id = $select_id[0];
@@ -50,7 +53,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		if ($select_id)
 		{		
 		$db = &JFactory::getDbo();
-			$query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('country');		
 		$query->from('#__sportsmanagement_associations AS t');
 		$query->where('t.id = '.$select_id);
@@ -145,9 +148,9 @@ function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=
             }
 
             if ( $v->parent_id == 0 ) {
-                $txt     = $this->kunena_htmlspecialchars($v->name);
+                $txt     = $this->sm_htmlspecialchars($v->name);
             } else {
-                $txt     = $pre . $this->kunena_htmlspecialchars($v->name);
+                $txt     = $pre . $this->sm_htmlspecialchars($v->name);
             }
             $pt = $v->parent_id;
             $list[$id] = $v;
@@ -161,7 +164,7 @@ function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=
     return $list;
 }    
 	
-function kunena_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
+function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
   {
 	return htmlspecialchars($string, $quote_style, $charset);
 }	

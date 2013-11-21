@@ -16,7 +16,8 @@ class sportsmanagementViewPlayground extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$mainframe = JFactory::getApplication();
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -31,12 +32,21 @@ class sportsmanagementViewPlayground extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        if ( $this->item->latitude == 255 )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->map = false;
+        }
+        else
+        {
+            $this->map = true;
+        }
 		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
-//		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
- 
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
+		$this->assignRef( 'extended', $extended );
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
+
 		// Set the toolbar
 		$this->addToolBar();
 		

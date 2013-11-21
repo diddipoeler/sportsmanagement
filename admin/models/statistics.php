@@ -116,6 +116,52 @@ class sportsmanagementModelStatistics extends JModelList
 
 		return $where;
 	}
+    
+    /**
+	* Method to return the position stats array (value,text)
+	*
+	* @access  public
+	* @return  array
+	* @since 0.1
+	*/
+	function getPositionStatsOptions($id)
+	{
+		$query=' SELECT	s.id AS value,
+				concat(s.name, " (" , st.name, ")") AS text
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=s.id 
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id 
+				WHERE ps.position_id='.(int) $id . '
+				ORDER BY ps.ordering ASC ';
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+    
+    /**
+	* Method to return the stats not yet assigned to position (value,text)
+	*
+	* @access  public
+	* @return  array
+	* @since 0.1
+	*/
+	function getAvailablePositionStatsOptions($id)
+	{
+		$query=' SELECT	s.id AS value, 
+				concat(s.name, " (" , st.name, ")") AS text 
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id 
+				AND ps.position_id='.(int) $id . '
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id 
+				WHERE ps.id IS NULL 
+				ORDER BY s.ordering ASC ';
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+    
+    
+    
 
 }
 ?>

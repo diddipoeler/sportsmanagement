@@ -38,7 +38,7 @@ class JFormFieldleaguelist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = &JFactory::getDbo();
+    $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('l.id AS value, l.name AS text');

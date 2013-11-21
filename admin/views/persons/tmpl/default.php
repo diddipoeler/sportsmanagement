@@ -9,18 +9,9 @@ $userId		= $user->get('id');
 <script>
 	function searchPerson(val)
 	{
-		var f = $('adminForm');
-		if(f)
-		{
-			f.elements['search'].value=val;
-			
-			f.submit();
-		}
-	}
-
-	function onupdatebirthday(cal)
-	{
-		$($(cal.params.inputField).getProperty('cb')).setProperty('checked','checked');
+        var s= document.getElementById("search");
+        s.value = val;
+        Joomla.submitform('', this.form)
 	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -39,6 +30,7 @@ $userId		= $user->get('id');
 					?>
 				</button>
 			</td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 			<td align="center" colspan="4">
 				<?php
 				for ($i=65; $i < 91; $i++)

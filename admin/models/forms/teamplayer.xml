@@ -2,7 +2,9 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -42,7 +44,12 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE_DESC"
 			class="inputbox"/>
-			
+</fieldset>
+
+<fieldset name="persondetails"
+  label="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS_DESC">
+  			
 		<field
 			name="injury"
 			type="radio"
@@ -53,16 +60,16 @@
 		<option value="1">JYES</option>
 		</field>	
 		<field
-			name="injury_date"
-			type="matchdaylist"
+			name="injury_date_start"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE_DESC"
 			class="inputbox"/>			
 		<field
-			name="injury_end"
-			type="matchdaylist"
+			name="injury_date_end"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END"
@@ -70,10 +77,12 @@
 			class="inputbox"/>	
 		<field
 			name="injury_detail"
-			type="text"
+			
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE_DESC"
-			class="inputbox"/>				
+			type="editor"
+      width="150" 
+			filter="safehtml"/>				
 		<field
 			name="suspension"
 			type="radio"
@@ -84,16 +93,16 @@
 		<option value="1">JYES</option>
 		</field>				
 		<field
-			name="suspension_date"
-			type="matchdaylist"
+			name="susp_date_start"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE_DESC"
 			class="inputbox"/>			
 		<field
-			name="suspension_end"
-			type="matchdaylist"
+			name="susp_date_end"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END"
@@ -101,7 +110,9 @@
 			class="inputbox"/>	
 		<field
 			name="suspension_detail"
-			type="text"
+			type="editor"
+      width="150" 
+			filter="safehtml"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE_DESC"
 			class="inputbox"/>				
@@ -115,16 +126,16 @@
 		<option value="1">JYES</option>
 		</field>			
 		<field
-			name="away_date"
-			type="matchdaylist"
+			name="away_date_start"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE_DESC"
 			class="inputbox"/>			
 		<field
-			name="away_end"
-			type="matchdaylist"
+			name="away_date_end"
+			type="calendar"
 			required="false"
 			varname="cid"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END"
@@ -132,35 +143,31 @@
 			class="inputbox"/>	
 		<field
 			name="away_detail"
-			type="text"
+			type="editor"
+      width="150" 
+			filter="safehtml"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE_DESC"
 			class="inputbox"/>				
 	</fieldset>			
-	<fieldset name="picture">		
+	
+  <fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">		
 			<field
 				name="picture"
-				type="media"
-        default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
+				type=""
+        default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PIC_DESC"
 				class="inputbox"
 				preview="show"
-				directory="com_sportsmanagement/database/teamplayers"/>			
+				directory=""/>			
 	</fieldset>	
-	<fieldset name="imageselect">
-			<field
-				name="picture"
-				type="imageselect"
-				default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"					
-				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PIC"
-				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PIC_DESC"
-				class="inputbox"
-				preview="show"
-				targetfolder="teamplayers"
-				directory="com_sportsmanagement/database/teamplayers"/>		
-	</fieldset>	
-	<fieldset name="description">		
+	
+	<fieldset name="description"
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
 			<field
 				name="notes"
 				type="editor"
@@ -168,5 +175,12 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_DESC"
 				width="450" 
 				filter="safehtml"/>			
-	</fieldset>		
+	</fieldset>	
+
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
+    	
 </form>

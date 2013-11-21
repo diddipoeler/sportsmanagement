@@ -69,8 +69,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order',		'filter_order',		'p.lastname',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order','filter_order','p.lastname','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='p.lastname')
 		{
 			$orderby='p.lastname '.$filter_order_Dir;
@@ -87,8 +87,8 @@ class sportsmanagementModelProjectReferees extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		
-		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search',		'search',		'',		'string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode',	'search_mode',	'',		'string');
+		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search','search','','string');
+		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where=array();
 		$where[]='pref.project_id='.$this->_project_id;

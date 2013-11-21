@@ -32,9 +32,9 @@ class sportsmanagementViewLeague extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
-//		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
+		$this->assignRef( 'extended', $extended );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -89,7 +89,11 @@ class sportsmanagementViewLeague extends JView
 			}
 			JToolBarHelper::cancel('league.cancel', 'JTOOLBAR_CLOSE');
 		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences('com_sportsmanagement');
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *

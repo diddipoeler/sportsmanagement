@@ -25,11 +25,11 @@ class sportsmanagementViewjlextassociations extends JView
 {
 	function display($tpl=null)
 	{
-		//$option='com_sportsmanagement';
-		$mainframe =& JFactory::getApplication();
-    $db =& JFactory::getDBO();
-		$uri =& JFactory::getURI();
-		$document	=& JFactory::getDocument();
+		
+		$mainframe = JFactory::getApplication();
+    //$db = JFactory::getDBO();
+		$uri = JFactory::getURI();
+		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
    
     $model	= $this->getModel();
@@ -40,14 +40,14 @@ class sportsmanagementViewjlextassociations extends JView
 
 		
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','objassoc.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -56,11 +56,11 @@ class sportsmanagementViewjlextassociations extends JView
 		// search filter
 		$lists['search']=$search;
 
-		$this->assignRef('user',JFactory::getUser());
+		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
         
         $this->addToolbar();
 

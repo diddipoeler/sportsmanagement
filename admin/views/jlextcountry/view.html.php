@@ -34,7 +34,7 @@ class sportsmanagementViewJlextcountry extends JView
 		
 //		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
 //		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
  
 		// Set the toolbar

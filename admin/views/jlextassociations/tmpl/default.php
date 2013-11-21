@@ -56,7 +56,6 @@ JHTML::_('behavior.modal');
 						<?php
 						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo '<br />';
-						//echo JHTML::_('grid.order',$this->items);
 						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'jlextassociations.saveorder');
 						?>
 					</th>

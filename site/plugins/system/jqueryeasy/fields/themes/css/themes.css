@@ -1,0 +1,13 @@
+#themes {
+	max-height: 210px;
+	overflow-y: auto;
+}
+
+.theme {
+	float: left;
+	text-align: center;
+	width: 95px;
+	height: 105px;
+	display: block;
+	position: relative;
+}

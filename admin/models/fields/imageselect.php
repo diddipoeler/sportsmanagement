@@ -23,12 +23,19 @@ class JFormFieldImageSelect extends JFormField
 {
 	protected $type = 'imageselect';
 
-	function getInput() {
+	function getInput() 
+    {
+        $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        
 		$default = $this->value;
 		$arrPathes = explode('/', $default);
 		$filename = array_pop($arrPathes);
 		//$targetfolder = array_pop($arrPathes);
 		$targetfolder = $this->element['targetfolder'];
+        
+        //$mainframe->enqueueMessage(JText::_('JFormFieldImageSelect targetfolder<br><pre>'.print_r($targetfolder,true).'</pre>'),'Notice');
+        
 		
 // 		echo 'this->value -> '.$this->value.'<br>';
 // 		echo 'this->name -> '.$this->name.'<br>';

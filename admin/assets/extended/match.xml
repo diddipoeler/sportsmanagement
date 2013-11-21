@@ -30,11 +30,11 @@
 		</field>
 		
 <field name="formation1" type="sql"  label="Spielsystem-Heim" description="Spielsystem-Heim"
-query="SELECT name AS value, name AS formation1 FROM #__joomleague_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
+query="SELECT name AS value, name AS formation1 FROM #__sportsmanagement_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
 </field>
 
 <field name="formation2" type="sql"  label="Spielsystem-Gast" description="Spielsystem-Gast"
-query="SELECT name AS value, name AS formation2 FROM #__joomleague_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
+query="SELECT name AS value, name AS formation2 FROM #__sportsmanagement_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
 </field>
 
 	</fieldset>
