@@ -55,8 +55,18 @@ $package['type'] = $type;
 
 echo 'package<br><pre>'.print_r($package,true).'</pre>';
 
+// Install the package
+		if (!$installer->install($package['dir'])) {
+			// There was an error installing the package
+			$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			//$result = false;
+		} else {
+			// Package installed sucessfully
+			$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			//$result = true;
+		}
 
-
+echo "<script> alert('".$msg."');window.parent.SqueezeBox.close();   </script>\n";
             
 }
 
