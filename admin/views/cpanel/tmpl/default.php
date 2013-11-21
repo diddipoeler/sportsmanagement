@@ -200,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 			</table>
 			<?php
-				echo $this->pane->endPanel();	
+				echo $this->pane->endPanel();
 				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_FORUM') , 'FORUM' );
 			?>
 			<table class="adminlist">
