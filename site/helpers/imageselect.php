@@ -16,7 +16,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-abstract class ImageSelect
+abstract class ImageSelectSM
 {
 
 var $_foldertype = '';
@@ -43,10 +43,10 @@ var $_foldertype = '';
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
 			$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . ImageSelect::getfolder( $type ) . "/'+imagename;
+			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
 			$('a_' + field + '_name').fireEvent('change');
       		if($(fieldid)) {
-        		$(fieldid).value = 'images/com_sportsmanagement/database/" . ImageSelect::getfolder( $type ) . "/'+imagename;
+        		$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
       		}
 			$('a_' + field + '_name').fireEvent('change');
 			//window.top.setTimeout('window.parent.SqueezeBox.close()', 100);

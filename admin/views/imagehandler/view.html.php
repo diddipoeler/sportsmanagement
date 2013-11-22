@@ -35,15 +35,15 @@ class sportsmanagementViewImagehandler extends JView  {
 
 		//get vars
 		$type     	= JRequest::getVar( 'type' );
-		$folder 	= ImageSelect::getfolder($type);
+		$folder 	= ImageSelectSM::getfolder($type);
 		$field 		= JRequest::getVar( 'field' );
 		$fieldid 	= JRequest::getVar( 'fieldid' );
 		$search 	= $mainframe->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
 
 		//add css
-		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
+		//$version = urlencode(sportsmanagementHelper::getVersion());
+		//$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
 
 		JRequest::setVar( 'folder', $folder );
 
@@ -59,11 +59,11 @@ class sportsmanagementViewImagehandler extends JView  {
 			$this->assignRef('type',  $type);
 			$this->assignRef('folder', 	$folder);
 			$this->assignRef('search', 	$search);
-			$this->assignRef('state', 	$this->get('state'));
+			$this->assign('state', 	$this->get('state'));
 			$this->assignRef('pageNav', $pageNav);
 			$this->assignRef('field',   $field);
 			$this->assignRef('fieldid',   $fieldid);
-			$this->assignRef('form'      	, $this->get('form'));
+			//$this->assign('form'      	, $this->get('form'));
 			parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
@@ -101,7 +101,7 @@ class sportsmanagementViewImagehandler extends JView  {
 		$uri 		= JFactory::getURI();
 		$params 	= JComponentHelper::getParams($option);
 		$type     	= JRequest::getVar( 'type' );
-		$folder 	= ImageSelect::getfolder($type);
+		$folder 	= ImageSelectSM::getfolder($type);
 		$field  	= JRequest::getVar( 'field' );
 		$fieldid  	= JRequest::getVar( 'fieldid' );
 		$menu 		= JRequest::setVar( 'hidemainmenu', 1 );

@@ -131,7 +131,7 @@ switch ($type)
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
 		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
-							'flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
+							'associations','flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
               'associations','rosterground','matchreport','seasons','sport_types', 'teams','flags','teamplayers','teamstaffs','venues', 'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
@@ -168,21 +168,7 @@ switch ($type)
         
         $mainframe =& JFactory::getApplication();
         $db = JFactory::getDbo();
-        /*
-        if ( count($param_array) > 0 )
-        {
-            // store the combined new and existing values back as a JSON string
-                        $paramsString = json_encode( $param_array );
-
-echo '<pre>' . print_r($paramsString,true). '</pre><br>';
-                        
-                        $db->setQuery('UPDATE #__extensions SET params = ' .
-                                $db->quote( $paramsString ) .
-                                ' WHERE name = "com_sportsmanagement" and type ="component"' );
-                                $db->query();
-        $mainframe->enqueueMessage(JText::_('Sportsmanagement Konfiguration gesichert'),'');
-        }
-        */                
+                     
                                 
                 if ( count($param_array) > 0 ) {
                         // read the existing component value(s)
