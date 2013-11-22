@@ -1285,6 +1285,12 @@ abstract class sportsmanagementHelper
     $view = JRequest::getVar( "view") ;
     $view = ucfirst(strtolower($view));
     
+    $window_width = '<script>alert($(window).width()); </script>';
+    $window_height = '<script>alert(window.screen.height); </script>';
+    
+    //$mainframe->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($window_width,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($_SESSION,true).'</pre>'),'Notice');
+    
     switch ($view)
     {
     case 'Template':
@@ -1299,9 +1305,16 @@ abstract class sportsmanagementHelper
     $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
+    
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
-         ' href="'.$cfg_help_server.'Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
-		// Add a help button.
+         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
+	
+    /*
+    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
+         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';	
+    */
+        
+        // Add a help button.
 		$bar->appendButton('Custom',$send);	
 		//$bar->appendButton('Help', $ref, $com, $override, $component);
 	}

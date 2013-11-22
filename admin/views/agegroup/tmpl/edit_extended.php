@@ -4,8 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 $extended = $this->form->getFieldsets('extended');
 ?>
 <fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENDED' );?>
-			</legend>
+			
 <?php foreach ($extended as $name => $fieldset): ?>
 		
 	<?php if (isset($fieldset->description) && trim($fieldset->description)): ?>

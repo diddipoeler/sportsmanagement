@@ -90,6 +90,9 @@ class sportsmanagementViewJlextcountry extends JView
 			}
 			JToolBarHelper::cancel('jlextcountry.cancel', 'JTOOLBAR_CLOSE');
 		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 	/**
 	 * Method to set up the document properties

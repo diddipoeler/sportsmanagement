@@ -30,9 +30,9 @@ class sportsmanagementViewjlextcountries extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',			'search',			'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','objcountry.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 
 		$items = $this->get('Items');
