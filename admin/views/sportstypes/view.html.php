@@ -71,7 +71,13 @@ class sportsmanagementViewSportsTypes extends JView
 	*/
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
+		// Get a refrence of the page instance in joomla
+		$document	=& JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE'),'sportstypes');
 		JToolBarHelper::addNewX('sportstype.add');
 		JToolBarHelper::editListX('sportstype.edit');
@@ -80,6 +86,7 @@ class sportsmanagementViewSportsTypes extends JView
 		JToolBarHelper::deleteList('','sportstypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }
 ?>

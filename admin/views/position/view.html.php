@@ -5,9 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
-/**
- * SportsManagement View
- */
+
 class sportsmanagementViewPosition extends JView
 {
 	/**
@@ -21,6 +19,18 @@ class sportsmanagementViewPosition extends JView
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $document = JFactory::getDocument();
+        
+        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
+        {
+            $mainframe->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+            $this->jquery = true;
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+            $this->jquery = false;
+        }
+        
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -169,6 +179,11 @@ class sportsmanagementViewPosition extends JView
 			}
 			JToolBarHelper::cancel('position.cancel', 'JTOOLBAR_CLOSE');
 		}
+        
+		JToolBarHelper::divider();
+        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
 	}
 	/**
 	 * Method to set up the document properties

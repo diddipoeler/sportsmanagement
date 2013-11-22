@@ -107,9 +107,10 @@ class sportsmanagementViewPositions extends JView
 		JToolBarHelper::custom('position.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('position.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','position.delete');
-		JToolBarHelper::divider();
 
+		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }
 ?>

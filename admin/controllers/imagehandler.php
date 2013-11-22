@@ -1,30 +1,13 @@
 <?php
-/**
- * @version    $Id: imagehandler.php 4905 2010-01-30 08:51:33Z and_one $
- * @package    JoomlaTracks
- * @copyright  Copyright (C) 2008 Julien Vonthron. All rights reserved.
- * @license    GNU/GPL, see LICENSE.php
- * Joomla Tracks is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
-// no direct access
 
+// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
 
-/**
- * Tracks Component Imagehandler Controller
- *
- * @package Joomla
- * @subpackage Tracks
- * @since 0.9
- */
+
 class sportsmanagementControllerImagehandler extends JController
 {
 	/**
@@ -173,8 +156,6 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 					continue;
 				}
 
-// 				$fullPath = JPath::clean( JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS . $image );
-// 				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS . 'small' . DS . $image );
 				$fullPath = JPath::clean( JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS . $image );
 				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS . 'small' . DS . $image );
 				if ( is_file( $fullPath ) )

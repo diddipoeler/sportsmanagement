@@ -74,24 +74,8 @@
 			class="inputbox"
 			required=""
       format="%Y-%m-%d"/>            		
-	
-
-  
       	
 	</fieldset>			
-<!-- 
-<fieldset name="picture">
-			<field
-				name="picture"
-				type="media"
-				default=""				
-				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"				
-				directory=""/>
-	</fieldset>
--->
 	
 	<fieldset name="picture">
 			<field

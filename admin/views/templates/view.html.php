@@ -112,7 +112,6 @@ class sportsmanagementViewTemplates extends JView
 			JToolBarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
 		}
 		JToolBarHelper::divider();
-		//JLToolBarHelper::onlinehelp();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}	

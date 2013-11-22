@@ -14,14 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-/**
- * View class for tracks imageselect screen
- * Based on the Joomla! media component
- *
- * @package Joomla
- * @subpackage Tracks
- * @since 0.9
- */
+
 class sportsmanagementViewImagehandler extends JView  {
 
 	/**

@@ -162,6 +162,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PIC_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="teamplayers"
 				directory=""/>			
 	</fieldset>	
 	
