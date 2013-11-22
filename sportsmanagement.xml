@@ -4,7 +4,7 @@
 	<name>COM_SPORTSMANAGEMENT</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
 	<creationDate>April 2013</creationDate>
-	<author>diddipoeler, johncage, svdoldie</author>
+	<author>diddipoeler, stony, svdoldie</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<copyright>Copyright Info</copyright>
@@ -50,7 +50,6 @@
 		<folder>cronjobs</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
-		<folder>plugins</folder>
 	</files>
  
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
@@ -68,7 +67,6 @@
 		<folder>treebracket</folder>
 	</media>
 	
-
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu img="../media/com_sportsmanagement/images/tux-16x16.png">COM_SPORTSMANAGEMENT_MENU</menu>
@@ -109,6 +107,7 @@
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
 		</languages>
+		
 	</administration>
  
 	<!-- UPDATESERVER DEFINITION -->
