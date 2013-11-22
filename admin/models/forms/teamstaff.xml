@@ -132,6 +132,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_PIC_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="teamstaffs"
 				directory=""/>			
 	</fieldset>
   

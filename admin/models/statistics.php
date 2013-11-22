@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -15,12 +7,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.modellist' );
 //require_once( JPATH_COMPONENT . DS . 'models' . DS . 'list.php' );
 
-/**
- * Sportsmanagement Component Events Model
- *
- * @package	Joomleague
- * @since	1.5.0a
- */
+
 class sportsmanagementModelStatistics extends JModelList
 {
 	var $_identifier = "statistics";
@@ -129,8 +116,10 @@ class sportsmanagementModelStatistics extends JModelList
 		$query=' SELECT	s.id AS value,
 				concat(s.name, " (" , st.name, ")") AS text
 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=s.id 
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id 
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
+                ON ps.statistic_id=s.id 
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
+                ON st.id = s.sports_type_id 
 				WHERE ps.position_id='.(int) $id . '
 				ORDER BY ps.ordering ASC ';
 
@@ -150,9 +139,11 @@ class sportsmanagementModelStatistics extends JModelList
 		$query=' SELECT	s.id AS value, 
 				concat(s.name, " (" , st.name, ")") AS text 
 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id 
-				AND ps.position_id='.(int) $id . '
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id 
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
+                ON ps.statistic_id = s.id 
+				AND ps.position_id !='.(int) $id . '
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
+                ON st.id = s.sports_type_id 
 				WHERE ps.id IS NULL 
 				ORDER BY s.ordering ASC ';
 

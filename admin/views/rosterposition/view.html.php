@@ -32,10 +32,12 @@ class sportsmanagementViewrosterposition extends JView
         if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
         {
             $mainframe->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+            $this->jquery = true;
         }
         else
         {
             $mainframe->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+            $this->jquery = false;
         }
         
         // get the Data

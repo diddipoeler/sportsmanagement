@@ -371,6 +371,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="persons"
 				directory=""/>		
 	</fieldset>	
 

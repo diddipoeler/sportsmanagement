@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -15,13 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
-/**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @packag	JoomLeague
- * @since	1.5.0a
- */
+
 class sportsmanagementViewStatistics extends JView
 {
 	function display($tpl=null)
@@ -40,9 +26,9 @@ class sportsmanagementViewStatistics extends JView
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search',			'search',			'',				'string');
 		$search				= JString::strtolower($search);
 
-		$items =& $this->get('Items');
-		$total =& $this->get('Total');
-		$pagination =& $this->get('Pagination');
+		$items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 		// state filter
 		$lists['state']=JHTML::_('grid.state',$filter_state);
@@ -70,11 +56,11 @@ class sportsmanagementViewStatistics extends JView
 		unset($sportstypes);
 
 		$this->assignRef('user',$user);
-		$this->assignRef('config',JFactory::getConfig());
+		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -86,7 +72,13 @@ class sportsmanagementViewStatistics extends JView
 	*/
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
+		// Get a refrence of the page instance in joomla
+		$document	=& JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE'),'statistics');
 		
 		JToolBarHelper::publishList();
@@ -100,6 +92,7 @@ class sportsmanagementViewStatistics extends JView
 		JToolBarHelper::divider();
 		
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
 }
 ?>

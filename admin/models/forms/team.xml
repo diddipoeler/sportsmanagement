@@ -116,6 +116,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
 				class="inputbox"
 				preview="show"
+				targetfolder="teams"
 				directory=""/>			
 	</fieldset>	
 

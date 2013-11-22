@@ -89,7 +89,8 @@ label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
 				label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
 				class="inputbox"
-				preview="show"				
+				preview="show"		
+        targetfolder="flags"		
 				directory=""/>
 	</fieldset>
 	

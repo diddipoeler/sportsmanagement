@@ -1,0 +1,56 @@
+/* mod_quickicon */
+
+#cpanel {  text-align: center;  vertical-align: middle; }
+
+#cpanel div.icon   { margin: 3px; }
+#cpanel div.icon a { 
+	display: block; float: left;
+	height: 97px !important;
+	height: 100px; 
+	width: 108px !important;
+	width: 110px; 
+	vertical-align: middle; 
+	text-decoration : none;
+	border: 1px solid #DDD;
+	padding: 2px 5px 1px 5px;
+}
+
+#cpanel div.icon a:link    {  color : #808080;  }
+#cpanel div.icon a:hover   { 
+	color : #333; 
+	background-color: #f1e8e6;  
+	border: 1px solid #c24733;
+	padding: 3px 4px 0px 6px; 
+}
+#cpanel div.icon a:active  {  color : #808080;  }
+#cpanel div.icon a:visited {  color : #808080;  }
+
+#cpanel div.icon img { margin-top: 13px; }
+#cpanel div.icon span { display: block; padding-top: 3px;}
+
+/* modified by derelvis */
+
+/** header icons **/
+.icon-48-pred-cpanel			{ background-image: url(../icons/tippspiel.png); }
+.icon-48-lmo-cpanel			{ background-image: url(../icons/h1.png); }
+.icon-48-dbb-cpanel			{ background-image: url(../icons/dbb.png); }
+
+.icon-48-playground			{ background-image: url(../icons/icon-48-playground-2.png); }
+.icon-48-countries  		{ background-image: url(../icons/world.png); }
+.icon-48-referees  		{ background-image: url(../icons/referees-48.png); }
+.icon-48-agegroups 		{ background-image: url(../icons/icon-48-agegroups.png); }
+
+.icon-48-cbe-tabs	 		{ background-image: url(../icons/tabmanager.png); }
+.icon-48-cbe-fields	 		{ background-image: url(../icons/fieldmanager.png); }
+.icon-48-cbe-lists	 		{ background-image: url(../icons/listmanager.png); }
+.icon-48-cbe-search	 		{ background-image: url(../icons/searchmanager.png); }
+.icon-48-cbe-blockedusers	{ background-image: url(../icons/blockednamesmanager.png); }
+.icon-48-cbe-badwords	 	{ background-image: url(../icons/badwordsmanager.png); }
+.icon-48-cbe-config	 		{ background-image: url(../icons/cbeconfig.png); }
+.icon-48-cbe-enhconfig 		{ background-image: url(../icons/cbeenhconfig.png); }
+.icon-48-cbe-admods	 		{ background-image: url(../icons/module.png); }
+.icon-48-cbe-extensions		{ background-image: url(../icons/extensions.png); }
+.icon-48-cbe-extensionsconf { background-image: url(../icons/extensionsconfig.png); }
+.icon-48-cbe-tools	 		{ background-image: url(../icons/tools.png); }
+.icon-48-cbe-updates	 	{ background-image: url(../icons/browser.png); }
+.icon-48-cbe-pinboard	 	{ background-image: url(../icons/pinboard.png); }

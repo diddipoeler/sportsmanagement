@@ -1,6 +1,5 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
 JHTML::_('behavior.tooltip');
 ?>
 <!-- import the functions to move the events between selection lists  -->
@@ -16,7 +15,7 @@ JHTML::_('behavior.tooltip');
 
     <fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('projectpositions.store', this.form)">
+			<button type="button" onclick="jQuery('select#project_positionslist > option').prop('selected', 'selected');Joomla.submitform('projectpositions.store', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>

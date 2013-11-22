@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form>
-	<fieldset name="details">
+<form addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -86,8 +89,8 @@
 	<fieldset 	name="picture">
 				
 		<field 	name="icon" 
-				type="media" 
-				directory="com_sportsmanagement/database/statistics"
+				type="" 
+				directory=""
 				preview="show"				
 				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
 				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
