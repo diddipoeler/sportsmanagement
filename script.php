@@ -100,7 +100,7 @@ switch ($type)
     self::setParams($newparams);
 //    self::installComponentLanguages();
 //    self::installModules();
-	  self::installPlugins();
+//	  self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -109,7 +109,7 @@ switch ($type)
     case "update":
 //    self::installComponentLanguages();
 //    self::installModules();
-    self::installPlugins();
+//    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -124,22 +124,26 @@ switch ($type)
 
 	}
     
+    
     public function createImagesFolder()
 	{
 		echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
-		$folders = array('clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
-							'flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
+		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
+							'associations','flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
               'associations','rosterground','matchreport','seasons','sport_types', 'teams','flags','teamplayers','teamstaffs','venues', 'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
-		foreach ($folders as $folder) {
+		
+        foreach ($folders as $folder) 
+        {
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
 		}
+        
 		foreach ($folders as $folder) {
 			$from = JPath::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
 			if(JFolder::exists($from)) {
@@ -155,22 +159,6 @@ switch ($type)
 		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
 	}
     
-    
-    /**
-	 * method to install the plugins
-	 *
-	 * @return void
-	 */
-	public function installPlugins()
-	{
-  $mainframe =& JFactory::getApplication();
-  $src=JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins';
-		$dest=JPATH_SITE.DS.'plugins';
-        
-        echo 'Copy Plugin(s)';
-		JFolder::copy($src, $dest, '', true);
-		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
-  }
     
     /*
     * sets parameter values in the component's row of the extension table
