@@ -6,6 +6,7 @@
 			name="id"
 			type="hidden"
 		/>
+		
 	<fieldset name="matchpreview">
 		<field
 				name="preview"
@@ -15,6 +16,7 @@
 				width="450" 
 				filter="safehtml"/>		
 	</fieldset>
+	
 	<fieldset name="matchdetails">
 		<field
 				name="cancel"
@@ -43,7 +45,8 @@
 					value="0">
 					COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
 		</field>	
-	</fieldset>			
+	</fieldset>	
+  		
 	<fieldset name="matchreport">
 		<field
 				name="show_report"
@@ -62,4 +65,7 @@
 				width="450" 
 				filter="safehtml"/>				
 	</fieldset>	
+	
+	
+	
 </form>

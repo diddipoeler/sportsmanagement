@@ -34,8 +34,11 @@ class sportsmanagementViewagegroup extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
-//		$this->assignRef( 'extended', $extended );
+        /*
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'agegroup');
+		$this->assignRef( 'extended', $extended );
+        */
+        
 //		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar

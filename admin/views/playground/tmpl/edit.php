@@ -51,7 +51,9 @@ $fieldsets = $this->form->getFieldsets();
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
-		echo $this->loadTemplate($fieldset->name);
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
 

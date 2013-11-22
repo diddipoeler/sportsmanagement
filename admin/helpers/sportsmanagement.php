@@ -710,7 +710,7 @@ abstract class sportsmanagementHelper
 	 * @return	array
 	 *
 	 */
-	function convertDate($DummyDate,$direction=1)
+	static function convertDate($DummyDate,$direction=1)
 	{
 		if(!strpos($DummyDate,"-")!==false)
 		{

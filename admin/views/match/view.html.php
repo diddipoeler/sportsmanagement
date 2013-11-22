@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2006-2013 JoomLeague.net. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -15,13 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 JHTML::_('behavior.mootools');
-/**
- * HTML View class for the Joomleague component
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	JoomLeague
- * @since	0.1
- */
+
 
 class sportsmanagementViewMatch extends JView
 {
@@ -51,10 +37,11 @@ class sportsmanagementViewMatch extends JView
 			return false;
 		}
         
+        /*
         $mdlPlaygrounds = JModel::getInstance("Playgrounds", "sportsmanagementModel");
         
         //build the html select list for playgrounds
-		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT_PLAYGROUND'));
+		$playgrounds[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
 		if ($res = $mdlPlaygrounds->getPlaygrounds())
 		{
 			$playgrounds=array_merge($playgrounds,$res);
@@ -70,19 +57,19 @@ class sportsmanagementViewMatch extends JView
 
 		// build the html select booleanlist for count match result
 		$lists['count_result']=JHTML::_('select.booleanlist','count_result','class="inputbox"',$item->count_result);
-        
+        */
         
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
         
-		$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+		//$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
         
         $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
 		$this->assignRef( 'extended', $extended );
-        $this->assignRef('lists',$lists);
+        //$this->assignRef('lists',$lists);
         $this->assignRef('match',$match);
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  

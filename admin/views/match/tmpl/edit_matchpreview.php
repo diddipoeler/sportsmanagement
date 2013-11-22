@@ -5,9 +5,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP'); ?>
 	</legend>
 	<table class="admintable">
-		<tr>
-			<td class="key"><?php echo $this->form->getLabel('preview'); ?></td>
-			<td><?php echo $this->form->getInput('preview'); ?></td>
-		</tr>
+			<?php 
+                    
+                    foreach ($this->form->getFieldset('matchpreview') as $field):
+                    ?>
+					<tr>
+						<td class="key"><?php echo $field->label; ?></td>
+						<td><?php echo $field->input; ?></td>
+					</tr>					
+					<?php endforeach; ?>
 	</table>
 </fieldset>		

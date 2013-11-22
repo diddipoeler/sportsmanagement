@@ -45,7 +45,11 @@ $fieldsets = $this->form->getFieldsets();
                 //echo $picture;
                 //echo JHTML::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
                 echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50px' )); 
-                     
+                }
+                
+                if ( $field->name == 'jform[website]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
                 
                 ?></li>
@@ -65,7 +69,9 @@ $fieldsets = $this->form->getFieldsets();
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
-		echo $this->loadTemplate($fieldset->name);
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
 
