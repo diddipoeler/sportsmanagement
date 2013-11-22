@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
@@ -16,22 +8,23 @@ $params = $this->form->getFieldsets('params');
 
 #echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
-/**
- * Match Form
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	JoomLeague
- * @since	0.1
- */
+
 ?>
 <script type="text/javascript">
 <!--
 var matchid = <?php echo $this->teams->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_joomleague&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
 var homeroster = new Array;
+
+
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
 <?php
+
+
+
+
 $i = 0;
 foreach ($this->rosters['home'] as $player)
 {
@@ -226,3 +219,11 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 		</fieldset>
 </div>
 <div style="clear: both"></div>
+
+<input type="hidden" name="task" value="match.edit"/>
+		<input type="hidden" name="close" id="close" value="0"/>
+        <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
+		<input type="hidden" name="component" value="" />
+		<?php echo JHTML::_('form.token')."\n"; ?>
+
+</form>

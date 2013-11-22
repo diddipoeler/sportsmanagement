@@ -1,10 +1,12 @@
-<?php defined('_JEXEC') or die('Restricted access');
-?>
+<?php 
+defined('_JEXEC') or die('Restricted access');
 
+?>
 		<fieldset class="adminform">
-			
 			<table class="admintable">
-					<?php foreach ($this->form->getFieldset('injury') as $field): ?>
+					<?php 
+                    foreach ($this->form->getFieldset($this->fieldset) as $field): 
+                    ?>
 					<tr>
 						<td class="key"><?php echo $field->label; ?></td>
 						<td><?php echo $field->input; ?></td>
