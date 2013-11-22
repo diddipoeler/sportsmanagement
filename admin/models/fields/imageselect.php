@@ -1,24 +1,9 @@
 <?php
-/**
- * @author Wolfgang Pinitsch <andone@aon.at>
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * 
- * creates a selector to upload, select, reset, clear an image path
- * @author And_One
- * @see administrator/components/com_sportsmanagement/helpers/imageselect.php
- *
- */
+
 class JFormFieldImageSelect extends JFormField
 {
 	protected $type = 'imageselect';

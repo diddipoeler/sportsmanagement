@@ -42,15 +42,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info"
 			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info_DESC"
 			class="inputbox"/>
-	<field
-			name="notes"
-			type="editor"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_notes_DESC"
-			class="inputbox"
-			required=""
-      width="450" 
-			filter="safehtml"/>
+
 
 <field
 			name="age_from"
@@ -77,7 +69,22 @@
       	
 	</fieldset>			
 	
-	<fieldset name="picture">
+	<fieldset name="description" 
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>		
+	
+	
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -89,18 +96,11 @@
 				targetfolder="agegroups"
 				directory=""/>		
 	</fieldset>	
-<!--  	
-  	<fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-		<field name="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION" type="textarea"
-			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION"
-			description="COM_SPORTSMANAGEMENT_EXT_AGEGROUP_DESCRIPTION_DESC" backendonly="">
-		</field>
-		</fieldset>
-	</fields>	
--->
+	
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
 	
 </form>

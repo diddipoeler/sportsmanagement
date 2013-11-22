@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 			<table class="admintable">
 					<?php 
             
-                    foreach ($this->form->getFieldset('picture') as $field): 
+                    foreach ($this->form->getFieldset('description') as $field): 
                     ?>
 					<tr>
 						<td class="key"><?php echo $field->label; ?></td>
