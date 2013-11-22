@@ -54,7 +54,9 @@
  
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
 		<filename>index.html</filename>
-		<folder>clubs</folder>
+		<folder>agegroups</folder>
+		<folder>associations</folder>
+    <folder>clubs</folder>
 		<folder>events</folder>
 		<folder>event_icons</folder>
     <folder>flags</folder>
