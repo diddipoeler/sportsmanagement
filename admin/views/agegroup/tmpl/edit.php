@@ -6,9 +6,12 @@ JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+<<<<<<< HEAD
+=======
 
 //echo COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE;
 
+>>>>>>> diddi/master
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" >
  
@@ -39,9 +42,13 @@ $fieldsets = $this->form->getFieldsets();
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
+<<<<<<< HEAD
+		echo $this->loadTemplate($fieldset->name);
+=======
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
+>>>>>>> diddi/master
 		endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
 
