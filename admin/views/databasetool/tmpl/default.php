@@ -7,32 +7,31 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 
-    
-
+  
+      
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p class="nowarning"><?php echo JText::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
-<div id="update-progress">
-	<div id="extprogress">
-		<div class="extprogrow">
-			<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_JOOMLAUPDATE_VIEW_PROGRESS'),
-					array('class' => 'progress', 'id' => 'progress'), true); ?>
-		</div>
-		<div class="extprogrow">
-			<span class="extlabel"><?php echo JText::_('COM_JOOMLAUPDATE_VIEW_UPDATE_PERCENT'); ?></span>
-			<span class="extvalue" id="extpercent"></span>
-		</div>
-		
-		<div class="extprogrow">
-			<span class="extlabel"><?php echo JText::_('COM_JOOMLAUPDATE_VIEW_UPDATE_FILESEXTRACTED'); ?></span>
-			<span class="extvalue" id="extfiles"></span>
-		</div>
-	</div>
+
+
+<div id="progressbar">
+<div class="progress-label">
+<?php echo $this->task; ?>
+</div>
 </div>
 
-
+<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+<input type="hidden" name="totals" value="<?php echo $this->totals; ?>" />
 
 
 <?PHP
-echo '<meta http-equiv="refresh" content="5; URL='.$this->request_url.$this->step.'">';
-?>  
+echo 'step -> '.$this->work_table.'<br>';
+
+if ( $this->bar_value < 100)
+{
+echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+}
+?>
+
+</form>  

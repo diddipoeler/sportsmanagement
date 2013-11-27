@@ -39,6 +39,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     
     function getSportsManagementTables()
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $query="SHOW TABLES LIKE '%_".COM_SPORTSMANAGEMENT_TABLE."%'";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
@@ -46,6 +48,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     
     function setSportsManagementTableQuery($table, $command)
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $query = strtoupper($command).' TABLE `'.$table.'`'; 
             $this->_db->setQuery($query);
             if (!$this->_db->query())

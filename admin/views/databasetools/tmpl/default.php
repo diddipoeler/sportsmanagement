@@ -33,7 +33,7 @@ JHtml::_( 'behavior.tooltip' );
             <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate&tmpl=component&step=' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate&tmpl=component' );
 						?>
 						
                         <a class="modal" rel="{handler: 'iframe', size: {x: '530', y: '140'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
@@ -52,7 +52,7 @@ JHtml::_( 'behavior.tooltip' );
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize&tmpl=component&step=' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize&tmpl=component' );
 						?>
 						<a class="modal" rel="{handler: 'iframe', size: {x: '530', y: '140'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
 							<?php
@@ -70,7 +70,7 @@ JHtml::_( 'behavior.tooltip' );
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair&tmpl=component&step=' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair&tmpl=component' );
 						?>
 						
                         <a class="modal" rel="{handler: 'iframe', size: {x: '530', y: '140'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
@@ -89,7 +89,7 @@ JHtml::_( 'behavior.tooltip' );
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath&tmpl=component&step=' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath&tmpl=component' );
 						?>
 						
                         <a class="modal" rel="{handler: 'iframe', size: {x: '530', y: '140'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
@@ -108,7 +108,7 @@ JHtml::_( 'behavior.tooltip' );
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters&tmpl=component&step=' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters&tmpl=component' );
 						?>
 						
                         <a class="modal" rel="{handler: 'iframe', size: {x: '530', y: '140'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">

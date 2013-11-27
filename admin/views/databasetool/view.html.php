@@ -17,7 +17,8 @@ class sportsmanagementViewDatabaseTool extends JView
         $document = JFactory::getDocument();
         
         $this->task = JRequest::getCmd('task');
-        $this->step = JRequest::getvar('step',0);
+        //$post = JRequest::get( 'post' );
+        $this->step = $mainframe->getUserState( "$option.step", '0' );
         
         if ( !$this->step )
         {
@@ -36,27 +37,57 @@ class sportsmanagementViewDatabaseTool extends JView
             if ( $this->step < count($this->sm_tables) )
             {
             $successTable = $model->setSportsManagementTableQuery($this->sm_tables[$this->step], $this->task);    
+            $this->work_table = $this->sm_tables[$this->step];
+            $this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
             }
-            $javascript = "\n";
-            
-            $javascript .= 'var joomlaupdate_progress_bar = null;' . "\n";
-            $javascript .= 'var joomlaupdate_stat_percent = 0;' . "\n";
-            $javascript .= 'var joomlaupdate_stat_files = 0;' . "\n";
-            
-            $javascript .= '// Display data' . "\n";
-            $javascript .= 'joomlaupdate_progress_bar = new Fx.ProgressBar(document.id(\'progress\'));' . "\n";
-            $javascript .= 'joomlaupdate_stat_percent = ('.$this->step.' * 100) / '.$this->totals.';' . "\n";
-            $javascript .= 'joomlaupdate_progress_bar.set(joomlaupdate_stat_percent);' . "\n"; 
-            $javascript .= 'joomlaupdate_stat_files = '.$this->totals.';'. "\n";
-			$javascript .= 'document.getElementById(\'extpercent\').innerHTML = new Number(joomlaupdate_stat_percent).formatPercentage(1);' . "\n"; 
-			$javascript .= 'document.getElementById(\'extfiles\').innerHTML = new Number(joomlaupdate_stat_files).format();' . "\n"; 
+            else
+            {
+            $this->step = 0;    
+            $this->bar_value = 100;
+            }
             
             
-            $javascript .= 'jQuery(".extfiles").val('.$this->totals.');' . "\n"; 
             
-            $javascript .= "\n";
-            $document->addScriptDeclaration( $javascript );
+            
+$javascript = "\n";            
+$javascript .= '            jQuery(function() {' . "\n"; 
+$javascript .= '    var progressbar = jQuery( "#progressbar" ),' . "\n"; 
+
+$javascript .= '      progressLabel = jQuery( ".progress-label" );' . "\n"; 
+
+
+
+$javascript .= '     progressbar.progressbar({' . "\n"; 
+//$javascript .= '      value: false,' . "\n"; 
+$javascript .= '      value: '.$this->bar_value.',' . "\n";
+
+$javascript .= '      create: function() {' . "\n"; 
+$javascript .= '        progressLabel.text( "'.$this->task.' -> " + progressbar.progressbar( "value" ) + "%" );' . "\n"; 
+$javascript .= '      },' . "\n";
+
+$javascript .= '      change: function() {' . "\n"; 
+$javascript .= '        progressLabel.text( progressbar.progressbar( "value" ) + "%" );' . "\n"; 
+$javascript .= '      },' . "\n"; 
+
+$javascript .= '      complete: function() {' . "\n"; 
+$javascript .= '        progressLabel.text( "Complete!" );' . "\n"; 
+$javascript .= '      }' . "\n"; 
+
+$javascript .= '    });' . "\n"; 
+$javascript .= '     function progress() {' . "\n"; 
+$javascript .= '      var val = progressbar.progressbar( "value" ) || 0;' . "\n"; 
+$javascript .= '       progressbar.progressbar( "value", '.$this->bar_value.' );' . "\n";
+$javascript .= '       if ( val < 99 ) {' . "\n"; 
+
+$javascript .= '        setTimeout( progress, 100 );' . "\n"; 
+$javascript .= '      }' . "\n"; 
+$javascript .= '    }' . "\n"; 
+$javascript .= '     setTimeout( progress, 3000 );' . "\n"; 
+$javascript .= '  });' . "\n"; 
+$document->addScriptDeclaration( $javascript );            
+            
             $this->step++;
+            $mainframe->setUserState( "$option.step", $this->step); 
             break;
         }
         
@@ -64,13 +95,18 @@ class sportsmanagementViewDatabaseTool extends JView
 		//JHtml::_('behavior.framework', true);
         
         // Load our Javascript
+        $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
+        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/progressbar.js');
+
+/*        
+        // Load our Javascript
 		$document = JFactory::getDocument();
 		$document->addScript('../media/com_joomlaupdate/json2.js');
 		$document->addScript('../media/com_joomlaupdate/encryption.js');
 		$document->addScript('../media/com_joomlaupdate/update.js');
 		JHtml::_('script', 'system/progressbar.js', true, true);
         JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
-
+*/
 		//$this->addToolbar();		
 		parent::display( $tpl );
 	}
