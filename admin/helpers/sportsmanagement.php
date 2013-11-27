@@ -84,6 +84,29 @@ abstract class sportsmanagementHelper
 		return $result;
 	}
     
+    /**
+	 * 
+	 * @param string $data
+	 * @param string $file
+	 * @return object
+	 */
+	static function getExtendedStatistic($data='', $file, $format='ini') 
+    {
+        $mainframe = JFactory::getApplication();
+		//$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
+		$templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
+        $xmlfile = $templatepath.DS.$file.'.xml';
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        
+		$extended = JForm::getInstance('params', $xmlfile,
+				array('control'=> 'params'),
+				false, '/config');
+		$extended->bind($data);
+		return $extended;
+	}
+    
   
   	/**
 	 * support for extensions which can overload extended data
@@ -91,7 +114,9 @@ abstract class sportsmanagementHelper
 	 * @param string $file
 	 * @return object
 	 */
-	static function getExtended($data='', $file, $format='ini') {
+	static function getExtended($data='', $file, $format='ini') 
+    {
+        $mainframe = JFactory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		
     /*
@@ -115,6 +140,10 @@ abstract class sportsmanagementHelper
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
         $jRegistry->loadJSON($data);
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        
 		$extended = JForm::getInstance('extended', $xmlfile,
 				array('control'=> 'extended'),
 				false, '/config');
@@ -1254,7 +1283,7 @@ abstract class sportsmanagementHelper
 	}
     
     
-    function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
+    static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();

@@ -70,8 +70,30 @@ class sportsmanagementViewTeamStaff extends JView
         $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
+        
+        // personendaten setzen
+        $this->form->setValue('injury',null,$project_person->injury);
+        $this->form->setValue('injury_date',null,$project_person->injury_date);
+        $this->form->setValue('injury_end',null,$project_person->injury_end);
+        $this->form->setValue('injury_detail',null,$project_person->injury_detail);
+        $this->form->setValue('injury_date_start',null,$project_person->injury_date_start);
+        $this->form->setValue('injury_date_end',null,$project_person->injury_date_end);
+        
+        $this->form->setValue('suspension',null,$project_person->suspension);
+        $this->form->setValue('suspension_date',null,$project_person->suspension_date);
+        $this->form->setValue('suspension_end',null,$project_person->suspension_end);
+        $this->form->setValue('suspension_detail',null,$project_person->suspension_detail);
+        $this->form->setValue('susp_date_start',null,$project_person->susp_date_start);
+        $this->form->setValue('susp_date_end',null,$project_person->susp_date_end);
+        
+        $this->form->setValue('away',null,$project_person->away);
+		$this->form->setValue('away_date',null,$project_person->away_date);
+        $this->form->setValue('away_end',null,$project_person->away_end);
+        $this->form->setValue('away_detail',null,$project_person->away_detail);
+        $this->form->setValue('away_date_start',null,$project_person->away_date_start);
+        $this->form->setValue('away_date_end',null,$project_person->away_date_end);
 		
-        $matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
+        //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
         $projectpositions = array();
 		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
@@ -86,89 +108,12 @@ class sportsmanagementViewTeamStaff extends JView
 												'text', $this->item->project_position_id );
 		unset($projectpositions);
         
-        // injury details
-		$myoptions = array();
-		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
-		$lists['injury']	= JHtml::_( 'select.radiolist',
-										$myoptions,
-										'injury',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$this->item->injury );
-		unset($myoptions);
+       
 
-		$lists['injury_date']	 = JHtml::_( 'select.genericlist',
-											$matchdays,
-											'injury_date',
-											'class="inputbox" size="1"',
-											'value',
-											'text',
-											$this->item->injury_date );
-		$lists['injury_end']	= JHtml::_( 'select.genericlist',
-											$matchdays,
-											'injury_end',
-											'class="inputbox" size="1"',
-											'value',
-											'text',
-											$this->item->injury_end );
+	
+		
 
-		// suspension details
-		$myoptions		= array();
-		$myoptions[]	= JHtml::_('select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]	= JHtml::_('select.option', '1', JText::_( 'JYES' ));
-		$lists['suspension']		= JHtml::_( 'select.radiolist',
-												$myoptions,
-												'suspension',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$this->item->suspension );
-		unset($myoptions);
-
-		$lists['suspension_date']	 = JHtml::_( 'select.genericlist',
-												$matchdays,
-												'suspension_date',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$this->item->suspension_date );
-		$lists['suspension_end']	= JHtml::_( 'select.genericlist',
-												$matchdays,
-												'suspension_end',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$this->item->suspension_end );
-
-		// away details
-		$myoptions		= array();
-		$myoptions[]	= JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]	= JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
-		$lists['away']	= JHtml::_( 'select.radiolist',
-									$myoptions,
-									'away',
-									'class="inputbox" size="1"',
-									'value',
-									'text',
-									$this->item->away );
-		unset($myoptions);
-
-		$lists['away_date'] = JHtml::_( 'select.genericlist',
-										$matchdays,
-										'away_date',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$this->item->away_date );
-		$lists['away_end']	= JHtml::_( 'select.genericlist',
-										$matchdays,
-										'away_end',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$this->item->away_end );
+		
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'teamstaff');
 		$this->assignRef( 'extended', $extended );
@@ -189,141 +134,7 @@ class sportsmanagementViewTeamStaff extends JView
 		// Set the document
 		$this->setDocument();
 
-/*
-		//get the project_TeamStaff data of the project_team
-		$project_teamstaff	= $this->get( 'data' );
-		$isNew				= ( $project_teamstaff->id < 1 );
 
-		// fail if checked out not by 'me'
-		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
-		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_THEPLAYER' ), $project_teamstaff->name );
-			$mainframe->redirect( 'index.php?option=com_sportsmanagement', $msg );
-		}
-
-		// Edit or Create?
-		if ( $isNew ) { $project_teamstaff->order = 0; }
-
-		//build the html select list for positions
-		$selectedvalue = $project_teamstaff->project_position_id;
-		$projectpositions = array();
-		$projectpositions[] = JHtml::_('select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FUNCTION' ) );
-		if ( $res = & $model->getProjectPositions() )
-		{
-			$projectpositions = array_merge( $projectpositions, $res );
-		}
-		$lists['projectpositions'] = JHtml::_(	'select.genericlist',
-												$projectpositions,
-												'project_position_id',
-												'class="inputbox" size="1"',
-												'value',
-												'text', $selectedvalue );
-		unset($projectpositions);
-
-		$matchdays[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ROUND' ) );
-		if ( $res = & $model->getProjectMatchdays() )
-		{
-			$matchdays = array_merge( $matchdays, $res );
-		}
-
-		// injury details
-		$myoptions = array();
-		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
-		$lists['injury']	= JHtml::_( 'select.radiolist',
-										$myoptions,
-										'injury',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$project_teamstaff->injury );
-		unset($myoptions);
-
-		$lists['injury_date']	 = JHtml::_( 'select.genericlist',
-											$matchdays,
-											'injury_date',
-											'class="inputbox" size="1"',
-											'value',
-											'text',
-											$project_teamstaff->injury_date );
-		$lists['injury_end']	= JHtml::_( 'select.genericlist',
-											$matchdays,
-											'injury_end',
-											'class="inputbox" size="1"',
-											'value',
-											'text',
-											$project_teamstaff->injury_end );
-
-		// suspension details
-		$myoptions		= array();
-		$myoptions[]	= JHtml::_('select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]	= JHtml::_('select.option', '1', JText::_( 'JYES' ));
-		$lists['suspension']		= JHtml::_( 'select.radiolist',
-												$myoptions,
-												'suspension',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$project_teamstaff->suspension );
-		unset($myoptions);
-
-		$lists['suspension_date']	 = JHtml::_( 'select.genericlist',
-												$matchdays,
-												'suspension_date',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$project_teamstaff->suspension_date );
-		$lists['suspension_end']	= JHtml::_( 'select.genericlist',
-												$matchdays,
-												'suspension_end',
-												'class="inputbox" size="1"',
-												'value',
-												'text',
-												$project_teamstaff->suspension_end );
-
-		// away details
-		$myoptions		= array();
-		$myoptions[]	= JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[]	= JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
-		$lists['away']	= JHtml::_( 'select.radiolist',
-									$myoptions,
-									'away',
-									'class="inputbox" size="1"',
-									'value',
-									'text',
-									$project_teamstaff->away );
-		unset($myoptions);
-
-		$lists['away_date'] = JHtml::_( 'select.genericlist',
-										$matchdays,
-										'away_date',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$project_teamstaff->away_date );
-		$lists['away_end']	= JHtml::_( 'select.genericlist',
-										$matchdays,
-										'away_end',
-										'class="inputbox" size="1"',
-										'value',
-										'text',
-										$project_teamstaff->away_end );
-
-		$projectws		= $this->get( 'Data', 'projectws' );
-		$teamws			= $this->get( 'Data', 'teamws' );
-		$extended = $this->getExtended($project_teamstaff->extended, 'teamstaff');
-		$this->assignRef( 'extended', $extended );
-		$this->assignRef('form'      	, $this->get('form'));			
-		#$this->assignRef( 'default_person',		$default_person );
-		$this->assignRef( 'projectws',			$projectws );
-		$this->assignRef( 'teamws',				$teamws );
-		$this->assignRef( 'lists',				$lists );
-		$this->assignRef( 'project_teamstaff',	$project_teamstaff );
-
-		$this->addToolbar();
-		parent::display( $tpl );
-        */
 	}
 
 	/**

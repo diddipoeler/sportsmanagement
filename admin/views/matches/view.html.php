@@ -45,7 +45,14 @@ class sportsmanagementViewMatches extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        
+        $this->project_id	= JRequest::getvar('pid', 0);
+        if ( !$this->project_id )
+        {
+            $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        }
+        
         $this->rid	= JRequest::getvar('rid', 0);
         if ( !$this->rid )
         {
@@ -302,6 +309,7 @@ class sportsmanagementViewMatches extends JView
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
         $mainframe->setUserState( "$option.rid", $this->rid );
+        $mainframe->setUserState( "$option.pid", $this->project_id );
         
         $massadd=JRequest::getInt('massadd',0);
 

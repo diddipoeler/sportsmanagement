@@ -44,7 +44,7 @@ $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width
                     ?>
                     <td class="center" nowrap="nowrap">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=updates&task=update.save&file_name=<?php echo $row['file_name']; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=<?php echo $row['file_name']; ?>"
 									 class="modal">
                                     <?php
                                     echo $row['file_name'];

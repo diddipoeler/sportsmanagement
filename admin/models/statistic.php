@@ -145,7 +145,20 @@ class sportsmanagementModelstatistic extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelstatistic save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        if (isset($post['params']) && is_array($post['params'])) 
+		{
+			// Convert the extended field to a string.
+            //$paramsString = json_encode( $post['params'] );
+            //$data['params'] = $paramsString;
+            
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['params']);
+			$data['params'] = (string)$parameter;
+            
+            
+		}
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelstatistic save data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

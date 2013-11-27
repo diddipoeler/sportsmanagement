@@ -1989,6 +1989,8 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
                 $mdl = JModel::getInstance("club", "sportsmanagementModel");
                 $p_club = $mdl->getTable();
                 
+                $this->dump_variable("p_club", $p_club);
+                
 				foreach ($this->_datas['club'] AS $dClub)
 				{
 					if ($dClub->id == $id)

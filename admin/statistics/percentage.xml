@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-	addrulepath="/administrator/components/com_joomleague/models/rules"
-	addfieldpath="/administrator/components/com_joomleague/models/fields">
-	<fields name="params">
+<config>
 		<fieldset name="typefields_base" 
 		          label="COM_SPORTSMANAGEMENT_STAT_PARAMS_GROUP_SETTINGS" 
 		          description="COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_DESC">
@@ -34,5 +31,4 @@
 				<option value="player">player</option>
 			</field>
 		</fieldset>
-	</fields>
-</form>
+</config>

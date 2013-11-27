@@ -71,7 +71,7 @@ JHtml::_('behavior.modal');
 					<th width="10%" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHtml::_('grid.order', $this->items, 'filesave.png', 'project.saveorder');
+						echo JHtml::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
 						?>
 					</th>
 					<th width="5%" class="title">
@@ -91,10 +91,10 @@ JHtml::_('behavior.modal');
 
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
 					$link2=JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
-					$link2panel=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid[]='.$row->id.'&stid[]='.$row->sports_type_id.'&id='.$row->id   );
+					$link2panel=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
 
 					$checked    = JHtml::_('grid.checkedout',$row,$i);
-					$published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','project.');
+					$published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -138,14 +138,14 @@ JHtml::_('behavior.modal');
 						<td class="center"><?php echo JText::_($row->project_type); ?></td>
 						<td class="center">
 							<?php if ($row->current_round): ?>
-								<?php echo JHtml::link('index.php?option=com_sportsmanagement&view=matches&task=match.display&pid[]='.$row->id.'&rid[]='. $row->current_round,
+								<?php echo JHtml::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
 								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
 						<td class="center"><?php echo $published; ?></td>
 						<td class="order">
-							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'project.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
-							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'project.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>
+							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'projects.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
+							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projects.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>
 							<?php $disabled=true ?  '' : 'disabled="disabled"';	?>
 							<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 						</td>

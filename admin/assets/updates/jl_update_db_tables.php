@@ -1,17 +1,13 @@
 <?php
-/**
- * Joomleague Component script file to CREATE/UPDATE all tables of JoomLeague
- *
- * @author	Kurt Norgaz
- * @author	And_One <andone@mfga.at>
- * @package	JoomLeague
- * @since	1.5 - 2010-08-18
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 
+jimport('joomla.html.html.sliders');
+jimport('joomla.html.html.tabs');
+  
 $version			= '2.0.43.b3fd04d-a';
 $updateFileDate		= '2012-09-13';
 $updateFileTime		= '00:05';
@@ -84,9 +80,12 @@ function ImportTables()
 			$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
 			$DummyStr=substr($DummyStr,0,strpos($DummyStr,'`'));
 			$db->setQuery($import);
-			$pane =& JPane::getInstance('sliders');
-			echo $pane->startPane('sliders');
-			echo $pane->startPanel($DummyStr,$DummyStr);
+			//$pane =& JPane::getInstance('sliders');
+			//echo $pane->startPane('sliders');
+            echo JHtml::_('sliders.start');
+			//echo $pane->startPanel($DummyStr,$DummyStr);
+            echo JHtml::_('sliders.panel', $DummyStr, $DummyStr);
+            
 			//echo JHTML::_('sliders.start','sliders',array('allowAllClose' => true,'startTransition' => true,true));
 			//echo JHTML::_('sliders.panel',$DummyStr,'panel-'.$DummyStr);
 			
@@ -280,8 +279,9 @@ function ImportTables()
 			unset($newIndexes);
 			unset($newFields);
 			
-			echo $pane->endPanel();
-			echo $pane->endPane();
+			//echo $pane->endPanel();
+			//echo $pane->endPane();
+            echo JHtml::_('sliders.end');
       //echo JHTML::_('sliders.end');
 		}
 		unset($import);

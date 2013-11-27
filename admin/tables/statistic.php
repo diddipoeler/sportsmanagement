@@ -67,28 +67,5 @@ class sportsmanagementTableStatistic extends JTable
 		return true;
 	}
 	
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-	 * @see JTable:bind
-	 * @since 1.5
-	 */
-	function bind($array, $ignore = '')
-	{
-		if (key_exists( 'baseparams', $array ) && is_array( $array['baseparams'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['baseparams']);
-			$array['baseparams'] = (string) $registry;
-		}
-		if (key_exists( 'params', $array ) && is_array( $array['params'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
-		}
-		return parent::bind($array, $ignore);
-	}
+	
 }

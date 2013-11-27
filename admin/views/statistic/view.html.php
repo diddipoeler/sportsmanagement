@@ -16,7 +16,8 @@ class sportsmanagementViewstatistic extends JView
 	 */
 	public function display($tpl = null) 
 	{
-		// get the Data
+		$mainframe = JFactory::getApplication();
+        // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
@@ -31,7 +32,31 @@ class sportsmanagementViewstatistic extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-		
+        
+        /*
+        $templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
+        $xmlfile = $templatepath.DS.$item->class.'.xml';
+        $jRegistry = new JRegistry;
+		//$jRegistry->loadString($data, $format);
+        //$jRegistry->loadJSON($this->item->params);
+        $jRegistry->loadArray($this->item->params);
+        
+        $mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        
+        //$this->formparams = JForm::getInstance($item->class, $xmlfile,array('control'=> 'params'));
+        $this->formparams = JForm::getInstance('params', $xmlfile,array('control'=> 'params'),false, '/config');
+        //$this->formparams->bind($jRegistry);
+        $this->formparams->bind($this->item->params);
+		*/
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->params,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->baseparams,true).'</pre>'),'Notice');
+        
+        $formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
+		$this->assignRef( 'formparams', $formparams );
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
+        
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 // 		$this->assignRef( 'extended', $extended );
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );

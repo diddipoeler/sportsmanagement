@@ -44,7 +44,7 @@ $fieldsets = $this->form->getFieldsets();
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
                 //echo $picture;
                 //echo JHTML::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
-                echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50px' )); 
+                echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
                 }
                 
                 if ( $field->name == 'jform[website]' )

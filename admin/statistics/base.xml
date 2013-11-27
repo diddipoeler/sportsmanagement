@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-	addrulepath="/administrator/components/com_joomleague/models/rules"
-	addfieldpath="/administrator/components/com_joomleague/models/fields">
-	<fields name="baseparams">
+<config>
 		<fieldset name="base" label="COM_SPORTSMANAGEMENT_ADMIN_STAT_GENERAL_PARAMS">
 			<field name="ranking_order" type="list" default="DESC" 
 					label="COM_SPORTSMANAGEMENT_STAT_RANKING_ORDER" 
@@ -11,5 +8,4 @@
 				<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESCENDING</option>
 			</field>
 		</fieldset>
-	</fields>
-</form>
+	</config>

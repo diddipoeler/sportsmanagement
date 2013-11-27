@@ -86,7 +86,9 @@
 
 	</fieldset>	
 
-	<fieldset 	name="picture">
+	<fieldset 	name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 				
 		<field 	name="icon" 
 				type="" 
@@ -97,6 +99,16 @@
 		</field>
 	</fieldset>
 
+  <fields name="params">
+		<fieldset
+			name="params"
+			label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
+			description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC"
+		>
+		
+		</fieldset>
+	</fields>	
+	
 <!--  
   <fields name="extended">
 		<fieldset
