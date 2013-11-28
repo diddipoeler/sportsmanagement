@@ -122,11 +122,13 @@ class sportsmanagementModelPositions extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
+		//$project_id=$mainframe->getUserState($option.'project');
 		//get positions already in project for parents list
 		//support only 2 sublevel, so parent must not have parents themselves
-		$query='	SELECT	pos.id AS value,
-							pos.name AS text
+		$query='	SELECT pos.id, pos.name,	
+        pos.id AS value,
+							pos.name AS text,
+                            pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id 
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
 					WHERE pos.parent_id=0
 					ORDER BY pos.ordering ASC 
@@ -298,7 +300,7 @@ class sportsmanagementModelPositions extends JModelList
     
     public function getPositionListSelect()
 	{
-		$query='SELECT id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
+		$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
 		$this->_db->setQuery($query);
 		$result=$this->_db->loadObjectList();
 		foreach ($result as $position)

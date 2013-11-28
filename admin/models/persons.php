@@ -393,7 +393,10 @@ class sportsmanagementModelPersons extends JModelList
     
     public function getPersonListSelect()
 	{
-		$query ="	SELECT id AS value,firstname,lastname,nickname,birthday
+		$query ="	SELECT id,id AS value,firstname,lastname,nickname,birthday,info,
+        LOWER(lastname) AS low_lastname,
+					LOWER(firstname) AS low_firstname,
+					LOWER(nickname) AS low_nickname
 						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
 						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
 						ORDER BY lastname,firstname";

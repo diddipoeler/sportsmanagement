@@ -126,7 +126,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
     
     public function getPlaygroundListSelect()
 	{
-		$query='SELECT id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
+		$query='SELECT id,name,id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
 		$this->_db->setQuery($query);
 		if ($results=$this->_db->loadObjectList())
 		{

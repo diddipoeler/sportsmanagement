@@ -54,8 +54,13 @@ class sportsmanagementViewJLXMLImports extends JView
 			return;
 		}
 
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'generic.png');
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimport');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
 		$uri = JFactory::getURI();
@@ -85,8 +90,13 @@ class sportsmanagementViewJLXMLImports extends JView
        $this->assignRef('projektfussballineuropa',$model->getDataUpdateImportID() );
        $this->assignRef('option',$option);
        
+       // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'generic.png');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
@@ -126,35 +136,64 @@ class sportsmanagementViewJLXMLImports extends JView
         $this->assignRef('whichfile',$whichfile);
         $projectidimport = $mainframe->getUserState($option.'projectidimport');
         $this->assignRef('projectidimport',$projectidimport);
-		$countries=new Countries();
+		//$countries=new Countries();
 		$this->assignRef('uploadArray',$uploadArray);
 		$this->assignRef('starttime',$starttime);
-		$this->assign('countries',$countries->getCountries());
+        // diddi
+		$this->assign('countries',Countries::getCountryOptions());
+        
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('xml', $data);
-		$this->assign('leagues',$model->getLeagueList());
-		$this->assign('seasons',$model->getSeasonList());
-		$this->assign('sportstypes',$model->getSportsTypeList());
+        // diddi
+        $mdl = JModel::getInstance("leagues", "sportsmanagementModel");
+		$this->assign('leagues',$mdl->getLeagues());
+        // diddi
+        $mdl = JModel::getInstance("seasons", "sportsmanagementModel");
+		$this->assign('seasons',$mdl->getSeasons());
+        // diddi
+        $mdl = JModel::getInstance("sportstypes", "sportsmanagementModel");
+		$this->assign('sportstypes',$mdl->getSportsTypes());
+        
 		$this->assign('admins',$model->getUserList(false));
 		$this->assign('editors',$model->getUserList(false));
 		$this->assign('templates',$model->getTemplateList());
-		$this->assign('teams',$model->getTeamList());
-		$this->assign('clubs',$model->getClubList());
+        // diddi
+        $mdl = JModel::getInstance("teams", "sportsmanagementModel");
+		$this->assign('teams',$mdl->getTeamListSelect());
+        // diddi
+        $mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+		$this->assign('clubs',$mdl->getClubListSelect());
+        
 		$this->assign('events',$model->getEventList());
-		$this->assign('positions',$model->getPositionList());
-		$this->assign('parentpositions',$model->getParentPositionList());
-		$this->assign('playgrounds',$model->getPlaygroundList());
+        // diddi
+        $mdl = JModel::getInstance("positions", "sportsmanagementModel");
+		$this->assign('positions',$mdl->getPositionListSelect());
+		$this->assign('parentpositions',$mdl->getParentsPositions());
+        // diddi
+        $mdl = JModel::getInstance("playgrounds", "sportsmanagementModel");
+		$this->assign('playgrounds',$mdl->getPlaygroundListSelect());
+        
         $mdl = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-		$this->assign('persons',$model->getPersonList());
-		$this->assign('statistics',$model->getStatisticList());
+        // diddi
+        $mdl = JModel::getInstance("persons", "sportsmanagementModel");
+		$this->assign('persons',$mdl->getPersonListSelect());
+        // diddi
+        $mdl = JModel::getInstance("statistics", "sportsmanagementModel");
+		$this->assign('statistics',$mdl->getStatisticListSelect());
+        
 		$this->assign('OldCountries',$model->getCountryByOldid());
 		$this->assignRef('import_version',$model->import_version);
 		$this->assignRef('lists',$lists);
 		
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
     
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3'),'generic.png');
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3'),'xmlimport');
 		//                       task    image  mouseover_img           alt_text_for_image              check_that_standard_list_item_is_checked
 		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
@@ -174,8 +213,13 @@ class sportsmanagementViewJLXMLImports extends JView
 		$model 		= JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$post		= JRequest::get('post');
 		
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'generic.png');
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'xmlimport');
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
@@ -194,7 +238,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$document 	= JFactory::getDocument();
 		$db 		= JFactory::getDBO();
 		$uri 		= JFactory::getURI();
-		$model 		=& JModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
+		$model 		= JModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
 		$lists 		= array();
 
 		$this->assignRef('request_url',$uri->toString());
@@ -223,7 +267,8 @@ class sportsmanagementViewJLXMLImports extends JView
 						}
 						break;
 			case '8':	{ // Select Statistics
-						$this->assignRef('statistics',$model->getStatisticListSelect());
+						$mdl = JModel::getInstance("statistics", "sportsmanagementModel");
+                        $this->assignRef('statistics',$mdl->getStatisticListSelect());
 						$statisticlist=array();
 						$statisticlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
 						$statisticlist=array_merge($statisticlist,$this->statistics);

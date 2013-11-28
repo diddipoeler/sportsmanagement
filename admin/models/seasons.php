@@ -85,7 +85,7 @@ class sportsmanagementModelSeasons extends JModelList
 	}
 	
 	/**
-     * Method to return a leagues array (id,name)
+     * Method to return a seasons array (id,name)
      *
      * @access	public
      * @return	array seasons

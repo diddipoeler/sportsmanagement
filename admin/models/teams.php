@@ -112,7 +112,7 @@ class sportsmanagementModelTeams extends JModelList
     
     public function getTeamListSelect()
 	{
-		$query="SELECT id AS value,name,info,club_id,short_name, middle_name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
+		$query="SELECT id,id AS value,name,club_id,short_name, middle_name,info FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
 		$this->_db->setQuery($query);
 		if ($results=$this->_db->loadObjectList())
 		{

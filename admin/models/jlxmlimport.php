@@ -497,28 +497,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 		}
 	}
 
-	public function getLeagueList()
-	{
-		$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_league ORDER BY name ASC';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
-	public function getSportsTypeList()
-	{
-		$query='SELECT id,name,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC';
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList();
-		foreach ($result as $sportstype){$sportstype->name=JText::_($sportstype->name);}
-		return $result;
-	}
-
-	public function getSeasonList()
-	{
-		$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_season ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
+	
 
 	public function getUserList($is_admin=false)
 	{
@@ -539,22 +521,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getTeamList()
-	{
-		$query='SELECT id,name,club_id,short_name,middle_name,info FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
 	
 
-	public function getClubList()
-	{
-		$query='SELECT id,name,standard_playground,country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name ASC';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
+	
 	
 
 	public function getNewClubList()
@@ -599,25 +570,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return false;
 	}
 
-	public function getPersonList()
-	{
-		$query="	SELECT *,
-					LOWER(lastname) AS low_lastname,
-					LOWER(firstname) AS low_firstname,
-					LOWER(nickname) AS low_nickname
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost' ORDER BY lastname";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
 	
 
-	public function getPlaygroundList()
-	{
-		$query='SELECT id,name,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
 	
 
@@ -637,21 +594,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $result;
 	}
 
-	public function getPositionList()
-	{
-		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
 	
 
-	public function getParentPositionList()
-	{
-		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position WHERE parent_id=0 ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+	
 
 	public function getParentPositionListSelect()
 	{
@@ -662,19 +609,19 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $result;
 	}
 
-	public function getStatisticList()
-	{
-		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+//	public function getStatisticList()
+//	{
+//		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
+//		$this->_db->setQuery($query);
+//		return $this->_db->loadObjectList();
+//	}
 
-	public function getStatisticListSelect()
-	{
-		$query='SELECT id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+//  public function getStatisticListSelect()
+//	{
+//		$query='SELECT id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
+//		$this->_db->setQuery($query);
+//		return $this->_db->loadObjectList();
+//	}
 
 	// Should be called as the last function in importData() to delete
 	private function _deleteImportFile()

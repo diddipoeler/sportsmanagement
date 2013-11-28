@@ -108,7 +108,7 @@ class sportsmanagementModelClubs extends JModelList
     
     public function getClubListSelect()
 	{
-		$query='SELECT id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
+		$query='SELECT id,name,id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
 		$this->_db->setQuery($query);
 		if ($results=$this->_db->loadObjectList())
 		{
