@@ -44,6 +44,7 @@ class sportsmanagementViewDatabaseTool extends JView
             {
             $this->step = 0;    
             $this->bar_value = 100;
+            $this->work_table = '';
             }
             
             

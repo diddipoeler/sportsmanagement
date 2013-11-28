@@ -82,14 +82,24 @@ class sportsmanagementModelJLXMLImport extends JModel
     {
     $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
-    $project_id = $mainframe->getUserState($option.'project', 0);  
+    $project_id = $mainframe->getUserState( "$option.pid", '0' ); 
     
     //$mainframe->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
+    
+    if ( $project_id )
+    {
     $model = JModel::getInstance('project', 'sportsmanagementmodel');
     $update_project = $model->getProject($project_id);  
     //$update_project = JTable::getInstance('Project','Table');
     //$update_project->load($project_id);
-    return $update_project->import_project_id;    
+    return $update_project->import_project_id;  
+    }
+    else
+    {
+        return false;
+    }
+    
+      
     }
         
     public function getDataUpdate()
@@ -535,20 +545,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getTeamListSelect()
-	{
-		$query="SELECT id AS value,name,info,club_id,short_name, middle_name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team ORDER BY name";
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
-		{
-			foreach ($results AS $team)
-			{
-				$team->text=$team->name.' - ('.$team->info.')';
-			}
-			return $results;
-		}
-		return false;
-	}
+	
 
 	public function getClubList()
 	{
@@ -557,16 +554,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getClubListSelect()
-	{
-		$query='SELECT id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
-		{
-			return $results;
-		}
-		return false;
-	}
+	
 
 	public function getNewClubList()
 	{
@@ -621,32 +609,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getPersonListSelect()
-	{
-		$query ="	SELECT id AS value,firstname,lastname,nickname,birthday
-						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
-						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
-						ORDER BY lastname,firstname";
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
-		{
-			foreach ($results AS $person)
-			{
-				$textString=$person->lastname.','.$person->firstname;
-				if (!empty($person->nickname))
-				{
-					$textString .= " '".$person->nickname."'";
-				}
-				if ($person->birthday!='0000-00-00')
-				{
-					$textString .= " (".$person->birthday.")";
-				}
-				$person->text=$textString;
-			}
-			return $results;
-		}
-		return false;
-	}
+	
 
 	public function getPlaygroundList()
 	{
@@ -1180,7 +1143,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 					WHERE name='$this->_name' AND league_id='$this->_league_id' AND season_id='$this->_season_id'";
 		*/
-		$query="SELECT id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE name='".addslashes(stripslashes($this->_name))."'";
+		$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project WHERE name='".addslashes(stripslashes($this->_name))."'";
 		$this->_db->setQuery($query);
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0){return false;}
@@ -1190,7 +1153,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 	private function _getObjectName($tableName,$id,$usedFieldName='')
 	{
 		$fieldName=($usedFieldName=='') ? 'name' : $usedFieldName;
-		$query="SELECT $fieldName FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_$tableName WHERE id=$id";
+		$query="SELECT $fieldName FROM #__".COM_SPORTSMANAGEMENT_TABLE."_$tableName WHERE id=$id";
 		$this->_db->setQuery($query);
 		if ($result=$this->_db->loadResult()){return $result;}
 		return JText::sprintf('Item with ID [%1$s] not found inside [#__'.COM_SPORTSMANAGEMENT_TABLE.'_%2$s]',$id,$tableName);
@@ -1406,7 +1369,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				{
 					$p_eventtype->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_eventtype,'name')));
 				}
-				$query="SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype WHERE name='".addslashes(stripslashes($p_eventtype->name))."'";
+				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype WHERE name='".addslashes(stripslashes($p_eventtype->name))."'";
 				$this->_db->setQuery($query); $this->_db->query();
 				if ($object=$this->_db->loadObject())
 				{
@@ -1489,7 +1452,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				{
 					$p_statistic->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_statistic,'name')));
 				}
-				$query="SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic WHERE name='".addslashes(stripslashes($p_statistic->name))."' AND class='".addslashes(stripslashes($p_statistic->class))."'";
+				$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_statistic WHERE name='".addslashes(stripslashes($p_statistic->name))."' AND class='".addslashes(stripslashes($p_statistic->class))."'";
 				$this->_db->setQuery($query);
 				$this->_db->query();
 				if ($object=$this->_db->loadObject())
@@ -1572,7 +1535,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				{
 					$p_position->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name')));
 				}
-				$query="SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=0";
+				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=0";
 				$this->_db->setQuery($query);
 				$this->_db->query();
 				if ($this->_db->getAffectedRows())
@@ -1665,7 +1628,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				{
 					$p_position->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name')));
 				}
-				$query="SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=$p_position->parent_id";
+				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=$p_position->parent_id";
 				$this->_db->setQuery($query);
 				$this->_db->query();
 				if ($this->_db->getAffectedRows())
@@ -1742,7 +1705,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			$p_positioneventtype->set('position_id',$this->_convertPositionID[$oldPositionID]);
 			$p_positioneventtype->set('eventtype_id',$this->_convertEventID[$oldEventID]);
 			$query ="SELECT id
-							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype
+							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype
 							WHERE	position_id='$p_positioneventtype->position_id' AND
 									eventtype_id='$p_positioneventtype->eventtype_id'";
 			$this->_db->setQuery($query);
@@ -1849,7 +1812,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 						$p_playground->set('club_id',$this->_getDataFromObject($import_playground,'club_id'));
 					}
 				}
-				$query="SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground WHERE name='".addslashes(stripslashes($p_playground->name))."'";
+				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_playground WHERE name='".addslashes(stripslashes($p_playground->name))."'";
 				$this->_db->setQuery($query); $this->_db->query();
 				if ($object=$this->_db->loadObject())
 				{
@@ -2061,7 +2024,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 				$query="SELECT	id,
 						name,
 						country
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_club
 					WHERE	name='".addslashes(stripslashes($p_club->name))."' AND
 						country='$p_club->country'";
 				$this->_db->setQuery($query); 
@@ -2323,7 +2286,7 @@ $this->dump_variable("import_team", $import_team);
 								short_name,
 								middle_name,
 								info, club_id
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
+						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team
 						WHERE	name='".addslashes(stripslashes($p_team->name))."' AND
 								middle_name='".addslashes(stripslashes($p_team->middle_name))."' AND
 								info='".addslashes(stripslashes($p_team->info))."' ";
@@ -2456,7 +2419,7 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$p_person->set('alias',$p_alias);
 				}
-				$query="	SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
+				$query="	SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
 							WHERE	firstname='".addslashes(stripslashes($p_person->firstname))."' AND
 									lastname='".addslashes(stripslashes($p_person->lastname))."' AND
 									nickname='".addslashes(stripslashes($p_person->nickname))."' AND
@@ -4319,7 +4282,7 @@ $this->dump_variable("import_team", $import_team);
 			}
 			$t_fav_team=trim($t_fav_team,',');
 		}
-		$query="UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_project SET fav_team='$t_fav_team' WHERE id=$this->_project_id";
+		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET fav_team='$t_fav_team' WHERE id=$this->_project_id";
 		$this->_db->setQuery($query);
 		$this->_db->query();
 	}

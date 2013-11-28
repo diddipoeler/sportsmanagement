@@ -105,6 +105,17 @@ class sportsmanagementModelClubs extends JModelList
 		$where=(count($where) ? ' '. implode(' AND ',$where) : ' ');
 		return $where;
 	}
+    
+    public function getClubListSelect()
+	{
+		$query='SELECT id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
+		$this->_db->setQuery($query);
+		if ($results=$this->_db->loadObjectList())
+		{
+			return $results;
+		}
+		return false;
+	}
 
 	
 }

@@ -123,7 +123,7 @@ class sportsmanagementModelperson extends JModelAdmin
     /**
 	 * return 
 	 *
-	 * @param int team_id
+	 * @param int person_id
 	 * @return int
 	 */
 	function getPerson($person_id)
@@ -385,6 +385,8 @@ class sportsmanagementModelperson extends JModelAdmin
         // Proceed with the save
 		return parent::save($data);   
     }
+    
+    
     
     
 	

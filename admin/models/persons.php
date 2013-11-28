@@ -384,7 +384,32 @@ class sportsmanagementModelPersons extends JModelList
 		return $result;
 	}
     
-    
+    public function getPersonListSelect()
+	{
+		$query ="	SELECT id AS value,firstname,lastname,nickname,birthday
+						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
+						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
+						ORDER BY lastname,firstname";
+		$this->_db->setQuery($query);
+		if ($results=$this->_db->loadObjectList())
+		{
+			foreach ($results AS $person)
+			{
+				$textString=$person->lastname.','.$person->firstname;
+				if (!empty($person->nickname))
+				{
+					$textString .= " '".$person->nickname."'";
+				}
+				if ($person->birthday!='0000-00-00')
+				{
+					$textString .= " (".$person->birthday.")";
+				}
+				$person->text=$textString;
+			}
+			return $results;
+		}
+		return false;
+	}
     
 
 }

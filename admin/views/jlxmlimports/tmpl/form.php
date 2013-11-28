@@ -716,6 +716,8 @@ if (isset($this->xml) && is_array($this->xml))
 							// Find in database a team with the name equal to that of the imported team
 							$matchingTeam_ID = 0;
 							$matchingTeam_ClubID = 0;
+                            $matchingTeam_INFO = '';
+                            
 							if (count($this->teams) > 0)
 							{
 								foreach ($this->teams AS $team)

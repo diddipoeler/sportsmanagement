@@ -55,7 +55,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		}
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_TITLE_1_3'),'generic.png');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'generic.png');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
 		$uri = JFactory::getURI();
@@ -86,7 +86,7 @@ class sportsmanagementViewJLXMLImports extends JView
        $this->assignRef('option',$option);
        
        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_TITLE_1_4'),'generic.png');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'generic.png');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
@@ -154,9 +154,9 @@ class sportsmanagementViewJLXMLImports extends JView
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
     
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_TITLE_2_3'),'generic.png');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3'),'generic.png');
 		//                       task    image  mouseover_img           alt_text_for_image              check_that_standard_list_item_is_checked
-		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
+		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
@@ -175,7 +175,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$post		= JRequest::get('post');
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_TITLE_3_3'),'generic.png');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'generic.png');
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
@@ -207,7 +207,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '10':   { // Select new Club
 						$this->assignRef('clubs',$model->getNewClubListSelect());
 						$clublist=array();
-						$clublist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_CLUB'));
+						$clublist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
 						$clublist=array_merge($clublist,$this->clubs);
 						$lists['clubs']=JHTML::_(	'select.genericlist',$clublist,'clubID','class="inputbox select-club" onchange="javascript:insertNewClub(\''.$this->recordID.'\')" ','value','text', 0);
 						unset($clubteamlist);
@@ -216,7 +216,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '9':   { // Select Club & Team
 						$this->assignRef('clubsteams',$model->getClubAndTeamListSelect());
 						$clubteamlist=array();
-						$clubteamlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_CLUB_AND_TEAM'));
+						$clubteamlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB_AND_TEAM'));
 						$clubteamlist=array_merge($clubteamlist,$this->clubsteams);
 						$lists['clubsteams']=JHTML::_(	'select.genericlist',$clubteamlist,'teamID','class="inputbox select-team" onchange="javascript:insertClubAndTeam(\''.$this->recordID.'\')" ','value','text', 0);
 						unset($clubteamlist);
@@ -225,7 +225,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '8':	{ // Select Statistics
 						$this->assignRef('statistics',$model->getStatisticListSelect());
 						$statisticlist=array();
-						$statisticlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
+						$statisticlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
 						$statisticlist=array_merge($statisticlist,$this->statistics);
 						$lists['statistics']=JHTML::_('select.genericlist',$statisticlist,'statisticID','class="inputbox select-statistic" onchange="javascript:insertStatistic(\''.$this->recordID.'\')" ');
 						unset($statisticlist);
@@ -235,7 +235,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '7':	{ // Select ParentPosition
 						$this->assignRef('parentpositions',$model->getParentPositionListSelect());
 						$parentpositionlist=array();
-						$parentpositionlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
+						$parentpositionlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
 						$parentpositionlist=array_merge($parentpositionlist,$this->parentpositions);
 						$lists['parentpositions']=JHTML::_('select.genericlist',$parentpositionlist,'parentPositionID','class="inputbox select-parentposition" onchange="javascript:insertParentPosition(\''.$this->recordID.'\')" ');
 						unset($parentpositionlist);
@@ -245,7 +245,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '6':	{ // Select Position
 						$this->assignRef('positions',$model->getPositionListSelect());
 						$positionlist=array();
-						$positionlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_POSITION'));
+						$positionlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
 						$positionlist=array_merge($positionlist,$this->positions);
 						$lists['positions']=JHTML::_('select.genericlist',$positionlist,'positionID','class="inputbox select-position" onchange="javascript:insertPosition(\''.$this->recordID.'\')" ');
 						unset($positionlist);
@@ -255,7 +255,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '5':	{ // Select Event
 						$this->assignRef('events',$model->getEventListSelect());
 						$eventlist=array();
-						$eventlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_EVENT'));
+						$eventlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
 						$eventlist=array_merge($eventlist,$this->events);
 						$lists['events']=JHTML::_('select.genericlist',$eventlist,'eventID','class="inputbox select-event" onchange="javascript:insertEvent(\''.$this->recordID.'\')" ');
 						unset($eventlist);
@@ -265,7 +265,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			case '4':	{ // Select Playground
 						$this->assignRef('playgrounds',$model->getPlaygroundListSelect());
 						$playgroundlist=array();
-						$playgroundlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
+						$playgroundlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
 						$playgroundlist=array_merge($playgroundlist,$this->playgrounds);
 						$lists['playgrounds']=JHTML::_('select.genericlist',$playgroundlist,'playgroundID','class="inputbox select-playground" onchange="javascript:insertPlayground(\''.$this->recordID.'\')" ');
 						unset($playgroundlist);
@@ -273,9 +273,10 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '3':	{ // Select Person
-						$this->assignRef('persons',$model->getPersonListSelect());
+                        $mdl = JModel::getInstance("persons", "sportsmanagementModel");
+						$this->assignRef('persons',$mdl->getPersonListSelect());
 						$personlist=array();
-						$personlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_PERSON'));
+						$personlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));
 						$personlist=array_merge($personlist,$this->persons);
 						$lists['persons']=JHTML::_('select.genericlist',$personlist,'personID','class="inputbox select-person" onchange="javascript:insertPerson(\''.$this->recordID.'\')" ');
 						unset($personlist);
@@ -283,9 +284,10 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '2':	{ // Select Club
-						$this->assignRef('clubs',$model->getClubListSelect());
+						$mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+                        $this->assignRef('clubs',$mdl->getClubListSelect());
 						$clublist=array();
-						$clublist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_CLUB'));
+						$clublist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
 						$clublist=array_merge($clublist,$this->clubs);
 						$lists['clubs']=JHTML::_('select.genericlist',$clublist,'clubID','class="inputbox select-club" onchange="javascript:insertClub(\''.$this->recordID.'\')" ');
 						unset($clublist);
@@ -294,10 +296,12 @@ class sportsmanagementViewJLXMLImports extends JView
 
 			case '1':
 			default:	{ // Select Team
-						$this->assignRef('teams',$model->getTeamListSelect());
-						$this->assignRef('clubs',$model->getClubListSelect());
+                        $mdl = JModel::getInstance("teams", "sportsmanagementModel");
+						$this->assignRef('teams',$mdl->getTeamListSelect());
+                        $mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+						$this->assignRef('clubs',$mdl->getClubListSelect());
 						$teamlist=array();
-						$teamlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_SELECT_TEAM'));
+						$teamlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_TEAM'));
 						$teamlist=array_merge($teamlist,$this->teams);
 						$lists['teams']=JHTML::_('select.genericlist',$teamlist,'teamID','class="inputbox select-team" onchange="javascript:insertTeam(\''.$this->recordID.'\')" ','value','text',0);
 						unset($teamlist);
@@ -307,7 +311,7 @@ class sportsmanagementViewJLXMLImports extends JView
 
 		$this->assignRef('lists',$lists);
 		// Set page title
-		$pageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_ASSIGN_TITLE');
+		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE');
 		$document->setTitle($pageTitle);
 
 		parent::display($tpl);
