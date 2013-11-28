@@ -181,7 +181,7 @@ class sportsmanagementViewJLXMLImports extends JView
 
 		$this->assignRef('starttime',$starttime);
 		$this->assignRef('importData',$model->importData($post));
-		$this->assignRef('postData',$post);
+		$this->assign('postData',$post);
         $this->assignRef('option',$option);
 
 		parent::display($tpl);
@@ -243,7 +243,8 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '6':	{ // Select Position
-						$this->assignRef('positions',$model->getPositionListSelect());
+						$mdl = JModel::getInstance("positions", "sportsmanagementModel");
+                        $this->assignRef('positions',$mdl->getPositionListSelect());
 						$positionlist=array();
 						$positionlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
 						$positionlist=array_merge($positionlist,$this->positions);
@@ -263,7 +264,8 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '4':	{ // Select Playground
-						$this->assignRef('playgrounds',$model->getPlaygroundListSelect());
+						$mdl = JModel::getInstance("playgrounds", "sportsmanagementModel");
+                        $this->assignRef('playgrounds',$mdl->getPlaygroundListSelect());
 						$playgroundlist=array();
 						$playgroundlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
 						$playgroundlist=array_merge($playgroundlist,$this->playgrounds);

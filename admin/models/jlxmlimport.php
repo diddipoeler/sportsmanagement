@@ -50,6 +50,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 	var $_datas=array();
 	var $_league_id=0;
 	var $_season_id=0;
+    var $_project_id = 0;
 	var $_sportstype_id=0;
 	var $import_version='';
 	var $storeFailedColor = 'red';
@@ -618,16 +619,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getPlaygroundListSelect()
-	{
-		$query='SELECT id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
-		{
-			return $results;
-		}
-		return false;
-	}
+	
 
 	public function getEventList()
 	{
@@ -652,14 +644,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
-	public function getPositionListSelect()
-	{
-		$query='SELECT id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList();
-		foreach ($result as $position){$position->text=JText::_($position->text);}
-		return $result;
-	}
+	
 
 	public function getParentPositionList()
 	{
@@ -1952,7 +1937,7 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
                 $mdl = JModel::getInstance("club", "sportsmanagementModel");
                 $p_club = $mdl->getTable();
                 
-                $this->dump_variable("p_club", $p_club);
+                //$this->dump_variable("p_club", $p_club);
                 
 				foreach ($this->_datas['club'] AS $dClub)
 				{
@@ -2080,7 +2065,7 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 
 	private function _convertNewPlaygroundIDs()
 	{
-    $mainframe =& JFactory::getApplication();   
+    $mainframe = JFactory::getApplication();   
 
 if ( $this->show_debug_info )
 {
@@ -4921,7 +4906,10 @@ $this->dump_variable("import_team", $import_team);
 
 			$this->_deleteImportFile();
 
-			return $this->_success_text;
+			// daten für die neue zuordnung setzen
+            $this->setNewDataStructur();
+            
+            return $this->_success_text;
 		}
 		else
 		{
@@ -4940,5 +4928,179 @@ $this->dump_variable("import_team", $import_team);
 	{
 		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
 	}
+    
+    function setNewDataStructur()
+    {
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        // $this->_project_id
+        // $this->_season_id 
+        
+        $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
+		$this->_db->setQuery($query);
+		$result_pr = $this->_db->loadObjectList();
+        
+        foreach ( $result_pr as $protref )
+        {
+            // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','season_id');
+                // Insert values.
+                $values = array($protref->person_id,$this->_season_id);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+            
+	            if (!$db->query())
+			    {
+			    }
+			    else
+			    {
+			    }
+        
+        }
+        
+        $query = 'SELECT id,team_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team where project_id = '.$this->_project_id ;
+		$this->_db->setQuery($query);
+		$result_pt = $this->_db->loadObjectList();
+        
+        //echo "<b>setNewDataStructur</b><pre>".print_r($result_pt,true)."</pre>";
+         
+        foreach ( $result_pt as $proteam )
+        {
+            //$table_ST = JTable::getInstance("seasonteam", "sportsmanagementTable");
+            
+            //echo "<b>seasonteam</b><pre>".print_r($table_ST,true)."</pre>";
+            
+            // Create a new query object.
+            $insertquery = $db->getQuery(true);
+            // Insert columns.
+            $columns = array('team_id','season_id');
+            // Insert values.
+            $values = array($proteam->team_id,$this->_season_id);
+            // Prepare the insert query.
+            $insertquery
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+            // Set the query using our newly populated query object and execute it.
+            $db->setQuery($insertquery);
+            
+			if (!$db->query())
+			{
+			}
+			else
+			{
+			}
+            $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
+            $this->_db->setQuery($query);
+		    $result_tp = $this->_db->loadObjectList();
+            foreach ( $result_tp as $team_member )
+            {
+                
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','season_id');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_season_id);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+            
+	            if (!$db->query())
+			    {
+			    }
+			    else
+			    {
+			    }
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','season_id','team_id');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+	            if (!$db->query())
+			    {
+			    }
+			    else
+			    {
+			    }
+            }
+            $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
+            $this->_db->setQuery($query);
+		    $result_tp = $this->_db->loadObjectList();
+            foreach ( $result_tp as $team_member )
+            {
+                
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','season_id');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_season_id);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+	            if (!$db->query())
+			    {
+			    }
+			    else
+			    {
+			    }
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','season_id','team_id');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+	            if (!$db->query())
+			    {
+			    }
+			    else
+			    {
+			    }
+            }
+            
+            
+
+        }
+        
+        
+        
+        
+        
+        
+    }
 }
 ?>

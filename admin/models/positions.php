@@ -295,6 +295,18 @@ class sportsmanagementModelPositions extends JModelList
 			return $result;
 		}
 	}
+    
+    public function getPositionListSelect()
+	{
+		$query='SELECT id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
+		$this->_db->setQuery($query);
+		$result=$this->_db->loadObjectList();
+		foreach ($result as $position)
+        {
+            $position->text=JText::_($position->text);
+        }
+		return $result;
+	}
 
 
 }

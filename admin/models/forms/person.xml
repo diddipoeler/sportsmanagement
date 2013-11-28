@@ -245,8 +245,10 @@
 		<field
 			name="season_ids"
 			type="seasoncheckbox"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SEASONLIST"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SEASONLIST_DESC"
+			targettable="season_person_id"
+			targetid="person_id"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST_DESC"
 			class="inputbox"/>	
 
 

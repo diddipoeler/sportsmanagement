@@ -38,8 +38,14 @@ class JFormFieldseasoncheckbox extends JFormField
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $select_id = JRequest::getVar('id');
         $this->value = explode(",", $this->value);
-        //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
+        $targettable = $this->element['targettable'];
+        $targetid = $this->element['targetid'];
+        
+        
+        //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
     
     
         // Initialize variables.
@@ -47,13 +53,24 @@ class JFormFieldseasoncheckbox extends JFormField
     
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
-			
+			// saisons selektieren
 			$query->select('id AS value, name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season');
 			$query->order('name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
+    // teilnehmende saisons selektieren
+    $query = $db->getQuery(true);
+			// saisons selektieren
+			$query->select('season_id');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable);
+			$query->where($targetid.'='.$select_id);
+			$db->setQuery($query);
+			$this->value = $db->loadColumn();
+    
+    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
    
 

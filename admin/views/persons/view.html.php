@@ -151,6 +151,18 @@ class sportsmanagementViewPersons extends JView
                     JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
                     //$items = $model->getNotAssignedReferees(JString::strtolower($search),$this->project_id);
 		}
+        
+        //build the html options for nation
+		$nation[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+        $lists['nation']=$nation;
+        
+        //build the html select list for positions
+		$positionsList[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
+		if ($positions){ $positions=array_merge($positionsList,$positions);}
+		$lists['positions']=$positions;
+		unset($positionsList);
 
 		//JToolBarHelper::onlinehelp();		
 		

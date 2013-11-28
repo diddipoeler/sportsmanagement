@@ -85,8 +85,8 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$mainframe = JFactory::getApplication();
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'v.ordering',	'cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode',		'search_mode',		'',				'string');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where=array();
 		if ($search)
@@ -122,6 +122,17 @@ class sportsmanagementModelPlaygrounds extends JModelList
 			return false;
 		}
 		return $result;
+	}
+    
+    public function getPlaygroundListSelect()
+	{
+		$query='SELECT id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
+		$this->_db->setQuery($query);
+		if ($results=$this->_db->loadObjectList())
+		{
+			return $results;
+		}
+		return false;
 	}
     
     

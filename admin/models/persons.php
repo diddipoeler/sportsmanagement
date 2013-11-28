@@ -32,8 +32,9 @@ class sportsmanagementModelPersons extends JModelList
         $option = JRequest::getCmd('option');
         $this->_type = JRequest::getInt('type');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );;
-        $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );;
+        $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );
+        $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
+        $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         
@@ -58,6 +59,12 @@ class sportsmanagementModelPersons extends JModelList
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
         
+        // neue struktur wird genutzt
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE && JRequest::getVar('layout') == 'assignplayers' )
+        {
+            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = pl.id');
+            $query->where('sp.season_id = '.$this->_season_id.'');
+        }
         
         if ($search || $search_nation)
 		{

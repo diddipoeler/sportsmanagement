@@ -110,7 +110,8 @@ class sportsmanagementViewProject extends JView
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $mainframe->setUserState( "$option.pid", $this->project->id); 
+    $mainframe->setUserState( "$option.pid", $this->project->id);
+    $mainframe->setUserState( "$option.season_id", $this->project->season_id);  
        
     parent::display($tpl);   
     }

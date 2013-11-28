@@ -86,8 +86,10 @@
 		<field
 			name="season_ids"
 			type="seasoncheckbox"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SEASONLIST"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SEASONLIST_DESC"
+			targettable="season_team_id"
+			targetid="team_id"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST_DESC"
 			class="inputbox"/>	
 
 
