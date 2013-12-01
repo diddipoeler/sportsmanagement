@@ -296,6 +296,338 @@ class sportsmanagementModelMatch extends JModelAdmin
 			return $this->_db->loadObject();
 		
 	}
+    
+    /**
+	 * Returns the team players
+	 * @param in project team id
+	 * @param array teamplayer_id to exclude
+	 * @return array
+	 */
+	function getTeamPlayers($projectteam_id,$filter=false)
+	{
+		$query='	SELECT	tpl.id AS value,
+							pl.firstname,
+							pl.nickname,
+							pl.lastname,
+							tpl.projectteam_id,
+							tpl.jerseynumber,
+							pl.info,
+							pos.name AS positionname,
+							ppos.position_id,
+							ppos.id AS pposid,
+							tpl.ordering
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.person_id=pl.id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=tpl.project_position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
+					WHERE tpl.projectteam_id='.  $projectteam_id.'
+					AND pl.published = 1
+					AND tpl.published = 1';
+		if (is_array($filter) && count($filter) > 0)
+		{
+			$query .= " AND tpl.id NOT IN (".implode(',',$filter).")";
+		}
+		$query .= " ORDER BY pos.ordering, pl.lastname ASC ";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+    
+    /**
+	 * Method to return substitutions made by a team during a match
+	 * if no team id is passed,all substitutions should be returned (to be done!!)
+	 * @access	public
+	 * @return	array of substitutions
+	 *
+	 */
+	function getSubstitutions($tid=0,$match_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$project_id=$mainframe->getUserState($option.'project');
+		$in_out=array();
+		$query='SELECT mp.*,'
+		.' p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname,'
+		.' p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname,'
+		.' pos.name AS in_position, came_in'
+		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp1 ON tp1.id=mp.teamplayer_id '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p1 ON tp1.person_id=p1.id '
+		.'   AND p1.published = 1'
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp2 ON tp2.id=mp.in_for '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id=p2.id '
+		.'   AND p2.published = 1'
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mp.project_position_id=ppos.id '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
+		.' WHERE mp.match_id='.$match_id
+		.'   AND came_in>0 '
+		.'   AND tp1.projectteam_id='.$tid
+		.' ORDER by (mp.in_out_time+0) ';
+		$this->_db->setQuery($query);
+		$in_out[$tid]=$this->_db->loadObjectList();
+		return $in_out;
+	}
+    
+    
+    /**
+	 * returns starters player id for the specified team
+	 *
+	 * @param int $team_id
+	 * @param int $project_position_id
+	 * @return array of player ids
+	 */
+	function getRoster($team_id, $project_position_id=0, $match_id)
+	{
+		$query='SELECT	mp.id AS table_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number,'
+		.' pl.firstname,'
+		.' pl.nickname,'
+		.' pl.lastname,'
+		.' tpl.jerseynumber'
+		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.id=mp.teamplayer_id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id=tpl.person_id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id '
+		.' WHERE mp.match_id='.$match_id
+		.' AND tpl.projectteam_id='.$team_id
+		.' AND mp.came_in='.self::MATCH_ROSTER_STARTER
+		.' AND pl.published = 1 '
+		.' AND tpl.published = 1 '
+		.' AND tpl.published = 1 ';
+		if ($project_position_id > 0)
+		{
+			$query .= " AND mp.project_position_id='".$project_position_id."' ";
+		}
+		$query .= " ORDER BY ppos.position_id, mp.ordering ASC";
+		$this->_db->setQuery($query);
+		$result=$this->_db->loadObjectList('value');
+		return $result;
+	}
+    
+    
+    /**
+	 * Method to return teams and match data
+		*
+		* @access	public
+		* @return	array
+		* @since 0.1
+		*/
+	function getMatchTeams($match_id)
+	{
+		$query='	SELECT	mc.*,'
+		.' t1.name AS team1,'
+		.' t2.name AS team2,'
+		.' u.name AS editor '
+		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=mc.projectteam1_id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=mc.projectteam2_id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id '
+		.' LEFT JOIN #__users u ON u.id=mc.checked_out '
+		.' WHERE mc.id='.(int) $match_id;
+		$this->_db->setQuery($query);
+		return	$this->_db->loadObject();
+        
+        /* diddi test
+       	SELECT	mc.*,
+		t1.name AS team1,
+		t2.name AS team2,
+		u.name AS editor 
+		FROM jos_sportsmanagement_match AS mc 
+		INNER JOIN jos_sportsmanagement_project_team AS pt1 ON pt1.id=mc.projectteam1_id 
+		INNER JOIN jos_sportsmanagement_team AS t1 ON t1.id=pt1.team_id 
+		INNER JOIN jos_sportsmanagement_project_team AS pt2 ON pt2.id=mc.projectteam2_id 
+		INNER JOIN jos_sportsmanagement_team AS t2 ON t2.id=pt2.team_id 
+		LEFT JOIN jos_users u ON u.id=mc.checked_out 
+		WHERE mc.id= 8
+        */
+        
+	}
+    
+    /**
+	 * returns starters referees id for the specified team
+	 *
+	 * @param int $project_position_id
+	 * @return array of referee ids
+	 */
+	function getRefereeRoster($project_position_id=0,$match_id=0)
+	{
+		$query='	SELECT	pref.id AS value,
+							pr.firstname,
+							pr.nickname,
+							pr.lastname
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id
+					 AND pref.published = 1
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON pref.person_id=pr.id
+					 AND pr.published = 1
+					WHERE mr.match_id='. $match_id;
+		if ($project_position_id > 0)
+		{
+			$query .= ' AND mr.project_position_id='.$project_position_id;
+		}
+		$query .= ' ORDER BY mr.project_position_id, mr.ordering ASC';
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList('value');
+	}
+    
+    /**
+	 * Method to return the projects referees array
+	 *
+	 * @access	public
+	 * @return	array
+	 * @since 0.1
+	 */
+	function getProjectReferees($already_sel=false, $project_id)
+	{
+		$query=' SELECT	pref.id AS value,'
+		.' pl.firstname,'
+		.' pl.nickname,'
+		.' pl.lastname,'
+		.' pl.info,'
+		.' pos.name AS positionname '
+		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON pref.person_id=pl.id '
+		.' AND pref.published=1 '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=pref.project_position_id '
+		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id '
+		.' WHERE pref.project_id='.$project_id
+		.' AND pl.published = 1';
+		if (is_array($already_sel) && count($already_sel) > 0)
+		{
+			$query .= " AND pref.id NOT IN (".implode(',',$already_sel).")";
+		}
+		$query .= " ORDER BY pl.lastname ASC ";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList('value');
+	}
+    
+    
+    /**
+	 * Returns the team players
+	 * @param in project team id
+	 * @param array teamplayer_id to exclude
+	 * @return array
+	 */
+	function getTeamStaffs($projectteam_id,$filter=false)
+	{
+		$query='	SELECT	ts.id AS value,
+							pl.firstname,
+							pl.nickname,
+							pl.lastname,
+							ts.projectteam_id,
+							pl.info,
+							pos.name AS positionname,
+							ppos.position_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pl.id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
+					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam_id)
+					.' AND pl.published = 1'
+					.' AND ts.published = 1';
+		if (is_array($filter) && count($filter) > 0)
+		{
+			$query .= " AND ts.id NOT IN (".implode(',',$filter).")";
+		}
+		$query .= " ORDER BY pl.lastname ASC ";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+    
+    
+    /**
+	 * returns players who played for the specified team
+	 *
+	 * @param int $team_id
+	 * @param int $project_position_id
+	 * @return array of players
+	 */
+	function getMatchStaffs($projectteam_id,$project_position_id=0,$match_id)
+	{
+		$query='	SELECT	mp.team_staff_id,
+							pl.firstname,
+							pl.nickname,
+							pl.lastname,
+							mp.project_position_id,
+							tpl.projectteam_id,
+							ppos.position_id,
+							ppos.id AS pposid
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tpl ON tpl.id=mp.team_staff_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id=tpl.person_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id
+					WHERE mp.match_id='.$match_id.'
+					AND pl.published = 1
+					AND tpl.published = 1
+					AND tpl.projectteam_id='.$projectteam_id;
+		if ($project_position_id > 0)
+		{
+			$query .= " AND mp.project_position_id='".$project_position_id."'";
+		}
+		$query .= " ORDER BY mp.project_position_id, mp.ordering,
+					pl.lastname, pl.firstname ASC";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList('team_staff_id');
+	}
+    
+    /**
+	 * Method to return the project positions array (id,name)
+	 *
+	 * @access	public
+	 * @return	array
+	 * @since 1.5
+	 */
+	function getProjectPositionsOptions($id=0, $person_type=1,$project_id)
+	{
+		//$option = JRequest::getCmd('option');
+		//$mainframe = JFactory::getApplication();
+		//$project_id=$mainframe->getUserState($option.'project');
+		$query='	SELECT	ppos.id AS value,
+							pos.name AS text,
+							pos.id AS posid
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pos.id
+					WHERE ppos.project_id='.$project_id.'
+					  AND pos.persontype='.$person_type;
+		if ($id > 0)
+		{
+			$query .= ' AND ppos.position_id='.$id;
+		}
+		$query .= ' ORDER BY pos.ordering';
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadObjectList('value'))
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result;
+	}
+    
+    function getEventsOptions($project_id,$match_id)
+	{
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query='	SELECT DISTINCT	et.id AS value,
+									et.name AS text,
+									et.icon AS icon
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.project_id='.$project_id.'
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.position_id=ppos.position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id=pet.eventtype_id
+					WHERE m.id='.$match_id.'
+                    AND et.published=1
+					ORDER BY pet.ordering, et.ordering';
+		$this->_db->setQuery($query);
+		$result=$this->_db->loadObjectList();
+        if ( !$result )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
+        }
+		foreach ($result as $event){$event->text=JText::_($event->text);}
+		return $result;
+	}
+    
+    
+    
          
     
 }

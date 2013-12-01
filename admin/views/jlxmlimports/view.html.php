@@ -163,8 +163,9 @@ class sportsmanagementViewJLXMLImports extends JView
         // diddi
         $mdl = JModel::getInstance("clubs", "sportsmanagementModel");
 		$this->assign('clubs',$mdl->getClubListSelect());
-        
-		$this->assign('events',$model->getEventList());
+        // diddi
+        $mdl = JModel::getInstance("eventtypes", "sportsmanagementModel");
+		$this->assign('events',$mdl->getEventList());
         // diddi
         $mdl = JModel::getInstance("positions", "sportsmanagementModel");
 		$this->assign('positions',$mdl->getPositionListSelect());
@@ -278,7 +279,8 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '7':	{ // Select ParentPosition
-						$this->assignRef('parentpositions',$model->getParentPositionListSelect());
+						$mdl = JModel::getInstance("positions", "sportsmanagementModel");
+                        $this->assignRef('parentpositions',$mdl->getParentsPositions());
 						$parentpositionlist=array();
 						$parentpositionlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
 						$parentpositionlist=array_merge($parentpositionlist,$this->parentpositions);
@@ -299,7 +301,8 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '5':	{ // Select Event
-						$this->assignRef('events',$model->getEventListSelect());
+						$mdl = JModel::getInstance("eventtypes", "sportsmanagementModel");
+                        $this->assignRef('events',$mdl->getEventList());
 						$eventlist=array();
 						$eventlist[]=JHTML::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
 						$eventlist=array_merge($eventlist,$this->events);

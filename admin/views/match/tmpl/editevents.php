@@ -1,10 +1,14 @@
 <?php
-
-
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-$params = $this->form->getFieldsets('params');
+//$params = $this->form->getFieldsets('params');
+
+
+//echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
+//echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
+//echo 'sportsmanagementViewMatch _displayEditevents item->id<br><pre>'.print_r($this->item->id,true).'</pre>';
+//echo 'sportsmanagementViewMatch _displayEditReferees lists<br><pre>'.print_r($this->lists,true).'</pre>';
 
 #echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
@@ -128,7 +132,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
                         
 						<td style='text-align:center; ' >
 							<?php echo JHtml::_('form.token'); ?>
-							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>" />
+							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
 				</tbody>
@@ -210,7 +214,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
 					</td>
 					<td style='text-align:center; ' >
-						<input id="save-new-comment" type="button" class="inputbox button-save-c" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE' ); ?>" />
+						<input id="save-new-comment" type="button" class="inputbox button-save-c" value="<?php echo JText::_('JTOOLBAR_APPLY' ); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -222,7 +226,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 
 <input type="hidden" name="task" value="match.edit"/>
 		<input type="hidden" name="close" id="close" value="0"/>
-        <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
+        <input type="hidden" name="id"  value="<?php echo $this->item->id; ?>"/>
 		<input type="hidden" name="component" value="" />
 		<?php echo JHTML::_('form.token')."\n"; ?>
 

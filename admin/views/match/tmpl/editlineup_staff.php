@@ -33,12 +33,13 @@
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- left / right buttons -->
 										<br />
-										<input	type="button" id="smoveright-<?php echo $position_id;?>" class="inputbox smove-right"
-												value="&gt;&gt;" /><br />
-										&nbsp;&nbsp;
-										<input	type="button" id="smoveleft-<?php echo $position_id;?>" class="inputbox smove-left"
-												value="&lt;&lt;" />
-										&nbsp;&nbsp;
+										
+                                        
+                                        <input id="moveright" type="button" value="Move Right" onclick="move_list_items('staff','staffposition<?php echo $position_id;?>');" />
+                                        <input id="moveleft" type="button" value="Move Left" onclick="move_list_items('staffposition<?php echo $position_id;?>','staff');" />
+                                        
+                                        
+                                        
 									</td>
 									<td>
 										<!-- player affected to this position -->

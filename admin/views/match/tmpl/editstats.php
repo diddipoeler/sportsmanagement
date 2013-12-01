@@ -20,6 +20,9 @@ JHTML::_( 'behavior.tooltip' );
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
+
+echo 'sportsmanagementViewMatch _displayEditStats project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
+
 ?>
 <?php
 //save and close 

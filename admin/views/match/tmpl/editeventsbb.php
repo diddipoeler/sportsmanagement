@@ -21,7 +21,7 @@ JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 //JHTML::_( 'behavior.tooltip' );
-//JHTML::_( 'behavior.modal' );
+JHtml::_( 'behavior.modal' );
 ?>
 <div id="gamesevents">
 	<form method="post" id="adminForm">

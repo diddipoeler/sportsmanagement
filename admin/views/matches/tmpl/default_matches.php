@@ -401,7 +401,7 @@ fieldset button {
 								//start add several events in one operation:
 								?>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
+									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'); ?>">
 									 <?php
 									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',

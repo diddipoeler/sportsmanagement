@@ -101,7 +101,7 @@ var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
                         
                         
 						<td>
-							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>" />
+							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
 				</tbody>

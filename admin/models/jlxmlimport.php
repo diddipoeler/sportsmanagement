@@ -570,58 +570,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 		return false;
 	}
 
-	
 
-	
-
-	
-
-	
-
-	public function getEventList()
-	{
-		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	public function getEventListSelect()
-	{
-		$query='SELECT id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype ORDER BY name';
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList();
-		foreach ($result as $event){$event->text=JText::_($event->text);}
-		return $result;
-	}
-
-	
-
-	
-
-	
-
-	public function getParentPositionListSelect()
-	{
-		$query='SELECT id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position WHERE parent_id=0 ORDER BY name';
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList();
-		foreach ($result as $position){$position->text=JText::_($position->text);}
-		return $result;
-	}
-
-//	public function getStatisticList()
-//	{
-//		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
-//		$this->_db->setQuery($query);
-//		return $this->_db->loadObjectList();
-//	}
-
-//  public function getStatisticListSelect()
-//	{
-//		$query='SELECT id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
-//		$this->_db->setQuery($query);
-//		return $this->_db->loadObjectList();
-//	}
 
 	// Should be called as the last function in importData() to delete
 	private function _deleteImportFile()

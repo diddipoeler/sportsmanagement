@@ -31,6 +31,7 @@ class sportsmanagementViewMatches extends JView
 		$uri = JFactory::getURI();
         $model		= $this->getModel();
 		$params = JComponentHelper::getParams( $option );
+        $document = JFactory::getDocument();
 
 		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_state','filter_state','','word');
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order','filter_order','mc.match_number','cmd');
@@ -60,6 +61,8 @@ class sportsmanagementViewMatches extends JView
         }
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         
         $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($this->rid);;
@@ -269,7 +272,7 @@ class sportsmanagementViewMatches extends JView
         
         
         
-        
+        $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
         // state filter
 		$lists['state']=JHTML::_('grid.state',$filter_state);
 

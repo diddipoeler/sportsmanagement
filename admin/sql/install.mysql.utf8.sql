@@ -810,6 +810,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `picture` VARCHAR(250) NULL ,
+  `logo_big` VARCHAR(250) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) )
 ENGINE = MyISAM
@@ -827,6 +829,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `picture` VARCHAR(250) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) )
 ENGINE = MyISAM
