@@ -21,7 +21,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
-echo 'sportsmanagementViewMatch _displayEditStats project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
+//echo 'sportsmanagementViewMatch _displayEditStats project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
 
 ?>
 <?php
@@ -36,7 +36,7 @@ if($close == 1) {
 	<?php 
 }
 ?>
-<form method="post" name="statsform" id="statsform">
+<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
 	<div id="jlstatsform">
 	<fieldset>
 		<div class="fltrt">
@@ -64,11 +64,11 @@ if($close == 1) {
 		?>
 		
 		<input type="hidden" name="option" value="" />
-		<input type="hidden" name="tmpl" value="component" />
+		
 		<input type="hidden" name="close" id="close" value="0" />
 		<input type="hidden" name="task" id="" value="" />
-		<input type="hidden" name="project_id"	value="<?php echo $this->match->project_id; ?>" />
-		<input type="hidden" name="match_id"	value="<?php echo $this->match->id; ?>" />
+		<input type="hidden" name="project_id"	value="<?php echo $this->project_id; ?>" />
+		<input type="hidden" name="id"	value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		
 		<?php echo JHTML::_( 'form.token' ); ?>

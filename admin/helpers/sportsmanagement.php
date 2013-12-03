@@ -1060,7 +1060,7 @@ abstract class sportsmanagementHelper
 	 * @param lastName
 	 * @param format
 	 */
-	function formatName($prefix, $firstName, $nickName, $lastName, $format)
+	static function formatName($prefix, $firstName, $nickName, $lastName, $format)
 	{
 		$name = array();
 		if ($prefix)

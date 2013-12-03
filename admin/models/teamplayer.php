@@ -223,9 +223,12 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       $season_id = $mainframe->getUserState( "$option.season_id");
        $post=JRequest::get('post');
        $db		= $this->getDbo();
 	   $query	= $db->getQuery(true);
+       $query2	= $db->getQuery(true);
         
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -259,10 +262,33 @@ class sportsmanagementModelteamplayer extends JModelAdmin
      $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
      $db->setQuery($query);   
  
+  
  if (!$db->query())
 		{
-		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
+        
+// update personendaten pro saison
+       // Fields to update.
+    unset($fields);
+    unset($conditions);   
+    $fields = array(
+    $db->quoteName('picture') .'=\''.$data['picture'].'\''
+        );
+     // Conditions for which records should be updated.
+    $conditions = array(
+    $db->quoteName('person_id') .'='. $data['person_id'],
+    $db->quoteName('season_id') .'='. $season_id
+    );
+     $query2->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))->set($fields)->where($conditions);
+     $db->setQuery($query2);   
+ 
+ if (!$db->query())
+		{
+		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+                
+        
  
         
        if (isset($post['extended']) && is_array($post['extended'])) 

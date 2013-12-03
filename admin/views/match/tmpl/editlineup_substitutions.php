@@ -15,9 +15,9 @@ defined('_JEXEC') or die('Restricted access');
 <script type="text/javascript">
 <!--
 // url for ajax
-var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_joomleague&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
 var teamid=<?php echo $this->tid; ?>;
-var matchid=<?php echo $this->match->id; ?>;
+var matchid=<?php echo $this->item->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
 // We need to setup some text variables for translation
@@ -35,14 +35,14 @@ var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
 					<tr>
 						<th>
 							<?php
-							echo JHTML::_('image','administrator/components/com_joomleague/assets/images/out.png',JText::_('Out'));
+							echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
 							echo '&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
 							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo JHTML::_('image','administrator/components/com_joomleague/assets/images/in.png',JText::_('In'));
+							echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
 							?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
@@ -85,7 +85,7 @@ var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
 							</td>
 							<td>
 								<input	id="delete-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete"
-										value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>" />
+										value="<?php echo JText::_('JTOOLBAR_REMOVE'); ?>" />
 							</td>
 						</tr>
 						<?php

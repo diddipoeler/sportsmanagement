@@ -59,7 +59,7 @@
 										<input	type="button" id="moveup-<?php echo $position_id;?>" class="inputbox move-up"
 												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
 										<input	type="button" id="movedown-<?php echo $position_id;?>" class="inputbox move-down"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
+												value="<?php echo JText::_('JGLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>
 								<?php

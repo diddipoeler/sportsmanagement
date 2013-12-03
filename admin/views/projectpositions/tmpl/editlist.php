@@ -2,11 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 ?>
-<!-- import the functions to move the events between selection lists  -->
-<?php
-//$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHTML::script('projectposition.js','administrator/components/com_sportsmanagement/assets/js/');
-?>
+
 
 
 

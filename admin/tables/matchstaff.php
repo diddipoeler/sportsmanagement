@@ -32,7 +32,7 @@ class sportsmanagementTableMatchStaff extends JTable
 	 */
 	function __construct( & $db )
 	{
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'match_staff', 'id', $db );
+		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff', 'id', $db );
 	}
 
 	/**

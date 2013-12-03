@@ -70,20 +70,23 @@ window.addEvent('domready', function() {
 			});
 		});
 	}
-	// ajax save substitution
-	$$('input.button-save').addEvent(
+	
+  
+  
+  // ajax save substitution
+	jQuery('input.button-save').addEvent(
 			'click',
 			function() {
 				var rowid = this.id.substr(5);
-				var playerin = $('in').value;
-				var playerout = $('out').value;
-				var position = $('project_position_id').value;
-				var time = $('in_out_time').value;
+				var playerin = jQuery('in').value;
+				var playerout = jQuery('out').value;
+				var position = jQuery('project_position_id').value;
+				var time = jQuery('in_out_time').value;
 				var querystring = 'in=' + playerin + '&out=' + playerout
 						+ '&project_position_id=' + position + '&in_out_time='
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+ '&rowid=' + rowid;
-				var url = baseajaxurl + '&task=match.savesubst&' + querystring;
+				var url = baseajaxurl + '&task=matches.savesubst&' + querystring;
 				if (playerin != 0 || playerout != 0) {
 					var myXhr = new Request.JSON({
 						url : url,
@@ -97,6 +100,9 @@ window.addEvent('domready', function() {
 					myXhr.post();
 				}
 			});
+			
+			
+			
 	// ajax remove substitution
 	$$('input.button-delete').addEvent('click', deletesubst);
 

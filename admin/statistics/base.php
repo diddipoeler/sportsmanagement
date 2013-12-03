@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once ( JLG_PATH_ADMIN .DS . 'helpers' . DS . 'jlparameter.php' );
+//require_once ( JLG_PATH_ADMIN .DS . 'helpers' . DS . 'jlparameter.php' );
 /**
  * base class for statistics handling.
  *
@@ -20,7 +20,8 @@ require_once ( JLG_PATH_ADMIN .DS . 'helpers' . DS . 'jlparameter.php' );
  * @subpackage Joomleague
  * @since 0.9
  */
-class JLGStatistic extends JObject {
+class SMStatistic extends JObject 
+{
 	
 	var $_name = 'default';
 	
@@ -82,13 +83,13 @@ class JLGStatistic extends JObject {
 	 */
 	function &getInstance($class)
 	{
-		$classname = 'JLGStatistic'. ucfirst($class);
+		$classname = 'SMStatistic'. ucfirst($class);
 		
 		// check for statistic in extensions
 		$extensions = sportsmanagementHelper::getExtensions(0);
 		foreach ($extensions as $type)
 		{
-			$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'admin'.DS.'statistics'.DS .$class.'.php';
+			$file = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$type.DS.'admin'.DS.'statistics'.DS .$class.'.php';
 			if (file_exists($file))
 			{
 				require_once($file);
@@ -99,7 +100,7 @@ class JLGStatistic extends JObject {
 	
 		if (!class_exists($classname))
 		{
-			$file = JLG_PATH_ADMIN .DS . 'statistics' . DS .$class.'.php';
+			$file = JPATH_COMPONENT .DS . 'statistics' . DS .$class.'.php';
 			if (!file_exists($file)) {
 				JError::raiseError(0, $class .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
 			}

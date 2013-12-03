@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JLG_PATH_ADMIN.DS.'statistics'.DS.'base.php');
-
+JPATH_COMPONENT
 /**
  * base class for statistics handling.
  *
@@ -21,7 +21,7 @@ require_once(JLG_PATH_ADMIN.DS.'statistics'.DS.'base.php');
  * @subpackage Joomleague
  * @since 0.9
  */
-class JLGStatisticDifference extends JLGStatistic {
+class SMStatisticDifference extends SMStatistic {
 //also the name of the associated xml file	
 	var $_name = 'difference';
 	

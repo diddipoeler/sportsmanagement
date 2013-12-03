@@ -569,6 +569,63 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $this->_db->loadObjectList('team_staff_id');
 	}
     
+    
+    function getInputStats($project_id)
+	{
+		require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
+		//$match =& $this->getData();
+		//$project_id=$match->project_id;
+		$query=' SELECT stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,ppos.position_id AS posid'
+		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS stat '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=stat.id '
+		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=ps.position_id '
+		.' WHERE ppos.project_id='.  $project_id
+		.' ORDER BY stat.ordering, ps.ordering ';
+		$this->_db->setQuery($query);
+		$res=$this->_db->loadObjectList();
+		$stats=array();
+		foreach ($res as $k => $row)
+		{
+			$stat=&SMStatistic::getInstance($row->class);
+			$stat->bind($row);
+			$stat->set('position_id',$row->posid);
+			$stats[]=$stat;
+		}
+		return $stats;
+	}
+    
+    function getMatchStatsInput($match_id,$projectteam1_id,$projectteam2_id)
+	{
+		//$match =& $this->getData();
+		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic  WHERE match_id='.$match_id;
+		$this->_db->setQuery($query);
+		$res=$this->_db->loadObjectList();
+		$stats=array(	$projectteam1_id => array(),
+		$projectteam2_id => array());
+		foreach ($res as $stat)
+		{
+			@$stats[$stat->projectteam_id][$stat->teamplayer_id][$stat->statistic_id]=$stat->value;
+		}
+		return $stats;
+	}
+
+	function getMatchStaffStatsInput($match_id,$projectteam1_id,$projectteam2_id)
+	{
+		//$match =& $this->getData();
+		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic WHERE match_id='.$match_id;
+		$this->_db->setQuery($query);
+		$res=$this->_db->loadObjectList();
+		$stats=array($projectteam1_id => array(),$projectteam2_id => array());
+		foreach ((array)$res as $stat)
+		{
+			@$stats[$stat->projectteam_id][$stat->team_staff_id][$stat->statistic_id]=$stat->value;
+		}
+		return $stats;
+	}
+    
+    
+    
+    
     /**
 	 * Method to return the project positions array (id,name)
 	 *
@@ -583,7 +640,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		//$project_id=$mainframe->getUserState($option.'project');
 		$query='	SELECT	ppos.id AS value,
 							pos.name AS text,
-							pos.id AS posid
+							pos.id AS posid,
+                            pos.id AS pposid
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pos.id
 					WHERE ppos.project_id='.$project_id.'
@@ -626,6 +684,298 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $result;
 	}
     
+    /**
+	 * Method to update starting lineup list
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function updateReferees($post)
+	{
+		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $mid = $post['id'];
+		$peid = array();
+		$result = true;
+		$positions = $post['positions'];
+        
+        $mainframe->enqueueMessage('sportsmanagementModelMatch updateReferees<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
+		//$project_id=$post['project'];
+		foreach ($positions AS $key => $pos)
+		{
+			if (isset($post['position'.$key])) { $peid=array_merge((array) $post['position'.$key],$peid); }
+		}
+		if ($peid == null)
+		{ // Delete all referees assigned to this match
+			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee WHERE match_id='.$post['id'];
+		}
+		else
+		{ // Delete all referees which are not selected anymore from this match
+			JArrayHelper::toInteger($peid);
+			$peids=implode(',',$peid);
+			$query="	DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
+						WHERE match_id=".$post['id']." AND project_referee_id NOT IN (".$peids.")";
+		}
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) { $this->setError($this->_db->getErrorMsg()); $result=false; }
+		foreach ($positions AS $key=>$pos)
+		{
+			if (isset($post['position'.$key]))
+			{
+				for ($x=0; $x < count($post['position'.$key]); $x++)
+				{
+					$project_referee_id=$post['position'.$key][$x];
+					$query="	SELECT *
+								FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
+								WHERE match_id=$mid AND project_referee_id=$project_referee_id";
+
+					$this->_db->setQuery($query);
+					if ($result=$this->_db->loadResult())
+					{
+						$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
+									SET project_position_id='$key',ordering= '$x'
+									WHERE id='$result' AND match_id='$mid' AND project_referee_id='$project_referee_id'";
+					}
+					else
+					{
+						$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
+										(match_id,project_referee_id, project_position_id, ordering) VALUES
+										('$mid','$project_referee_id','$key','$x')";
+					}
+					$this->_db->setQuery($query);
+					if (!$this->_db->query())
+					{
+						$this->setError($this->_db->getErrorMsg());
+						$result=false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+    
+    
+    /**
+	 * Method to update starting lineup list
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function updateRoster($data)
+	{
+		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $result = true;
+		$positions = $data['positions'];
+		$mid = $data['id'];
+		$team = $data['team'];
+        
+        $mainframe->enqueueMessage('sportsmanagementModelMatch updateRoster<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        
+		// we first remove the records of starter for this team and this game then add them again from updated data.
+		$query='	DELETE	mp
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id=mp.teamplayer_id
+					WHERE	came_in='.self::MATCH_ROSTER_STARTER.' AND
+							mp.match_id='.$this->_db->Quote($mid).' AND
+							tp.projectteam_id='.$this->_db->Quote($team);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			$result=false;
+		}
+		foreach ($positions AS $project_position_id => $pos)
+		{
+			if (isset($data['position'.$project_position_id]))
+			{
+				foreach ($data['position'.$project_position_id] AS $ordering => $player_id)
+				{
+					$record = JTable::getInstance('Matchplayer','sportsmanagementTable');
+					$record->match_id			= $mid;
+					$record->teamplayer_id		= $player_id;
+					$record->project_position_id= $pos->pposid;
+					$record->came_in			= self::MATCH_ROSTER_STARTER;
+					$record->ordering			= $ordering;
+					/*
+                    if (!$record->check())
+					{
+						$this->setError($record->getError());
+						$result=false;
+					}
+                    */
+					if (!$record->store())
+					{
+						$this->setError($record->getError());
+						$result=false;
+					}
+				}
+			}
+		}
+		return $result;
+	}
+    
+    /**
+	 * Method to update starting lineup list
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function updateStaff($data)
+	{
+		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $result = true;
+		$positions = $data['staffpositions'];
+		$mid = $data['id'];
+		$team = $data['team'];
+        
+        $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        
+		// we first remove the records of starter for this team and this game,then add them again from updated data.
+		$query='	DELETE mp
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp ON tp.id=mp.team_staff_id
+					WHERE	mp.match_id='.$this->_db->Quote($mid).' AND
+							tp.projectteam_id='.$this->_db->Quote($team);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			$result=false;
+		}
+		foreach ($positions AS $project_position_id => $pos)
+		{
+			if (isset($data['staffposition'.$project_position_id]))
+			{
+				foreach ($data['staffposition'.$project_position_id] AS $ordering => $player_id)
+				{
+					$record = JTable::getInstance('Matchstaff','sportsmanagementTable');
+					$record->match_id = $mid;
+					$record->team_staff_id = $player_id;
+					$record->project_position_id = $pos->pposid;
+					$record->ordering = $ordering;
+                    
+                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff match_id<br><pre>'.print_r($mid, true).'</pre><br>','');
+                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff team_staff_id<br><pre>'.print_r($player_id, true).'</pre><br>','');
+                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff project_position_id<br><pre>'.print_r($pos->pposid, true).'</pre><br>','');
+                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff ordering<br><pre>'.print_r($ordering, true).'</pre><br>','');
+                    
+					/*
+                    if (!$record->check())
+					{
+						$this->setError($record->getError());
+						$result = false;
+					}
+                    */
+					if (!$record->store())
+					{
+						$this->setError($record->getError());
+						$result = false;
+					}
+				}
+			}
+		}
+		//die();
+		return true;
+	}
+    
+    
+    /**
+	 * save the submitted substitution
+	 *
+	 * @param array $data
+	 * @return boolean
+	 */
+	function savesubstitution($data)
+	{
+		
+        if ( empty($data['project_position_id'])  )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'));
+		return false;
+		}
+        
+        if ( empty($data['in_out_time'])  )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_TIME'));
+		return false;
+		}
+        
+        if ( empty($data['in'])  )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_IN'));
+		return false;
+		}
+        
+        if ( empty($data['out'])  )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_OUT'));
+		return false;
+		}
+        
+        if ( (int)$data['in_out_time'] > (int)$data['projecttime'] )
+		{
+		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME',$data['in_out_time'],$data['projecttime']));
+		return false;
+		}
+        
+        if (! ($data['matchid']))
+		{
+			$this->setError("in: " . $data['in'].
+							", out: " . $data['out'].
+							", matchid: " . $data['matchid'].
+							", project_position_id: " . $data['project_position_id']);
+			return false;
+		}
+		$player_in				= (int) $data['in'];
+		$player_out				= (int) $data['out'];
+		$match_id				= (int) $data['matchid'];
+		$in_out_time			= $data['in_out_time'];
+		$project_position_id 	= $data['project_position_id'];
+
+		if ($project_position_id == 0 && $player_in>0)
+		{
+			// retrieve normal position of player getting in
+			$query='	SELECT project_position_id '
+			.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS pt '
+			.' WHERE pt.player_id='.$this->_db->Quote($player_in)
+			;
+			$this->_db->setQuery($query);
+			$project_position_id = $this->_db->loadResult();
+		}
+		if($player_in>0) {
+			$in_player_record =& JTable::getInstance('Matchplayer','sportsmanagementTable');
+			$in_player_record->match_id				= $match_id;
+			$in_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_IN; //1 //1=came in, 2=went out
+			$in_player_record->teamplayer_id		= $player_in;
+			$in_player_record->in_for				= ($player_out>0) ? $player_out : 0;
+			$in_player_record->in_out_time			= $in_out_time;
+			$in_player_record->project_position_id	= $project_position_id;
+			if (!$in_player_record->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		if($player_out>0 && $player_in==0) {
+			$out_player_record =& JTable::getInstance('Matchplayer','sportsmanagementTable');
+			$out_player_record->match_id			= $match_id;
+			$out_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_OUT; //2; //0=starting lineup
+			$out_player_record->teamplayer_id		= $player_out;
+			$out_player_record->in_out_time			= $in_out_time;
+			$out_player_record->project_position_id	= $project_position_id;
+			$out_player_record->out					= 1;
+			if (!$out_player_record->store()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		return true;
+	}
     
     
          

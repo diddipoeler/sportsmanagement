@@ -32,12 +32,12 @@ if($close == 1) {
 }
 ?>
 <div id="lineup">
-	<form id="startingSquadsForm" name="startingSquadsForm" method="post">
+	<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
 	<fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('match.saveReferees', this.form);">
+			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('matches.saveReferees', this.form);">
 				<?php echo JText::_('JAPPLY');?></button>
-			<button type="button" onclick="$('close').value=1; Joomla.submitform('match.saveReferees', this.form);">
+			<button type="button" onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected'); Joomla.submitform('matches.saveReferees', this.form);">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
@@ -70,19 +70,18 @@ if($close == 1) {
 					<td style="text-align:center; vertical-align:top; ">
 						<table>
 							<?php
-							foreach ($this->positions AS $key=>$pos)
+							foreach ($this->positions AS $key => $pos)
 							{
 								?>
 								<tr>
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- left / right buttons -->
 										<br />
-										<input	type="button" id="moveright-<?php echo $key;?>" class="inputbox move-right"
-												value="&gt;&gt;" /><br />
-										&nbsp;&nbsp;
-										<input	type="button" id="moveleft-<?php echo $key;?>" class="inputbox move-left"
-												value="&lt;&lt;" />
-										&nbsp;&nbsp;
+										
+                                        
+                                        <input id="moveright" type="button" value="Move Right" onclick="move_list_items('roster','position<?php echo $key;?>');" />
+                                        <input id="moveleft" type="button" value="Move Left" onclick="move_list_items('position<?php echo $key;?>','roster');" />
+                                        
 									</td>
 									<td>
 										<!-- player affected to this position -->
@@ -95,7 +94,7 @@ if($close == 1) {
 										<input	type="button" id="moveup-<?php echo $key;?>" class="inputbox move-up"
 												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
 										<input	type="button" id="movedown-<?php echo $key;?>" class="inputbox move-down"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
+												value="<?php echo JText::_('JGLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>
 								<?php
@@ -109,13 +108,14 @@ if($close == 1) {
 		<br/>
 		<br/>
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="view" value="match" />
+		<input type="hidden" name="view" value="" />
 		<input type="hidden" name="close" id="close" value="0" />
-		<input type="hidden" name="cid[]" value="<?php echo $this->match->id; ?>" />
-		<input type="hidden" name="project" value="<?php echo $this->project_id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+		<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
-		<input type="hidden" name="option" value="" id="" />
+		
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
+        <input type="hidden" name="component" value="com_sportsmanagement" />
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</form>
 </div>

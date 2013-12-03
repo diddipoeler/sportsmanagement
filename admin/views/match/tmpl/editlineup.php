@@ -27,12 +27,12 @@ if($close == 1) {
 	<?php 
 }
 ?>
-<form id="startingSquadsForm" name="startingSquadsForm" method="post">
+<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
 	<fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('match.saveroster', this.form);">
+			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
 				<?php echo JText::_('JAPPLY');?></button>
-			<button type="button" onclick="$('close').value=1; Joomla.submitform('match.saveroster', this.form);">
+			<button type="button" onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
@@ -63,13 +63,16 @@ if($close == 1) {
 		echo JHtml::_('tabs.end');
 		?>
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="view" value="match" />
+		<input type="hidden" name="view" value="" />
+        <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 		<input type="hidden" name="close" id="close" value="0" />
-		<input type="hidden" name="cid[]" value="<?php echo $this->match->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
-		<input type="hidden" name="option" value="" id="" />
+		
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
+        
+        <input type="hidden" name="component" value="com_sportsmanagement" />
 		<?php echo JHtml::_('form.token')."\n"; ?>
 	</div>
 </form>
