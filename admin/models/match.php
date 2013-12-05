@@ -541,6 +541,100 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of players
 	 */
+	function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table='player')
+	{
+		
+        switch($table)
+        {
+            case 'player':
+            $id = 'teamplayer_id';
+            break;
+            case 'staff':
+            $id = 'team_staff_id';
+            break;
+        }
+        
+        $query='	SELECT	mp.'.$id.',
+        tpl.id AS value,pos.name AS positionname,
+							pl.firstname,
+							pl.nickname,
+							pl.lastname,
+							mp.project_position_id,
+							tpl.projectteam_id,
+							ppos.position_id,
+							ppos.id AS pposid
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_'.$table.' AS mp
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_'.$table.' AS tpl ON tpl.id = mp.'.$id.'
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = tpl.person_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id
+                    INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id
+					WHERE mp.match_id='.$match_id.'
+					AND pl.published = 1
+					AND tpl.published = 1
+					AND tpl.projectteam_id='.$projectteam_id;
+                    
+
+		if ($project_position_id > 0)
+		{
+			$query .= " AND mp.project_position_id='".$project_position_id."'";
+		}
+		$query .= " ORDER BY mp.project_position_id, mp.ordering,
+					pl.lastname, pl.firstname ASC";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList($id);
+        //return $this->_db->loadObjectList();
+	}
+    
+    /**
+	 * returns players who played for the specified team
+	 *
+	 * @param int $team_id
+	 * @param int $project_position_id
+	 * @return array of players
+	 */
+/*
+	function getMatchPlayers($projectteam_id,$project_position_id=0,$match_id)
+	{
+		$query='	SELECT	mp.teamplayer_id,
+        tpl.id AS value,pos.name AS positionname,
+							pl.firstname,
+							pl.nickname,
+							pl.lastname,
+							mp.project_position_id,
+							tpl.projectteam_id,
+							ppos.position_id,
+							ppos.id AS pposid
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.id = mp.teamplayer_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = tpl.person_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id
+                    INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id
+					WHERE mp.match_id='.$match_id.'
+					AND pl.published = 1
+					AND tpl.published = 1
+					AND tpl.projectteam_id='.$projectteam_id;
+                    
+
+		if ($project_position_id > 0)
+		{
+			$query .= " AND mp.project_position_id='".$project_position_id."'";
+		}
+		$query .= " ORDER BY mp.project_position_id, mp.ordering,
+					pl.lastname, pl.firstname ASC";
+		$this->_db->setQuery($query);
+		//return $this->_db->loadObjectList('team_staff_id');
+        return $this->_db->loadObjectList();
+	}
+*/
+    
+    /**
+	 * returns players who played for the specified team
+	 *
+	 * @param int $team_id
+	 * @param int $project_position_id
+	 * @return array of players
+	 */
+/*
 	function getMatchStaffs($projectteam_id,$project_position_id=0,$match_id)
 	{
 		$query='	SELECT	mp.team_staff_id,
@@ -568,7 +662,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList('team_staff_id');
 	}
-    
+*/    
     
     function getInputStats($project_id)
 	{
@@ -773,7 +867,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$mid = $data['id'];
 		$team = $data['team'];
         
-        $mainframe->enqueueMessage('sportsmanagementModelMatch updateRoster<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch updateRoster<br><pre>'.print_r($data, true).'</pre><br>','Notice');
         
 		// we first remove the records of starter for this team and this game then add them again from updated data.
 		$query='	DELETE	mp
@@ -834,7 +928,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$mid = $data['id'];
 		$team = $data['team'];
         
-        $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($data, true).'</pre><br>','Notice');
         
 		// we first remove the records of starter for this team and this game,then add them again from updated data.
 		$query='	DELETE mp
@@ -860,10 +954,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 					$record->project_position_id = $pos->pposid;
 					$record->ordering = $ordering;
                     
-                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff match_id<br><pre>'.print_r($mid, true).'</pre><br>','');
-                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff team_staff_id<br><pre>'.print_r($player_id, true).'</pre><br>','');
-                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff project_position_id<br><pre>'.print_r($pos->pposid, true).'</pre><br>','');
-                    $mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff ordering<br><pre>'.print_r($ordering, true).'</pre><br>','');
+                    //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff match_id<br><pre>'.print_r($mid, true).'</pre><br>','');
+                    //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff team_staff_id<br><pre>'.print_r($player_id, true).'</pre><br>','');
+                    //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff project_position_id<br><pre>'.print_r($pos->pposid, true).'</pre><br>','');
+                    //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff ordering<br><pre>'.print_r($ordering, true).'</pre><br>','');
                     
 					/*
                     if (!$record->check())
@@ -949,7 +1043,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$project_position_id = $this->_db->loadResult();
 		}
 		if($player_in>0) {
-			$in_player_record =& JTable::getInstance('Matchplayer','sportsmanagementTable');
+			$in_player_record = JTable::getInstance('Matchplayer','sportsmanagementTable');
 			$in_player_record->match_id				= $match_id;
 			$in_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_IN; //1 //1=came in, 2=went out
 			$in_player_record->teamplayer_id		= $player_in;
@@ -962,7 +1056,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			}
 		}
 		if($player_out>0 && $player_in==0) {
-			$out_player_record =& JTable::getInstance('Matchplayer','sportsmanagementTable');
+			$out_player_record = JTable::getInstance('Matchplayer','sportsmanagementTable');
 			$out_player_record->match_id			= $match_id;
 			$out_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_OUT; //2; //0=starting lineup
 			$out_player_record->teamplayer_id		= $player_out;
@@ -977,7 +1071,214 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return true;
 	}
     
+    /**
+	 * remove specified subsitution
+	 *
+	 * @param int $substitution_id
+	 * @return boolean
+	 */
+	function removeSubstitution($substitution_id)
+	{
+		// the subsitute isn't getting in so we delete the substitution
+		$query="	DELETE
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_player
+					WHERE id=".$this->_db->Quote($substitution_id). "
+					 OR id=".$this->_db->Quote($substitution_id + 1);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETING_SUBST'));
+			return false;
+		}
+		return true;
+	}
     
+    
+    
+    function deleteevent($event_id)
+	{
+		$object = JTable::getInstance('MatchEvent','sportsmanagementTable');
+		//if (!$object->canDelete($event_id))
+//		{
+//			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_ERROR_DELETE');
+//			return false;
+//		}
+		if (!$object->delete($event_id))
+		{
+			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED');
+			return false;
+		}
+		return true;
+	}
+    
+    
+    function deletecommentary($event_id)
+	{
+	   $db = JFactory::getDbo();
+ 
+$query = $db->getQuery(true);
+ 
+// delete all custom keys
+$conditions = array(
+    $db->quoteName('id') . '='.$event_id
+);
+ 
+$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'));
+$query->where($conditions);
+ 
+$db->setQuery($query);    
+if (!$db->query())
+		{
+			
+            $this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
+			return false;
+		}
+
+/*
+		$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
+		//if (!$object->canDelete($event_id))
+//		{
+//			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_ERROR_DELETE_COMMENTARY');
+//			return false;
+//		}
+		if (!$object->delete($event_id))
+		{
+			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
+			return false;
+		}
+*/        
+		return true;
+	}
+    
+    
+    function savecomment($data)
+	{
+		
+        // live kommentar speichern
+        if ( empty($data['event_time']) )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_NO_TIME'));
+		return false;
+		}
+
+        
+        if ( empty($data['notes']) )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'));
+		return false;
+		}
+            
+        if ( (int)$data['event_time'] > (int)$data['projecttime'] )
+		{
+		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
+		return false;
+		}
+        
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        // Insert columns.
+        $columns = array('event_time','match_id','type','notes');
+        // Insert values.
+        $values = array($data['event_time'],$data['match_id'],$data['type'],'\''.$data['notes'].'\'');
+        // Prepare the insert query.
+        $query
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        $db->setQuery($query);
+        if (!$db->query())
+		{
+			$result = false;
+            $object->id = $db->getErrorMsg();
+		}
+        else
+        {
+            $object->id = $db->insertid();
+        }
+        
+        //$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
+//        $object->event_time = $data['event_time'];
+//		$object->match_id = $data['match_id'];
+//		$object->type = $data['type'];
+//		$object->notes = $data['notes'];
+		//$object->bind($data);
+		//if (!$object->check())
+//		{
+//			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_CHECK_FAILED'));
+//			return false;
+//		}
+		
+        //if (!$object->store())
+//		{
+//			//$this->setError($this->_db->getErrorMsg());
+//			return false;
+//		}
+//        else
+//        {
+//            $object->id = $this->_db->insertid();
+//        }
+        
+		return $object->id;
+	}
+    
+    function saveevent($data)
+	{
+
+        if ( empty($data['event_time']) )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
+		return false;
+		}
+        
+        if ( empty($data['event_sum']) )
+		{
+		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM'));
+		return false;
+		}
+        
+        if ( (int)$data['event_time'] > (int)$data['projecttime'] )
+		{
+		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
+		return false;
+		}
+   
+        $object = JTable::getInstance('MatchEvent','sportsmanagementTable');
+		$object->bind($data);
+		//if (!$object->check())
+//		{
+//			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_CHECK_FAILED'));
+//			return false;
+//		}
+		if (!$object->store())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+        else
+        {
+            $object->id = $this->_db->insertid();
+        }
+		return $object->id;
+	}
+    
+    
+    /**
+	 * get match commentary
+	 *
+	 * @return array
+	 */
+	function getMatchCommentary($match_id)
+	{
+		$query=' SELECT	me.*'
+        .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary AS me '
+		.' WHERE me.match_id='.$match_id
+		.' ORDER BY me.event_time ASC ';
+		$this->_db->setQuery($query);
+		return ($this->_db->loadObjectList());
+	}
          
     
 }

@@ -26,7 +26,8 @@ jimport( 'joomla.filter.input' );
 
 class sportsmanagementTableMatchCommentary extends JTable
 {
-	/**
+	
+    /**
 	 * Constructor
 	 *
 	 * @param object Database connector object

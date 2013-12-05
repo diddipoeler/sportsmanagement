@@ -83,7 +83,7 @@ class sportsmanagementControllerJLXMLImport extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('JINVALID_TOKEN');
 		$msg='';
 		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$mainframe = JFactory::getApplication();
