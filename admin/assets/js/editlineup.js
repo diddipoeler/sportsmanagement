@@ -84,7 +84,7 @@ window.addEvent('domready', function() {
 						+ '&project_position_id=' + position + '&in_out_time='
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+ '&rowid=' + rowid + '&projecttime=' + projecttime;
-				var url = baseajaxurl + '&task=match.savesubst&' + querystring;
+				var url = baseajaxurl + '&task=matches.savesubst&' + querystring;
 				if (playerin != 0 || playerout != 0) {
 					var myXhr = new Request.JSON({
 						url : url,
@@ -112,7 +112,7 @@ function substRequest() {
 function deletesubst() {
 	var substid = this.id.substr(7);
 	var querystring = '&substid=' + substid;
-	var url = baseajaxurl + '&task=match.removeSubst';
+	var url = baseajaxurl + '&task=matches.removeSubst';
 	if (substid) {
 		var myXhr = new Request.JSON({
 			url : url + querystring,

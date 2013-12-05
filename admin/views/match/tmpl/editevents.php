@@ -16,20 +16,22 @@ JHtml::_('behavior.formvalidation');
 ?>
 <script type="text/javascript">
 <!--
-var matchid = <?php echo $this->teams->id; ?>;
+var matchid = <?php echo $this->item->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
 var homeroster = new Array;
 
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
+
 <?php
 
 
 
 
 $i = 0;
+if ( isset($this->rosters['home']) )
+{
 foreach ($this->rosters['home'] as $player)
 {
 	$obj = new stdclass();
@@ -37,10 +39,13 @@ foreach ($this->rosters['home'] as $player)
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
 }
+}
 ?>
 var awayroster = new Array;
 <?php
 $i = 0;
+if ( isset($this->rosters['away']) )
+{
 foreach ($this->rosters['away'] as $player)
 {
 	$obj = new stdclass();
@@ -48,13 +53,16 @@ foreach ($this->rosters['away'] as $player)
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
 }
+}
 ?>
 var rosters = Array(homeroster, awayroster);
-var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>";
+var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 
 //-->
 </script>
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
 <div id="gamesevents">
+<div id="ajaxresponse" >ajax</div>
 	<fieldset>
 		<div class="fltrt">
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
@@ -69,7 +77,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
 			<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
 			<div id="ajaxresponse"></div>
-			<table class='adminlist'>
+			<table id="table-event" class='adminlist'>
 				<thead>
 					<tr>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TEAM'); ?></th>
@@ -110,8 +118,8 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 									<?php echo (strlen($event->notice) > 20) ? substr($event->notice, 0, 17).'...' : $event->notice; ?>
 								</td>
 								<td style='text-align:center; ' >
-									<input	id="delete-<?php echo $event->id; ?>" type="button" class="inputbox button-delete"
-											value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>" />
+									<input	id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
+											value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 								</td>
 							</tr>
 							<?php
@@ -132,7 +140,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
                         
 						<td style='text-align:center; ' >
 							<?php echo JHtml::_('form.token'); ?>
-							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
+							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
 				</tbody>
@@ -142,7 +150,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 		</fieldset>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_LIVE_COMMENTARY_DESCR'); ?></legend>		
-		<table class='adminlist' >
+		<table class='adminlist' id="table-commentary">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE' ); ?></th>
@@ -190,7 +198,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 							</td>
 							<td style='text-align:center; ' >
 								<input	id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
-										value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE' ); ?>" />
+										value="<?php echo JText::_('JACTION_DELETE' ); ?>" />
 							</td>
 						</tr>
 						<?php
@@ -214,7 +222,7 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
 					</td>
 					<td style='text-align:center; ' >
-						<input id="save-new-comment" type="button" class="inputbox button-save-c" value="<?php echo JText::_('JTOOLBAR_APPLY' ); ?>" />
+						<input id="save-new-comment" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JTOOLBAR_APPLY' ); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -224,10 +232,10 @@ var str_delete = "<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DELETE'); ?>"
 </div>
 <div style="clear: both"></div>
 
-<input type="hidden" name="task" value="match.edit"/>
+<input type="hidden" name="task" value=""/>
 		<input type="hidden" name="close" id="close" value="0"/>
         <input type="hidden" name="id"  value="<?php echo $this->item->id; ?>"/>
-		<input type="hidden" name="component" value="" />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<input type="hidden" name="component" value="com_sportsmanagement" />
+		<?php //echo JHTML::_('form.token')."\n"; ?>
 
 </form>

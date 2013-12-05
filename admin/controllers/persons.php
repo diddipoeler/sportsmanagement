@@ -22,7 +22,7 @@ class sportsmanagementControllerpersons extends JControllerAdmin
 	{
 		$post = JRequest::get('post');
         // Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->storeAssign($post);

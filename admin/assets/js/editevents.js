@@ -14,23 +14,32 @@ window.addEvent('domready', function() {
 
 		//ajax remove event
 		$$('input.button-delete').addEvent('click', deleteevent);
+        //ajax remove commentary
+		$$('input.button-delete-commentary').addEvent('click', deletecommentary);
 
-		$('save-new').addEvent(
+		// neues ereignis speichern
+        $('save-new').addEvent(
 				'click',
 				function() {
-					var url = baseajaxurl + '&task=match.saveevent&';
+				    // diddipoeler
+                    //var comment = 0;
+				    var rowid = this.id.substr(5);
+					var url = baseajaxurl + '&task=matches.saveevent&';
 					var player = $('teamplayer_id').value;
 					var event = $('event_type_id').value;
 					var team = $('team_id').value;
 					//var token = $('token').value;
 					var time = $('event_time').value;
+                    //var projecttime = $('projecttime').value;
+          var notice = encodeURIComponent($('notice').value);
 					var querystring = 'teamplayer_id=' + player +
 					'&projectteam_id=' + team + 
 					'&event_type_id=' + event + 
 					'&event_time=' + time + 
-					'&match_id=' + matchid + 
+					'&match_id=' + matchid +
+          '&projecttime=' + projecttime + 
 					'&event_sum=' + $('event_sum').value +
-					'&notice=' + $('notice').value
+					'&notice=' + notice 
 					//+ '&'
 					//+ token
 					;
@@ -40,35 +49,44 @@ window.addEvent('domready', function() {
 							method : 'post',
 							onRequest : reqsent,
 							onFailure : reqfailed,
-							onSuccess : eventsaved
+							onSuccess : eventsaved,
+                            rowid: rowid
 						});
 						myXhr.post();
 					}
 				});
 	}
+    
+    // neuen kommentar speichern
     $('save-new-comment').addEvent(
 			'click',
 			function() {
-				var url = baseajaxurl + '&task=match.saveevent';
+				var url = baseajaxurl + '&task=matches.savecomment';
 				var player = 0;
+                // diddipoeler
+                //var comment = 1;
+                var rowid = this.id.substr(5);
 				var event = 0;
 				var team = 0;
 				var ctype = $('ctype').value;
-				var comnt = $('notes').value;
+                var comnt = encodeURIComponent($('notes').value)
 				var time = $('c_event_time').value;
 				var querystring = '&teamplayer_id=' + player
 				+ '&projectteam_id=' + team + '&event_type_id='
 				+ event + '&event_time=' + time + '&match_id='
 				+ matchid + '&event_sum='
 				+ ctype + '&notes='
-				+ comnt;
-				if (ctype != 0 && comnt != '') {
+				+ comnt +
+          '&projecttime=' + projecttime;
+				if (ctype != 0 ) {
 					var myXhr = new Request.JSON( {
 						url: url + querystring,
 						method : 'post',
 						onRequest : reqsent,
 						onFailure : reqfailed,
-						onSuccess : commentsaved
+						onSuccess : commentsaved,
+                        rowid: rowid
+                        
 					});
 					myXhr.post();
 				}
@@ -77,6 +95,7 @@ window.addEvent('domready', function() {
 
 function reqsent() {
 	$('ajaxresponse').addClass('ajax-loading');
+    $('ajaxresponse').className = "";
 	$('ajaxresponse').set('text','');
 }
 
@@ -87,8 +106,16 @@ function reqfailed() {
 
 function eventsaved(response) {
 	$('ajaxresponse').removeClass('ajax-loading');
+    $('ajaxresponse').className = "";
 	// first line contains the status, second line contains the new row.
-	var resp = response.split("\n");
+	var resp = response.split("&");
+//    var showdebuginfo = $('showdebuginfo').value;
+//    if ( showdebuginfo == 1 )
+//    {
+//        alert(resp[0]);
+//        alert(resp[1]);
+//    }
+    
 	if (resp[0] != '0') {
 		// create new row in events table
 		var newrow = new Element('tr', {
@@ -114,8 +141,10 @@ function eventsaved(response) {
 		}).addClass('inputbox button-delete').addEvent('click', deleteevent);
 		new Element('td').appendChild(deletebutton).injectInside(newrow);
 		newrow.injectBefore($('row-new'));
-		$('ajaxresponse').set('text','Event saved');
+        $('ajaxresponse').className = "ajaxsuccess";
+		$('ajaxresponse').set('text',resp[1]);
 	} else {
+	   $('ajaxresponse').className = "ajaxerror";
 		$('ajaxresponse').set('text',resp[1]);
 	}
 }
@@ -123,33 +152,42 @@ function eventsaved(response) {
 function commentsaved(response) {
 	$('ajaxresponse').removeClass('ajax-loading');
 	// first line contains the status, second line contains the new row.
-	var resp = response.split("\n");
+	var resp = response.split("&");
 	if (resp[0] != '0') {
 		// create new row in comments table
 		var newrow = new Element('tr', {
-			id : 'row-' + resp[0]
+			id : 'rowcomment-' + resp[0]
 		});
-		new Element('td').injectInside(newrow);
+		//new Element('td').injectInside(newrow);
+        new Element('td').set('text', $('ctype').options[$('ctype').selectedIndex].text)
+				.injectInside(newrow);
 		new Element('td').set('text',$('c_event_time').value).injectInside(newrow);
 		new Element('td', {
 			title : $('notes').value
 		}).addClass("hasTip").set('text',$('notes').value).injectInside(newrow);
 		var deletebutton = new Element('input', {
-			id : 'delete-' + resp[0],
+			id : 'deletecomment-' + resp[0],
 			type : 'button',
 			value : str_delete
-		}).addClass('inputbox button-delete').addEvent('click', deleteevent);
+		}).addClass('inputbox button-delete-commentary').addEvent('click', deleteevent);
 		new Element('td').appendChild(deletebutton).injectInside(newrow);
-		newrow.injectBefore($('row-new-comment'));
-		$('ajaxresponse').set('text','Comment saved').style.color='green';
+		newrow.injectBefore($('rowcomment-new'));
+		
+        $('ajaxresponse').className = "ajaxsuccess";
+		$('ajaxresponse').set('text',resp[1]);
 	} else {
-		$('ajaxresponse').set('text',resp[1]).style.color='red';
+		
+        $('ajaxresponse').className = "ajaxerror";
+		$('ajaxresponse').set('text',resp[1]);
 	}
 }
 
 function deleteevent() {
 	var eventid = this.id.substr(7);
-	var url = baseajaxurl + '&task=match.removeEvent';
+    
+//    alert(eventid);
+    
+	var url = baseajaxurl + '&task=matches.removeEvent';
 	var querystring = '&event_id=' + eventid;
 	if (eventid) {
 		var myXhr = new Request.JSON( {
@@ -164,14 +202,58 @@ function deleteevent() {
 	}
 }
 
+
+function deletecommentary() {
+	var eventid = this.id.substr(14);
+    
+//    alert(eventid);
+    
+	var url = baseajaxurl + '&task=matches.removeCommentary';
+	var querystring = '&event_id=' + eventid;
+	if (eventid) {
+		var myXhr = new Request.JSON( {
+			url: url + querystring,
+			method : 'post',
+			onRequest : reqsent,
+			onFailure : reqfailed,
+			onSuccess : commentarydeleted,
+			rowid : eventid
+		});
+		myXhr.post();
+	}
+}
+
 function eventdeleted(response) {
-	var resp = response.split("\n");
+	var resp = response.split("&");
+    
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert(this.options.rowid);
+    
 	if (resp[0] != '0') {
 		var currentrow = $('row-' + this.options.rowid);
 		currentrow.dispose();
 	}
 
 	$('ajaxresponse').removeClass('ajax-loading');
+    $('ajaxresponse').className = "ajaxsuccess";
+	$('ajaxresponse').set('text',resp[1]);
+}
+
+function commentarydeleted(response) {
+	var resp = response.split("&");
+
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert(this.options.rowid);
+
+	if (resp[0] != '0') {
+		var currentrow = $('rowcomment-' + this.options.rowid);
+		currentrow.dispose();
+	}
+
+	$('ajaxresponse').removeClass('ajax-loading');
+    $('ajaxresponse').className = "ajaxsuccess";
 	$('ajaxresponse').set('text',resp[1]);
 }
 

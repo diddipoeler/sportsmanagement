@@ -1,0 +1,19 @@
+div#ajaxresponse {
+  height:1.2em;
+}
+.ajax-loading {
+  background-image : url("administrator/components/com_sportsmanagement/assets/images/ajaxload_1.gif");
+  background-repeat: no-repeat;
+  background-position: 100px;
+}
+
+.ajaxerror
+{
+  color: red;
+  font-weight: bold;
+}
+.ajaxsuccess
+{
+  color: green;
+  font-weight: bold;
+}

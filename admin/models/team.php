@@ -229,7 +229,7 @@ class sportsmanagementModelteam extends JModelAdmin
  
 $query = $db->getQuery(true);
  
-// delete all custom keys for user 1001.
+// delete all custom keys
 $conditions = array(
     $db->quoteName('id') . '='.$id
 );

@@ -28,7 +28,7 @@ class sportsmanagementControllerpredictionproject extends JControllerForm
 	{
 		$post = JRequest::get('post');
         // Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JRequest::checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->save($post['jform']);

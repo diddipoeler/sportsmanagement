@@ -11,10 +11,131 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllermatches extends JControllerAdmin
 {
   
+    
+    function removeEvent()
+    {
+        // Check for request forgeries
+		JSession::checkToken() or die('JINVALID_TOKEN');
+
+		$event_id=JRequest::getInt('event_id');
+		$model=$this->getModel();
+		if (!$result=$model->deleteevent($event_id))
+		{
+			$result="0"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_DELETE_EVENTS');
+		}
+		echo json_encode($result);
+		//JFactory::getApplication()->close();
+    }
+    
+    
+    function removeCommentary()
+    {
+        // Check for request forgeries
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+
+		$event_id = JRequest::getInt('event_id');
+		$model = $this->getModel();
+		if (!$result = $model->deletecommentary($event_id))
+		{
+			$result='0'.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
+		}
+		else
+		{
+			$result='1'.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_DELETE_COMMENTARY');
+		}
+		echo json_encode($result);
+		//JFactory::getApplication()->close();
+    }
+    
+    
+    function removeSubst()
+	{
+		JSession::checkToken() or die('JINVALID_TOKEN');
+		$substid = JRequest::getInt('substid',0);
+		$model = $this->getModel();
+		if (!$result = $model->removeSubstitution($substid))
+		{
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.$model->getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST');
+		}
+		echo json_encode($result);
+		//JFactory::getApplication()->close();
+	}
+    
+    function saveevent()
+    {
+        $option = JRequest::getCmd('option');
+
+		// Check for request forgeries
+		JSession::checkToken() or die('JINVALID_TOKEN');
+
+		$mainframe = JFactory::getApplication();
+		$data = array();
+		$data['teamplayer_id']	= JRequest::getInt('teamplayer_id');
+		$data['projectteam_id']	= JRequest::getInt('projectteam_id');
+		$data['event_type_id']	= JRequest::getInt('event_type_id');
+		$data['event_time']		= JRequest::getVar('event_time','');
+		$data['match_id']		= JRequest::getInt('matchid');
+		$data['event_sum']		= JRequest::getVar('event_sum', '');
+		$data['notice']			= JRequest::getVar('notice', '');
+		$data['notes']			= JRequest::getVar('notes', '');
+        
+        // diddipoeler
+        $data['projecttime']			= JRequest::getVar('projecttime','');
+        
+        $model = $this->getModel();
+		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
+		if (!$result = $model->saveevent($data)) {
+			$result = "0"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
+        } else {
+			$result = $model->getDbo()->insertid()."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_EVENT');
+		}    
+ 
+		echo json_encode($result);
+		//JFactory::getApplication()->close();
+    }
+    
+    function savecomment()
+    {
+        $option = JRequest::getCmd('option');
+
+		// Check for request forgeries
+		JSession::checkToken() or die('JINVALID_TOKEN');
+
+		$mainframe = JFactory::getApplication();
+		$data = array();
+		$data['event_time']		= JRequest::getVar('event_time','');
+		$data['match_id']		= JRequest::getInt('matchid');
+		$data['type']		= JRequest::getVar('type', '');
+		$data['notes']			= JRequest::getVar('notes', '');
+        
+        // diddipoeler
+        $data['projecttime']			= JRequest::getVar('projecttime','');
+        
+        $model = $this->getModel();
+		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
+		if (!$result = $model->savecomment($data)) {
+            $result = '0&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
+        } else {
+            //$result = $model->getDbo()->insertid()."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_COMMENT');
+            $result = $result.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_COMMENT');
+		}    
+ 
+		echo json_encode($result);
+		//JFactory::getApplication()->close();
+    }
+    
     function savesubst()
 	{
 		// Check for request forgeries
-		JRequest::checkToken("GET") or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JSession::checkToken() or die('JINVALID_TOKEN');
 		$data = array();
 		$data['in'] 					= JRequest::getInt('in');
 		$data['out'] 					= JRequest::getInt('out');
@@ -33,7 +154,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		}
         
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		//JFactory::getApplication()->close();
 	}
     
     

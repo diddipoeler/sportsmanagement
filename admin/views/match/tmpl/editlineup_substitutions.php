@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+// &tmpl=component&view=match&layout=editlineup
+
 ?>
 <script type="text/javascript">
 <!--
@@ -21,13 +23,13 @@ var matchid=<?php echo $this->item->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
 // We need to setup some text variables for translation
-var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
+var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
 //-->
 </script>
 <!-- SUBSTITUTIONS START -->
 <div id="io">
 	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
-	<div id="ajaxresponse"></div>
+	<div id="ajaxresponse" >ajax</div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="substitutions">
@@ -84,7 +86,7 @@ var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
 								?>
 							</td>
 							<td>
-								<input	id="delete-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete"
+								<input	id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
 										value="<?php echo JText::_('JTOOLBAR_REMOVE'); ?>" />
 							</td>
 						</tr>
@@ -93,15 +95,16 @@ var str_delete="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_REMOVE'); ?>";
 					}
 					?>
 					<tr id="row-new">
-						<td><?php echo JHTML::_('select.genericlist',$this->playersoptions,'out','class="inputbox player-out"'); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$this->playersoptions,'in','class="inputbox player-in"'); ?></td>
+						<td><?php echo JHTML::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
+						<td><?php echo JHTML::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
 						<td><?php echo $this->lists['projectpositions']; ?></td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
                         
                         
                         
 						<td>
-							<input id="save-new" type="button" class="inputbox button-save" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
+							<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
+                            
 						</td>
 					</tr>
 				</tbody>
