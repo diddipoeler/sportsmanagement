@@ -74,19 +74,28 @@ class JFormFieldseasonteamperson extends JFormField
 
 
 // Initialize variables.
-            $html = array();
+            $html = '';
             $attribs['width'] = '25px';
-            $html[] = '<ul>';
+            //$html[] = '<ul>';
+            $html .= '<table>';
             foreach ($options as $i => $option)
             {
-            $html[] = '<li>';
-            $html[] = $option->seasonname.' - '.JHtml::_('image', $option->clublogo, '', $attribs).' - '.$option->teamname;
-            $html[] = '</li>';    
+            //$html[] = '<li>';
+            $html .= '<tr>';
+            $html .= '<td>'.$option->seasonname.'</td>';
+            //$html .= $option->clublogo.' - ';
+            //$html .= JHtml::_('image', $option->clublogo, '', $attribs);
+            //$html .= '<img scr="'.$option->clublogo.'" width="25px">';
+            $html .= '<td>'.JHtml::image($option->clublogo, '',	$attribs).'</td>';
+            $html .= '<td>'.$option->teamname.'</td>';
+            //$html[] = '</li>';
+            $html .= '</tr>';    
             }   
-            $html[] = '</ul>';
+            //$html[] = '</ul>';
+            $html .= '</table>';
              
     
-            return implode($html);    
+            return $html;    
     
     }
 }
