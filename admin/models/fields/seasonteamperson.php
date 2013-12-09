@@ -69,29 +69,28 @@ class JFormFieldseasonteamperson extends JFormField
     
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasonteamperson getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
    
 
 
 // Initialize variables.
             $html = '';
             $attribs['width'] = '25px';
-            //$html[] = '<ul>';
+            $attribs['height'] = '25px';
+            
             $html .= '<table>';
             foreach ($options as $i => $option)
             {
-            //$html[] = '<li>';
+            
             $html .= '<tr>';
             $html .= '<td>'.$option->seasonname.'</td>';
-            //$html .= $option->clublogo.' - ';
-            //$html .= JHtml::_('image', $option->clublogo, '', $attribs);
-            //$html .= '<img scr="'.$option->clublogo.'" width="25px">';
+            
             $html .= '<td>'.JHtml::image($option->clublogo, '',	$attribs).'</td>';
             $html .= '<td>'.$option->teamname.'</td>';
-            //$html[] = '</li>';
+            
             $html .= '</tr>';    
             }   
-            //$html[] = '</ul>';
+            
             $html .= '</table>';
              
     
