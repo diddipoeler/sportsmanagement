@@ -63,7 +63,7 @@ class sportsmanagementViewTeamStaffs extends JView
 	    $project_team = $mdlTeam->getTeam($this->team_id);
         
         //build the html options for position
-		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STAFF_FUNCTION'));
+		$position_id[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STAFF_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
         if ( $project_ref_positions )

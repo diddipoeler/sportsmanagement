@@ -3,8 +3,8 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'v.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <script>
 
@@ -48,37 +48,37 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NAME','v.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NAME','v.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_S_NAME','v.short_name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_S_NAME','v.short_name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CLUBNAME','club',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CLUBNAME','club',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CAPACITY','v.max_visitors',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CAPACITY','v.max_visitors',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_IMAGE','v.picture',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_IMAGE','v.picture',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','v.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'playgrounds.saveorder');
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','v.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'playgrounds.saveorder');
 						?>
 					</th>
 					<th width="5%">
-						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','v.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','v.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -90,7 +90,7 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=playground.edit&id='.$row->id);
-					$checked=JHTML::_('grid.checkedout',$row,$i);
+					$checked=JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -109,7 +109,7 @@ JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -126,20 +126,20 @@ JHTML::_('behavior.modal');
 							if ($row->picture == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
-								echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+								echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 
 							}
 							elseif($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
-									echo JHTML::_(	'image','/administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo JHtml::_(	'image','/administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif($row->picture !== '')
 									{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
-										echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+										echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 									}
 									?>
@@ -170,5 +170,5 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

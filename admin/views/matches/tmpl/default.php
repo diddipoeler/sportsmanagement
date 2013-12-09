@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 $massadd=JRequest::getInt('massadd',0);
 ?>
 

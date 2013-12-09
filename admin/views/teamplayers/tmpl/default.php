@@ -6,7 +6,7 @@ $ordering = ( $this->lists['order'] == 'tp.ordering' );
 
 //$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 ?>
 <style>
 .search-item {
@@ -60,7 +60,7 @@ JHTML::_('behavior.mootools');
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
 		</tr>
 	</table>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 	</form>
 </fieldset>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -118,12 +118,12 @@ JHTML::_('behavior.mootools');
 						</th>
 						<th>
 							<?php
-							echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th>
 							<?php
-							echo JHTML::_( 'grid.sort', 'PID', 'ppl.person_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'PID', 'ppl.person_id', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th>
@@ -143,7 +143,7 @@ JHTML::_('behavior.mootools');
 						</th>
 						<th width="20">
 							<?php
-							echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'tp.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'tp.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th>
@@ -153,18 +153,18 @@ JHTML::_('behavior.mootools');
 						</th>
 						<th>
 						<?php
-						echo JHTML::_('grid.sort','JSTATUS','tp.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','tp.published',$this->lists['order_Dir'],$this->lists['order']);
 						?></th>
 						<th width="10%">
 							<?php
-							//echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-                            echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'tp.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-							echo JHTML::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
+							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+                            echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'tp.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
 							?>
 						</th>
 						<th width="5%">
 							<?php
-							echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ID', 'tpid', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'tpid', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 					</tr>
@@ -187,7 +187,7 @@ JHTML::_('behavior.mootools');
 						$row =& $this->items[$i];
 						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
 													$row->projectteam_id . '&id=' . $row->id.'&pid=' .$this->project->id.'&team_id='.$this->team_id);
-						$checked		= JHTML::_( 'grid.checkedout', $row, $i );
+						$checked		= JHtml::_( 'grid.checkedout', $row, $i );
 						$inputappend	= '';
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -218,7 +218,7 @@ JHTML::_('behavior.mootools');
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
-										echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
+										echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
 										?>
@@ -240,7 +240,7 @@ JHTML::_('behavior.mootools');
 								if ( $row->picture == '' )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
-									echo JHTML::_(	'image',
+									echo JHtml::_(	'image',
 													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
@@ -249,7 +249,7 @@ JHTML::_('behavior.mootools');
 								elseif ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
-										echo JHTML::_(	'image',
+										echo JHtml::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -295,7 +295,7 @@ JHTML::_('behavior.mootools');
 								{
 									$append=' style="background-color:#FFCCCC"';
 								}
-								echo JHTML::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 								?>
 							</td>
 							<td class="nowrap" class="center">
@@ -306,21 +306,21 @@ JHTML::_('behavior.mootools');
 								if ( $row->injury > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
-									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
+									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
-									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
+									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
-									echo JHTML::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
+									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
 													$imageTitle,
 													'title= "' . $imageTitle . '"' );
 								}
@@ -329,7 +329,7 @@ JHTML::_('behavior.mootools');
 							</td>
 							<td class="center">
 								<?php
-								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamplayers.');
+								echo JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','teamplayers.');
 								?>
 							</td>
 							<td class="order">
@@ -372,5 +372,5 @@ JHTML::_('behavior.mootools');
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

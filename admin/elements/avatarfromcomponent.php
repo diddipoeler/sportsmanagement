@@ -25,7 +25,7 @@ class JFormFieldAvatarFromComponent extends JFormField
         
         
 		$mitems = array();
-		$mitems[] = JHTML::_('select.option', 'com_users', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
+		$mitems[] = JHtml::_('select.option', 'com_users', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
 		
         foreach( $sel_component as $key => $value )
         {
@@ -34,12 +34,12 @@ class JFormFieldAvatarFromComponent extends JFormField
             $db->setQuery($query);
             if ( $result = $db->loadResult() )
             {
-		$mitems[] = JHTML::_('select.option', $key , JText::_($value));
+		$mitems[] = JHtml::_('select.option', $key , JText::_($value));
 	       }
         
         }
 
-		$output= JHTML::_('select.genericlist',  $mitems,
+		$output= JHtml::_('select.genericlist',  $mitems,
 				$this->name,
 				'class="inputbox" size="1"',
 				'value', 'text', $this->value, $this->id);

@@ -71,7 +71,7 @@ class sportsmanagementViewteamPlayers extends JView
 	    $project_team = $mdlTeam->getTeam($this->team_id);
         
         //build the html options for position
-		$position_id[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
+		$position_id[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
         if ( $project_ref_positions )
@@ -126,7 +126,7 @@ class sportsmanagementViewteamPlayers extends JView
 		$pagination		=& $this->get( 'Pagination' );
 
 		// state filter
-		$lists['state'] = JHTML::_( 'grid.state', $filter_state );
+		$lists['state'] = JHtml::_( 'grid.state', $filter_state );
 
 		// table ordering
 		$lists['order_Dir']		= $filter_order_Dir;
@@ -149,11 +149,11 @@ class sportsmanagementViewteamPlayers extends JView
 			$playerslist = array();
 			foreach( $ress as $res )
 			{
-				$team_playerslist[] = JHTML::_(	'select.option', $res->value, $res->lastname . ' ' . $res->text . ' (' .
+				$team_playerslist[] = JHtml::_(	'select.option', $res->value, $res->lastname . ' ' . $res->text . ' (' .
 												$res->notes . ')' );
 			}
 
-			$lists['team_players'] = JHTML::_(	'select.genericlist', $team_playerslist, 'team_playerslist[]',
+			$lists['team_players'] = JHtml::_(	'select.genericlist', $team_playerslist, 'team_playerslist[]',
 												' style="width:150px" class="inputbox" multiple="true" size="' . max( 20, count( $ress ) ) .
 												'"', 'value', 'text' );
 		}
@@ -179,7 +179,7 @@ class sportsmanagementViewteamPlayers extends JView
 				}
 				if ( $used == 0 )
 				{
-					$notusedplayers[] = JHTML::_(	'select.option', $res1->value,
+					$notusedplayers[] = JHtml::_(	'select.option', $res1->value,
 					  sportsmanagementHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
 													' (' . $res1->notes . ')' );
 				}
@@ -189,7 +189,7 @@ class sportsmanagementViewteamPlayers extends JView
 		{
 			foreach ( $ress1 as $res1 )
 			{
-				$notusedplayers[] = JHTML::_(	'select.option', $res1->value,
+				$notusedplayers[] = JHtml::_(	'select.option', $res1->value,
 				  sportsmanagementHelper::formatName(null, $res1->firstname, $res1->nickname, $res1->lastname, 0) .
 												' (' . $res1->notes . ')' );
 			}
@@ -198,7 +198,7 @@ class sportsmanagementViewteamPlayers extends JView
 		//build the html select list for players
 		if ( count ( $notusedplayers ) > 0 )
 		{
-			$lists['players'] = JHTML::_(	'select.genericlist', $notusedplayers, 'playerslist[]',
+			$lists['players'] = JHtml::_(	'select.genericlist', $notusedplayers, 'playerslist[]',
 											' style="width:150px" class="inputbox" multiple="true" size="30"', 'value', 'text' );
 		}
 		else
@@ -254,7 +254,7 @@ class sportsmanagementViewteamPlayers extends JView
 		$pagination = & $this->get( 'Pagination' );
 
 		// state filter
-		$lists['state'] = JHTML::_( 'grid.state', $filter_state );
+		$lists['state'] = JHtml::_( 'grid.state', $filter_state );
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -265,7 +265,7 @@ class sportsmanagementViewteamPlayers extends JView
 		$lists['search_mode']	= $search_mode;
 
 		//build the html options for position
-		$position_id[] = JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
+		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res =& $this->get('positions'))
 		{
 			$position_id = array_merge( $position_id, $res );

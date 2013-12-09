@@ -27,6 +27,6 @@ $fieldsets = $this->form->getFieldsets();
 	
 	
 	<input type="hidden" name="task" value="predictiongroup.edit" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </fieldset>		
 </form>

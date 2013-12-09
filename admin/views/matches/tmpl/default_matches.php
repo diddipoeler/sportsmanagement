@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
@@ -42,10 +42,10 @@ fieldset button {
             }
             ?>
 						<th width="20" >
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th class="title" >
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
@@ -55,8 +55,8 @@ fieldset button {
 						?>
 						<th >
 							<?php 
-								echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->lists['order_Dir'],$this->lists['order']);
-								echo '<br>'.JHTML::_(	'select.genericlist',
+								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->lists['order_Dir'],$this->lists['order']);
+								echo '<br>'.JHtml::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'division',
 													'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
@@ -84,7 +84,7 @@ fieldset button {
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
 						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
-							<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 					</tr>
 				</thead>
@@ -95,8 +95,8 @@ fieldset button {
 					for ($i=0,$n=count($this->matches); $i < $n; $i++)
 					{
 						$row		=& $this->matches[$i];
-						$checked	= JHTML::_('grid.checkedout',$row,$i,'id');
-						$published	= JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
+						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
+						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
 
 						list($date,$time)=explode(" ",$row->match_date);
 						$time=strftime("%H:%M",strtotime($time));
@@ -126,7 +126,7 @@ fieldset button {
 									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.edit&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS').'"');
 									?>
@@ -135,7 +135,7 @@ fieldset button {
 									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.picture&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE').'"');
 									?>
@@ -157,7 +157,7 @@ fieldset button {
 									 
 								 	$image = 'players_add.png';
 								 	$title=  '';
-								 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('JL_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
 													 'title= "' .$title. '"');
 													 
@@ -174,7 +174,7 @@ fieldset button {
 							</td>
 							<td class="center" nowrap="nowrap">
 								<?php
-								echo JHTML::calendar(	sportsmanagementHelper::convertDate($date),
+								echo JHtml::calendar(	sportsmanagementHelper::convertDate($date),
 														'match_date'.$row->id,
 														'match_date'.$row->id,
 														'%d-%m-%Y',
@@ -189,7 +189,7 @@ fieldset button {
 
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
+									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'),
 															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT').'"');
 									?>
@@ -213,7 +213,7 @@ fieldset button {
 							?>
 							<td class="center">
 								<?php
-							echo JHTML::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
+							echo JHtml::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
 												'class="inputbox select-division_id" size="1"'.$append,'value','text',$row->division_id);
 							?>
                 <?php 
@@ -230,7 +230,7 @@ fieldset button {
               ?>
               <td style="text-align:center; ">
 								<?php
-							echo JHTML::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
+							echo JHtml::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
 												'class="inputbox select-round_id" size="1"'.$append,'value','text',$row->round_id);
 							?>
 							</td>
@@ -253,7 +253,7 @@ fieldset button {
 									echo '<sub>'.$row->homeplayers_count.'</sub> ';
 												 
 
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),
 													 'title= "' .$title. '"');
 													 
@@ -267,7 +267,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam1_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam1_id'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
@@ -279,7 +279,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam2_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
@@ -297,7 +297,7 @@ fieldset button {
 													 ' '.JText::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->awaystaff_count;
 													 
 									 echo '<sub>'.$row->awayplayers_count.'</sub> ';
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),
 													 'title= "' .$title. '"');
 									 echo '<sub>'.$row->awaystaff_count.'</sub> ';	
@@ -312,7 +312,7 @@ fieldset button {
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="inputbox" />
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
+									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
 															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
 									?>
@@ -367,7 +367,7 @@ fieldset button {
 								?>
 								<td>
 									<?php
-									echo JHTML::_(	'select.genericlist',$this->lists['match_result_type'],
+									echo JHtml::_(	'select.genericlist',$this->lists['match_result_type'],
 													'match_result_type'.$row->id,'class="inputbox" size="1"','value','text',
 													$row->match_result_type);
 									?>
@@ -382,7 +382,7 @@ fieldset button {
 									 class="modal open-pressebericht"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'); ?>">
 									 <?php
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT').'"');
 									 ?>
 								</a>
@@ -392,7 +392,7 @@ fieldset button {
 									 class="modal open-editevents"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'); ?>">
 									 <?php
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/events.png',
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/events.png',
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS').'"');
 									 ?>
 								</a>
@@ -404,7 +404,7 @@ fieldset button {
 									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'); ?>">
 									 <?php
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS').'"');
 								?>
 								</a>
@@ -421,7 +421,7 @@ fieldset button {
 									 class="modal open-editstats"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'); ?>">
 									 <?php
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/calc16.png',
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/calc16.png',
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS').'"');
 								?>
 								</a>								
@@ -438,7 +438,7 @@ fieldset button {
 									 	$image = 'icon-16-Referees.png';
 									 }
 									 $title= $row->referees_count;
-									 echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'),
 													 'title= "'. $title. '"') ;
 									 echo '<sub>'.$row->referees_count.'</sub> ';	
@@ -474,7 +474,7 @@ fieldset button {
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type='hidden' name='act' value='' />
 			<input type='hidden' name='task' value='' />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 		</form>
 	</fieldset>
 </div>

@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
-JHTML::_( 'behavior.mootools' );
+JHtml::_( 'behavior.mootools' );
 
 /**
  * Renders a Dynamic SQL element
@@ -84,7 +84,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		}
 		else
 		{
-			$options = array(JHTML::_('select.option', '', JText::_('Select'), $key, $val));
+			$options = array(JHtml::_('select.option', '', JText::_('Select'), $key, $val));
 		}
 
 		if ($query!='')
@@ -101,7 +101,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		}
 
 		// Render the HTML SELECT list.
-		$text = JHTML::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
+		$text = JHtml::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
 		$text .= '<input type="hidden" name="'.$ctrl.'" id="'.$this->id.'" value="'.$value.'"/>';
 		return $text;
 	}

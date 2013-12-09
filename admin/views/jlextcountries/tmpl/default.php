@@ -3,8 +3,8 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'objcountry.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
@@ -35,60 +35,60 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_NAME','objcountry.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_NAME','objcountry.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2','objcountry.alpha2',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2','objcountry.alpha2',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3','objcountry.alpha3',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU','objcountry.itu',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS','objcountry.fips',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC','objcountry.ioc',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA','objcountry.fifa',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS','objcountry.ds',$this->lists['order_Dir'],$this->lists['order']);
-						?>
-					</th>
-					<th width="10%">
-						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO','objcountry.wmo',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3','objcountry.alpha3',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','objcountry.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'jlextcountries.saveorder');
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU','objcountry.itu',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS','objcountry.fips',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC','objcountry.ioc',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA','objcountry.fifa',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS','objcountry.ds',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO','objcountry.wmo',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					
+					<th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objcountry.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'jlextcountries.saveorder');
 						?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','objcountry.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','objcountry.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -100,7 +100,7 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id='.$row->id);
-					$checked=JHTML::_('grid.checkedout',$row,$i);
+					$checked=JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -119,7 +119,7 @@ JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -130,7 +130,7 @@ JHTML::_('behavior.modal');
 						<td><?php echo $row->name; ?></td>
 						<td>
                         <?php 
-                        //echo JHTML::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
+                        //echo JHtml::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
                         echo Countries::getCountryFlag($row->alpha3);
                         ?>
                         </td>
@@ -168,5 +168,5 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

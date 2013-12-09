@@ -43,7 +43,7 @@ if($close == 1) {
     
 			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='' />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
 				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td>

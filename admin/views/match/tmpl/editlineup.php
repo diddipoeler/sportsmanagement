@@ -57,7 +57,7 @@ if($close == 1) {
 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
 		echo JHtml::_('tabs.end');
@@ -72,7 +72,7 @@ if($close == 1) {
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
         
-        <input type="hidden" name="component" value="com_sportsmanagement" />
+        
 		<?php echo JHtml::_('form.token')."\n"; ?>
 	</div>
 </form>

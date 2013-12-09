@@ -42,7 +42,7 @@ class sportsmanagementViewEventtypes extends JView
 		$pagination = $this->get('Pagination');
 
 		// state filter
-		$lists['state']	= JHTML::_('grid.state', $filter_state);
+		$lists['state']	= JHtml::_('grid.state', $filter_state);
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -52,13 +52,13 @@ class sportsmanagementViewEventtypes extends JView
 		$lists['search']	= $search;
 
 		//build the html select list for sportstypes
-		$sportstypes[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
 		$sportstypes=array_merge($sportstypes,$allSportstypes);
 		
-		$lists['sportstypes']=JHTML::_( 'select.genericList',
+		$lists['sportstypes']=JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',

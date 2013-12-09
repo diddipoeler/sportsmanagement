@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <script language="javascript">
 window.addEvent('domready',function(){
@@ -24,7 +24,7 @@ window.addEvent('domready',function(){
 		<form id='copyform' method='post' style='display:inline' id='copyform'>
 			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='round.copyfrom' />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
 				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td><input type='text' name='add_round_count' id='add_round_count' value='0' size='3' class='inputbox' /></td>
@@ -44,7 +44,7 @@ window.addEvent('domready',function(){
 						<th width="1%"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 						<th width="20">&nbsp;</th>
- 						<th width="20"><?php echo JHTML::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+ 						<th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE'); ?></th>
 						<th width="10%" class="center" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_STARTDATE'); ?></th>
 						<th width="1%">&nbsp;</th>
@@ -54,10 +54,10 @@ window.addEvent('domready',function(){
 						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
 						<th width="5%" class="title">
 						<?php
-						echo JHTML::_('grid.sort','JSTATUS','r.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','r.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
-            <th width="5%"><?php echo JHTML::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+            <th width="5%"><?php echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 					</tr>
 				</thead>
 				<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
@@ -69,8 +69,8 @@ window.addEvent('domready',function(){
 						$row =& $this->matchday[$i];
 						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id.'&pid='.$this->project->id);
 						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=matches&rid='.$row->id.'&pid='.$this->project->id);
-						$checked=JHTML::_('grid.checkedout',$row,$i);
-                        $published  = JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
+						$checked=JHtml::_('grid.checkedout',$row,$i);
+                        $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -79,7 +79,7 @@ window.addEvent('domready',function(){
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageParams="title='$imageTitle'";
-								echo JHTML::link($link1,JHTML::image($imageFile,$imageTitle,$imageParams));
+								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
 							?></td>
 							<td class="center">
 								<input tabindex="1" type="text" style="text-align: center" size="5" class="inputbox" name="roundcode<?php echo $row->id; ?>" value="<?php echo $row->roundcode; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
@@ -95,7 +95,7 @@ window.addEvent('domready',function(){
 								{
 									$append=' style="background-color:#FFCCCC;" ';
 								}
-								echo JHTML::calendar(	$date1,
+								echo JHtml::calendar(	$date1,
 														'round_date_first'.$row->id,
 														'round_date_first'.$row->id,
 														'%d-%m-%Y',
@@ -113,7 +113,7 @@ window.addEvent('domready',function(){
 								{
 									$append=' style="background-color:#FFCCCC;"';
 								}
-								echo JHTML::calendar(	$date2,
+								echo JHtml::calendar(	$date2,
 														'round_date_last'.$row->id,
 														'round_date_last'.$row->id,
 														'%d-%m-%Y',
@@ -125,7 +125,7 @@ window.addEvent('domready',function(){
 							<td class="center" class="nowrap"><?php
 								$link2Title=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES_LINK');
 								$link2Params="title='$link2Title'";
-								echo JHTML::link($link2,$link2Title,$link2Params);
+								echo JHtml::link($link2,$link2Title,$link2Params);
 					  			?></td>
 							<td class="center" class="nowrap"><?php
 								if (($row->countUnPublished == 0) && ($row->countMatches > 0))
@@ -133,7 +133,7 @@ window.addEvent('domready',function(){
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
-									echo JHTML::image($imageFile,$imageTitle,$imageParams);
+									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
@@ -147,7 +147,7 @@ window.addEvent('domready',function(){
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
-									echo JHTML::image($imageFile,$imageTitle,$imageParams);
+									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
 								?></td>
 					  		<td class="center" class="nowrap"><?php
@@ -156,7 +156,7 @@ window.addEvent('domready',function(){
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
-									echo JHTML::image($imageFile,$imageTitle,$imageParams);
+									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
@@ -170,7 +170,7 @@ window.addEvent('domready',function(){
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
-									echo JHTML::image($imageFile,$imageTitle,$imageParams);
+									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
 								?></td>
                 <td class="center"><?php echo $published; ?></td>
@@ -190,5 +190,5 @@ window.addEvent('domready',function(){
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

@@ -70,12 +70,12 @@ class JoomleagueViewPredictionMember extends JLGView
 		
 /*        
         //build the html select list for parent positions
-		$parents[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Prediction Group' ) . ' -' );
+		$parents[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Prediction Group' ) . ' -' );
 		if ( $res =& $model->getPredictionGroups() )
 		{
 			$parents = array_merge( $parents, $res );
 		}
-		$lists['parents'] = JHTML::_(	'select.genericlist', $parents, 'group_id', 'class="inputbox" size="1"', 'value', 'text',
+		$lists['parents'] = JHtml::_(	'select.genericlist', $parents, 'group_id', 'class="inputbox" size="1"', 'value', 'text',
 										$predictionuser->group_id );
 		unset( $parents );
 */

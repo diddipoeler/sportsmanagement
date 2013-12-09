@@ -20,6 +20,6 @@ window.addEvent('domready', function()
 		<?php echo $this->lists['mastertemplates']; ?>
 		<input type="hidden" name="project_id" value="<?php echo $this->projectws->id; ?>" />
 		<input type="hidden" name="task" value="template.masterimport" />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </div>

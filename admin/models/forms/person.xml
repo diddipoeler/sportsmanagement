@@ -254,6 +254,23 @@
 
 	</fieldset>
  
+ <fieldset name="seasonsteams" 
+  label="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON"
+  description="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON_DESC">		
+
+		<field
+			name="season_team_person_ids"
+			type="seasonteamperson"
+			targettable="season_team_person_id"
+			targetid="person_id"
+			label=""
+			description=""
+			class=""/>	
+
+
+	</fieldset>
+ 
+ 
   <fieldset name="injury" 
   label="COM_SPORTSMANAGEMENT_TABS_INJURY"
   description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		

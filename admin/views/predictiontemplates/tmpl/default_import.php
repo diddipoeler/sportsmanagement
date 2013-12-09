@@ -45,6 +45,6 @@ window.addEvent('domready', function()
 		-->
 		<input type='hidden' name='controller'	value='predictiontemplate' />
 		<input type='hidden' name='task' 		value='masterimport' />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo JHtml::_( 'form.token' ); ?>
 	</form>
 </div>

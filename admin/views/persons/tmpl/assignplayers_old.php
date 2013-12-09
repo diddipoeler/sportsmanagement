@@ -77,28 +77,28 @@
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
 						<th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						
             <th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_INFO','pl.info',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_INFO','pl.info',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						
 						<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?></th>
 						<th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th width="1%" class="nowrap">
-							<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 
             					
@@ -114,7 +114,7 @@
 						$row =& $this->items[$i];
 						if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 						{
-							$checked=JHTML::_('grid.checkedout',$row,$i);
+							$checked=JHtml::_('grid.checkedout',$row,$i);
 							?>
 							<tr class="<?php echo "row$k"; ?>">
 								<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -130,14 +130,14 @@
 									if ($row->picture == '')
 									{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE');
-										echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 
 									}
 									elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 									{
 											$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-											echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+											echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 															$imageTitle,'title= "'.$imageTitle.'"');
 									}
 									elseif ($row->picture == !'')
@@ -167,5 +167,5 @@
 	<input type="hidden" name="project_team_id"		value="<?php echo $this->project_team_id; ?>" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

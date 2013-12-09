@@ -60,32 +60,32 @@ $params = $this->form->getFieldsets('params');
 		{
 			$startOffset = 4;
 		}
-		echo JHTML::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
+		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
 		echo $this->loadTemplate('matchpreview');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'), 'panel2');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'), 'panel2');
 		echo $this->loadTemplate('matchdetails');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
 		echo $this->loadTemplate('scoredetails');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'), 'panel4');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'), 'panel4');
 		echo $this->loadTemplate('altdecision');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
 		echo $this->loadTemplate('matchreport');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'), 'panel6');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'), 'panel6');
 		echo $this->loadTemplate('matchrelation');
 		
-		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel7');
+		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel7');
 		echo $this->loadTemplate('matchextended');
 		
-// 		echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPICTURE'), 'panel8');
+// 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPICTURE'), 'panel8');
 // 		echo $this->loadTemplate('matchpicture');
 		
-		echo JHTML::_('tabs.end');
+		echo JHtml::_('tabs.end');
 		
 		?>
 		<!-- Additional Details Table END -->
@@ -95,6 +95,6 @@ $params = $this->form->getFieldsets('params');
 		<input type="hidden" name="close" id="close" value="0"/>
         <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
 		<input type="hidden" name="component" value="" />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</div>
 </form>

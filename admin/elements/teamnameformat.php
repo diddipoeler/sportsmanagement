@@ -24,11 +24,11 @@ class JFormFieldTeamNameFormat extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		$mitems = array();
-		$mitems[] = JHTML::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
-		$mitems[] = JHTML::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
-		$mitems[] = JHTML::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
+		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
+		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
+		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
 
-		$output= JHTML::_('select.genericlist',  $mitems,
+		$output= JHtml::_('select.genericlist',  $mitems,
 				$this->name,
 				'class="inputbox" size="1"',
 				'value', 'text', $this->value, $this->id);

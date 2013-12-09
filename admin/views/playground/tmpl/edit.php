@@ -30,7 +30,7 @@ $fieldsets = $this->form->getFieldsets();
                 //echo sportsmanagementHelper::getPictureClub($field->value); 
                 $picture = sportsmanagementHelper::getPictureClub($field->value);
                 //echo $picture;
-                //echo JHTML::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
+                //echo JHtml::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
                 echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));  
                 }
                 

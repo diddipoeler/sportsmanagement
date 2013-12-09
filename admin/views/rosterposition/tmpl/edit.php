@@ -2,8 +2,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-//JHTML::_('behavior.tooltip');
-//JHTML::_('behavior.modal');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.modal');
 //jimport('joomla.html.pane');
 jimport( 'joomla.html.html.tabs' );
 $options = array(
@@ -69,5 +69,5 @@ echo JHtml::_('tabs.end');
 	
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 	<input type="hidden" name="task" value="rosterposition.edit" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

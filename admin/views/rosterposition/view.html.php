@@ -263,14 +263,14 @@ $bildpositionenaway[AWAY_POS][10][heim][links] = 288;
 		}
 
 		//build the html select list for countries
-		$countries[]=JHTML::_('select.option','',JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SELECT_COUNTRY'));
+		$countries[]=JHtml::_('select.option','',JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SELECT_COUNTRY'));
 		if ($res =& Countries::getCountryOptions()){$countries=array_merge($countries,$res);}
-		$lists['countries']=JHTML::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$object->country);
+		$lists['countries']=JHtml::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$object->country);
 		unset($countries);
 
 		// build the html select list for ordering
 		$query='SELECT ordering AS value,name AS text FROM	#__joomleague_rosterposition ORDER BY ordering ';
-		$lists['ordering']=JHTML::_('list.specificordering',$object,$object->id,$query,1);
+		$lists['ordering']=JHtml::_('list.specificordering',$object,$object->id,$query,1);
 
     
 		
@@ -353,10 +353,10 @@ $extended->bind($jRegistry);
     $this->assignRef('bildpositionen',$bildpositionen);
     }
     
-    $project_type=array (	JHTMLSelect::option('HOME_POS',JText::_('HOME_POS'),'id','name'),
-								JHTMLSelect::option('AWAY_POS',JText::_('AWAY_POS'),'id','name')
+    $project_type=array (	JHtmlSelect::option('HOME_POS',JText::_('HOME_POS'),'id','name'),
+								JHtmlSelect::option('AWAY_POS',JText::_('AWAY_POS'),'id','name')
 							);
-		$lists['project_type']=JHTMLSelect::genericlist($project_type,'short_name','class="inputbox" size="1"','id','name',$object->short_name);
+		$lists['project_type']=JHtmlSelect::genericlist($project_type,'short_name','class="inputbox" size="1"','id','name',$object->short_name);
 		unset($project_type);
     
     // Add Script

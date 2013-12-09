@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 ?>
 <style>
 .search-item {
@@ -56,7 +56,7 @@ $uri=JURI::root();
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
 		</tr>
 	</table>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 	</form>
 </fieldset>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -113,7 +113,7 @@ $uri=JURI::root();
 						</th>
 						<th>
 							<?php
-							echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->lists['order_Dir'],$this->lists['order']);
 							?>
 						</th>
 						<th width="20">
@@ -128,23 +128,23 @@ $uri=JURI::root();
 						</th>
 						<th>
 							<?php
-							echo JHTML::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->lists['order_Dir'],$this->lists['order']);
 							?>
 						</th>
 						<th>
 						<?php
-						echo JHTML::_('grid.sort','JSTATUS','pref.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','pref.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 						</th>
 						<th width="10%">
 							<?php
-							echo JHTML::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
-							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
+							echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
 							?>
 						</th>
 						<th width="5%">
 							<?php
-							echo JHTML::_('grid.sort','JGRID_HEADING_ID','p.id',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->lists['order_Dir'],$this->lists['order']);
 							?>
 						</th>
 					</tr>
@@ -157,7 +157,7 @@ $uri=JURI::root();
 					{
 						$row =& $this->items[$i];
 						$link=JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id);
-						$checked=JHTML::_('grid.checkedout',$row,$i);
+						$checked=JHtml::_('grid.checkedout',$row,$i);
 						$inputappend='';
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -188,7 +188,7 @@ $uri=JURI::root();
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
-										echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
 										?>
@@ -210,7 +210,7 @@ $uri=JURI::root();
 								if ($row->picture == '')
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
-									echo JHTML::_(	'image',
+									echo JHtml::_(	'image',
 													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
 													'title= "'.$imageTitle.'"');
@@ -219,7 +219,7 @@ $uri=JURI::root();
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
-										echo JHTML::_(	'image',
+										echo JHtml::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
@@ -257,7 +257,7 @@ $uri=JURI::root();
 									$append=' style="background-color:#FFCCCC"';
 								}
 
-								echo JHTML::_('select.genericlist',
+								echo JHtml::_('select.genericlist',
 												$this->lists['project_position_id'],'project_position_id'.$row->id,
 												$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.$append,
 												'value','text',$selectedvalue);
@@ -265,7 +265,7 @@ $uri=JURI::root();
 							</td>
 							<td class="center">
 								<?php
-								echo JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferees.');
+								echo JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferees.');
 								?>
 							</td>
 							<td class="order">
@@ -302,5 +302,5 @@ $uri=JURI::root();
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

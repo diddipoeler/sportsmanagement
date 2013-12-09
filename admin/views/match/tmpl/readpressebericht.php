@@ -25,23 +25,23 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/ok.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
 														'','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/error.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
 														'','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/ok.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
 														'','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/error.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
 														'','title= "'.''.'"').'</td>';
         }
         
@@ -64,7 +64,7 @@ if ( $this->matchnumber )
 								{
 									$append=' style="background-color:#FFCCCC"';
 								}
-								echo JHTML::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -90,23 +90,23 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/ok.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
 														'','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/error.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
 														'','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/ok.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
 														'','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/error.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
 														'','title= "'.''.'"').'</td>';
         }
         
@@ -129,7 +129,7 @@ if ( $this->matchnumber )
 								{
 									$append=' style="background-color:#FFCCCC"';
 								}
-								echo JHTML::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+								echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -165,7 +165,7 @@ if ( $this->matchnumber )
         $inputappend = '';
 		$selectedvalue = 0;
 		$append = ' style="background-color:#FFCCCC"';
-		echo JHTML::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+		echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -198,12 +198,12 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->event_type_id )
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/ok.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
 														'','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHTML::_('image','administrator/components/com_joomleague/assets/images/error.png',
+            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
 														'','title= "'.''.'"').'</td>';
         }
         ?>
@@ -227,7 +227,7 @@ if ( $this->matchnumber )
 								}
         //$selectedvalue = $value->event_type_id;;
         //$append = ' style="background-color:#FFCCCC"';
-        echo JHTML::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->spielernummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->spielernummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         //echo $this->lists['events']; 
         ?>
         </td>

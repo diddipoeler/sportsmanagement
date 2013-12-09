@@ -11,7 +11,7 @@
 				<input type='hidden' name='task' value='match.copyfrom' />
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
-				<?php echo JHTML::_('form.token')."\n"; ?>
+				<?php echo JHtml::_('form.token')."\n"; ?>
 				<table class="adminlist">
 					<thead>
 						<tr>
@@ -53,7 +53,7 @@
 														<td width="100" align="right" class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
 															<?php
-															echo JHTML::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+															echo JHtml::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																					'match_date','match_date',
 																					'%d-%m-%Y','size="10" ');
                                                            ?>
@@ -84,7 +84,7 @@
 										<td width="100" align="right" class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_DEFAULT_DATE'); ?></td>
 										<td>
 											<?php
-											echo JHTML::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+											echo JHtml::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																	'date','date',
 																	'%d-%m-%Y','size="10" ');
 											?>

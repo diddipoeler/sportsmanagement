@@ -116,6 +116,6 @@ if($close == 1) {
 		
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
         <input type="hidden" name="component" value="com_sportsmanagement" />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </div>
