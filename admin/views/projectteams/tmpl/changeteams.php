@@ -30,7 +30,7 @@
 
 			foreach ( $this->projectteam as $row )
 			{
-				$checked = JHTML::_( 'grid.id', 'oldteamid'.$i, $row->id, $row->checked_out, 'oldteamid' );
+				$checked = JHtml::_( 'grid.id', 'oldteamid'.$i, $row->id, $row->checked_out, 'oldteamid' );
 				$append=' style="background-color:#bbffff"';
 				$inputappend	= '';
 				$selectedvalue = 0;
@@ -49,7 +49,7 @@
 				?>
 				</td>
 				<td class="nowrap" class="center"><?php
-				echo JHTML::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+				echo JHtml::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 				?>
 				</td>
 			</tr>
@@ -62,5 +62,5 @@
 	</fieldset>
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option"				value="com_joomleague" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

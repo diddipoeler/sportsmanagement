@@ -5,7 +5,7 @@
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name='boxchecked' value="0" />
 			<div style="float: right; vertical-align: middle; line-height: 27px;">
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 
 				<?php
 				$lv=""; $nv=""; $sv=false;
@@ -17,7 +17,7 @@
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$lv;
 					$link=JRoute::_('index.php?'.$query);
-					$prevlink=JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
+					$prevlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
 				}
 				else
@@ -33,7 +33,7 @@
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$nv;
 					$link=JRoute::_('index.php?'.$query);
-					$nextlink=JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
+					$nextlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;
 				}
 				else

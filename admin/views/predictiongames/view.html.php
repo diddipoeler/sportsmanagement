@@ -50,7 +50,7 @@ $items = $this->get('Items');
         }
         
 		// state filter
-		$lists['state']		= JHTML::_( 'grid.state',  $filter_state );
+		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -60,12 +60,12 @@ $items = $this->get('Items');
 		$lists['search'] = $search;
 
 		//build the html select list for prediction games
-		$predictions[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );
 		if ( $res = $model->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
             }
-		$lists['predictions'] = JHTML::_(	'select.genericlist',
+		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
 											'prediction_id',
 											//'class="inputbox validate-select-required" ',

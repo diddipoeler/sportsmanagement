@@ -74,14 +74,14 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 						</th>
 						<th>
 					<?php
-						echo JHTML::_('grid.sort','JSTATUS','dv.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','dv.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                         <th width="85" style="vertical-align: top; ">
 							<?php
 							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'dv.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
-							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'divisions.saveorder');
+							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'divisions.saveorder');
 							?>
 						</th>
                         
@@ -111,7 +111,7 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 						$row		=& $this->items[$i];
 						$link 		= JRoute::_( 'index.php?option=com_sportsmanagement&task=division.edit&id=' . $row->id );
 						$checked 	= JHtml::_( 'grid.checkedout',   $row, $i );
-                        $published  = JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','divisions.');
+                        $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','divisions.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td style="text-align:center; ">

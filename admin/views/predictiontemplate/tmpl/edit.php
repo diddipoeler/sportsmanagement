@@ -1,8 +1,8 @@
 <?php defined('_JEXEC') or die('Restricted access');
 /*
-JHTMLBehavior::formvalidation();
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtmlBehavior::formvalidation();
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 */
 //$component_text = 'COM_JOOMLEAGUE_';
 

@@ -116,19 +116,19 @@ class sportsmanagementViewRounds extends JView
 
 		$lists = array();
 		
-		$options = array( JHTML::_('select.option', 0, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
-		                  JHTML::_('select.option', 1, Jtext::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
-                      JHTML::_('select.option', 2, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN')) 
+		$options = array( JHtml::_('select.option', 0, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
+		                  JHtml::_('select.option', 1, Jtext::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
+                      JHtml::_('select.option', 2, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN')) 
 		                  );
-		$lists['scheduling'] = JHTML::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
+		$lists['scheduling'] = JHtml::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
 		//TODO-add error message - what if there are no teams assigned to the project
 		$teams = $this->get('projectteams');
 		$options = array();
 		foreach ($teams as $t) {
-			$options[] = JHTML::_('select.option', $t->projectteam_id, $t->text);
+			$options[] = JHtml::_('select.option', $t->projectteam_id, $t->text);
 		}
-		$lists['teamsorder'] = JHTML::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
+		$lists['teamsorder'] = JHtml::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
 		
 		$this->assignRef('projectws',        $projectws);
 		$this->assignRef('request_url',      $uri->toString());

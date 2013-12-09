@@ -43,7 +43,7 @@ $fieldsets = $this->form->getFieldsets();
                 //echo sportsmanagementHelper::getPicturePlayground($field->value);
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
                 //echo $picture;
-                //echo JHTML::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
+                //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
                 echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
                 }
                 

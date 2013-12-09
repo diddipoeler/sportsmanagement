@@ -3,8 +3,8 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'objcountry.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
@@ -35,34 +35,34 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_NAME','objcountry.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_GLOBAL_NAME','objcountry.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                     <th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_BACKEND','objcountry.template_backend',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_BACKEND','objcountry.template_backend',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
                     <th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_FRONTEND','objcountry.template_frontend',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_FRONTEND','objcountry.template_frontend',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 
           <th width="5%">
 						<?php
-						echo JHTML::_('grid.sort','JSTATUS','objcountry.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','objcountry.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','objcountry.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'extrafields.saveorder');
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objcountry.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'extrafields.saveorder');
 						?>
 					</th>
 					<th width="20">
-						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','objcountry.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','objcountry.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -74,8 +74,8 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=extrafield.edit&id='.$row->id);
-					$checked=JHTML::_('grid.checkedout',$row,$i);
-          $published=JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','extrafields.');
+					$checked=JHtml::_('grid.checkedout',$row,$i);
+          $published=JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','extrafields.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -94,7 +94,7 @@ JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -132,5 +132,5 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

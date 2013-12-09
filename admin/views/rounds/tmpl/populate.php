@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 ?>
 
 <form method="post" id="adminForm" action="<?php echo $this->request_url; ?>">
@@ -8,7 +8,7 @@ JHTML::_('behavior.tooltip');
 	<?php echo Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_DESC'); ?>
 	</fieldset>
 	<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 		<table class='admintable'>
 		<tbody>
 		
@@ -37,7 +37,7 @@ JHTML::_('behavior.tooltip');
 			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_TIP'); ?>">
 				<label for="start"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL'); ?></label>
 			</td>
-			<td><?php echo JHTML::calendar(strftime('%Y-%m-%d'), 'start', 'start', '%Y-%m-%d'); ?></td>
+			<td><?php echo JHtml::calendar(strftime('%Y-%m-%d'), 'start', 'start', '%Y-%m-%d'); ?></td>
 		</tr>
 		
 		<tr>

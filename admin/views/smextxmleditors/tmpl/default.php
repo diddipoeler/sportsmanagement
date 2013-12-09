@@ -22,7 +22,7 @@ foreach ( $this->files as $file )
 								<a	href="<?php echo $link; ?>" >
                                     <?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
                     </a>                 

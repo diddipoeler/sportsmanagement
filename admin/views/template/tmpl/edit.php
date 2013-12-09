@@ -1,9 +1,9 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-//JHTMLBehavior::formvalidation();
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+//JHtmlBehavior::formvalidation();
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 

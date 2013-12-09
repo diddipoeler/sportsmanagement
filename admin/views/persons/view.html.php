@@ -51,7 +51,7 @@ class sportsmanagementViewPersons extends JView
 		$mainframe->setUserState($option.'task','');
 
 		// state filter
-		$lists['state']=JHTML::_('grid.state',$filter_state);
+		$lists['state']=JHtml::_('grid.state',$filter_state);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -62,24 +62,24 @@ class sportsmanagementViewPersons extends JView
 		$lists['search_mode']=$search_mode;
 
 		//build the html select list for positions
-		$positionsList[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);
 
 		//build the html options for nation
-		$nation[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
 		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
 		
         $lists['nation']=$nation;
-        $lists['nation2']= JHTMLSelect::genericlist(	$nation,
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
 																'search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
 																$search_nation);
-        /*$lists['nation2']=JHTML::_( 'select.genericList',
+        /*$lists['nation2']=JHtml::_( 'select.genericList',
 										$nation,
 										'filter_nation',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -153,12 +153,12 @@ class sportsmanagementViewPersons extends JView
 		}
         
         //build the html options for nation
-		$nation[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
 		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
         $lists['nation']=$nation;
         
         //build the html select list for positions
-		$positionsList[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
@@ -173,7 +173,7 @@ class sportsmanagementViewPersons extends JView
 		//$mdlQuickAdd->_pagination=$pagination;
 
 		// state filter
-		$lists['state']=JHTML::_('grid.state',$filter_state);
+		$lists['state']=JHtml::_('grid.state',$filter_state);
         // table ordering
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
@@ -209,7 +209,7 @@ class sportsmanagementViewPersons extends JView
 	 */
 	function calendar($value,$name,$id,$format='%Y-%m-%d',$attribs=null,$onUpdate=null,$i=null)
 	{
-		JHTML::_('behavior.calendar'); //load the calendar behavior
+		JHtml::_('behavior.calendar'); //load the calendar behavior
 
 		if (is_array($attribs)){$attribs=JArrayHelper::toString($attribs);}
 		$document = JFactory::getDocument();

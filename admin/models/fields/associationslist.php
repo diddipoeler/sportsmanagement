@@ -86,7 +86,7 @@ foreach ( $list as $item )
       {
 				$selected = $item->id;
 			}
-			$options [] = JHTML::_ ( 'select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
+			$options [] = JHtml::_ ( 'select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 		}
 		
 		

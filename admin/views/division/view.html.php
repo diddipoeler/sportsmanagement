@@ -112,17 +112,17 @@ class sportsmanagementViewDivision extends JView
 					WHERE project_id = ' . $project_id . '
 					ORDER BY ordering';
 
-		$lists['ordering'] = JHTML::_( 'list.specificordering', $division, $division->id, $query, 1 );
+		$lists['ordering'] = JHtml::_( 'list.specificordering', $division, $division->id, $query, 1 );
 		*/
 		$projectws =& $this->get( 'Data', 'projectws' );
 
 		//build the html select list for parent divisions
-		$parents[] = JHTML::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PROJECT' ) );
+		$parents[] = JHtml::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PROJECT' ) );
 		if ( $res =& $model->getParentsDivisions() )
 		{
 			$parents = array_merge( $parents, $res );
 		}
-		$lists['parents'] = JHTML::_(	'select.genericlist', $parents, 'parent_id', 'class="inputbox" size="1"', 'value', 'text',
+		$lists['parents'] = JHtml::_(	'select.genericlist', $parents, 'parent_id', 'class="inputbox" size="1"', 'value', 'text',
 										$division->parent_id );
 		unset( $parents );
 

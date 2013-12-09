@@ -33,13 +33,13 @@ class JFormFieldTeams extends JFormField
 		$query = 'SELECT t.id, t.name FROM #__'.$database_table.'_team t ORDER BY name';
 		$db->setQuery( $query );
 		$teams = $db->loadObjectList();
-		$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $teams as $team ) {
-			$mitems[] = JHTML::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')' );
+			$mitems[] = JHtml::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')' );
 		}
 
-		$output= JHTML::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output= JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

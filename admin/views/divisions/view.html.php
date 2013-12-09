@@ -50,7 +50,7 @@ class sportsmanagementViewDivisions extends JView
 		$projectws	=& $this->get( 'Data', 'projectws' );
 
 		// state filter
-		$lists['state']		= JHTML::_( 'grid.state',  $filter_state );
+		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -76,7 +76,7 @@ class sportsmanagementViewDivisions extends JView
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
         // state filter
-		$lists['state']	= JHTML::_('grid.state', $filter_state );
+		$lists['state']	= JHtml::_('grid.state', $filter_state );
 
 		// search filter
 		$lists['search']=$search;

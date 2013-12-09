@@ -47,9 +47,13 @@ class sportsmanagementViewprojectteams extends JView
 	    $project = $mdlProject->getProject($this->project_id);
         $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
+        
+        
+        $divisionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+        if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
         $lists['divisions'] = $projectdivisions;
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewprojectteams divisions<br><pre>'.print_r($projectdivisions,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewprojectteams divisions<br><pre>'.print_r($lists['divisions'],true).'</pre>'   ),'');
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

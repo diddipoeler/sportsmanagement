@@ -5,8 +5,8 @@ defined('_JEXEC') or die('Restricted access');
 //Ordering allowed ?
 $ordering = ($this->lists['order']=='pre.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -79,19 +79,19 @@ JHTML::_('behavior.modal');
 					<th width='20'>&nbsp;</th>
 					<th class='title' nowrap='nowrap'>
 						<?php
-						echo JHTML::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NAME'),'pre.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NAME'),'pre.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th class='title' nowrap='nowrap' colspan='2'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_COUNT'); ?></th>
 					<th class='title' nowrap='nowrap' colspan='2'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_ADMIN_COUNT'); ?></th>
 					<th class='title' width='5%' nowrap='nowrap'>
 						<?php
-						echo JHTML::_('grid.sort',JText::_('JSTATUS'),'pre.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort',JText::_('JSTATUS'),'pre.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th class='title' width='20' nowrap='nowrap'>
 						<?php
-						echo JHTML::_('grid.sort',JText::_('JGRID_HEADING_ID'),'pre.id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ID'),'pre.id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 				</tr>
@@ -110,9 +110,9 @@ JHTML::_('behavior.modal');
 				$row			=& $this->items[$i];
 				$pred_projects	= $this->getModel()->getChilds($row->id);
 				$pred_admins	= $this->getModel()->getAdmins($row->id);
-				$checked		= JHTML::_('grid.checkedout',$row,$i);
-				//$published		= JHTML::_('grid.published',$row,$i);
-        $published  = JHTML::_('grid.published',$row,$i,'tick.png','publish_x.png','predictiongames.');
+				$checked		= JHtml::_('grid.checkedout',$row,$i);
+				//$published		= JHtml::_('grid.published',$row,$i);
+        $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','predictiongames.');
         
 				$link			= JRoute::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
 				?>
@@ -242,7 +242,7 @@ JHTML::_('behavior.modal');
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_JOKER' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
-								echo JHTML::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?></td>
 							<td style='text-align:center; '><?php
 								if ( $pred_project['champ'] == '1' )
@@ -255,7 +255,7 @@ JHTML::_('behavior.modal');
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PICK_CHAMP' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
-								echo JHTML::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?></td>
 							<td style='text-align:center; ' >
 								<?php
@@ -269,7 +269,7 @@ JHTML::_('behavior.modal');
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
-									echo JHTML::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+									echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?>
 							</td>
 							<td style='text-align:center; ' nowrap='nowrap'><?php echo $pred_project['project_id']; ?></td>
@@ -298,5 +298,5 @@ JHTML::_('behavior.modal');
 	<input type='hidden' name='boxchecked'			value='0' />
 	<input type='hidden' name='filter_order'		value='<?php echo $this->lists['order']; ?>' />
 	<input type='hidden' name='filter_order_Dir'	value='' />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

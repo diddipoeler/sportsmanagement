@@ -96,11 +96,11 @@ class sportsmanagementViewTeamStaff extends JView
         //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
         $projectpositions = array();
-		$projectpositions[] = JHTML::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
+		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
         $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
         $projectpositions = array_merge( $projectpositions, $project_ref_positions );
-        $lists['projectpositions'] = JHTML::_(	'select.genericlist',
+        $lists['projectpositions'] = JHtml::_(	'select.genericlist',
 												$projectpositions,
 												'project_position_id',
 												'class="inputbox" size="1"',

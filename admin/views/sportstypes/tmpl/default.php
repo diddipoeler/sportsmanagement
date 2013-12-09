@@ -3,8 +3,8 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 's.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table>
@@ -33,7 +33,7 @@ JHTML::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th class="title">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME','s.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME','s.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					
@@ -45,12 +45,12 @@ JHTML::_('behavior.modal');
 					</th>
 					<th width="10%">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->lists['order_Dir'],$this->lists['order']);
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'sportstypes.saveorder');
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'sportstypes.saveorder');
 						?>
 					</th>
 					<th>
-						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','s.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','s.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -62,7 +62,7 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id='.$row->id);
-					$checked=JHTML::_('grid.checkedout',$row,$i);
+					$checked=JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -81,7 +81,7 @@ JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -101,7 +101,7 @@ JHTML::_('behavior.modal');
                         <td>
                         <?php
                         $append = ' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['sportart'],'sportstype_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['sportart'],'sportstype_id'.$row->id,
 												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->sportsart);
                         //echo $row->sportsart; 
                         ?>
@@ -132,5 +132,5 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

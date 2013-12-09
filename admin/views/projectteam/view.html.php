@@ -62,11 +62,11 @@ class sportsmanagementViewProjectteam extends JView
         $dwOptions=array();
 			foreach($daysOfWeek AS $key => $value)
             {
-                $dwOptions[]=JHTML::_('select.option',$key,$value);
+                $dwOptions[]=JHtml::_('select.option',$key,$value);
             }
 			foreach ($trainingdata AS $td)
 			{
-				$lists['dayOfWeek'][$td->id]=JHTML::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
+				$lists['dayOfWeek'][$td->id]=JHtml::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
 			}    
             
         $extended = sportsmanagementHelper::getExtended($item->extended, 'projectteam');

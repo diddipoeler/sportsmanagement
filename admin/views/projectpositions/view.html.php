@@ -82,9 +82,9 @@ class sportsmanagementViewprojectpositions extends JView
         {
         foreach($items as $item)
         {
-            $project_positionslist[] = JHTML::_('select.option',$item->id,JText::_($item->name));
+            $project_positionslist[] = JHtml::_('select.option',$item->id,JText::_($item->name));
         }
-        $lists['project_positions']=JHTML::_(	'select.genericlist',
+        $lists['project_positions']=JHtml::_(	'select.genericlist',
 													$project_positionslist,
 													'project_positionslist[]',
 													'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"',
@@ -131,7 +131,7 @@ class sportsmanagementViewprojectpositions extends JView
 		//build the html select list for positions
 		if (count ($notusedpositions) > 0)
 		{
-			$lists['positions']=JHTML::_(	'select.genericlist',
+			$lists['positions']=JHtml::_(	'select.genericlist',
 											$notusedpositions,
 											'positionslist[]',
 											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"',
@@ -154,8 +154,8 @@ class sportsmanagementViewprojectpositions extends JView
 
 		if ($ress =& $model->getProjectPositions())
 		{ // select all already assigned positions to the project
-			foreach($ress as $res){$project_positionslist[]=JHTML::_('select.option',$res->value,JText::_($res->text));}
-			$lists['project_positions']=JHTML::_(	'select.genericlist',
+			foreach($ress as $res){$project_positionslist[]=JHtml::_('select.option',$res->value,JText::_($res->text));}
+			$lists['project_positions']=JHtml::_(	'select.genericlist',
 													$project_positionslist,
 													'project_positionslist[]',
 													' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($ress)).'"',
@@ -197,7 +197,7 @@ class sportsmanagementViewprojectpositions extends JView
 		//build the html select list for positions
 		if (count ($notusedpositions) > 0)
 		{
-			$lists['positions']=JHTML::_(	'select.genericlist',
+			$lists['positions']=JHtml::_(	'select.genericlist',
 											$notusedpositions,
 											'positionslist[]',
 											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"',

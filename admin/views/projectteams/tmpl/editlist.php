@@ -1,13 +1,13 @@
 <?php defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 $uri = JFactory::getURI();
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
 $version = urlencode(sportsmanagementHelper::getVersion());
-echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
+echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
 ?>
 <script>
 	function submitbutton(pressbutton)

@@ -4,8 +4,8 @@
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'objassoc.ordering');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<table>
@@ -36,17 +36,17 @@ JHTML::_('behavior.modal');
 					<th width="20" style="vertical-align: top; ">&nbsp;</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME','objassoc.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME','objassoc.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>					
 					<th width="10%" class="title" style="vertical-align: top; ">
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_COUNTRY','objassoc.country',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_COUNTRY','objassoc.country',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
           
@@ -54,13 +54,13 @@ JHTML::_('behavior.modal');
           
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo '<br />';
-						echo JHTML::_('grid.order',$this->items, 'filesave.png', 'jlextassociations.saveorder');
+						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'jlextassociations.saveorder');
 						?>
 					</th>
 					<th width="20" style="vertical-align: top; ">
-						<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','objassoc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','objassoc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 				</tr>
 			</thead>
@@ -72,7 +72,7 @@ JHTML::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id='.$row->id);
-					$checked=JHTML::_('grid.checkedout',$row,$i);
+					$checked=JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td style="text-align:center; "><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -91,7 +91,7 @@ JHTML::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('JL_ADMIN_ASSOCIATIONS_EDIT_DETAILS');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -137,5 +137,5 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

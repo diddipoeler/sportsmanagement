@@ -105,7 +105,7 @@ class sportsmanagementViewpredictionproject extends JView
 		//build the html select list for Joomla users
 		$jl_users[]=array();
 		if ($res =& $model->getJLUsers()){$jl_users=array_merge($jl_users,$res);}
-		$lists['jl_users']=JHTMLSelect::genericlist(	$res,
+		$lists['jl_users']=JHtmlSelect::genericlist(	$res,
 														'user_ids[]',
 														'class="inputbox validate-select-required" size="5" multiple="multiple"',
 														'value',
@@ -116,7 +116,7 @@ class sportsmanagementViewpredictionproject extends JView
 		//build the html select list for projects
 		$projects[]=array();
 		if ($res =& $model->getProjects()){$projects=array_merge($projects,$res);}
-		$lists['projects']=JHTMLSelect::genericlist(	$res,
+		$lists['projects']=JHtmlSelect::genericlist(	$res,
 														'project_ids[]',
 														'class="inputbox validate-select-required" size="5" multiple="multiple"',
 														'value',
@@ -126,13 +126,13 @@ class sportsmanagementViewpredictionproject extends JView
 		unset($res);
 
 		// build the html radio for auto_activate_user
-		$lists['auto_activate_user']=JHTMLSelect::booleanlist('auto_approve','class="inputbox"',$prediction->auto_approve);
+		$lists['auto_activate_user']=JHtmlSelect::booleanlist('auto_approve','class="inputbox"',$prediction->auto_approve);
 
 		// build the html radio for only_favteams
-		$lists['only_favteams']=JHTMLSelect::booleanlist('only_favteams','class="inputbox"',$prediction->only_favteams);
+		$lists['only_favteams']=JHtmlSelect::booleanlist('only_favteams','class="inputbox"',$prediction->only_favteams);
 
 		// build the html radio for admin_tipp
-		$lists['admin_tipp']=JHTMLSelect::booleanlist('admin_tipp','class="inputbox"',$prediction->admin_tipp);
+		$lists['admin_tipp']=JHtmlSelect::booleanlist('admin_tipp','class="inputbox"',$prediction->admin_tipp);
 
     $this->assignRef('form'      	, $this->get('form'));
     
@@ -171,38 +171,38 @@ class sportsmanagementViewpredictionproject extends JView
 		if (!$isNew){$model->checkout($user->get('id'));}
 
 		// build the html radio for usage of published
-		$lists['published']=JHTML::_('select.booleanlist','published','class="inputbox" onclick="change_published(); " ',$pred_project->published);
+		$lists['published']=JHtml::_('select.booleanlist','published','class="inputbox" onclick="change_published(); " ',$pred_project->published);
 
 		// build the html dropdown for Prediction game mode
-		$mode=array(	JHTMLSelect::option('1',JText::_('JL_ADMIN_PGAME_PRED_TOTO'),'id','name'),
-						JHTMLSelect::option('0',JText::_('JL_ADMIN_PGAME_PRED_TIPP'),'id','name'));
-		$lists['mode']=JHTMLSelect::genericlist($mode,'mode','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->mode);
+		$mode=array(	JHtmlSelect::option('1',JText::_('JL_ADMIN_PGAME_PRED_TOTO'),'id','name'),
+						JHtmlSelect::option('0',JText::_('JL_ADMIN_PGAME_PRED_TIPP'),'id','name'));
+		$lists['mode']=JHtmlSelect::genericlist($mode,'mode','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->mode);
 		unset($mode);
 
 		// build the html dropdown for Prediction game mode
-		$overview=array(	JHTMLSelect::option('1',JText::_('JL_ADMIN_PGAME_TIPP_HALF'),'id','name'),
-							JHTMLSelect::option('0',JText::_('JL_ADMIN_PGAME_TIPP_COMPLETE'),'id','name'));
-		$lists['overview']=JHTMLSelect::genericlist($overview,'overview','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->overview);
+		$overview=array(	JHtmlSelect::option('1',JText::_('JL_ADMIN_PGAME_TIPP_HALF'),'id','name'),
+							JHtmlSelect::option('0',JText::_('JL_ADMIN_PGAME_TIPP_COMPLETE'),'id','name'));
+		$lists['overview']=JHtmlSelect::genericlist($overview,'overview','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->overview);
 		unset($overview);
 
 		// build the html radio for usage of tipp joker
-		$lists['use_joker']=JHTMLSelect::booleanlist('joker','class="inputbox" onclick="change_joker(); " disabled="disabled" ',$pred_project->joker);
+		$lists['use_joker']=JHtmlSelect::booleanlist('joker','class="inputbox" onclick="change_joker(); " disabled="disabled" ',$pred_project->joker);
 
 		// build the html radio for limitation of tipp joker
 		$joker_limit=($pred_project->joker_limit > 0);
-		$lists['joker_limit']=JHTMLSelect::booleanlist('joker_limit_select','class="inputbox" onclick="change_jokerlimit(); " disabled="disabled" ',$joker_limit);
+		$lists['joker_limit']=JHtmlSelect::booleanlist('joker_limit_select','class="inputbox" onclick="change_jokerlimit(); " disabled="disabled" ',$joker_limit);
 
 		// build the html radio for usage of tipp champ
-		$lists['use_champ']=JHTMLSelect::booleanlist('champ','class="inputbox" onclick="change_champ(); " disabled="disabled" ',$pred_project->champ);
+		$lists['use_champ']=JHtmlSelect::booleanlist('champ','class="inputbox" onclick="change_champ(); " disabled="disabled" ',$pred_project->champ);
 
     
     
-    $league_teams[]=JHTML::_('select.option','0',JText::_('JL_ADMIN_PGAME_SET_CHAMPION'),'id','name');
+    $league_teams[]=JHtml::_('select.option','0',JText::_('JL_ADMIN_PGAME_SET_CHAMPION'),'id','name');
 		if($allLeagues =& $model->getProjectTeams($pred_project->project_id)) 
     {
 			$league_teams=array_merge($league_teams,$allLeagues);
 		}
-		$lists['league_teams']=JHTMLSelect::genericlist($league_teams,'league_champ','class="inputbox" size="'.sizeof($allLeagues).'"','id','name',$pred_project->league_champ);                            
+		$lists['league_teams']=JHtmlSelect::genericlist($league_teams,'league_champ','class="inputbox" size="'.sizeof($allLeagues).'"','id','name',$pred_project->league_champ);                            
 
 		#echo '<pre>'.print_r($projects,true).'</pre>';
 		unset($allLeagues);

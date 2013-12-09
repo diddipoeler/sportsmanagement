@@ -153,5 +153,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="task" value="imagehandler.upload" />
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>

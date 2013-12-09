@@ -52,5 +52,5 @@
 	</fieldset>
 	<input type="hidden" name="project_id"	value="<?php echo JRequest::getVar('project_id'); ?>" />
 	<input type="hidden" name="task"		value="" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

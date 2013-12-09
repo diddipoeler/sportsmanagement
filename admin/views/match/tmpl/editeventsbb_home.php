@@ -20,7 +20,7 @@
 					{
 						$imageTitle = JText::sprintf( '%1$s', JText::_( $ev->text ) );
 						$iconFileName = $ev->icon;
-						echo JHTML::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
+						echo JHtml::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
 					} else {
 						echo JText::_( $ev->text ) ;
 					}

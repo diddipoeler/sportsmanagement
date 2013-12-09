@@ -9,13 +9,13 @@ JHtml::_('behavior.formvalidation');
  
 <div class="col50">
 		<?php
-echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
+echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
+echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
 echo $this->loadTemplate('details');
-// echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
+// echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
 // echo $this->loadTemplate('picture');
 
-echo JHTML::_('tabs.end');
+echo JHtml::_('tabs.end');
 		?>
 	</div>	
  

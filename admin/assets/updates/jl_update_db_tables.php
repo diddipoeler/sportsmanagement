@@ -86,8 +86,8 @@ function ImportTables()
 			//echo $pane->startPanel($DummyStr,$DummyStr);
             echo JHtml::_('sliders.panel', $DummyStr, $DummyStr);
             
-			//echo JHTML::_('sliders.start','sliders',array('allowAllClose' => true,'startTransition' => true,true));
-			//echo JHTML::_('sliders.panel',$DummyStr,'panel-'.$DummyStr);
+			//echo JHtml::_('sliders.start','sliders',array('allowAllClose' => true,'startTransition' => true,true));
+			//echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$DummyStr);
 			
 			//echo "<pre>$import</pre>";
 			echo '<table class="adminlist" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
@@ -282,7 +282,7 @@ function ImportTables()
 			//echo $pane->endPanel();
 			//echo $pane->endPane();
             echo JHtml::_('sliders.end');
-      //echo JHTML::_('sliders.end');
+      //echo JHtml::_('sliders.end');
 		}
 		unset($import);
 	}

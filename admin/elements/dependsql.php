@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
-JHTML::_( 'behavior.mootools' );
+JHtml::_( 'behavior.mootools' );
 
 /**
  * Renders a Dynamic SQL field
@@ -72,7 +72,7 @@ class JFormFieldDependSQL extends JFormField
 			$options = array();
 		}
 		else {
-			$options = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
+			$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
 		}
 
 		$query = $this->element['query'];
@@ -89,6 +89,6 @@ class JFormFieldDependSQL extends JFormField
 			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
-		return JHTML::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
+		return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
 	}
 }
