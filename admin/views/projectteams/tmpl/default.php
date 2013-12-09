@@ -37,7 +37,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 	<input type="hidden" id="cteamid" name="cteamid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?></td>
+			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESC'); ?></td>
 			<td><input type="text" name="quickadd" id="quickadd" size="50" /></td>
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /></td>
 		</tr>

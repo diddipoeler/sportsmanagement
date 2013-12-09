@@ -3,7 +3,7 @@
 		<fieldset class="adminform">
 			<legend>
             <?php
-                    echo JText::sprintf(	'COM_SPORTSMANAGEMENTADMIN_P_TEAM_TITLE_DETAILS',
+                    echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_DETAILS',
 												'<i>' . $this->project_team->name . '</i>',
 												'<i>' . $this->projectws->name . '</i>');
 					

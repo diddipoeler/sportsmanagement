@@ -2,7 +2,7 @@
 <config>
 	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
 		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_LESSONS" type="list"
-			label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_LESSONS" description="Theoretical lessons day">
+			label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_LESSONS" description="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_LESSONS_DESC">
 			<option value="monday">Monday</option>
 			<option value="tuesday">Tuesday</option>
 			<option value="wednesday">Wednesday</option>
@@ -13,19 +13,19 @@
 		</field>
 		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_STARTTIME"
 			type="calendar" label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_STARTTIME"
-			description="Teaching start time">
+			description="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_STARTTIME_DESC">
 		</field>
 		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_ENDTIME"
 			type="calendar" label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_ENDTIME"
-			description="Teaching end time">
+			description="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_ENDTIME_DESC">
 		</field>
 		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_PLACE"
 			type="text" label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_PLACE"
-			description="Teaching place">
+			description="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_TEACHING_PLACE_DESC">
 		</field>
 		<field name="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_INFOTEXT" type="textarea"
 			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_INFOTEXT"
-			description="Infotext">
+			description="COM_SPORTSMANAGEMENT_EXT_PROJECTTEAM_INFOTEXT_DESC">
 		</field>
 	</fieldset>
 </config>
