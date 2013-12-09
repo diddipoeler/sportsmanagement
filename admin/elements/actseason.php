@@ -16,11 +16,13 @@ class JFormFieldactseason extends JFormField
 
 	protected $type = 'actseason';
 
-	protected function getInput() {
-		$db = &JFactory::getDBO();
+	protected function getInput() 
+    {
+		$db = JFactory::getDBO();
 		$lang = JFactory::getLanguage();
+        $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = JComponentHelper::getParams( 'COM_SPORTSMANAGEMENT' );
         $database_table	= $params->get( 'cfg_which_database_table' );
          
 		$extension = "com_sportsmanagement";

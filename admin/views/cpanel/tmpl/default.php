@@ -42,7 +42,10 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
                 <?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
                 <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES'));?>
-                <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>		
+                <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>
+                
+<?php echo $this->addIcon('xmlimport-48.png','index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR'));?>
+                		
 			</div>
 		</td>
 		<td width="45%" valign="top">
@@ -53,6 +56,10 @@ defined('_JEXEC') or die('Restricted access');
 						<td width="50%" >
 							<div style="text-align: center;">
 							<?php echo $this->addIcon('ploeger_dieter.jpg','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							</div>
+                            
+                            <div style="text-align: center;">
+							<?php echo $this->addIcon('galun-siegfried02.png','http://www.esv-knittelfeld.at', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
 						</td>
 						<td width="50%" >

@@ -111,7 +111,7 @@ class sportsmanagementModelDivisions extends JModelList
 	{
 		$query = '	SELECT	id AS value,
 					name AS text
-					FROM #__joomleague_division
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division
 					WHERE project_id=' . $project_id .
 					' ORDER BY name ASC ';
 

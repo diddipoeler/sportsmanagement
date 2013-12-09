@@ -8,7 +8,7 @@ $mainframe = JFactory::getApplication();
 $ordering=($this->lists['order'] == 't.name');
 
 //load navigation menu
-$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
+//$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 
 ?>
 <script language="javascript">

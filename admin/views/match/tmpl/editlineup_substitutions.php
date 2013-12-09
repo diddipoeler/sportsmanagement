@@ -12,12 +12,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 // &tmpl=component&view=match&layout=editlineup
+/*
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
+*/
 
 ?>
 <script type="text/javascript">
 <!--
 // url for ajax
-var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
 var teamid=<?php echo $this->tid; ?>;
 var matchid=<?php echo $this->item->id; ?>;
 

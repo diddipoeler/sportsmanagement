@@ -10,7 +10,7 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 	<fieldset class="adminform">
 		<legend>
 			<?php
-			echo JText::sprintf(	'COM_JOOMLEAGUE_ADMIN_DIVS_TITLE2',
+			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE2',
 									'<i>' . $this->projectws->name . '</i>' );
 			?>
 		</legend>
@@ -48,7 +48,7 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 					<tr>
 						<th width="5" style="vertical-align: top; ">
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_GLOBAL_RESET' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
 							?>
 						</th>
 						<th width="20" style="vertical-align: top; ">
@@ -59,26 +59,32 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_DIVS_NAME', 'dv.name', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_NAME', 'dv.name', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_DIVS_S_NAME', 'dv.shortname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_S_NAME', 'dv.shortname', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->lists['order_Dir'], $this->lists['order'] );
 							?>
 						</th>
-						<th width="85" style="vertical-align: top; ">
+						<th>
+					<?php
+						echo JHTML::_('grid.sort','JSTATUS','dv.published',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+                        <th width="85" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_JOOMLEAGUE_GLOBAL_ORDER', 'dv.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'dv.ordering', $this->lists['order_Dir'], $this->lists['order'] );
 							echo '<br />';
 							echo JHTML::_('grid.order',$this->items, 'filesave.png', 'divisions.saveorder');
 							?>
 						</th>
+                        
 						<th style="vertical-align: top; ">
 							<?php
 							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'dv.id', $this->lists['order_Dir'], $this->lists['order'] );
@@ -105,6 +111,7 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 						$row		=& $this->items[$i];
 						$link 		= JRoute::_( 'index.php?option=com_sportsmanagement&task=division.edit&id=' . $row->id );
 						$checked 	= JHtml::_( 'grid.checkedout',   $row, $i );
+                        $published  = JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','divisions.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td style="text-align:center; ">
@@ -130,7 +137,7 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 								<td style="text-align:center; ">
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle = JText::_( 'COM_JOOMLEAGUE_ADMIN_DIVS_EDIT_DETAILS' );
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS' );
 										echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -155,15 +162,16 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 								echo $row->parent_name;
 								?>
 							</td>
+                            <td class="center"><?php echo $published; ?></td>
 							<td class="order">
 								<span>
 									<?php
-									echo $this->pagination->orderUpIcon( $i, $i > 0 , 'divisions.orderup', 'COM_JOOMLEAGUE_GLOBAL_ORDER_UP', true );
+									echo $this->pagination->orderUpIcon( $i, $i > 0 , 'divisions.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true );
 									?>
 								</span>
 								<span>
 									<?php
-									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'divisions.orderdown', 'COM_JOOMLEAGUE_GLOBAL_ORDER_DOWN', true );
+									echo $this->pagination->orderDownIcon( $i, $n, $i < $n, 'divisions.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true );
 									$disabled = true ?  '' : 'disabled="disabled"';
 									?>
 								</span>

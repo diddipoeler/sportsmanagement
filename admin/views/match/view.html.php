@@ -5,6 +5,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
+jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
 JHTML::_('behavior.mootools');
 
@@ -23,6 +24,7 @@ class sportsmanagementViewMatch extends JView
         $user = JFactory::getUser();
 		$model = $this->getModel();
         $document = JFactory::getDocument();
+        $browser = JBrowser::getInstance();
 
         $project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->assignRef('project_id',$project_id);
@@ -175,12 +177,17 @@ class sportsmanagementViewMatch extends JView
         if ( $this->getLayout() == 'editevents' )
 		{
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editevents.js');
+        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_editevents.js');
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
+        
         // mannschaften der paarung
        	$teams = $model->getMatchTeams($this->item->id);
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
+        
 		$teamlist=array();
 		$teamlist[]=JHTML::_('select.option',$teams->projectteam1_id,$teams->team1);
 		$teamlist[]=JHTML::_('select.option',$teams->projectteam2_id,$teams->team2);

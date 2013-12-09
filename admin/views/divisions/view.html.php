@@ -75,11 +75,14 @@ class sportsmanagementViewDivisions extends JView
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
+        // state filter
+		$lists['state']	= JHTML::_('grid.state', $filter_state );
 
 		// search filter
 		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
+        $this->assignRef('projectws',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
@@ -96,13 +99,18 @@ class sportsmanagementViewDivisions extends JView
 	protected function addToolbar()
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' ),'divisions' );
+        
+        JToolBarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolBarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        JToolBarHelper::checkin('divisions.checkin');
+		JToolBarHelper::divider();
 		
 		JToolBarHelper::addNew('division.add');
 		JToolBarHelper::editList('division.edit');
