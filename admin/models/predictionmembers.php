@@ -197,7 +197,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
   //$rowproject->load( $value );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;
-  $rowproject->registerDate = JHTML::date(time(),'%Y-%m-%d %H:%M:%S');
+  $rowproject->registerDate = JHtml::date(time(),'%Y-%m-%d %H:%M:%S');
   $rowproject->approved = 1;
   if ( !$rowproject->store() )
   {

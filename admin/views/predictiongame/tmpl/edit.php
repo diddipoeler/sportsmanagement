@@ -1,8 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 
 
 $params = $this->form->getFieldsets('params');
@@ -38,5 +38,5 @@ $fieldsets = $this->form->getFieldsets();
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="predictiongame.edit" />
 	</div>
-<?php echo JHTML::_('form.token')."\n"; ?>
+<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

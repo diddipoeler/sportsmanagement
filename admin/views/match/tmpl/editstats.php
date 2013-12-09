@@ -16,7 +16,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -53,14 +53,14 @@ if($close == 1) {
 	</fieldset>
 	<div class="clear"></div>
 		<?php
-		echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
-		echo JHTML::_('tabs.panel',JText::_($this->teams->team1), 'panel1');
+		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
+		echo JHtml::_('tabs.panel',JText::_($this->teams->team1), 'panel1');
 		echo $this->loadTemplate('home');
 		
-		echo JHTML::_('tabs.panel',JText::_($this->teams->team2), 'panel2');
+		echo JHtml::_('tabs.panel',JText::_($this->teams->team2), 'panel2');
 		echo $this->loadTemplate('away');
 		
-		echo JHTML::_('tabs.end');
+		echo JHtml::_('tabs.end');
 		?>
 		
 		<input type="hidden" name="option" value="" />
@@ -71,7 +71,7 @@ if($close == 1) {
 		<input type="hidden" name="id"	value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo JHtml::_( 'form.token' ); ?>
 	</div>
 </form>
 <div style="clear: both"></div>

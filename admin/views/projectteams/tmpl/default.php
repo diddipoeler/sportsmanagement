@@ -1,14 +1,14 @@
 <?php defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 $mainframe = JFactory::getApplication();
 
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 't.name');
 
 //load navigation menu
-$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
+//$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 
 ?>
 <script language="javascript">
@@ -42,7 +42,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /></td>
 		</tr>
 	</table>
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </fieldset>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -59,7 +59,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->lists['order_Dir'],$this->lists['order']); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -82,16 +82,16 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHTML::image($imageFile,$imageTitle,$imageParams);
+								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
-								//echo JHTML::link($link3,$image);
+								//echo JHtml::link($link3,$image);
 								echo $image;
 								?>
 							</a>
 						</th>
 						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->lists['order_Dir'],$this->lists['order']); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -114,9 +114,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHTML::image($imageFile,$imageTitle,$imageParams);
+								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
-								//echo JHTML::link($link3,$image);
+								//echo JHtml::link($link3,$image);
 								echo $image;
 								?></a>
 						</th>
@@ -125,18 +125,19 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						{
 							$cell_count++;
 							?><th>
-								<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->lists['order_Dir'],$this->lists['order']);
-									echo '<br>'.JHTML::_(	'select.genericlist',
+								<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->lists['order_Dir'],$this->lists['order']);
+									echo '<br>'.JHtml::_(	'select.genericlist',
 														$this->lists['divisions'],
 														'division',
 														'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
 														'value','text', $this->division);
+//echo $this->lists['divisions'];
 								?>
 							</th><?php
 						}
 						?>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
@@ -155,10 +156,10 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
                         
                         
 						<th width="1%">
-							<?php echo JHTML::_('grid.sort','TID','team_id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','TID','team_id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 					</tr>
 				</thead>
@@ -172,7 +173,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
 						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=teamplayers&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
 						$link3=JRoute::_('index.php?option=com_sportsmanagement&view=teamstaffs&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-						$checked=JHTML::_('grid.checkedout',$row,$i);
+						$checked=JHtml::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -191,9 +192,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams='title= "'.$imageTitle.'"';
-									$image=JHTML::image($imageFile,$imageTitle,$imageParams);
+									$image=JHtml::image($imageFile,$imageTitle,$imageParams);
 									$linkParams='';
-									echo JHTML::link($link1,$image);
+									echo JHtml::link($link1,$image);
 									?></td>
 								<?php
 							}
@@ -208,9 +209,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/'.$image;
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHTML::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
+								$image=JHtml::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
 								$linkParams='';
-								echo JHTML::link($link2,$image);
+								echo JHtml::link($link2,$image);
 								?></td>
 							<td class="center"><?php
 								if($row->staffcount==0) {
@@ -221,9 +222,9 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/'.$image;
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHTML::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
+								$image=JHtml::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
 								$linkParams='';
-								echo JHTML::link($link3,$image);
+								echo JHtml::link($link3,$image);
 								?></td>
 							<td class="center"><?php echo $row->editor; ?></td>
 							<?php
@@ -237,7 +238,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									{
 										$append=' style="background-color:#bbffff"';
 									}
-									echo JHTML::_(	'select.genericlist',
+									echo JHtml::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'division_id'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
@@ -253,13 +254,13 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
-									echo JHTML::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
-									echo JHTML::image('administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo JHtml::image('administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
@@ -269,7 +270,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 									$imageParams['title']=$imageTitle ;
 									$imageParams['height']=30;
 									//$imageParams['width'] =40;
-									echo JHTML::image($row->picture,$imageTitle,$imageParams);
+									echo JHtml::image($row->picture,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -344,7 +345,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
                             <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';
-									echo JHTML::_(	'select.genericlist',
+									echo JHtml::_(	'select.genericlist',
 													$this->lists['is_in_score'],
 													'is_in_score'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
@@ -355,7 +356,7 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
                             <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';
-									echo JHTML::_(	'select.genericlist',
+									echo JHtml::_(	'select.genericlist',
 													$this->lists['use_finally'],
 													'use_finally'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
@@ -383,5 +384,5 @@ $this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

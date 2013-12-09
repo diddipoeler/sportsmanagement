@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
 <script>
 	function searchTemplate(val,key)
@@ -26,16 +26,16 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th>
-							<?php echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 						<th>
 							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>
 						</th>
 						<th>
-							<?php echo JHTML::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
 						</th>
 					</tr>
 				</thead>
@@ -47,7 +47,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 					{
 						$row =& $this->templates[$i];
 						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=template.edit&id='.$row->id);
-						$checked=JHTML::_('grid.checkedout',$row,$i);
+						$checked=JHtml::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -56,9 +56,9 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHTML::image($imageFile,$imageTitle,$imageParams);
+								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
-								echo JHTML::link($link1,$image);
+								echo JHtml::link($link1,$image);
 								?></td>
 							<td><?php echo $row->template; ?></td>
 							<td><?php echo JText::_($row->title); ?></td>
@@ -82,7 +82,7 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 			<input type="hidden" name="filter_order_Dir" value="" />
 			<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 			<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 		</form>
 	</fieldset>
 </div>

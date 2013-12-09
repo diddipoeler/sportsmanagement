@@ -8,9 +8,9 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-// echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PARAM'), 'panel3');
+// echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PARAM'), 'panel3');
 // echo $this->loadTemplate('param');
-// echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_GPARAM'), 'panel4');
+// echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_GPARAM'), 'panel4');
 // echo $this->loadTemplate('gparam');
 
 ?>

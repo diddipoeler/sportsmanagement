@@ -73,7 +73,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 		
-		//return JHTML::_('select.genericlist', $options, 'month', 'class="inputbox"', 'value', 'text', $person_range);
+		//return JHtml::_('select.genericlist', $options, 'month', 'class="inputbox"', 'value', 'text', $person_range);
 		return $options;
 	}
 	

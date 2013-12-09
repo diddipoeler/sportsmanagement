@@ -56,7 +56,7 @@ class sportsmanagementViewPredictionTemplates extends JView
 		$lists['order']		= $filter_order;
 
 		//build the html select list for prediction games
-		$predictions[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
@@ -64,7 +64,7 @@ class sportsmanagementViewPredictionTemplates extends JView
             //$this->prediction_id = 0;
 
             
-		$lists['predictions'] = JHTML::_(	'select.genericlist',
+		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
 											'prediction_id_select',
 											'class="inputbox" onChange="this.form.submit();" ',

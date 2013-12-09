@@ -1,6 +1,6 @@
 <?php defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
 //$edit = JRequest::getVar('edit',true);
@@ -20,7 +20,7 @@ $uri =& JFactory::getURI();
 <!-- import the functions to move the events between selection lists  -->
 <?php
 $version = urlencode(JoomleagueHelper::getVersion());
-echo JHTML::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
+echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
 ?>
 <script language="javascript" type="text/javascript">
 	function submitbutton(pressbutton)

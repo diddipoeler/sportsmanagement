@@ -54,9 +54,9 @@ class sportsmanagementViewTemplates extends JView
 			$model->set('_getALL',0);
 			$masterTemplates=$this->get('MasterTemplatesList');
 			$importlist=array();
-			$importlist[]=JHTML::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+			$importlist[]=JHtml::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
 			$importlist=array_merge($importlist,$masterTemplates);
-			$lists['mastertemplates']=JHTML::_('select.genericlist',$importlist,'templateid');
+			$lists['mastertemplates']=JHtml::_('select.genericlist',$importlist,'templateid');
 			$master=$this->get('MasterName');
 			$this->assign('master',$master);
 			$templates=array_merge($templates,$allMasterTemplates);
@@ -71,7 +71,7 @@ class sportsmanagementViewTemplates extends JView
 		$search				= JString::strtolower($search);
 
 		// state filter
-		$lists['state']=JHTML::_('grid.state',$filter_state);
+		$lists['state']=JHtml::_('grid.state',$filter_state);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

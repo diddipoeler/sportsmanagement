@@ -35,6 +35,7 @@ class sportsmanagementViewprojectteams extends JView
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search','search','','string');
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search_mode','search_mode','','string');
+        $division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_division','division','','string');
 		$search				= JString::strtolower($search);
 
 		$items = $this->get('Items');
@@ -44,6 +45,15 @@ class sportsmanagementViewprojectteams extends JView
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
+        $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
+        
+        
+        $divisionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+        if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
+        $lists['divisions'] = $projectdivisions;
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewprojectteams divisions<br><pre>'.print_r($lists['divisions'],true).'</pre>'   ),'');
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -62,6 +72,8 @@ class sportsmanagementViewprojectteams extends JView
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
+        $this->assignRef('divisions',$projectdivisions);
+        $this->assignRef('division',$division);
 		$this->assignRef('projectteam',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());

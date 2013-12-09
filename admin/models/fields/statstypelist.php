@@ -51,7 +51,7 @@ class JFormFieldStatstypelist extends JFormFieldList
 		{
 			$parts = explode('.', $file);
 			if ($parts[0] != 'base') {
-				$options[] = JHTML::_('select.option', $parts[0], $parts[0]);
+				$options[] = JHtml::_('select.option', $parts[0], $parts[0]);
 			}
 		}
 		
@@ -69,7 +69,7 @@ class JFormFieldStatstypelist extends JFormFieldList
 			{
 				$parts = explode('.', $file);
 				if ($parts[0] != 'base') {
-					$options[] = JHTML::_('select.option', $parts[0], $parts[0]);
+					$options[] = JHtml::_('select.option', $parts[0], $parts[0]);
 				}
 			}	
 		}

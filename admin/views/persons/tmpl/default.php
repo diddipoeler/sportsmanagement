@@ -52,44 +52,44 @@ $userId		= $user->get('id');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_POSITION','pl.position_id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_POSITION','pl.position_id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 					<?php
-						echo JHTML::_('grid.sort','JSTATUS','pl.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','pl.published',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th class="nowrap">
 						<?php
-						echo JHTML::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 				</tr>
@@ -104,10 +104,10 @@ $userId		= $user->get('id');
 					if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 					{
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
-						$checked    = JHTML::_('grid.checkedout',$row,$i);
+						$checked    = JHtml::_('grid.checkedout',$row,$i);
                         $canCheckin	= $user->authorise('core.manage','com_checkin') || $row->checked_out == $userId || $row->checked_out == 0;
 						$is_checked = JTable::isCheckedOut($this->user->get('id'),$row->checked_out);
-                        $published  = JHTML::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
+                        $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -118,7 +118,7 @@ $userId		= $user->get('id');
 								$inputappend=' disabled="disabled" ';
 								?><td class="center">
                                 	<?php if ($row->checked_out) : ?>
-						<?php echo JHTML::_('grid.checkedout', $row, $i, $row->checked_out_time, 'persons.', $canCheckin); ?>
+						<?php echo JHtml::_('grid.checkedout', $row, $i, $row->checked_out_time, 'persons.', $canCheckin); ?>
 					<?php endif; ?>
                     </td><?php
 							}
@@ -130,7 +130,7 @@ $userId		= $user->get('id');
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_EDIT_DETAILS');
-										echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 										?>
 									</a>
@@ -161,13 +161,13 @@ $userId		= $user->get('id');
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
@@ -204,7 +204,7 @@ $userId		= $user->get('id');
 								<?php
 								$append='';
 								if (empty($row->country)){$append=' background-color:#FFCCCC;';}
-								echo JHTMLSelect::genericlist(	$this->lists['nation'],
+								echo JHtmlSelect::genericlist(	$this->lists['nation'],
 																'country'.$row->id,
 																$inputappend.' class="inputbox" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
 																'value',
@@ -216,7 +216,7 @@ $userId		= $user->get('id');
 								<?php
 								$append='';
 								if (empty($row->position_id)){$append=' background-color:#FFCCCC;';}
-								echo JHTMLSelect::genericlist(	$this->lists['positions'],
+								echo JHtmlSelect::genericlist(	$this->lists['positions'],
 																'position'.$row->id,
 																$inputappend.'class="inputbox" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
 																'value',
@@ -240,5 +240,5 @@ $userId		= $user->get('id');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

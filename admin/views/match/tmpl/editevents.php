@@ -12,17 +12,32 @@ JHtml::_('behavior.formvalidation');
 
 #echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
-
+// JUtility::getToken()
+/*
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
+*/
 ?>
 <script type="text/javascript">
 <!--
 var matchid = <?php echo $this->item->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
-var homeroster = new Array;
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+//var homeroster = new Array;
+var rosters = new Array();
 
+//var Mitarbeiter = [];
 
+//Mitarbeiter[0][0] = {};
+//Mitarbeiter[0][0]["Name"] = "Müller";
+//Mitarbeiter[0][0]["Vorname"] = "Hans";
+//Mitarbeiter[0][0]["Wohnort"] = "Dresden";
+
+//Mitarbeiter[1][0] = {};
+//Mitarbeiter[1][0]["Name"] = "Schulze";
+//Mitarbeiter[1][0]["Vorname"] = "Frauke";
+//Mitarbeiter[1][0]["Wohnort"] = "Berlin";
 
 <?php
 
@@ -34,34 +49,66 @@ if ( isset($this->rosters['home']) )
 {
 foreach ($this->rosters['home'] as $player)
 {
-	$obj = new stdclass();
+?>
+
+//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>] = new Array();
+//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
+//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
+
+<?php
+
+    $obj = new stdclass();
 	$obj->value = $player->value;
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
-	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
+	//echo 'rosters['.$this->teams->projectteam1_id.']['.($i++).']='.json_encode($obj).";\n";
+    echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
+$i++;
 }
 }
 ?>
-var awayroster = new Array;
+
+//var awayroster = new Array;
+
 <?php
 $i = 0;
 if ( isset($this->rosters['away']) )
 {
 foreach ($this->rosters['away'] as $player)
 {
+?>
+
+//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>] = new Array();
+//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
+//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
+
+<?PHP    
 	$obj = new stdclass();
 	$obj->value = $player->value;
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
-	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
+	//echo 'rosters['.$this->teams->projectteam2_id.']['.($i++).']='.json_encode($obj).";\n";
+    echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
+
+$i++;
 }
 }
+
+foreach ($this->teams as $team)
+{
+
+}    
+
 ?>
 var rosters = Array(homeroster, awayroster);
 var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 
 //-->
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
+
 <div id="gamesevents">
+
+<div id="UserError" ></div>
+<div id="UserErrorWrapper" ></div>
+
 <div id="ajaxresponse" >ajax</div>
 	<fieldset>
 		<div class="fltrt">
@@ -165,6 +212,24 @@ var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 				</tr>
 			</thead>
 			<tbody>
+            <tr id="rowcomment-new">
+
+					<td>
+						<select name="ctype" id="ctype" class="inputbox select-commenttype">
+                            <option value="1"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' ); ?></option>
+                            <option value="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' ); ?></option>
+                        </select> 
+					</td>
+					<td style='text-align:center; ' >
+						<input type="text" size="3" value="" id="c_event_time" name="c_event_time" class="inputbox" />
+					</td>
+					<td style='text-align:center; ' >
+						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
+					</td>
+					<td style='text-align:center; ' >
+						<input id="save-new-comment" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JTOOLBAR_APPLY' ); ?>" />
+					</td>
+				</tr>
 				<?php
 				$k=0;
 				if ( isset( $this->matchcommentary ) )
@@ -207,24 +272,7 @@ var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 					}
 				}
 				?>
-				<tr id="rowcomment-new">
-
-					<td>
-						<select name="ctype" id="ctype" class="inputbox select-commenttype">
-                            <option value="1"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' ); ?></option>
-                            <option value="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' ); ?></option>
-                        </select> 
-					</td>
-					<td style='text-align:center; ' >
-						<input type="text" size="3" value="" id="c_event_time" name="c_event_time" class="inputbox" />
-					</td>
-					<td style='text-align:center; ' >
-						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
-					</td>
-					<td style='text-align:center; ' >
-						<input id="save-new-comment" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JTOOLBAR_APPLY' ); ?>" />
-					</td>
-				</tr>
+				
 			</tbody>
 		</table>
 			
@@ -232,10 +280,4 @@ var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 </div>
 <div style="clear: both"></div>
 
-<input type="hidden" name="task" value=""/>
-		<input type="hidden" name="close" id="close" value="0"/>
-        <input type="hidden" name="id"  value="<?php echo $this->item->id; ?>"/>
-		<input type="hidden" name="component" value="com_sportsmanagement" />
-		<?php //echo JHTML::_('form.token')."\n"; ?>
 
-</form>

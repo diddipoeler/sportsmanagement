@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
@@ -137,7 +137,7 @@ function change_champ () {
 		<input type='hidden' name='psapply'					value='1' />
 	</div>
 	<?php 
-    echo JHTML::_('form.token'); 
+    echo JHtml::_('form.token'); 
 
     ?>
 </form>

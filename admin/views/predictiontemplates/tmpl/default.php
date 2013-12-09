@@ -3,7 +3,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<table width='100%'>
@@ -57,18 +57,18 @@ JHTML::_( 'behavior.tooltip' );
 							</th>
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHTML::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->lists['order_Dir'], $this->lists['order'] );
 								?>
 							</th>							
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHTML::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->lists['order_Dir'], $this->lists['order'] );
 								?>
 							</th>
 
 							<th class='title' width='20' nowrap='nowrap'>
 								<?php
-								echo JHTML::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->lists['order_Dir'], $this->lists['order'] );
 								?>
 							</th>
 						</tr>
@@ -90,7 +90,7 @@ JHTML::_( 'behavior.tooltip' );
 							$row =& $this->items[$i];
 
 							$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id );
-							$checked = JHTML::_( 'grid.checkedout', $row, $i );
+							$checked = JHtml::_( 'grid.checkedout', $row, $i );
 							?>
 							<tr class='<?php echo "row$k"; ?>'>
 								<td>
@@ -106,7 +106,7 @@ JHTML::_( 'behavior.tooltip' );
 								<td style='text-align:center; '>
 									<a href='<?php echo $link; ?>'>
 										<?php
-										echo JHTML::_(	'image',
+										echo JHtml::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ),
 														'title= "' . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ) . '"' );
@@ -146,5 +146,5 @@ JHTML::_( 'behavior.tooltip' );
 	<input type='hidden' name='filter_order_Dir'	value='' />
 	<input type='hidden' name='filter_order'		value='<?php echo $this->lists['order']; ?>' />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

@@ -110,10 +110,13 @@ class sportsmanagementModelProjectteams extends JModelList
 		$mainframe	= JFactory::getApplication();
 		$where=array();
 		
-		$division	= (int) $mainframe->getUserStateFromRequest($option.'tl_division', 'division', 0);
+		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_division', 'division', 0);
 		$where[] 	= ' tl.project_id = ' . $this->_project_id;
-		$division=JString::strtolower($division);
-		if ($division>0)
+		$division = JString::strtolower($division);
+        
+        //$mainframe->enqueueMessage('sportsmanagementModelProjectteams _buildContentWhere division<br><pre>'.print_r($division, true).'</pre><br>','Notice');
+        
+		if ( $division > 0)
 		{
 			$where[]=' d.id = '.$this->_db->Quote($division);
 		}

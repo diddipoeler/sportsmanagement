@@ -11,21 +11,39 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllermatches extends JControllerAdmin
 {
   
+    /**
+	 * Returns a reference to the global {@link JoomlaTuneAjaxResponse} object,
+	 * only creating it if it doesn't already exist.
+	 *
+	 * @return JoomlaTuneAjaxResponse
+	 */
+	public static function getAjaxResponse()
+	{
+		static $instance = null;
+
+		if (!is_object($instance)) {
+			$instance = new JoomlaTuneAjaxResponse('utf-8');
+		}
+
+		return $instance;
+	}
+    
     
     function removeEvent()
     {
         // Check for request forgeries
-		JSession::checkToken() or die('JINVALID_TOKEN');
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
 
 		$event_id=JRequest::getInt('event_id');
 		$model=$this->getModel();
 		if (!$result=$model->deleteevent($event_id))
 		{
-			$result="0"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
 		}
 		else
 		{
-			$result="1"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_DELETE_EVENTS');
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS');
 		}
 		echo json_encode($result);
 		//JFactory::getApplication()->close();
@@ -34,27 +52,50 @@ class sportsmanagementControllermatches extends JControllerAdmin
     
     function removeCommentary()
     {
+        
+        //$response = self::getAjaxResponse();
+        //$result = $response;
+        
         // Check for request forgeries
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-
+        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        
+        // Check for request forgeries
+        //JRequest::checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
+        
+ //       if (!JSession::checkToken('post')) 
+//        {
+			//$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.JText::_('JINVALID_TOKEN');
+		//echo json_encode($result);
+        //}
+//else
+//{
 		$event_id = JRequest::getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
-			$result='0'.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
+			$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
 		}
 		else
 		{
-			$result='1'.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_DELETE_COMMENTARY');
+			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
 		}
 		echo json_encode($result);
+ //}       
+        // Close the application
+		JFactory::getApplication()->close();
+        
+        //jexit();
 		//JFactory::getApplication()->close();
     }
     
     
     function removeSubst()
 	{
-		JSession::checkToken() or die('JINVALID_TOKEN');
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        
 		$substid = JRequest::getInt('substid',0);
 		$model = $this->getModel();
 		if (!$result = $model->removeSubstitution($substid))
@@ -74,7 +115,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $option = JRequest::getCmd('option');
 
 		// Check for request forgeries
-		JSession::checkToken() or die('JINVALID_TOKEN');
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
 
 		$mainframe = JFactory::getApplication();
 		$data = array();
@@ -93,9 +135,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $model = $this->getModel();
 		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->saveevent($data)) {
-			$result = "0"."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
+			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
         } else {
-			$result = $model->getDbo()->insertid()."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_EVENT');
+			$result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
 		}    
  
 		echo json_encode($result);
@@ -105,11 +147,19 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function savecomment()
     {
         $option = JRequest::getCmd('option');
+        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //$mainframe = JFactory::getApplication();
+        
+        //$response = self::getAjaxResponse();
+        //$result = $response;
 
 		// Check for request forgeries
-		JSession::checkToken() or die('JINVALID_TOKEN');
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken() or $result = '0&'.JText::_('JINVALID_TOKEN');
 
-		$mainframe = JFactory::getApplication();
+		
 		$data = array();
 		$data['event_time']		= JRequest::getVar('event_time','');
 		$data['match_id']		= JRequest::getInt('matchid');
@@ -122,20 +172,23 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $model = $this->getModel();
 		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->savecomment($data)) {
-            $result = '0&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
+            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
         } else {
-            //$result = $model->getDbo()->insertid()."&".JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_COMMENT');
-            $result = $result.'&'.JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_CTRL_SAVED_COMMENT');
+            //$result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
+            $result = $result.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
  
 		echo json_encode($result);
-		//JFactory::getApplication()->close();
+		JFactory::getApplication()->close();
+        //$mainframe->close();
     }
     
     function savesubst()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('JINVALID_TOKEN');
+		//JSession::checkToken() or die('JINVALID_TOKEN');
+        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        
 		$data = array();
 		$data['in'] 					= JRequest::getInt('in');
 		$data['out'] 					= JRequest::getInt('out');

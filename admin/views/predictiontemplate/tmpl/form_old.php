@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 jimport('joomla.html.pane');
 //$uri =& JFactory::getURI();
 $edit = JRequest::getVar( 'edit', true );
@@ -168,5 +168,5 @@ $i = 1;
 		<input type='hidden' name='title'		value='<?php echo $this->params->name; ?>' />
 		<input type='hidden' name='template'	value='<?php echo $this->predictionTemplate->template; ?>' />
 	</div>
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>

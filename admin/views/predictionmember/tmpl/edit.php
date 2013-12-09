@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 //echo 'predictionuser<pre>',print_r($this->predictionuser, true),'</pre>';
 
@@ -84,5 +84,5 @@ $uri =& JFactory::getURI();
 		<input type="hidden" name="cid[]"											value="<?php echo $this->predictionuser->id; ?>" />
 		<input type="hidden" name="task"											value="" />
 	</div>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

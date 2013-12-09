@@ -48,7 +48,7 @@ class sportsmanagementViewPosition extends JView
 		$this->script = $script;
         
         //build the html options for parent position
-		$parent_id[]=JHTML::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
 	    
         if ($res = $mdlPositions->getParentsPositions())
@@ -67,7 +67,7 @@ class sportsmanagementViewPosition extends JView
 		$notusedevents=array();
 		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
 		{
-			$lists['position_events']=JHTML::_(	'select.genericlist',$res,'position_eventslist[]',
+			$lists['position_events']=JHtml::_(	'select.genericlist',$res,'position_eventslist[]',
 								' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($res)).'"',
 								'value','text');
 		}
@@ -97,7 +97,7 @@ class sportsmanagementViewPosition extends JView
 		//build the html select list for events
 		if (($notusedevents) && (count($notusedevents) > 0))
 		{
-			$lists['events']=JHTML::_(	'select.genericlist',$notusedevents,'eventslist[]',
+			$lists['events']=JHtml::_(	'select.genericlist',$notusedevents,'eventslist[]',
 							' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($notusedevents)).'"',
 							'value','text');
 		}
@@ -112,11 +112,11 @@ class sportsmanagementViewPosition extends JView
         // position statistics
         $mdlStatistics = JModel::getInstance("Statistics", "sportsmanagementModel");
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
-		$lists['position_statistic']=JHTML::_(	'select.genericlist',$position_stats,'position_statistic[]',
+		$lists['position_statistic']=JHtml::_(	'select.genericlist',$position_stats,'position_statistic[]',
 							' style="width:250px; height:300px;" class="inputbox" id="position_statistic" multiple="true" size="'.max(10,count($position_stats)).'"',
 							'value','text');
         $available_stats = $mdlStatistics->getAvailablePositionStatsOptions($this->item->id);
-		$lists['statistic']=JHTML::_(	'select.genericlist',$available_stats,'statistic[]',
+		$lists['statistic']=JHtml::_(	'select.genericlist',$available_stats,'statistic[]',
 						' style="width:250px; height:300px;" class="inputbox" id="statistic" multiple="true" size="'.max(10,count($available_stats)).'"',
 						'value','text');
                         

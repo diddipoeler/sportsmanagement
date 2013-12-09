@@ -24,7 +24,7 @@ window.addEvent('domready', function() {
 				    // diddipoeler
                     //var comment = 0;
 				    var rowid = this.id.substr(5);
-					var url = baseajaxurl + '&task=matches.saveevent&';
+					var url = baseajaxurl + '&task=match.saveevent&';
 					var player = $('teamplayer_id').value;
 					var event = $('event_type_id').value;
 					var team = $('team_id').value;
@@ -61,7 +61,7 @@ window.addEvent('domready', function() {
     $('save-new-comment').addEvent(
 			'click',
 			function() {
-				var url = baseajaxurl + '&task=matches.savecomment';
+				var url = baseajaxurl + '&task=match.savecomment';
 				var player = 0;
                 // diddipoeler
                 //var comment = 1;
@@ -187,7 +187,7 @@ function deleteevent() {
     
 //    alert(eventid);
     
-	var url = baseajaxurl + '&task=matches.removeEvent';
+	var url = baseajaxurl + '&task=match.removeEvent';
 	var querystring = '&event_id=' + eventid;
 	if (eventid) {
 		var myXhr = new Request.JSON( {
@@ -208,7 +208,7 @@ function deletecommentary() {
     
 //    alert(eventid);
     
-	var url = baseajaxurl + '&task=matches.removeCommentary';
+	var url = baseajaxurl + '&task=match.removeCommentary';
 	var querystring = '&event_id=' + eventid;
 	if (eventid) {
 		var myXhr = new Request.JSON( {

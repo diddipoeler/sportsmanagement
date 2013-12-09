@@ -1,12 +1,12 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
 //$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHTML::script('projectposition.js','administrator/components/com_sportsmanagement/assets/js/');
+//echo JHtml::script('projectposition.js','administrator/components/com_sportsmanagement/assets/js/');
 ?>
 
 
@@ -59,5 +59,5 @@ JHTML::_('behavior.tooltip');
         <input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
             <input type="hidden" name="component" value="com_sportsmanagement" />
 	</div>
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

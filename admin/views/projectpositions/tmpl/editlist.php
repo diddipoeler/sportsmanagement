@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 ?>
 
 
@@ -49,5 +49,5 @@ JHTML::_('behavior.tooltip');
         <input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
             <input type="hidden" name="component" value="com_sportsmanagement" />
 	</div>
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

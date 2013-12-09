@@ -61,7 +61,7 @@ class sportsmanagementViewPredictionMembers extends JView
     
     if ( $res_prediction_members )
     {
-    $lists['prediction_members']=JHTML::_(	'select.genericlist',
+    $lists['prediction_members']=JHtml::_(	'select.genericlist',
 										$res_prediction_members,
 										'prediction_members[]',
 										'class="inputbox" multiple="true" onchange="" size="15"',
@@ -76,7 +76,7 @@ class sportsmanagementViewPredictionMembers extends JView
     $res_joomla_members =& $this->getModel()->getJLUsers($prediction_id);
     if ( $res_joomla_members )
     {
-    $lists['members']=JHTML::_(	'select.genericlist',
+    $lists['members']=JHtml::_(	'select.genericlist',
 										$res_joomla_members,
 										'members[]',
 										'class="inputbox" multiple="true" onchange="" size="15"',
@@ -113,7 +113,7 @@ $mainframe = JFactory::getApplication();
 		$pagination = $this->get('Pagination');
         
         // state filter
-		$lists['state']		= JHTML::_( 'grid.state',  $filter_state );
+		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -124,12 +124,12 @@ $mainframe = JFactory::getApplication();
         
         //build the html select list for prediction games
         $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
-		$predictions[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
             }
-		$lists['predictions'] = JHTML::_(	'select.genericlist',
+		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
 											'prediction_id',
 											'class="inputbox" onChange="this.form.submit();" ',
@@ -164,7 +164,7 @@ $mainframe = JFactory::getApplication();
 		$document->addStyleSheet($baseurl.'administrator/components/com_joomleague/assets/css/Autocompleter.css');
 		
 		// state filter
-		$lists['state']		= JHTML::_( 'grid.state',  $filter_state );
+		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
 
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -174,9 +174,9 @@ $mainframe = JFactory::getApplication();
 		$lists['search'] = $search;
 
 		//build the html select list for prediction games
-		$predictions[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res =& $this->getModel()->getPredictionGames() ) { $predictions = array_merge( $predictions, $res ); }
-		$lists['predictions'] = JHTML::_(	'select.genericlist',
+		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
 											'prediction_id',
 											'class="inputbox" onChange="this.form.submit();" ',

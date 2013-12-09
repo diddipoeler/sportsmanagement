@@ -27,7 +27,7 @@
 						{
 									$inputappend=' style="background-color:#bbffff"';
 						}
-						echo JHTML::_(	'select.genericlist',
+						echo JHtml::_(	'select.genericlist',
 										$this->lists['divisions'],
 										'division_id',
 										$inputappend.'class="inputbox" size="1"',

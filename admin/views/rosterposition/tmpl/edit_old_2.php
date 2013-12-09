@@ -1,15 +1,15 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 //        L O A D   M O O T O O L S
 
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 
 //        L O A D   C A L E N D A R
 
-JHTML::_('behavior.calendar');
+JHtml::_('behavior.calendar');
 
 //        I M P O R T   T A B S   C L A S S
 
@@ -95,5 +95,5 @@ echo JHtml::_('tabs.end');
 	
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 	<input type="hidden" name="task" value="rosterposition.edit" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

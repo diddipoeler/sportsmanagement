@@ -47,6 +47,6 @@
 		<input type="hidden" name="option" value="com_sportsmanagement" />
 		<input type="hidden" name="view" value="person" />
 		<input type="hidden" name="task" value="person.personassign" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo JHtml::_( 'form.token' ); ?>
 	</form>
 </div>

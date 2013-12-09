@@ -41,13 +41,13 @@ class JFormFieldRounds extends JFormField
 		$db->setQuery( $query );
 		$rounds = $db->loadObjectList();
 		if($required == 'false') {
-			$mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		foreach ( $rounds as $round ) {
-			$mitems[] = JHTML::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;'.$round->name );
+			$mitems[] = JHtml::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;'.$round->name );
 		}
 		
-		$output = JHTML::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output = JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

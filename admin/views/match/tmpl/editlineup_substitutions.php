@@ -12,12 +12,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 // &tmpl=component&view=match&layout=editlineup
+/*
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
+*/
 
 ?>
 <script type="text/javascript">
 <!--
 // url for ajax
-var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
+var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
 var teamid=<?php echo $this->tid; ?>;
 var matchid=<?php echo $this->item->id; ?>;
 
@@ -37,14 +41,14 @@ var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
 					<tr>
 						<th>
 							<?php
-							echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
+							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
 							echo '&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
 							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
+							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
 							?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
@@ -95,8 +99,8 @@ var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
 					}
 					?>
 					<tr id="row-new">
-						<td><?php echo JHTML::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
+						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
+						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
 						<td><?php echo $this->lists['projectpositions']; ?></td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
                         

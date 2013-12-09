@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
-JHTML::_( 'behavior.mootools' );
+JHtml::_( 'behavior.mootools' );
 /**
  * Renders a Dynamic SQL element
  *
@@ -74,7 +74,7 @@ class JFormFieldJLSQL extends JFormField
 				theAjax.request();
 			}");
 		}
-		$html = JHTML::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
+		$html = JHtml::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
 		return $html;
 	}
 }

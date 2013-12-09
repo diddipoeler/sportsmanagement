@@ -73,15 +73,15 @@ class sportsmanagementViewMatches extends JView
 		foreach ($ress as $res)
 		{
 			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
-			$project_roundslist[]=JHTML::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
+			$project_roundslist[]=JHtml::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
 		}
-		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid',
+		$lists['project_rounds']=JHtml::_(	'select.genericList',$project_roundslist,'rid',
 				'class="inputbox" ' .
 				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
 				'document.roundForm.submit();" ',
 				'value','text',$roundws->id);
 
-		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
+		$lists['project_rounds2']=JHtml::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
         // diddipoeler rounds for change in match
         $project_change_roundslist = array();
         if ( $ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true) )
@@ -104,7 +104,7 @@ class sportsmanagementViewMatches extends JView
             }
             
             
-            $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+            $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 			$divhomeid = 0;
 			//apply the filter only if both teams are from the same division
 			//teams are not from the same division in tournament mode with divisions
@@ -131,7 +131,7 @@ class sportsmanagementViewMatches extends JView
 		
 
 		// state filter
-		$lists['state']=JHTML::_('grid.state',$filter_state);
+		$lists['state']=JHtml::_('grid.state',$filter_state);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;
@@ -157,7 +157,7 @@ class sportsmanagementViewMatches extends JView
             }
             
             
-            $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+            $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 			$divhomeid = 0;
 			//apply the filter only if both teams are from the same division
 			//teams are not from the same division in tournament mode with divisions
@@ -182,15 +182,15 @@ class sportsmanagementViewMatches extends JView
 		foreach ($ress as $res)
 		{
 			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
-			$project_roundslist[]=JHTML::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
+			$project_roundslist[]=JHtml::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
 		}
-		$lists['project_rounds']=JHTML::_(	'select.genericList',$project_roundslist,'rid[]',
+		$lists['project_rounds']=JHtml::_(	'select.genericList',$project_roundslist,'rid[]',
 				'class="inputbox" ' .
 				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
 				'document.roundForm.submit();" ',
 				'value','text',$roundws->id);
 
-		$lists['project_rounds2']=JHTML::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
+		$lists['project_rounds2']=JHtml::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
 
   
     // diddipoeler rounds for change in match
@@ -209,11 +209,11 @@ class sportsmanagementViewMatches extends JView
 				(isset($overall_config['use_jl_events']) && $overall_config['use_jl_events']))
 		{
 			$match_list=array();
-			$mdd[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_MATCH'));
+			$mdd[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_MATCH'));
 
 			foreach ($matches as $row)
 			{
-				$mdd[]=JHTML::_('select.option','index3.php?option=com_joomleague&controller=match&task=editEvents&cid[0]='.$row->id,$row->team1.'-'.$row->team2);
+				$mdd[]=JHtml::_('select.option','index3.php?option=com_joomleague&controller=match&task=editEvents&cid[0]='.$row->id,$row->team1.'-'.$row->team2);
 			}
 			$RosterEventMessage=(isset($overall_config['use_jl_substitution']) && $overall_config['use_jl_substitution']) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LINEUP') : '';
 			if (isset($overall_config['use_jl_events']) && $overall_config['use_jl_events'])
@@ -226,15 +226,15 @@ class sportsmanagementViewMatches extends JView
 			$RosterEventMessage .= ($RosterEventMessage != '') ? ':' : '';
 			$lists['RosterEventMessage']=$RosterEventMessage;
 
-			$lists['round_matches']=JHTML::_(	'select.genericList',$mdd,'mdd',
+			$lists['round_matches']=JHtml::_(	'select.genericList',$mdd,'mdd',
 					'id="mdd" class="inputbox" onchange="jl_load_new_match_events(this,\'eventscontainer\')"',
 					'value','text','0');
 		}
 
 		//build the html options for extratime
-		$match_result_type[]=JHTMLSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
-		$match_result_type[]=JHTMLSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
-		$match_result_type[]=JHTMLSelect::option('2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
+		$match_result_type[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
+		$match_result_type[]=JHtmlSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
+		$match_result_type[]=JHtmlSelect::option('2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
 		$lists['match_result_type']=$match_result_type;
 		unset($match_result_type);
 
@@ -245,23 +245,23 @@ class sportsmanagementViewMatches extends JView
 		);
 		$ctOptions=array();
 		foreach($createTypes AS $key => $value){
-			$ctOptions[]=JHTMLSelect::option($key,$value);
+			$ctOptions[]=JHtmlSelect::option($key,$value);
 		}
-		$lists['createTypes']=JHTMLSelect::genericlist($ctOptions,'ct[]','class="inputbox" onchange="javascript:displayTypeView();"','value','text',1,'ct');
+		$lists['createTypes']=JHtmlSelect::genericlist($ctOptions,'ct[]','class="inputbox" onchange="javascript:displayTypeView();"','value','text',1,'ct');
 		unset($createTypes);
 
 		// build the html radio for adding into one round / all rounds
 		$createYesNo=array(0 => JText::_('JNO'),1 => JText::_('JYES'));
 		$ynOptions=array();
 		foreach($createYesNo AS $key => $value){
-			$ynOptions[]=JHTMLSelect::option($key,$value);
+			$ynOptions[]=JHtmlSelect::option($key,$value);
 		}
-		$lists['addToRound']=JHTMLSelect::radiolist($ynOptions,'addToRound','class="inputbox"','value','text',0);
+		$lists['addToRound']=JHtmlSelect::radiolist($ynOptions,'addToRound','class="inputbox"','value','text',0);
 
 		// build the html radio for auto publish new matches
-		$lists['autoPublish']=JHTMLSelect::radiolist($ynOptions,'autoPublish','class="inputbox"','value','text',0);
+		$lists['autoPublish']=JHtmlSelect::radiolist($ynOptions,'autoPublish','class="inputbox"','value','text',0);
 		//build the html options for divisions
-		$divisions[]=JHTMLSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModel::getInstance("divisions", "JoomLeagueModel");
 		if ($res =& $mdlDivisions->getDivisions($project_id)){
 			$divisions=array_merge($divisions,$res);
@@ -274,7 +274,7 @@ class sportsmanagementViewMatches extends JView
         
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
         // state filter
-		$lists['state']=JHTML::_('grid.state',$filter_state);
+		$lists['state']=JHtml::_('grid.state',$filter_state);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

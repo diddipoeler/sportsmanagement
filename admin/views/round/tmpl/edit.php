@@ -49,5 +49,5 @@ $fieldsets = $this->form->getFieldsets();
 	<input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
 	<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
 	<input type="hidden" name="task" value="round.edit" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

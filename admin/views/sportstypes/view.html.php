@@ -41,8 +41,8 @@ class sportsmanagementViewSportsTypes extends JView
 		$pagination = $this->get('Pagination');
         
         $myoptions = array();
-		$myoptions[]		= JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
-		$myoptions[]		= JHTML::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
+		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

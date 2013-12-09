@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 
 if ( $this->show_debug_info )
 {
@@ -336,7 +336,7 @@ if (isset($this->xml) && is_array($this->xml))
             <input type='hidden' name='projectidimport' value="<?php echo $this->projectidimport; ?>" />
 			<input type='hidden' name='sent' value="2" id='sent' />
 			<input type='hidden' name='task' value="jlxmlimport.insert" />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo JHtml::_('form.token')."\n"; ?>
 			<?php
 			if (($xmlProjectImport) || ($xmlImportType=='events') || ($xmlImportType=='positions'))
 			{

@@ -9,7 +9,7 @@ $fieldsets = $this->form->getFieldsets();
 <!-- import the functions to move the events between selection lists	-->
 <?php
 //$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHTML::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_sportsmanagement/assets/js/' );
+//echo JHtml::script( 'JL_eventsediting.js?v='.$version, 'administrator/components/com_sportsmanagement/assets/js/' );
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
@@ -68,6 +68,6 @@ $fieldsets = $this->form->getFieldsets();
 		
 		<input type="hidden" name="task"				value="teamplayer.edit" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
     </div> 
 </form>

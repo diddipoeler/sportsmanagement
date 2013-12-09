@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 /*
 // Set toolbar items for the page
@@ -149,6 +149,6 @@ function change_champ () {
 		<input type='hidden' name='task'					value='' />
 		<input type='hidden' name='psapply'					value='1' />
 	</div>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <script type="text/javascript">change_published();</script>

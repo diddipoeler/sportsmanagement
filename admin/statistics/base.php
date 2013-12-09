@@ -315,7 +315,7 @@ class SMStatistic extends JObject
 			{
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
-			return JHTML::image($iconPath, JText::_($this->name),	array( "title" => JText::_($this->name) ));
+			return JHtml::image($iconPath, JText::_($this->name),	array( "title" => JText::_($this->name) ));
 		}
 		return '<span class="stat-alternate hasTip" title="'.JText::_($this->name).'">'.JText::_($this->short).'</span>';
 	}
