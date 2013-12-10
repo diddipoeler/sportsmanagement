@@ -157,7 +157,7 @@
 				type=""
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
-				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_LOGO_TRIKOT_AWAY_DESC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
 				directory=""/>	  					
