@@ -181,6 +181,14 @@ class sportsmanagementViewMatch extends JView
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
+        $javascript = "\n";
+        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JUtility::getToken()."=1';" . "\n";
+        $javascript .= "var matchid = ".$this->item->id.";" . "\n";
+        $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
+        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
+        
+        
+        
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         
         // mannschaften der paarung
@@ -222,6 +230,8 @@ class sportsmanagementViewMatch extends JView
 		$rosters = array('home' => $homeRoster,'away' => $awayRoster);
         
         $matchCommentary = $model->getMatchCommentary($this->item->id);
+        
+        $document->addScriptDeclaration( $javascript );
         
         $this->assignRef('matchcommentary',$matchCommentary);
         $this->assignRef('teams',$teams);

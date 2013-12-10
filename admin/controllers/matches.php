@@ -40,6 +40,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function removeEvent()
     {
         // Check for request forgeries
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
 
@@ -54,7 +55,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS');
 		}
 		echo json_encode($result);
-		//JFactory::getApplication()->close();
+		JFactory::getApplication()->close();
     }
     
     
@@ -65,7 +66,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //$result = $response;
         
         // Check for request forgeries
-        JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
         //JRequest::checkToken('request') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
@@ -110,6 +112,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	{
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
 		$substid = JRequest::getInt('substid',0);
 		$model = $this->getModel();
@@ -122,7 +125,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST');
 		}
 		echo json_encode($result);
-		//JFactory::getApplication()->close();
+		JFactory::getApplication()->close();
 	}
     
     function saveevent()
@@ -132,8 +135,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 
-		$mainframe = JFactory::getApplication();
+		//$mainframe = JFactory::getApplication();
 		$data = array();
 		$data['teamplayer_id']	= JRequest::getInt('teamplayer_id');
 		$data['projectteam_id']	= JRequest::getInt('projectteam_id');
@@ -156,12 +160,12 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		}    
  
 		echo json_encode($result);
-		//JFactory::getApplication()->close();
+		JFactory::getApplication()->close();
     }
     
     function savecomment()
     {
-        $option = JRequest::getCmd('option');
+        //$option = JRequest::getCmd('option');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
         JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         //$mainframe = JFactory::getApplication();
@@ -202,7 +206,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	{
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
 		$data = array();
 		$data['in'] 					= JRequest::getInt('in');
@@ -222,7 +227,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		}
         
 		echo json_encode($result);
-		//JFactory::getApplication()->close();
+		JFactory::getApplication()->close();
 	}
     
     

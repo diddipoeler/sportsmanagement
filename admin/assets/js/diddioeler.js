@@ -88,6 +88,7 @@ var playerin = jQuery('in').value;
           var rowid = this.id.substr(5);
 
 				var ctype = jQuery("#ctype").val();
+				var token = jQuery("#token").val();
         var comnt = encodeURIComponent(jQuery("#notes").val())
 				var time = jQuery("#c_event_time").val();
 				
@@ -95,11 +96,16 @@ var playerin = jQuery('in').value;
 				+ matchid + '&notes='
 				+ comnt + '&projecttime=' + projecttime;
          jQuery("#ajaxresponse").html(url + querystring); 
+
+//alert(token);
          
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
+  data: {
+            'token': '1' // <-- THIS IS IMPORTANT
+            
+        }, // data to be post
   //data: jQuery("#component-form").serialize(),
   dataType:"json",
 //  success: commentsaved
@@ -122,20 +128,26 @@ jQuery(".button-delete-commentary").click(function()
 //alert('löschen');
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
-var eventid = this.id.substr(14);          
-var url = baseajaxurl + '&view=matches&task=removeCommentary&tmpl=component';
+var eventid = this.id.substr(14);   
+var token = jQuery("#token").val();       
+var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 //var url = baseajaxurl + '&task=ajaxcalls.removeCommentary';
 //var url = baseajaxurl + '&task=removeCommentary&tmpl=component&view=matches';
 var querystring = '&event_id=' + eventid;
 
 jQuery("#ajaxresponse").html(url + querystring);
 
+//alert(token);
+
 //alert(eventid);
 	
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
- //data: data, // data to be post
+ data: {
+            'token': '1' // <-- THIS IS IMPORTANT
+            
+        }, // data to be post
  //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
@@ -274,8 +286,8 @@ function commentsaved(response)
 	// first line contains the status, second line contains the new row.
 	var resp = response.split('&');
 	
-	alert(resp[0]);
-	alert(resp[1]);
+//	alert(resp[0]);
+//	alert(resp[1]);
 	
 	if (resp[0] != '0') 
   {
@@ -290,6 +302,9 @@ function commentsaved(response)
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
+		jQuery("#notes").text('');
+		jQuery("#c_event_time").text('');
+		
 	}
    else 
    {
@@ -303,9 +318,9 @@ function commentarydeleted(response)
 	var resp = response.split("&");
   var eventid = resp[2]; 
   
-    alert(resp[0]);
-    alert(resp[1]);
-    alert(eventid);
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert(eventid);
 
 	if (resp[0] != '0') 
   {
@@ -345,9 +360,11 @@ function getPlayerSelect(index)
 {
 	// homeroster and awayroster must be defined globally (in the view calling
 	// the script)
-	alert(index);
+
+	//alert(index);
+
 	//alert(rosters + " rosters Zahlen sind definiert");
-	alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
+	//alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
 	//alert(rosters);
 	//var roster = rosters + index;
 	//alert(roster);
