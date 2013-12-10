@@ -96,6 +96,8 @@ var playerin = jQuery('in').value;
 				+ matchid + '&notes='
 				+ comnt + '&projecttime=' + projecttime;
          jQuery("#ajaxresponse").html(url + querystring); 
+
+alert(token);
          
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post

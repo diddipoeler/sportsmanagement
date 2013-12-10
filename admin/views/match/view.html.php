@@ -185,7 +185,7 @@ class sportsmanagementViewMatch extends JView
         $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JUtility::getToken()."=1';" . "\n";
         $javascript .= "var matchid = ".$this->item->id.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
-        //$javascript .= "var token = ".JUtility::getToken().";" . "\n";
+        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
         
         
         
