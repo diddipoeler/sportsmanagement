@@ -11,6 +11,14 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllermatches extends JControllerAdmin
 {
   
+    
+    
+    function __construct()
+	{
+		parent::__construct();
+
+	}
+
     /**
 	 * Returns a reference to the global {@link JoomlaTuneAjaxResponse} object,
 	 * only creating it if it doesn't already exist.
@@ -50,16 +58,18 @@ class sportsmanagementControllermatches extends JControllerAdmin
     }
     
     
-    function removeCommentary()
+    public function removeCommentary()
     {
         
         //$response = self::getAjaxResponse();
         //$result = $response;
         
         // Check for request forgeries
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
+        
+        //JRequest::checkToken('request') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
         
         // Check for request forgeries
         //JRequest::checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
@@ -71,7 +81,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //}
 //else
 //{
-		$event_id = JRequest::getInt('event_id');
+		
+        //if (JSession::checkToken('post')) 
+        //{
+        
+        $event_id = JRequest::getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -85,6 +99,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
  //}       
         // Close the application
 		JFactory::getApplication()->close();
+        //}
         
         //jexit();
 		//JFactory::getApplication()->close();
@@ -147,8 +162,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function savecomment()
     {
         $option = JRequest::getCmd('option');
-        JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         //$mainframe = JFactory::getApplication();
         
         //$response = self::getAjaxResponse();

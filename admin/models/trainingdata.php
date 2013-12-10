@@ -33,7 +33,7 @@ class sportsmanagementModeltrainingdata extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'rainingdata ', $prefix = 'sportsmanagementTable', $config = array()) 
+	public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

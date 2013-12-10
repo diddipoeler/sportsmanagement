@@ -2,9 +2,10 @@
 jQuery(document).ready(function() {	
 
 updatePlayerSelect();
-	if(jQuery('team_id')) {
-		jQuery('team_id').addEvent('change', updatePlayerSelect);
-   }
+//	if(jQuery('team_id')) 
+//  {
+//		jQuery('team_id').addEvent('change', updatePlayerSelect);
+//   }
       
 //jQuery.ajaxSetup({
 //        // put your favorite error function here:
@@ -41,7 +42,7 @@ var playerin = jQuery('in').value;
 						+ '&project_position_id=' + position + '&in_out_time='
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+  '&projecttime=' + projecttime;
-				var url = baseajaxurl + '&task=matches.savesubst';
+				var url = baseajaxurl + '&task=matches.savesubst&tmpl=component';
         jQuery("#ajaxresponse").html(url);
         
         jQuery.ajax({
@@ -60,7 +61,7 @@ var playerin = jQuery('in').value;
           jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
           var rowid = this.id.substr(5);
-					var url = baseajaxurl + '&task=matches.saveevent&';
+					var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
 					var player = jQuery('teamplayer_id').val();
 					var event = jQuery('event_type_id').val();
 					var team = jQuery('team_id').val();
@@ -83,7 +84,7 @@ var playerin = jQuery('in').value;
   jQuery("#save-new-comment").click(function(){
           jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
-          var url = baseajaxurl + '&task=matches.savecomment&controller=matches';
+          var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
           var rowid = this.id.substr(5);
 
 				var ctype = jQuery("#ctype").val();
@@ -99,6 +100,7 @@ jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
   //data: data, // data to be post
+  //data: jQuery("#component-form").serialize(),
   dataType:"json",
 //  success: commentsaved
   success: commentsaved, //function to be called on successful reply from server
@@ -121,7 +123,7 @@ jQuery(".button-delete-commentary").click(function()
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var eventid = this.id.substr(14);          
-var url = baseajaxurl + '&task=matches.removeCommentary';
+var url = baseajaxurl + '&view=matches&task=removeCommentary&tmpl=component';
 //var url = baseajaxurl + '&task=ajaxcalls.removeCommentary';
 //var url = baseajaxurl + '&task=removeCommentary&tmpl=component&view=matches';
 var querystring = '&event_id=' + eventid;
@@ -134,9 +136,13 @@ jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
  //data: data, // data to be post
+ //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
- error: function (xhr, ajaxOptions, thrownError) {
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       //alert(xhr);
        alert(xhr.status);
        alert(thrownError);
      }
@@ -320,9 +326,12 @@ jQuery("#rowcomment-" + eventid).remove();
 
 function updatePlayerSelect() 
 {
-	if(jQuery('cell-player'))
-	jQuery('cell-player').empty().appendChild(
-			getPlayerSelect(jQuery("#team_id").val()));
+//	if(jQuery('cell-player'))
+//	jQuery('cell-player').empty().appendChild(
+//			getPlayerSelect(jQuery("#team_id").val())
+//      );
+getPlayerSelect(jQuery("#team_id").val());
+      
 }
 
 /**
@@ -336,22 +345,27 @@ function getPlayerSelect(index)
 {
 	// homeroster and awayroster must be defined globally (in the view calling
 	// the script)
-	//alert(index);
-	alert(rosters + " rosters Zahlen sind definiert");
-	//alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
+	alert(index);
+	//alert(rosters + " rosters Zahlen sind definiert");
+	alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
 	//alert(rosters);
-	var roster = rosters[index];
+	//var roster = rosters + index;
 	//alert(roster);
+	//alert(roster.length);
 	
   // build select
 	var select = new Element('select', {
 		id : "teamplayer_id"
 	});
 	
-	for (var i = 0; i < roster.length; i++) 
-  {
-  
-  }
+//	jQuery("#ajaxresponse").text(roster);
+	
+//	for (var i = 0; i < 1; i++) 
+//  {
+//  var roster_value = roster[i];
+//  alert( roster[i] );
+//  }
+
 //	for ( var i = 0, n = roster.length; i < n; i++) 
 //  {
 //		new Element('option', {

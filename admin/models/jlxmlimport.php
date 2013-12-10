@@ -3090,7 +3090,7 @@ $this->dump_variable("import_team", $import_team);
 		foreach ($this->_datas['teamtraining'] as $key => $teamtraining)
 		{
 			
-            $mdl = JModel::getInstance("teamtrainingdata", "sportsmanagementModel");
+            $mdl = JModel::getInstance("trainingdata", "sportsmanagementModel");
             $p_teamtraining = $mdl->getTable();
             
 			$import_teamtraining=$this->_datas['teamtraining'][$key];
