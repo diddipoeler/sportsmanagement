@@ -97,7 +97,7 @@ var playerin = jQuery('in').value;
 				+ comnt + '&projecttime=' + projecttime;
          jQuery("#ajaxresponse").html(url + querystring); 
 
-alert(token);
+//alert(token);
          
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
@@ -128,7 +128,8 @@ jQuery(".button-delete-commentary").click(function()
 //alert('löschen');
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
-var eventid = this.id.substr(14);          
+var eventid = this.id.substr(14);   
+var token = jQuery("#token").val();       
 var url = baseajaxurl + '&view=matches&task=removeCommentary&tmpl=component';
 //var url = baseajaxurl + '&task=ajaxcalls.removeCommentary';
 //var url = baseajaxurl + '&task=removeCommentary&tmpl=component&view=matches';
@@ -136,12 +137,17 @@ var querystring = '&event_id=' + eventid;
 
 jQuery("#ajaxresponse").html(url + querystring);
 
+//alert(token);
+
 //alert(eventid);
 	
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
- //data: data, // data to be post
+ data: {
+            'token': '1' // <-- THIS IS IMPORTANT
+            
+        }, // data to be post
  //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
@@ -280,8 +286,8 @@ function commentsaved(response)
 	// first line contains the status, second line contains the new row.
 	var resp = response.split('&');
 	
-	alert(resp[0]);
-	alert(resp[1]);
+//	alert(resp[0]);
+//	alert(resp[1]);
 	
 	if (resp[0] != '0') 
   {
@@ -309,9 +315,9 @@ function commentarydeleted(response)
 	var resp = response.split("&");
   var eventid = resp[2]; 
   
-    alert(resp[0]);
-    alert(resp[1]);
-    alert(eventid);
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert(eventid);
 
 	if (resp[0] != '0') 
   {
