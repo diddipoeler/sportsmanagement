@@ -88,6 +88,7 @@ var playerin = jQuery('in').value;
           var rowid = this.id.substr(5);
 
 				var ctype = jQuery("#ctype").val();
+				var token = jQuery("#token").val();
         var comnt = encodeURIComponent(jQuery("#notes").val())
 				var time = jQuery("#c_event_time").val();
 				
@@ -99,7 +100,10 @@ var playerin = jQuery('in').value;
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
+  data: {
+            'token': '1' // <-- THIS IS IMPORTANT
+            
+        }, // data to be post
   //data: jQuery("#component-form").serialize(),
   dataType:"json",
 //  success: commentsaved
@@ -347,7 +351,7 @@ function getPlayerSelect(index)
 	// the script)
 	alert(index);
 	//alert(rosters + " rosters Zahlen sind definiert");
-	alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
+	//alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
 	//alert(rosters);
 	//var roster = rosters + index;
 	//alert(roster);

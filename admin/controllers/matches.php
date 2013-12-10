@@ -161,9 +161,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
     
     function savecomment()
     {
-        $option = JRequest::getCmd('option');
+        //$option = JRequest::getCmd('option');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         //$mainframe = JFactory::getApplication();
         
         //$response = self::getAjaxResponse();
