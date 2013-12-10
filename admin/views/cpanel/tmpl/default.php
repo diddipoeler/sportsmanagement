@@ -61,6 +61,10 @@ defined('_JEXEC') or die('Restricted access');
                             <div style="text-align: center;">
 							<?php echo $this->addIcon('galun-siegfried02.png','http://www.esv-knittelfeld.at', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
+                            
+                            <div style="text-align: center;">
+							<?php echo $this->addIcon('prochnow_hauke.jpg','http://svdoerpum.de/', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							</div>
 						</td>
 						<td width="50%" >
 							<div style="text-align: center;">

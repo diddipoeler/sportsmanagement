@@ -191,7 +191,7 @@ class sportsmanagementViewMatch extends JView
 		$teamlist=array();
 		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
 		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
-		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team"');
+		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team" onchange="javascript:updatePlayerSelect()"');
         // events
 		$events = $model->getEventsOptions($project_id,$this->item->id);
 		if (!$events)

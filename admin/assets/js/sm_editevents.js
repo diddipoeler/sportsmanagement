@@ -8,10 +8,10 @@
  */
 
 //window.addEvent('domready', function() {
-jQuery(document).ready(function($) {
-	updatePlayerSelect();
+$(document).ready(function($) {
+//	updatePlayerSelect();
 	if($('team_id')) {
-		$('team_id').addEvent('change', updatePlayerSelect);
+	//	$('team_id').addEvent('change', updatePlayerSelect);
 
 		//ajax remove event
 		$$('input.button-delete').addEvent('click', deleteevent);
@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
 		$$('input.button-delete-commentary').addEvent('click', deletecommentary);
 
 		// neues ereignis speichern
-        $('save-new-event').addEvent(
+        $$('save-new-event').addEvent(
 				'click',
 				function() {
 				    // diddipoeler
@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
 	}
     
     // neuen kommentar speichern
-    $('save-new-comment').addEvent(
+    $$('save-new-comment').addEvent(
 			'click',
 			function() {
 				var url = baseajaxurl + '&task=matches.savecomment';

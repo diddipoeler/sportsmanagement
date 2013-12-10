@@ -24,21 +24,25 @@ var matchid = <?php echo $this->item->id; ?>;
 
 var projecttime=<?php echo $this->eventsprojecttime; ?>;
 var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
-//var homeroster = new Array;
-var rosters = new Array();
+var homeroster = new Array;
+//var rosters = new Array();
 
-//var Mitarbeiter = [];
 
-//Mitarbeiter[0][0] = {};
-//Mitarbeiter[0][0]["Name"] = "Müller";
-//Mitarbeiter[0][0]["Vorname"] = "Hans";
-//Mitarbeiter[0][0]["Wohnort"] = "Dresden";
+var rosters<?php echo $this->teams->projectteam1_id ?> = new Array();
+var rosters<?php echo $this->teams->projectteam2_id ?> = new Array();
 
-//Mitarbeiter[1][0] = {};
-//Mitarbeiter[1][0]["Name"] = "Schulze";
-//Mitarbeiter[1][0]["Vorname"] = "Frauke";
-//Mitarbeiter[1][0]["Wohnort"] = "Berlin";
+var Mitarbeiter = [];
 
+Mitarbeiter[0][0] = {};
+Mitarbeiter[0][0]["Name"] = "Müller";
+Mitarbeiter[0][0]["Vorname"] = "Hans";
+Mitarbeiter[0][0]["Wohnort"] = "Dresden";
+Mitarbeiter[1][0] = {};
+Mitarbeiter[1][0]["Name"] = "Schulze";
+Mitarbeiter[1][0]["Vorname"] = "Frauke";
+Mitarbeiter[1][0]["Wohnort"] = "Berlin";
+
+//var rosters1 = new Array();
 <?php
 
 
@@ -51,9 +55,9 @@ foreach ($this->rosters['home'] as $player)
 {
 ?>
 
-//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>] = new Array();
-//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
-//rosters[<?php echo $this->teams->projectteam1_id ?>][<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
+//rosters<?php echo $this->teams->projectteam1_id ?>[<?php echo $i ?>] = new Object();
+//rosters<?php echo $this->teams->projectteam1_id ?>[<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
+//rosters<?php echo $this->teams->projectteam1_id ?>[<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
 
 <?php
 
@@ -61,35 +65,47 @@ foreach ($this->rosters['home'] as $player)
 	$obj->value = $player->value;
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	//echo 'rosters['.$this->teams->projectteam1_id.']['.($i++).']='.json_encode($obj).";\n";
-    echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
+    echo 'homeroster['.($i).']='.json_encode($obj).";\n";
+    $rosters1[$i] = json_encode($obj)."";
+    
 $i++;
 }
+
+echo 'rosters'.$this->teams->projectteam1_id.'=['.implode(",",$rosters1)."]\n";
+
+
 }
 ?>
 
-//var awayroster = new Array;
+var awayroster = new Array;
 
 <?php
 $i = 0;
+unset($rosters1);
 if ( isset($this->rosters['away']) )
 {
 foreach ($this->rosters['away'] as $player)
 {
 ?>
 
-//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>] = new Array();
-//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
-//rosters[<?php echo $this->teams->projectteam2_id ?>][<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
+rosters<?php echo $this->teams->projectteam2_id ?>[<?php echo $i ?>] = new Object();
+rosters<?php echo $this->teams->projectteam2_id ?>[<?php echo $i ?>]["value"] = "<?php echo $player->value ?>";
+rosters<?php echo $this->teams->projectteam2_id ?>[<?php echo $i ?>]["text"] = "<?php echo sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')' ?>";
 
 <?PHP    
 	$obj = new stdclass();
 	$obj->value = $player->value;
 	$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, 14) .' - ('.JText::_($player->positionname).')';
 	//echo 'rosters['.$this->teams->projectteam2_id.']['.($i++).']='.json_encode($obj).";\n";
-    echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
+    echo 'awayroster['.($i).']='.json_encode($obj).";\n";
+    //echo 'rosters'.$this->teams->projectteam2_id.'['.($i).']='.json_encode($obj).";\n";
+    $rosters1[$i] = json_encode($obj)."";
 
 $i++;
 }
+
+echo 'rosters'.$this->teams->projectteam2_id.'=['.implode(",",$rosters1)."]\n";
+
 }
 
 foreach ($this->teams as $team)
@@ -98,12 +114,12 @@ foreach ($this->teams as $team)
 }    
 
 ?>
-var rosters = Array(homeroster, awayroster);
+//var rosters = Array(homeroster, awayroster);
 var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 
 //-->
 </script>
-
+<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
 <div id="UserError" ></div>
@@ -279,5 +295,8 @@ var str_delete = "<?php echo JText::_('JACTION_DELETE'); ?>";
 		</fieldset>
 </div>
 <div style="clear: both"></div>
+<?php echo JHtml::_('form.token')."\n"; ?>
 
+<input type="hidden" name="token" value="<?php echo JUtility::getToken(); ?>" />	
+</form>
 
