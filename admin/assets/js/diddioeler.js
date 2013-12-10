@@ -130,7 +130,7 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var eventid = this.id.substr(14);   
 var token = jQuery("#token").val();       
-var url = baseajaxurl + '&view=matches&task=removeCommentary&tmpl=component';
+var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 //var url = baseajaxurl + '&task=ajaxcalls.removeCommentary';
 //var url = baseajaxurl + '&task=removeCommentary&tmpl=component&view=matches';
 var querystring = '&event_id=' + eventid;
@@ -302,6 +302,9 @@ function commentsaved(response)
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
+		jQuery("#notes").text('');
+		jQuery("#c_event_time").text('');
+		
 	}
    else 
    {
@@ -357,7 +360,9 @@ function getPlayerSelect(index)
 {
 	// homeroster and awayroster must be defined globally (in the view calling
 	// the script)
-	alert(index);
+
+	//alert(index);
+
 	//alert(rosters + " rosters Zahlen sind definiert");
 	//alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
 	//alert(rosters);
