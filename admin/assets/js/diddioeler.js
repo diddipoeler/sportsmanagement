@@ -302,8 +302,8 @@ function commentsaved(response)
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
-		jQuery("#notes").text('');
-		jQuery("#c_event_time").text('');
+		jQuery("#notes").val('');
+		jQuery("#c_event_time").val('');
 		
 	}
    else 
