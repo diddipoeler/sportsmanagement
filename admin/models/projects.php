@@ -42,9 +42,11 @@ class sportsmanagementModelProjects extends JModelList
     ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id')
     ->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
-    if ($search)
+  $where = self::_buildContentWhere();
+  
+    if ($where)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where($where);
         }
 		$query->order(self::_buildContentOrderBy());
      
@@ -61,8 +63,8 @@ class sportsmanagementModelProjects extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'p.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','p.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 
 		if ($filter_order=='p.ordering')
 		{
@@ -79,12 +81,12 @@ class sportsmanagementModelProjects extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_league',		'filter_league','',			'int');
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type',	'filter_sports_type','',	'int');
-		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_season',		'filter_season','',				'int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state',		'filter_state',		'',		'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search',				'search',			'',		'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode',		'search_mode',		'',		'string');
+		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_league','filter_league','','int');
+		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
+		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_season','filter_season','','int');
+		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where = array();
 		

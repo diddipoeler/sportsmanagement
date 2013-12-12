@@ -301,7 +301,7 @@ class sportsmanagementViewMatch extends JView
 		$starters = $model->getMatchPersons($tid,0,$this->item->id,'player');
         $starters_id = array_keys($starters);
  
-        //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup starters<br><pre>'.print_r($starters, true).'</pre><br>','');
+        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup starters player<br><pre>'.print_r($starters, true).'</pre><br>','');
         //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup starters_id<br><pre>'.print_r($starters_id, true).'</pre><br>','');
 
 		// get players not already assigned to starter
@@ -403,7 +403,7 @@ class sportsmanagementViewMatch extends JView
         $assigned = $model->getMatchPersons($tid,0,$this->item->id,'staff');
 		$assigned_id = array_keys($assigned);
         
-        //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup assigned<br><pre>'.print_r($assigned, true).'</pre><br>','');
+        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup assigned staff<br><pre>'.print_r($assigned, true).'</pre><br>','');
         //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup assigned_id<br><pre>'.print_r($assigned_id, true).'</pre><br>','');
         
 		// not assigned staff
