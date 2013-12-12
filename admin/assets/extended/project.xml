@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
-	
-	<field name="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED" type="textarea"
-	rows="4" cols="100"
-			label="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED" description="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_DESCR">
-		</field>
-		
-	<field name="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS" type="textarea"
-	rows="4" cols="100"
-			label="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS" description="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS_DESCR">
-		</field>	
-		
-	</fieldset>
+  <fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
+  
+  <field name="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED" type="textarea"
+  rows="4" cols="100"
+      label="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED" description="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_DESCR">
+    </field>
+    
+  <field name="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS" type="textarea"
+  rows="4" cols="100"
+      label="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS" description="COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS_DESCR">
+    </field>  
+    
+  </fieldset>
 </config>

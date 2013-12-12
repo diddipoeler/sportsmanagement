@@ -55,7 +55,6 @@ class sportsmanagementViewpredictiongroups extends JView
 	{ 
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         

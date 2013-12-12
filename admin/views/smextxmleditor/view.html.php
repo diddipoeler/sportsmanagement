@@ -25,7 +25,11 @@ class sportsmanagementViewsmextxmleditor extends JView
         $model = $this->getModel();
         $this->file_name = JRequest::getVar('file_name');
         
-       $this->assign('contents',$model->getContents());
+        // Initialise variables.
+		$this->form		= $this->get('Form');
+        $this->source	= $this->get('Source');
+        
+       //$this->assign('contents',$model->getContents());
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
@@ -41,13 +45,23 @@ class sportsmanagementViewsmextxmleditor extends JView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
+		JRequest::setVar('hidemainmenu', true);
+        // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+
         // Set toolbar items for the page
-        JToolBarHelper::title($this->file_name,'xmlimport');
+        JToolBarHelper::title($this->file_name,'xml-edit');
+        
+        JToolBarHelper::apply('smextxmleditor.apply');
+        JToolBarHelper::save('smextxmleditor.save');
+        JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+        
+        
+        
+        
+        JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
