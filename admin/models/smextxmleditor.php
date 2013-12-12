@@ -39,52 +39,81 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 		return $form;
 	}
     
+    /**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return	mixed	The data for the form.
+	 * @since	1.6
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		//$data = JFactory::getApplication()->getUserState('com_templates.edit.source.data', array());
+        $data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.source.data', array());
+
+		if (empty($data)) {
+			$data = $this->getSource();
+		}
+
+		return $data;
+	}
     
-  public function getContents()
-  {
     
-    $mainframe = JFactory::getApplication();
+  /**
+	 * Method to store the source file contents.
+	 *
+	 * @param	array	The souce data to save.
+	 *
+	 * @return	boolean	True on success, false otherwise and internal error set.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        jimport('joomla.filesystem.file');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
+        $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
+        $return = JFile::write($filePath, $data['source']);
+    }    
+  
+  /**
+	 * Method to get a single record.
+	 *
+	 * @return	mixed	Object on success, false on failure.
+	 * @since	1.6
+	 */
+	public function &getSource()
+	{
+		$mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
-    $file_name = JRequest::getVar('file_name');
-    
-      //$path = $this->getState('translation.path');
-      $path = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$file_name;
-      if (JFile::exists($path))
-      {
-        $this->contents = file_get_contents($path);
-      }
-      else
-      {
-        $this->contents = '';
-      }
-    
-    return $this->contents;
-  }
-    
-//    function getSportsManagementTables()
-//    {
-//        $mainframe = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        $query="SHOW TABLES LIKE '%_".COM_SPORTSMANAGEMENT_TABLE."%'";
-//		$this->_db->setQuery($query);
-//		return $this->_db->loadResultArray();
-//    }
-//    
-//    function setSportsManagementTableQuery($table, $command)
-//    {
-//        $mainframe = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        $query = strtoupper($command).' TABLE `'.$table.'`'; 
-//            $this->_db->setQuery($query);
-//            if (!$this->_db->query())
-//		{
-//			$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool getErrorMsg<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
-//			return false;
+        $item = new stdClass;
+//		if (!$this->_template) {
+//			$this->getTemplate();
 //		}
-//        
-//        
-//		return true;
-//    }
+
+		//if ($this->_template) {
+			$file_name	= JRequest::getVar('file_name');
+			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
+			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
+            $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$file_name;
+
+			if (file_exists($filePath)) {
+				jimport('joomla.filesystem.file');
+
+				//$item->extension_id	= $this->getState('extension.id');
+				$item->filename		= JRequest::getVar('file_name');
+				$item->source		= JFile::read($filePath);
+			} else {
+				$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
+			}
+		//}
+
+		return $item;
+	}
+    
+
     
 
 }

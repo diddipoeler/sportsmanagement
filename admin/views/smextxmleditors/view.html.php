@@ -39,8 +39,13 @@ class sportsmanagementViewsmextxmleditors extends JView
 	*/
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'generic.png');
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        // Set toolbar items for the page
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edit');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
