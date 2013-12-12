@@ -7,21 +7,21 @@
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EXISTING_EVENTS'); ?></b><br /><?php echo $this->lists['events']; ?></td>
 			<td style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="move_list_items('eventslist','position_eventslist');"
+						onclick="move_list_items('eventslist','position_eventslist');jQuery('#position_eventslist option').prop('selected', true);"
 						value="&gt;&gt;" />
 				<br /><br />
 				<input  type="button" class="inputbox"
-						onclick="move_list_items('position_eventslist','eventslist');"
+						onclick="move_list_items('position_eventslist','eventslist');jQuery('#position_eventslist option').prop('selected', true);"
 						value="&lt;&lt;" />
 			</td>
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_ASSIGNED_EVENTS_TO_POS'); ?></b><br /><?php echo $this->lists['position_events']; ?></td>
 			<td align='center' style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="$('eventschanges_check').value=1;moveOptionUp('position_eventslist');"
+						onclick="move_up('position_eventslist');jQuery('#position_eventslist option').prop('selected', true);"
 						value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" />
 				<br /><br />
 				<input type="button" class="inputbox"
-					   onclick="$('eventschanges_check').value=1;moveOptionDown('position_eventslist');"
+					   onclick="move_down('position_eventslist');jQuery('#position_eventslist option').prop('selected', true);"
 					   value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 			</td>
 			<td style="width:auto;">

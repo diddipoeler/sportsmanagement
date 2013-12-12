@@ -160,6 +160,17 @@ class sportsmanagementModelposition extends JModelAdmin
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 
+		{
+		if ( $data['id'] )
+        {
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition post position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+        $mdl = JModel::getInstance("positioneventtype", "sportsmanagementModel");
+        $mdl->store($post,$data['id']);
+            
+        }
+		}
+        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.

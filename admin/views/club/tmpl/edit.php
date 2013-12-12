@@ -51,6 +51,14 @@ $fieldsets = $this->form->getFieldsets();
                 {
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
+                if ( $field->name == 'jform[twitter]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                if ( $field->name == 'jform[facebook]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
                 
                 ?></li>
 			<?php endforeach; ?>

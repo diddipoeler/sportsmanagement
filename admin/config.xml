@@ -93,6 +93,27 @@
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT_DESCR">
 		</field>
+		
+		<field name="cfg_sport_types" 
+    type="list"
+    multiple="true"  
+    default=""
+    size="10"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESCR">
+			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
+			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
+			
+			<option value="americanfootball">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
+			<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
+			<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
+			<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
+			<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
+			<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
+			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
+			
+		</field>
+		
   </fieldset>
 
 <!-- register 2 -->		
