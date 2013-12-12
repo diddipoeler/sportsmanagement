@@ -21,6 +21,16 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
-			class="inputbox"/>		
+			class="inputbox"/>	
+      
+<field
+			name="countmembers"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_COUNT_MEMBERS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_COUNT_MEMBERS_DESC"
+			class=""
+			size="10"
+			default="0"/>
+            	
 	</fieldset>				
 </form>

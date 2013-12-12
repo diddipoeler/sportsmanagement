@@ -55,3 +55,8 @@
 .icon-48-cbe-tools	 		{ background-image: url(../icons/tools.png); }
 .icon-48-cbe-updates	 	{ background-image: url(../icons/browser.png); }
 .icon-48-cbe-pinboard	 	{ background-image: url(../icons/pinboard.png); }
+
+
+.icon-48-group			{ background-image: url(../icons/group_128.png); }
+.icon-48-group-add			{ background-image: url(../icons/group_add_128.png); }
+.icon-48-group-edit			{ background-image: url(../icons/group_edit_128.png); }

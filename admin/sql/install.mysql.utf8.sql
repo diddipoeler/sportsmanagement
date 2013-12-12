@@ -64,6 +64,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `associations` INT(11) NOT NULL DEFAULT '0',
   `merge_teams` VARCHAR(255) NOT NULL DEFAULT '' ,
   `extendeduser` TEXT NULL ,
+  `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC)
   )
@@ -466,6 +468,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `away_detail` VARCHAR(255) NOT NULL ,
   `away_date_start` DATE NOT NULL DEFAULT '0000-00-00' ,
   `away_date_end` DATE NOT NULL DEFAULT '0000-00-00' ,
+  `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -848,6 +852,22 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `picture` VARCHAR(250) NULL ,
+  
+  `project_position_id` INT(11) NULL DEFAULT NULL ,
+  `active` TINYINT(1) NULL DEFAULT '1' ,
+  `jerseynumber` INT(11) NULL DEFAULT NULL ,
+  `notes` TEXT NOT NULL ,
+  `extended` TEXT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `ordering` INT(11) NOT NULL DEFAULT '0' ,
+  `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `market_value` INT(11) NOT NULL DEFAULT '0' ,
+  `extendeduser` TEXT NULL ,
+  `played_time` INT(11) NULL DEFAULT '0' ,
+  
+  
+  
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) )
 ENGINE = MyISAM
@@ -960,7 +980,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_player` (
   `market_value` INT(11) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
   `played_time` INT(11) NULL DEFAULT '0' ,
-    `injury` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `injury` TINYINT(4) NOT NULL DEFAULT '0' ,
   `injury_date` INT(11) NOT NULL ,
   `injury_end` INT(11) NOT NULL ,
   `injury_detail` VARCHAR(255) NOT NULL ,
@@ -1368,6 +1388,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_groups` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `extendeduser` TEXT NULL ,
+  `countmembers` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM

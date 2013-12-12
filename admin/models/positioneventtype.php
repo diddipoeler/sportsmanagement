@@ -113,4 +113,59 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		return true;
 	}
     
+    /**
+	 * Method to update position events
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function store($data,$position_id)
+	{
+		$mainframe = JFactory::getApplication();
+        $result	= true;
+		$peid	= (isset($data['position_eventslist']) ? $data['position_eventslist'] : array());
+		JArrayHelper::toInteger( $peid );
+		$peids = implode( ',', $peid );
+		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype '
+		       . ' WHERE position_id = ' . $position_id
+		       ;
+		if (count($peid)) {
+			$query .= '   AND eventtype_id NOT IN  (' . $peids . ')';
+		}
+
+		$this->_db->setQuery( $query );
+		if( !$this->_db->query() )
+		{
+			$mainframe->enqueueMessage(JText::_('sportsmanagementModelpositioneventtype post position_eventslist<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+            //$this->setError( $this->_db->getErrorMsg() );
+			$result = false;
+		}
+
+		for ( $x = 0; $x < count( $peid ); $x++ )
+		{
+			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype SET ordering='$x' WHERE position_id = '" . $position_id . "' AND eventtype_id = '" . $peid[$x] . "'";
+ 			$this->_db->setQuery( $query );
+			if( !$this->_db->query() )
+			{
+				$mainframe->enqueueMessage(JText::_('sportsmanagementModelpositioneventtype post position_eventslist<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                //$this->setError( $this->_db->getErrorMsg() );
+				$result= false;
+			}
+		}
+		for ( $x = 0; $x < count ($peid ); $x++ )
+		{
+			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype (position_id, eventtype_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
+			$this->_db->setQuery( $query );
+			if ( !$this->_db->query() )
+			{
+				$mainframe->enqueueMessage(JText::_('sportsmanagementModelpositioneventtype post position_eventslist<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                //$this->setError( $this->_db->getErrorMsg() );
+				$result= false;
+			}
+		}
+		return $result;
+	}
+    
+    
 }

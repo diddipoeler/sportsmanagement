@@ -99,16 +99,23 @@ class sportsmanagementViewpredictiongroup extends JView
 	*/
 	protected function addToolbar()
 	{	
+	   // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'), 'helloworld');
+		//JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
+		  // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW'),'group-add');
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
@@ -120,6 +127,8 @@ class sportsmanagementViewpredictiongroup extends JView
 		}
 		else
 		{
+		    // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'),'group-edit');
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record

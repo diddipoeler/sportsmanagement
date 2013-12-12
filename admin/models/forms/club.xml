@@ -113,6 +113,22 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
 			class="inputbox"/>	
+			
+<field
+			name="twitter"
+			size="100"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER_DESC"
+			class="inputbox"/>
+<field
+			name="facebook"
+			size="100"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC"
+			class="inputbox"/>
+            			
 	<field
 			name="manager"
 			size="100"
