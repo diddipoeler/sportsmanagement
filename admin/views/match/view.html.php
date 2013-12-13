@@ -316,7 +316,10 @@ class sportsmanagementViewMatch extends JView
 		}
 
 		$projectpositions = $model->getProjectPositionsOptions(0, 1,$project_id);
-		if (!$projectpositions)
+        
+        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup player projectpositions<br><pre>'.print_r($projectpositions, true).'</pre><br>','');
+		
+        if (!$projectpositions)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
 			return;
@@ -335,12 +338,12 @@ class sportsmanagementViewMatch extends JView
 											'value','text');
 
 		// build position select
-		$selectpositions[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
-		$selectpositions=array_merge($selectpositions,$model->getProjectPositionsOptions(0,1,$project_id));
-		$lists['projectpositions']=JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text', NULL, false, true);
+		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
+		$selectpositions = array_merge($selectpositions,$model->getProjectPositionsOptions(0,1,$project_id));
+		$lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text', NULL, false, true);
 		
         // build player select
-		$allplayers=$model->getTeamPlayers($tid);
+		$allplayers = $model->getTeamPlayers($tid);
 		
         $playersoptionsout=array();
 		$playersoptionsout[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
@@ -395,7 +398,10 @@ class sportsmanagementViewMatch extends JView
 		/**
 		 * staff positions
 		 */
-		$staffpositions = $model->getProjectPositionsOptions($id=0, $person_type=2,$project_id);	// get staff not already assigned to starter
+		$staffpositions = $model->getProjectPositionsOptions(0, 2,$project_id);	// get staff not already assigned to starter
+        
+        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup staff projectpositions<br><pre>'.print_r($staffpositions, true).'</pre><br>','');
+        
 		//echo '<pre>'.print_r($staffpositions,true).'</pre>';
 
 		// assigned staff

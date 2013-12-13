@@ -56,9 +56,9 @@
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- up/down buttons -->
 										<br />
-										<input	type="button" id="moveup-<?php echo $position_id;?>" class="inputbox move-up"
+										<input	type="button" id="move_up('position<?php echo $position_id;?>');" class="inputbox move-up"
 												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
-										<input	type="button" id="movedown-<?php echo $position_id;?>" class="inputbox move-down"
+										<input	type="button" id="move_down('position<?php echo $position_id;?>');" class="inputbox move-down"
 												value="<?php echo JText::_('JGLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>

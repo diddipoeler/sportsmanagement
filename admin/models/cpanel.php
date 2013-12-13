@@ -6,12 +6,22 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
  
 
+/**
+ * sportsmanagementModelcpanel
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementModelcpanel extends JModel
 {
 
 public function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
 	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
        $manifest_cache = json_decode( $this->_db->loadResult(), true );
 	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
@@ -57,9 +67,9 @@ $paramsdata = JComponentHelper::getParams($option);
 
 		return $github;
     
-}
+    }
 
-/**
+    /**
 	 * Function to fetch a JSON feed
 	 *
 	 * @param   string  $req  The URL of the feed to load

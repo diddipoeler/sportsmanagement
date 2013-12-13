@@ -49,9 +49,9 @@
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- up/down buttons -->
 										<br />
-										<input	type="button" id="smoveup-<?php echo $position_id;?>" class="inputbox smove-up"
+										<input	type="button" id="move_up('staffposition<?php echo $position_id;?>');" class="inputbox smove-up"
 												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
-										<input	type="button" id="smovedown-<?php echo $position_id;?>" class="inputbox smove-down"
+										<input	type="button" id="move_down('staffposition<?php echo $position_id;?>');" class="inputbox smove-down"
 												value="<?php echo JText::_('JGLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>
