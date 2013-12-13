@@ -104,7 +104,7 @@
 			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
 			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
 			
-			<option value="americanfootball">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
+			<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
 			<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
 			<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
 			<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
@@ -276,7 +276,16 @@
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-		</field>     
+		</field>
+    
+    <field name="show_debug_info_matches" 
+    type="radio" 
+    default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_MATCHES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>        
           		
 	</fieldset>
   
