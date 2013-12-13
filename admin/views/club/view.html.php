@@ -93,7 +93,7 @@ class sportsmanagementViewClub extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_CLUB_NEW') : JText::_('COM_SPORTSMANAGEMENT_CLUB_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
