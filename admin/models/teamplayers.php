@@ -14,11 +14,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
+
 /**
- * Sportsmanagement Component TeamPlayers Model
- *
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementModelTeamPlayers
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
  */
 class sportsmanagementModelTeamPlayers extends JModelList
 {
@@ -143,205 +147,47 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		return $where;
 	}
 
+	function getProjectTeamplayers($project_team_id)
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        // Create a new query object.
+		$db		= &JFactory::getDBO();
+		$query	= $db->getQuery(true);
+		$user	= JFactory::getUser(); 
+		
+        //$mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        
+        // Select some fields
+		$query->select('pl.*');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as tpl on tpl.person_id = pl.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt on pt.id = tpl.projectteam_id');
+        $query->where('pt.team_id = '.$project_team_id);
+        $db->setQuery($query);
+        //$db->query();
+        $result = $db->loadObjectList();
+        //$mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+                
+		if (!$result)
+		{
+			//$this->setError($this->_db->getErrorMsg());
+            $mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+            $mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+			return false;
+		}
+		return $result;
+    }
+
+	
 	
 
-	/**
-	 * Method to return the players array (projectid,teamid)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
+	
 
-/*     
-	function getPersons()
-	{
-		$query="	SELECT	id AS value,
-							lastname,
-							firstname,
-							info,
-							weight,
-							height,
-							picture,
-							birthday,
-							notes,
-							nickname,
-							knvbnr,
-							country
-					FROM #__joomleague_person
-					WHERE published = '1'
-					ORDER BY firstname ASC ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
-*/
+	
 
-	/**
-	 * Method to return a divisions array (id,name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
-/*
-	function getDivisions()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-
-		$project_id=$mainframe->getUserState($option.'project');
-		$query="	SELECT id AS value, name AS text
-					FROM #__joomleague_division
-					WHERE project_id=$project_id ORDER BY name ASC ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
-*/
-
-	/**
-	 * Method to return a positions array (id,position)
-		*
-		* @access  public
-		* @return  array
-		* @since 0.1
-		*/
-/*
-	function getPositions()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-
-		$query="	SELECT pp.id AS value,name AS text
-					FROM #__joomleague_position AS p
-					LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
-					WHERE pp.project_id=$project_id AND p.persontype=1
-					ORDER BY ordering ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		foreach ($result as $position){$position->text=JText::_($position->text);}
-		return $result;
-	}
-*/
-
-	/**
-	 * return list of project teams for select options
-	 *
-	 * @return array
-	 */
-
-/*
-	function getProjectTeamList()
-	{
-		$query='	SELECT	t.id AS value,
-							t.name AS text
-					FROM #__joomleague_team AS t
-					INNER JOIN  #__joomleague_project_team AS tt ON tt.team_id=t.id
-					WHERE tt.project_id='.$this->_project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-*/
-
-	/**
-	 * add the specified persons to team
-	 *
-	 * @param array int player ids
-	 * @param int team id
-	 * @return int number of row inserted
-	 */
-	/*
-    function storeAssigned($cid,$projectteam_id)
-	{
-		$mainframe = JFactory::getApplication();
-        //$mainframe->enqueueMessage(JText::_('storeAssigned cid-> '.'<pre>'.print_r($cid,true).'</pre>' ),'');
-        //$mainframe->enqueueMessage(JText::_('storeAssigned projectteam_id-> '.'<pre>'.print_r($projectteam_id,true).'</pre>' ),'');
-        
-        if (!count($cid) || !$projectteam_id){return 0;}
-		$query="	SELECT	p.id
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS p
-					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS tp ON tp.person_id=p.id
-					WHERE tp.projectteam_id=".$this->_db->Quote($projectteam_id)." AND p.published = '1'";
-		$this->_db->setQuery($query);
-		$current=$this->_db->loadResultArray();
-		$added=0;
-		foreach ($cid AS $pid)
-		{
-			if (!in_array($pid,$current))
-			{
-
-				$tblTeamplayer =& JTable::getInstance( 'Teamplayer', 'Table' );
-				$tblTeamplayer->person_id		= $pid;
-				$tblTeamplayer->projectteam_id	= $projectteam_id;
-                // diddipoeler published
-                $tblTeamplayer->published		= 1;
-                // diddipoeler picture
-                $tblPerson =& JTable::getInstance( 'Person', 'Table' );
-                $tblPerson->load($pid);
-                
-
-				$tblProjectTeam =& JTable::getInstance( 'Projectteam', 'Table' );
-				$tblProjectTeam->load($projectteam_id);
-					
-				if ( !$tblTeamplayer->check() )
-				{
-					$this->setError( $tblTeamplayer->getError() );
-					continue;
-				}
-				// Get data from player
-				$query = "	SELECT picture, position_id
-							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl
-							WHERE pl.id=". $this->_db->Quote($pid);
-				$this->_db->setQuery( $query );
-				$person = $this->_db->loadObject();
-				if ( $person )
-				{
-					$query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position ";
-					$query.= " WHERE position_id = " . $this->_db->Quote($person->position_id);
-					$query.= " AND project_id = " . $this->_db->Quote($tblProjectTeam->project_id);
-					$this->_db->setQuery($query);
-					if ($resPrjPosition = $this->_db->loadObject())
-					{
-						$tblTeamplayer->project_position_id = $resPrjPosition->id;
-					}
-                    // diddipoeler picture and notes
-					$tblTeamplayer->picture			= $person->picture;
-                    $tblTeamplayer->notes			= $person->notes;
-					$tblTeamplayer->projectteam_id	= $projectteam_id;
-
-				}
-				$query = "	SELECT max(ordering) count
-							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team_player";
-				$this->_db->setQuery( $query );
-				$tp = $this->_db->loadObject();
-				
-				$tblTeamplayer->ordering = (int) $tp->count + 1;
-				if ( !$tblTeamplayer->store() )
-				{
-					$this->setError( $tblTeamplayer->getError() );
-					continue;
-				}
-				$added++;
-			}
-		}
-
-		return $added;
-	}
-*/
+	
 	/**
 	 * remove specified players from team
 	 * @param $cids player ids
