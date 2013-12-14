@@ -68,6 +68,25 @@ $paramsdata = JComponentHelper::getParams($option);
 		return $github;
     
     }
+    
+    function checkcountry()
+    {
+        $query='SELECT count(*) AS count
+		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+    }
+    
+    function checksporttype($type)
+    {
+        $type = strtoupper($type);
+        $query="SELECT count(*) AS count
+		FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type where name LIKE '%".$type."%' ";
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+        
+        
+    }
 
     /**
 	 * Function to fetch a JSON feed
