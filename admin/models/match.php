@@ -1347,6 +1347,7 @@ $mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_HEAD
 //add body
 $fcontent = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL',$this->_match_date_old,$this->_match_time_old,$this->_match_date_new,$this->_match_time_new,$user->name);
 $mailer->setBody($fcontent);
+$mailer->isHTML(true); 
 $send =& $mailer->Send();
 if ( $send !== true ) 
 {
