@@ -176,8 +176,8 @@ class sportsmanagementModelMatch extends JModelAdmin
             
             
               
-            $mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
-            $mainframe->enqueueMessage($tbl->match_date,'Notice');
+            //$mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
+            //$mainframe->enqueueMessage($tbl->match_date,'Notice');
             
             if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
             {
@@ -1356,7 +1356,7 @@ if ( $send !== true )
 } 
 else 
 {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_SEND_SUCCESS'),'Notice');
+    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_SEND_SUCCESS',$player->firstname,$player->lastname ),'Notice');
 }
     
         }    
