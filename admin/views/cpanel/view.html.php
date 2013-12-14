@@ -6,6 +6,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 
+/**
+ * sportsmanagementViewcpanel
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementViewcpanel extends JView
 {
 	/**
@@ -14,10 +23,50 @@ class sportsmanagementViewcpanel extends JView
 	 */
 	function display($tpl = null) 
 	{
-		// Get data from the model
+		
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $model	= $this->getModel();
+        
+        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        
+        $params = JComponentHelper::getParams( $option );
+        $sporttypes = $params->get( 'cfg_sport_types' );
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewcpanel cfg_sport_types<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
+        
+        foreach ( $sporttypes as $key => $type )
+        {
+        $checksporttype = $model->checksporttype($type);    
+        
+        if ( $checksporttype )
+        {
+        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
+        }
+        else
+        {
+        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
+        
+        $insert_sport_type = $databasetool->insertSportType($type);    
+        
+        }
+        
+        }
+        
+        // Get data from the model
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
-        $model	= $this->getModel();
+        
+        
+        $checkcountry = $model->checkcountry();
+        if ( $checkcountry )
+        {
+        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS'),'');    
+        }
+        else
+        {
+        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error');    
+        }
         
 		jimport('joomla.html.pane');
 		$pane	= JPane::getInstance('sliders');

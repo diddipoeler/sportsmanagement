@@ -145,7 +145,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
@@ -161,12 +161,36 @@ class sportsmanagementModelMatch extends JModelAdmin
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			$tblMatch = & $this->getTable();
+			// änderungen im datum oder der uhrzeit
+            $tbl = $this->getTable();;
+            $tbl->load((int) $pks[$x]);
+            
+            list($date,$time) = explode(" ",$tbl->match_date);
+            $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
+            $this->_match_date_new = $post['match_date'.$pks[$x]];
+            $this->_match_time_old = $time;
+            $this->_match_date_old = sportsmanagementHelper::convertDate($date);
+            
+            $post['match_date'.$pks[$x]] = sportsmanagementHelper::convertDate($post['match_date'.$pks[$x]],0);
+            $post['match_date'.$pks[$x]] = $post['match_date'.$pks[$x]].' '.$post['match_time'.$pks[$x]].':00';
+            
+            
+              
+            $mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
+            $mainframe->enqueueMessage($tbl->match_date,'Notice');
+            
+            if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
+                self::sendEmailtoPlayers();
+                
+            }
+            
+            $tblMatch = & $this->getTable();
 			$tblMatch->id = $pks[$x];
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
-            
             $tblMatch->match_date = $post['match_date'.$pks[$x]];
-            $tblMatch->match_time = $post['match_time'.$pks[$x]];
+            //$tblMatch->match_time = $post['match_time'.$pks[$x]];
             $tblMatch->crowd = $post['crowd'.$pks[$x]];
             $tblMatch->round_id	= $post['round_id'.$pks[$x]];
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
@@ -174,9 +198,11 @@ class sportsmanagementModelMatch extends JModelAdmin
             $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
             $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
 
-			if(!$tblMatch->store()) {
-				$this->setError($this->_db->getErrorMsg());
-				$result=false;
+			if(!$tblMatch->store()) 
+            {
+				//$this->setError($this->_db->getErrorMsg());
+                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
 			}
 		}
 		return $result;
@@ -1279,6 +1305,69 @@ if (!$db->query())
 		$this->_db->setQuery($query);
 		return ($this->_db->loadObjectList());
 	}
+    
+    
+    function sendEmailtoPlayers()
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $mailer = JFactory::getMailer();
+        $user	= JFactory::getUser();
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $mdl = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdl->getProject($this->project_id);
+        
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers user<br><pre>'.print_r($user, true).'</pre><br>','Notice');
+        
+        $mdl = JModel::getInstance("TeamPlayers", "sportsmanagementModel");
+	    $teamplayer = $mdl->getProjectTeamplayers($project->fav_team);
+        
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers teamplayer<br><pre>'.print_r($teamplayer, true).'</pre><br>','Notice');
+        
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_time_new<br><pre>'.print_r($this->_match_time_new, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_date_new<br><pre>'.print_r($this->_match_date_new, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_time_old<br><pre>'.print_r($this->_match_time_old, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_date_old<br><pre>'.print_r($this->_match_date_old, true).'</pre><br>','Notice');
+        
+        foreach ( $teamplayer as $player )
+        {
+        if( $player->email )
+        {
+        //add the sender Information.
+$sender = array( 
+    $user->email,
+    $user->name
+);
+$mailer->setSender($sender); 
+//add the recipient. $recipient = $user_email;
+$mailer->addRecipient($player->email);
+//add the subject
+$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_HEADER'));
+//add body
+$fcontent = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL',$this->_match_date_old,$this->_match_time_old,$this->_match_date_new,$this->_match_time_new,$user->name);
+$mailer->setBody($fcontent);
+$mailer->isHTML(true); 
+$send =& $mailer->Send();
+if ( $send !== true ) 
+{
+    //echo 'Error sending email: ' . $send->message;
+    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_SEND_ERROR',$send->message),'Error');
+} 
+else 
+{
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_SEND_SUCCESS'),'Notice');
+}
+    
+        }    
+            
+            
+        }
+                
+        
+        
+        
+    }
          
     
 }
