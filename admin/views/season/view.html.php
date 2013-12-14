@@ -52,7 +52,7 @@ class sportsmanagementViewSeason extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_SEASON_NEW') : JText::_('COM_SPORTSMANAGEMENT_SEASON_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
