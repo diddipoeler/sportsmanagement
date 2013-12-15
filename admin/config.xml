@@ -120,6 +120,8 @@
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		
+		
+		
 		<field name="ph_flags" 
     type="media"
 			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"
@@ -182,6 +184,38 @@
 			directory="images/com_sportsmanagement/database/placeholders/"
 			preview="show">			
 		</field>
+		
+		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL" 
+          description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_DESC" />
+          
+		<field
+				name="match_mail_header"
+				type="text"
+				default="Spielverlegung !"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_HEADER"
+				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_HEADER_DESC"
+				size="50"
+				filter="safehtml"/>	
+<!--
+		<field
+				name="match_mail_text"
+				type="textarea"
+				default="Hallo Sportsfreunde, das Spiel am [FROMDATE] um [FROMTIME] Uhr wurde auf den [TODATE] auf [TOTIME] Uhr verlegt.Gruß [MAILFROM]"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT"
+				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
+				rows="5" 
+        cols="50"
+				filter="safehtml"/>			
+-->
+		<field
+				name="match_mail_text"
+				type="editor"
+				default="Hallo Sportsfreunde, das Spiel am [FROMDATE] um [FROMTIME] Uhr wurde auf den [TODATE] auf [TOTIME] Uhr verlegt.Gruß [MAILFROM]"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT"
+				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
+				width="45ß" 
+				filter="safehtml"/>
+				
 	</fieldset>
 
 <!-- register 3 -->	
