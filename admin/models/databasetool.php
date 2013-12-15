@@ -261,6 +261,29 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     }    
     
     
+    function insertCountries()
+    {
+    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+    require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
+    $db = JFactory::getDBO();
+    $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/countries.sql';
+// echo '<br>'.$db_table.'<br>';
+// $fileContent = JFile::read($db_table);
+// $sql_teil = explode(";",$fileContent);
+
+    $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
+    if ( $result )
+    {
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error');     
+    }   
+    else
+    {
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');     
+    } 
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+    }
+    
     function insertSportType($type)
     {
         $mainframe = JFactory::getApplication();
