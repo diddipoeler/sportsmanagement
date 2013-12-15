@@ -1313,6 +1313,8 @@ if (!$db->query())
         $option = JRequest::getCmd('option');
         $mailer = JFactory::getMailer();
         $user	= JFactory::getUser();
+        // get settings from com_issuetracker parameters
+        $params = JComponentHelper::getParams($option);
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $mdl = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdl->getProject($this->project_id);
@@ -1343,9 +1345,17 @@ $mailer->setSender($sender);
 //add the recipient. $recipient = $user_email;
 $mailer->addRecipient($player->email);
 //add the subject
-$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL_HEADER'));
+$mailer->setSubject($params->get('match_mail_header', ''));
 //add body
-$fcontent = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL',$this->_match_date_old,$this->_match_time_old,$this->_match_date_new,$this->_match_time_new,$user->name);
+//$fcontent = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_MAIL',$this->_match_date_old,$this->_match_time_old,$this->_match_date_new,$this->_match_time_new,$user->name);
+$fcontent = $params->get('match_mail_text', '');
+
+$fcontent    = str_replace('[FROMDATE]', $this->_match_date_old, $fcontent);
+$fcontent    = str_replace('[FROMTIME]', $this->_match_time_old, $fcontent);
+$fcontent    = str_replace('[TODATE]', $this->_match_date_new, $fcontent);
+$fcontent    = str_replace('[TOTIME]', $this->_match_time_new, $fcontent);
+$fcontent    = str_replace('[MAILFROM]', $user->name, $fcontent);
+
 $mailer->setBody($fcontent);
 $mailer->isHTML(true); 
 $send =& $mailer->Send();
