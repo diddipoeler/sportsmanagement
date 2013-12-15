@@ -65,7 +65,8 @@ class sportsmanagementViewcpanel extends JView
         }
         else
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error');    
+        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error'); 
+        $insert_countries = $databasetool->insertCountries();    
         }
         
 		jimport('joomla.html.pane');
