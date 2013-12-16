@@ -361,6 +361,7 @@ foreach( $xml->document->events as $event )
         $temp->switch = strtolower($attributes['switch']);
         $temp->parent = $attributes['parent'];
         $temp->content = $attributes['content'];
+        $temp->events = $attributes['events'];
         //$export = array();
         $export[] = $temp;
         $this->_sport_types_position_parent[strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper($attributes['main'])] = array_merge($export);
@@ -491,6 +492,7 @@ foreach( $xml->document->events as $event )
 			$events_staff[$i]		= $db->insertid();
 			$events_clubstaff[$i]	= $db->insertid();
 			$events_referees[$i]	= $db->insertid();
+            $event->tableid = $db->insertid();
             }
             else
 		{
@@ -498,7 +500,7 @@ foreach( $xml->document->events as $event )
 			$events_staff[$i]		= $object->id;
 			$events_clubstaff[$i]	= $object->id;
 			$events_referees[$i]	= $object->id;
-			
+			$event->tableid = $object->id;
 		}
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
         $i++;
@@ -540,11 +542,32 @@ foreach( $xml->document->events as $event )
                     $db->setQuery($query);
 					$result					= $db->query();
 					$PlayersPositions[$j]	= $db->insertid();
+                    $parent->tableid = $db->insertid();
 				}
 				else
 				{
 					$PlayersPositions[$j]	= $object->id;
+                    $parent->tableid = $object->id;
 				}
+                
+                if ( $parent->events )
+                {
+                foreach ( $this->_sport_types_events[$type] as $event )
+                {
+                $query	= self::build_InsertQuery_PositionEventType($parent->tableid,$event->tableid);
+                $db->setQuery($query);
+				$result = $db->query(); 
+                if ( $result )
+                {
+                    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+                }   
+                else
+                {
+                    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
+                }
+                }
+                }
+                
             $j++;
             
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
