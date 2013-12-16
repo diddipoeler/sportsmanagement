@@ -38,16 +38,16 @@
 
 
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">GOALKEEPER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">DEFENDER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">MIDFIELDER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MIDFIELDER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">FORWARD</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">MAIN_REFEREE</parentname>

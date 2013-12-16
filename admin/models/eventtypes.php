@@ -53,7 +53,7 @@ class sportsmanagementModelEventtypes extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelEventtypes getListQuery query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
         
@@ -89,6 +89,9 @@ class sportsmanagementModelEventtypes extends JModelList
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelEventtypes _buildContentWhere filter_sports_type<br><pre>'.print_r($filter_sports_type,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelEventtypes _buildContentWhere filter_state<br><pre>'.print_r($filter_state,true).'</pre>'   ),'');
 
 		$search=JString::strtolower($search);
 		$where=array();
@@ -111,7 +114,7 @@ class sportsmanagementModelEventtypes extends JModelList
 				$where[]='obj.published=0';
 			}
 		}
-		$where=(count($where) ? ' WHERE '. implode(' AND ',$where) : '');
+		$where=(count($where) ? '  '. implode(' AND ',$where) : '');
 		return $where;
 	}
     
@@ -122,20 +125,39 @@ class sportsmanagementModelEventtypes extends JModelList
 	* @return  array
 	* @since 0.1
 	*/
-	function getEvents()
+	function getEvents($sports_type_id  = 0)
 	{
-		$query='SELECT evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text 
+		
+        $query	= $this->_db->getQuery(true);
+        // Select some fields
+		$query->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as evt');
+        // Join over the sportstype
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = evt.sports_type_id');
+        $query->where('evt.published = 1');
+        if ( $sports_type_id )
+        {
+            $query->where('evt.sports_type_id = '.$sports_type_id);
+        }
+        $query->order('evt.name ASC');
+/*        
+        $query='SELECT evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text 
 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS evt 
 				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = evt.sports_type_id 
 				WHERE evt.published=1 
 				ORDER BY evt.name ASC ';
+*/                
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		foreach ($result as $position){$position->text=JText::_($position->text);}
+		foreach ($result as $position)
+        {
+            $position->text=JText::_($position->text);
+        }
 		return $result;
 	}
     

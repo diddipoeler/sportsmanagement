@@ -75,7 +75,7 @@ class sportsmanagementViewPosition extends JView
 		{
 			$lists['position_events']='<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
-		$res1 = $mdlEventtypes->getEvents();
+		$res1 = $mdlEventtypes->getEvents($this->item->sports_type_id);
 		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
 		{
 			if($res1!="")

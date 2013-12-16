@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<events>
+<name icon="gelb.png">YELLOW_CARD</name>
+</events>
+<events>
+<name icon="rot.png">RED_CARD</name>
+</events>
+<events>
+<name icon="tor.png">GOAL</name>
+</events>
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">TEAM_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">COACHES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">MEDICAL_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="3">REFEREES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="4">CLUB_STAFF</mainname>
+</mainpositions>
+
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">HR</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">HM</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">VM</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">IL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">IR</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">HL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">AR</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RM</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RR</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">KM</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">KL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">KR</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">TW</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">AL</parentname>
+</parentpositions>
+
+</structur>
