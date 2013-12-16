@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<events>
+<name icon="yellow_card.png">YELLOW_CARD</name>
+</events>
+<events>
+<name icon="red_card.png">RED_CARD</name>
+</events>
+<events>
+<name icon="penalty_goal.png">PENALTY_GOAL</name>
+</events>
+<events>
+<name icon="injured.png">INJURY</name>
+</events>
+<events>
+<name icon="goal.png">GOAL</name>
+</events>
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">TEAM_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">COACHES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">MEDICAL_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="3">REFEREES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="4">CLUB_STAFF</mainname>
+</mainpositions>
+
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">GOALKEEPER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">DEFENDER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">MIDFIELDER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" main="PLAYERS">FORWARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">MAIN_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">CENTER_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">LINESMAN</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">THIRD_OFFICIAL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">FOURTH_OFFICIAL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">FIFTH_OFFICIAL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">VIDEO_UMPIRE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" main="CLUB_STAFF">CLUB_MANAGER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>
+</parentpositions>
+
+</structur>

@@ -39,6 +39,8 @@ class sportsmanagementViewcpanel extends JView
         {
         $checksporttype = $model->checksporttype($type);    
         
+        $checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
+        
         if ( $checksporttype )
         {
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
@@ -48,7 +50,7 @@ class sportsmanagementViewcpanel extends JView
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
         
         $insert_sport_type = $databasetool->insertSportType($type);    
-        
+        //$checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
         }
         
         }
