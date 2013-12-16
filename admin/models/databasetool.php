@@ -4,7 +4,8 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
- 
+jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file'); 
 
 class sportsmanagementModeldatabasetool extends JModelAdmin
 {
@@ -260,6 +261,123 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         
     }    
     
+    function checkSportTypeStructur($type)
+    {
+    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');    
+    //$db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.txt';    
+    //$fileContent = JFile::read($db_table);    
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
+    
+    $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+    
+    if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml')) 
+    {
+        return false;
+    }    
+    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    
+    
+    // We can now step through each element of the file 
+foreach( $xml->document->events as $event ) 
+{
+   $name = $event->getElementByPath('name');
+   $attributes = $name->attributes();
+   //$icon = $event->getElementByPath('icon');
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   
+   $temp = new stdClass();
+   $temp->name = strtoupper($option).'_'.strtoupper($type).'_E_'.strtoupper($name->data());
+    $temp->icon = 'images/'.$option.'/database/events/'.$type.'/'.strtolower($attributes['icon']);
+    $export[] = $temp;
+    $this->_sport_types_events[$type] = array_merge($export);
+   }
+    
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
+   
+   unset ($export); 
+    foreach( $xml->document->mainpositions as $position ) 
+{
+   $name = $position->getElementByPath('mainname');
+   $attributes = $name->attributes();
+   
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   
+//   $switch = $position->getElementByPath('mainswitch');
+//   $parent = $position->getElementByPath('mainparent');
+//   $content = $position->getElementByPath('maincontent');
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   
+   
+        $temp = new stdClass();
+        $temp->name = strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper($name->data());
+        $temp->switch = strtolower($attributes['switch']);
+        $temp->parent = $attributes['parent'];
+        $temp->content = $attributes['content'];
+        $export[] = $temp;
+        $this->_sport_types_position[$type] = array_merge($export);
+   }
+   
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
+    
+    
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
+    
+    unset ($export); 
+    foreach( $xml->document->parentpositions as $parent ) 
+{
+   $name = $parent->getElementByPath('parentname');
+   $attributes = $name->attributes();
+   
+   
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
+   
+//   $switch = $parent->getElementByPath('parentswitch');
+//   $parent = $parent->getElementByPath('parentparent');
+//   $content = $parent->getElementByPath('parentcontent');
+//   $mainparentposition = $parent->getElementByPath('mainparentposition');
+   
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
+   
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
+//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
+   
+  
+        $temp = new stdClass();
+        $temp->name = strtoupper($option).'_'.strtoupper($type).'_'.strtoupper($attributes['art']).'_'.strtoupper($name->data());
+        $temp->switch = strtolower($attributes['switch']);
+        $temp->parent = $attributes['parent'];
+        $temp->content = $attributes['content'];
+        //$export = array();
+        $export[] = $temp;
+        $this->_sport_types_position_parent[strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper($attributes['main'])] = array_merge($export);
+        
+   }
+    
+    
+    
+    
+    
+    
+    
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
+    
+    return true;
+    }
+    
     
     function insertCountries()
     {
@@ -290,7 +408,15 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $option = JRequest::getCmd('option');
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
-        self::createSportTypeArray();
+        //self::createSportTypeArray();
+        $available = self::checkSportTypeStructur($type);
+        
+        if ( !$available )
+        {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            return false;
+        }
+        
         
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -323,7 +449,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         }
         
         
-        
+        return true;
     }
     
     
