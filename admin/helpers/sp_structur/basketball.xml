@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<events>
+<name icon="freiwurf.png">FREE_THROW</name>
+</events>
+<events>
+<name icon="zweier.png">TWO_POINT</name>
+</events>
+<events>
+<name icon="dreier.png">THREE_POINT</name>
+</events>
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">TEAM_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">COACHES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">MEDICAL_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="3">REFEREES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="4">CLUB_STAFF</mainname>
+</mainpositions>
+
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">POINT_GUARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">COMBO_GUARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SHOOTING_GUARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SWINGMAN</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SMALL_FORWARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">POINT_FORWARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">POWER_FORWARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">COMBO_FORWARD</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD_CENTER</parentname>
+</parentpositions>
+
+
+</structur>
