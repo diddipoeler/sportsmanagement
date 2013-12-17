@@ -162,7 +162,9 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	public function getData()
 	{
-		libxml_use_internal_errors(true);
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        libxml_use_internal_errors(true);
 		if (!$xmlData=$this->_getXml())
 		{
 			$errorFound=false;
@@ -309,6 +311,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				if ($xmlData->record[$i]['object']=='EventType')
 				{
 					$this->_datas['event'][$et]=$xmlData->record[$i];
+//                    $mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
 					$et++;
 				}
 
@@ -342,6 +345,9 @@ class sportsmanagementModelJLXMLImport extends JModel
 				if ($xmlData->record[$i]['object']=='SportsType')
 				{
 					$this->_datas['sportstype']=$xmlData->record[$i];
+//                    JError::raiseNotice(0,$this->_datas['sportstype']);
+//                    $this->_datas['sportstype']->name    = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
+//                    $mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
 				}
 
 				// collect the projectreferee data
@@ -472,6 +478,34 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 				$i++;
 			}
+            
+            // textelemente bereinigen
+            $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
+            
+            // ereignisse um die textelemente bereinigen
+            $temp = explode("_",$this->_datas['sportstype']->name);
+            $sport_type_name = array_pop($temp);
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sport_type_name<br><pre>'.print_r($sport_type_name,true).'</pre>'   ),'');
+            foreach ($this->_datas['event'] as $event)
+            {
+                $event->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $event->name);
+            }
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
+                     
+            
+            
+            foreach ($this->_datas['position'] as $position)
+            {
+                $position->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $position->name);
+            }
+            
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
+            
+            
+            
+            
+            
 
 			if (isset($this->_datas['teamtool']) && is_array($this->_datas['teamtool']) && count($this->_datas['teamtool']) > 0)
 			{

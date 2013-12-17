@@ -6,6 +6,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 
+/**
+ * sportsmanagementViewPosition
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementViewPosition extends JView
 {
 	/**
@@ -53,18 +62,22 @@ class sportsmanagementViewPosition extends JView
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
-			foreach ($res as $re){$re->text=JText::_($re->text);}
-			$parent_id=array_merge($parent_id,$res);
+			foreach ($res as $re)
+            {
+                $re->text = JText::_($re->text);
+            }
+			$parent_id = array_merge($parent_id,$res);
 		}
-		$lists['parents']=$parent_id;
-        //$lists['parents']=$parent_id;
+		$lists['parents'] = $parent_id;
+        
 		unset($parent_id);
         
         $mdlEventtypes = JModel::getInstance("Eventtypes", "sportsmanagementModel");
+        
         //build the html select list for events
-		$res=array();
-		$res1=array();
-		$notusedevents=array();
+		$res = array();
+		$res1 = array();
+		$notusedevents = array();
 		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
 		{
 			$lists['position_events']=JHtml::_(	'select.genericlist',$res,'position_eventslist[]',

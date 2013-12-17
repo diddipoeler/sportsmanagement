@@ -55,17 +55,10 @@ defined('_JEXEC') or die('Restricted access');
 					<tr align="center">
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('ploeger_dieter.jpg','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
-							</div>
-                            
-                            <div style="text-align: center;">
-							<?php echo $this->addIcon('galun-siegfried02.png','http://www.esv-knittelfeld.at', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
-							</div>
-                            
-                            <div style="text-align: center;">
-							<?php echo $this->addIcon('prochnow_hauke.jpg','http://svdoerpum.de/', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							<?php echo $this->addIcon('sm-sports-management.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
 						</td>
+                        
 						<td width="50%" >
 							<div style="text-align: center;">
 							<?php echo $this->addIcon('cbehelp.png','http://joomleaguewiki.grammatikas-grill.de/index.php/Hauptseite', JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'), true); ?>
@@ -77,7 +70,31 @@ defined('_JEXEC') or die('Restricted access');
 		
 			<?php
 				echo $this->pane->startPane( 'stat-pane' );
-				echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_CBECOMMUNITY') , 'welcome' );
+				
+                                echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_DEVELOPER') , 'developer' );
+			?>
+			<table class="adminlist">
+				<tr>
+				<td width="5" >
+							<div style="text-align: center;">
+							<?php echo $this->addIcon('ploeger_dieter.jpg','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							</div>
+                            
+                            <div style="text-align: center;">
+							<?php echo $this->addIcon('galun-siegfried02.png','http://www.esv-knittelfeld.at', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							</div>
+                            
+                            <div style="text-align: center;">
+							<?php echo $this->addIcon('prochnow_hauke.jpg','http://svdoerpum.de/', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							</div>
+						</td>	
+				</tr>
+			</table>
+			<?php
+				echo $this->pane->endPanel();
+                
+                
+                echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_WELCOME_TO_CBECOMMUNITY') , 'welcome' );
 			?>
 			<table class="adminlist">
 				<tr>
