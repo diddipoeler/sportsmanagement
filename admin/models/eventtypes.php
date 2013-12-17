@@ -127,10 +127,11 @@ class sportsmanagementModelEventtypes extends JModelList
 	*/
 	function getEvents($sports_type_id  = 0)
 	{
-		
-        $query	= $this->_db->getQuery(true);
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query = $this->_db->getQuery(true);
         // Select some fields
-		$query->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text');
+		$query->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as evt');
         // Join over the sportstype
@@ -141,13 +142,7 @@ class sportsmanagementModelEventtypes extends JModelList
             $query->where('evt.sports_type_id = '.$sports_type_id);
         }
         $query->order('evt.name ASC');
-/*        
-        $query='SELECT evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text 
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS evt 
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = evt.sports_type_id 
-				WHERE evt.published=1 
-				ORDER BY evt.name ASC ';
-*/                
+                
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
 		{
@@ -156,7 +151,8 @@ class sportsmanagementModelEventtypes extends JModelList
 		}
 		foreach ($result as $position)
         {
-            $position->text=JText::_($position->text);
+            //$position->text = JText::_($position->text);
+            $position->text = JText::_($position->posname).' ('.JText::_($position->stname).')';
         }
 		return $result;
 	}
@@ -170,8 +166,12 @@ class sportsmanagementModelEventtypes extends JModelList
 	*/
 	function getEventsPosition($id)
 	{
-		$query='	SELECT	p.id AS value,
-							concat(p.name, " (" , st.name, ")") AS text 
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query='	SELECT	p.id AS value,
+        p.name as posname,
+						st.name AS stname,
+                        concat(p.name, " (" , st.name, ")") AS text  
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
 						ON pe.eventtype_id=p.id
@@ -185,7 +185,11 @@ class sportsmanagementModelEventtypes extends JModelList
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		foreach ($result as $event){$event->text=JText::_($event->text);}
+		foreach ($result as $event)
+        {
+            //$event->text = JText::_($event->text);
+            $event->text = JText::_($event->posname).' ('.JText::_($event->stname).')';
+        }
 		return $result;
 	}
     

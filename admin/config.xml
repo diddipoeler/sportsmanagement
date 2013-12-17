@@ -111,7 +111,7 @@
 			<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
 			<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
 			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
-			
+			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
 		</field>
 		
   </fieldset>
