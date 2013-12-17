@@ -26,7 +26,7 @@ JHtml::_('behavior.modal');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20">
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>

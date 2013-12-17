@@ -607,7 +607,7 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#DDDDDD'><?php echo JText::_('COM_SPORTSMANAGEMENT_PROJECT_TIMEZONE'); ?></td>
+								<td style='background-color:#DDDDDD'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE'); ?></td>
 								<td style='background-color:#DDDDDD'>
 									<?php echo $this->lists['timezone'].'&nbsp;'; ?>
 								</td>
