@@ -16,6 +16,12 @@
 <events>
 <name icon="goal.png">GOAL</name>
 </events>
+<events>
+<name icon="own_goal.png">OWN_GOAL</name>
+</events>
+
+
+
 
 <mainpositions>
 <mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
@@ -50,31 +56,31 @@
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">MAIN_REFEREE</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">MAIN_REFEREE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">CENTER_REFEREE</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">CENTER_REFEREE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">LINESMAN</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">LINESMAN</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">THIRD_OFFICIAL</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">THIRD_OFFICIAL</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">FOURTH_OFFICIAL</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FOURTH_OFFICIAL</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">FIFTH_OFFICIAL</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FIFTH_OFFICIAL</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" main="REFEREES">VIDEO_UMPIRE</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">VIDEO_UMPIRE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="4" art="F" main="CLUB_STAFF">CLUB_MANAGER</parentname>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="4" art="F" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>
 </parentpositions>
 
 </structur>
