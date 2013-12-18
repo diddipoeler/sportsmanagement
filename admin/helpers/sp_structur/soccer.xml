@@ -19,8 +19,12 @@
 <events>
 <name icon="own_goal.png">OWN_GOAL</name>
 </events>
-
-
+<events>
+<name icon="foul.png">FOUL</name>
+</events>
+<events>
+<name icon="foul_time.png">FOUL_TIME</name>
+</events>
 
 
 <mainpositions>
