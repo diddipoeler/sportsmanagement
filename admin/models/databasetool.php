@@ -439,7 +439,7 @@ foreach( $xml->document->events as $event )
 		{
 			
             $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		//	$result = false;
+			$result = false;
 		}
         else
         {
