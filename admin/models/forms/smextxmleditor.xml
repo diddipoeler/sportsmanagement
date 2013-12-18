@@ -13,7 +13,7 @@
 			editor="codemirror|none"
 			buttons="no"
 			label="COM_SPORTSMANAGEMENT_XML_SOURCE_LABEL"
-			description="COM_SPORTSMANAGEMENT_XML_SOURCE_DESC"
+			description="COM_SPORTSMANAGEMENT_XML_SOURCE_LABEL_DESC"
 			rows="60"
 			cols="80"
 			filter="raw" />
