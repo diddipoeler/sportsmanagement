@@ -439,7 +439,7 @@ foreach( $xml->document->events as $event )
 		{
 			
             $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			$result = false;
+		//	$result = false;
 		}
         else
         {
@@ -506,7 +506,7 @@ foreach( $xml->document->events as $event )
         $i++;
     }
     
-    // standardpositionen einfügen
+    // standardpositionen einfï¿½gen
     $i = 0;
     $j = 0;
     foreach ( $this->_sport_types_position[$type] as $position )
