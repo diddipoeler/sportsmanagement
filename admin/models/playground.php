@@ -150,15 +150,15 @@ class sportsmanagementModelplayground extends JModelAdmin
 		{
 			$address_parts[] = $data['state'];
 		}
-		if (!empty($data['location']))
+		if (!empty($data['city']))
 		{
 			if (!empty($data['zipcode']))
 			{
-				$address_parts[] = $data['zipcode']. ' ' .$data['location'];
+				$address_parts[] = $data['zipcode']. ' ' .$data['city'];
 			}
 			else
 			{
-				$address_parts[] = $data['location'];
+				$address_parts[] = $data['city'];
 			}
 		}
 		if (!empty($data['country']))
