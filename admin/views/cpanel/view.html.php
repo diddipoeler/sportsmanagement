@@ -44,6 +44,10 @@ class sportsmanagementViewcpanel extends JView
         if ( $checksporttype )
         {
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
+        
+        // es können aber auch neue positionen oder ereignisse dazu kommen
+        $insert_sport_type = $databasetool->insertSportType($type); 
+        
         }
         else
         {
