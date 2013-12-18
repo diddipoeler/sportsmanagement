@@ -3,6 +3,9 @@
 
 <events>
 <name icon="yellow_card.png">YELLOW_CARD</name>
+<events>
+<name icon="yellow_red_card.png">YELLOW_RED_CARD</name>
+</events>
 </events>
 <events>
 <name icon="red_card.png">RED_CARD</name>
