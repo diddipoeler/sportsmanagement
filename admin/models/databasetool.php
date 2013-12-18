@@ -296,7 +296,7 @@ foreach( $xml->document->events as $event )
     $this->_sport_types_events[$type] = array_merge($export);
    }
     
-   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
+   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
    
    unset ($export); 
@@ -323,7 +323,7 @@ foreach( $xml->document->events as $event )
         $this->_sport_types_position[$type] = array_merge($export);
    }
    
-    $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
     
     
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
@@ -374,7 +374,7 @@ foreach( $xml->document->events as $event )
     
     
     
-    $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
     
     return true;
     }
@@ -418,7 +418,20 @@ foreach( $xml->document->events as $event )
             return false;
         }
         
-        
+       $query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
+       $this->_db->setQuery($query);
+       $result = $this->_db->loadResult();
+       if ( $result )
+       {
+       $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
+     // $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+      $sports_type_id = $result;
+        $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
+      self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=1);
+      
+       }
+       else
+       { 
         // Get a db connection.
         $db = JFactory::getDbo();
         // Create a new query object.
@@ -446,15 +459,15 @@ foreach( $xml->document->events as $event )
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
         $sports_type_id = $db->insertid();
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
-        self::addStandardForSportType($sports_type_name, $sports_type_id, $type);
+        self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=0);
         }
-        
+        }
         
         return true;
     }
     
     
-    function addStandardForSportType($name, $id, $type)
+    function addStandardForSportType($name, $id, $type,$update=0)
 {
     $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -502,7 +515,11 @@ foreach( $xml->document->events as $event )
 			$events_referees[$i]	= $object->id;
 			$event->tableid = $object->id;
 		}
+        
+        if ( !$update )
+        {
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        }
         $i++;
     }
     
@@ -527,7 +544,10 @@ foreach( $xml->document->events as $event )
 				$PlayersPositions[$i]	= $dbresult->id;
 			}
     
+   if ( !$update )
+        {
     $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    }
     
     // parent position
     if ( isset($this->_sport_types_position_parent[$position->name])  )
@@ -557,6 +577,8 @@ foreach( $xml->document->events as $event )
                 $query	= self::build_InsertQuery_PositionEventType($parent->tableid,$event->tableid);
                 $db->setQuery($query);
 				$result = $db->query(); 
+                if ( !$update )
+        {
                 if ( $result )
                 {
                     $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
@@ -567,10 +589,14 @@ foreach( $xml->document->events as $event )
                 }
                 }
                 }
+                }
                 
             $j++;
-            
+        
+        if ( !$update )
+        {    
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+         }
             
         }    
     }
