@@ -1737,13 +1737,14 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 				$p_playground->set('notes',$this->_getDataFromObject($import_playground,'notes'));
                 
     // geo coding
-    $address = $this->_getDataFromObject($import_playground,'address');
+    $address_parts = array();
+    $addressdata = $this->_getDataFromObject($import_playground,'address');
     $city = $this->_getDataFromObject($import_playground,'city');
     $zipcode = $this->_getDataFromObject($import_playground,'zipcode');
     $country = $this->_getDataFromObject($import_playground,'country');
-    if (!empty($address))
+    if (!empty($addressdata))
     {
-	$address_parts[] = $address;
+	$address_parts[] = $addressdata;
 	}
 	
 	if (!empty($city))
@@ -1977,14 +1978,15 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
                 $p_club->set('new_club_id',$this->_getDataFromObject($import_club,'new_club_id'));
                 
     // geo coding
-    $address = $this->_getDataFromObject($import_club,'address');
+    $address_parts = array();
+    $addressdata = $this->_getDataFromObject($import_club,'address');
     $state = $this->_getDataFromObject($import_club,'state');
     $location = $this->_getDataFromObject($import_club,'location');
     $zipcode = $this->_getDataFromObject($import_club,'zipcode');
     $country = $this->_getDataFromObject($import_club,'country');
-    if (!empty($address))
+    if (!empty($addressdata))
     {
-	$address_parts[] = $address;
+	$address_parts[] = $addressdata;
 	}
 	if (!empty($state))
 	{
@@ -2414,14 +2416,15 @@ $this->dump_variable("import_team", $import_team);
                 
                 
     // geo coding
-    $address = $this->_getDataFromObject($import_person,'address');
+    $address_parts = array();
+    $addressdata = $this->_getDataFromObject($import_person,'address');
     $city = $this->_getDataFromObject($import_person,'city');
     $zipcode = $this->_getDataFromObject($import_person,'zipcode');
     $country = $this->_getDataFromObject($import_person,'address_country');
     $state = $this->_getDataFromObject($import_person,'state');
-    if (!empty($address))
+    if (!empty($addressdata))
     {
-	$address_parts[] = $address;
+	$address_parts[] = $addressdata;
 	}
 	if (!empty($state))
     {
