@@ -24,27 +24,27 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="55%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('icon-48-clubs.png','index.php?option=com_sportsmanagement&view=clubs', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>
-				<?php echo $this->addIcon('icon-48-teams.png','index.php?option=com_sportsmanagement&view=teams', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS'));?>
-				<?php echo $this->addIcon('icon-48-leagues.png','index.php?option=com_sportsmanagement&view=leagues', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>
-				<?php echo $this->addIcon('icon-48-seasons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>
-				<?php echo $this->addIcon('icon-48-playground-2.png','index.php?option=com_sportsmanagement&view=playgrounds', JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES'));?>
-				<?php echo $this->addIcon('icon-48-positions.png','index.php?option=com_sportsmanagement&view=positions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'));?>
-				<?php echo $this->addIcon('icon-48-statistics.png','index.php?option=com_sportsmanagement&view=statistics', JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS'));?>
-				<?php echo $this->addIcon('icon-48-sportstypes.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
-				<?php echo $this->addIcon('icon-48-events.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>
-        <?php echo $this->addIcon('groups.gif','index.php?option=com_sportsmanagement&view=persons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS'));?>
-        <?php echo $this->addIcon('icon-48-agegroups.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?>
-        <?php echo $this->addIcon('world.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>
-        <?php echo $this->addIcon('association.jpg','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>
-        <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=extrafields', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS'));?>
+				<?php echo $this->addIcon('vereine.png','index.php?option=com_sportsmanagement&view=clubs', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>
+				<?php echo $this->addIcon('mannschaften.png','index.php?option=com_sportsmanagement&view=teams', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS'));?>
+				<?php echo $this->addIcon('ligen.png','index.php?option=com_sportsmanagement&view=leagues', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>
+				<?php echo $this->addIcon('saisons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>
+				<?php echo $this->addIcon('spielorte.png','index.php?option=com_sportsmanagement&view=playgrounds', JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES'));?>
+				<?php echo $this->addIcon('positionen.png','index.php?option=com_sportsmanagement&view=positions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'));?>
+				<?php echo $this->addIcon('statistik.png','index.php?option=com_sportsmanagement&view=statistics', JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS'));?>
+				<?php echo $this->addIcon('sportarten.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
+				<?php echo $this->addIcon('ereignisse.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>
+        <?php echo $this->addIcon('personen.png','index.php?option=com_sportsmanagement&view=persons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS'));?>
+        <?php echo $this->addIcon('altersklassen.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?>
+        <?php echo $this->addIcon('laender.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>
+        <?php echo $this->addIcon('landesverbaende.png','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>
+        <?php echo $this->addIcon('extrafelder.png','index.php?option=com_sportsmanagement&view=extrafields', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS'));?>
 				
-		<?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
-                <?php echo $this->addIcon('configuration.gif','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
-                <?php echo $this->addIcon('applications.gif','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES'));?>
-                <?php echo $this->addIcon('icon-48-rosterposition.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>
+		<?php echo $this->addIcon('xmlimport.png','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
+                <?php echo $this->addIcon('datenbanktools.png','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
+                <?php echo $this->addIcon('updates.png','index.php?option=com_sportsmanagement&view=updates', JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES'));?>
+                <?php echo $this->addIcon('spielfeldpositionen.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>
                 
-<?php echo $this->addIcon('xmlimport-48.png','index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR'));?>
+<?php echo $this->addIcon('xmleditor.png','index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR'));?>
                 		
 			</div>
 		</td>
@@ -249,10 +249,10 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 	<tr>
-		<td style="text-align: left; width: 33%;">
-			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW" ); ?></a>
-			<br/>
-			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
+		<td style="width: 33%;">
+			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/facebook.png" alt="facebook" /><?php echo JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW'); ?></a>
+			
+			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/github.png" alt="github" /><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
 			
 		</td>
 		<td style="text-align: center; width: 33%;">
