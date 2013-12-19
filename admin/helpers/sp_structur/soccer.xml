@@ -63,6 +63,9 @@
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
 <parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
+</parentpositions>
+<parentpositions>
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">MAIN_REFEREE</parentname>
 </parentpositions>
 <parentpositions>

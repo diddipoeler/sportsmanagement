@@ -479,6 +479,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 				$i++;
 			}
             
+            
             // textelemente bereinigen
             $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
@@ -492,16 +493,46 @@ class sportsmanagementModelJLXMLImport extends JModel
                 $event->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $event->name);
             }
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
-                     
             
-            
+            // klartexte in textvariable umwandeln.
+            $query="SELECT name,alias FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name LIKE '%".$sport_type_name."%'";
+            $this->_db->setQuery($query);
+		    $this->_db->query();
+		    if ($this->_db->getAffectedRows())
+		    {
+			$result = $this->_db->loadObjectList();
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport _position<br><pre>'.print_r($result,true).'</pre>'   ),'');
+		    }
+
             foreach ($this->_datas['position'] as $position)
             {
                 $position->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $position->name);
+                if ( $result )
+                {
+                    foreach ( $result as $pos )
+                    {
+                        if ( $position->name == JText::_($pos->name) )
+                        {
+                            $position->name = $pos->name;
+                            $position->alias = $pos->alias;
+                        }
+                    }
+                }
             }
+            
+            
+            
             
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
             
+            // länder bei den spielorten vervollständigen
+            foreach ($this->_datas['playground'] as $playground )
+            {
+                if ( $playground->country == 0 || empty($playground->country) )
+                {
+                    $playground->country = 'DEU';
+                }
+            }    
             
             
             
