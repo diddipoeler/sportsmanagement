@@ -88,6 +88,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/yellow_card.png';
         $export[] = $temp;
         $this->_sport_types_events[$type] = array_merge($export);
+		$temp = new stdClass();
+        $temp->name = strtoupper($option).'_E_YELLOW_RED_CARD';
+		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/yellow_red_card.png';
+        $export[] = $temp;
+        $this->_sport_types_events[$type] = array_merge($export);
         $temp = new stdClass();
         $temp->name = strtoupper($option).'_E_RED_CARD';
 		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/red_card.png';
