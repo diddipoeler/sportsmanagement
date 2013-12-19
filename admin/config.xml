@@ -114,14 +114,21 @@
 			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
 		</field>
 		
+		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER" 
+          description="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER_DESC" />
+     
+     <field name="sis_xmllink" type="list" default="http://www.sis-handball.de" label="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK_DESC">
+				<option value="http://www.sis-handball.at">SIS Österreich</option>
+				<option value="http://www.sis-handball.de">SIS Deutschland</option>
+			</field>
+      <field name="sis_meinevereinsnummer" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSNUMMER" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSNUMMER_DESC" />
+			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
 <!-- register 2 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-		
-		
-		
+	
 		<field name="ph_flags" 
     type="media"
 			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"
