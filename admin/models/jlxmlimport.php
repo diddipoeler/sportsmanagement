@@ -1775,7 +1775,8 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 				{
 					$p_playground->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_playground,'name')));
 				}
-				if (array_key_exists((int)$this->_getDataFromObject($import_playground,'country'),$this->_convertCountryID))
+				/*
+                if (array_key_exists((int)$this->_getDataFromObject($import_playground,'country'),$this->_convertCountryID))
 				{
 					$p_playground->set('country',(int)$this->_convertCountryID[(int)$this->_getDataFromObject($import_playground,'country')]);
 				}
@@ -1783,6 +1784,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 				{
 					$p_playground->set('country',$this->_getDataFromObject($import_playground,'country'));
 				}
+                */
 				if ($this->_importType!='playgrounds')	// force club_id to be set to default if only playgrounds are imported
 				{
 					//if (!isset($this->_getDataFromObject($import_playground,'club_id')))
@@ -1816,7 +1818,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 						$insertID=$this->_db->insertid();
 						$this->_convertPlaygroundID[$oldID]=$insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new playground data: %1$s',"</span><strong>$p_playground->name</strong>");
+						$my_text .= JText::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
 						$my_text .= '<br />';
 					}
 				}
@@ -5006,6 +5008,7 @@ $this->dump_variable("import_team", $import_team);
     
     function setNewDataStructur()
     {
+        $mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         // $this->_project_id
@@ -5033,14 +5036,18 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
+			     
+                 
+                 
 			    }
         
         }
         
-        $query = 'SELECT id,team_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team where project_id = '.$this->_project_id ;
+        $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team where project_id = '.$this->_project_id ;
 		$this->_db->setQuery($query);
 		$result_pt = $this->_db->loadObjectList();
         
@@ -5055,9 +5062,9 @@ $this->dump_variable("import_team", $import_team);
             // Create a new query object.
             $insertquery = $db->getQuery(true);
             // Insert columns.
-            $columns = array('team_id','season_id');
+            $columns = array('team_id','season_id','picture');
             // Insert values.
-            $values = array($proteam->team_id,$this->_season_id);
+            $values = array($proteam->team_id,$this->_season_id,'\''.$proteam->picture.'\'');
             // Prepare the insert query.
             $insertquery
             ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
@@ -5068,11 +5075,12 @@ $this->dump_variable("import_team", $import_team);
             
 			if (!$db->query())
 			{
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			}
 			else
 			{
 			}
-            $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
+            $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
             $this->_db->setQuery($query);
 		    $result_tp = $this->_db->loadObjectList();
             foreach ( $result_tp as $team_member )
@@ -5094,16 +5102,18 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
 			    }
+                
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','team_id');
+                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id);
+                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
@@ -5114,12 +5124,27 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
+			    // die match player tabelle updaten
+                $new_match_player_id = $db->insertid();
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('teamplayer_id') . '=' . $new_match_player_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('teamplayer_id') . '=' . $team_member->id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query(); 
 			    }
             }
-            $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
+            $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
             $this->_db->setQuery($query);
 		    $result_tp = $this->_db->loadObjectList();
             foreach ( $result_tp as $team_member )
@@ -5141,16 +5166,19 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
+			     
 			    }
+                
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','team_id');
+                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id);
+                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
@@ -5161,9 +5189,27 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
+			    // die match staff tabelle updaten
+                $new_match_staff_id = $db->insertid(); 
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('team_staff_id') . '=' . $new_match_staff_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('team_staff_id') . '=' . $team_member->id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query();
+                
+                
+                
 			    }
             }
             
@@ -5171,9 +5217,11 @@ $this->dump_variable("import_team", $import_team);
 
         }
         
-        
-        
-        
+        // zum schluss den inhalt der alten tabellen löschen
+        // wegen speicherplatz
+        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
+        $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
         
         
     }

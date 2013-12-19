@@ -100,7 +100,7 @@
     default=""
     size="10"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESCR">
 			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
 			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
 			

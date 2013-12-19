@@ -4,13 +4,13 @@
 	<name>COM_SPORTSMANAGEMENT</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
 	<creationDate>April 2013</creationDate>
-	<author>diddipoeler, stony, svdoldie</author>
+	<author>diddipoeler, stony, svdoldie, donclumsy</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.08</version>
+	<version>1.0.09</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  

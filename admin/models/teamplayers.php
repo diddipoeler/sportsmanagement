@@ -28,6 +28,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 {
 	var $_identifier = "teamplayers";
     var $_project_id = 0;
+    var $_season_id = 0;
     var $_team_id = 0;
     var $_project_team_id = 0;
 
@@ -40,6 +41,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$query = $db->getQuery(true);
 		        
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $this->_team_id = JRequest::getVar('team_id');
         $this->_project_team_id = JRequest::getVar('project_team_id');
         
@@ -56,6 +58,29 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$where = self::_buildContentWhere();
 		$orderby = self::_buildContentOrderBy();
         
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+        $query->select(array('ppl.firstname',
+							'ppl.lastname',
+							'ppl.nickname',
+                            'ppl.height',
+                            'ppl.weight',
+                            
+                            'ppl.injury',
+                            'ppl.suspension',
+                            'ppl.away',
+                            
+                            'ppl.id',
+                            'ppl.id AS person_id',
+							'tp.*',
+                            'tp.id as tpid',
+							'u.name AS editor'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id')
+        ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
+        }
+        else
+        {    
         $query->select(array('ppl.firstname',
 							'ppl.lastname',
 							'ppl.nickname',
@@ -69,6 +94,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
         ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
+        }
 
         
         if ($where)
@@ -113,8 +139,21 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where=array();
-		$where[]='tp.projectteam_id= '.$this->_project_team_id;
+		
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+            $where[]="ppl.published = '1'";
+            $where[]='tp.team_id='.$this->_team_id;
+            $where[]='tp.season_id='.$this->_season_id;
+            $where[]='tp.persontype=1';
+        }
+        else
+        {
+        $where[]='tp.projectteam_id= '.$this->_project_team_id;
 		$where[]="ppl.published = '1'";
+        }
+        
+        
 		if ($search)
 		{
 			if ($search_mode)

@@ -326,7 +326,7 @@ class sportsmanagementModelperson extends JModelAdmin
 
 		if (!$db->query())
 		{
-//            $mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+    $mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
