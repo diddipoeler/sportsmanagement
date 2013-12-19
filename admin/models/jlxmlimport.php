@@ -1691,9 +1691,9 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
                 $mdl = JModel::getInstance("playground", "sportsmanagementModel");
                 $p_playground = $mdl->getTable();
                 
-				$import_playground=$this->_datas['playground'][$key];
-				$oldID=$this->_getDataFromObject($import_playground,'id');
-				$alias=$this->_getDataFromObject($import_playground,'alias');
+				$import_playground = $this->_datas['playground'][$key];
+				$oldID = $this->_getDataFromObject($import_playground,'id');
+				$alias = $this->_getDataFromObject($import_playground,'alias');
 				$p_playground->set('name',trim($this->_newplaygroundname[$key]));
 				$p_playground->set('short_name',$this->_newplaygroundshort[$key]);
 				$p_playground->set('address',$this->_getDataFromObject($import_playground,'address'));
@@ -4490,6 +4490,13 @@ $this->dump_variable("import_team", $import_team);
 					$tempplayground=explode("_",$key);
 					$this->_newplaygroundname[$tempplayground[1]]=$element;
 				}
+                
+                elseif (substr($key,0,17)=='playgroundCountry')
+				{
+					$tempplayground=explode("_",$key);
+					$this->_newplaygroundcountry[$tempplayground[1]]=$element;
+				}
+                
 				elseif (substr($key,0,19)=='playgroundShortname')
 				{
 					$tempplayground=explode("_",$key);

@@ -29,12 +29,13 @@ class sportsmanagementViewPlaygrounds extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
+        $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order','filter_order','v.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir','filter_order_Dir','','word');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'v_filter_order','filter_order','v.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'v_filter_order_Dir','filter_order_Dir','','word');
         $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode','search_mode','','string');
+		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'v_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'t_search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 
 		$items = $this->get('Items');

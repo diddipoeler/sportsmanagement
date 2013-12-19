@@ -1047,6 +1047,7 @@ if (isset($this->xml) && is_array($this->xml))
 												$color=$useExistingEntryColor;
 												$foundMatchingPlayground=$row1->id;
 												$foundMatchingPlaygroundName=$row1->name;
+                                                $foundMatchingPlaygroundCountry=$row1->country;
 												$foundMatchingPlaygroundShortname=$row1->short_name;
 												$playgroundClubID=$row1->club_id;
 												break;
@@ -1141,6 +1142,10 @@ if (isset($this->xml) && is_array($this->xml))
 												<td>
 													<?php echo '<b>'.JText::_('Shortname').'</b>'; ?><br />
 													<input type='text' name='playgroundShortname_<?php echo $key; ?>' size='20' maxlength='15' value="<?php echo stripslashes(htmlspecialchars($playground->short_name)); ?>" <?php echo $disabled; ?> />
+												</td>
+                                                <td>
+													<?php echo '<b>'.JText::_('Country').'</b>'; ?><br />
+													<input type='text' name='playgroundCountry_<?php echo $key; ?>' size='20' maxlength='15' value="<?php echo stripslashes(htmlspecialchars($playground->country)); ?>" <?php echo $disabled; ?> />
 												</td>
 											</tr>
 										</table>
