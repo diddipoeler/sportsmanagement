@@ -31,6 +31,7 @@ class sportsmanagementModelClubs extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         //$mainframe->enqueueMessage(JText::_('clubs getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -39,7 +40,7 @@ class sportsmanagementModelClubs extends JModelList
 		$query->select('a.*');
 		// From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
-        if ($search)
+        if ($search || $search_nation)
 		{
         $query->where(self::_buildContentWhere());
         }
@@ -76,6 +77,7 @@ class sportsmanagementModelClubs extends JModelList
 		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','a.ordering','cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
@@ -91,6 +93,10 @@ class sportsmanagementModelClubs extends JModelList
 				$where[]='LOWER(a.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 			}
 		}
+        if ( $search_nation )
+		{
+		  $where[] = "a.country = '".$search_nation."'";
+        }
 		if ($filter_state)
 		{
 			if ($filter_state == 'P')

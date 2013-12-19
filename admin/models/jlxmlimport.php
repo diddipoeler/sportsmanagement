@@ -1704,6 +1704,37 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 				$p_playground->set('website',$this->_getDataFromObject($import_playground,'website'));
 				$p_playground->set('picture',$this->_getDataFromObject($import_playground,'picture'));
 				$p_playground->set('notes',$this->_getDataFromObject($import_playground,'notes'));
+                
+    // geo coding
+    $adress = $this->_getDataFromObject($import_playground,'address');
+    $city = $this->_getDataFromObject($import_playground,'city');
+    $zipcode = $this->_getDataFromObject($import_playground,'zipcode');
+    $country = $this->_getDataFromObject($import_playground,'country');
+    if (!empty($address))
+    {
+	$address_parts[] = $address;
+	}
+	
+	if (!empty($city))
+	{
+		if (!empty($zipcode))
+		{
+			$address_parts[] = $zipcode. ' ' .$city;
+		}
+		else
+		{
+			$address_parts[] = $city;
+		}
+	}
+	if (!empty($country))
+	{
+		$address_parts[] = Countries::getShortCountryName($country);
+	}
+	$address = implode(', ', $address_parts);
+	$coords = sportsmanagementHelper::resolveLocation($address);
+    $p_playground->set('latitude',$coords['latitude']);
+    $p_playground->set('longitude',$coords['longitude']);        
+                
 				if ((isset($alias)) && (trim($alias)!=''))
 				{
 					$p_playground->set('alias',$alias);
@@ -1914,7 +1945,43 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
                 $p_club->set('unique_id',$this->_getDataFromObject($import_club,'unique_id'));
                 $p_club->set('new_club_id',$this->_getDataFromObject($import_club,'new_club_id'));
                 
-				if ((isset($alias)) && (trim($alias)!=''))
+    // geo coding
+    $adress = $this->_getDataFromObject($import_club,'address');
+    $state = $this->_getDataFromObject($import_club,'state');
+    $location = $this->_getDataFromObject($import_club,'location');
+    $zipcode = $this->_getDataFromObject($import_club,'zipcode');
+    $country = $this->_getDataFromObject($import_club,'country');
+    if (!empty($p_club->address))
+    {
+	$address_parts[] = $address;
+	}
+	if (!empty($state))
+	{
+		$address_parts[] = $state;
+	}
+	if (!empty($location))
+	{
+		if (!empty($zipcode))
+		{
+			$address_parts[] = $zipcode. ' ' .$location;
+		}
+		else
+		{
+			$address_parts[] = $location;
+		}
+	}
+	if (!empty($country))
+	{
+		$address_parts[] = Countries::getShortCountryName($country);
+	}
+	$address = implode(', ', $address_parts);
+	$coords = sportsmanagementHelper::resolveLocation($address);
+    $p_club->set('latitude',$coords['latitude']);
+    $p_club->set('longitude',$coords['longitude']);        
+                
+                
+                
+                if ((isset($alias)) && (trim($alias)!=''))
 				{
 					$p_club->set('alias',$alias);
 				}
@@ -2313,6 +2380,43 @@ $this->dump_variable("import_team", $import_team);
 				$p_person->set('address_country',$this->_getDataFromObject($import_person,'address_country'));
 				$p_person->set('extended',$this->_getDataFromObject($import_person,'extended'));
 				$p_person->set('published',1);
+                
+                
+    // geo coding
+    $adress = $this->_getDataFromObject($import_person,'address');
+    $city = $this->_getDataFromObject($import_person,'city');
+    $zipcode = $this->_getDataFromObject($import_person,'zipcode');
+    $country = $this->_getDataFromObject($import_person,'address_country');
+    $state = $this->_getDataFromObject($import_person,'state');
+    if (!empty($address))
+    {
+	$address_parts[] = $address;
+	}
+	if (!empty($state))
+    {
+	$address_parts[] = $state;
+	}
+	if (!empty($city))
+	{
+		if (!empty($zipcode))
+		{
+			$address_parts[] = $zipcode. ' ' .$city;
+		}
+		else
+		{
+			$address_parts[] = $city;
+		}
+	}
+	if (!empty($country))
+	{
+		$address_parts[] = Countries::getShortCountryName($country);
+	}
+	$address = implode(', ', $address_parts);
+	$coords = sportsmanagementHelper::resolveLocation($address);
+    $p_person->set('latitude',$coords['latitude']);
+    $p_person->set('longitude',$coords['longitude']);       
+    
+    
 				if ($this->_importType!='persons')	// force position_id to be set to default if only persons are imported
 				{
 					if ($import_person->position_id > 0)

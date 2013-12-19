@@ -30,6 +30,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         //$mainframe->enqueueMessage(JText::_('playgrounds getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         
         // Create a new query object.
@@ -49,7 +50,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($search || $search_nation)
 		{
         $query->where(self::_buildContentWhere());
         }
@@ -85,6 +86,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$mainframe = JFactory::getApplication();
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'v.ordering',	'cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
@@ -100,6 +102,10 @@ class sportsmanagementModelPlaygrounds extends JModelList
 				$where[]='LOWER(v.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 			}
 		}
+        if ( $search_nation )
+		{
+		  $where[] = "v.country = '".$search_nation."'";
+        }
 		$where=(count($where) ? '  '. implode(' AND ',$where) : '');
 		return $where;
 	}

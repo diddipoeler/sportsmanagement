@@ -39,6 +39,7 @@ JHtml::_('behavior.modal');
 					?>
 				</button>
 			</td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 			<td align="center" colspan="4">
 				<?php
 				for ($i=65; $i < 91; $i++)
@@ -71,7 +72,12 @@ JHtml::_('behavior.modal');
 					<th width="20">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO','a.logo_small',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
-					<th width="20">
+					
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CITY'); ?></th>
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE'); ?></th>
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LONGITUDE'); ?></th>
+                    
+                    <th width="20">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','a.country',$this->lists['order_Dir'],$this->lists['order']); ?>
 					</th>
 					<th width="10%">
@@ -85,7 +91,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -216,7 +222,12 @@ JHtml::_('behavior.modal');
 							}
 							?>
 						</td>
-						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+						
+                        <td class=""><?php echo $row->location; ?></td>
+                        <td class=""><?php echo $row->latitude; ?></td>
+                        <td class=""><?php echo $row->longitude; ?></td>
+                        
+                        <td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'clubs.orderup','JLIB_HTML_MOVE_UP',true); ?>

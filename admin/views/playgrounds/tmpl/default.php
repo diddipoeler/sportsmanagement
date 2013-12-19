@@ -32,6 +32,7 @@ JHtml::_('behavior.modal');
 				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 			</td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 			<td align="center" colspan="4">
 				<?php for ($i=65; $i < 91; $i++){printf("<a href=\"javascript:searchPlayground('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));} ?>
 			</td>
@@ -71,6 +72,17 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_IMAGE','v.picture',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
+                    
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CITY'); ?></th>
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LATITUDE'); ?></th>
+                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LONGITUDE'); ?></th>
+                    
+                    <th width="20">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_COUNTRY','v.country',$this->lists['order_Dir'],$this->lists['order']); ?>
+					</th>
+                    
+                    
+                    
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','v.ordering',$this->lists['order_Dir'],$this->lists['order']);
@@ -82,7 +94,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -144,6 +156,13 @@ JHtml::_('behavior.modal');
 									}
 									?>
 						</td>
+                        
+                        <td class=""><?php echo $row->city; ?></td>
+                        <td class=""><?php echo $row->latitude; ?></td>
+                        <td class=""><?php echo $row->longitude; ?></td>
+                        
+                        <td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+                        
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'playgrounds.orderup','JLIB_HTML_MOVE_UP',true); ?>

@@ -30,15 +30,28 @@ class sportsmanagementViewPlaygrounds extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order',		'filter_order',		'v.ordering',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'v_search',			'search',			'',				'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode',		'search_mode',		'',				'string');
+		$filter_order		= $mainframe->getUserStateFromRequest($option.'v_filter_order','filter_order','v.ordering','cmd');
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'v_filter_order_Dir','filter_order_Dir','','word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
+		$search				= $mainframe->getUserStateFromRequest($option.'v_search','search','','string');
+		$search_mode		= $mainframe->getUserStateFromRequest($option.'t_search_mode','search_mode','','string');
 		$search				= JString::strtolower($search);
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        //build the html options for nation
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		
+        $lists['nation']=$nation;
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+																'search_nation',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$search_nation);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr align="center">
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('sm-sports-management.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							<?php echo $this->addIcon('logo_transparent.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
 						</td>
                         

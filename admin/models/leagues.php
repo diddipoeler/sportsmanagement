@@ -30,6 +30,7 @@ class sportsmanagementModelLeagues extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -40,7 +41,7 @@ class sportsmanagementModelLeagues extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        if ($search)
+        if ($search || $search_nation)
 		{
         $query->where(self::_buildContentWhere());
         }
@@ -74,6 +75,7 @@ class sportsmanagementModelLeagues extends JModelList
 		$mainframe = JFactory::getApplication();
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'obj.ordering',	'cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 		$where=array();
@@ -81,6 +83,10 @@ class sportsmanagementModelLeagues extends JModelList
 		{
 			$where[]='LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
+        if ( $search_nation )
+		{
+		  $where[] = "obj.country = '".$search_nation."'";
+        }
 		$where=(count($where) ? ' '.implode(' AND ',$where) : ' ');
 		return $where;
 	}

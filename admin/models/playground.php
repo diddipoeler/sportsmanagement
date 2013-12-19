@@ -146,10 +146,7 @@ class sportsmanagementModelplayground extends JModelAdmin
 		{
 			$address_parts[] = $data['address'];
 		}
-		if (!empty($data['state']))
-		{
-			$address_parts[] = $data['state'];
-		}
+		
 		if (!empty($data['city']))
 		{
 			if (!empty($data['zipcode']))
