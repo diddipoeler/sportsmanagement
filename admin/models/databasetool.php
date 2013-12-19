@@ -59,7 +59,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             $this->_db->setQuery($query);
             if (!$this->_db->query())
 		{
-			$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool getErrorMsg<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
         

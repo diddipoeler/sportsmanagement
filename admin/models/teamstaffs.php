@@ -25,6 +25,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 {
 	var $_identifier = "teamstaffs";
     var $_project_id = 0;
+    var $_season_id = 0;
     var $_team_id = 0;
     var $_project_team_id = 0;
 
@@ -37,6 +38,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$query = $db->getQuery(true);
         
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $this->_team_id        = JRequest::getVar('team_id');
         $this->_project_team_id        = JRequest::getVar('project_team_id');
         
@@ -53,6 +55,22 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$where = self::_buildContentWhere();
 		$orderby = self::_buildContentOrderBy();
         
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+        $query->select(array('ppl.firstname',
+							'ppl.lastname',
+							'ppl.nickname',
+                            'ppl.injury',
+                            'ppl.suspension',
+                            'ppl.away',
+							'ts.*',
+							'u.name AS editor'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
+        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS ts on ts.person_id = ppl.id')
+        ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
+        }
+        else
+        {
         $query->select(array('ppl.firstname',
 							'ppl.lastname',
 							'ppl.nickname',
@@ -60,7 +78,9 @@ class sportsmanagementModelTeamStaffs extends JModelList
 							'u.name AS editor'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
         ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id = ppl.id')
-        ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');
+        ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
+        }
+        
 
         if ($where)
         {
@@ -103,8 +123,19 @@ class sportsmanagementModelTeamStaffs extends JModelList
 		$search_mode	= $mainframe->getUserStateFromRequest($option.'ts_search_mode','search_mode','','string');
 		$search			= JString::strtolower($search);
 		$where=array();
-		$where[]='ts.projectteam_id='.$this->_project_team_id;
-		$where[]="ppl.published = '1'";
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+            $where[]="ppl.published = '1'";
+            $where[]='ts.team_id='.$this->_team_id;
+            $where[]='ts.season_id='.$this->_season_id;
+            $where[]='ts.persontype=2';
+        }
+        else
+        {
+            $where[]='ts.projectteam_id='.$this->_project_team_id;
+            $where[]="ppl.published = '1'";
+        }
+		
 		if ($search)
 		{
 			if ($search_mode)

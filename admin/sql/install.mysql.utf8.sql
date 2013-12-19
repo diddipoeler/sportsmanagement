@@ -866,7 +866,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `extendeduser` TEXT NULL ,
   `played_time` INT(11) NULL DEFAULT '0' ,
   
-  
+  `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) )
