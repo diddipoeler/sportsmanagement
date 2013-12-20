@@ -27,14 +27,19 @@ class sportsmanagementModelMatches extends JModelList
 {
 	var $_identifier = "matches";
     var $_rid = 0;
+    var $_season_id = 0;
 
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         $this->_rid = JRequest::getvar('rid', 0);
+        
+        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+        
         if ( !$this->_rid )
         {
             $this->_rid	= $mainframe->getUserState( "$option.rid", '0' );
@@ -57,46 +62,104 @@ class sportsmanagementModelMatches extends JModelList
 		// From the match table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc');
         
-        // join player
-        $subQueryPlayerHome->select('id');
-        $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
-        $subQueryPlayerHome->where('tp.projectteam_id = mc.projectteam1_id');
-        // join staff
-        $subQueryStaffHome->select('id');
-        $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
-        $subQueryStaffHome->where('ts.projectteam_id = mc.projectteam1_id');
-        // join player
-        $subQueryPlayerAway->select('id');
-        $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
-        $subQueryPlayerAway->where('tp.projectteam_id = mc.projectteam2_id');
-        // join staff
-        $subQueryStaffAway->select('id');
-        $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
-        $subQueryStaffAway->where('ts.projectteam_id = mc.projectteam2_id');
-        
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+        // join player home
+        $subQueryPlayerHome->select('tp.id');
+        $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
+        $subQueryPlayerHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryPlayerHome->where('pthome.id = mc.projectteam1_id');
+        $subQueryPlayerHome->where('tp.season_id = '.$this->_season_id);
+        $subQueryPlayerHome->where('tp.persontype = 1'); 
         // count match homeplayers
         $subQuery1->select('count(mp.id)');
         $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
         $subQuery1->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerHome.')');
         $query->select('('.$subQuery1.') AS homeplayers_count');
         
-        // count match homestaffs
+        
+        // join staff home
+        $subQueryStaffHome->select('tp.id');
+        $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
+        $subQueryStaffHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryStaffHome->where('pthome.id = mc.projectteam1_id');
+        $subQueryStaffHome->where('tp.season_id = '.$this->_season_id);
+        $subQueryStaffHome->where('tp.persontype = 2'); 
+        // count match homestaff
         $subQuery2->select('count(ms.id)');
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
         $subQuery2->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffHome.')');
         $query->select('('.$subQuery2.') AS homestaff_count');
         
+        
+        // join player away
+        $subQueryPlayerAway->select('tp.id');
+        $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
+        $subQueryPlayerAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryPlayerAway->where('pthome.id = mc.projectteam2_id');
+        $subQueryPlayerAway->where('tp.season_id = '.$this->_season_id);
+        $subQueryPlayerAway->where('tp.persontype = 1'); 
         // count match awayplayers
         $subQuery3->select('count(mp.id)');
         $subQuery3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
         $subQuery3->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerAway.')');
         $query->select('('.$subQuery3.') AS awayplayers_count');
         
+        
+        // join staff away
+        $subQueryStaffAway->select('tp.id');
+        $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
+        $subQueryStaffAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryStaffAway->where('pthome.id = mc.projectteam2_id');
+        $subQueryStaffAway->where('tp.season_id = '.$this->_season_id);
+        $subQueryStaffAway->where('tp.persontype = 2'); 
+        // count match awaystaff
+        $subQuery4->select('count(ms.id)');
+        $subQuery4->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
+        $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
+        $query->select('('.$subQuery4.') AS awaystaff_count');
+        
+           
+        }
+        else
+        {
+        // join player home
+        $subQueryPlayerHome->select('id');
+        $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
+        $subQueryPlayerHome->where('tp.projectteam_id = mc.projectteam1_id');
+        // join staff home
+        $subQueryStaffHome->select('id');
+        $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+        $subQueryStaffHome->where('ts.projectteam_id = mc.projectteam1_id');
+        // join player away
+        $subQueryPlayerAway->select('id');
+        $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
+        $subQueryPlayerAway->where('tp.projectteam_id = mc.projectteam2_id');
+        // join staff away
+        $subQueryStaffAway->select('id');
+        $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+        $subQueryStaffAway->where('ts.projectteam_id = mc.projectteam2_id');
+        // count match homeplayers
+        $subQuery1->select('count(mp.id)');
+        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
+        $subQuery1->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerHome.')');
+        $query->select('('.$subQuery1.') AS homeplayers_count');
+        // count match homestaffs
+        $subQuery2->select('count(ms.id)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
+        $subQuery2->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffHome.')');
+        $query->select('('.$subQuery2.') AS homestaff_count');
+        // count match awayplayers
+        $subQuery3->select('count(mp.id)');
+        $subQuery3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp  ');
+        $subQuery3->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerAway.')');
+        $query->select('('.$subQuery3.') AS awayplayers_count');
         // count match awaystaffs
         $subQuery4->select('count(ms.id)');
         $subQuery4->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms  ');
         $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
         $query->select('('.$subQuery4.') AS awaystaff_count');
+        }
         
         // count match referee
         $subQuery5->select('count(mr.id)');
