@@ -71,13 +71,13 @@ class sportsmanagementViewrosterpositions extends JView
 	*/
 	protected function addToolbar()
 	{
-	   // Set toolbar items for the page
+// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE'),'generic.png');
-        JToolBarHelper::custom('rosterposition.addhome','new','new',JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_HOME'),false);
-    JToolBarHelper::custom('rosterposition.addaway','new','new',JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_AWAY'),false);
+        	JToolBarHelper::custom('rosterposition.addhome','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'),false);
+		JToolBarHelper::custom('rosterposition.addaway','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'),false);
 		JToolBarHelper::editList('rosterposition.edit');
-		JToolBarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_JOOMLEAGUE_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_JOOMLEAGUE_GLOBAL_XML_EXPORT'));
+		JToolBarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_CSV_IMPORT'),false);
+		JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
 		//JToolBarHelper::deleteList();
 		JToolBarHelper::deleteList('', 'rosterposition.remove');
 		JToolBarHelper::divider();
