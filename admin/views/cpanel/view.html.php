@@ -131,15 +131,21 @@ class sportsmanagementViewcpanel extends JView
 		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
 	}
 	
-	public function addIcon( $image , $url , $text , $newWindow = false )
+	public function addIcon( $image , $url , $text , $newWindow = false , $width = 0, $height = 0)
 	{
 		$lang		= JFactory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
+        
+        if ( $width )
+        {
+        $attribs['width'] = $width;
+        $attribs['height'] = $height;
+        }
 ?>
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
 			<div class="icon">
 				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-					<?php echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image , NULL, NULL ); ?>
+					<?php echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image , null, $attribs ); ?>
 					<span><?php echo $text; ?></span></a>
 			</div>
 		</div>

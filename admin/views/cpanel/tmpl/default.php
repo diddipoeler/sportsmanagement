@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr align="center">
 						<td width="50%" >
 							<div style="text-align: center;">
-							<?php echo $this->addIcon('logo_transparent.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
+							<?php echo $this->addIcon('logo_transparent.png','http://www.fussballineuropa.de', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true, '200', '120'); ?>
 							</div>
 						</td>
                         
@@ -117,6 +117,14 @@ defined('_JEXEC') or die('Restricted access');
                             <div style="text-align: center;">
 							<?php echo $this->addIcon('galun-siegfried02.png','http://www.esv-knittelfeld.at', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
 							</div>
+                            
+                    
+                            
+						</td>	
+				</tr>
+                	<tr>
+				<td width="5" >
+					
                             
                             <div style="text-align: center;">
 							<?php echo $this->addIcon('prochnow_hauke.jpg','http://svdoerpum.de/', JText::_('COM_SPORTSMANAGEMENT_SITE_LINK'), true); ?>
