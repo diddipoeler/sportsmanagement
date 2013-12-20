@@ -37,6 +37,7 @@ class sportsmanagementViewjlextassociations extends JView
 		
         
         //$mainframe->enqueueMessage(JText::_('Viewjlextassociations identifier<br><pre>'.print_r($model->_identifier,true).'</pre>'   ),'');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
 
 		
 
@@ -48,6 +49,18 @@ class sportsmanagementViewjlextassociations extends JView
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        //build the html options for nation
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		
+        $lists['nation']=$nation;
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+																'search_nation',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$search_nation);
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

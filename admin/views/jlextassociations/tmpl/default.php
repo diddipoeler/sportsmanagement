@@ -23,6 +23,7 @@ JHtml::_('behavior.modal');
 					?>
 				</button>
 			</td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 		</tr>
 	</table>
 	<div id="editcell">

@@ -25,11 +25,13 @@ class sportsmanagementModelProjectteams extends JModelList
 {
 	var $_identifier = "pteams";
     var $_project_id = 0;
+    var $_season_id = 0;
 
 	protected function getListQuery()
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         $subQuery= $db->getQuery(true);
@@ -43,6 +45,27 @@ class sportsmanagementModelProjectteams extends JModelList
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+        // count team player
+        $subQuery->select('count(tp.id)');
+        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id tp');
+        $subQuery->where('tp.published = 1');
+        $subQuery->where('tp.team_id = tl.team_id');
+        $subQuery->where('tp.persontype = 1');
+        $subQuery->where('tp.season_id = '.$this->_season_id);
+        $query->select('(' . $subQuery . ') AS playercount');
+        // count team staff
+        $subQuery2->select('count(tp.id)');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id tp');
+        $subQuery2->where('tp.published = 1');
+        $subQuery2->where('tp.team_id = tl.team_id');
+        $subQuery2->where('tp.persontype = 2');
+        $subQuery2->where('tp.season_id = '.$this->_season_id);
+        $query->select('(' . $subQuery2 . ') AS staffcount');    
+        }
+        else
+        {    
         // count team player
         $subQuery->select('count(tp.id)');
         $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp');
@@ -53,6 +76,7 @@ class sportsmanagementModelProjectteams extends JModelList
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
         $subQuery2->where('ts.published = 1 and ts.projectteam_id  = tl.id');
         $query->select('(' . $subQuery2 . ') AS staffcount');
+        }
         
         // Join over the team
 		$query->select('t.name,t.club_id');

@@ -34,6 +34,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -44,7 +45,7 @@ class sportsmanagementModeljlextassociations extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
-        if ($search)
+        if ($search || $search_nation )
 		{
         $query->where(self::_buildContentWhere());
         }
@@ -79,6 +80,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 		//$option='sportsmanagement';
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
 		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'objassoc.ordering',	'cmd');
 		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
@@ -88,7 +90,15 @@ class sportsmanagementModeljlextassociations extends JModelList
 		{
 			$where[]='LOWER(objassoc.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		$where=(count($where) ? ' '.implode(' AND ',$where) : ' ');
+		
+        if ( $search_nation )
+		{
+		  $where[] = "objassoc.country = '".$search_nation."'";
+        }
+        
+        
+        
+        $where=(count($where) ? ' '.implode(' AND ',$where) : ' ');
 		return $where;
 	}
 

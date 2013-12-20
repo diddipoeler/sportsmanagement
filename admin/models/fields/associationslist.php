@@ -42,7 +42,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$options = array();
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		//$varname = (string) $this->element['varname'];
-//    $vartable = (string) $this->element['targettable'];
+    $vartable = (string) $this->element['targettable'];
 		$select_id = JRequest::getVar('id');
 //echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
@@ -55,7 +55,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('country');		
-		$query->from('#__sportsmanagement_associations AS t');
+		$query->from('#__sportsmanagement_'.$vartable.' AS t');
 		$query->where('t.id = '.$select_id);
 		$db->setQuery($query);
 		$country = $db->loadResult();

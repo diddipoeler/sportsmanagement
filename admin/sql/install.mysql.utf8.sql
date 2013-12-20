@@ -834,6 +834,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `picture` VARCHAR(250) NULL ,
+  `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) )
 ENGINE = MyISAM

@@ -266,6 +266,138 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         
     }    
     
+    
+    function checkAssociations()
+    {
+    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');    
+    // Get a db connection.
+    $db = JFactory::getDbo();   
+    $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    
+    $image_path = '/images/'.$option.'/database/associations/';
+    
+    foreach( $xml->document->associations as $association ) 
+{
+   $name = $association->getElementByPath('assocname');
+   $attributes = $name->attributes();
+   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
+   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   
+   $country = $attributes['country'];
+   $main = $attributes['main'];
+   $parentmain = $attributes['parentmain'];
+   
+   $icon = $image_path.$attributes['icon'];
+   $flag = $attributes['flag'];
+   $website = $attributes['website'];
+   $shortname = $attributes['shortname'];
+   
+   $assocname = $name->data();
+   $query1 = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_associations WHERE country LIKE '" . $country ."' and name LIKE '".$assocname."'";
+    $this->_db->setQuery( $query1 );
+	$result = $this->_db->loadResult();
+   
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query1,true).'</pre>'),'Notice');
+   
+   $export = array();
+   if ( !$result )
+   {
+   if ( empty($parentmain) )
+   {
+   // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('country','name','picture','assocflag','website','short_name');
+                // Insert values.
+                $values = array('\''.$country.'\'','\''.$assocname.'\'','\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+	            if (!$db->query())
+			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    }
+			    else
+			    {
+			    $temp = new stdClass();
+                $temp->id = $db->insertid();
+                $export[] = $temp;
+                $this->_assoclist[$country][$main] = array_merge($export); 
+			    } 
+   }
+   else
+   {
+   $parent_id = $this->_assoclist[$country][$parentmain];
+   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
+    // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('country','name','parent_id','picture','assocflag','website','short_name');
+                // Insert values.
+                $values = array('\''.$country.'\'','\''.$assocname.'\'',$parent_id[0]->id,'\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+	            if (!$db->query())
+			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    }
+			    else
+			    {
+			    $temp = new stdClass();
+                $temp->id = $db->insertid();
+                $export[] = $temp;
+                $this->_assoclist[$country][$main] = array_merge($export); 
+			    } 
+   
+   }
+   
+   }
+   else
+   {
+   $temp = new stdClass();
+   $temp->id = $result;
+   $export[] = $temp;
+   $this->_assoclist[$country][$main] = array_merge($export); 
+   
+   // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('picture') . '=' . '\''.$icon.'\''
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('id') . '=' . $result
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query(); 
+   
+   
+    
+   }
+   
+   
+   }
+   
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
+    }
+    
+    
     function checkSportTypeStructur($type)
     {
     $mainframe = JFactory::getApplication();

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="DEU">Baden-Württemberg</assocname></associations>
+<associations><assocname country="DEU">Bayern</assocname></associations>
+<associations><assocname country="DEU">Berlin</assocname></associations>
+<associations><assocname country="DEU">Brandenburg</assocname></associations>
+<associations><assocname country="DEU">Bremen</assocname></associations>
+<associations><assocname country="DEU">Hamburg</assocname></associations>
+<associations><assocname country="DEU">Hessen</assocname></associations>
+<associations><assocname country="DEU">Mecklenburg-Vorpommern</assocname></associations>
+<associations><assocname country="DEU">Niedersachsen</assocname></associations>
+<associations><assocname country="DEU">Nordrhein-Westfalen</assocname></associations>
+<associations><assocname country="DEU">Rheinland-Pfalz</assocname></associations>
+<associations><assocname country="DEU">Saarland</assocname></associations>
+<associations><assocname country="DEU">Sachsen</assocname></associations>
+<associations><assocname country="DEU">Sachsen-Anhalt</assocname></associations>
+<associations><assocname country="DEU">Schleswig-Holstein</assocname></associations>
+<associations><assocname country="DEU">Thüringen</assocname></associations>
+
+<associations><assocname country="POL">Dolnośląskie</assocname></associations>
+<associations><assocname country="POL">Kujawsko-Pomorskie</assocname></associations>
+<associations><assocname country="POL">Lubelskie</assocname></associations>
+<associations><assocname country="POL">Lubuskie</assocname></associations>
+<associations><assocname country="POL">Łódzkie</assocname></associations>
+<associations><assocname country="POL">Małopolskie</assocname></associations>
+<associations><assocname country="POL">Mazowieckie</assocname></associations>
+<associations><assocname country="POL">Opolskie</assocname></associations>
+<associations><assocname country="POL">Podkarpackie</assocname></associations>
+<associations><assocname country="POL">Podlaskie</assocname></associations>
+<associations><assocname country="POL">Pomorskie</assocname></associations>
+<associations><assocname country="POL">Śląskie</assocname></associations>
+<associations><assocname country="POL">Świętokrzyskie</assocname></associations>
+<associations><assocname country="POL">Warmińsko-Mazurskie</assocname></associations>
+<associations><assocname country="POL">Wielkopolskie</assocname></associations>
+<associations><assocname country="POL">Zachodniopomorskie</assocname></associations>
+
+<associations><assocname country="ESP">Andalusien</assocname></associations>
+<associations><assocname country="ESP">Aragonien</assocname></associations>
+<associations><assocname country="ESP">Asturien</assocname></associations>
+<associations><assocname country="ESP">Balearen</assocname></associations>
+<associations><assocname country="ESP">Kanaren</assocname></associations>
+<associations><assocname country="ESP">Kantabrien</assocname></associations>
+<associations><assocname country="ESP">Kastilien-La Mancha</assocname></associations>
+<associations><assocname country="ESP">Kastilien und León</assocname></associations>
+<associations><assocname country="ESP">Katalonien</assocname></associations>
+<associations><assocname country="ESP">Extremadura</assocname></associations>
+<associations><assocname country="ESP">Galicien</assocname></associations>
+<associations><assocname country="ESP">La Rioja</assocname></associations>
+<associations><assocname country="ESP">Madrid</assocname></associations>
+<associations><assocname country="ESP">Murcia</assocname></associations>
+<associations><assocname country="ESP">Navarra</assocname></associations>
+<associations><assocname country="ESP">Baskenland</assocname></associations>
+<associations><assocname country="ESP">Valencia</assocname></associations>
+<associations><assocname country="ESP">Ceuta</assocname></associations>
+<associations><assocname country="ESP">Melilla</assocname></associations>
+
+<associations><assocname country="FRA">Aquitanien</assocname></associations>
+<associations><assocname country="FRA">Auvergne</assocname></associations>
+<associations><assocname country="FRA">Bretagne</assocname></associations>
+<associations><assocname country="FRA">Burgund</assocname></associations>
+<associations><assocname country="FRA">Centre</assocname></associations>
+<associations><assocname country="FRA">Champagne-Ardenne</assocname></associations>
+<associations><assocname country="FRA">Elsass</assocname></associations>
+<associations><assocname country="FRA">Franche-Comté</assocname></associations>
+<associations><assocname country="FRA">Île-de-France</assocname></associations>
+<associations><assocname country="FRA">Korsika</assocname></associations>
+<associations><assocname country="FRA">Languedoc-Roussillon</assocname></associations>
+<associations><assocname country="FRA">Limousin</assocname></associations>
+<associations><assocname country="FRA">Lothringen</assocname></associations>
+<associations><assocname country="FRA">Midi-Pyrénées</assocname></associations>
+<associations><assocname country="FRA">Nord-Pas-de-Calais</assocname></associations>
+<associations><assocname country="FRA">Basse-Normandie</assocname></associations>
+<associations><assocname country="FRA">Haute-Normandie</assocname></associations>
+<associations><assocname country="FRA">Pays de la Loire</assocname></associations>
+<associations><assocname country="FRA">Picardie</assocname></associations>
+<associations><assocname country="FRA">Poitou-Charentes</assocname></associations>
+<associations><assocname country="FRA">Provence-Alpes-Côte d’Azur</assocname></associations>
+<associations><assocname country="FRA">Rhône-Alpes</assocname></associations>
+
+<associations><assocname country="ITA">Lombardia</assocname></associations>
+<associations><assocname country="ITA">Campania</assocname></associations>
+<associations><assocname country="ITA">Lazio</assocname></associations>
+<associations><assocname country="ITA">Sizilien</assocname></associations>
+<associations><assocname country="ITA">Venetien</assocname></associations>
+<associations><assocname country="ITA">Piemont</assocname></associations>
+<associations><assocname country="ITA">Emilia-Romagna</assocname></associations>
+<associations><assocname country="ITA">Apulien</assocname></associations>
+<associations><assocname country="ITA">Toskana</assocname></associations>
+<associations><assocname country="ITA">Kalabrien</assocname></associations>
+<associations><assocname country="ITA">Sardinien</assocname></associations>
+<associations><assocname country="ITA">Ligurien</assocname></associations>
+<associations><assocname country="ITA">Marken</assocname></associations>
+<associations><assocname country="ITA">Abruzzen</assocname></associations>
+<associations><assocname country="ITA">Friaul-Julisch Venetien</assocname></associations>
+<associations><assocname country="ITA">Trentino-Südtirol</assocname></associations>
+<associations><assocname country="ITA">Umbrien</assocname></associations>
+<associations><assocname country="ITA">Basilikata</assocname></associations>
+<associations><assocname country="ITA">Molise</assocname></associations>
+<associations><assocname country="ITA">Aostatal</assocname></associations>
+
+<associations><assocname country="BEL">Antwerpen</assocname></associations>
+<associations><assocname country="BEL">Limburg</assocname></associations>
+<associations><assocname country="BEL">Ostflandern</assocname></associations>
+<associations><assocname country="BEL">Flämich-Brabant</assocname></associations>
+<associations><assocname country="BEL">Westflandern</assocname></associations>
+<associations><assocname country="BEL">Hennegau</assocname></associations>
+<associations><assocname country="BEL">Lüttich</assocname></associations>
+<associations><assocname country="BEL">Luxemburg</assocname></associations>
+<associations><assocname country="BEL">Namur</assocname></associations>
+<associations><assocname country="BEL">Wallonisch-Brabant</assocname></associations>
+
+
+</structur>
