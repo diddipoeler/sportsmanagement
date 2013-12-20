@@ -297,7 +297,7 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 	<tr>
 		<td style="width: 33%;">
-			<a href="http://www.facebook.com/pages/Sportsmanager/558711710835555" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/facebook.png" alt="facebook" /><?php echo JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW'); ?></a>
+			<a href="https://www.facebook.com/joomlasportsmanagement" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/facebook.png" alt="facebook" /><?php echo JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW'); ?></a>
 			
 			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/github.png" alt="github" /><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
 			
