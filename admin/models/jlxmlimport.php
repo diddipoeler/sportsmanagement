@@ -5014,7 +5014,8 @@ $this->dump_variable("import_team", $import_team);
         // $this->_project_id
         // $this->_season_id 
         
-        $query = 'SELECT id,person_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
+        // die schiedsrichter verarbeiten
+        $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
 		$this->_db->setQuery($query);
 		$result_pr = $this->_db->loadObjectList();
         
@@ -5023,9 +5024,9 @@ $this->dump_variable("import_team", $import_team);
             // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id');
+                $columns = array('person_id','season_id','persontype','picture');
                 // Insert values.
-                $values = array($protref->person_id,$this->_season_id);
+                $values = array($protref->person_id,$this->_season_id,3,'\''.$protref->picture.'\'');
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -5040,13 +5041,27 @@ $this->dump_variable("import_team", $import_team);
 			    }
 			    else
 			    {
-			     
+			    // die match referee tabelle updaten
+                $new_match_referee_id = $db->insertid();
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('project_referee_id') . '=' . $new_match_referee_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('project_referee_id') . '=' . $protref->id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query();  
                  
                  
 			    }
         
         }
         
+        // die teams verarbeiten
         $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team where project_id = '.$this->_project_id ;
 		$this->_db->setQuery($query);
 		$result_pt = $this->_db->loadObjectList();
@@ -5079,7 +5094,25 @@ $this->dump_variable("import_team", $import_team);
 			}
 			else
 			{
+			    
+                // die project team tabelle updaten
+                $new_team_id = $db->insertid();
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('team_id') . '=' . $new_team_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('team_id') . '=' . $proteam->team_id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query();
+                
 			}
+            
+            // die spieler verarbeiten
             $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
             $this->_db->setQuery($query);
 		    $result_tp = $this->_db->loadObjectList();
@@ -5089,9 +5122,9 @@ $this->dump_variable("import_team", $import_team);
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id');
+                $columns = array('person_id','season_id','persontype','picture');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id);
+                $values = array($team_member->person_id,$this->_season_id,1,'\''.$team_member->picture.'\'');
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -5113,7 +5146,7 @@ $this->dump_variable("import_team", $import_team);
                 // Insert columns.
                 $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
+                $values = array($team_member->person_id,$this->_season_id,$new_team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
@@ -5141,9 +5174,29 @@ $this->dump_variable("import_team", $import_team);
                 );
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
+                $result = $db->query();
+                
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query();
+                
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('teamplayer_id') . '=' . $new_match_player_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('in_for') . '=' . $team_member->id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
+                $db->setQuery($query);
                 $result = $db->query(); 
+                 
 			    }
             }
+            
+            // staffs verarbeiten
             $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
             $this->_db->setQuery($query);
 		    $result_tp = $this->_db->loadObjectList();
@@ -5153,9 +5206,9 @@ $this->dump_variable("import_team", $import_team);
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id');
+                $columns = array('person_id','season_id','persontype','picture');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id);
+                $values = array($team_member->person_id,$this->_season_id,2,'\''.$team_member->picture.'\'');
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -5178,7 +5231,7 @@ $this->dump_variable("import_team", $import_team);
                 // Insert columns.
                 $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$proteam->team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
+                $values = array($team_member->person_id,$this->_season_id,$new_team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))

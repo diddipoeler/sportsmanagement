@@ -63,6 +63,7 @@ class sportsmanagementViewcpanel extends JView
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
         
+        $checkassociations = $databasetool->checkAssociations();
         
         $checkcountry = $model->checkcountry();
         if ( $checkcountry )

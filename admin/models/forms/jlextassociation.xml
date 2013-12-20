@@ -44,6 +44,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			class="inputbox"
 			size="30"
 			multiple="false"
+			targettable="associations"
 			label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST"
 			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
 			
