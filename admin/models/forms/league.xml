@@ -46,7 +46,7 @@
 	
   <field
 			name="associations"
-			type="countryassociation" 
+			type="associationslist" 
       size="10"
 			default="0"
       varname="cid"
