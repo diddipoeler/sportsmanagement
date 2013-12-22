@@ -297,17 +297,17 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 	<tr>
 		<td style="width: 33%;">
-			<a href="https://www.facebook.com/joomlasportsmanagement" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/facebook.png" alt="facebook" /><?php echo JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW'); ?></a>
-			
-			<a href="https://github.com/diddipoeler/sportsmanagement" target="_blank"><img src="/administrator/components/com_sportsmanagement/assets/icons/github.png" alt="github" /><?php echo JText::_( "COM_SPORTSMANAGEMENT_GITHUB_FOLLOW" ); ?></a>
-			
-		</td>
+			<div id="cpanel">
+			<?php echo $this->addIcon('facebook.png','https://www.facebook.com/joomlasportsmanagement', JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW'), true); ?>
+			<?php echo $this->addIcon('github.png','https://github.com/diddipoeler/sportsmanagement', JText::_('COM_SPORTSMANAGEMENT_GITHUB_FOLLOW'), true); ?>	
+			</div>
+			</td>
 		<td style="text-align: center; width: 33%;">
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 			<br/>
 			<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?>: &copy; <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 			<br/>
-			<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?>: <?php echo JText::sprintf( 'Version: %1$s', $this->version ); ?>
+			<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?>: <?php echo JText::sprintf( '%1$s', $this->version ); ?>
 		</td>
 		<td style="text-align: right; width: 33%;">
 		</td>
