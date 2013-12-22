@@ -29,6 +29,7 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         $params = JComponentHelper::getParams( $option );
         $sporttypes = $params->get( 'cfg_sport_types' );
@@ -135,7 +136,7 @@ class sportsmanagementViewcpanel extends JView
 	{
 		$lang		= JFactory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
-        
+        $attribs = array();
         if ( $width )
         {
         $attribs['width'] = $width;

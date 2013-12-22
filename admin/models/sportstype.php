@@ -49,13 +49,23 @@ class sportsmanagementModelsportstype extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		// Get the form.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.sportstype', 'sportstype', array('control' => 'jform', 'load_data' => $loadData));
+        
+        
 		if (empty($form)) 
 		{
 			return false;
 		}
-		return $form;
+		
+        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($option)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/sport_types');
+        $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
+        
+        return $form;
 	}
     
 	/**

@@ -11,12 +11,19 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
+
 /**
- * Session form field class
+ * JFormFieldCountry
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
  */
 class JFormFieldCountry extends JFormFieldList
 {
@@ -35,9 +42,13 @@ class JFormFieldCountry extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialize variables.
 		$options = Countries::getCountryOptions();
 		
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
+        
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
