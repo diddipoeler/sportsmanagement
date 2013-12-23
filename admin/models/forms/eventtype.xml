@@ -12,15 +12,15 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
 			name="name"
 			type="text"
-			label="COM_SPORTSMANGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANGEMENT_GLOBAL_NAME_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required="true"/>
 		<field
 			name="alias"
 			type="text"
-			label="COM_SPORTSMANGEMENT_GLOBAL_ALIAS"
-			description="COM_SPORTSMANGEMENT_GLOBAL_ALIAS_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
 			class="inputbox"/>			
 		
 		<field
@@ -29,8 +29,8 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			type="sportstypes"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
 			required="true">
 		</field>
 		<field
@@ -51,8 +51,8 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
 			name="splitt"
 			type="radio"
-			label="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_NOTE"
-			description="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_NOTE_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE_DESC"
 			default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>			
@@ -61,19 +61,19 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
 			name="directions"
 			type="list"
-			label="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_SORTING"
-			description="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_SORTING_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING"
+			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_DESC"
 			class="inputbox"			
 			default="0">
-			<option value="0">COM_SPORTSMANGEMENT_GLOBAL_DESCENDING</option>
-			<option value="1">COM_SPORTSMANGEMENT_GLOBAL_ASCENDING</option>
+			<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESCENDING</option>
+			<option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASCENDING</option>
 		</field>		
 
 		<field
 			name="double"
 			type="radio"
-			label="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT"
-			description="COM_SPORTSMANGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT_DESC"
 			default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>			
@@ -91,8 +91,8 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 				preview="show"	
         class="inputbox"		
         targetfolder="events"		
-				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
-				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
+				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
 		</field>
 	</fieldset>
   
