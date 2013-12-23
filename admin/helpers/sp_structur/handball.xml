@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <structur>
-
+<version>1.0.00</version>
 <events>
 <name icon="gelb.png">YELLOW_CARD</name>
 </events>

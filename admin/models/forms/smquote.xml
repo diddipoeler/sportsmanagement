@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+	<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="author"
+			type="text"
+			label="JAUTHOR"
+			description="JAUTHOR"
+			class="inputbox"
+			required="true"/>
+
+
+			<field
+				name="quote"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+		
+	<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>
+    
+<field
+			name="catid"
+			type="category"
+			extension="com_sportsmanagement"
+			class="inputbox"
+			default=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_CATID_LABEL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_CATID_DESC"
+			required="false"
+		>
+			<option value="0">JOPTION_SELECT_CATEGORY</option>
+		</field>
+        		      		
+	</fieldset>		
+
+
+
+<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+			<field
+				name="picture"
+				type=""
+				default=""				
+				label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"	
+        targetfolder="persons"			
+				directory=""/>
+	</fieldset> 
+		
+		
+  		
+</form>

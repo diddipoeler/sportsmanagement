@@ -16,7 +16,13 @@ class sportsmanagementViewextensions extends JView
 	 */
 	function display($tpl = null) 
 	{
-		
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
+        $params = JComponentHelper::getParams( $option );
+        $this->sporttypes = $params->get( 'cfg_sport_types' );
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->sporttypes,true).'</pre>'),'');
  
 		// Set the toolbar
 		$this->addToolBar();

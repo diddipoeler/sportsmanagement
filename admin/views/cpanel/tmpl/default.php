@@ -72,6 +72,8 @@ defined('_JEXEC') or die('Restricted access');
             <?php echo $this->addIcon('xmlimport.png','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>
             <?php echo $this->addIcon('xmleditor.png','index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR'));?>
             <?php echo $this->addIcon('datenbanktools.png','index.php?option=com_sportsmanagement&view=databasetools', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'));?>
+            <?php echo $this->addIcon('icon-48-clients.png','index.php?option=com_sportsmanagement&view=smquotes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES'));?>
+            
             </div>
             </td>
             </tr>

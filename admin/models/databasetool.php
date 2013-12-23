@@ -67,6 +67,77 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return true;
     }
     
+    function checkQuotes($sm_quotes)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $db = JFactory::getDbo();   
+        $xml = JFactory::getXMLParser( 'Simple' );
+        
+        foreach ( $sm_quotes as $key => $type )
+        {
+            $temp = explode(",",$type);
+            
+            $query='SELECT count(*) AS count
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote where daily_number = '.$temp[1];
+		    $this->_db->setQuery($query);
+		    // sind zitate vorhanden ?
+            if ( !$this->_db->loadResult() )
+            {
+            /* Ein JDatabaseQuery Objekt beziehen */
+            $query = $db->getQuery(true);
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote')->where('daily_number = '.$temp[1].''  );
+            $db->setQuery($query);
+            $result = $db->query();
+    
+            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            foreach( $xml->document->version as $version ) 
+            {
+            $quote_version = $version->data();
+            $mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            }
+            
+            foreach( $xml->document->quotes as $quote ) 
+            {
+            $author = '';
+            $zitat = '';
+            $name = $quote->getElementByPath('quote');
+            $attributes = $name->attributes();
+            $author = $attributes['author'];
+            $author = str_replace("\\", "\\\\", $author);
+            $zitat = $name->data();
+
+            $insertquery = $db->getQuery(true);
+            // Insert columns.
+            $columns = array('daily_number','author','quote');
+            // Insert values.
+            $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'');
+            // Prepare the insert query.
+            $insertquery
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+            // Set the query using our newly populated query object and execute it.
+            $db->setQuery($insertquery);
+                
+	        if (!$db->query())
+			{
+			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            }
+			else
+			{
+    	    } 
+            
+            
+            
+            }
+            
+            }
+        }    
+        
+    }
+
+/*    
     function createSportTypeArray()
     {
         $mainframe = JFactory::getApplication();
@@ -265,29 +336,49 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
         
     }    
-    
+*/    
     
     function checkAssociations()
     {
     $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
-    // Get a db connection.
+    /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
     $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    $params = JComponentHelper::getParams( $option );
+    $country_assoc = $params->get( 'cfg_country_associations' );
+    $country_assoc_del = "'".implode("','",$country_assoc)."'";    
     
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
+    
+   
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations')->where('country NOT IN ('.$country_assoc_del.')'  );
+    $db->setQuery($query);
+    $result = $db->query();
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
+     
     $image_path = '/images/'.$option.'/database/associations/';
     
     foreach( $xml->document->associations as $association ) 
 {
    $name = $association->getElementByPath('assocname');
    $attributes = $name->attributes();
+   $country = $attributes['country'];
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
-   $country = $attributes['country'];
+   // welche länder möchte denn der user haben ?
+   foreach( $country_assoc as $key => $value )
+   {
+   if ( $value == $country  ) 
+   {
+   //$country = $attributes['country'];
    $main = $attributes['main'];
    $parentmain = $attributes['parentmain'];
    
@@ -324,8 +415,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-			    }
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+                }
 			    else
 			    {
 			    $temp = new stdClass();
@@ -354,7 +446,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg()); 
 			    }
 			    else
 			    {
@@ -390,8 +483,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    
     
    }
-   
-   
+   }
+   }
    }
    
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
@@ -775,6 +868,48 @@ function build_InsertQuery_PositionEventType($param1,$param2)
 				('".$param1."','".$param2."')";
 	return $query;
 }
-    
+
+
+function writeErrorLog($class, $function, $file, $text, $line)
+{
+$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();   
+        $date = date("Y-m-d");
+        $time = date("H:i:s");
+        
+        //$path_parts = pathinfo($file); 
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($path_parts,true).'</pre>'),'');
+        
+        $file = str_replace("\\", "\\\\", $file);
+        
+$insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('date','time','class','file','text','function','line');
+                // Insert values.
+                $values = array('\''.$date.'\'','\''.$time.'\'','\''.$class.'\'','"'.$file.'"','"'.$text.'"','\''.$function.'\'','\''.$line.'\'');
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_error_log'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
+                
+	            if (!$db->query())
+			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    }
+			    else
+			    {
+			     
+			    }     
+}   
+
+ 
 
 }

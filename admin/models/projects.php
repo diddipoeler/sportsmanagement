@@ -29,7 +29,7 @@ class sportsmanagementModelProjects extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         
         
         // Create a new query object.

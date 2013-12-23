@@ -238,7 +238,7 @@ fieldset button {
 							<td class="right"  nowrap="nowrap">
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=<?php echo $date; ?>&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
 									 class="modal openroster-team1<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
 									 <?php

@@ -33,8 +33,12 @@ class sportsmanagementViewcpanel extends JView
         
         $params = JComponentHelper::getParams( $option );
         $sporttypes = $params->get( 'cfg_sport_types' );
+        $sm_quotes = $params->get( 'cfg_quotes' );
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewcpanel cfg_sport_types<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sm_quotes,true).'</pre>'),'Notice');
+        
+        // zitate
+        $databasetool->checkQuotes($sm_quotes);
         
         foreach ( $sporttypes as $key => $type )
         {
@@ -80,6 +84,7 @@ class sportsmanagementViewcpanel extends JView
 		jimport('joomla.html.pane');
 		$pane	= JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
+        $this->assignRef( 'sporttypes'		, $sporttypes );
         $this->assign( 'version', $model->getVersion() );
         $this->assign( 'githubrequest', $model->getGithubRequests() );
  

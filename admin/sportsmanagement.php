@@ -30,6 +30,12 @@ else
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
 
+/*
+// fehler in der komponente protokollieren 
+$databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
+*/
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
  
