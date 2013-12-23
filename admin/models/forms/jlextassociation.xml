@@ -45,15 +45,15 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			size="30"
 			multiple="false"
 			targettable="associations"
-			label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST"
-			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
 			
 	<field
 			name="website"
 			type="text"
 			class="inputbox"
-   		label="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE"
-			description="COM_SPORTSMANGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>	
+   		label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>	
       
       <field
 			name="country"
@@ -77,8 +77,8 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				directory=""
 				preview="show"	
         targetfolder="flags_associations"			
-				label="COM_SPORTSMANGEMENT_GLOBAL_FLAG" 
-				description="COM_SPORTSMANGEMENT_GLOBAL_FLAG">
+				label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
+				description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG">
 		</field>
 		<field 	name="picture" 
 				type=""
@@ -86,8 +86,8 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				directory=""
 				preview="show"			
         targetfolder="associations"	
-				label="COM_SPORTSMANGEMENT_GLOBAL_ICON" 
-				description="COM_SPORTSMANGEMENT_GLOBAL_ICON_DESC">
+				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
 		</field>
 	</fieldset>
   
