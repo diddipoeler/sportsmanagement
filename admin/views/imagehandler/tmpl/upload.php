@@ -66,7 +66,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							</tr>
 							<tr>
 	          			<td>
-							<legend><?php echo JText::_( 'COM_INSTALLER_MSG_INSTALL_ENTER_A_URL' ); ?></legend>
+							<legend><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MSG_INSTALL_ENTER_A_URL' ); ?></legend>
               <input class="inputbox" type="text" id="linkaddress" name="linkaddress" size="50" maxlength="250" value="" />
               <br />
               
@@ -86,10 +86,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tbody>
 					<tr>
 	          			<td>
- 							<b><?php
- 							echo JText::_( 'COM_MEDIA_FIELD_PATH_IMAGE_FOLDER_LABEL' ).':'; ?></b>
-							<?php	echo "/images/com_sportsmanagement/database/".$this->folder;	?><br />
-							<b><?php echo JText::_( 'COM_MEDIA_FILESIZE' ).':'; ?></b> <?php echo $this->params->get('image_max_size', 120); ?> kb<br />
+ 							<?php
+ 							echo "<b>".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_FIELD_PATH_IMAGE_FOLDER_LABEL' ).": "."</b>";
+							echo "/images/com_sportsmanagement/database/".$this->folder;	
+							echo "<br /><b>".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MEDIA_FILESIZE' ).": </b>".$this->params->get('image_max_size', 120)."kb<br />";
+							?>
 
 							<?php
 							if ( isset($gd_info) ) {
