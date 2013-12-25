@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo $this->addIcon('ereignisse.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>                                                             
                 <?php echo $this->addIcon('altersklassen.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?> 
               </div></td>
-          </tr>>           
+          </tr>           
           <tr><td>                             
               <?php echo JText::_( 'COM_SPORTSMANAGEMENT_D_HEADING_PERSONAL_DATA' ).': '; ?></td>                     
           </tr>                                  
