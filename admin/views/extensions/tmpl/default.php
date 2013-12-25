@@ -32,15 +32,15 @@ defined('_JEXEC') or die('Restricted access');
                     switch ($value)
                     {
                         case 'soccer':
-                        echo $this->addIcon('dfbnet-logo-20.gif','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT'));
-                        echo $this->addIcon('dfb-key.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));
-                        echo $this->addIcon('lmo.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));
+                        echo $this->addIcon('dfbnetimport.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT'));
+                        echo $this->addIcon('dfbschluessel.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));
+                        echo $this->addIcon('lmoimport.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));
                         break;
                         case 'basketball':
-                        echo $this->addIcon('dbb.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));
+                        echo $this->addIcon('dbbimport.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));
                         break;
                         case 'handball':
-                        echo $this->addIcon('sis.jpg','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'));
+                        echo $this->addIcon('sisimport.png','index.php?option=com_sportsmanagement&view=configuration', JText::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'));
                         break;
                         default:
                         break;
