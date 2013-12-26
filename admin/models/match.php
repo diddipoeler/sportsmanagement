@@ -569,7 +569,17 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table='player')
 	{
-		
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+        {
+            
+            
+        }
+        else
+        {
         switch($table)
         {
             case 'player':
@@ -607,6 +617,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$query .= " ORDER BY mp.project_position_id, mp.ordering,
 					pl.lastname, pl.firstname ASC";
 		$this->_db->setQuery($query);
+        }
+        
 		return $this->_db->loadObjectList($id);
         //return $this->_db->loadObjectList();
 	}

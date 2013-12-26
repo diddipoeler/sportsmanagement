@@ -118,8 +118,8 @@ JHtml::_('behavior.modal');
 						<td class="center"><?php echo $published; ?>
 						</td>
 						<td class="order">
-							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0,'statistics.orderup','COM_SPORTSMANGEMENT_GLOBAL_ORDER_UP',true); ?></span>
-							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'statistics.orderdown','COM_SPORTSMANGEMENT_GLOBAL_ORDER_DOWN',true); ?>
+							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0,'statistics.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',true); ?></span>
+							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'statistics.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',true); ?>
 									<?php $disabled=true ?  '' : 'disabled="disabled"'; ?></span>
 							<input  type="text" name="order[]" size="5"
 									value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>

@@ -140,12 +140,12 @@ JHtml::_('behavior.modal');
 						<td class="order">
 							<span>
 								<?php
-								echo $this->pagination->orderUpIcon($i,$i > 0,'eventtypes.orderup','COM_SPORTSMANGEMENT_GLOBAL_ORDER_UP',$ordering);
+								echo $this->pagination->orderUpIcon($i,$i > 0,'eventtypes.orderup','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP',$ordering);
 								?>
 							</span>
 							<span>
 								<?php
-								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'eventtypes.orderdown','COM_SPORTSMANGEMENT_GLOBAL_ORDER_DOWN',$ordering);
+								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'eventtypes.orderdown','COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN',$ordering);
 								?>
 								<?php
 								$disabled=true ? '' : 'disabled="disabled"';

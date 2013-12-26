@@ -28,8 +28,8 @@
 			type="sportstypes"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
 			required="true">
 		</field>
 		

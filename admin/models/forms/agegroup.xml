@@ -31,38 +31,38 @@
 			type="sportstypes"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
 			required="true">
 		</field>
         			
 	<field
 			name="info"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_info_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO_DESC"
 			class="inputbox"/>
 
 
 <field
 			name="age_from"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_from_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM_DESC"
 			class="inputbox"
 			required=""/>
 <field
 			name="age_to"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_age_to_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO_DESC"
 			class="inputbox"
 			required=""/>
 <field
 			name="deadline_day"
 			type="calendar"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_deadline_day_DESC"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY_DESC"
 			class="inputbox"
 			required=""
       format="%Y-%m-%d"/>            		
@@ -90,7 +90,7 @@
 				type=""
 				default=""					
 				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="agegroups"

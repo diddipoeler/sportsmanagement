@@ -5,7 +5,9 @@
 		name="greetings"
 		label="COM_SPORTSMANAGEMENT_CONFIG_SETTINGS_LABEL"
 		description="COM_SPORTSMANAGEMENT_CONFIG_SETTINGS_DESC"
-	>
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
+  >
 	
   <field name="cfg_help_server" 
   type="text" 
@@ -94,7 +96,33 @@
       description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT_DESCR">
 		</field>
 		
-		<field name="cfg_sport_types" 
+		
+    <field name="cfg_quotes" 
+    type="list"
+    multiple="true"  
+    default=""
+    size="10"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES_DESCR">
+			<option value="player,1">COM_SPORTSMANAGEMENT_QUOTES_PLAYER</option>
+			<option value="staff,2">COM_SPORTSMANAGEMENT_QUOTES_STAFF</option>
+			<option value="functionaries,3">COM_SPORTSMANAGEMENT_QUOTES_FUNCTIONARIES</option>
+      <option value="reporter,4">COM_SPORTSMANAGEMENT_QUOTES_REPORTER</option>
+			<option value="others,5">COM_SPORTSMANAGEMENT_QUOTES_OTHERS</option>
+		</field>
+		
+		
+    <field name="cfg_country_associations" 
+    type="country"
+    multiple="true"  
+    default=""
+    size="10"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_COUNTRY_ASSOCIATIONS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_COUNTRY_ASSOCIATIONS_DESCR">
+			
+		</field>
+    
+    <field name="cfg_sport_types" 
     type="list"
     multiple="true"  
     default=""

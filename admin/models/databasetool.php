@@ -1,4 +1,42 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
@@ -7,6 +45,15 @@ jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file'); 
 
+/**
+ * sportsmanagementModeldatabasetool
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
+ */
 class sportsmanagementModeldatabasetool extends JModelAdmin
 {
 
@@ -67,227 +114,120 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return true;
     }
     
-    function createSportTypeArray()
+    function checkQuotes($sm_quotes)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $params = JComponentHelper::getParams( $option );
-        $sporttypes = $params->get( 'cfg_sport_types' );
-        $export = array();
+        $db = JFactory::getDbo();   
+        $xml = JFactory::getXMLParser( 'Simple' );
         
-        foreach ( $sporttypes as $key => $type )
+        foreach ( $sm_quotes as $key => $type )
         {
-        unset ($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_GREEN_CARD';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/green_card.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_YELLOW_CARD';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/yellow_card.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-		$temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_YELLOW_RED_CARD';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/yellow_red_card.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_RED_CARD';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/red_card.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_PENALTY_GOAL';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/penalty_goal.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_INJURY';
-		$temp->icon = 'images/'.$option.'/database/events/'.$type.'/injured.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_E_GOAL';
-        $temp->icon = 'images/'.$option.'/database/events/'.$type.'/goal.png';
-        $export[] = $temp;
-        $this->_sport_types_events[$type] = array_merge($export);
+            $temp = explode(",",$type);
+            
+            $query='SELECT count(*) AS count
+            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote where daily_number = '.$temp[1];
+		    $this->_db->setQuery($query);
+		    // sind zitate vorhanden ?
+            if ( !$this->_db->loadResult() )
+            {
+            /* Ein JDatabaseQuery Objekt beziehen */
+            $query = $db->getQuery(true);
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote')->where('daily_number = '.$temp[1].''  );
+            $db->setQuery($query);
+            $result = $db->query();
+    
+            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            foreach( $xml->document->version as $version ) 
+            {
+            $quote_version = $version->data();
+            $mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            }
+            
+            foreach( $xml->document->quotes as $quote ) 
+            {
+            $author = '';
+            $zitat = '';
+            $name = $quote->getElementByPath('quote');
+            $attributes = $name->attributes();
+            $author = $attributes['author'];
+            $notes = $attributes['notes'];
+            $author = str_replace("\\", "\\\\", $author);
+            $zitat = $name->data();
+
+            $insertquery = $db->getQuery(true);
+            // Insert columns.
+            $columns = array('daily_number','author','quote','notes');
+            // Insert values.
+            $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'','\''.$notes.'\'');
+            // Prepare the insert query.
+            $insertquery
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+            // Set the query using our newly populated query object and execute it.
+            $db->setQuery($insertquery);
+                
+	        if (!$db->query())
+			{
+			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            }
+			else
+			{
+    	    } 
+            
+            
+            
+            }
+            
+            }
+        }    
         
-        unset ($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_PLAYERS';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '1';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_TEAM_STAFF';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '2';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_COACHES';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '2';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_MEDICAL_STAFF';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '2';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_REFEREES';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_CLUB_STAFF';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '4';
-        $export[] = $temp;
-        $this->_sport_types_position[$type] = array_merge($export);
-        
-        unset ($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_P_GOALKEEPER';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '1';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_PLAYERS'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_P_DEFENDER';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '1';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_PLAYERS'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_P_MIDFIELDER';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '1';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_PLAYERS'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_P_FORWARD';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '1';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_PLAYERS'] = array_merge($export);
-        
-        unset ($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_CLUB_MANAGER';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '4';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_CLUB_STAFF'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_CLUB_YOUTH_MANAGER';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '4';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_CLUB_STAFF'] = array_merge($export);
-        
-        unset ($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_MAIN_REFEREE';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_CENTER_REFEREE';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_LINESMAN';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_THIRD_OFFICIAL';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_FOURTH_OFFICIAL';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_FIFTH_OFFICIAL';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        $temp = new stdClass();
-        $temp->name = strtoupper($option).'_F_VIDEO_UMPIRE';
-        $temp->switch = 'persontype';
-        $temp->parent = '0';
-        $temp->content = '3';
-        $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_F_REFEREES'] = array_merge($export);
-        
-        
-        
-        
-        }
-        
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
-        
-    }    
+    }
+
     
     
     function checkAssociations()
     {
     $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
-    // Get a db connection.
+    /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
     $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    $params = JComponentHelper::getParams( $option );
+    $country_assoc = $params->get( 'cfg_country_associations' );
+    $country_assoc_del = "'".implode("','",$country_assoc)."'";    
     
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
+    
+   
+    /* Ein JDatabaseQuery Objekt beziehen */
+    $query = $db->getQuery(true);
+    $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations')->where('country NOT IN ('.$country_assoc_del.')'  );
+    $db->setQuery($query);
+    $result = $db->query();
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
+     
     $image_path = '/images/'.$option.'/database/associations/';
     
     foreach( $xml->document->associations as $association ) 
 {
    $name = $association->getElementByPath('assocname');
    $attributes = $name->attributes();
+   $country = $attributes['country'];
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
-   $country = $attributes['country'];
+   // welche länder möchte denn der user haben ?
+   foreach( $country_assoc as $key => $value )
+   {
+   if ( $value == $country  ) 
+   {
+   //$country = $attributes['country'];
    $main = $attributes['main'];
    $parentmain = $attributes['parentmain'];
    
@@ -324,8 +264,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-			    }
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+                }
 			    else
 			    {
 			    $temp = new stdClass();
@@ -354,7 +295,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg()); 
 			    }
 			    else
 			    {
@@ -390,8 +332,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    
     
    }
-   
-   
+   }
+   }
    }
    
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
@@ -544,7 +486,7 @@ foreach( $xml->document->events as $event )
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
@@ -560,7 +502,7 @@ foreach( $xml->document->events as $event )
        $result = $this->_db->loadResult();
        if ( $result )
        {
-       $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
+       //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
      // $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
       $sports_type_id = $result;
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
@@ -775,6 +717,48 @@ function build_InsertQuery_PositionEventType($param1,$param2)
 				('".$param1."','".$param2."')";
 	return $query;
 }
-    
+
+
+function writeErrorLog($class, $function, $file, $text, $line)
+{
+$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();   
+        $date = date("Y-m-d");
+        $time = date("H:i:s");
+        
+        //$path_parts = pathinfo($file); 
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($path_parts,true).'</pre>'),'');
+        
+        $file = str_replace("\\", "\\\\", $file);
+        
+$insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('date','time','class','file','text','function','line');
+                // Insert values.
+                $values = array('\''.$date.'\'','\''.$time.'\'','\''.$class.'\'','"'.$file.'"','"'.$text.'"','\''.$function.'\'','\''.$line.'\'');
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_error_log'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
+                
+	            if (!$db->query())
+			    {
+			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    }
+			    else
+			    {
+			     
+			    }     
+}   
+
+ 
 
 }

@@ -1,4 +1,42 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
@@ -29,11 +67,16 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         $params = JComponentHelper::getParams( $option );
         $sporttypes = $params->get( 'cfg_sport_types' );
+        $sm_quotes = $params->get( 'cfg_quotes' );
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewcpanel cfg_sport_types<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sm_quotes,true).'</pre>'),'Notice');
+        
+        // zitate
+        $databasetool->checkQuotes($sm_quotes);
         
         foreach ( $sporttypes as $key => $type )
         {
@@ -79,6 +122,7 @@ class sportsmanagementViewcpanel extends JView
 		jimport('joomla.html.pane');
 		$pane	= JPane::getInstance('sliders');
 		$this->assignRef( 'pane'		, $pane );
+        $this->assignRef( 'sporttypes'		, $sporttypes );
         $this->assign( 'version', $model->getVersion() );
         $this->assign( 'githubrequest', $model->getGithubRequests() );
  
@@ -135,7 +179,7 @@ class sportsmanagementViewcpanel extends JView
 	{
 		$lang		= JFactory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
-        
+        $attribs = array();
         if ( $width )
         {
         $attribs['width'] = $width;
