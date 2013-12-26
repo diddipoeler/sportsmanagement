@@ -500,6 +500,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `away_date_end` DATE NOT NULL DEFAULT '0000-00-00' ,
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -535,6 +536,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `longitude` float NOT NULL DEFAULT '255',
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
+  `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   UNIQUE INDEX `name` (`name` ASC)
@@ -980,6 +982,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `merge_clubs` VARCHAR(255) NOT NULL DEFAULT '' ,
   `extendeduser` TEXT NULL ,
   `season_ids` TEXT NULL ,
+  `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   INDEX `fk_club` (`club_id` ASC)

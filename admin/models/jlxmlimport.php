@@ -38,12 +38,15 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 
+
 /**
- * Joomleague Component JoomLeague XML-Import Model
- *
- * @author	Zoltan Koteles & Kurt Norgaz
- * @package	JoomLeague
- * @since	1.5.0a
+ * sportsmanagementModelJLXMLImport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2013
+ * @access public
  */
 class sportsmanagementModelJLXMLImport extends JModel
 {

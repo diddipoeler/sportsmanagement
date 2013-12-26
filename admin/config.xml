@@ -105,7 +105,10 @@
 			label="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES_DESCR">
 			<option value="player,1">COM_SPORTSMANAGEMENT_QUOTES_PLAYER</option>
-			
+			<option value="staff,2">COM_SPORTSMANAGEMENT_QUOTES_STAFF</option>
+			<option value="functionaries,3">COM_SPORTSMANAGEMENT_QUOTES_FUNCTIONARIES</option>
+      <option value="reporter,4">COM_SPORTSMANAGEMENT_QUOTES_REPORTER</option>
+			<option value="others,5">COM_SPORTSMANAGEMENT_QUOTES_OTHERS</option>
 		</field>
 		
 		

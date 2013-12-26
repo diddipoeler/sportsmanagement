@@ -55,8 +55,21 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			<option value="0">JOPTION_SELECT_CATEGORY</option>
 		</field>
         		      		
-	</fieldset>		
+		
 
+  <field
+			name="person_id"
+			type="personlist"
+			class="inputbox"
+			default=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_PERSONID_LABEL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_PERSONID_DESC"
+			required="false"
+		>
+			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON</option>
+		</field>
+        		      		
+	</fieldset>	
 
 
 <fieldset name="picture"
