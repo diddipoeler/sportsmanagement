@@ -1,7 +1,7 @@
 <?php
 if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0))
 {
-	echo '<p>'.JText::sprintf('JL_ADMIN_DFBNET_IMPORT_HINT2',$this->revisionDate).'</p>';
+	echo '<p>'.JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT2',$this->revisionDate).'</p>';
 }
 
 $url = 'components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo.gif';
@@ -18,7 +18,7 @@ $iconStyle = '.icon-48-dfbnet { background-image: url(components/com_joomleague/
 $document =& JFactory::getDocument();
 $document->addStyleDeclaration($iconStyle);
 // set the toolbar title and icon suffix
-JToolBarHelper::title('JL_ADMIN_DFBNET_IMPORT_TITLE_3_3', 'dfbnet');
+JToolBarHelper::title('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TITLE_3_3', 'dfbnet');
 
 
 ?>
@@ -27,7 +27,7 @@ JToolBarHelper::title('JL_ADMIN_DFBNET_IMPORT_TITLE_3_3', 'dfbnet');
 	<table class='adminlist'>
 		<thead><tr><th>
     <?php echo JHtml::_('image', $url, $alt, $attribs);; ?>
-    <?php echo JText::_('JL_ADMIN_DFBNET_IMPORT_TABLE_TITLE_3'); ?></th></tr></thead>
+    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TABLE_TITLE_3'); ?></th></tr></thead>
 		<tbody><tr><td><?php echo '&nbsp;'; ?></td></tr></tbody>
 	</table>
 	<?php

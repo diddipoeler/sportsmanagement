@@ -684,7 +684,7 @@ if (isset($this->xml) && is_array($this->xml))
 		}
 		else
 		{
-		  alert("<?php echo JText::_('JL_ADMIN_XML_IMPORT_ERROR'); ?>\n\n"+message);
+		  alert("<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR'); ?>\n\n"+message);
 		  return false;
 		}
 	}
@@ -763,11 +763,11 @@ if (isset($this->xml) && is_array($this->xml))
 	<div id='editcell'>
 		<a name='page_top'></a>
 		<table class='adminlist'>
-			<thead><tr><th><?php echo JText::_('JL_ADMIN_XML_IMPORT_TABLE_TITLE_2'); ?></th></tr></thead>
+			<thead><tr><th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TABLE_TITLE_2'); ?></th></tr></thead>
 			<tbody>
 				<tr>
 					<td style='text-align:center; '>
-						<p style='text-align:center;'><b style='color:green; '><?php echo JText::sprintf('JL_ADMIN_XML_IMPORT_UPLOAD_SUCCESS','<i>'.$this->uploadArray['name'].'</i>'); ?></b></p>
+						<p style='text-align:center;'><b style='color:green; '><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_SUCCESS','<i>'.$this->uploadArray['name'].'</i>'); ?></b></p>
 						<?php
 						if ($this->import_version!='OLD')
 						{
@@ -791,8 +791,8 @@ if (isset($this->xml) && is_array($this->xml))
 									return;
 							}
 						}
-						?><p><?php echo JText::sprintf('JL_ADMIN_XML_IMPORT_HINT2',$this->revisionDate); ?></p>
-						<p><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_CLUBS_HINT'); ?></p>
+						?><p><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_HINT2',$this->revisionDate); ?></p>
+						<p><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_CLUBS_HINT'); ?></p>
 					</td>
 				</tr>
 			</tbody>
@@ -809,14 +809,14 @@ if (isset($this->xml) && is_array($this->xml))
 			{
 				?>
 				<fieldset>
-					<legend><strong><?php echo JText::_('JL_ADMIN_XML_IMPORT_GENERAL_DATA_LEGEND'); ?></strong></legend>
+					<legend><strong><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_GENERAL_DATA_LEGEND'); ?></strong></legend>
 					<table class='adminlist'>
 						<?php
 						if (($xmlImportType!='events') && ($xmlImportType!='positions'))
 						{
 							?>
 							<tr>
-								<td style='background-color:#EEEEEE'><?php echo JText::_('JL_ADMIN_XML_IMPORT_PROJECT_NAME'); ?></td>
+								<td style='background-color:#EEEEEE'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_PROJECT_NAME'); ?></td>
 								<td style='background-color:#EEEEEE'>
 									<input type='text' name='name' id='name' size='110' maxlength='100' value="<?php echo stripslashes(htmlspecialchars($proj->name)); ?>" />
 								</td>
@@ -825,7 +825,7 @@ if (isset($this->xml) && is_array($this->xml))
 						}
 						?>
 						<tr>
-							<td style='background-color:#DDDDDD'><?php echo JText::_('JL_ADMIN_XML_IMPORT_SPORTSTYPE'); ?></td>
+							<td style='background-color:#DDDDDD'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SPORTSTYPE'); ?></td>
 							<td style='background-color:#DDDDDD'>
 								<?php
 								if (isset($sportstype->name))
@@ -840,7 +840,7 @@ if (isset($this->xml) && is_array($this->xml))
 								{
 									?>
 									<select name='sportstype' id='sportstype'>
-										<option selected value="0"><?php echo JText::_('JL_ADMIN_XML_IMPORT_SPORTSTYPE_SELECT'); ?></option>
+										<option selected value="0"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SPORTSTYPE_SELECT'); ?></option>
 										<?php
 										foreach ($this->sportstypes AS $row)
 										{
@@ -867,7 +867,7 @@ if (isset($this->xml) && is_array($this->xml))
 											} else {
 												document.adminForm.sportstype.disabled=false;
 												document.adminForm.sportstypeNew.disabled=true;
-											}" /><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+											}" /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 									<input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew' value="<?php echo stripslashes(htmlspecialchars(JText::_($dSportsTypeName))); ?>" disabled='disabled' />
 								<?php
 								}
@@ -875,7 +875,7 @@ if (isset($this->xml) && is_array($this->xml))
 								{
 									?>
 									<input type="hidden" name="newSportsTypeCheck" value="1" />
-									<?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+									<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 									<input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew' value="<?php echo stripslashes(htmlspecialchars(JText::_($dSportsTypeName))); ?>" />
 									<?php
 								}
@@ -887,7 +887,7 @@ if (isset($this->xml) && is_array($this->xml))
 						{
 							?>
 							<tr>
-								<td style='background-color:#EEEEEE'><?php echo JText::_('JL_ADMIN_XML_IMPORT_LEAGUE'); ?></td>
+								<td style='background-color:#EEEEEE'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_LEAGUE'); ?></td>
 								<td style='background-color:#EEEEEE'>
 									<?php
 									if (isset($league->name))
@@ -907,7 +907,7 @@ if (isset($this->xml) && is_array($this->xml))
 									}
 									?>
 									<select name='league' id='league'>
-										<option selected value="0"><?php echo JText::_('JL_ADMIN_XML_IMPORT_LEAGUE_SELECT'); ?></option>
+										<option selected value="0"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_LEAGUE_SELECT'); ?></option>
 										<?php
 										if (count($this->leagues) > 0)
 										{
@@ -929,7 +929,7 @@ if (isset($this->xml) && is_array($this->xml))
 									{
 										?>
 										<input	checked='checked' type='checkbox' name='newLeagueCheck' value="1"
-												onclick='this.checked=true;' /><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+												onclick='this.checked=true;' /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 										<input	type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew' value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>" disabled='disabled' />
 										<script type="text/javascript">
 											document.adminForm.newLeagueCheck.value=1;
@@ -951,7 +951,7 @@ if (isset($this->xml) && is_array($this->xml))
 												} else {
 													document.adminForm.league.disabled=false;
 													document.adminForm.leagueNew.disabled=true;
-												}" /><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+												}" /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 										<input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew' value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>" disabled='disabled' />
 										<?php
 									}
@@ -959,7 +959,7 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#DDDDDD'><?php echo JText::_('JL_ADMIN_XML_IMPORT_SEASON'); ?></td>
+								<td style='background-color:#DDDDDD'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON'); ?></td>
 								<td style='background-color:#DDDDDD'>
 									<?php
 									if (isset($season->name))
@@ -972,7 +972,7 @@ if (isset($this->xml) && is_array($this->xml))
 									}
 									?>
 									<select name='season' id='season'>
-										<option selected value="0"><?php echo JText::_('JL_ADMIN_XML_IMPORT_SEASON_SELECT'); ?></option>
+										<option selected value="0"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'); ?></option>
 										<?php
 										if (count($this->seasons) > 0)
 										{
@@ -994,7 +994,7 @@ if (isset($this->xml) && is_array($this->xml))
 									{
 										?>
 										<input	checked='checked' type='checkbox' name='newSeasonCheck' value="1"
-												onclick='this.checked=true;' /><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+												onclick='this.checked=true;' /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 										<input	type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew' value="<?php echo stripslashes(htmlspecialchars($dSeasonName)); ?>" disabled='disabled' />
 										<script type="text/javascript">
 											document.adminForm.newSeasonCheck.value=1;
@@ -1016,7 +1016,7 @@ if (isset($this->xml) && is_array($this->xml))
 												} else {
 													document.adminForm.season.disabled=false;
 													document.adminForm.seasonNew.disabled=true;
-												}" /><?php echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
+												}" /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
 										<input type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew' value="<?php echo stripslashes(htmlspecialchars($dSeasonName)); ?>" disabled='disabled' />
 										<?php
 									}
@@ -1024,7 +1024,7 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#EEEEEE'><?php echo JText::_('JL_ADMIN_XML_IMPORT_ADMIN'); ?></td>
+								<td style='background-color:#EEEEEE'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ADMIN'); ?></td>
 								<td style='background-color:#EEEEEE'>
 									<select name='admin' id='admin'>
 										<?php
@@ -1041,7 +1041,7 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#DDDDDD'><?php echo JText::_('JL_ADMIN_XML_IMPORT_EDITOR'); ?></td>
+								<td style='background-color:#DDDDDD'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_EDITOR'); ?></td>
 								<td style='background-color:#DDDDDD'>
 									<select name='editor' id='editor'>
 										<?php
@@ -1058,10 +1058,10 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#EEEEEE'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TEMPLATES'); ?></td>
+								<td style='background-color:#EEEEEE'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES'); ?></td>
 								<td style='background-color:#EEEEEE'>
 									<select name='copyTemplate' id='copyTemplate'>
-										<option value="0" selected><?php echo JText::_('JL_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>
+										<option value="0" selected><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>
 										<?php
 										foreach ($this->templates AS $row)
 										{
@@ -1077,12 +1077,12 @@ if (isset($this->xml) && is_array($this->xml))
 									<?php
 									echo $this->lists['serveroffset'].'&nbsp;';
 									$output1="<input type='text' name='acttime' id='acttime' size='4' value=\"".JHTML::date(time(),'%H:%M')."\" style='font-weight: bold;' disabled='disabled' />";
-									echo sprintf(JText::_('JL_ADMIN_PROJECT_SERVER_ACTTIME'),$output1);
+									echo sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SERVER_ACTTIME'),$output1);
 									?>
 								</td>
 							</tr>
 							<tr>
-								<td style='background-color:#EEEEEE'><?php echo JText::_('JL_ADMIN_XML_IMPORT_PUBLISH'); ?></td>
+								<td style='background-color:#EEEEEE'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_PUBLISH'); ?></td>
 								<td style='background-color:#EEEEEE'>
 									<input type='radio' name='publish' value="0" /><?php echo JText::_('JL_GLOBAL_NO'); ?>
 									<input type='radio' name='publish' value="1" checked='checked' /><?php echo JText::_('JL_GLOBAL_YES'); ?>
@@ -1093,7 +1093,7 @@ if (isset($this->xml) && is_array($this->xml))
 						?>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_bottom'><?php echo JText::_('JL_ADMIN_XML_IMPORT_BOTTOM'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_bottom'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_BOTTOM'); ?></a></p>
 				<?php
 			}
 			?>
@@ -1105,15 +1105,15 @@ if (isset($this->xml) && is_array($this->xml))
 					<legend><strong><?php
 						if (!empty($clubs) && !empty($teams))
 						{
-							echo JText::_('JL_ADMIN_XML_IMPORT_CLUBS_TEAMS_LEGEND'); //JL_XML_IMPORT_TEAM_CLUB_LEGEND
+							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_TEAMS_LEGEND'); //JL_XML_IMPORT_TEAM_CLUB_LEGEND
 						}
 						elseif (!empty($clubs))
 						{
-							echo JText::_('JL_ADMIN_XML_IMPORT_CLUBS_LEGEND');
+							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_LEGEND');
 						}
 						else
 						{
-							echo JText::_('JL_ADMIN_XML_IMPORT_TEAMS_LEGEND');
+							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND');
 						}
 						?></strong></legend>
 					<table class='adminlist'>
@@ -1121,11 +1121,11 @@ if (isset($this->xml) && is_array($this->xml))
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
 									$checkCount=((isset($clubs) && count($clubs) > 0)) ? count($clubs) : count($teams);
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW').'<br />';
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW').'<br />';
 									echo '<input type="checkbox" name="toggleTeamsClubs" value="" onclick="checkAllCustom('.$checkCount.')" />';
 								?></th>
-								<?php if (!empty($clubs)){ ?><th><?php echo JText::_('JL_ADMIN_XML_IMPORT_TEAM_DATA'); ?></th><?php } ?>
-								<?php if (!empty($teams)){ ?><th><?php echo JText::_('JL_ADMIN_XML_IMPORT_CLUB_DATA'); ?></th><?php } ?>
+								<?php if (!empty($clubs)){ ?><th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAM_DATA'); ?></th><?php } ?>
+								<?php if (!empty($teams)){ ?><th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUB_DATA'); ?></th><?php } ?>
 							</tr>
 						</thead>
 						<tbody>
@@ -1224,7 +1224,7 @@ if (isset($this->xml) && is_array($this->xml))
 													}' $disabled ";
 											echo "/>&nbsp;";
 											$output="<input type='text' name='dbTeamName_$key' size='40' maxlength='60' value=\"".stripslashes(htmlspecialchars($foundMatchingTeamName))."\" style='font-weight: bold;' disabled='disabled' />";
-											echo JText::sprintf('JL_ADMIN_XML_IMPORT_USE_TEAM',$output);
+											echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_TEAM',$output);
 											echo "<input type='hidden' name='dbTeamID_$key' value=\"".stripslashes(htmlspecialchars($foundMatchingTeam))."\" $disabled />";
 											echo '<br />';
 
@@ -1239,7 +1239,7 @@ if (isset($this->xml) && is_array($this->xml))
 												echo ",1";
 												echo ")' ";
 												echo "/>&nbsp;";
-												echo JText::_('JL_ADMIN_XML_IMPORT_ASSIGN_TEAM');
+												echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TEAM');
 												echo '<br />';
 											}
 											else
@@ -1275,7 +1275,7 @@ if (isset($this->xml) && is_array($this->xml))
 														document.adminForm.teamMiddleName_$key.disabled=true;
 													}' ";
 											echo "/>&nbsp;";
-											echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_TEAM');
+											echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_TEAM');
 											if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0)){echo ' ('.$teamClub->club_id.')';}
 											?>
 											<br />
@@ -1283,13 +1283,13 @@ if (isset($this->xml) && is_array($this->xml))
 												<tr>
 													<td>
 														<?php
-														echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_TEAMNAME').'</b>';
+														echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMNAME').'</b>';
 														?><br /><input type='hidden' name='teamID_<?php echo $key; ?>' value="<?php echo $key; ?>" <?php echo $disabled; ?> />
 														<input type='text' name='teamName_<?php echo $key; ?>' size='45' maxlength='60' value="<?php echo stripslashes(htmlspecialchars($teamClub->name)); ?>" <?php echo $disabled; ?> />
 													</td>
 													<td>
 														<?php
-														echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_TEAMSHORT').'</b>';
+														echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMSHORT').'</b>';
 														?><br /><input type='text' name='teamShortname_<?php echo $key; ?>' size='20' maxlength='15' value="<?php echo stripslashes(htmlspecialchars($teamClub->short_name)); ?>" <?php echo $disabled; ?> />
 													</td>
 												</tr>
@@ -1417,7 +1417,7 @@ if (isset($this->xml) && is_array($this->xml))
 													}' $disabled ";
 											echo "/>&nbsp;";
 											$output="<input type='text' name='dbClubName_$key' size='45' maxlength='100' value=\"".stripslashes(htmlspecialchars($matchingClubName))."\" style='font-weight: bold; ' disabled='disabled' />";
-											echo JText::sprintf('JL_ADMIN_XML_IMPORT_USE_CLUB',$output);
+											echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_CLUB',$output);
 											echo "<input type='hidden' name='dbClubPlaygroundID_$key' value=\"$clubPlaygroundID\" $disabled />";
 											echo "<input type='hidden' name='dbClubID_$key' value=\"$matchingTeam_ClubID\" $disabled $disabled />";
 											echo '<br />';
@@ -1433,7 +1433,7 @@ if (isset($this->xml) && is_array($this->xml))
 												echo ",2";
 												echo ")' ";
 												echo "/>&nbsp;";
-												echo JText::_('JL_ADMIN_XML_IMPORT_ASSIGN_CLUB');
+												echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_CLUB');
 												echo '<br />';
 											}
 											else
@@ -1466,7 +1466,7 @@ if (isset($this->xml) && is_array($this->xml))
 																	document.adminForm.clubID_$key.disabled=true;
 														}' ";
 											echo "/>&nbsp;";
-											echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_CLUB');
+											echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_CLUB');
 											if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0)){echo ' ('.$club->id.')';}
 											?>
 											<br />
@@ -1474,14 +1474,14 @@ if (isset($this->xml) && is_array($this->xml))
 												<tr>
 													<td>
 														<?php
-														echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_CLUBNAME').'</b>';
+														echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBNAME').'</b>';
 														?><br />
 														<input type='hidden' name='clubID_<?php echo $key; ?>' value="<?php echo $clubid; ?>" <?php echo $disabled; ?> />
 														<input type='text' name='clubName_<?php echo $key; ?>' size='60' maxlength='100' value="<?php echo stripslashes(htmlspecialchars($club->name)); ?>" <?php echo $disabled; ?> />
 													</td>
 													<td>
 														<?php
-														echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_CLUBCOUNTRY').'</b>';
+														echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBCOUNTRY').'</b>';
 														$dCountry=$clubCountry; echo ": ".$dCountry;
 														if (preg_match('=^[0-9]+$=',$dCountry)){$dCountry=$this->OldCountries[(int)$dCountry];}
 														?><br />
@@ -1517,7 +1517,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -1532,7 +1532,7 @@ if (isset($this->xml) && is_array($this->xml))
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="togglePlaygrounds" value="" onclick="checkAllPlaygrounds('.count($playgrounds).')" />';
 								?></th>
@@ -1675,7 +1675,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -1689,7 +1689,7 @@ if (isset($this->xml) && is_array($this->xml))
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="toggleEvents" value="" onclick="checkAllEvents('.count($events).')" />';
 								?></th>
@@ -1820,7 +1820,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -1834,7 +1834,7 @@ if (isset($this->xml) && is_array($this->xml))
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="toggleParentPositions" value="" onclick="checkAllParentPositions('.count($parentpositions).')" />';
 								?></th>
@@ -1964,7 +1964,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -1978,7 +1978,7 @@ if (isset($this->xml) && is_array($this->xml))
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="togglePositions" value="" onclick="checkAllPositions('.count($positions).')" />';
 								?></th>
@@ -2108,7 +2108,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -2122,7 +2122,7 @@ if (isset($this->xml) && is_array($this->xml))
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="toggleStatistics" value="" onclick="checkAllStatistics('.count($statistics).')" />';
 								?></th>
@@ -2265,7 +2265,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>
@@ -2274,16 +2274,16 @@ if (isset($this->xml) && is_array($this->xml))
 			{
 				?>
 				<fieldset>
-					<legend><strong><?php echo JText::_('JL_ADMIN_XML_IMPORT_PERSON_LEGEND'); ?></strong></legend>
+					<legend><strong><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_PERSON_LEGEND'); ?></strong></legend>
 					<table class='adminlist'>
 						<thead>
 							<tr>
 								<th width='5%' nowrap='nowrap'><?php
-									echo JText::_('JL_ADMIN_XML_IMPORT_ALL_NEW');
+									echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ALL_NEW');
 									echo '<br />';
 									echo '<input type="checkbox" name="togglePersons" value="" onclick="checkAllPersons('.count($persons).')" />';
 								?></th>
-								<th><?php echo JText::_('JL_ADMIN_XML_IMPORT_PERSON_DATA'); ?></th>
+								<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_PERSON_DATA'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -2360,7 +2360,7 @@ if (isset($this->xml) && is_array($this->xml))
 										$output2="<input type='text' name='dbPersonFirstname_$key' size='30' maxlength='45' value=\"".stripslashes(htmlspecialchars($foundMatchingPersonFirstname))."\" style='font-weight: bold;' disabled='disabled' />";
 										$output3="<input type='text' name='dbPersonNickname_$key' size='30' maxlength='45' value=\"".stripslashes(htmlspecialchars($foundMatchingPersonNickname))."\" style='font-weight: bold;' disabled='disabled' />";
 										$output4="<input type='text' name='dbPersonBirthday_$key' value=\"$foundMatchingPersonBirthday\" maxlength='10' size='11' style='font-weight: bold;' disabled='disabled' />";
-										echo JText::sprintf('JL_ADMIN_XML_IMPORT_USE_PERSON',$output1,$output2,$output3,$output4);
+										echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_PERSON',$output1,$output2,$output3,$output4);
 										echo "<input type='hidden' name='dbPersonID_$key' value=\"$foundMatchingPerson\" $disabled />";
 										echo '<br />';
 
@@ -2375,7 +2375,7 @@ if (isset($this->xml) && is_array($this->xml))
 											echo ",3";
 											echo ")' ";
 											echo "/>&nbsp;";
-											echo JText::_('JL_ADMIN_XML_IMPORT_ASSIGN_PERSON');
+											echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_PERSON');
 											echo '<br />';
 										}
 										else
@@ -2411,22 +2411,22 @@ if (isset($this->xml) && is_array($this->xml))
 																document.adminForm.personBirthday_$key.disabled=true;
 													}' ";
 										echo "/>&nbsp;";
-										echo JText::_('JL_ADMIN_XML_IMPORT_CREATE_PERSON');
+										echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_PERSON');
 										?>
 										<br />
 										<table cellspacing='0' cellpadding='0'>
 											<tr>
-												<td><?php echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_LNAME').'</b>'; ?><br />
+												<td><?php echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_LNAME').'</b>'; ?><br />
 													<input type='hidden' name='personID_<?php echo $key; ?>' value="<?php echo $key; ?>" <?php echo $disabled; ?> />
 													<input type='text' name='personLastname_<?php echo $key; ?>' size='30' maxlength='45' value="<?php echo stripslashes(htmlspecialchars($person->lastname)); ?>" <?php echo $disabled; ?> />
 												</td>
-												<td><?php echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_FNAME').'</b>'; ?><br />
+												<td><?php echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_FNAME').'</b>'; ?><br />
 													<input type='text' name='personFirstname_<?php echo $key; ?>' size='30' maxlength='45' value="<?php echo stripslashes(htmlspecialchars($person->firstname)); ?>" <?php echo $disabled; ?> />
 												</td>
-												<td><?php echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_NNAME').'</b>'; ?><br />
+												<td><?php echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_NNAME').'</b>'; ?><br />
 													<input type='text' name='personNickname_<?php echo $key; ?>' size='30' maxlength='45' value="<?php echo stripslashes(htmlspecialchars($person->nickname)); ?>" <?php echo $disabled; ?> />
 												</td>
-												<td><?php echo '<b>'.JText::_('JL_ADMIN_XML_IMPORT_BIRTHDAY').'</b>'; ?><br />
+												<td><?php echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_BIRTHDAY').'</b>'; ?><br />
 													<input type='text' name='personBirthday_<?php echo $key; ?>' maxlength='10' size='11' value="<?php echo $person->birthday; ?>" <?php echo $disabled; ?> />
 												</td>
 											</tr>
@@ -2440,7 +2440,7 @@ if (isset($this->xml) && is_array($this->xml))
 						</tbody>
 					</table>
 				</fieldset>
-				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('JL_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
 				<?php
 			}
 			?>

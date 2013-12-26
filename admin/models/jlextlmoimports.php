@@ -175,8 +175,8 @@ function parse_ini_file_ersatz($f)
 		}
 		else
 		{
-			JError::raiseWarning(500,JText::sprintf('JL_ADMIN_LMO_ERROR','Missing import file'));
-			echo "<script> alert('".JText::sprintf('JL_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
+			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
+			echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
 

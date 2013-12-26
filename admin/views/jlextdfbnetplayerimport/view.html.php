@@ -171,7 +171,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends JView
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
 		$model = $this->getModel ();
-		$option = 'com_joomleague';
+		//$option = 'com_joomleague';
 		$project = $mainframe->getUserState ( $option . 'project' );
 		$this->assignRef ( 'project', $project );
 		$config = JComponentHelper::getParams ( 'com_media' );

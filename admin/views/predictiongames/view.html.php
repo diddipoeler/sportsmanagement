@@ -96,7 +96,7 @@ $items = $this->get('Items');
 			JToolBarHelper::editList('predictiongame.edit');
 			//JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', JText::_( 'Copy'), true );
 			JToolBarHelper::divider();
-			//JToolBarHelper::deleteList( JText::_('JL_ADMIN_PGAMES_DELETE'));
+			//JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'));
             JToolBarHelper::deleteList( JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_DELETE'), 'predictiongame.remove');
 			JToolBarHelper::divider();
 			JToolBarHelper::customX('rebuild','restore.png','restore_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_REBUILDS'),true);
