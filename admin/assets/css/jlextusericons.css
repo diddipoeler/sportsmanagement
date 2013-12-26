@@ -32,15 +32,25 @@
 
 /** header icons **/
 .icon-48-pred-cpanel			{ background-image: url(../icons/tippspiel.png); }
-.icon-48-lmo-cpanel			{ background-image: url(../icons/h1.png); }
-.icon-48-dbb-cpanel			{ background-image: url(../icons/dbb.png); }
+.icon-48-lmo-cpanel			{ background-image: url(../icons/lmoimport.png); }
+.icon-48-dbb-cpanel			{ background-image: url(../icons/dbbimport.png); }
 
-.icon-48-playground			{ background-image: url(../icons/icon-48-playground-2.png); }
-.icon-48-countries  		{ background-image: url(../icons/world.png); }
+.icon-48-persons			{ background-image: url(../icons/personen.png); }
+.icon-48-leagues			{ background-image: url(../icons/ligen.png); }
+.icon-48-associations			{ background-image: url(../icons/landesverbaende.png); }
+.icon-48-extrafields			{ background-image: url(../icons/extrafelder.png); }
+.icon-48-events			{ background-image: url(../icons/ereignisse.png); }
+.icon-48-divisons			{ background-image: url(../icons/ligen.png); }
+.icon-48-projectsettings			{ background-image: url(../icons/projekte.png); }
+.icon-48-database			{ background-image: url(../icons/datenbanktools.png); }
+.icon-48-seasons			{ background-image: url(../icons/saisons.png); }
+.icon-48-clubs			{ background-image: url(../icons/vereine.png); }
+.icon-48-playground			{ background-image: url(../icons/spielorte.png); }
+.icon-48-countries  		{ background-image: url(../icons/laender.png); }
 .icon-48-referees  		{ background-image: url(../icons/referees-48.png); }
-.icon-48-agegroups 		{ background-image: url(../icons/icon-48-agegroups.png); }
-.icon-48-xmlimport 		{ background-image: url(../icons/xmlimport-48.png); }
-.icon-48-dfbnet 		{ background-image: url(../icons/dfbnet-logo-20.gif); }
+.icon-48-agegroups 		{ background-image: url(../icons/altersgruppen.png); }
+.icon-48-xmlimport 		{ background-image: url(../icons/xmlimport.png); }
+.icon-48-dfbnet 		{ background-image: url(../icons/dfbnetimport.png); }
 .icon-48-cbe-tabs	 		{ background-image: url(../icons/tabmanager.png); }
 .icon-48-cbe-fields	 		{ background-image: url(../icons/fieldmanager.png); }
 .icon-48-cbe-lists	 		{ background-image: url(../icons/listmanager.png); }
@@ -61,4 +71,4 @@
 .icon-48-group-add			{ background-image: url(../icons/group_add_128.png); }
 .icon-48-group-edit			{ background-image: url(../icons/group_edit_128.png); }
 
-.icon-48-xml-edit			{ background-image: url(../icons/application_xml.png); }
+.icon-48-xml-edit			{ background-image: url(../icons/xmleditor.png); }
