@@ -21,13 +21,13 @@ JToolBarHelper::save();
 
 if ( !$edit )
 {
-	JToolBarHelper::title( JText::_( 'JL_ADMIN_PTMPL_ADD_TITLE' ) );
+	JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPL_ADD_TITLE' ) );
 	JToolBarHelper::divider();
 	JToolBarHelper::cancel();
 }
 else
 {
-	JToolBarHelper::title( JText::_( 'JL_ADMIN_PTMPL_EDIT_TITLE' ) );
+	JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPL_EDIT_TITLE' ) );
 
 	// for existing items the button is renamed `close` and the apply button is showed
 	JToolBarHelper::apply();
@@ -44,7 +44,7 @@ $i = 1;
 		<fieldset class="adminform">
 			<legend>
 				<?php
-					echo JText::sprintf(	'JL_ADMIN_PTMPL_TITLE',
+					echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_PTMPL_TITLE',
 											'<i>' . $this->params->name . '</i>',
 											'<i>' . $this->predictionGame->name . '</i>' );
 				?>

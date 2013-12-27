@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 		<fieldset class="adminform">
 			<legend><?php echo JText::sprintf('Predictiongame [%1$s]','<i>' .$this->prediction->name .'</i>'); ?></legend>
 		<fieldset class="adminform">			
-			<?php echo JText::_('JL_ADMIN_PGAME_HINT_1'); ?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1'); ?>
 		</fieldset>			
 			<table class="admintable">
 				<tr>

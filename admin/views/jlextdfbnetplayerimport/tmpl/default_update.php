@@ -5,7 +5,7 @@ JHTML::_('behavior.tooltip');
 <div id='editcell'>
 	<a name='page_top'></a>
 	<table class='adminlist'>
-		<thead><tr><th><?php echo JText::_('JL_ADMIN_DFBNET_UPDATE_MATCH_DATA_TITLE'); ?></th></tr></thead>
+		<thead><tr><th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA_TITLE'); ?></th></tr></thead>
 		<tbody><tr><td><?php echo '&nbsp;'; ?></td></tr></tbody>
 	</table>
 	<?php

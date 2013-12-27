@@ -152,13 +152,13 @@ fieldset button {
 							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&task=jlextindividualsport.jlexteditsinglematches&tmpl=component&cid[]=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>"
 									 class="modal"
-									 title="<?php echo JText::_('JL_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
 									 <?php
 									 
 								 	$image = 'players_add.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('JL_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
 													 'title= "' .$title. '"');
 													 
 										

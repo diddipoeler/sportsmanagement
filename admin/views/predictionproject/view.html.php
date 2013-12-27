@@ -95,7 +95,7 @@ class sportsmanagementViewpredictionproject extends JView
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut($user->get('id')))
 		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('JL_ADMIN_PGAME_THE_PREDICTIONGAME'),$prediction->name);
+			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_THE_PREDICTIONGAME'),$prediction->name);
 			$mainframe->redirect('index.php?option='.$option,$msg);
 		}
 
@@ -163,7 +163,7 @@ class sportsmanagementViewpredictionproject extends JView
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut($user->get('id')))
 		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('JL_ADMIN_PGAME_THE_PREDICTIONGAME'),$pred_project->project_name);
+			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_THE_PREDICTIONGAME'),$pred_project->project_name);
 			$mainframe->redirect('index.php?option='.$option,$msg);
 		}
 
@@ -174,14 +174,14 @@ class sportsmanagementViewpredictionproject extends JView
 		$lists['published']=JHtml::_('select.booleanlist','published','class="inputbox" onclick="change_published(); " ',$pred_project->published);
 
 		// build the html dropdown for Prediction game mode
-		$mode=array(	JHtmlSelect::option('1',JText::_('JL_ADMIN_PGAME_PRED_TOTO'),'id','name'),
-						JHtmlSelect::option('0',JText::_('JL_ADMIN_PGAME_PRED_TIPP'),'id','name'));
+		$mode=array(	JHtmlSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PRED_TOTO'),'id','name'),
+						JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PRED_TIPP'),'id','name'));
 		$lists['mode']=JHtmlSelect::genericlist($mode,'mode','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->mode);
 		unset($mode);
 
 		// build the html dropdown for Prediction game mode
-		$overview=array(	JHtmlSelect::option('1',JText::_('JL_ADMIN_PGAME_TIPP_HALF'),'id','name'),
-							JHtmlSelect::option('0',JText::_('JL_ADMIN_PGAME_TIPP_COMPLETE'),'id','name'));
+		$overview=array(	JHtmlSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_TIPP_HALF'),'id','name'),
+							JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_TIPP_COMPLETE'),'id','name'));
 		$lists['overview']=JHtmlSelect::genericlist($overview,'overview','class="inputbox" size="1" disabled="disabled" ','id','name',$pred_project->overview);
 		unset($overview);
 
@@ -197,7 +197,7 @@ class sportsmanagementViewpredictionproject extends JView
 
     
     
-    $league_teams[]=JHtml::_('select.option','0',JText::_('JL_ADMIN_PGAME_SET_CHAMPION'),'id','name');
+    $league_teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_SET_CHAMPION'),'id','name');
 		if($allLeagues =& $model->getProjectTeams($pred_project->project_id)) 
     {
 			$league_teams=array_merge($league_teams,$allLeagues);

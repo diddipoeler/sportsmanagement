@@ -78,7 +78,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				preview="show"	
         targetfolder="flags_associations"			
 				label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
-				description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG">
+				description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC">
 		</field>
 		<field 	name="picture" 
 				type=""

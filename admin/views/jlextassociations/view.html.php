@@ -51,7 +51,7 @@ class sportsmanagementViewjlextassociations extends JView
 		$pagination = $this->get('Pagination');
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NATION'));
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
 		
         $lists['nation']=$nation;

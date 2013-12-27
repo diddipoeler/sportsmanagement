@@ -320,13 +320,13 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 					//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
 					if ( $publish == 1 )
 					{
-						$mailer->setSubject( JText::_('JL_ADMIN_PMEMBER_MODEL_APPROVED') );
-						$body = JText::_('JL_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
+						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
+						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
 					}
 					else
 					{
-						$mailer->setSubject( JText::_('JL_ADMIN_PMEMBER_MODEL_REJECTED') );
-						$body = JText::_('JL_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
+						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REJECTED') );
+						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
 					}
 					$mailer->setBody( $body );
 					echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
@@ -339,12 +339,12 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 					$send =& $mailer->Send();
 					if ( $send !== true )
 					{
-						echo JText::_('JL_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
-						echo JText::_('JL_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
 					}
 					else
 					{
-						echo JText::_('JL_ADMIN_PMEMBER_MODEL_MAIL_SENT');
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_MAIL_SENT');
 					}
 					echo '<br /><br />';
 				}

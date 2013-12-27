@@ -28,13 +28,13 @@ window.addEvent('domready', function()
 	<form method="post" name="importform" id="importform">
 		<p>
 			<?php
-			echo JText::sprintf(	'JL_ADMIN_PTMPLS_INHERITS_SETTINGS',
+			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_INHERITS_SETTINGS',
 									$this->predictiongame->name );
 			?>
 		</p>
 		<p>
 			<?php
-			echo JText::_( 'JL_ADMIN_PTMPLS_OVERRIDES_SETTINGS' );
+			echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_OVERRIDES_SETTINGS' );
 			?>
 		</p>
 		<?php
