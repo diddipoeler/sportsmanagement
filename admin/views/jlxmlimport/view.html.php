@@ -26,8 +26,14 @@ class sportsmanagementViewJLXMLImport extends JView
 {
 	function display( $tpl = null )
 	{
+  		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
 		JToolBarHelper::back();
 		#JLToolBarHelper::save( 'save', 'Import' );
 		JLToolBarHelper::onlinehelp();

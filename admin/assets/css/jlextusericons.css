@@ -34,21 +34,36 @@
 .icon-48-pred-cpanel                        { background-image: url(../icons/tippspiel.png); }
 .icon-48-lmo-cpanel                        { background-image: url(../icons/lmoimport.png); }
 .icon-48-dbb-cpanel                        { background-image: url(../icons/dbbimport.png); }
-
-.icon-48-persons                        { background-image: url(../icons/personen.png); }
-.icon-48-leagues                        { background-image: url(../icons/ligen.png); }
+ 
+.icon-48-match                        { background-image: url(../icons/spiel.png); }
+.icon48-matches                        { background-image: url(../icons/spiel.png); }
+.icon-48-association                        { background-image: url(../icons/landesverbaende.png); }
 .icon-48-associations                        { background-image: url(../icons/landesverbaende.png); }
+.icon-48-extrafield                        { background-image: url(../icons/extrafelder.png); }
 .icon-48-extrafields                        { background-image: url(../icons/extrafelder.png); }
+.icon-48-extensions                        { background-image: url(../icons/erweiterungen.png); }
+.icon-48-event                        { background-image: url(../icons/ereignisse.png); }
 .icon-48-events                        { background-image: url(../icons/ereignisse.png); }
-.icon-48-divisons                        { background-image: url(../icons/ligen.png); }
+.icon-48-division                        { background-image: url(../icons/divisionen.png); }
+.icon-48-divisions                        { background-image: url(../icons/divisionen.png); }
+.icon-48-persons                        { background-image: url(../icons/personen.png); }
+.icon-48-person                        { background-image: url(../icons/personen.png); }
+.icon-48-leagues                        { background-image: url(../icons/ligen.png); }
+.icon-48-league                        { background-image: url(../icons/ligen.png); }
 .icon-48-projectsettings                        { background-image: url(../icons/projekte.png); }
 .icon-48-database                        { background-image: url(../icons/datenbanktools.png); }
+.icon-48-databases                        { background-image: url(../icons/datenbanktools.png); }
 .icon-48-seasons                        { background-image: url(../icons/saisons.png); }
+.icon-48-season                        { background-image: url(../icons/saisons.png); }
 .icon-48-clubs                        { background-image: url(../icons/vereine.png); }
+.icon-48-club                        { background-image: url(../icons/vereine.png); }
 .icon-48-playground                        { background-image: url(../icons/spielorte.png); }
+.icon-48-playgrounds                        { background-image: url(../icons/spielorte.png); }
 .icon-48-countries                 { background-image: url(../icons/laender.png); }
+.icon-48-country                 { background-image: url(../icons/laender.png); }
 .icon-48-referees                 { background-image: url(../icons/referees-48.png); }
-.icon-48-agegroups                 { background-image: url(../icons/altersgruppen.png); }
+.icon-48-agegroups                 { background-image: url(../icons/altersklassen.png); }
+.icon-48-agegroup                 { background-image: url(../icons/altersklassen.png); }
 .icon-48-xmlimport                 { background-image: url(../icons/xmlimport.png); }
 .icon-48-dfbnet                 { background-image: url(../icons/dfbnetimport.png); }
 .icon-48-cbe-tabs                         { background-image: url(../icons/tabmanager.png); }
@@ -65,7 +80,10 @@
 .icon-48-cbe-tools                         { background-image: url(../icons/tools.png); }
 .icon-48-cbe-updates                 { background-image: url(../icons/browser.png); }
 .icon-48-cbe-pinboard                 { background-image: url(../icons/pinboard.png); }
-
+.icon-48-helloworld                { background-image: url(../icons/transparent_schrift_48.png); }
+.icon-48-currentseason             { background-image: url(../icons/aktuellesaison.png); }
+.icon-48-dfbkey             { background-image: url(../icons/dfbschluessel.png); }
+.icon-48-xmlimports             { background-image: url(../icons/xmlimport.png); }
 
 .icon-48-group                        { background-image: url(../icons/group_128.png); }
 .icon-48-group-add                        { background-image: url(../icons/group_add_128.png); }
