@@ -50,6 +50,7 @@
 		<folder>cronjobs</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
+		<folder>sisdata</folder>
 	</files>
  
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
@@ -101,6 +102,7 @@
 			<folder>controllers</folder>
 			<!-- helpers files section -->
 			<folder>helpers</folder>
+			<folder>sisdata</folder>
 		</files>
  
 		<languages folder="admin">
