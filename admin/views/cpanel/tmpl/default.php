@@ -271,3 +271,4 @@ JHTML::_('behavior.tooltip');
     <td style="text-align: right; width: 33%;">		</td>	         
   </tr>
 </table>
+
