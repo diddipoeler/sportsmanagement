@@ -45,7 +45,7 @@
     type="radio"
 			default="imageselect" 
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
-			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESCR">
+			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESC">
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
 			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
 		</field>
@@ -54,7 +54,7 @@
     type="radio"
 			default="sportsmanagement" 
       label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_TABLE_TITLE"
-			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_TABLE_DESCR">
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_TABLE_DESC">
 			<option value="joomleague">COM_SPORTSMANAGEMENT_JOOMLEAGUE_DATABASE_TABLE</option>
 			<option value="sportsmanagement">COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_DATABASE_TABLE</option>
 		</field>
@@ -63,7 +63,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -72,28 +72,28 @@
     type="text" 
     default="480"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_TIME_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_TIME_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_TIME_DESC">
 		</field>
 		
 		<field name="max_import_memory" 
     type="text" 
     default="256M"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_MEMORY_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_MEMORY_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_MEMORY_DESC">
 		</field>
 
 		<field name="modal_popup_width" 
     type="text" 
     default="900"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_WIDTH" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_WIDTH_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_WIDTH_DESC">
 		</field>
 		
 		<field name="modal_popup_height" 
     type="text" 
     default="600"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT_DESC">
 		</field>
 		
 		
@@ -103,7 +103,7 @@
     default=""
     size="10"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_QUOTES_DESC">
 			<option value="player,1">COM_SPORTSMANAGEMENT_QUOTES_PLAYER</option>
 			<option value="staff,2">COM_SPORTSMANAGEMENT_QUOTES_STAFF</option>
 			<option value="functionaries,3">COM_SPORTSMANAGEMENT_QUOTES_FUNCTIONARIES</option>
@@ -118,7 +118,7 @@
     default=""
     size="10"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_COUNTRY_ASSOCIATIONS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_COUNTRY_ASSOCIATIONS_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_COUNTRY_ASSOCIATIONS_DESC">
 			
 		</field>
     
@@ -128,7 +128,7 @@
     default=""
     size="10"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
 			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
 			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
 			

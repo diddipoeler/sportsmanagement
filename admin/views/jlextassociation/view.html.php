@@ -54,7 +54,7 @@ class sportsmanagementViewJlextassociation extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ASSOCIATION_NEW') : JText::_('COM_SPORTSMANAGEMENT_ASSOCIATION_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
