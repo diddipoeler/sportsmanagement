@@ -55,13 +55,19 @@ class sportsmanagementViewagegroup extends JView
 	 * Setting the toolbar
 	 */
 	protected function addToolBar() 
-	{
+	{ 
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT'), 'agegroup');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{

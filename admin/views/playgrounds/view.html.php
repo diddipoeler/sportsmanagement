@@ -85,7 +85,7 @@ class sportsmanagementViewPlaygrounds extends JView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playground');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE'),'playgrounds');
 		JToolBarHelper::editList('playground.edit');
 		JToolBarHelper::addNew('playground.add');
 		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
