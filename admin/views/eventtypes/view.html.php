@@ -109,3 +109,4 @@ class sportsmanagementViewEventtypes extends JView
 	}
 }
 ?>
+
