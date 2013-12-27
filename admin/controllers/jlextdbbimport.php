@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
-* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
-* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License fÃ¼r weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -37,18 +37,24 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+/*
+Spielplan - Bayernliga Herren Nord (Senioren; Liganr.: 20001)
+http://www.basketball-bund.net/index.jsp?Action=101&liga_id=12150
+
+ergebnisse
+http://www.basketball-bund.net/public/ergebnisse.jsp?print=1&viewDescKey=sport.dbb.liga.ErgebnisseViewPublic/index.jsp_&liga_id=12150
+spielplan
+http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=sport.dbb.liga.SpielplanViewPublic/index.jsp_&liga_id=12150
+
+*/
+
 // Check to ensure this file is included in Joomla!
-defined ( '_JEXEC' ) or die ( 'Restricted access' );
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport ( 'joomla.application.component.controller' );
-jimport ( 'joomla.filesystem.file' );
-jimport ( 'joomla.filesystem.folder' );
-jimport ( 'joomla.filesystem.archive' );
-
-
+jimport( 'joomla.application.component.controller' );
 
 /**
- * sportsmanagementControllerjlextdfbnetplayerimport
+ * sportsmanagementControllerjlextdbbimport
  * 
  * @package   
  * @author 
@@ -56,8 +62,9 @@ jimport ( 'joomla.filesystem.archive' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdfbnetplayerimport extends JController 
+class sportsmanagementControllerjlextdbbimport extends JController
 {
+
 	function __construct() {
 	   $option = JRequest::getCmd('option');
 		// $this->registerTask( 'save' , 'Save' );
@@ -77,26 +84,26 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 			case 'save' :
 				JRequest::setVar ( 'hidemainmenu', 0 );
 				JRequest::setVar ( 'layout', 'default_edit' );
-				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
+				JRequest::setVar ( 'view', 'jlextdbbimport' );
 				JRequest::setVar ( 'edit', true );
 				break;
 			case 'edit' :
 				JRequest::setVar ( 'hidemainmenu', 0 );
 				JRequest::setVar ( 'layout', 'default_edit' );
-				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
+				JRequest::setVar ( 'view', 'jlextdbbimport' );
 				JRequest::setVar ( 'edit', true );
 				break;
 			case 'cancel' :
 				JRequest::setVar ( 'hidemainmenu', 0 );
 				JRequest::setVar ( 'layout', 'default' );
-				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
+				JRequest::setVar ( 'view', 'jlextdbbimport' );
 				JRequest::setVar ( 'edit', true );
 				break;
 			
 			case 'update' :
 				JRequest::setVar ( 'hidemainmenu', 0 );
 				JRequest::setVar ( 'layout', 'default_update' );
-				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
+				JRequest::setVar ( 'view', 'jlextdbbimport' );
 				JRequest::setVar ( 'edit', true );
 				break;
 			
@@ -149,7 +156,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 		$msg = '';
 		//JToolBarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $mainframe = JFactory::getApplication();
-		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
+		$model = $this->getModel ( 'jlextdbbimport' );
 		$post = JRequest::get ( 'post' );
 		
 		//$delimiter = JRequest::getVar ( 'delimiter', null );
@@ -159,12 +166,12 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 		//$mainframe->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
 		
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE' ) );
+			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE' ) );
+			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE' ) );
 			
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE' ) );
+				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE' ) );
 			}
 		}
 		
@@ -193,39 +200,39 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 					JFile::delete ( $dest );
 				}
 				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
+					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
 					return;
 				} else {
 					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
+							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
 							return false;
 						}
 						JFile::delete ( $dest );
 						$src = JFolder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
-							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG' );
+							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG' );
 							// todo: delete every extracted file / directory
 							return false;
 						}
 						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
+								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
+							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED' ) );
 							return;
 						}
 					} else {
 						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
+								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
+							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION' ) );
 							return false;
 						}
 					}
@@ -234,7 +241,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 		}
 		
 		if (isset ( $post ['dfbimportupdate'] )) {
-			$link = 'index.php?option='.$option.'&view=jlextdfbnetplayerimport&task=jlextdfbnetplayerimport.update';
+			$link = 'index.php?option='.$option.'&view=jlextdfbnetplayerimport&task=jlextdbbimport.update';
 		} else {
 			
 			if ($whichfile == 'matchfile') {
@@ -253,6 +260,12 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 		
 		$this->setRedirect ( $link, $msg );
 	}
-}
 
-?>
+
+
+
+
+    
+}  
+
+?>  
