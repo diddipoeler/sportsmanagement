@@ -46,36 +46,7 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO_DESC"
-			class="inputbox"/>
-      
-<field
-		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
-			name="sports_type_id"
-			type="sportstypes"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-			required="false">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
-		</field>
-		
-<field
-		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
-			name="agegroup_id"
-			type="agegroups"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
-			required="false">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
-		</field>		
-          	
+			class="inputbox"/>	
 	<field
 			name="club_id"
 			type="clublist"

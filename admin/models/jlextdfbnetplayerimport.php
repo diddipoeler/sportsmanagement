@@ -980,106 +980,85 @@ $output .= $this->_addToXml($this->_setJoomLeagueVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-    $mainframe->enqueueMessage(JText::_('project Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-    $mainframe->enqueueMessage(JText::_('league Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-    $mainframe->enqueueMessage(JText::_('season Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setSeasonData($this->_datas['season']));
 }
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-    $mainframe->enqueueMessage(JText::_('round Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-    $mainframe->enqueueMessage(JText::_('team Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-    $mainframe->enqueueMessage(JText::_('club Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-    $mainframe->enqueueMessage(JText::_('match Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-    $mainframe->enqueueMessage(JText::_('position Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
-    $mainframe->enqueueMessage(JText::_('parentposition Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectposition Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
-    $mainframe->enqueueMessage(JText::_('matchreferee Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 // set the person data
 if ( isset($this->_datas['person']) )
 {
-    $mainframe->enqueueMessage(JText::_('person Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectreferee Daten '.'generiert'),'');
 // von mir 
 //$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectteam Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
-    $mainframe->enqueueMessage(JText::_('playground Daten '.'generiert'),'');
 // von mir 
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['playground'], 'Playground'));
-
-
-//$mainframe->enqueueMessage(JText::_("<b>description</b><pre>".print_r($this->_datas['playground'],true)."</pre>"),'');
-
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['playground'], 'Playground'));
 }            
-
-//$mainframe->enqueueMessage(JText::_("<b>description</b><pre>".print_r($output,true)."</pre>"),'');
             
 // close the project
 $output .= '</project>';
@@ -1611,13 +1590,6 @@ $lfdnumberteam++;
  
 // dfbnet spielstaette 
 $valueplayground = $csv->data[$a]['Spielstätte'];
-if ( !$valueplayground )
-{
-$valueplayground = $csv->data[$a]['Spielstaette'];
-}    
-
-//$mainframe->enqueueMessage(JText::_('DEBUG Ausgabe der verarbeiteten Spielorte (Spielstätte):<br><pre>'.print_r($csv->data[$a]['Spielstätte'],true).'</pre>'   ),'');
-
 if ( $valueplayground )
 {
 if (  array_key_exists($valueplayground, $exportplaygroundtemp) ) 
@@ -1627,7 +1599,6 @@ if (  array_key_exists($valueplayground, $exportplaygroundtemp) )
 else
 {
 // echo $valueplayground." <- nicht enthalten<br>";
- 
 $exportplaygroundtemp[$valueplayground] = $lfdnumberplayground;
 $temp = new stdClass();
 $temp->id = $lfdnumberplayground;
@@ -1979,7 +1950,7 @@ $rowmatch->projectteam2_id = $rowteam->id;
 }
 
 } 	
-
+/* von mir
 if ( $importcsv && sizeof($exportreferee) > 0  )
 {
 $temp = new stdClass();
@@ -2029,10 +2000,7 @@ $temp->id = 1002;
 $temp->position_id = 1002;
 $exportprojectposition[] = $temp;
 }
-
-
-//$mainframe->enqueueMessage(JText::_('DEBUG Ausgabe der verarbeiteten (exportreferee):<br><pre>'.print_r($exportreferee,true).'</pre>'   ),'');
-
+*/
 foreach ( $exportteams as $rowteam )
 {
 
@@ -2142,17 +2110,17 @@ echo '</pre>';
 // $this->_datas['season'] = array_merge($exportseason);
 
 // von mir 
-$this->_datas['position'] = array_merge($exportposition);
+//$this->_datas['position'] = array_merge($exportposition);
 // von mir 
-$this->_datas['projectposition'] = array_merge($exportprojectposition);
+//$this->_datas['projectposition'] = array_merge($exportprojectposition);
 // von mir 
-$this->_datas['parentposition'] = array_merge($exportparentposition);
+//$this->_datas['parentposition'] = array_merge($exportparentposition);
   
   
 // von mir 
-$this->_datas['person'] = array_merge($exportpersons);
+//$this->_datas['person'] = array_merge($exportpersons);
 // von mir 
-$this->_datas['projectreferee'] = array_merge($exportreferee);
+//$this->_datas['projectreferee'] = array_merge($exportreferee);
 
 $this->_datas['team'] = array_merge($exportteams);
 $this->_datas['projectteam'] = array_merge($exportprojectteams);
@@ -2165,7 +2133,7 @@ $this->_datas['round'] = array_merge($exportround);
 
 $this->_datas['match'] = array_merge($exportmatch);
 // von mir 
-$this->_datas['matchreferee'] = array_merge($exportmatchreferee);
+//$this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 
 
 
@@ -2298,57 +2266,49 @@ if ( isset($this->_datas['match']) )
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-// von mir
-$mainframe->enqueueMessage(JText::_('position Daten '.'generiert'),''); 
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['position'], 'Position'));
+// von mir 
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('parentposition Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('projectposition Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('matchreferee Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 // set the person data
 if ( isset($this->_datas['person']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('person Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['person'], 'Person'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('projectreferee Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectteam Daten '.'generiert'),'');
 $output .= $this->_addToXml($this->_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
 // von mir 
-$mainframe->enqueueMessage(JText::_('playground Daten '.'generiert'),'');
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['playground'], 'Playground'));
+//$output .= $this->_addToXml($this->_setXMLData($this->_datas['playground'], 'Playground'));
 }            
             
 // close the project

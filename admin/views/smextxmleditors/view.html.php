@@ -45,7 +45,7 @@ class sportsmanagementViewsmextxmleditors extends JView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edit');
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         

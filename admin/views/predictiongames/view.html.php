@@ -147,7 +147,7 @@ $items = $this->get('Items');
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'pred-cpanel' );
+        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'predgames' );
         JToolBarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
