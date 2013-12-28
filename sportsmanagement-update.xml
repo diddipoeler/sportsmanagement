@@ -245,9 +245,7 @@
       <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
       <targetplatform name="joomla" version="2.5" />
-   </update>   
-    
-</updates>
+	</update>
 
 <update>
       <name>Sports-Management</name>
