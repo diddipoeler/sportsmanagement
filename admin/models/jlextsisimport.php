@@ -93,6 +93,42 @@ function getData()
   $mainframe = JFactory::getApplication();
   $document	= JFactory::getDocument();
 
+$exportpositioneventtype = array();  
+$exportplayer = array();
+$exportpersons = array();
+$exportpersonstemp = array();
+$exportclubs = array();
+$exportclubsstandardplayground = array();
+$exportplaygroundclubib = array();
+$exportteams = array();
+$exportteamstemp = array();
+$exportteamplayer = array();
+$exportprojectteam = array();
+$exportprojectteams = array();
+$exportreferee = array();
+$exportprojectposition = array();
+$exportposition = array();
+$exportparentposition = array();
+$exportplayground = array();
+$exportplaygroundtemp = array();
+
+$exportteamplaygroundtemp = array();
+
+$exportround = array();
+$exportmatch = array();
+$exportmatchplayer = array();
+$exportmatchevent = array();
+$exportevent = array();  
+$exportpositiontemp = array(); 
+
+$exportposition = array();
+$exportparentposition = array();
+$exportprojectposition = array();
+
+$exportmatchreferee = array();
+
+$exportmatchplan = array();
+
 $params = JComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
@@ -103,11 +139,252 @@ $params = JComponentHelper::getParams( $option );
         $liganummer = '001514505501506501000000000000000003000';
         
         $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
-        $mainframe->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
         
         
         $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
         $mainframe->enqueueMessage(JText::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
+
+
+  
+  $temp = new stdClass();
+  $temp->name = '';
+  $this->_datas['season'] = $temp;
+
+  $temp = new stdClass();
+  $temp->id = 1;
+  $temp->name = 'COM_SPORTSMANAGEMENT_ST_HANDBALL';
+  $this->_datas['sportstype'] = $temp;
+
+  
+  
+//foreach ($linkspielplan->Spielklasse as $tempklasse) 
+//        {
+//        $projectname = $tempklasse->Name;    
+//		}
+
+$mainframe->enqueueMessage(JText::_('linkspielplan<br><pre>'.print_r($linkspielplan->Spielklasse->Name,true).'</pre>'   ),'');
+
+        $projectname = $linkspielplan->Spielklasse->Name[0];        
+        
+$temp = new stdClass();
+  $temp->name = $projectname;
+  $temp->exportRoutine = '2010-09-19 23:00:00';  
+  $this->_datas['exportversion'] = $temp;
+$temp = new stdClass();
+  $temp->name = $projectname;
+  $temp->alias = $projectname;
+  $temp->short_name = $projectname;
+  $temp->middle_name = $projectname;
+  $temp->country = '';
+  $this->_datas['league'] = $temp;
+  
+  $temp = new stdClass();
+  $temp->name = $projectname;
+  $temp->serveroffset = 0;
+  $temp->sports_type_id = 1;
+  $temp->project_type = 'SIMPLE_LEAGUE';
+  $temp->current_round_auto = '2';
+  $temp->auto_time = '2880';
+  $temp->start_date = '';  
+  $temp->start_time = '';
+  $temp->game_regular_time = '60';
+  $temp->game_parts = '2';
+  $temp->halftime = '15';
+  $temp->points_after_regular_time = '2,1,0';
+  $temp->use_legs = '0';
+  $temp->allow_add_time = '0';
+  $temp->add_time = '30';
+  $temp->points_after_add_time = '2,1,0';
+  $temp->points_after_penalty = '2,1,0';
+  $this->_datas['project'] = $temp;
+
+foreach ($linkspielplan->Spiel as $tempspiel) 
+{
+
+// heimmannschaft
+if (  array_key_exists($tempspiel->Heim, $exportteamstemp) ) 
+{
+}
+else
+{
+$exportteamstemp[$tempspiel->Heim] = $tempspiel->HeimNr;
+}
+
+// gastmannschaft
+if (  array_key_exists($tempspiel->Gast, $exportteamstemp) ) 
+{
+}
+else
+{
+$exportteamstemp[$tempspiel->Gast] = $tempspiel->GastNr;
+}
+
+
+
+			
+}
+
+
+// teams verarbeiten
+foreach ( $exportteamstemp as $key => $value )
+{
+// team
+$temp = new stdClass();
+$temp->id = $value;
+$temp->club_id = $value;
+$temp->name = $key;
+$temp->middle_name = $key;
+$temp->short_name = $key;
+//$temp->info = '';
+$temp->info = 'Herren';
+$temp->extended = '';
+$exportteams[] = $temp;
+
+//$standard_playground = $exportteamplaygroundtemp[$key];
+//$standard_playground_nummer = $exportplaygroundtemp[$standard_playground];
+
+// club
+$temp = new stdClass();
+$temp->id = $value;
+$temp->name = $key;
+$temp->country = $country;
+$temp->extended = '';
+//$temp->standard_playground = $standard_playground_nummer;
+$exportclubs[] = $temp;
+
+// projektteam
+$temp = new stdClass();
+$temp->id = $value;
+$temp->team_id = $value;
+$temp->project_team_id = $value;
+$temp->is_in_score = 1;
+//$temp->standard_playground = $standard_playground_nummer;
+$exportprojectteams[] = $temp;
+
+}
+
+$mainframe->enqueueMessage(JText::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'   ),'');
+
+$this->_datas['team'] = array_merge($exportteams);
+$this->_datas['projectteam'] = array_merge($exportprojectteams);
+$this->_datas['club'] = array_merge($exportclubs);
+
+
+/**
+ * das ganze für den standardimport aufbereiten
+ */
+$output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+// open the project
+$output .= "<project>\n";
+// set the version of JoomLeague
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+// set the project datas
+if ( isset($this->_datas['project']) )
+{
+$mainframe->enqueueMessage(JText::_('project Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
+}
+// set league data of project
+if ( isset($this->_datas['league']) )
+{
+$mainframe->enqueueMessage(JText::_('league Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
+}
+// set season data of project
+if ( isset($this->_datas['season']) )
+{
+$mainframe->enqueueMessage(JText::_('season Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
+}
+// set season data of project
+if ( isset($this->_datas['sportstype']) )
+{
+$mainframe->enqueueMessage(JText::_('sportstype Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));
+}
+// set the rounds data
+if ( isset($this->_datas['round']) )
+{
+$mainframe->enqueueMessage(JText::_('round Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
+}
+// set the teams data
+if ( isset($this->_datas['team']) )
+{
+$mainframe->enqueueMessage(JText::_('team Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
+}
+// set the clubs data
+if ( isset($this->_datas['club']) )
+{
+$mainframe->enqueueMessage(JText::_('club Daten '.'generiert'),'');
+$mainframe->enqueueMessage(JText::_('club<br><pre>'.print_r($this->_datas['club'],true).'</pre>'   ),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
+}
+// set the matches data
+if ( isset($this->_datas['match']) )
+{
+$mainframe->enqueueMessage(JText::_('match Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
+}
+// set the positions data
+if ( isset($this->_datas['position']) )
+{
+$mainframe->enqueueMessage(JText::_('position Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
+}
+// set the positions parent data
+if ( isset($this->_datas['parentposition']) )
+{
+$mainframe->enqueueMessage(JText::_('parentposition Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
+}
+// set position data of project
+if ( isset($this->_datas['projectposition']) )
+{
+$mainframe->enqueueMessage(JText::_('projectposition Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
+}
+// set the matchreferee data
+if ( isset($this->_datas['matchreferee']) )
+{
+$mainframe->enqueueMessage(JText::_('matchreferee Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
+}
+// set the person data
+if ( isset($this->_datas['person']) )
+{
+$mainframe->enqueueMessage(JText::_('person Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
+}
+// set the projectreferee data
+if ( isset($this->_datas['projectreferee']) )
+{
+$mainframe->enqueueMessage(JText::_('projectreferee Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
+}
+// set the projectteam data
+if ( isset($this->_datas['projectteam']) )
+{
+$mainframe->enqueueMessage(JText::_('projectteam Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
+}
+// set playground data of project
+if ( isset($this->_datas['playground']) )
+{
+$mainframe->enqueueMessage(JText::_('playground Daten '.'generiert'),'');
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
+}            
+
+
+            
+// close the project
+$output .= '</project>';
+
+$xmlfile = $output;
+$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+JFile::write($file, $xmlfile);
 
 
 

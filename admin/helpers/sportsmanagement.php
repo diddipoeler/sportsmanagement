@@ -7,7 +7,180 @@ defined('_JEXEC') or die;
  */
 abstract class sportsmanagementHelper
 {
-	/**
+	
+    /**
+	 * Add data to the xml
+	 *
+	 * @param array $data data what we want to add in the xml
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return void
+	 */
+	 function _addToXml($data)
+	{
+		if (is_array($data) && count($data) > 0)
+		{
+			$object = $data[0]['object'];
+			$output = '';
+			foreach ($data as $name => $value)
+			{
+				$output .= "<record object=\"" . self::stripInvalidXml($object) . "\">\n";
+				foreach ($value as $key => $data)
+				{
+					if (!is_null($data) && !(substr($key, 0, 1) == "_") && $key != "object")
+					{
+						$output .= "  <$key><![CDATA[" . self::stripInvalidXml(trim($data)) . "]]></$key>\n";
+					}
+				}
+				$output .= "</record>\n";
+			}
+			return $output;
+		}
+		return false;
+	}    
+    
+/**
+	 * _setJoomLeagueVersion
+	 *
+	 * set the version data and actual date, time and
+	 * Joomla systemName from the joomleague_version table
+	 *
+	 * @access private
+	 * @since  2010-08-26
+	 *
+	 * @return array
+	 */
+	 function _setJoomLeagueVersion()
+	{
+		$exportRoutine='2010-09-23 15:00:00';
+			$result[0]['exportRoutine']=$exportRoutine;
+			$result[0]['exportDate']=date('Y-m-d');
+			$result[0]['exportTime']=date('H:i:s');
+			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
+			$result[0]['object']='JoomLeagueVersion';
+			return $result;
+	}    
+    
+    
+/**
+	 * _setLeagueData
+	 *
+	 * set the league data from the joomleague_league table
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setLeagueData($league)
+	{
+		
+        if ( $league )
+        {
+            $result[] = JArrayHelper::fromObject($league);
+			$result[0]['object'] = 'League';
+			return $result;
+		}
+		return false;
+        		
+	}    
+
+/**
+	 * _setProjectData
+	 *
+	 * set the project data from the joomleague table
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return array
+	 */
+	 function _setProjectData($project)
+	{
+		if ( $project )
+        {
+            $result[] = JArrayHelper::fromObject($project);
+			$result[0]['object'] = 'JoomLeague20';
+			return $result;
+		}
+		return false;
+	}    
+
+/**
+	 * _setSeasonData
+	 *
+	 * set the season data from the joomleague_season table
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setSeasonData($season)
+	{
+		if ( $season )
+        {
+            $result[] = JArrayHelper::fromObject($season);
+			$result[0]['object'] = 'Season';
+			return $result;
+		}
+		return false;
+	}
+    
+    
+    /**
+	 * _setSportsType
+	 *
+	 * set the SportsType
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setSportsType($sportstype)
+	{
+
+		if ( $sportstype )
+		{
+			$result[] = JArrayHelper::fromObject($sportstype);
+			$result[0]['object'] = 'SportsType';
+			return $result;
+		}
+		return false;
+
+	}        
+    
+/**
+	 * _setXMLData
+	 *
+	 * 
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return void
+	 */
+	 function _setXMLData($data, $object)
+	{
+	if ( $data )
+        {
+            foreach ( $data as $row )
+            {
+                $result[] = JArrayHelper::fromObject($row);
+            }
+			$result[0]['object'] = $object;
+			return $result;
+		}
+		return false;
+	}
+    
+
+    
+    
+    /**
 	 * Configure the Linkbar.
 	 */
 	public static function addSubmenu($submenu) 
