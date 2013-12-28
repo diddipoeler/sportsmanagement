@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.12</version>
+	<version>1.0.13</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -50,6 +50,7 @@
 		<folder>cronjobs</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
+		<folder>sisdata</folder>
 	</files>
  
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
@@ -101,6 +102,7 @@
 			<folder>controllers</folder>
 			<!-- helpers files section -->
 			<folder>helpers</folder>
+			<folder>sisdata</folder>
 		</files>
  
 		<languages folder="admin">
