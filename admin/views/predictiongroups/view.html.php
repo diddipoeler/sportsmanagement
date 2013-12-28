@@ -59,7 +59,7 @@ class sportsmanagementViewpredictiongroups extends JView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'),'group');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'),'predgroups');
 		
         
 		JToolBarHelper::addNew('predictiongroup.add');

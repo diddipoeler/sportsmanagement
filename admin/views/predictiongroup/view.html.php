@@ -115,7 +115,7 @@ class sportsmanagementViewpredictiongroup extends JView
 		if ($isNew) 
 		{
 		  // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW'),'group-add');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW'),'predgroup');
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
