@@ -983,8 +983,6 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `extendeduser` TEXT NULL ,
   `season_ids` TEXT NULL ,
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
-  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
-  `sports_type_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   INDEX `fk_club` (`club_id` ASC)

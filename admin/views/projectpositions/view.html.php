@@ -237,8 +237,14 @@ class sportsmanagementViewprojectpositions extends JView
 	 */
 	protected function addToolbar()
 	{
+  		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'Positions');
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'projectpositions');
         
         sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 

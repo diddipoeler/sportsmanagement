@@ -56,8 +56,7 @@ jimport ( 'joomla.filesystem.archive' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdfbnetplayerimport extends JController 
-{
+class sportsmanagementControllerjlextdfbnetplayerimport extends JController {
 	function __construct() {
 	   $option = JRequest::getCmd('option');
 		// $this->registerTask( 'save' , 'Save' );
