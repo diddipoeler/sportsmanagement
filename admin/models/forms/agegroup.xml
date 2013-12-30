@@ -24,7 +24,15 @@
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>		
 
-
+<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>
+	
 <field
 		  addfieldpath="/administrator/components/com_sportsmanagement/elements"
 			name="sportstype_id"

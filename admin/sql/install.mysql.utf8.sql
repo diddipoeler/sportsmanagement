@@ -1297,6 +1297,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_agegroup` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `country` VARCHAR(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `sportstype_id` (`sportstype_id`),
   INDEX `fk_sportstype` (`sportstype_id` ASC)

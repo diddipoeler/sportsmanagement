@@ -926,97 +926,96 @@ $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
 // set the version of JoomLeague
-$output .= $this->_addToXml($this->_setJoomLeagueVersion());
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
 $mainframe->enqueueMessage(JText::_('project daten '.'generiert'),'');    
-$output .= $this->_addToXml($this->_setProjectData($this->_datas['project']));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
 $mainframe->enqueueMessage(JText::_('league daten '.'generiert'),'');      
-$output .= $this->_addToXml($this->_setLeagueData($this->_datas['league']));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
 $mainframe->enqueueMessage(JText::_('season daten '.'generiert'),'');      
-$output .= $this->_addToXml($this->_setSeasonData($this->_datas['season']));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
 $mainframe->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
-$output .= $this->_addToXml($this->_setSportsType($this->_datas['sportstype']));    
-//$output .= $this->_addToXml($this->_setXMLData($this->_datas['sportstype'], 'SportsType') );
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
 $mainframe->enqueueMessage(JText::_('round daten '.'generiert'),'');      
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['round'], 'Round') );
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
 $mainframe->enqueueMessage(JText::_('team daten '.'generiert'),'');    
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['team'], 'JL_Team'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
 $mainframe->enqueueMessage(JText::_('club daten '.'generiert'),'');    
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['club'], 'Club'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
 $mainframe->enqueueMessage(JText::_('match daten '.'generiert'),'');    
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['match'], 'Match'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['position'], 'Position'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 // set the person data
 if ( isset($this->_datas['person']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['person'], 'Person'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
-$output .= $this->_addToXml($this->_setXMLData($this->_datas['playground'], 'Playground'));
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
             
 // close the project
@@ -1038,345 +1037,29 @@ echo $this->pane->endPane();
     
 }
 
-/**
-	 * _setXMLData
-	 *
-	 * 
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
-	 */
-	private function _setXMLData($data, $object)
-	{
-	if ( $data )
-        {
-            foreach ( $data as $row )
-            {
-                $result[] = JArrayHelper::fromObject($row);
-            }
-			$result[0]['object'] = $object;
-			return $result;
-		}
-		return false;
-	}
-    
-/**
-	* Removes invalid XML
-	*
-	* @access public
-	* @param string $value
-	* @return string
-	*/
-	private function stripInvalidXml($value)
-	{
-		$ret='';
-		$current;
-		if (is_null($value)){return $ret;}
 
-		$length = strlen($value);
-		for ($i=0; $i < $length; $i++)
-		{
-			$current = ord($value{$i});
-			if (($current == 0x9) ||
-				($current == 0xA) ||
-				($current == 0xD) ||
-				(($current >= 0x20) && ($current <= 0xD7FF)) ||
-				(($current >= 0xE000) && ($current <= 0xFFFD)) ||
-				(($current >= 0x10000) && ($current <= 0x10FFFF)))
-			{
-				$ret .= chr($current);
-			}
-			else
-			{
-				$ret .= ' ';
-			}
-		}
-		return $ret;
-	}
+    
+
     
     
-/**
-	 * Add data to the xml
-	 *
-	 * @param array $data data what we want to add in the xml
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
-	 */
-	private function _addToXml($data)
-	{
-		if (is_array($data) && count($data) > 0)
-		{
-			$object = $data[0]['object'];
-			$output = '';
-			foreach ($data as $name => $value)
-			{
-				$output .= "<record object=\"" . $this->stripInvalidXml($object) . "\">\n";
-				foreach ($value as $key => $data)
-				{
-					if (!is_null($data) && !(substr($key, 0, 1) == "_") && $key != "object")
-					{
-						$output .= "  <$key><![CDATA[" . $this->stripInvalidXml(trim($data)) . "]]></$key>\n";
-					}
-				}
-				$output .= "</record>\n";
-			}
-			return $output;
-		}
-		return false;
-	}
+
 
 
     
-/**
-	 * _setSeasonData
-	 *
-	 * set the Season
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
-	 */
-	private function _setSeasonData($season)
-	{
-		if ( $season )
-        {
-            $result[] = JArrayHelper::fromObject($season);
-			$result[0]['object'] = 'Season';
-			return $result;
-		}
-		return false;
-	}
+
     
-/**
-	 * _setSportsType
-	 *
-	 * set the SportsType
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
-	 */
-	private function _setSportsType($sportstype)
-	{
-		
-        if ( $sportstype )
-        {
-            $result[] = JArrayHelper::fromObject($sportstype);
-			$result[0]['object'] = 'SportsType';
-			return $result;
-		}
-		return false;
-        		
-	}
+
         
-/**
-	 * _setLeagueData
-	 *
-	 * set the League
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
-	 */
-	private function _setLeagueData($league)
-	{
-		
-        if ( $league )
-        {
-            $result[] = JArrayHelper::fromObject($league);
-			$result[0]['object'] = 'League';
-			return $result;
-		}
-		return false;
-        		
-	}
+
     
-/**
-	 * _setJoomLeagueVersion
-	 *
-	 * set the version data and actual date, time and
-	 * Joomla systemName from the joomleague_version table
-	 *
-	 * @access private
-	 * @since  2010-08-26
-	 *
-	 * @return array
-	 */
-	private function _setJoomLeagueVersion()
-	{
-		$exportRoutine='2010-09-23 15:00:00';
-        /*
-		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
-		{
-			$result = $this->_db->loadAssocList();
-			$result[0]['exportRoutine']=$exportRoutine;
-			$result[0]['exportDate']=date('Y-m-d');
-			$result[0]['exportTime']=date('H:i:s');
-			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
-			$result[0]['object']='JoomLeagueVersion';
-			return $result;
-		}
-		return false;
-        */
-        $result[0]['version']=sportsmanagementHelper::getVersion();
-            $result[0]['exportRoutine']=$exportRoutine;
-			$result[0]['exportDate']=date('Y-m-d');
-			$result[0]['exportTime']=date('H:i:s');
-			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
-			$result[0]['object']='JoomLeagueVersion';
-			return $result;
-	}
+
     
-/**
-	 * _setProjectData
-	 *
-	 * set the project data from the joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
-	 */
-	private function _setProjectData($project)
-	{
-		if ( $project )
-        {
-            $result[] = JArrayHelper::fromObject($project);
-			//$result[0]['object'] = 'JoomLeague15';
-      $result[0]['object'] = 'JoomLeague20';
-			return $result;
-		}
-		return false;
-	}
 
 
 
 
-/*
-	public function getTeamList()
-	{
-	global $mainframe, $option;
-  $mainframe =& JFactory::getApplication();
-  $document	=& JFactory::getDocument();
-  
-  $option = JRequest::getCmd('option');
-	$project = $mainframe->getUserState( $option . 'project', 0 );
-	$lmoimportuseteams=$mainframe->getUserState($option.'lmoimportuseteams'); 
+
 	
-	
-// jetzt brauchen wir noch das land der liga !
-$query = "SELECT l.country
-from #__joomleague_league as l
-inner join #__joomleague_project as p
-on p.league_id = l.id
-where p.id = '$project'
-";
-
-$this->_db->setQuery( $query );
-$country = $this->_db->loadResult();
-// $mainframe->enqueueMessage(JText::_('Das Land der Liga '.$country.' !'),'Notice');
-
-	  if ( $lmoimportuseteams )
-	  {
-    $query='SELECT jt.id,jt.name,jt.club_id,jt.short_name,jt.middle_name,jt.info,jt.alias 
-    FROM #__joomleague_team as jt
-    INNER JOIN #__joomleague_club as cl
-    ON cl.id = jt.club_id    
-    INNER JOIN #__joomleague_project_team as pt 
-    ON pt.team_id = jt.id
-    WHERE cl.country = "' . $country . '"
-    AND pt.project_id = ' . (int) $project . ' GROUP BY jt.name ORDER BY jt.name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();    
-    }
-    else
-    {
-    $query='SELECT t.id,t.name,t.club_id,t.short_name,t.middle_name,t.info,t.alias,cl.country 
-    FROM #__joomleague_team as t 
-    INNER JOIN #__joomleague_club as cl
-    ON cl.id = t.club_id    
-    ORDER BY name
-    ';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-    }
-
-		
-	}
-*/	
-
-/*	
-	public function getTeamListSelect()
-	{
-	global $mainframe, $option;
-  $mainframe =& JFactory::getApplication();
-  $document	=& JFactory::getDocument();
-  
-  $option = JRequest::getCmd('option');
-	$project = $mainframe->getUserState( $option . 'project', 0 );
-	$lmoimportuseteams=$mainframe->getUserState($option.'lmoimportuseteams'); 
-	
-	
-// jetzt brauchen wir noch das land der liga !
-$query = "SELECT l.country
-from #__joomleague_league as l
-inner join #__joomleague_project as p
-on p.league_id = l.id
-where p.id = '$project'
-";
-
-$this->_db->setQuery( $query );
-$country = $this->_db->loadResult();
-
-
-		//$query="SELECT id AS value,name,info,club_id FROM #__joomleague_team ORDER BY name";
-		if ( $lmoimportuseteams )
-	  {
-    $query='SELECT jt.id as value,jt.name,jt.club_id,jt.info 
-    FROM #__joomleague_team as jt
-    INNER JOIN #__joomleague_club as cl
-    ON cl.id = jt.club_id    
-    INNER JOIN #__joomleague_project_team as pt 
-    ON pt.team_id = jt.id
-    WHERE cl.country = "' . $country . '"
-    AND pt.project_id = ' . (int) $project . ' GROUP BY jt.name ORDER BY jt.name';
-		$this->_db->setQuery($query);
-		//return $this->_db->loadObjectList();    
-    }
-    else
-    {
-    $query='SELECT id AS value,name,info,club_id 
-    FROM #__joomleague_team 
-    ORDER BY name
-    ';
-		$this->_db->setQuery($query);
-		//return $this->_db->loadObjectList();
-    }
-		
-		
-		
-		if ($results=$this->_db->loadObjectList())
-		{
-			foreach ($results AS $team)
-			{
-				$team->text=$team->name.' - ('.$team->info.')';
-			}
-			return $results;
-		}
-		return false;
-	}
-*/
 
 
 
