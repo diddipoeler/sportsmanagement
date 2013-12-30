@@ -49,7 +49,7 @@
         			
 	<field
 			name="info"
-			type="text"
+			type="hidden"
 			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO"
 			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO_DESC"
 			class="inputbox"/>

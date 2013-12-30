@@ -114,23 +114,26 @@ $exportposition = array();
 $exportparentposition = array();
 $exportplayground = array();
 $exportplaygroundtemp = array();
-
 $exportteamplaygroundtemp = array();
-
 $exportround = array();
 $exportmatch = array();
 $exportmatchplayer = array();
 $exportmatchevent = array();
 $exportevent = array();  
 $exportpositiontemp = array(); 
-
 $exportposition = array();
 $exportparentposition = array();
 $exportprojectposition = array();
-
 $exportmatchreferee = array();
-
 $exportmatchplan = array();
+
+$lfdnumber = 0;
+$lfdnumberteam = 1;
+$lfdnumbermatch = 1;
+$lfdnumberplayground = 1;
+$lfdnumberperson = 1;
+$lfdnumbermatchreferee = 1;
+
 
 $params = JComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
@@ -139,16 +142,12 @@ $params = JComponentHelper::getParams( $option );
 		//$mainframe->enqueueMessage(JText::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
         //$mainframe->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
         //$mainframe->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
-        //$liganummer = '001514505501506501000000000000000003000';
-        $liganummer = $post ['liganummer'];
         
-        $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
-        //$mainframe->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
+        /**
+         * test herren : 001514505501506501000000000000000003000
+         * test damen :  001514505501506502000000000000000004000
+         */
         
-        
-        $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
-        //$mainframe->enqueueMessage(JText::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
-
 switch ($sis_xmllink)
 {
     case 'http://www.sis-handball.de':
@@ -158,7 +157,43 @@ switch ($sis_xmllink)
     $country = 'AUT';
     break;
     
-}
+}        
+        
+$liganummer = $post ['liganummer'];
+$teamart = substr( $liganummer , 17, 4);
+
+$mainframe->enqueueMessage(JText::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
+
+$db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('id'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type')
+        ->where('name LIKE '."'COM_SPORTSMANAGEMENT_ST_HANDBALL'");    
+        $db->setQuery($query);
+		$sp_id = $db->loadResult();
+
+$mainframe->enqueueMessage(JText::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
+
+$query = $db->getQuery(true);
+        $query->select(array('id,name'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup')
+        ->where('info LIKE '."'".$teamart."'")
+        ->where('country LIKE '."'".$country."'");    
+        $db->setQuery($query);
+		$agegroup = $db->loadObject();
+
+$mainframe->enqueueMessage(JText::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
+$mainframe->enqueueMessage(JText::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
+        
+        $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
+        //$mainframe->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
+        
+        
+        $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
+//        $mainframe->enqueueMessage(JText::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
+
+
   
   $temp = new stdClass();
   $temp->name = '';
@@ -178,7 +213,7 @@ switch ($sis_xmllink)
 
 //$mainframe->enqueueMessage(JText::_('Spielklasse->Name<br><pre>'.print_r($linkspielplan->Spielklasse->Name,true).'</pre>'   ),'');
 
-        $projectname = (string) $linkspielplan->Spielklasse->Name;        
+$projectname = (string) $linkspielplan->Spielklasse->Name;        
         
 $temp = new stdClass();
   $temp->name = $projectname;
@@ -218,7 +253,7 @@ foreach ($linkspielplan->Spiel as $tempspiel)
 {
 // das spiele
 $tempmatch = new stdClass();
-$tempmatch->id = (string) $tempspiel->Liga;
+$tempmatch->id = (string) $tempspiel->Nummer;
 $tempmatch->round_id = (string) $tempspiel->Spieltag;
 $tempmatch->match_date = (string) $tempspiel->Date." ".(string) $tempspiel->vonUhrzeit;
 $tempmatch->match_number = (string) $tempspiel->Nummer;
@@ -228,8 +263,6 @@ $tempmatch->show_report = 1;
 $tempmatch->projectteam1_id = (string) $tempspiel->HeimNr;
 $tempmatch->projectteam2_id = (string) $tempspiel->GastNr;
 
-
-
 if ( (string) $tempspiel->Tore1 && (string) $tempspiel->Tore2 )
 {
 $tore_team_1 = array();
@@ -238,7 +271,6 @@ $tore_team_1[] = (string) $tempspiel->Tore01;
 $tore_team_1[] = (string) $tempspiel->Tore1; 
 $tore_team_2[] = (string) $tempspiel->Tore02;
 $tore_team_2[] = (string) $tempspiel->Tore2;
-
 $tempmatch->team1_result = (string) $tempspiel->Tore1;
 $tempmatch->team1_result_split = implode(";",$tore_team_1);
 $tempmatch->team2_result = (string) $tempspiel->Tore2;
@@ -246,6 +278,7 @@ $tempmatch->team2_result_split = implode(";",$tore_team_2);
 }
     
 $tempmatch->summary = '';
+$tempmatch->preview = (string) $tempspiel->Anmerkung;
 $tempmatch->playground_id = (string) $tempspiel->Halle;
 
 $exportmatch[] = $tempmatch;  
@@ -297,7 +330,7 @@ $exportpersons[] = $temp;
 //schiedsrichter
 $tempmatchreferee = new stdClass();
 $tempmatchreferee->id = (string) $tempspiel->Schiri; 
-$tempmatchreferee->match_id = (string) $tempspiel->Liga; 
+$tempmatchreferee->match_id = (string) $tempspiel->Nummer; 
 $tempmatchreferee->project_referee_id = (string) $tempspiel->Schiri; 
 $tempmatchreferee->project_position_id = 1000; 
 $exportmatchreferee[] = $tempmatchreferee;
@@ -323,7 +356,7 @@ $temp->city = $teile[1];
 $temp->country = $country;
 $temp->max_visitors = 0;
 $exportplayground[] = $temp;
-
+$exportteamplaygroundtemp[(string) $tempspiel->HeimNr] = (string) $tempspiel->Halle;
 }
 
 // heimmannschaft
@@ -343,9 +376,6 @@ else
 {
 $exportteamstemp[(string) $tempspiel->Gast] = (string) $tempspiel->GastNr;
 }
-
-
-
 			
 }
 
@@ -360,13 +390,16 @@ $temp->club_id = $value;
 $temp->name = $key;
 $temp->middle_name = $key;
 $temp->short_name = $key;
-//$temp->info = '';
-$temp->info = 'Herren';
+$temp->info = $agegroup->name;
+
+$temp->agegroup_id = $agegroup->id;
+$temp->sports_type_id = $sp_id;
+
 $temp->extended = '';
 $exportteams[] = $temp;
 
 //$standard_playground = $exportteamplaygroundtemp[$key];
-//$standard_playground_nummer = $exportplaygroundtemp[$standard_playground];
+$standard_playground_nummer = $exportteamplaygroundtemp[$value];
 
 // club
 $temp = new stdClass();
@@ -375,7 +408,7 @@ $temp->unique_id = $value;
 $temp->name = $key;
 $temp->country = $country;
 $temp->extended = '';
-//$temp->standard_playground = $standard_playground_nummer;
+$temp->standard_playground = $standard_playground_nummer;
 $exportclubs[] = $temp;
 
 // projektteam
@@ -384,7 +417,7 @@ $temp->id = $value;
 $temp->team_id = $value;
 $temp->project_team_id = $value;
 $temp->is_in_score = 1;
-//$temp->standard_playground = $standard_playground_nummer;
+$temp->standard_playground = $standard_playground_nummer;
 $exportprojectteams[] = $temp;
 
 }
@@ -438,7 +471,10 @@ $temp->position_id = 1002;
 $exportprojectposition[] = $temp;
 
 
-//$mainframe->enqueueMessage(JText::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('exportteamplaygroundtemp<br><pre>'.print_r($exportteamplaygroundtemp,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_('exportprojectteams<br><pre>'.print_r($exportprojectteams,true).'</pre>'),'');
+
 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 $this->_datas['position'] = array_merge($exportposition);
 $this->_datas['projectposition'] = array_merge($exportprojectposition);

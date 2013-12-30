@@ -2286,6 +2286,10 @@ $this->dump_variable("import_team", $import_team);
 				$p_team->set('short_name',$this->_newteamsshort[$key]);
 				$p_team->set('middle_name',$this->_newteamsmiddle[$key]);
 				$p_team->set('website',$this->_getDataFromObject($import_team,'website'));
+                
+                $p_team->set('agegroup_id',$this->_getDataFromObject($import_team,'agegroup_id'));
+                $p_team->set('sports_type_id',$this->_getDataFromObject($import_team,'sports_type_id'));
+                
 				$p_team->set('notes',$this->_getDataFromObject($import_team,'notes'));
 				$p_team->set('picture',$this->_getDataFromObject($import_team,'picture'));
 				$p_team->set('info',$this->_newteamsinfo[$key]);
@@ -5040,7 +5044,7 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
@@ -5093,7 +5097,7 @@ $this->dump_variable("import_team", $import_team);
             
 			if (!$db->query())
 			{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			}
 			else
 			{
@@ -5138,7 +5142,7 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
@@ -5160,7 +5164,7 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
@@ -5222,7 +5226,7 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
@@ -5245,7 +5249,7 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {

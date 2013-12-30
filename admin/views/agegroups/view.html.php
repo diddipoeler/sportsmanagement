@@ -32,14 +32,50 @@ class sportsmanagementViewagegroups extends JView
 
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
+        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 		$search=JString::strtolower($search);
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        //build the html select list for sportstypes
+		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$mdlSportsTypes = JModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$allSportstypes = $mdlSportsTypes->getSportsTypes();
+		$sportstypes=array_merge($sportstypes,$allSportstypes);
+		$lists['sportstypes']=JHtml::_( 'select.genericList',
+										$sportstypes,
+										'filter_sports_type',
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+										'id',
+										'name',
+										$filter_sports_type);
+		unset($sportstypes);
+        
+        //build the html options for nation
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		
+        $lists['nation']=$nation;
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+																'search_nation',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$search_nation);
 
-		// table ordering
+		//$mainframe->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
+        if ( count($items)  == 0 )
+        {
+            $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+            $insert_agegroup = $databasetool->insertAgegroup($search_nation,$filter_sports_type);
+        $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
+        }
+        
+        // table ordering
 		$lists['order_Dir']=$filter_order_Dir;
 		$lists['order']=$filter_order;
 

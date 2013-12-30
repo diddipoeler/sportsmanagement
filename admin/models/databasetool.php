@@ -186,6 +186,86 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     }
 
     
+    function insertAgegroup($search_nation,$filter_sports_type)
+    {
+    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option'); 
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
+    
+    $mdl = JModel::getInstance("sportstype", "sportsmanagementModel");
+    $p_sportstype = $mdl->getTable();
+    $p_sportstype->load((int) $filter_sports_type);
+    $temp = explode("_",$p_sportstype->name);
+    $sport_type_name = strtolower(array_pop($temp));
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
+    $filename = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
+    
+    if (!JFile::exists($filename)) 
+    {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+        return false;
+    }  
+    else
+    {
+      
+        $xml = JFactory::getXMLParser( 'Simple' );
+       $xml->loadFile($filename); 
+       
+       foreach( $xml->document->agegroups as $agegroup ) 
+{
+   $name = $agegroup->getElementByPath('agegroup');
+   $attributes = $name->attributes();
+   
+   //$mainframe->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   
+   $agegroup = $name->data();
+   $info = $attributes['info'];
+   $picture = 'images/com_sportsmanagement/database/agegroups/'.$attributes['picture'];
+   
+   // Get a db connection.
+        $db = JFactory::getDbo();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        // Insert columns.
+        $columns = array('name','picture','info','sportstype_id','country');
+        // Insert values.
+        $values = array('\''.$agegroup.'\'','\''.$picture.'\'' ,'\''.$info.'\'' ,'\''.$filter_sports_type.'\'' ,'\''.$search_nation.'\''  );
+        // Prepare the insert query.
+        $query
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        $db->setQuery($query);
+        
+        if (!$db->query())
+		{
+			
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$result = false;
+		}
+        else
+        {
+        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$name->data()),'Notice');
+        
+        }
+        
+   
+   
+   }
+       
+       
+       
+       
+       
+    }
+                   
+    
+    
+    }
     
     function checkAssociations()
     {

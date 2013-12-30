@@ -45,11 +45,12 @@ class sportsmanagementModelProjectteams extends JModelList
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
+        
         if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
         {
         // count team player
         $subQuery->select('count(tp.id)');
-        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id tp');
+        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $subQuery->where('tp.published = 1');
         $subQuery->where('tp.team_id = tl.team_id');
         $subQuery->where('tp.persontype = 1');
@@ -57,7 +58,7 @@ class sportsmanagementModelProjectteams extends JModelList
         $query->select('(' . $subQuery . ') AS playercount');
         // count team staff
         $subQuery2->select('count(tp.id)');
-        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id tp');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $subQuery2->where('tp.published = 1');
         $subQuery2->where('tp.team_id = tl.team_id');
         $subQuery2->where('tp.persontype = 2');
@@ -68,27 +69,28 @@ class sportsmanagementModelProjectteams extends JModelList
         {    
         // count team player
         $subQuery->select('count(tp.id)');
-        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp');
+        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp');
         $subQuery->where('tp.published = 1 and tp.projectteam_id  = tl.id');
         $query->select('(' . $subQuery . ') AS playercount');
         // count team staff
         $subQuery2->select('count(ts.id)');
-        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts');
         $subQuery2->where('ts.published = 1 and ts.projectteam_id  = tl.id');
         $query->select('(' . $subQuery2 . ') AS staffcount');
         }
         
+        
         // Join over the team
 		$query->select('t.name,t.club_id');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t on tl.team_id = t.id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on tl.team_id = t.id');
         // Join over the club
 		$query->select('c.email AS club_email');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c on t.club_id = c.id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c on t.club_id = c.id');
         
         // Join over the playground
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg on plg.id = tl.standard_playground');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS plg on plg.id = tl.standard_playground');
         // Join over the division
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tl.division_id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d on d.id = tl.division_id');
         
         // Join over the users for the checked out user.
 		$query->select('u.name AS editor,u.email AS email');

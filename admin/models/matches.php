@@ -38,7 +38,7 @@ class sportsmanagementModelMatches extends JModelList
         
         $this->_rid = JRequest::getvar('rid', 0);
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {

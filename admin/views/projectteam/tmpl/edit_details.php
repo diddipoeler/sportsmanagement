@@ -5,7 +5,7 @@
             <?php
                     echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_DETAILS',
 												'<i>' . $this->project_team->name . '</i>',
-												'<i>' . $this->projectws->name . '</i>');
+												'<i>' . $this->project->name . '</i>');
 					
 					?>
             
@@ -17,7 +17,7 @@
 					<td><?php echo $this->form->getInput('admin'); ?></td>
 				</tr>
 				
-				<?php if ($this->projectws->project_type == 'DIVISIONS_LEAGUE') :?>
+				<?php if ($this->project->project_type == 'DIVISIONS_LEAGUE') :?>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DIV');	?></td>
 					<td>
