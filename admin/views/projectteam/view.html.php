@@ -96,6 +96,11 @@ class sportsmanagementViewProjectteam extends JView
 	*/
 	protected function addToolbar()
 	{
+	// Get a refrence of the page instance in joomla
+        $document = JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 		
         JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->item->project_id);
@@ -103,7 +108,7 @@ class sportsmanagementViewProjectteam extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'), 'projectteam');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{

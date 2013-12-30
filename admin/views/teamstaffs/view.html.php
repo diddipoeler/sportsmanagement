@@ -170,6 +170,11 @@ class sportsmanagementViewTeamStaffs extends JView
 	*/
 	protected function addToolbar()
 	{
+	// Get a refrence of the page instance in joomla
+        $document = JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // store the variable that we would like to keep for next time
@@ -178,7 +183,7 @@ class sportsmanagementViewTeamStaffs extends JView
         $mainframe->setUserState( "$option.team_id", $this->team_id );
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' ) );
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' ),'teamstaffs' );
 
 		JToolBarHelper::publishList('teamstaffs.publish');
 		JToolBarHelper::unpublishList('teamstaffs.unpublish');
