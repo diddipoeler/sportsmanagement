@@ -260,7 +260,7 @@
 
 <field name="current_season" type="actseason" default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESCR"
+      description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESC"
       
       
       />
@@ -269,7 +269,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_CLUBS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -277,7 +277,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_TEAMS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -285,7 +285,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_LEAGUES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -293,7 +293,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SEASONS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -301,7 +301,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_PLAYGROUNDS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -309,7 +309,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_POSITIONS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -317,7 +317,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_STATISTICS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -325,7 +325,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SPORTSTYPES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -333,7 +333,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_EVENTTYPES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -342,7 +342,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_ROUNDS" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -351,7 +351,7 @@
     type="radio" 
     default="0"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_MATCHES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESCR">
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>        
