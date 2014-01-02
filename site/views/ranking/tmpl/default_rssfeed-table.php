@@ -11,7 +11,7 @@ $mainframe	=& JFactory::getApplication();
 <div class="no-column">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_JOOMLEAGUE_PROJECT_RSS_FEEDS'); ?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEEDS'); ?>
 		</div>
 	</div>
 

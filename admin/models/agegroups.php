@@ -78,9 +78,12 @@ class sportsmanagementModelagegroups extends JModelList
         $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
         $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
+        
+        
+        
         if ($search || $search_nation || $filter_sports_type)
 		{
-        //$query->where(self::_buildContentWhere());
+        $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
         
@@ -123,7 +126,7 @@ class sportsmanagementModelagegroups extends JModelList
         
 		if ($filter_sports_type> 0)
 		{
-			$where[]='obj.sports_type_id='.$this->_db->Quote($filter_sports_type);
+			$where[]='obj.sportstype_id='.$this->_db->Quote($filter_sports_type);
 		}
 		
         if ($search)

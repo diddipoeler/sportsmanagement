@@ -3,7 +3,7 @@
 jimport('joomla.application.component.model');
 jimport( 'joomla.utilities.arrayhelper' );
 
-require_once (JLG_PATH_ADMIN .DS.'models'.DS.'rounds.php');
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
 
 class sportsmanagementModelProject extends JModel
 {
@@ -60,7 +60,7 @@ class sportsmanagementModelProject extends JModel
 
 	function __construct()
 	{
-		$this->projectid=JRequest::getInt('p',0);
+		$this->projectid = JRequest::getInt('p',0);
 		parent::__construct();
 	}
 
@@ -71,14 +71,14 @@ class sportsmanagementModelProject extends JModel
 			//fs_sport_type_name = sport_type folder name
 			$query='SELECT p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name,
       st.icon AS sport_type_picture, l.picture as leaguepicture, 
-					LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_JOOMLEAGUE_ST_")+1)) AS fs_sport_type_name,
+					LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name,
 					CASE WHEN CHAR_LENGTH( p.alias )
 					THEN CONCAT_WS( \':\', p.id, p.alias )
 					ELSE p.id
 					END AS slug
-					FROM #__joomleague_project AS p
-					INNER JOIN #__joomleague_sports_type AS st ON p.sports_type_id = st.id 
-					LEFT JOIN #__joomleague_league AS l ON p.league_id = l.id 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id 
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id 
 					WHERE p.id='. $this->_db->Quote($this->projectid);
 			$this->_db->setQuery($query,0,1);
 			$this->_project = $this->_db->loadObject();
@@ -96,7 +96,7 @@ class sportsmanagementModelProject extends JModel
 	{
 		if (!$project = $this->getProject())
 		{
-			$this->setError(0, Jtext::_('COM_JOOMLEAGUE_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
+			$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 			return false;
 		}
 		
@@ -137,7 +137,7 @@ class sportsmanagementModelProject extends JModel
 		if (!$this->_current_round)
 		{
 			if (!$project = $this->getProject()) {
-				$this->setError(0, Jtext::_('COM_JOOMLEAGUE_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
+				$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 				return false;
 			}
 			
@@ -224,7 +224,7 @@ class sportsmanagementModelProject extends JModel
 				       . ' WHERE id = ' . $this->_db->Quote($project->id);
 				$this->_db->setQuery($query);
 				if (!$this->_db->query()) {
-					JError::raiseWarning(0, JText::_('COM_JOOMLEAGUE_ERROR_CURRENT_ROUND_UPDATE_FAILED'));					
+					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));					
 				}
 			}
 			$this->_current_round = $result;
@@ -281,7 +281,7 @@ class sportsmanagementModelProject extends JModel
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		if(count($res) == 0) {
-			echo JText::_('COM_JOOMLEAGUE_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
+			echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
 		return $res;
 	}
@@ -388,7 +388,7 @@ class sportsmanagementModelProject extends JModel
 		$query="SELECT
 					id as value,
 				    CASE LENGTH(name)
-				    	when 0 then CONCAT('".JText::_('COM_JOOMLEAGUE_MATCHDAY_NAME'). "',' ', id)
+				    	when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id)
 				    	else name
 				    END as text
 				  FROM #__joomleague_round
@@ -476,13 +476,13 @@ class sportsmanagementModelProject extends JModel
 								CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\',d.id,d.alias) ELSE d.id END AS division_slug,
 								CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug
 
-						FROM #__joomleague_project_team tl
-							LEFT JOIN #__joomleague_team t ON tl.team_id=t.id
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tl
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON tl.team_id=t.id
 							LEFT JOIN #__users u ON tl.admin=u.id
-							LEFT JOIN #__joomleague_club c ON t.club_id=c.id
-							LEFT JOIN #__joomleague_division d ON d.id=tl.division_id
-							LEFT JOIN #__joomleague_playground plg ON plg.id=tl.standard_playground
-							LEFT JOIN #__joomleague_project AS p ON p.id=tl.project_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id=c.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id=tl.division_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id=tl.standard_playground
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=tl.project_id
 
 						WHERE tl.project_id='.(int)$this->projectid;
 
@@ -624,7 +624,7 @@ class sportsmanagementModelProject extends JModel
 	{
 		$query='	SELECT	id AS value,
 							name AS text
-					FROM #__joomleague_playground
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground
 					ORDER BY text ASC ';
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
@@ -646,7 +646,7 @@ class sportsmanagementModelProject extends JModel
 	{
 		$gameprojecttime = 0;
         $query = 'SELECT game_regular_time 
-					FROM #__joomleague_project 
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project 
 					WHERE id='.$project_id;
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObject();
@@ -667,7 +667,7 @@ class sportsmanagementModelProject extends JModel
 		{
 			$query='	SELECT	id AS value,
 								name AS text
-						FROM #__joomleague_team
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
 						ORDER BY name';
 
 			$this->_db->setQuery($query);
@@ -679,7 +679,7 @@ class sportsmanagementModelProject extends JModel
 								firstname,
 								lastname
 
-						FROM #__joomleague_project_referee
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee
 						ORDER BY lastname';
 
 			$this->_db->setQuery($query);
@@ -697,8 +697,8 @@ class sportsmanagementModelProject extends JModel
 		//first load the default settings from the default <template>.xml file
 		$paramsdata="";
 		$arrStandardSettings=array();
-		if(file_exists(JLG_PATH_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) {
-			$strXmlFile = JLG_PATH_SITE. DS.'settings'.DS."default".DS.$template.'.xml';
+		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) {
+			$strXmlFile = JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml';
 			$form = JForm::getInstance($template, $strXmlFile);
 			$fieldsets = $form->getFieldsets();
 			foreach ($fieldsets as $fieldset) {
@@ -707,6 +707,7 @@ class sportsmanagementModelProject extends JModel
 				}				
 			}
 		}
+/*
 		//second load the default settings from the default extensions <template>.xml file
 		$extensions=JoomleagueHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($extensions as $e => $extension) {
@@ -723,7 +724,7 @@ class sportsmanagementModelProject extends JModel
 				}
 			}
 		}
-
+*/
 		if($this->projectid == 0) return $arrStandardSettings;
 
 		$query= "SELECT t.params
@@ -747,9 +748,9 @@ class sportsmanagementModelProject extends JModel
 				$this->_db->setQuery($query);
 				if (! $result=$this->_db->loadResult())
 				{
-					JError::raiseNotice(500,JText::_('COM_JOOMLEAGUE_MASTER_TEMPLATE_MISSING')." ".$template);
-					JError::raiseNotice(500,JText::_('COM_JOOMLEAGUE_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
-					JError::raiseNotice(500,JText::_('COM_JOOMLEAGUE_TEMPLATE_MISSING_HINT'));
+					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
+					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
+					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
 					return $arrStandardSettings;
 				}
 			}
@@ -788,8 +789,8 @@ class sportsmanagementModelProject extends JModel
    	function getProjectCountry()
 	{
 		 $query = 'SELECT l.country
-					from #__joomleague_league as l
-					inner join #__joomleague_project as pro
+					from #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l
+					inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro
 					on pro.league_id = l.id 
 					WHERE pro.id = '. $this->_db->Quote($this->projectid);
 		  $this->_db->setQuery( $query );
@@ -807,9 +808,9 @@ class sportsmanagementModelProject extends JModel
 		$query=' SELECT	et.id,
 						et.name,
 						et.icon
-						FROM #__joomleague_eventtype AS et
-						INNER JOIN #__joomleague_position_eventtype AS pet ON pet.eventtype_id=et.id
-						INNER JOIN #__joomleague_project_position AS ppos ON ppos.position_id=pet.position_id
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pet.position_id
 						WHERE ppos.project_id='.$this->_db->Quote($this->projectid);
 		if ($position_id)
 		{
@@ -843,11 +844,11 @@ class sportsmanagementModelProject extends JModel
 								ppos.id as pposid,
 								ppos.position_id AS position_id,
 								stat.params, stat.baseparams
-						FROM #__joomleague_statistic AS stat
-						INNER JOIN #__joomleague_position_statistic AS ps ON ps.statistic_id=stat.id
-						INNER JOIN #__joomleague_project_position AS ppos ON ppos.position_id=ps.position_id
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS stat
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=stat.id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=ps.position_id
 						  AND ppos.project_id='.$project_id.' 
-						INNER JOIN #__joomleague_position AS pos ON pos.id=ps.position_id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ps.position_id
 						WHERE stat.published=1 
 						  AND pos.published =1 
 						  ';
@@ -901,8 +902,8 @@ class sportsmanagementModelProject extends JModel
 								pos.ordering,
 								pos.published,
 								ppos.id AS pposid
-						FROM #__joomleague_project_position AS ppos
-						INNER JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
 						WHERE ppos.project_id='.$this->_db->Quote($this->projectid);
 			$this->_db->setQuery($query);
 			$this->_positions=$this->_db->loadObjectList('id');
@@ -1018,19 +1019,19 @@ class sportsmanagementModelProject extends JModel
 							p2.firstname AS out_firstname,
 							p2.nickname AS out_nickname,
 							p2.lastname AS out_lastname
-						FROM #__joomleague_match_player AS mp
-							LEFT JOIN #__joomleague_team_player AS tp ON mp.teamplayer_id=tp.id
+						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON mp.teamplayer_id=tp.id
 							  AND tp.published=1
-							LEFT JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id
-							LEFT JOIN #__joomleague_person AS p ON tp.person_id=p.id
-							LEFT JOIN #__joomleague_team_player AS tp2 ON mp.in_for=tp2.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON tp.projectteam_id=pt.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp2 ON mp.in_for=tp2.id
 							  AND tp2.published=1
-							LEFT JOIN #__joomleague_person AS p2 ON tp2.person_id=p2.id
-							LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=mp.project_position_id
-							LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id
-							LEFT JOIN #__joomleague_match_player AS mp2 ON mp.match_id=mp2.match_id and mp.in_for=mp2.teamplayer_id
-							LEFT JOIN #__joomleague_project_position AS ppos2 ON ppos2.id=mp2.project_position_id
-							LEFT JOIN #__joomleague_position AS pos2 ON ppos2.position_id=pos2.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id=p2.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mp.project_position_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp2 ON mp.match_id=mp2.match_id and mp.in_for=mp2.teamplayer_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos2 ON ppos2.id=mp2.project_position_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id=pos2.id
 						WHERE	mp.match_id='.(int)$match_id.' AND
 								mp.came_in=1 AND p.published = 1 AND p2.published = 1
 						ORDER by (mp.in_out_time+0) ';
@@ -1074,13 +1075,13 @@ class sportsmanagementModelProject extends JModel
 							p.lastname AS lastname1,
 							p.picture AS picture1,
 							tp.picture AS tppicture1
-					FROM #__joomleague_match_event AS me
-					'.$join.' JOIN #__joomleague_eventtype AS et ON me.event_type_id = et.id
-					'.$join.' JOIN #__joomleague_project_team AS pt ON me.projectteam_id = pt.id
-					'.$join.' JOIN #__joomleague_team AS t ON pt.team_id = t.id
-					LEFT JOIN #__joomleague_team_player AS tp ON tp.id = me.teamplayer_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me
+					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON me.event_type_id = et.id
+					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON me.projectteam_id = pt.id
+					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id = t.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id = me.teamplayer_id
 						  AND tp.published = 1
-					LEFT JOIN #__joomleague_person AS p ON tp.person_id = p.id
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id
 						  AND p.published = 1
 					WHERE me.match_id = ' . $match_id . ' 
 					ORDER BY (me.event_time + 0)'. $esort .', me.event_type_id, me.id';
@@ -1116,7 +1117,7 @@ class sportsmanagementModelProject extends JModel
 		$user = JFactory::getUser();
 		if($user->id > 0) {
 			if(!is_null($task)) {
-				if (!$user->authorise($task, 'com_joomleague')) {
+				if (!$user->authorise($task, 'com_sportsmanagement')) {
 					$allowed = false;
 					error_log("no ACL permission for task " . $task);
 				} else {

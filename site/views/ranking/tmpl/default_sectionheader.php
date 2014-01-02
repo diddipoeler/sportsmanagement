@@ -5,7 +5,7 @@
     <tr>
         <td class="contentheading">
             <?php
-            echo JText::_('COM_JOOMLEAGUE_RANKING_PAGE_TITLE' );
+            echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
             ?>
         </td>
     </tr>

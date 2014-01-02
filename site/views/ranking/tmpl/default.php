@@ -1,14 +1,15 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-if ( $this->show_debug_info )
-{
-echo 'default allteams<pre>',print_r($this->allteams,true),'</pre><br>';
-}
+//if ( $this->show_debug_info )
+//{
+//echo 'default allteams<pre>',print_r($this->allteams,true),'</pre><br>';
+//}
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('projectheading', 'backbutton', 'footer');
-JoomleagueHelper::addTemplatePaths($templatesToLoad, $this);
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
 <div class="joomleague">
 	<?php

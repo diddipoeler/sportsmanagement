@@ -1,41 +1,57 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
+//require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
-require_once (JLG_PATH_ADMIN .DS.'models'.DS.'divisions.php');
 
-class JoomleagueViewRanking extends JLGView {
+require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
+require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'route.php' );
+require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
+require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
+require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'divisions.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'teams.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
+
+class sportsmanagementViewRanking extends JView 
+{
 	
 	function display($tpl = null) 
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
+        $mainframe = JFactory::getApplication();
         
-        $version = urlencode(JoomleagueHelper::getVersion());
-		$css='components/com_joomleague/assets/css/tabs.css?v='.$version;
-		$document->addStyleSheet($css);
+        //$version = urlencode(JoomleagueHelper::getVersion());
+		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
+		//$document->addStyleSheet($css);
 
 		$model = $this->getModel();
-		$config = $model->getTemplateConfig($this->getName());
-		$project = $model->getProject();
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlDivisions = JModel::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = JModel::getInstance("Teams", "sportsmanagementModel");
+        
+		$config = $mdlProject->getTemplateConfig($this->getName());
+		$project = $mdlProject->getProject();
 		
-		$rounds = JoomleagueHelper::getRoundsOptions($project->id, 'ASC', true);
+		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
-		$model->setProjectId($project->id);
+		$mdlProject->setProjectId($project->id);
 		
-		$map_config		= $model->getMapConfig();
-		$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
+		//$map_config		= $model->getMapConfig();
+		//$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 		$this->assignRef('model',			$model);
 		$this->assignRef('project', $project);
-        $extended = $this->getExtended($this->project->extended, 'project');
+        $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->assignRef( 'extended', $extended );
         
-		$this->assignRef('overallconfig', $model->getOverallConfig());
+		$this->assign('overallconfig', $mdlProject->getOverallConfig());
 		$this->assignRef('tableconfig', $config);
 		$this->assignRef('config', $config);
 
@@ -43,7 +59,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
 	  $mod_name               = "mod_jw_srfr";
 	  $rssfeeditems = '';
-    $rssfeedlink = $this->extended->getValue('COM_JOOMLEAGUE_PROJECT_RSS_FEED');
+    $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
     if ( $rssfeedlink )
     {
     $this->assignRef( 'rssfeeditems', $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']) );
@@ -82,7 +98,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('round',     $model->round);
 		$this->assignRef('part',      $model->part);
 		$this->assignRef('rounds',    $rounds);
-		$this->assignRef('divisions', $model->getDivisions());
+		$this->assign('divisions', $mdlDivisions->getDivisions($project->id));
 		$this->assignRef('type',      $model->type);
 		$this->assignRef('from',      $model->from);
 		$this->assignRef('to',        $model->to);
@@ -92,11 +108,16 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('homeRank',      $model->homeRank);
 		$this->assignRef('awayRank',      $model->awayRank);
         
-        
+        //$mainframe->enqueueMessage('sportsmanagementViewRanking currentRanking<br><pre>'.print_r($this->currentRanking, true).'</pre><br>','');
+        //$mainframe->enqueueMessage('sportsmanagementViewRanking previousRanking<br><pre>'.print_r($this->previousRanking, true).'</pre><br>','');
+        //$mainframe->enqueueMessage('sportsmanagementViewRanking homeRank<br><pre>'.print_r($this->homeRank, true).'</pre><br>','');
+        //$mainframe->enqueueMessage('sportsmanagementViewRanking awayRank<br><pre>'.print_r($this->awayRank, true).'</pre><br>','');
        
 		$this->assignRef('current_round', $model->current_round);
-		$this->assignRef('teams',			    $model->getTeamsIndexedByPtid());
+        
+		$this->assign('teams',$mdlProject->getTeamsIndexedByPtid());
 		
+        //$mainframe->enqueueMessage('sportsmanagementViewRanking teams<br><pre>'.print_r($this->teams, true).'</pre><br>','');
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
@@ -135,20 +156,20 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		
 		
-		$this->assignRef('previousgames', $model->getPreviousGames());
+		$this->assign('previousgames', $model->getPreviousGames());
 		$this->assign('action', $uri->toString());
 
-		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_JOOMLEAGUE_RANKING_FROM_MATCHDAY'));
+		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
 		$lists['frommatchday'] = $frommatchday;
-		$tomatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_JOOMLEAGUE_RANKING_TO_MATCHDAY'));
+		$tomatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
 		$tomatchday = array_merge($tomatchday, $rounds);
 		$lists['tomatchday'] = $tomatchday;
 
 		$opp_arr = array ();
-		$opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_JOOMLEAGUE_RANKING_FULL_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_JOOMLEAGUE_RANKING_HOME_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_JOOMLEAGUE_RANKING_AWAY_RANKING'));
+		$opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+		$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
+		$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
 		$lists['type'] = $opp_arr;
 		$this->assignRef('lists', $lists);
@@ -157,14 +178,13 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$config['colors'] = "";
 		}
 
-		$this->assignRef('colors', $model->getColors($config['colors']));
+		$this->assign('colors', $mdlProject->getColors($config['colors']));
 		//$this->assignRef('result', $model->getTeamInfo());
 		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
 		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
 
     // diddipoeler
-		$mdlTeams = JModel::getInstance("Teams", "JoomleagueModel");
-		$this->assignRef( 'allteams', $mdlTeams->getTeams() );
+		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
 		
 		if (($this->config['show_ranking_maps'])==1)
 	  {
@@ -244,7 +264,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     }
     else
     {
-    $path = JURI::root().'media/com_joomleague/placeholders/'.'placeholder_150.png';
+    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
     }
     
     //echo $path.'<br>';
@@ -260,10 +280,10 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //   $document->addScriptDeclaration($this->map->JLshowMap(false));
   
 	}
-	  $this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
+	  $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 	  
 		// Set page title
-		$pageTitle = JText::_( 'COM_JOOMLEAGUE_RANKING_PAGE_TITLE' );
+		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;

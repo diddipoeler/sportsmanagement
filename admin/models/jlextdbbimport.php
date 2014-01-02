@@ -1161,57 +1161,14 @@ Array
 
   
   
-  $teamid = 1;
+$teamid = 1;
   
 $this->fileName = JFile::read($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {
 $row = 0;
-/*
-foreach($this->lines as $line )
-{
 
-if ( $startline <= $row && $row <= count($this->lines)  )
-{
-// spielerliste
-if ( $whichfile == 'playerfile' )
-{
-	$fields = array();
-  if ($delimiter == "\\t") {
-    $fields = explode("\t", $line);
-  } else {
-    $fields = explode($delimiter, $line);
-  }
-	$temp = new stdClass();
-	$temp->id = 0;
-	$temp->knvbnr = $fields[0];
-	$temp->lastname = $fields[1];
-	$temp->firstname = $fields[2];
-	$temp->country = $country;
-	$temp->nickname = '';
-	$temp->position_id = '';
-	//$temp->lastname = utf8_encode ($temp->lastname);
-	//$temp->firstname = utf8_encode ($temp->firstname);
-
-	$temp->info = $fields[3];
-	$datetime = strtotime($fields[4]);
-	$temp->birthday = date('Y-m-d', $datetime);
-	$exportplayer[] = $temp;
-
-	$fields = "";
-}
-elseif ( $whichfile == 'matchfile' )
-{
-// spielplan anfang
-
-// spielplan ende
-}
-
-}
-$row++;
-}
-*/
 
 if ( $whichfile == 'playerfile' )
 {

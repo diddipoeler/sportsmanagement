@@ -974,7 +974,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_team_link'])
 		{
-			$link =JoomleagueHelperRoute::getPlayersRoute($projectSlug,$teamSlug);
+			$link =sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -983,7 +983,7 @@ abstract class sportsmanagementHelper
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-			$link =JoomleagueHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug);
+			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -992,7 +992,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_curve_link'])
 		{
-			$link =JoomleagueHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
+			$link =sportsmanagementHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1002,7 +1002,7 @@ abstract class sportsmanagementHelper
 		if ($config['show_teaminfo_link'])
 		{
 // 			$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
-			$link =JoomleagueHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug);
+			$link =sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug);
       $title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1011,7 +1011,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_club_link'])
 		{
-			$link =JoomleagueHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1020,7 +1020,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_teamstats_link'])
 		{
-			$link =JoomleagueHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
+			$link =sportsmanagementHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1029,7 +1029,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_clubplan_link'])
 		{
-			$link =JoomleagueHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);

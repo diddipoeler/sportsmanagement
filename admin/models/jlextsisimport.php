@@ -162,7 +162,7 @@ switch ($sis_xmllink)
 $liganummer = $post ['liganummer'];
 $teamart = substr( $liganummer , 17, 4);
 
-$mainframe->enqueueMessage(JText::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
 
 $db = JFactory::getDBO();
     // Create a new query object.
@@ -173,7 +173,7 @@ $db = JFactory::getDBO();
         $db->setQuery($query);
 		$sp_id = $db->loadResult();
 
-$mainframe->enqueueMessage(JText::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
 
 $query = $db->getQuery(true);
         $query->select(array('id,name'))
@@ -183,8 +183,8 @@ $query = $db->getQuery(true);
         $db->setQuery($query);
 		$agegroup = $db->loadObject();
 
-$mainframe->enqueueMessage(JText::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
-$mainframe->enqueueMessage(JText::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
         
         $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
         //$mainframe->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
@@ -230,6 +230,7 @@ $temp = new stdClass();
   
   $temp = new stdClass();
   $temp->name = $projectname;
+  $temp->staffel_id = $liganummer;
   $temp->serveroffset = 0;
   $temp->sports_type_id = 1;
   $temp->project_type = 'SIMPLE_LEAGUE';

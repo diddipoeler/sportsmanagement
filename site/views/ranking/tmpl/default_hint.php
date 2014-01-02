@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td align="left">
                 <br />
-                <?php echo JText :: _('COM_JOOMLEAGUE_RANKING_HINT');?>
+                <?php echo JText :: _('COM_SPORTSMANAGEMENT_RANKING_HINT');?>
         </td>
             </tr>
     </table>

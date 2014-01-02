@@ -18,7 +18,7 @@
 
 	?>
 		<td><input type="submit" class="button" name="reload View"
-			value="<?php echo JText::_('COM_JOOMLEAGUE_RANKING_FILTER'); ?>"></td>
+			value="<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>"></td>
 	</tr>
 </table>
 	<?php echo JHTML::_( 'form.token' ); ?></form>

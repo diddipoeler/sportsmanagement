@@ -61,8 +61,17 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY','obj.deadline_day',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
+                    <th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
+					<th class="title">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SPORTSTYPE','obj.sportstype_id',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
                     
-					
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
@@ -74,7 +83,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -115,7 +124,9 @@ JHtml::_('behavior.modal');
                         <td><?php echo $row->age_from; ?></td>
                         <td><?php echo $row->age_to; ?></td>
                         <td><?php echo $row->deadline_day; ?></td>
-						
+						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+                        <td class="center"><?php echo JText::_($row->sportstype); ?></td>
+                        
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'agegroup.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>

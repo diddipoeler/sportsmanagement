@@ -490,10 +490,13 @@ class sportsmanagementModelJLXMLImport extends JModel
             // ereignisse um die textelemente bereinigen
             $temp = explode("_",$this->_datas['sportstype']->name);
             $sport_type_name = array_pop($temp);
+            if ( isset($this->_datas['event']) )
+            {
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sport_type_name<br><pre>'.print_r($sport_type_name,true).'</pre>'   ),'');
             foreach ($this->_datas['event'] as $event)
             {
                 $event->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $event->name);
+            }
             }
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
             
@@ -506,7 +509,9 @@ class sportsmanagementModelJLXMLImport extends JModel
 			$result = $this->_db->loadObjectList();
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport _position<br><pre>'.print_r($result,true).'</pre>'   ),'');
 		    }
-
+            
+            if ( isset($this->_datas['position']) )
+            {
             foreach ($this->_datas['position'] as $position)
             {
                 $position->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $position->name);
@@ -522,13 +527,15 @@ class sportsmanagementModelJLXMLImport extends JModel
                     }
                 }
             }
-            
+            }
             
             
             
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
             
             // länder bei den spielorten vervollständigen
+            if ( isset($this->_datas['playground']) )
+            {
             foreach ($this->_datas['playground'] as $playground )
             {
                 if ( $playground->country == 0 || empty($playground->country) )
@@ -536,7 +543,7 @@ class sportsmanagementModelJLXMLImport extends JModel
                     $playground->country = 'DEU';
                 }
             }    
-            
+            }
             
             
             
@@ -5283,7 +5290,128 @@ $this->dump_variable("import_team", $import_team);
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
         
+        self::setNewRoundDates();
         
     }
+    
+    function setNewRoundDates()
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
+        $query = "SELECT r.id as round_id
+FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
+WHERE r.project_id = " . $this->_project_id .' ORDER by roundcode DESC';
+
+$this->_db->setQuery( $query );
+$rounds = $this->_db->loadObjectList();
+
+$current_round = 0;
+
+// anfang schleife runden        
+foreach( $rounds as $rounddate)
+{
+
+// current round für das projekt
+$current_round_old = $rounddate->round_id;
+    
+$query = "SELECT min(m.match_date)
+from #__".COM_SPORTSMANAGEMENT_TABLE."_match as m
+where m.round_id = '$rounddate->round_id'
+";
+
+$this->_db->setQuery( $query );
+$von = $this->_db->loadResult();
+$teile = explode(" ",$von);
+$von = $teile[0];
+
+$query = "SELECT max(m.match_date)
+from #__".COM_SPORTSMANAGEMENT_TABLE."_match as m
+where m.round_id = '$rounddate->round_id'
+";
+
+$this->_db->setQuery( $query );
+$bis = $this->_db->loadResult();
+$teile = explode(" ",$bis);
+$bis = $teile[0];
+
+// anfang bedingung
+if ( $von && $bis )
+{
+// Create an object for the record we are going to update.
+$object = new stdClass();
+ 
+// Must be a valid primary key value.
+$object->id = $rounddate->round_id;
+$object->round_date_first = $von;
+$object->round_date_last = $bis;
+ 
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round', $object, 'id');                
+
+if (!$result)
+		{
+		    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' update round<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        else
+        {
+//            $mainframe->enqueueMessage(JText::_('update round<br><pre>'.print_r($rounddate->round_id,true).'</pre>'),'');
+        }
+        
+        
+// gibt es noch nicht ausgetragene spiele in der runde ?
+// Create a new query object.
+        $query = $this->_db->getQuery(true);
+        $query->select(array('id'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')
+        ->where('team1_result IS NULL ')
+        ->where('round_id = '.$rounddate->round_id);    
+        $this->_db->setQuery($query);
+		$match_id = $this->_db->loadResult();
+
+//if ( $match_id && empty($current_round) )
+if ( $match_id  )
+{
+    $current_round = $rounddate->round_id;
+}
+
+}
+// ende bedingung
+
+}        
+// ende schleife runden        
+
+if ( empty($current_round) )
+{
+    $current_round = $current_round_old;
+}
+
+//$mainframe->enqueueMessage(JText::_('current_round<br><pre>'.print_r($current_round,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_('_project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');        
+
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+ 
+// Must be a valid primary key value.
+$object->id = $this->_project_id;
+$object->current_round = $current_round;
+ 
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');                
+
+if (!$result)
+		{
+		    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' update projekt<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        else
+        {
+//            $mainframe->enqueueMessage(JText::_('update _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
+        }
+                
+        
+    }    
 }
 ?>

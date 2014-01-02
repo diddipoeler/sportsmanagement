@@ -225,7 +225,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 
 		$this->assignRef('starttime',$starttime);
-		$this->assignRef('importData',$model->importData($post));
+		$this->assign('importData',$model->importData($post));
 		$this->assign('postData',$post);
         $this->assignRef('option',$option);
 

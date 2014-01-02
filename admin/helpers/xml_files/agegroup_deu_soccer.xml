@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<agegroups><agegroup country="DEU" info="Alt-Senioren" picture="" >Alt-Senioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Altherren" picture="m-alte-herren.png" >Altherren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Herren" picture="" >Herren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="A-Junioren" picture="n-a-junioren.png" >A-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Junioren" picture="n-b-junioren.png" >B-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Junioren" picture="n-c-junioren.png" >C-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Junioren" picture="n-d-junioren.png" >D-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Junioren" picture="n-e-junioren.png" >E-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="F-Junioren" picture="n-f-junioren.png" >F-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="G-Junioren" picture="n-g-junioren.png" >G-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Frauen" picture="" >Frauen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="A-Juniorinnen" picture="" >A-Juniorinnen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Juniorinnen" picture="w-b-juniorinnen.png" >B-Juniorinnen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Juniorinnen" picture="w-c-juniorinnen.png" >C-Juniorinnen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Juniorinnen" picture="w-d-juniorinnen.png" >D-Juniorinnen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Juniorinnen" picture="" >E-Juniorinnen</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="F-Juniorinnen" picture="" >F-Juniorinnen</agegroup></agegroups>
+
+</structur>

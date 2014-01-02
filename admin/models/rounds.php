@@ -133,7 +133,45 @@ class sportsmanagementModelRounds extends JModelList
 		return $this->_db->loadResult();
 	}
     
-    
+    /**
+	 * 
+	 * @param int $projectid
+	 * @return assocarray
+	 */
+	function getFirstRound($projectid) 
+    {
+		$query="	SELECT	id, roundcode
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+					WHERE project_id=".$projectid."
+					ORDER BY roundcode ASC, id ASC ";
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadAssocList ())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result[0];
+	}
+	
+	/**
+	 * 
+	 * @param int $projectid
+	 * @return assocarray
+	 */
+	function getLastRound($projectid) 
+    {
+		$query="	SELECT	id, roundcode
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+					WHERE project_id=".$projectid."
+					ORDER BY roundcode DESC, id DESC ";
+		$this->_db->setQuery($query);
+		if (!$result=$this->_db->loadAssocList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result[0];
+	}
 	
 	
 

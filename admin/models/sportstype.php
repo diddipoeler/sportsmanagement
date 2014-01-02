@@ -151,6 +151,22 @@ class sportsmanagementModelsportstype extends JModelAdmin
         // Proceed with the save
 		return parent::save($data);   
     }
+    
+    
+     /**
+	 * return 
+	 *
+	 * @param int sportstype_id
+	 * @return int
+	 */
+	function getSportstype($sportstype_id)
+	{
+		$query='SELECT *
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
+				  WHERE id = '.$sportstype_id;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 	
 	
 }

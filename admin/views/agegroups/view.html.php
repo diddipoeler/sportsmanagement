@@ -29,6 +29,7 @@ class sportsmanagementViewagegroups extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $mdlSportsType = JModel::getInstance('SportsType', 'sportsmanagementModel');
 
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
@@ -68,6 +69,13 @@ class sportsmanagementViewagegroups extends JView
 																$search_nation);
 
 		//$mainframe->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
+        
+        foreach ( $items as $item )
+        {
+            $sportstype = $mdlSportsType->getSportstype($item->sportstype_id);
+            $item->sportstype = $sportstype->name;
+        }
+        
         if ( count($items)  == 0 )
         {
             $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");

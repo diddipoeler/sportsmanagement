@@ -43,7 +43,9 @@ class Countries
 
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
-		// Get a db connection.
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a db connection.
 $db = JFactory::getDbo();
  
 // Create a new query object.
@@ -51,11 +53,14 @@ $query = $db->getQuery(true);
         // Select some fields
 		$query->select('alpha3,name');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+		//$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        $query->from('#__SPORTSMANAGEMENT_countries');
         // Reset the query using our newly populated query object.
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
 		
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($countries,true).'</pre>'),'');
+        
 		$options=array();
 		foreach ($countries AS $k )
 		{

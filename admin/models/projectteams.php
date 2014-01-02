@@ -387,7 +387,11 @@ class sportsmanagementModelProjectteams extends JModelList
 	 */
 	function getProjectTeams($project_id=0)
 	{
-		$query = '	SELECT	t.id AS value,
+		$mainframe = JFactory::getApplication();
+        
+        $mainframe->enqueueMessage('getProjectTeams project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+        
+        $query = '	SELECT	t.id AS value,
 							t.name AS text,
 							t.notes, pt.info
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
@@ -398,13 +402,69 @@ class sportsmanagementModelProjectteams extends JModelList
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			//$this->setError( $this->_db->getErrorMsg() );
+            $mainframe->enqueueMessage('getProjectTeams <br><pre>'.print_r($query, true).'</pre><br>','Error');
+            $mainframe->enqueueMessage('getProjectTeams <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
 		else
 		{
 			return $result;
 		}
+	}
+    
+    
+    
+    function getAllProjectTeams($projectid=0,$divisionid=0)
+	{
+		$teams = array();
+
+		$query = "SELECT
+                    tl.id AS projectteamid,
+                    tl.team_id,
+                    tl.picture projectteam_picture,
+                    tl.project_id,
+                    t.id,
+                    t.name as team_name,
+                    t.short_name,
+                    t.middle_name,
+                    t.club_id,
+                    t.website AS team_www,
+                    t.picture team_picture,
+                    c.name as club_name,
+                    c.address as club_address,
+                    c.zipcode as club_zipcode,
+                    c.state as club_state,
+                    c.location as club_location,
+                    c.email as club_email,
+                    c.logo_big,
+                    c.unique_id,
+                    c.logo_small,
+                    c.logo_middle,
+                    c.country as club_country,
+                    c.website AS club_www,
+				    CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( ':', t.id, t.alias ) ELSE t.id END AS team_slug,
+				    CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( ':', c.id, c.alias ) ELSE c.id END AS club_slug
+                  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as tl
+                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team as t ON tl.team_id = t.id
+                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c ON t.club_id = c.id
+                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_division as d ON d.id = tl.division_id
+                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_playground as plg ON plg.id = tl.standard_playground
+                  WHERE tl.project_id = " . $projectid;
+
+		if ( $divisionid > 0 )
+		{
+			$query .= " AND tl.division_id = " . $divisionid;
+		}
+		$query .= " ORDER BY t.name";
+
+		$this->_db->setQuery($query);
+		if ( ! $teams = $this->_db->loadObjectList() )
+		{
+			echo $this->_db->getErrorMsg();
+		}
+
+		return $teams;
 	}
 
 	/**

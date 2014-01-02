@@ -2,10 +2,10 @@
 
 jimport( 'joomla.application.component.model' );
 
-require_once( JLG_PATH_SITE . DS . 'helpers' . DS . 'ranking.php' );
-require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
 
-class sportsmanagementModelRanking extends JoomleagueModelProject
+class sportsmanagementModelRanking extends JModel
 {
 	var $projectid = 0;
 	var $round = 0;
@@ -132,13 +132,13 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		$query = ' SELECT m.*, r.roundcode, '
 		       . ' CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug, '
 		       . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug '
-		       . ' FROM #__joomleague_match AS m '
-		       . ' INNER JOIN #__joomleague_round AS r ON r.id = m.round_id '
-		       . ' INNER JOIN #__joomleague_project AS p ON p.id = r.project_id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-		       . ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id = t1.id '
-		       . ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id = t2.id '
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON pt1.team_id = t1.id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON pt2.team_id = t2.id '
 		       . ' WHERE r.project_id = ' . $this->_db->Quote($this->projectid)
 		       . '   AND r.roundcode <= ' . $this->_db->Quote($current->roundcode)
 		       . '   AND m.team1_result IS NOT NULL '
@@ -198,22 +198,27 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	function computeRanking()
 	{
 		$mainframe	= JFactory::getApplication();
-		$project =& $this->getProject();
+        
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+        
+		$project = $mdlProject->getProject();
 		
-		$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
-		$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
-		$mdlRounds->setProjectId($project->id);
+		
+		$mdlRounds->_project_id = $project->id;
 		
 		$firstRound	= $mdlRounds->getFirstRound($project->id);
 		$lastRound	= $mdlRounds->getLastRound($project->id);
 
 		// url if no sef link comes along (ranking form)
-		$url = JoomleagueHelperRoute::getRankingRoute( $this->projectid );
-		$tableconfig= $this->getTemplateConfig( "ranking" );
+		$url = sportsmanagementHelperRoute::getRankingRoute( $this->projectid );
+		$tableconfig= $mdlProject->getTemplateConfig( "ranking" );
 
-		$this->round = ($this->round == 0) ? $this->getCurrentRound() : $this->round;
+		$this->round = ($this->round == 0) ? $mdlProject->getCurrentRound() : $this->round;
 
-		$this->rounds = $this->getRounds();
+		$this->rounds = $mdlProject->getRounds();
+        
 		if ( $this->part == 1 )
 		{
 			$this->from = $firstRound['id'];
@@ -249,11 +254,6 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 
 		$this->divLevel = 0;
 
-
-//echo 'computeRanking this->part -> '.'<pre>'.print_r($this->part,true).'</pre>';
-//echo 'computeRanking this->from -> '.'<pre>'.print_r($this->from,true).'</pre>';
-//echo 'computeRanking this->to-> '.'<pre>'.print_r($this->to,true).'</pre>';
-//echo 'computeRanking this->rounds -> '.'<pre>'.print_r($this->rounds,true).'</pre>';
 
 
 
@@ -376,7 +376,7 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	function _getPreviousRoundId($round_id)
 	{
 		$query = ' SELECT id ' 
-		       . ' FROM #__joomleague_round ' 
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round ' 
 		       . ' WHERE project_id = ' . $this->projectid
 		       . ' ORDER BY roundcode ASC ';
 		$this->_db->setQuery($query);
@@ -406,77 +406,77 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		switch ($order)
 		{
 			case 'played':
-			uasort( $ranking, array("JoomleagueModelRanking","playedCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","playedCmp" ));
 			break;				
 			case 'name':
-			uasort( $ranking, array("JoomleagueModelRanking","teamNameCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","teamNameCmp" ));
 			break;
 			case 'rank':
 			break;
 			case 'won':
-			uasort( $ranking, array("JoomleagueModelRanking","wonCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wonCmp" ));
 			break;
 			case 'draw':
-			uasort( $ranking, array("JoomleagueModelRanking","drawCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","drawCmp" ));
 			break;
 			case 'loss':
-			uasort( $ranking, array("JoomleagueModelRanking","lossCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lossCmp" ));
 			break;
 			case 'wot':
-			uasort( $ranking, array("JoomleagueModelRanking","wotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wotCmp" ));
 			break;		
 			case 'wso':
-			uasort( $ranking, array("JoomleagueModelRanking","wsoCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wsoCmp" ));
 			break;	
 			case 'lot':
-			uasort( $ranking, array("JoomleagueModelRanking","lotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lotCmp" ));
 			break;		
 			case 'lso':
-			uasort( $ranking, array("JoomleagueModelRanking","lsoCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lsoCmp" ));
 			break;			
 			case 'winpct':
-			uasort( $ranking, array("JoomleagueModelRanking","winpctCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","winpctCmp" ));
 			break;
 			case 'quot':
-			uasort( $ranking, array("JoomleagueModelRanking","quotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","quotCmp" ));
 			break;
 			case 'goalsp':
-			uasort( $ranking, array("JoomleagueModelRanking","goalspCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalspCmp" ));
 			break;
 			case 'goalsfor':
-			uasort( $ranking, array("JoomleagueModelRanking","goalsforCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalsforCmp" ));
 			break;
 			case 'goalsagainst':
-			uasort( $ranking, array("JoomleagueModelRanking","goalsagainstCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalsagainstCmp" ));
 			break;
 			case 'legsdiff':
-			uasort( $ranking, array("JoomleagueModelRanking","legsdiffCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","legsdiffCmp" ));
 			break;
 			case 'legsratio':
-			uasort( $ranking, array("JoomleagueModelRanking","legsratioCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","legsratioCmp" ));
 			break;				
 			case 'diff':
-			uasort( $ranking, array("JoomleagueModelRanking","diffCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","diffCmp" ));
 			break;
 			case 'points':
-			uasort( $ranking, array("JoomleagueModelRanking","pointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","pointsCmp" ));
 			break;
             
             case 'penaltypoints':
-			uasort( $ranking, array("JoomleagueModelRanking","penaltypointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","penaltypointsCmp" ));
 			break;
             
 			case 'start':
-			uasort( $ranking, array("JoomleagueModelRanking","startCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","startCmp" ));
 			break;
 			case 'bonus':
-			uasort( $ranking, array("JoomleagueModelRanking","bonusCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","bonusCmp" ));
 			break;
 			case 'negpoints':
-			uasort( $ranking, array("JoomleagueModelRanking","negpointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","negpointsCmp" ));
 			break;
 			case 'pointsratio':
-			uasort( $ranking, array("JoomleagueModelRanking","pointsratioCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","pointsratioCmp" ));
 			break;			
 
 			default:

@@ -4,7 +4,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_JOOMLEAGUE_RANKING_NOTES'); ?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
 		</div>
 	</div>
 
@@ -19,7 +19,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 }
                 else
                 {
-                echo JText::_('COM_JOOMLEAGUE_NO_RANKING_NOTES');
+                echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
                 }
                 ?>
         </td>

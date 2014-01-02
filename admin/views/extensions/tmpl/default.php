@@ -57,6 +57,7 @@ defined('_JEXEC') or die('Restricted access');
                         echo $this->addIcon('dfbnetimport.png','index.php?option=com_sportsmanagement&view=jlextdfbnetplayerimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT'));
                         echo $this->addIcon('dfbschluessel.png','index.php?option=com_sportsmanagement&view=jlextdfbkeyimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));
                         echo $this->addIcon('lmoimport.png','index.php?option=com_sportsmanagement&view=jlextlmoimports', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));
+                        echo $this->addIcon('profleague.png','index.php?option=com_sportsmanagement&view=jlextprofleagimport', JText::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT'));
                         break;
                         case 'basketball':
                         echo $this->addIcon('dbbimport.png','index.php?option=com_sportsmanagement&view=jlextdbbimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));
