@@ -46,7 +46,7 @@ class Countries
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( $option );
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' );
 
         // Get a db connection.
@@ -81,7 +81,7 @@ $query = $db->getQuery(true);
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( $option );
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' );
 
 	// Get a db connection.
@@ -109,7 +109,7 @@ $query = $db->getQuery(true);
 	    $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( $option );
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
 $db = JFactory::getDbo();
@@ -171,7 +171,7 @@ $query = $db->getQuery(true);
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( $option );
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
 $db = JFactory::getDbo();
