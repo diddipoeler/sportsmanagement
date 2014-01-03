@@ -57,7 +57,8 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 //require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'XMLParser.class.php' );
 //require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'crXml.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'SofeeXmlParser.php' );
-
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'xml_parser.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'parser_php5.php' );
 
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
@@ -194,6 +195,35 @@ function xml2assoc($xml, array &$target = array()) {
         return $target; 
     } 
 
+
+Function DumpStructure(&$structure,&$positions,$path)
+{
+    echo "[".$positions[$path]["Line"].",".$positions[$path]["Column"].",".$positions[$path]["Byte"]."]";
+    if(GetType($structure[$path])=="array")
+    {
+        echo "&lt;".$structure[$path]["Tag"];
+        if(IsSet($structure[$path]["Attributes"]))
+        {
+            $attributes = $structure[$path]["Attributes"];
+            $ta = count($attributes);
+            for(Reset($attributes), $a = 0; $a < $ta; Next($attributes), ++$a)
+            {
+                $attribute = Key($attributes);
+                echo " ", $attribute, "=\"", HtmlSpecialChars($attributes[$attribute]), "\"";
+            }
+        }
+        echo "&gt;";
+        for($element=0;$element<$structure[$path]["Elements"];$element++)
+            self::DumpStructure($structure,$positions,$path.",$element");
+        echo "&lt;/".$structure[$path]["Tag"]."&gt;";
+    }
+    else
+        echo $structure[$path];
+}
+
+
+
+
         	
 function getData()
 	{
@@ -224,26 +254,15 @@ $option = JRequest::getCmd('option');
 
 $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml';
 
-/*
-$xml = self::_getXml();
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
-*/
+    
 
-/*
-$xml = new XMLReader(); 
-$xml->open($file); 
-$assoc = self::xml2assoc($xml); 
-$xml->close(); 
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' assoc<br><pre>'.print_r($assoc,true).'</pre>'),'Notice');
-*/
 
 
 $xml = new SofeeXmlParser(); 
 $xml->parseFile($file); 
 $tree = $xml->getTree(); 
 unset($xml); 
-
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' [tournament][title][value]<br><pre>'.print_r($tree[tournament][title][value],true).'</pre>'),'Notice');
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($tree[tournament][season][value],true).'</pre>'),'Notice');
 
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value];
@@ -259,84 +278,914 @@ $temp->name = $tree[tournament][title][value].' '.$tree[tournament][season][valu
 $temp->project_type = 'SIMPLE_LEAGUE';
 $this->_datas['project'] = $temp;
 
-
-/*
-$xml = JFactory::getXMLParser( 'Simple' );
-$xml->loadFile($file);
-//$xml = JFactory::getXML( $file );
-//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
-*/
-
-/*
-$xml = new XMLParser;
-$output = $xml->parse($file);
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xml<br><pre>'.print_r($output,true).'</pre>'),'Notice');    
-*/
-
-
-/*
-$xml = new SofeeXmlParser(); 
-$xml->parseFile($file); 
-$tree = $xml->getTree(); 
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xml<br><pre>'.print_r($tree,true).'</pre>'),'Notice');
-*/
-
-
-/*
-$content = utf8_encode(file_get_contents($file));
-$xml = simplexml_load_string($content);
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' source<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
-*/
-
-
-//$convert = array (
-//'Ä' => '&#196;',
-//'Ö' => '&#214;',
-//'Ü' => '&#220;',
-//'ä' => '&#228;',
-//'ö' => '&#246;',
-//'ü' => '&#252;',
-//'ß' => '&#223;'
-//  );
-  
-//$source	= JFile::read($file);
-//$source = str_replace(array_keys($convert), array_values($convert), $source  );
-//$return = JFile::write($file, $source);
-//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' source<br><pre>'.print_r($source,true).'</pre>'),'Notice');
-
-
-//$xml = JFactory::getXML( $file );
-
-
-//$xml = JFactory::getXMLParser( 'Simple' );
-//$xml->loadFile($file);
-
-/*
-$content = file_get_contents($file);
-$content = str_replace(array_keys($convert), array_values($convert), $content  );
-$xml = simplexml_load_string($content);
-
-//Create a blank crXml object.
-$crxml = new crxml;
-//$xmlstr contains the xml String
-$crxml->loadXML($xml);
-//Outputs the XML document 
-$crxml->xml();
-*/        
-//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xml<br><pre>'.print_r($tree,true).'</pre>'),'Notice');
-
-
-/*
-foreach( $xml->document->tournament as $tournament ) 
+// spieler als personen anlegen
+$lfdnummerperson = 1;
+for($a=0; $a < sizeof($tree[tournament][player]); $a++ )
 {
-    $name = $tournament->getElementByPath('season');
-    $temp = new stdClass();
-  $temp->name = $name->data();
-  $this->_datas['season'] = $temp;
+//echo $tree[tournament][player][$a][id].'<br>';
+$temp = new stdClass();
+$tempexportplayer[$tree[tournament][player][$a][id]] = $lfdnummerperson;
+//$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][player][$a][id] );
+$temp->id = $lfdnummerperson;
+$temp->plid = $tree[tournament][player][$a][id];
+$temp->lastname = $tree[tournament][player][$a][lastName];
+$temp->firstname = $tree[tournament][player][$a][firstName];
+$temp->birthday = $tree[tournament][player][$a][dateOfBirth][date][value];
+$temp->country = $country;
+$temp->show_persdata = 1;
+$temp->show_teamdata = 1;
+$temp->show_on_frontend = 1;
+$exportplayer[] = $temp;
+$this->_checkplayer[] = $temp;
+$lfdnummerperson++;
 }
-*/
 
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($this->_datas['season'],true).'</pre>'),'Notice');
+// trainer als personen anlegen
+for($a=0; $a < sizeof($tree[tournament][coach]); $a++ )
+{
+//echo $tree[tournament][player][$a][id].'<br>';
+$temp = new stdClass();
+$tempexportplayer[$tree[tournament][coach][$a][id]] = $lfdnummerperson;
+//$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][player][$a][id] );
+$temp->id = $lfdnummerperson;
+$temp->plid = $tree[tournament][coach][$a][id];
+$temp->lastname = $tree[tournament][coach][$a][lastName];
+$temp->firstname = $tree[tournament][coach][$a][firstName];
+$temp->birthday = $tree[tournament][coach][$a][dateOfBirth][date][value];
+$temp->country = $country;
+$temp->show_persdata = 1;
+$temp->show_teamdata = 1;
+$temp->show_on_frontend = 1;
+$exportplayer[] = $temp;
+$exportpositiontemp[2000] = 2000;
+$lfdnummerperson++;
+}
+
+// schiedsrichter als personen anlegen
+for($a=0; $a < sizeof($tree[tournament][referee]); $a++ )
+{
+//echo $tree[tournament][player][$a][id].'<br>';
+$temp = new stdClass();
+//$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][player][$a][id] );
+$temp->id = $lfdnummerperson;
+$temp->plid = $tree[tournament][referee][$a][id];
+$temp->lastname = $tree[tournament][referee][$a][lastName];
+$temp->firstname = $tree[tournament][referee][$a][firstName];
+$temp->location = $tree[tournament][referee][$a][location];
+$temp->birthday = $tree[tournament][referee][$a][dateOfBirth][date][value];
+$temp->country = $country;
+$temp->show_persdata = 1;
+$temp->show_teamdata = 1;
+$temp->show_on_frontend = 1;
+$exportplayer[] = $temp;
+
+$temp = new stdClass();
+//$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][referee][$a][id] );
+$tempexportreferee[$tree[tournament][referee][$a][id]] = $lfdnummerperson; 
+$temp->id = $lfdnummerperson;
+$temp->plid = $tree[tournament][referee][$a][id];
+$temp->person_id = $lfdnummerperson;
+$temp->project_position_id = 1000;
+$temp->published = 1;
+$exportreferee[] = $temp;
+$exportpositiontemp[1000] = 1000;
+$lfdnummerperson++;
+}
+
+// teams, teamplayer, playgrounds bearbeiten
+$lfdnummerteamperson = 1;
+$lfdnummerteam = 1;
+for($a=0; $a < sizeof($tree[tournament][team]); $a++ )
+{
+$temp = new stdClass();
+$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->plid = $tree[tournament][team][$a][id];
+$temp->name = $tree[tournament][team][$a][name];
+$temp->country = $country;
+$temp->standard_playground = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$exportclubs[] = $temp;
+
+$temp = new stdClass();
+$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->plid = $tree[tournament][team][$a][id];
+$temp->club_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->name = $tree[tournament][team][$a][name];
+$temp->middle_name = $tree[tournament][team][$a][name];
+$temp->short_name = $tree[tournament][team][$a][name];
+$exportteams[] = $temp;
+
+$temp = new stdClass();
+$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->plid = $tree[tournament][team][$a][id];
+$exportprojectteamtemp[$tree[tournament][team][$a][id]] = $temp->id;
+$temp->team_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->project_team_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->is_in_score = 1;
+$temp->standard_playground = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$exportprojectteam[] = $temp;
+
+// teamplayer
+for($b=0; $b < sizeof($tree[tournament][team][$a][player]); $b++ )
+{
+$temp = new stdClass();
+$tempexportteamplayer[$tree[tournament][team][$a][player][$b][id]] = $lfdnummerteamperson;
+$temp->id= $lfdnummerteamperson;
+$temp->plid= $tree[tournament][team][$a][player][$b][id];
+$temp->projectteam_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->active = 1;
+$temp->person_id = $tempexportplayer[$tree[tournament][team][$a][player][$b][playerRef]];
+$temp->jerseynumber = $tree[tournament][team][$a][player][$b][shirtNumber];
+$temp->plposition = $tree[tournament][team][$a][player][$b][posCode];
+
+if ( !empty($tree[tournament][team][$a][player][$b][posCode]) )
+{
+$temp->project_position_id = $this->getProfLeagPosition($tree[tournament][team][$a][player][$b][posCode],$tree[tournament][team][$a][player][$b][playerRef]);
+}
+else
+{
+$temp->project_position_id = $this->getProfLeagPosition(900,$tree[tournament][team][$a][player][$b][playerRef]);
+}
+
+$exportteamplayer[] = $temp;
+
+// temp player position
+// temp positionen
+if ( !empty($tree[tournament][team][$a][player][$b][posCode]) )
+{
+$exportplayerpositiontemp[(string) $tree[tournament][team][$a][player][$b][playerRef]] = (string) $tree[tournament][team][$a][player][$b][posCode];
+$exportpositiontemp[(string) $tree[tournament][team][$a][player][$b][posCode] ] = (string) $tree[tournament][team][$a][player][$b][posCode];
+}
+else
+{
+$exportplayerpositiontemp[(string) $tree[tournament][team][$a][player][$b][playerRef]] = 900;
+$exportpositiontemp[900] = 900;
+}
+// ist die position schon in der tabelle
+$profleagpos = $this->getProfLeagPosition((string) $tree[tournament][team][$a][player][$b][posCode],(string) $tree[tournament][team][$a][player][$b][playerRef]);
+
+$lfdnummerteamperson++;
+}
+
+// playground
+$temp = new stdClass();
+$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][id] );
+$temp->plid = $tree[tournament][team][$a][id];
+$temp->name = $tree[tournament][team][$a][venue];
+$temp->country = $country;
+$temp->max_visitors = $tree[tournament][team][$a][capacity];
+$exportplayground[] = $temp;
+
+}
+
+
+// jetzt die spiele
+$lfdnumbermatch = 1;
+$lfdnumberlineup = 1;
+$lfdnumbermatchevent = 1;
+$countgoals = 0;
+
+for($a=0; $a < sizeof($tree[tournament][tournamentElement][group][groupRound]); $a++ )
+{
+
+// spieltage
+$temp = new stdClass();
+$temp->id = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
+$round_id = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
+$temp->roundcode = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
+$temp->name = $tree[tournament][tournamentElement][group][groupRound][$a][header][title];
+$exportround[] = $temp;
+
+// paarung
+for($b=0; $b < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match]); $b++ )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatch;
+$temp->round_id = $round_id;
+$temp->match_number = $lfdnumbermatch;
+$temp->match_date = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][date] . ' ' . $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][kickoff];
+$temp->summary = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][note][value];
+$temp->count_result = 1;
+$temp->published = 1;
+$temp->show_report = 1;
+$temp->projectteam1_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref] );
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef] )
+{
+$tempexportteamstaff[$tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref]] = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef];
+}
+$temp->projectteam2_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref] );
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef] )
+{
+$tempexportteamstaff[$tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref]] = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef];
+}
+$temp->team1_result = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][home];
+$temp->team2_result = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][away];
+$exportmatch[] = $temp;
+
+$countgoals = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][home] +
+              $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][away];
+
+
+// startaufstellung oder auswechselung
+// heimmannschaft
+for($c=0; $c < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry] ); $c++ )
+{
+
+// startaufstellung heimmannschaft
+if ( empty( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][type] ) )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumberlineup;
+$temp->match_id = $lfdnumbermatch;
+$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]];
+
+$teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]);
+$playerposition = $exportplayerpositiontemp[$teile[1]];
+
+if ( empty($playerposition) )
+{
+$playerposition = 900;
+}
+
+$temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+
+$exportmatchplayer[] = $temp;
+$lfdnumberlineup++;
+
+// hat der spieler karten bekommen ?
+// gelbe karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 2;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// gelb/rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_time = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+$temp->event_type_id = 3;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+//$temp->event_time = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+$temp->event_type_id = 4;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+}
+else
+{
+// auswechselung heimmannschaft
+$temp = new stdClass();
+$temp->id = $lfdnumberlineup;
+$temp->match_id = $lfdnumbermatch;
+$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]];
+$inplayer = $temp->teamplayer_id;
+
+$teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]);
+$playerposition = $exportplayerpositiontemp[$teile[1]];
+
+if ( empty($playerposition) )
+{
+$playerposition = 900;
+}
+
+$temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+$temp->came_in = 1;
+$temp->out = 0;
+$temp->in_for = $tempexportteamplayer[ (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][substRef] ];
+$outplayer = $temp->in_for;
+$temp->in_out_time  = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][time][min];
+$exportmatchplayer[] = $temp;
+$lfdnumberlineup++;
+
+// $temp = new stdClass();
+// $temp->id = $lfdnumberlineup;
+// $temp->match_id = $lfdnumbermatch;
+// $temp->teamplayer_id = $outplayer;
+// $teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][substRef]);
+// $playerposition = $exportplayerpositiontemp[$teile[1]];
+// 
+// if ( empty($playerposition) )
+// {
+// $playerposition = 900;
+// }
+// 
+// $temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+// 
+// $temp->came_in = 2;
+// $temp->out = 1;
+// $temp->in_out_time  = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][time][min];
+// $exportmatchplayer[] = $temp;
+// $lfdnumberlineup++;
+
+
+// hat der spieler karten bekommen ?
+// gelbe karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 2;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// gelb/rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 3;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 4;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+}
+
+$lfdnumberlineup++;
+
+
+
+}
+
+// gastmannschaft
+for($c=0; $c < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry] ); $c++ )
+{
+
+// startaufstellung gastmannschaft
+if ( empty( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][type] ) )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumberlineup;
+$temp->match_id = $lfdnumbermatch;
+$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]];
+
+$teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]);
+$playerposition = $exportplayerpositiontemp[$teile[1]];
+if ( empty($playerposition) )
+{
+$playerposition = 900;
+}
+$temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+
+$exportmatchplayer[] = $temp;
+$lfdnumberlineup++;
+
+// hat der spieler karten bekommen ?
+// gelbe karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 2;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// gelb/rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+
+$temp->event_type_id = 3;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 4;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+}
+else
+{
+// auswechselung gastmannschaft
+$temp = new stdClass();
+$temp->id = $lfdnumberlineup;
+$temp->match_id = $lfdnumbermatch;
+$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]];
+$inplayer = $temp->teamplayer_id;
+
+$teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]);
+$playerposition = $exportplayerpositiontemp[$teile[1]];
+
+if ( empty($playerposition) )
+{
+$playerposition = 900;
+}
+
+$temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+$temp->came_in = 1;
+$temp->out = 0;
+$temp->in_for = $tempexportteamplayer[ (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][substitution][substRef] ];
+$outplayer = $temp->in_for;
+$temp->in_out_time  = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][substitution][time][min];
+$exportmatchplayer[] = $temp;
+$lfdnumberlineup++;
+
+// $temp = new stdClass();
+// $temp->id = $lfdnumberlineup;
+// $temp->match_id = $lfdnumbermatch;
+// $temp->teamplayer_id = $outplayer;
+// $teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][substitution][substRef]);
+// $playerposition = $exportplayerpositiontemp[$teile[1]];
+// 
+// if ( empty($playerposition) )
+// {
+// $playerposition = 900;
+// }
+// 
+// $temp->project_position_id = $this->getProfLeagPosition( $playerposition ,'' );
+// 
+// $temp->came_in = 2;
+// $temp->out = 1;
+// $temp->in_out_time  = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][time][min];
+// $exportmatchplayer[] = $temp;
+// $lfdnumberlineup++;
+
+// hat der spieler karten bekommen ?
+// gelbe karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 2;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// gelb/rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 3;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+// rote karte ?
+if ( $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R' )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_type_id = 4;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+
+}
+
+}
+
+$lfdnumberlineup++;
+
+}
+
+// torschuetzen ?
+if ( $countgoals == 1 )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][scorerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_time = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][time][min];
+$temp->event_type_id = 1;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+}
+
+if ( $countgoals > 1 )
+{
+
+for($d=0; $d < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score] ); $d++ )
+{
+$temp = new stdClass();
+$temp->id = $lfdnumbermatchevent;
+$temp->match_id = $lfdnumbermatch;
+$tempplid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][scorerRef];
+
+foreach ( $exportteamplayer as $teamplayer)
+{
+if ( $teamplayer->plid == $tempplid )
+{
+$temp->projectteam_id = $teamplayer->projectteam_id;
+$temp->teamplayer_id = $teamplayer->id;
+}
+}
+
+$temp->event_time = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+$temp->event_type_id = 1;
+$temp->event_sum = 1;
+$exportmatchevent[] = $temp;
+
+$lfdnumbermatchevent++;
+}
+
+}
+
+$countgoals = 0;
+$lfdnumbermatch++;
+
+}
+
+
+}
+
+
+// print "tempexportteamstaff<pre>"; 
+// print_r($tempexportteamstaff); 
+// print "</pre>";
+
+foreach ( $tempexportteamstaff as $key => $value )
+{
+// echo $key.'-'.$value.'<br>';
+$temp = new stdClass();
+$temp->id = $tempexportplayer[$value];
+$temp->projectteam_id = $exportprojectteamtemp[$key];
+$temp->person_id = $tempexportplayer[$value];
+$temp->project_position_id = 2000;
+$exportteamstaff[] = $temp;
+
+
+}
+
+// print "exportmatchevent<pre>"; 
+// print_r($exportmatchevent); 
+// print "</pre>";
+
+// print "exportpositiontemp<pre>"; 
+// print_r($exportpositiontemp); 
+// print "</pre>";
+// print "exportplayerpositiontemp<pre>"; 
+// print_r($exportplayerpositiontemp); 
+// print "</pre>";
+// print "tempexportteamplayer<pre>"; 
+// print_r($tempexportteamplayer); 
+// print "</pre>";
+// print "tempexportplayer<pre>"; 
+// print_r($tempexportplayer); 
+// print "</pre>";
+// print "tempexportreferee<pre>"; 
+// print_r($tempexportreferee); 
+// print "</pre>";
+
+
+// parentposition
+$temp = new stdClass();
+$temp->id = 1;
+$temp->name = 'Spieler';
+$temp->alias = 'Spieler';
+$temp->published = 1;
+$exportparentposition[] = $temp;
+$temp = new stdClass();
+$temp->id = 2;
+$temp->name = 'Trainer';
+$temp->alias = 'Trainer';
+$temp->published = 1;
+$exportparentposition[] = $temp;
+$temp = new stdClass();
+$temp->id = 3;
+$temp->name = 'Schiedsrichter';
+$temp->alias = 'Schiedsrichter';
+$temp->published = 1;
+$exportparentposition[] = $temp;
+
+// ereignisse
+$temp = new stdClass();
+$temp->id = 1;
+$temp->name = 'Tor';
+$temp->alias = 'Tor';
+$temp->published = 1;
+$exportevent[] = $temp;
+$temp = new stdClass();
+$temp->id = 2;
+$temp->name = 'gelbe Karte';
+$temp->alias = 'gelbe Karte';
+$temp->published = 1;
+$exportevent[] = $temp;
+$temp = new stdClass();
+$temp->id = 3;
+$temp->name = 'gelb/rote Karte';
+$temp->alias = 'gelb/rote Karte';
+$temp->published = 1;
+$exportevent[] = $temp;
+$temp = new stdClass();
+$temp->id = 4;
+$temp->name = 'rote Karte';
+$temp->alias = 'rote Karte';
+$temp->published = 1;
+$exportevent[] = $temp;
+
+//$selectposition = implode(",",$exportpositiontemp);
+//$exportposition = $this->getPlPosition($selectposition);
+
+$temp = new stdClass();
+$temp->id = 1000;
+$temp->name = 'Spielleitung';
+$temp->alias = 'Spielleitung';
+$temp->parent_id = 3;
+$temp->published = 1;
+$temp->persontype = 3;
+$exportposition[] = $temp;
+
+$temp = new stdClass();
+$temp->id = 1001;
+$temp->name = 'Assistent 1';
+$temp->alias = 'Assistent 1';
+$temp->parent_id = 3;
+$temp->published = 1;
+$temp->persontype = 3;
+$exportposition[] = $temp;
+
+$temp = new stdClass();
+$temp->id = 1002;
+$temp->name = 'Assistent 2';
+$temp->alias = 'Assistent 2';
+$temp->parent_id = 3;
+$temp->published = 1;
+$temp->persontype = 3;
+$exportposition[] = $temp;
+
+
+$temp = new stdClass();
+$temp->id = 1000;
+$temp->position_id = 1000;
+$exportprojectposition[] = $temp;
+$temp = new stdClass();
+$temp->id = 1001;
+$temp->position_id = 1001;
+$exportprojectposition[] = $temp;
+$temp = new stdClass();
+$temp->id = 1002;
+$temp->position_id = 1002;
+$exportprojectposition[] = $temp;
+
+
+//$exportprojectposition = $this->getPlProjectPosition($selectposition);
+
+foreach ($exportplayer as $row)
+{
+$playerposition = $exportplayerpositiontemp[ (string) $row->plid];
+$row->position_id = $this->getProfLeagPosition( $playerposition ,'' );
+}
+
+//$exportpositioneventtype = $this->getPlProjectEventPosition($selectposition);
+
+$this->_datas['person'] = array_merge($exportplayer);
+$this->_datas['club'] = array_merge($exportclubs);
+$this->_datas['team'] = array_merge($exportteams);
+$this->_datas['teamplayer'] = array_merge($exportteamplayer);
+$this->_datas['teamstaff'] = array_merge($exportteamstaff);
+$this->_datas['projectteam'] = array_merge($exportprojectteam);
+$this->_datas['projectreferee'] = array_merge($exportreferee);
+
+$this->_datas['projectposition'] = array_merge($exportprojectposition);
+
+$this->_datas['position'] = array_merge($exportposition);
+//$this->_datas['positioneventtype'] = array_merge($exportpositioneventtype);
+$this->_datas['parentposition'] = array_merge($exportparentposition);
+
+$this->_datas['playground'] = array_merge($exportplayground);
+$this->_datas['round'] = array_merge($exportround);
+$this->_datas['match'] = array_merge($exportmatch);
+$this->_datas['matchplayer'] = array_merge($exportmatchplayer);
+$this->_datas['matchevent'] = array_merge($exportmatchevent);
+$this->_datas['event'] = array_merge($exportevent);
+
+
 
 
 
@@ -458,42 +1307,39 @@ echo $this->pane->endPane();
     
 }
 
+function getProfLeagPosition($val,$posplayer)
+{
 
+/**
+ * Torwart - Nr. 1-15
+ * Abwehr - Nr. 16-95
+ * Mittelfeld - Nr. 96-175
+ * Sturm - Nr. 176-255
+ */
+
+// Torwart
+if ( ($val >= 1 && $val <= 15) )
+{
+    return 1;
+}
+// Abwehr
+if ( ($val >= 16 && $val <= 95) )
+{
+    return 2;
+}
+// Mittelfeld
+if ( ($val >= 96 && $val <= 175) )
+{
+    return 3;
+}
+// Sturm
+if ( ($val >= 176 && $val <= 255) )
+{
+    return 4;
+}
     
-
+}    
     
-    
-
-
-
-    
-
-    
-
-        
-
-    
-
-    
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     
           	

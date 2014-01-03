@@ -159,19 +159,14 @@ $convert = array (
 'é' => '&#233;'
   );
 */
+
+
 $convert = array (
-'Ä' => '&#196;',
-'Ö' => '&#214;',
-'Ü' => '&#220;',
-'ä' => '&#228;',
-'ö' => '&#246;',
-'ü' => '&#252;',
-'ß' => '&#223;',
-'charset=' => '',
-'“' => '&#34;',
-'„' => '&#8222;',
-'é' => '&#233;'
-  );  
+'charset=' => ''
+  );
+  
+
+      
 $source	= JFile::read($importFile);
 $source = str_replace(array_keys($convert), array_values($convert), $source  );
 $return = JFile::write($importFile,$source );
@@ -181,7 +176,9 @@ $return = JFile::write($importFile,$source );
         $link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
 		#echo '<br />Message: '.$msg.'<br />';
 		#echo '<br />Redirect-Link: '.$link.'<br />';
-		$this->setRedirect($link,$msg);
+		
+        $this->setRedirect($link,$msg);
+        
 	}
 
 
