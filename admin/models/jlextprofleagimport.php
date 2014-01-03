@@ -1174,33 +1174,35 @@ $temp->published = 1;
 $temp->persontype = 3;
 $exportposition[] = $temp;
 
+
 $temp = new stdClass();
-$temp->id = 1;
+$temp->id = 101;
 $temp->position_id = 1;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 2;
+$temp->id = 102;
 $temp->position_id = 2;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 3;
+$temp->id = 103;
 $temp->position_id = 3;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 4;
+$temp->id = 104;
 $temp->position_id = 4;
 $exportprojectposition[] = $temp;
 
+
 $temp = new stdClass();
-$temp->id = 1000;
+$temp->id = 105;
 $temp->position_id = 1000;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 1001;
+$temp->id = 106;
 $temp->position_id = 1001;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 1002;
+$temp->id = 107;
 $temp->position_id = 1002;
 $exportprojectposition[] = $temp;
 
