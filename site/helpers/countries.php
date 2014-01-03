@@ -53,8 +53,8 @@ $query = $db->getQuery(true);
         // Select some fields
 		$query->select('alpha3,name');
         // From table
-		//$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
-        $query->from('#__SPORTSMANAGEMENT_countries');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        //$query->from('#__SPORTSMANAGEMENT_countries');
         // Reset the query using our newly populated query object.
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
