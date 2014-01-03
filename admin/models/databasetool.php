@@ -276,6 +276,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
     
+    if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml')) 
+    {
+        return false;
+    } 
+    
     $params = JComponentHelper::getParams( $option );
     $country_assoc = $params->get( 'cfg_country_associations' );
     $country_assoc_del = "'".implode("','",$country_assoc)."'";    
