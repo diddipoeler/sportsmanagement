@@ -52,8 +52,8 @@
 		<folder>language</folder>
 		<folder>sisdata</folder>
 	</files>
-  <languages folder="site/language">
-        <language tag="de-DE">de-DE.com_sportsmanagement.ini</language>
+  <languages folder="site">
+        <language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
   </languages>
     
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
