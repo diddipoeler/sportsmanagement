@@ -307,6 +307,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
+   if ( $country_assoc )
+   {
    // welche länder möchte denn der user haben ?
    foreach( $country_assoc as $key => $value )
    {
@@ -416,6 +418,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    
    
     
+   }
    }
    }
    }
