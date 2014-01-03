@@ -283,7 +283,10 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     
     $params = JComponentHelper::getParams( $option );
     $country_assoc = $params->get( 'cfg_country_associations' );
+    if ( $country_assoc )
+   {
     $country_assoc_del = "'".implode("','",$country_assoc)."'";    
+    }
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');

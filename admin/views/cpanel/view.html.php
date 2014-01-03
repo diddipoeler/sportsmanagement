@@ -75,9 +75,12 @@ class sportsmanagementViewcpanel extends JView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sm_quotes,true).'</pre>'),'Notice');
         
+        if ( $sm_quotes )
+        {
         // zitate
         $databasetool->checkQuotes($sm_quotes);
-        
+        }
+            
         foreach ( $sporttypes as $key => $type )
         {
         $checksporttype = $model->checksporttype($type);    
