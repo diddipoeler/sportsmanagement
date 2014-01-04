@@ -296,7 +296,7 @@
 				type=""
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
-				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_TRIKOT_AWAY_DESC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="clubs_trikot_away"
