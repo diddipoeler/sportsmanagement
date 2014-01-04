@@ -1117,6 +1117,7 @@ $exportevent[] = $temp;
 //$selectposition = implode(",",$exportpositiontemp);
 //$exportposition = $this->getPlPosition($selectposition);
 
+// spieler
 $temp = new stdClass();
 $temp->id = 1;
 $temp->name = 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER';
@@ -1150,7 +1151,17 @@ $temp->published = 1;
 $temp->persontype = 1;
 $exportposition[] = $temp;
 
+// trainer
+$temp = new stdClass();
+$temp->id = 2000;
+$temp->name = 'COM_SPORTSMANAGEMENT_SOCCER_F_COACH';
+$temp->alias = 'COM_SPORTSMANAGEMENT_SOCCER_F_COACH';
+$temp->parent_id = 2;
+$temp->published = 1;
+$temp->persontype = 2;
+$exportposition[] = $temp;
 
+// schiedsrichter
 $temp = new stdClass();
 $temp->id = 1000;
 $temp->name = 'COM_SPORTSMANAGEMENT_SOCCER_F_MAIN_REFEREE';
@@ -1159,7 +1170,6 @@ $temp->parent_id = 3;
 $temp->published = 1;
 $temp->persontype = 3;
 $exportposition[] = $temp;
-
 $temp = new stdClass();
 $temp->id = 1001;
 $temp->name = 'COM_SPORTSMANAGEMENT_SOCCER_F_LINESMAN';
@@ -1168,7 +1178,6 @@ $temp->parent_id = 3;
 $temp->published = 1;
 $temp->persontype = 3;
 $exportposition[] = $temp;
-
 $temp = new stdClass();
 $temp->id = 1002;
 $temp->name = 'COM_SPORTSMANAGEMENT_SOCCER_F_LINESMAN';
@@ -1178,35 +1187,39 @@ $temp->published = 1;
 $temp->persontype = 3;
 $exportposition[] = $temp;
 
-
+// spieler
 $temp = new stdClass();
-$temp->id = 101;
+$temp->id = 1;
 $temp->position_id = 1;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 102;
+$temp->id = 2;
 $temp->position_id = 2;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 103;
+$temp->id = 3;
 $temp->position_id = 3;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 104;
+$temp->id = 4;
 $temp->position_id = 4;
 $exportprojectposition[] = $temp;
-
-
+// trainer
 $temp = new stdClass();
-$temp->id = 105;
+$temp->id = 2000;
+$temp->position_id = 2000;
+$exportprojectposition[] = $temp;
+// schiedsrichter
+$temp = new stdClass();
+$temp->id = 1000;
 $temp->position_id = 1000;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 106;
+$temp->id = 1001;
 $temp->position_id = 1001;
 $exportprojectposition[] = $temp;
 $temp = new stdClass();
-$temp->id = 107;
+$temp->id = 1002;
 $temp->position_id = 1002;
 $exportprojectposition[] = $temp;
 
@@ -1292,6 +1305,21 @@ if ( isset($this->_datas['team']) )
 $mainframe->enqueueMessage(JText::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
+
+// set the teamplayer data
+if ( isset($this->_datas['teamplayer']) )
+{
+$mainframe->enqueueMessage(JText::_('teamplayer daten '.'generiert'),'');    
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamplayer'], 'TeamPlayer'));
+}
+// set the teamstaff data
+if ( isset($this->_datas['teamstaff']) )
+{
+$mainframe->enqueueMessage(JText::_('teamstaff daten '.'generiert'),'');    
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamstaff'], 'TeamStaff'));
+}
+
+
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
@@ -1307,21 +1335,25 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
+    $mainframe->enqueueMessage(JText::_('position daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
+    $mainframe->enqueueMessage(JText::_('parentposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
+    $mainframe->enqueueMessage(JText::_('projectposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
+    $mainframe->enqueueMessage(JText::_('matchreferee daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 
@@ -1329,11 +1361,13 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the matchplayer data
 if ( isset($this->_datas['matchplayer']) )
 {
+    $mainframe->enqueueMessage(JText::_('matchplayer daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchplayer'], 'MatchPlayer'));
 }
 // set the matchevent data
 if ( isset($this->_datas['matchevent']) )
 {
+    $mainframe->enqueueMessage(JText::_('matchevent daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchevent'], 'MatchEvent'));
 }
 
@@ -1341,21 +1375,25 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the person data
 if ( isset($this->_datas['person']) )
 {
+    $mainframe->enqueueMessage(JText::_('person daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
+    $mainframe->enqueueMessage(JText::_('projectreferee daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
+    $mainframe->enqueueMessage(JText::_('projectteam daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
+    $mainframe->enqueueMessage(JText::_('playground daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
             
