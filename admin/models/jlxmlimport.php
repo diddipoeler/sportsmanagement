@@ -37,7 +37,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
-
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'databasetool.php');
 
 /**
  * sportsmanagementModelJLXMLImport
@@ -3018,7 +3018,7 @@ $this->dump_variable("import_team", $import_team);
             $p_projectposition = $mdl->getTable();
             
 			$p_projectposition->set('project_id',$this->_project_id);
-			$oldPositionID=$this->_getDataFromObject($import_projectposition,'position_id');
+			$oldPositionID = $this->_getDataFromObject($import_projectposition,'position_id');
 			if (!isset($this->_convertPositionID[$oldPositionID]))
 			{
 				$my_text .= '<span style="color:red">';
@@ -3034,7 +3034,8 @@ $this->dump_variable("import_team", $import_team);
 				$my_text .= '#'.$oldID.'#';
 				$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
 				$this->_success_text['Importing projectposition data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
