@@ -115,7 +115,7 @@ class sportsmanagementModelRanking extends JModel
 		}
 		
 		// current round roundcode
-		$rounds = $this->getRounds();
+		$rounds = sportsmanagementModelProject::getRounds();
 		$current = null;
 		foreach ($rounds as $r)
 		{
@@ -147,7 +147,7 @@ class sportsmanagementModelRanking extends JModel
 		$this->_db->setQuery($query);
 		$games = $this->_db->loadObjectList();
 
-		$teams = $this->getTeamsIndexedByPtid();
+		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 
 		// get games per team
 		$res = array();
@@ -168,7 +168,7 @@ class sportsmanagementModelRanking extends JModel
 				
 			// get last x games
 			//$nb_games = 5;
-			$config = $this->getTemplateConfig('ranking');
+			$config = sportsmanagementModelProject::getTemplateConfig('ranking');
 			$nb_games = $config['nb_previous'];			
 			$res[$ptid] = array_slice($teamgames, -$nb_games);
 		}

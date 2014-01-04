@@ -7,15 +7,15 @@ jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
 
-require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
-require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'route.php' );
-require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
-require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'divisions.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'teams.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
+//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'route.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'divisions.php');
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'teams.php');
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
+//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
 
 class sportsmanagementViewRanking extends JView 
 {
@@ -26,6 +26,7 @@ class sportsmanagementViewRanking extends JView
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
         $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         
         //$version = urlencode(JoomleagueHelper::getVersion());
 		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;

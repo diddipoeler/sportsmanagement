@@ -229,6 +229,39 @@ class sportsmanagementModelround extends JModelAdmin
 		return $result;
 	}
     
+   
+   
+   function getRoundcode($round_id)
+   {
+    // Get a db connection.
+        $db = JFactory::getDbo();
+        
+    		$query='SELECT roundcode
+				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+				  WHERE id='.$round_id;
+		$db->setQuery($query);
+		return $db->loadResult();
+    
+   }
+   
+    /**
+	 * 
+	 * @param $roundcode
+	 * @param $project_id
+	 */
+	function getRoundId($roundcode, $project_id)
+	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+		$query='SELECT id
+				FROM #__joomleague_round 
+				WHERE roundcode='.$roundcode.'
+				  AND project_id='.(int) $project_id;
+		$db->setQuery($query);
+		$result = $db->loadResult();
+		return $result;
+	}
+    
     /**
 	 * return 
 	 *

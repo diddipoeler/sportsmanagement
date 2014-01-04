@@ -122,7 +122,7 @@ class sportsmanagementHelperHtml {
 
 			if ($config['show_division_link'])
 			{
-				$link=JoomleagueHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$hometeam->division_id);
+				$link=sportsmanagementHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$hometeam->division_id);
 				$output .= JHTML::link($link,$hometeam->$nametype);
 			}
 			else
@@ -136,7 +136,7 @@ class sportsmanagementHelperHtml {
 
 				if ($config['show_division_link'] == 1)
 				{
-					$link=JoomleagueHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$guestteam->division_id);
+					$link=sportsmanagementHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$guestteam->division_id);
 					$output .= JHTML::link($link,$guestteam->$nametype);
 				}
 				else
@@ -163,21 +163,21 @@ class sportsmanagementHelperHtml {
 	 */
 	function showMatchdaysTitle($title,$current_round,&$config,$mode=0)
 	{
-		$projectid=JRequest::getInt('p',0);
-		$joomleague =& JTable::getInstance('Project','Table');
+		$projectid = JRequest::getInt('p',0);
+		$joomleague = JTable::getInstance('Project','sportsmanagementTable');
 		$joomleague->load($projectid);
 
 		echo ($title != '') ? $title.' - ' : $title;
 		if ($current_round > 0)
 		{
-			$thisround =& JTable::getInstance('Round','Table');
+			$thisround = JTable::getInstance('Round','sportsmanagementTable');
 			$thisround->load($current_round);
 
 			if ($config['type_section_heading'] == 1 && $thisround->name != '')
 			{
 				if ($mode == 1)
 				{
-					$link=JoomleagueHelperRoute::getRankingRoute($projectid,$thisround->id);
+					$link=sportsmanagementHelperRoute::getRankingRoute($projectid,$thisround->id);
 					echo JHTML::link($link,$thisround->name);
 				}
 				else
@@ -213,19 +213,19 @@ class sportsmanagementHelperHtml {
 		$division = JRequest::getInt('division',0);
 
 		if($form){
-			$currenturl=JoomleagueHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
+			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
 			$options=array();
 			foreach ($rounds as $r)
 			{
-				$link=JoomleagueHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
 				$options[]=JHTML::_('select.option', $link, $r->text);
 			}
 		} else {
-			$currenturl=JoomleagueHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
+			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
 			$options=array();
 			foreach ($rounds as $r)
 			{
-				$link=JoomleagueHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
 				$options[]=JHTML::_('select.option', $link, $r->text);
 			}
 		}
@@ -282,7 +282,7 @@ class sportsmanagementHelperHtml {
 			$toolTipText	.= $pginfo->address.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->zipcode.' '.$pginfo->city. '&lt;br /&gt;';
 
-			$link=JoomleagueHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id);
+			$link=sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id);
 			$playgroundName=($this->config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'
@@ -342,7 +342,7 @@ class sportsmanagementHelperHtml {
 	 */
 	public function getThumbUpDownImg($game, $projectteam_id, $attributes = null)
 	{
-		$res = JoomleagueHelper::getTeamMatchResult($game, $projectteam_id);
+		$res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
 		if ($res === false) {
 			return false;
 		}
@@ -396,7 +396,7 @@ class sportsmanagementHelperHtml {
 		if (is_array($attributes)) {
 			$attribs = array_merge($attributes, $attribs);
 		}
-		$url = JRoute::_(JoomleagueHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
+		$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
 		return JHTML::link($url, $img);
 	}
 	

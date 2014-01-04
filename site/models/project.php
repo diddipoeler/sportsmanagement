@@ -1,4 +1,6 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 jimport( 'joomla.utilities.arrayhelper' );
@@ -58,15 +60,25 @@ class sportsmanagementModelProject extends JModel
 	 */
 	var $_current_round;
 
-	function __construct()
-	{
-		$this->projectid = JRequest::getInt('p',0);
-		parent::__construct();
-	}
+/**
+ * 	function __construct()
+ * 	{
+ * //		$this->projectid = JRequest::getInt('p',0);
+ * 		parent::__construct();
+ * 	}
+ */
 
 	function getProject()
 	{
-		if (is_null($this->_project) && $this->projectid > 0)
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+       $this->projectid = JRequest::getInt('p',0);
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'   ),'');
+    
+        if (is_null($this->_project) && $this->projectid > 0)
 		{
 			//fs_sport_type_name = sport_type folder name
 			$query='SELECT p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name,
@@ -79,9 +91,9 @@ class sportsmanagementModelProject extends JModel
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id 
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id 
-					WHERE p.id='. $this->_db->Quote($this->projectid);
-			$this->_db->setQuery($query,0,1);
-			$this->_project = $this->_db->loadObject();
+					WHERE p.id='. $db->Quote($this->projectid);
+			$db->setQuery($query,0,1);
+			$this->_project = $db->loadObject();
 		}
 		return $this->_project;
 	}
@@ -113,7 +125,7 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getCurrentRound()
 	{
-		$round = $this->increaseRound();
+		$round = self::increaseRound();
 		return ($round ? $round->id : 0);
 	}
 
@@ -124,7 +136,7 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getCurrentRoundNumber()
 	{
-		$round = $this->increaseRound();
+		$round = self::$this->increaseRound();
 		return ($round ? $round->roundcode : 0);
 	}
 
@@ -147,26 +159,26 @@ class sportsmanagementModelProject extends JModel
 			switch ($project->current_round_auto)
 			{
 				case 0 :	 // manual mode
-					$query="SELECT r.id, r.roundcode FROM #__joomleague_round AS r
+					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
 							 WHERE r.id =".$project->current_round;
 					break;
 	
 				case 1 :	 // get current round from round_date_first
-					$query="SELECT r.id, r.roundcode FROM #__joomleague_round AS r
+					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
 							 WHERE r.project_id=".$project->id."
 								AND (r.round_date_first - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')
 							 ORDER BY r.round_date_first DESC LIMIT 1";
 					break;
 	
 				case 2 : // get current round from round_date_last
-					$query="SELECT r.id, r.roundcode FROM #__joomleague_round AS r
+					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
 							  WHERE r.project_id=".$project->id."
 								AND (r.round_date_last + INTERVAL ".($project->auto_time)." MINUTE > '".$current_date."')
 							  ORDER BY r.round_date_first ASC LIMIT 1";
 					break;
 	
 				case 3 : // get current round from first game of the round
-					$query="SELECT r.id, r.roundcode FROM #__joomleague_round AS r,#__joomleague_match AS m
+					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r,#__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
 							WHERE r.project_id=".$project->id."
 								AND m.round_id=r.id
 								AND (m.match_date - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')
@@ -174,7 +186,7 @@ class sportsmanagementModelProject extends JModel
 					break;
 	
 				case 4 : // get current round from last game of the round
-					$query="SELECT r.id, r.roundcode FROM #__joomleague_round AS r, #__joomleague_match AS m
+					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r, #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
 							WHERE r.project_id=".$project->id."
 								AND m.round_id=r.id
 								AND (m.match_date + INTERVAL ".($project->auto_time)." MINUTE > '".$current_date."')
@@ -188,7 +200,7 @@ class sportsmanagementModelProject extends JModel
 			// Either way, do not change current value
 			if (!$result)
 			{
-				$query = ' SELECT r.id, r.roundcode FROM #__joomleague_round AS r '
+				$query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
 				       . ' WHERE r.project_id = '. $project->current_round
 				       ;
 				$this->_db->setQuery($query);
@@ -198,7 +210,7 @@ class sportsmanagementModelProject extends JModel
 				{
 					if ($project->current_round_auto == 2) {
 					    // the current value is invalid... saison is over, just take the last round
-					    $query = ' SELECT r.id, r.roundcode FROM #__joomleague_round AS r '
+					    $query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
 						    . ' WHERE r.project_id = '. $project->id
 						    . ' ORDER BY . r.roundcode DESC '
 						    ;
@@ -206,7 +218,7 @@ class sportsmanagementModelProject extends JModel
 					    $result = $this->_db->loadObject();					
 					} else {
 					    // the current value is invalid... just take the first round
-					    $query = ' SELECT r.id, r.roundcode FROM #__joomleague_round AS r '
+					    $query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
 						    . ' WHERE r.project_id = '. $project->id
 						    . ' ORDER BY . r.roundcode ASC '
 						    ;
@@ -220,7 +232,7 @@ class sportsmanagementModelProject extends JModel
 			// Update the database if determined current round is different from that in the database
 			if ($result && ($project->current_round <> $result->id))
 			{
-				$query = ' UPDATE #__joomleague_project SET current_round = '.$result->id
+				$query = ' UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_project SET current_round = '.$result->id
 				       . ' WHERE id = ' . $this->_db->Quote($project->id);
 				$this->_db->setQuery($query);
 				if (!$this->_db->query()) {
@@ -267,7 +279,7 @@ class sportsmanagementModelProject extends JModel
 
 	function getDivisionsId($divLevel=0)
 	{
-		$query="SELECT id from #__joomleague_division
+		$query="SELECT id from #__".COM_SPORTSMANAGEMENT_TABLE."_division
 				  WHERE project_id=".$this->projectid;
 		if ($divLevel==1)
 		{
@@ -326,7 +338,7 @@ class sportsmanagementModelProject extends JModel
 		{
 			if (empty($this->_divisions))
 			{
-				$query="SELECT * from #__joomleague_division
+				$query="SELECT * from #__".COM_SPORTSMANAGEMENT_TABLE."_division
 						  WHERE project_id=".$this->projectid;
 				$this->_db->setQuery($query);
 				$this->_divisions=$this->_db->loadObjectList('id');
@@ -356,7 +368,10 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getRounds($ordering='ASC')
 	{
-		if (empty($this->_rounds))
+		// Get a db connection.
+        $db = JFactory::getDbo();
+        
+        if (empty($this->_rounds))
 		{
 			$query=" 	SELECT id,round_date_first,round_date_last,
 				   			CASE LENGTH(name)
@@ -364,12 +379,12 @@ class sportsmanagementModelProject extends JModel
 				    			else name
 				    		END as name,
 				   			roundcode
-			       		FROM #__joomleague_round
+			       		FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
 			         	WHERE project_id=". $this->projectid.
 			       		" ORDER BY roundcode ASC ";
 
-			$this->_db->setQuery($query);
-			$this->_rounds=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$this->_rounds = $db->loadObjectList();
 		}
 		if ($ordering == 'DESC') {
 			return array_reverse($this->_rounds);
@@ -391,7 +406,7 @@ class sportsmanagementModelProject extends JModel
 				    	when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id)
 				    	else name
 				    END as text
-				  FROM #__joomleague_round
+				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
 				  WHERE project_id=".(int)$this->projectid."
 				  ORDER BY roundcode ".$ordering;
 
@@ -401,7 +416,9 @@ class sportsmanagementModelProject extends JModel
 
 	function getTeaminfo($projectteamid)
 	{
-		$query=' SELECT t.*, pt.division_id, t.id as team_id,
+		// Get a db connection.
+        $db = JFactory::getDbo();
+        $query=' SELECT t.*, pt.division_id, t.id as team_id,
 				pt.picture AS projectteam_picture,
 				t.picture as team_picture,
 				c.logo_small,
@@ -410,16 +427,19 @@ class sportsmanagementModelProject extends JModel
 				IF((ISNULL(pt.picture) OR (pt.picture="")), 
 					(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture,
 				t.extended as teamextended 
-				FROM #__joomleague_project_team AS pt 
-				INNER JOIN #__joomleague_team AS t ON pt.team_id=t.id
-				LEFT JOIN #__joomleague_club AS c ON t.club_id=c.id 
-				WHERE pt.id='. $this->_db->Quote($projectteamid);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt 
+				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id=t.id
+				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id=c.id 
+				WHERE pt.id='. $db->Quote($projectteamid);
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
 
 	function & _getTeams()
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (empty($this->_teams))
 		{
 			$query='	SELECT	tl.id AS projectteamid,
@@ -486,8 +506,8 @@ class sportsmanagementModelProject extends JModel
 
 						WHERE tl.project_id='.(int)$this->projectid;
 
-			$this->_db->setQuery($query);
-			$this->_teams=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$this->_teams = $db->loadObjectList();
 		}
 		return $this->_teams;
 	}
@@ -514,7 +534,7 @@ class sportsmanagementModelProject extends JModel
 		}
 		else
 		{
-			$teams=$this->_getTeams();
+			$teams=self::_getTeams();
 		}
 
 		return $teams;
@@ -554,7 +574,7 @@ class sportsmanagementModelProject extends JModel
 
 	function getTeamsIndexedByPtid($division=0)
 	{
-		$result=$this->getTeams($division);
+		$result=self::getTeams($division);
 		$teams=array();
 
 		if (count($result))
@@ -581,8 +601,8 @@ class sportsmanagementModelProject extends JModel
 		$query="SELECT	et.id AS etid,
 							me.event_type_id AS id,
 							et.*
-							FROM #__joomleague_eventtype AS et
-							LEFT JOIN #__joomleague_match_event AS me ON et.id=me.event_type_id";
+							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype AS et
+							LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_event AS me ON et.id=me.event_type_id";
 		if ($evid != 0)
 		{
 			if ($this->projectid > 0)
@@ -603,7 +623,7 @@ class sportsmanagementModelProject extends JModel
 	function getprojectteamID($teamid)
 	{
 		$query="SELECT id
-				  FROM #__joomleague_project_team
+				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 				  WHERE team_id=".(int)$teamid."
 					AND project_id=".(int)$this->projectid;
 
@@ -694,7 +714,10 @@ class sportsmanagementModelProject extends JModel
 
 	function getTemplateConfig($template)
 	{
-		//first load the default settings from the default <template>.xml file
+		// Get a db connection.
+        $db = JFactory::getDbo();
+        
+        //first load the default settings from the default <template>.xml file
 		$paramsdata="";
 		$arrStandardSettings=array();
 		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) {
@@ -728,25 +751,25 @@ class sportsmanagementModelProject extends JModel
 		if($this->projectid == 0) return $arrStandardSettings;
 
 		$query= "SELECT t.params
-				   FROM #__joomleague_template_config AS t
-				   INNER JOIN #__joomleague_project AS p ON p.id=t.project_id
-				   WHERE t.template=".$this->_db->Quote($template)."
-				   AND p.id=".$this->_db->Quote($this->projectid);
+				   FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
+				   INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
+				   WHERE t.template=".$db->Quote($template)."
+				   AND p.id=".$db->Quote($this->projectid);
 
-		$this->_db->setQuery($query);
-		if (! $result=$this->_db->loadResult())
+		$db->setQuery($query);
+		if (! $result=$db->loadResult())
 		{
 			$project=$this->getProject();
 			if (!empty($project) && $project->master_template>0)
 			{
 				$query="SELECT t.params
-						  FROM #__joomleague_template_config AS t
-						  INNER JOIN #__joomleague_project AS p ON p.id=t.project_id
-						  WHERE t.template=".$this->_db->Quote($template)."
-						  AND p.id=".$this->_db->Quote($project->master_template);
+						  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
+						  INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
+						  WHERE t.template=".$db->Quote($template)."
+						  AND p.id=".$db->Quote($project->master_template);
 
-				$this->_db->setQuery($query);
-				if (! $result=$this->_db->loadResult())
+				$db->setQuery($query);
+				if (! $result=$db->loadResult())
 				{
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
@@ -773,12 +796,12 @@ class sportsmanagementModelProject extends JModel
 
 	function getOverallConfig()
 	{
-		return $this->getTemplateConfig('overall');
+		return self::getTemplateConfig('overall');
 	}
 
 	function getMapConfig()
 	{
-		return $this->getTemplateConfig('map');
+		return self::getTemplateConfig('map');
 	}
 
   	/**
@@ -805,20 +828,23 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getProjectEvents($position_id=0)
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query=' SELECT	et.id,
 						et.name,
 						et.icon
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id
 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pet.position_id
-						WHERE ppos.project_id='.$this->_db->Quote($this->projectid);
+						WHERE ppos.project_id='.$db->Quote($this->projectid);
 		if ($position_id)
 		{
-			$query=' AND ppos.position_id='. $this->_db->Quote($position_id);
+			$query=' AND ppos.position_id='. $db->Quote($position_id);
 		}
 		$query .= ' GROUP BY et.id';
-		$this->_db->setQuery($query);
-		$events=$this->_db->loadObjectList('id');
+		$db->setQuery($query);
+		$events = $db->loadObjectList('id');
 		return $events;
 	}
 
@@ -830,11 +856,14 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getProjectStats($statid=0,$positionid=0)
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (empty($this->_stats))
 		{
-			require_once (JLG_PATH_ADMIN .DS.'statistics'.DS.'base.php');
-			$project =& $this->getProject();
-			$project_id=$project->id;
+			require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
+			$project = self::getProject();
+			$project_id = $project->id;
 			$query='	SELECT	stat.id,
 								stat.name,
 								stat.short,
@@ -853,13 +882,13 @@ class sportsmanagementModelProject extends JModel
 						  AND pos.published =1 
 						  ';
 			$query .= ' ORDER BY pos.ordering,ps.ordering ';
-			$this->_db->setQuery($query);
-			$this->_stats=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$this->_stats = $db->loadObjectList();
 
 		}
 		// sort into positions
-		$positions=$this->getProjectPositions();
-		$stats=array();
+		$positions = self::getProjectPositions();
+		$stats = array();
 		// init
 		foreach ($positions as $pos)
 		{
@@ -894,6 +923,9 @@ class sportsmanagementModelProject extends JModel
 
 	function getProjectPositions()
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (empty($this->_positions))
 		{
 			$query='	SELECT	pos.id,
@@ -904,9 +936,9 @@ class sportsmanagementModelProject extends JModel
 								ppos.id AS pposid
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos
 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-						WHERE ppos.project_id='.$this->_db->Quote($this->projectid);
-			$this->_db->setQuery($query);
-			$this->_positions=$this->_db->loadObjectList('id');
+						WHERE ppos.project_id='.$db->Quote($this->projectid);
+			$db->setQuery($query);
+			$this->_positions = $db->loadObjectList('id');
 		}
 		return $this->_positions;
 	}
@@ -926,7 +958,7 @@ class sportsmanagementModelProject extends JModel
 			}
 			if ($small_club_icon=='')
 			{
-				$small_club_icon = JoomleagueHelper::getDefaultPlaceholder("clublogosmall");
+				$small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
 			return JHTML::image($small_club_icon,'',$params);
@@ -1007,6 +1039,9 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getMatchSubstitutions($match_id)
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query=' SELECT	mp.in_out_time,
 							pt.team_id,
 							pt.id AS ptid,
@@ -1035,8 +1070,8 @@ class sportsmanagementModelProject extends JModel
 						WHERE	mp.match_id='.(int)$match_id.' AND
 								mp.came_in=1 AND p.published = 1 AND p2.published = 1
 						ORDER by (mp.in_out_time+0) ';
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$db->setQuery( $query );
+		return $db->loadObjectList();
 	}
 
 	/**
@@ -1046,7 +1081,10 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getMatchEvents($match_id,$showcomments=0,$sortdesc=0)
 	{
-		if ($showcomments == 1) {
+		// Get a db connection.
+        $db = JFactory::getDbo();
+        
+        if ($showcomments == 1) {
 		    $join = 'LEFT';
 		    $addline = ' me.notes,';
 		} else {
@@ -1086,15 +1124,15 @@ class sportsmanagementModelProject extends JModel
 					WHERE me.match_id = ' . $match_id . ' 
 					ORDER BY (me.event_time + 0)'. $esort .', me.event_type_id, me.id';
 			
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
 		
-        $events = $this->_db->loadObjectList();
+        $events = $db->loadObjectList();
         
         $query = "SELECT *  
-    FROM #__joomleague_match_commentary
+    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
     WHERE match_id = ".(int)$this->matchid;
-    $this->_db->setQuery($query);
-		$commentary = $this->_db->loadObjectList();
+    $db->setQuery($query);
+		$commentary = $db->loadObjectList();
         if ( $commentary )
         {
             foreach ( $commentary as $comment )

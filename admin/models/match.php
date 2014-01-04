@@ -301,7 +301,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function getMatchData($match_id)
 	{
-		
+		// Get a db connection.
+        $db = JFactory::getDbo();
 			$query=' SELECT	m.*,
 							CASE m.time_present
 							when NULL then NULL
@@ -317,9 +318,9 @@ class sportsmanagementModelMatch extends JModelAdmin
 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
 						WHERE m.id='.(int) $match_id;
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
 			//$this->_data=$this->_db->loadObject();
-			return $this->_db->loadObject();
+			return $db->loadObject();
 		
 	}
     

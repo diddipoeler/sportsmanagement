@@ -36,11 +36,11 @@
 		</field>
     
     <field 	name="prediction_team_name" type="list" default="short_name" 
-				label="COM_JOOMLEAGUE_XML_PREDICTIONENTRY_TEAM_NAME_LABEL"
-				description="COM_JOOMLEAGUE_XML_PREDICTIONENTRY_TEAM_NAME_DESC">
-			<option value="short_name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_SHORT</option>
-			<option value="middle_name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_MEDIUM</option>
-			<option value="name">COM_JOOMLEAGUE_GLOBAL_TEAM_NAME_FORMAT_FULL</option>
+				label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_TEAM_NAME_LABEL"
+				description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_TEAM_NAME_DESC">
+			<option value="short_name">COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT</option>
+			<option value="middle_name">COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM</option>
+			<option value="name">COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL</option>
 		</field>
 
 		<field	name="show_help" type="list" default="3"
@@ -75,15 +75,15 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS_TIPRESULTS_MATCHES_EDIT">
 	
 	<field	name="use_pred_select_matches" type="radio" default="0"
-				label="COM_JOOMLEAGUE_XML_PREDICTION_USE_SELECT_MATCH_LABEL"
-				description="COM_JOOMLEAGUE_XML_PREDICTION_USE_SELECT_MATCH_DESCR">
+				label="COM_SPORTSMANAGEMENT_XML_PREDICTION_USE_SELECT_MATCH_LABEL"
+				description="COM_SPORTSMANAGEMENT_XML_PREDICTION_USE_SELECT_MATCH_DESCR">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
 	<field name="predictionmatchid" type="matchid" depends="preid" task="prematchoptions" 
-				label="COM_JOOMLEAGUE_XML_PREDICTION_SELECT_MATCH_LABEL"
-				description="COM_JOOMLEAGUE_XML_PREDICTION_SELECT_MATCH_DESCR">
+				label="COM_SPORTSMANAGEMENT_XML_PREDICTION_SELECT_MATCH_LABEL"
+				description="COM_SPORTSMANAGEMENT_XML_PREDICTION_SELECT_MATCH_DESCR">
 	</field>
 			
   </fieldset>

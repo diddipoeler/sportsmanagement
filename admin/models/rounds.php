@@ -126,11 +126,13 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	function getRoundsCount($project_id)
 	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
 		$query='SELECT count(*) AS count
 				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
 				  WHERE project_id='.$project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		$db->setQuery($query);
+		return $db->loadResult();
 	}
     
     /**
@@ -140,12 +142,14 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	function getFirstRound($projectid) 
     {
+        // Get a db connection.
+        $db = JFactory::getDbo();
 		$query="	SELECT	id, roundcode
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
 					WHERE project_id=".$projectid."
 					ORDER BY roundcode ASC, id ASC ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadAssocList ())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList ())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -160,17 +164,127 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	function getLastRound($projectid) 
     {
+        // Get a db connection.
+        $db = JFactory::getDbo();
 		$query="	SELECT	id, roundcode
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
 					WHERE project_id=".$projectid."
 					ORDER BY roundcode DESC, id DESC ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadAssocList())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return $result[0];
+	}
+    
+    /**
+	 * 
+	 * @param int $roundid
+	 * @param int $projectid
+	 * @return assocarray
+	 */
+	function getPreviousRound($roundid, $projectid) 
+    {
+        // Get a db connection.
+        $db = JFactory::getDbo();
+		$query="	SELECT	id, roundcode
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
+					WHERE project_id=".$projectid."
+					ORDER BY id ASC ";
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		for ($i=0,$n=count($result); $i < $n; $i++) {
+			if(isset($result[$i-1])) {
+				return $result[$i-1];
+			} else {
+				return $result[$i];
+			}
+		}
+	}
+    
+    /**
+	 * 
+	 * @param int $roundid
+	 * @param int $projectid
+	 * @return assocarray
+	 */
+	function getNextRound($roundid, $projectid) 
+    {
+        // Get a db connection.
+        $db = JFactory::getDbo();
+		$query="	SELECT	id, roundcode
+					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
+					WHERE project_id=".$projectid."
+					ORDER BY id ASC ";
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		for ($i=0,$n=count($result); $i < $n; $i++) {
+			if($result[$i]['id']==$roundid) {
+				if(isset($result[$i+1])) {
+					return $result[$i+1];
+				} else {
+					return $result[$i];
+				}
+			}
+		}
+	}
+    
+    /**
+	 * Get the next round by todays date
+	 * @param int $project_id
+	 * @return assocarray
+	 */
+	function getNextRoundByToday($projectid)
+	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+		$query = ' SELECT r.id, r.roundcode, r.round_date_first , r.round_date_last '
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
+		       . ' WHERE project_id = '. $db->Quote($projectid)
+		       . '   AND DATEDIFF(CURDATE(), DATE(r.round_date_first)) < 0'
+		       . ' ORDER BY r.round_date_first ASC '
+		            ;
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $result;		
+	}
+    
+    /**
+	 * return project rounds as array of objects(roundid as value, name as text)
+	 *
+	 * @param string $ordering
+	 * @return array
+	 */
+	function getRoundsOptions($project_id, $ordering='ASC')
+	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+		$query="SELECT
+					id as value,
+				    CASE LENGTH(name)
+				    	when 0 then CONCAT('".JText::_('COM_JOOMLEAGUE_GLOBAL_MATCHDAY_NAME'). "',' ', id)
+				    	else name
+				    END as text, id, name, round_date_first, round_date_last, roundcode 
+				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
+				  WHERE project_id=".$project_id."
+				  ORDER BY roundcode ".$ordering;
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 	
 	

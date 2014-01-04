@@ -40,9 +40,29 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php' );
-require_once(JPATH_COMPONENT_SITE .DS. 'helpers' . DS . 'countries.php');
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'html.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'ranking.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'project.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'divisions.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'rounds.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'round.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'teams.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'team.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'club.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'playground.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projectteams.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'sportsmanagement.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'match.php');
+    
+
+
+    
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' ); 
