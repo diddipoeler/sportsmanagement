@@ -1142,10 +1142,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= JText::_('Error in function _importSportsType').'</strong></span><br />';
 					$my_text .= JText::sprintf('Sportstypename: %1$s',JText::_($this->_sportstype_new)).'<br />';
-					$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-					$my_text .= '<pre>'.print_r($p_sportstype,true).'</pre>';
+					//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+					//$my_text .= '<pre>'.print_r($p_sportstype,true).'</pre>';
 					$this->_success_text['Importing sportstype data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -1198,10 +1199,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= JText::_('Error in function _importLeague').'</strong></span><br />';
 					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
-					$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-					$my_text .= '<pre>'.print_r($p_league,true).'</pre>';
+					//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+					//$my_text .= '<pre>'.print_r($p_league,true).'</pre>';
 					$this->_success_text['Importing league data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -1253,10 +1255,11 @@ class sportsmanagementModelJLXMLImport extends JModel
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= JText::_('Error in function _importSeason').'</strong></span><br />';
 					$my_text .= JText::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
-					$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-					$my_text .= '<pre>'.print_r($p_season,true).'</pre>';
+					//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+					//$my_text .= '<pre>'.print_r($p_season,true).'</pre>';
 					$this->_success_text['Importing season data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -1340,9 +1343,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 					{
 						$my_text .= 'error on event import: ';
 						$my_text .= $oldID;
-						$my_text .= "<br />Error: _importEvents<br />#$my_text#<br />#<pre>".print_r($p_eventtype,true).'</pre>#';
+						//$my_text .= "<br />Error: _importEvents<br />#$my_text#<br />#<pre>".print_r($p_eventtype,true).'</pre>#';
 						$this->_success_text['Importing general event data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -1424,9 +1428,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 					{
 						$my_text .= 'error on statistic import: ';
 						$my_text .= $oldID;
-						$my_text .= "<br />Error: _importStatistics<br />#$my_text#<br />#<pre>".print_r($p_statistic,true).'</pre>#';
+						//$my_text .= "<br />Error: _importStatistics<br />#$my_text#<br />#<pre>".print_r($p_statistic,true).'</pre>#';
 						$this->_success_text['Importing general statistic data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -1508,9 +1513,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 					{
 						$my_text .= 'error on parent-position import: ';
 						$my_text .= $oldID;
-						$my_text .= "<br />Error: _importParentPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
+						//$my_text .= "<br />Error: _importParentPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
 						$this->_success_text['Importing general parent-position data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -1605,9 +1611,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 					{
 						$my_text .= 'error on position import: ';
 						$my_text .= $oldID;
-						$my_text .= "<br />Error: _importPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
+						//$my_text .= "<br />Error: _importPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
 						$this->_success_text['Importing general position data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -1680,9 +1687,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 				{
 					$my_text .= 'error on PositionEventType import: ';
 					$my_text .= '#'.$oldID.'#';
-					$my_text .= "<br />Error: _importPositionEventType<br />#$my_text#<br />#<pre>".print_r($p_positioneventtype,true).'</pre>#';
+					//$my_text .= "<br />Error: _importPositionEventType<br />#$my_text#<br />#<pre>".print_r($p_positioneventtype,true).'</pre>#';
 					$this->_success_text['Importing positioneventtype data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -1818,10 +1826,11 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= JText::_('Error in function _importPlayground').'</strong></span><br />';
 						$my_text .= JText::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
-						$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-						$my_text .= '<pre>'.print_r($p_playground,true).'</pre>';
+						//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+						//$my_text .= '<pre>'.print_r($p_playground,true).'</pre>';
 						$this->_success_text['Importing general playground data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -2070,10 +2079,11 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= JText::_('Error in function importClubs').'</strong></span><br />';
 						$my_text .= JText::sprintf('Clubname: %1$s',$p_club->name).'<br />';
-						$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-						$my_text .= '<pre>'.print_r($p_club,true).'</pre>';
+						//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+						//$my_text .= '<pre>'.print_r($p_club,true).'</pre>';
 						$this->_success_text['Importing general club data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -2336,10 +2346,11 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= JText::_('Error in function _importTeams').'</strong></span><br />';
 						$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
-						$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-						$my_text .= '<pre>'.print_r($p_team,true).'</pre>';
+						//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+						//$my_text .= '<pre>'.print_r($p_team,true).'</pre>';
 						$this->_success_text['Importing general team data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -2515,9 +2526,10 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= $p_person->firstname.'-';
 						$my_text .= $p_person->nickname.'-';
 						$my_text .= $p_person->birthday;
-						$my_text .= "<br />Error: _importPersons<br />#$my_text#<br />#<pre>".print_r($p_person,true).'</pre>#';
+						//$my_text .= "<br />Error: _importPersons<br />#$my_text#<br />#<pre>".print_r($p_person,true).'</pre>#';
 						$this->_success_text['Importing general person data:']=$my_text;
-						return false;
+						//return false;
+                        sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -2589,10 +2601,11 @@ $this->dump_variable("import_team", $import_team);
 			$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 			$my_text .= JText::_('Error in function _importProject').'</strong></span><br />';
 			$my_text .= JText::sprintf('Projectname: %1$s',$p_project->name).'<br />';
-			$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
-			$my_text .= '<pre>'.print_r($p_project,true).'</pre>';
+			//$my_text .= JText::sprintf('Error-Text #%1$s#',$this->_db->getErrorMsg()).'<br />';
+			//$my_text .= '<pre>'.print_r($p_project,true).'</pre>';
 			$this->_success_text['Importing general project data:']=$my_text;
-			return false;
+			//return false;
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 		}
 		else
 		{
@@ -2730,9 +2743,10 @@ $this->dump_variable("import_team", $import_team);
 				if ($p_template->store()===false)
 				{
 					$my_text .= 'error on master template import: ';
-					$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
+					//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
 					$this->_success_text['Importing template data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -2772,9 +2786,10 @@ $this->dump_variable("import_team", $import_team);
 						if ($p_template->store()===false)
 						{
 							$my_text .= 'error on own template import: ';
-							$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
+							//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
 							$this->_success_text['Importing template data:']=$my_text;
-							return false;
+							//return false;
+                            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 						}
 						else
 						{
@@ -2837,9 +2852,10 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on division import: ';
 					$my_text .= '#'.$oldID.'#';
-					$my_text .= "<br />Error: _importDivisions<br />#$my_text#<br />#<pre>".print_r($p_division,true).'</pre>#';
+					//$my_text .= "<br />Error: _importDivisions<br />#$my_text#<br />#<pre>".print_r($p_division,true).'</pre>#';
 					$this->_success_text['Importing division data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -2926,9 +2942,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on projectteam import: ';
 				$my_text .= $oldID;
-				$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
+				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
 				$this->_success_text['Importing projectteam data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3032,7 +3049,7 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on ProjectPosition import: ';
 				$my_text .= '#'.$oldID.'#';
-				$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
+				//$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
 				$this->_success_text['Importing projectposition data:']=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
@@ -3122,9 +3139,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on teamplayer import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importTeamPlayer<br />#$my_text#<br />#<pre>".print_r($p_teamplayer,true).'</pre>#';
+				//$my_text .= "<br />Error: _importTeamPlayer<br />#$my_text#<br />#<pre>".print_r($p_teamplayer,true).'</pre>#';
 				$this->_success_text['Importing teamplayer data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3230,9 +3248,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on teamstaff import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importTeamStaff<br />#$my_text#<br />#<pre>".print_r($p_teamstaff,true).'</pre>#';
+				//$my_text .= "<br />Error: _importTeamStaff<br />#$my_text#<br />#<pre>".print_r($p_teamstaff,true).'</pre>#';
 				$this->_success_text['Importing teamstaff data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3300,9 +3319,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on teamtraining import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importTeamTraining<br />#$my_text#<br />#<pre>".print_r($p_teamtraining,true).'</pre>#';
+				//$my_text .= "<br />Error: _importTeamTraining<br />#$my_text#<br />#<pre>".print_r($p_teamtraining,true).'</pre>#';
 				$this->_success_text['Importing teamtraining data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3358,9 +3378,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on round import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importRounds<br />#$my_text#<br />#<pre>".print_r($p_round,true).'</pre>#';
+				//$my_text .= "<br />Error: _importRounds<br />#$my_text#<br />#<pre>".print_r($p_round,true).'</pre>#';
 				$this->_success_text['Importing round data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3580,9 +3601,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on match import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatches<br />#$my_text#<br />#<pre>".print_r($p_match,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatches<br />#$my_text#<br />#<pre>".print_r($p_match,true).'</pre>#';
 				$this->_success_text['Importing match data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3707,9 +3729,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchplayer import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchPlayer<br />#$my_text#<br />#<pre>".print_r($p_matchplayer,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchPlayer<br />#$my_text#<br />#<pre>".print_r($p_matchplayer,true).'</pre>#';
 				$this->_success_text['Importing matchplayer data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3777,9 +3800,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchstaff import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchStaff<br />#$my_text#<br />#<pre>".print_r($p_matchstaff,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchStaff<br />#$my_text#<br />#<pre>".print_r($p_matchstaff,true).'</pre>#';
 				$this->_success_text['Importing matchstaff data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3847,9 +3871,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchreferee import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchReferee<br />#$my_text#<br />#<pre>".print_r($p_matchreferee,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchReferee<br />#$my_text#<br />#<pre>".print_r($p_matchreferee,true).'</pre>#';
 				$this->_success_text['Importing matchreferee data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -3920,9 +3945,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchevent import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchEvent<br />#$my_text#<br />#<pre>".print_r($p_matchevent,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchEvent<br />#$my_text#<br />#<pre>".print_r($p_matchevent,true).'</pre>#';
 				$this->_success_text['Importing matchevent data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -4004,9 +4030,10 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on positionstatistic import: ';
 					$my_text .= $oldID;
-					$my_text .= "<br />Error: _importPositionStatistic<br />#$my_text#<br />#<pre>".print_r($p_positionstatistic,true).'</pre>#';
+					//$my_text .= "<br />Error: _importPositionStatistic<br />#$my_text#<br />#<pre>".print_r($p_positionstatistic,true).'</pre>#';
 					$this->_success_text['Importing position statistic data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -4081,9 +4108,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchstaffstatistic import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchStaffStatistic<br />#$my_text#<br />#<pre>".print_r($p_matchstaffstatistic,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchStaffStatistic<br />#$my_text#<br />#<pre>".print_r($p_matchstaffstatistic,true).'</pre>#';
 				$this->_success_text['Importing match staff statistic data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -4164,9 +4192,10 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$my_text .= 'error on matchstatistic import: ';
 				$my_text .= $oldID;
-				$my_text .= "<br />Error: _importMatchStatistic<br />#$my_text#<br />#<pre>".print_r($p_matchstatistic,true).'</pre>#';
+				//$my_text .= "<br />Error: _importMatchStatistic<br />#$my_text#<br />#<pre>".print_r($p_matchstatistic,true).'</pre>#';
 				$this->_success_text['Importing match statistic data:']=$my_text;
-				return false;
+				//return false;
+                sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			}
 			else
 			{
@@ -4229,9 +4258,10 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on treeto import: ';
 					$my_text .= '#'.$oldID.'#';
-					$my_text .= "<br />Error: _importTreetos<br />#$my_text#<br />#<pre>".print_r($p_treeto,true).'</pre>#';
+					//$my_text .= "<br />Error: _importTreetos<br />#$my_text#<br />#<pre>".print_r($p_treeto,true).'</pre>#';
 					$this->_success_text['Importing treeto data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -4280,9 +4310,10 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on treetonode import: ';
 					$my_text .= '#'.$oldID.'#';
-					$my_text .= "<br />Error: _importTreetonode<br />#$my_text#<br />#<pre>".print_r($p_treetonode,true).'</pre>#';
+					//$my_text .= "<br />Error: _importTreetonode<br />#$my_text#<br />#<pre>".print_r($p_treetonode,true).'</pre>#';
 					$this->_success_text['Importing treetonode data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -4320,9 +4351,10 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on treetomatch import: ';
 					$my_text .= '#'.$oldID.'#';
-					$my_text .= "<br />Error: _importTreetomatch<br />#$my_text#<br />#<pre>".print_r($p_treetomatch,true).'</pre>#';
+					//$my_text .= "<br />Error: _importTreetomatch<br />#$my_text#<br />#<pre>".print_r($p_treetomatch,true).'</pre>#';
 					$this->_success_text['Importing treetomatch data:']=$my_text;
-					return false;
+					//return false;
+                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
