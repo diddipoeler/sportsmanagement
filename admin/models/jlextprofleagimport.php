@@ -268,12 +268,16 @@ unset($xml);
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value];
 $this->_datas['exportversion'] = $temp;
+
 $temp = new stdClass();
 $temp->name = $tree[tournament][season][value];
 $this->_datas['season'] = $temp;
+
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value];
+$temp->country = $country;
 $this->_datas['league'] = $temp;
+
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value].' '.$tree[tournament][season][value];
 $temp->project_type = 'SIMPLE_LEAGUE';
@@ -1320,6 +1324,20 @@ if ( isset($this->_datas['matchreferee']) )
 {
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
+
+
+// set the matchplayer data
+if ( isset($this->_datas['matchplayer']) )
+{
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchplayer'], 'MatchPlayer'));
+}
+// set the matchevent data
+if ( isset($this->_datas['matchevent']) )
+{
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchevent'], 'MatchEvent'));
+}
+
+
 // set the person data
 if ( isset($this->_datas['person']) )
 {
