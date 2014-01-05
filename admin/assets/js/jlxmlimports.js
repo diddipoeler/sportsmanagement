@@ -389,7 +389,7 @@ function openSelectWindow(recordid,key,selector,box,datatype)
 		// For now do nothing
 	}
 	//alert(datatype + "-" + recordid + "-" + key + "-" + selector + "-" + box);
-	query='index.php?option=com_joomleague'
+	query='index.php?option=com_sportsmanagement'
 		+ '&tmpl=component'
 		+ '&view=jlxmlimports'
 		+ '&task=jlxmlimport.select'

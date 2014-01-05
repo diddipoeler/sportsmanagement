@@ -275,12 +275,29 @@ $this->_datas['season'] = $temp;
 
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value];
+$temp->alias = $tree[tournament][title][value];
+$temp->short_name = $tree[tournament][title][value];
+$temp->middle_name = $tree[tournament][title][value];
 $temp->country = $country;
 $this->_datas['league'] = $temp;
 
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value].' '.$tree[tournament][season][value];
+$temp->serveroffset = 0;
 $temp->project_type = 'SIMPLE_LEAGUE';
+$temp->current_round_auto = '2';
+$temp->auto_time = '2880';
+$temp->start_date = '2013-08-08';  
+$temp->start_time = '15:30';
+$temp->game_regular_time = '90';
+$temp->game_parts = '2';
+$temp->halftime = '15';
+$temp->points_after_regular_time = '3,1,0';
+$temp->use_legs = '0';
+$temp->allow_add_time = '0';
+$temp->add_time = '30';
+$temp->points_after_add_time = '3,1,0';
+$temp->points_after_penalty = '3,1,0';
 $this->_datas['project'] = $temp;
 
 // spieler als personen anlegen

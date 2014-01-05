@@ -68,10 +68,11 @@ class sportsmanagementControllerJLXMLImport extends JController
 	function select()
 	{
 		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
 		$selectType=JRequest::getVar('type',0,'get','int');
 		$recordID=JRequest::getVar('id',0,'get','int');
-		$mainframe->setUserState('com_sportsmanagement'.'selectType',$selectType);
-		$mainframe->setUserState('com_sportsmanagement'.'recordID',$recordID);
+		$mainframe->setUserState($option.'selectType',$selectType);
+		$mainframe->setUserState($option.'recordID',$recordID);
 
 		JRequest::setVar('hidemainmenu',1);
 		JRequest::setVar('layout','selectpage');

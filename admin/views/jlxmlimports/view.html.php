@@ -28,7 +28,10 @@ class sportsmanagementViewJLXMLImports extends JView
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $model			= JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        $model = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
 
 		if ($this->getLayout()=='form')
 		{
@@ -54,8 +57,7 @@ class sportsmanagementViewJLXMLImports extends JView
 			return;
 		}
 
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
