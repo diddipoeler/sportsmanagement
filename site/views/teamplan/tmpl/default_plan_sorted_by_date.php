@@ -144,7 +144,7 @@ $teamid=JRequest::getInt('tid');
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHTML::image('media/com_joomleague/jl_images/events.png', 'events.png');
+				$img = JHTML::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
 				echo JHTML::link($link,$img,$params);
@@ -509,7 +509,7 @@ $teamid=JRequest::getInt('tid');
 				{
 				?> 
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo JURI::root(); ?>media/com_joomleague/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
+					<img src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
 				<?php
 				}
 			}
@@ -554,7 +554,7 @@ $teamid=JRequest::getInt('tid');
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
 		<img
-			src='<?php echo JURI::root(); ?>media/com_joomleague/jl_images/icon-16-Referees.png'
+			src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
 			alt='' title='' /> </span> <?php
 				}
 			}

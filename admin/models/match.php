@@ -128,7 +128,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -787,7 +787,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList('value'))
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
@@ -880,7 +880,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 					$this->_db->setQuery($query);
 					if (!$this->_db->query())
 					{
-						$this->setError($this->_db->getErrorMsg());
+						sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 						$result=false;
 					}
 				}
@@ -918,7 +918,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result=false;
 		}
 		foreach ($positions AS $project_position_id => $pos)
@@ -1090,7 +1090,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$in_player_record->in_out_time			= $in_out_time;
 			$in_player_record->project_position_id	= $project_position_id;
 			if (!$in_player_record->store()) {
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}

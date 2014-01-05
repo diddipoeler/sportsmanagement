@@ -145,7 +145,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObject() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -181,7 +181,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$result = $this->_db->loadObject())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -232,7 +232,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 		if (!$result = $this->_db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -259,7 +259,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$this->_db->setQuery( $query );
 		if( !$this->_db->query() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
 		}
 	
@@ -271,7 +271,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
 			}
 		}
@@ -299,7 +299,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$this->_db->setQuery($query);
 		if(!$this->_db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
 		}
 
@@ -309,7 +309,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
 			}
 		}
@@ -346,7 +346,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}
@@ -373,7 +373,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}
@@ -399,7 +399,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}
@@ -425,7 +425,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}
@@ -486,7 +486,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$this->_db->setQuery( $query );
 		if ( !$this->_db->query() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result= false;
 		}
 

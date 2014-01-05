@@ -118,7 +118,7 @@ class sportsmanagementModelDivisions extends JModelList
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObjectList("value") )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else

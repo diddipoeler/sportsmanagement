@@ -10,7 +10,7 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 $document = JFactory::getDocument();
 JHTML::_('behavior.mootools');
 $version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_joomleague/assets/js/eventsediting.js?v='.$version);
+$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
 ?>
 <div style="overflow:auto;">
 	<a name="jl_top" id="jl_top"></a>
@@ -26,7 +26,7 @@ $document->addScript(JURI::root().'components/com_joomleague/assets/js/eventsedi
 					{
 						$link = JoomleagueHelperRoute::getResultsRoute( $this->project->id, $this->roundid );
 						$imgTitle = JText::_('Exit Edit Mode');
-						$desc = JHTML::image('media/com_joomleague/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$desc = JHTML::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
 						echo JHTML::link($link, $desc);
 					}
@@ -105,7 +105,7 @@ $document->addScript(JURI::root().'components/com_joomleague/assets/js/eventsedi
 			</tbody>
 		</table>
 		<br/>
-		<input type='hidden' name='option' value='com_joomleague' />
+		<input type='hidden' name='option' value='com_sportsmanagement' />
 		<input type='hidden' name='task' value='results.saveshort' />
 		<input type='hidden' name='p' value='<?php echo $this->project->id; ?>' />
 		<input type='hidden' name='r' value='<?php echo $this->roundid; ?>' />

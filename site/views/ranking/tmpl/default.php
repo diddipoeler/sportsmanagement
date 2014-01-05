@@ -1,4 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+
+JHtml::_('behavior.switcher');
 
 //if ( $this->show_debug_info )
 //{

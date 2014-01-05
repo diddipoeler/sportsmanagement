@@ -170,7 +170,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 		}
@@ -184,7 +184,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 
@@ -196,7 +196,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
@@ -207,7 +207,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 				
@@ -223,7 +223,7 @@ class sportsmanagementModelProjectteams extends JModelList
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 		}
@@ -250,7 +250,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else

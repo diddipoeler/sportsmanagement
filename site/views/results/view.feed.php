@@ -10,7 +10,7 @@ class JoomleagueViewResults extends JLGView
 	{
 
 		$document	= JFactory::getDocument();
-		$document->link = JRoute::_('index.php?option=com_joomleague');
+		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$this->assignRef( 'config', $model->getTemplateConfig( 'results' ));
 		$this->assignRef( 'overallconfig', $model->getOverallConfig() );
@@ -28,7 +28,7 @@ class JoomleagueViewResults extends JLGView
 				$date = ( $game->match_date ? date( 'r', strtotime($game->match_date) ) : '' );
 				$result = $game->cancel>0 ?$game->cancel_reason : $game->team1_result . "-" . $game->team2_result;
 				$item->title 		= $team1->name. " - ".$team2->name." : ".$result;
-				$item->link 		= JRoute::_( 'index.php?option=com_joomleague&view=matchreport&p=' .
+				$item->link 		= JRoute::_( 'index.php?option=com_sportsmanagement&view=matchreport&p=' .
 				$game->project_id . '&mid=' . $game->id);
 				$item->description 	= $game->summary;
 				$item->date			= $date;

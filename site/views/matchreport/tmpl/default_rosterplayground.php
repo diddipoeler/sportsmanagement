@@ -89,8 +89,8 @@ $schemahome = $this->formation1;
 $schemaguest = $this->formation2;
 }
 
-//$backgroundimage = 'media/com_joomleague/rosterground/spielfeld_578x1050.png';
-$backgroundimage = 'media/com_joomleague/rosterground/'.$this->config['roster_playground_select'];
+//$backgroundimage = 'media/com_sportsmanagement/rosterground/spielfeld_578x1050.png';
+$backgroundimage = 'media/com_sportsmanagement/rosterground/'.$this->config['roster_playground_select'];
 
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 $spielfeldhaelfte = $height / 2;

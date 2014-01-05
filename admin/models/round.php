@@ -108,7 +108,7 @@ class sportsmanagementModelround extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -154,8 +154,8 @@ class sportsmanagementModelround extends JModelAdmin
 
 			if(!$tblRound->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-				return $this->_db->getErrorMsg();
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
 			}
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');

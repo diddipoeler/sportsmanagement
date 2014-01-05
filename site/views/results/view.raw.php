@@ -12,11 +12,11 @@ class JoomleagueViewResults extends JLGView
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-		$css		= 'components/com_joomleague/assets/css/tabs.css';
+		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
 		$document->addStyleSheet($css);
-		$css		= 'components/com_joomleague/assets/css/joomleague.css';
+		$css		= 'components/com_sportsmanagement/assets/css/joomleague.css';
 		$document->addStyleSheet($css);
-		$css		= 'components/com_joomleague/assets/css/results.css';
+		$css		= 'components/com_sportsmanagement/assets/css/results.css';
 		$document->addStyleSheet($css);
 		
 		//add js file
@@ -69,7 +69,7 @@ class JoomleagueViewResults extends JLGView
 		$document->setTitle($pageTitle);
 
 		//build feed links
-		$feed = 'index.php?option=com_joomleague&view=results&p='.$this->project->id.'&format=feed';
+		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
 		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
 		// add the links
@@ -155,7 +155,7 @@ class JoomleagueViewResults extends JLGView
 			}
 			else
 			{
-				$image=JHTML::image(JURI::root().'images/com_joomleague/database/placeholders/placeholder_small.gif',$title,$attribs);
+				$image=JHTML::image(JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_small.gif',$title,$attribs);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -163,7 +163,7 @@ class JoomleagueViewResults extends JLGView
 			$image=Countries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image=JHTML::image(JURI::root().'images/com_joomleague/database/placeholders/placeholder_flags.png',$title,$attribs);
+				$image=JHTML::image(JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_flags.png',$title,$attribs);
 			}
 		}
 		else
@@ -211,7 +211,7 @@ class JoomleagueViewResults extends JLGView
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
 		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
-		$desc=JHTML::image(	JURI::root()."media/com_joomleague/jl_images/sort01.gif",
+		$desc=JHTML::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
 		echo JHTML::link($link,$desc,$params);
 
@@ -429,7 +429,7 @@ class JoomleagueViewResults extends JLGView
 		$attribs=array(	"title" => $imgTitle,
 		 		"id" => 'events-'. $match_id,
 		 		"class" => "eventstoggle");
-		$img=JHTML::image(JURI::root().'media/com_joomleague/jl_images/events.png',$imgTitle,$attribs);
+		$img=JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png',$imgTitle,$attribs);
 		return $img;
 	}
 
@@ -467,7 +467,7 @@ class JoomleagueViewResults extends JLGView
 			<!-- Referee tooltip -->
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
-				src="<?php echo JURI::root(); ?>media/com_joomleague/jl_images/icon-16-Referees.png"
+				src="<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
 				alt="" title="" /> </span>
 			
 				<?php
@@ -491,12 +491,12 @@ class JoomleagueViewResults extends JLGView
 			if ($game->alt_decision)
 			{
 				$imgTitle=JText::_($game->decision_info);
-				$img='media/com_joomleague/jl_images/court.gif';
+				$img='media/com_sportsmanagement/jl_images/court.gif';
 			}
 			else
 			{
 				$imgTitle=JText::_('Has match summary');
-				$img='media/com_joomleague/jl_images/zoom.png';
+				$img='media/com_sportsmanagement/jl_images/zoom.png';
 			}
 			$output .= JHTML::_(	'link',
 			$report_link,
@@ -584,10 +584,10 @@ class JoomleagueViewResults extends JLGView
 
 			if (!empty($substitutions))
 			{
-				$pic_time	= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-				$pic_tab	= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
+				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+				$pic_tab	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
 
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_IN_OUT'); $imgTitle2=array(' title' => $imgTitle);
 				$txt_tab	= JHTML::image($pic_tab,$imgTitle,$imgTitle2);

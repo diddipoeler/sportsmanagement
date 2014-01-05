@@ -57,10 +57,11 @@ class sportsmanagementModelAbout extends JModel
 		$about->wiki = 'http://wiki.joomleague.net';
 		
 		//date
-		$about->date = '2013-01-07';
+		$about->date = '2014-01-01';
 
 		//developer
-		$about->developer = '<a href="http://stats.joomleague.net/authors.html" target="_blank">JoomLeague-Team</a>';
+		//$about->developer = '<a href="http://stats.joomleague.net/authors.html" target="_blank">JoomLeague-Team</a>';
+        $about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Gallun) ';
 /*
 		//designer
 		$about->designer = 'Kasi';
@@ -68,7 +69,8 @@ class sportsmanagementModelAbout extends JModel
 */
 		//designer
 		$about->designer = 'DonClumsy';
-		$about->designer .= ', (Tim Keller) ';
+		$about->designer .= ' (Tim Keller), ';
+        
         
 		//icons
 		$about->icons = '<a href="http://www.hollandsevelden.nl/iconset/" target="_blank">Jersey Icons</a> (Hollandsevelden.nl)';

@@ -122,7 +122,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -160,7 +160,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result=false;
 		}
 		for ($x=0; $x < count($data['project_positionslist']); $x++)
@@ -169,7 +169,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
 		}
@@ -195,7 +195,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		//echo '<br /><pre>2~'.print_r($result,true).'~</pre><br />';
@@ -224,7 +224,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
@@ -264,7 +264,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 				$this->_db->setQuery($query);
 				if(!$this->_db->query())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					$result=false;
 				}	
 			}

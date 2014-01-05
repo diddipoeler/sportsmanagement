@@ -187,7 +187,7 @@ if ($this->config['show_comments_count'] > 0){
 		if ($hasEvents)
 		{
 			$link = "javascript:void(0);";
-			$img = JHTML::image('media/com_joomleague/jl_images/events.png', 'events.png');
+			$img = JHTML::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 							"onclick" => 'switchMenu(\'info'.$game->id.'\');return false;');
 			echo JHTML::link($link,$img,$params);
@@ -207,7 +207,7 @@ if ($this->config['show_comments_count'] > 0){
 		<td width="5" class="ko">
         <?php
 $link = "javascript:void(0);";
-			$img = JHTML::image('media/com_joomleague/jl_images/discuss.gif', 'discuss.gif');
+			$img = JHTML::image('media/com_sportsmanagement/jl_images/discuss.gif', 'discuss.gif');
 			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 							"onclick" => 'example_alertBox(\''.$game->id.'\');');
 			echo JHTML::link($link,$img,$params);
@@ -427,15 +427,15 @@ $link = "javascript:void(0);";
 				// Comments integration trigger when separate_comments in plugin is set to yes/1
 				if (isset($game->team1_result))
 				{
-					$joomleage_comments_object_group = 'com_joomleague_matchreport';
+					$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
 				}
 				else {
-					$joomleage_comments_object_group = 'com_joomleague_nextmatch';
+					$joomleage_comments_object_group = 'com_sportsmanagement_nextmatch';
 				}
 			}
 			else {
 				// Comments integration trigger when separate_comments in plugin is set to no/0
-				$joomleage_comments_object_group = 'com_joomleague';
+				$joomleage_comments_object_group = 'com_sportsmanagement';
 			}
 
 			$options 					= array();
@@ -448,7 +448,7 @@ $link = "javascript:void(0);";
 			if ($count == 1) {
 				$imgTitle		= $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -467,7 +467,7 @@ $link = "javascript:void(0);";
 			elseif ($count > 1) {
 				$imgTitle	= $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -486,7 +486,7 @@ $link = "javascript:void(0);";
 			else {
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}

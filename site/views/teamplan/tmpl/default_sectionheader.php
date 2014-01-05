@@ -29,7 +29,7 @@
 				if (!is_null($this->ptid))
 				{
 				$link=JoomleagueHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
-				$text=JHTML::_('image','administrator/components/com_joomleague/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
+				$text=JHTML::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				$attribs	= array('title' => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				echo JHTML::_('link',$link,$text,$attribs);
 				}

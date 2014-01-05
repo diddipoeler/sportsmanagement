@@ -17,15 +17,15 @@ class sportsmanagementViewMatchReport extends JView
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
 //		$version = urlencode(JoomleagueHelper::getVersion());
-//		$css='components/com_joomleague/assets/css/tabs.css?v='.$version;
+//		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
         
         // diddipoeler
-        $css='components/com_joomleague/assets/css/tooltipstyle.css';
+        $css='components/com_sportsmanagement/assets/css/tooltipstyle.css';
         $document->addStyleSheet($css);
-        $css='components/com_joomleague/assets/css/jquery-easy-tooltip.css';
+        $css='components/com_sportsmanagement/assets/css/jquery-easy-tooltip.css';
         $document->addStyleSheet($css);
-        $document->addScript( JURI::base(true).'/components/com_joomleague/assets/js/tooltipscript.js');
+        $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
 		$model = $this->getModel();
 		$config=sportsmanagementModelProject::getTemplateConfig($this->getName());
@@ -88,7 +88,7 @@ $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show
 if ( $this->config['show_pictures'] == 1 )
 	  {
 		// die bilder zum spiel
-		$dest = JPATH_ROOT.'/images/com_joomleague/database/matchreport/'.$this->match->id;
+		$dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$this->match->id;
 		$folder = 'matchreport/'.$this->match->id;
 		$images = $model->getMatchPictures($folder);
 		if ( $images )
@@ -106,10 +106,10 @@ if ( $this->config['show_pictures'] == 1 )
 		}
 		$document->setTitle( $pageTitle );
 
-    $document->addScript( JURI::base(true).'/components/com_joomleague/assets/js/highslide.js');
-		$document->addStyleSheet( JURI::base(true) . '/components/com_joomleague/assets/css/highslide/highslide.css' );
+    $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
+		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
     
-    $js = "hs.graphicsDir = '".JURI::base(true) . "/components/com_joomleague/assets/css/highslide/graphics/"."';\n";
+    $js = "hs.graphicsDir = '".JURI::base(true) . "/components/com_sportsmanagement/assets/css/highslide/graphics/"."';\n";
     $js .= "hs.outlineType = 'rounded-white';\n";
     $js .= "
     hs.lang = {
@@ -254,9 +254,9 @@ if ( $this->config['show_pictures'] == 1 )
 
 	function showSubstitution($sub)
 	{
-		$pic_time='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-		$pic_out='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		$pic_in='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		$pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 
 		//$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE');
 		//$imgTitle2=array(' title' => $imgTitle);
@@ -442,9 +442,9 @@ if ( $this->config['show_pictures'] == 1 )
 	function _formatTimelineSubstitution($sub,$firstname,$nickname,$lastname,$out_firstname,$out_nickname,$out_lastname,$two_substitutions_per_minute=0)
 	{
 
-		$pic_out='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		$pic_in='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-		$pic_time='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/change.png';
+		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		$pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/change.png';
 
 		$time=$sub->in_out_time;
                 $matchtime=$this->getTimelineMatchTime();
@@ -566,7 +566,7 @@ if ( $this->config['show_pictures'] == 1 )
 	{
 		$result='';
 		if(empty($event->icon)) {
-			$event->icon = JUri::Base() . "media/com_joomleague/jl_images/same.png";
+			$event->icon = JUri::Base() . "media/com_sportsmanagement/jl_images/same.png";
 		}
 		$tiptext=JText::_($event->name).' '.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE_SHORT').' '.$matchEvent->event_time;
 		$tiptext .= ' ::';

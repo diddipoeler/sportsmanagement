@@ -147,7 +147,7 @@ class sportsmanagementViewTeamPlan extends JView
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
-					$pic_tab	= 'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
+					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
 					$tab_content = JoomleagueHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
@@ -155,9 +155,9 @@ class sportsmanagementViewTeamPlan extends JView
 					$tab_content = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time	= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 				$imgTime = JHTML::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
 				$imgOut  = JHTML::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn   = JHTML::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));

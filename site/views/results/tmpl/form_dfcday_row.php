@@ -60,9 +60,9 @@
 		JHTML::_('behavior.modal','a.mymodal');
 		$url=JoomleagueHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
 		$imgTitle=JText::_('Edit match details');
-		$desc=JHTML::image(JURI::root().'media/com_joomleague/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
+		$desc=JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
 		?>
-		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
 		<?php 
 		if($this->project->project_type=='DIVISIONS_LEAGUE') {
@@ -83,9 +83,9 @@
 		<?php
 		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
 		$imgTitle=JText::_('Edit Home Team');
-		$desc=JHTML::image(	JURI::root().'administrator/components/com_joomleague/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc=JHTML::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 		<!-- Edit home team -->
 			<?php
 		$append=' class="inputbox" size="1" onchange="$(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
@@ -113,9 +113,9 @@
 		<?php
 		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
 		$imgTitle=JText::_('Edit Away Team');
-		$desc=JHTML::image(	JURI::root().'administrator/components/com_joomleague/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc=JHTML::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
 	<!-- Edit match results -->
 	<?php
@@ -222,18 +222,18 @@
 		<?php
 		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
 		$imgTitle=JText::_('Edit all Match Events');
-		$desc=JHTML::image(	JURI::root().'media/com_joomleague/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc=JHTML::image(	JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
 		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
 		$imgTitle=JText::_('Edit all Match Statistics');
-		$desc=JHTML::image(	JURI::root().'administrator/components/com_joomleague/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc=JHTML::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_joomleague')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>

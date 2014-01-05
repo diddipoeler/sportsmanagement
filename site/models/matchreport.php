@@ -100,8 +100,8 @@ class sportsmanagementModelMatchReport extends JModel
 
   function getMatchPictures($folder)
   {
-  $basePath = JPATH_SITE.DS.'images'.DS.'com_joomleague'.DS.'database'.DS.$folder;
-  $sitePath = 'images'.DS.'com_joomleague'.DS.'database'.DS.$folder;
+  $basePath = JPATH_SITE.DS.'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
+  $sitePath = 'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
   $images 	= array ();
   
   

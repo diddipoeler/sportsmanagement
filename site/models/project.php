@@ -148,7 +148,7 @@ class sportsmanagementModelProject extends JModel
 	{
 		if (!$this->_current_round)
 		{
-			if (!$project = $this->getProject()) {
+			if (!$project = self::getProject()) {
 				$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 				return false;
 			}
@@ -1151,11 +1151,12 @@ class sportsmanagementModelProject extends JModel
 	
 	function hasEditPermission($task=null)
 	{
-		$allowed = false;
+		$option = JRequest::getCmd('option');
+        $allowed = false;
 		$user = JFactory::getUser();
 		if($user->id > 0) {
 			if(!is_null($task)) {
-				if (!$user->authorise($task, 'com_sportsmanagement')) {
+				if (!$user->authorise($task, $option)) {
 					$allowed = false;
 					error_log("no ACL permission for task " . $task);
 				} else {

@@ -365,7 +365,7 @@ $nbcols = 0;
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHTML::image('media/com_joomleague/jl_images/events.png', 'events.png');
+				$img = JHTML::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
 				echo JHTML::link($link,$img,$params);
@@ -770,7 +770,7 @@ $nbcols = 0;
 				{
 				?>
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo JURI::root(); ?>media/com_joomleague/jl_images/icon-16-Referees.png' alt='' title='' /> </span>
+					<img src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span>
 				<?php
 				}
 			}
@@ -815,7 +815,7 @@ $nbcols = 0;
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
 		<img
-			src='<?php echo JURI::root(); ?>media/com_joomleague/jl_images/icon-16-Referees.png'
+			src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
 			alt='' title='' /> </span> <?php
 				}
 			}
@@ -888,15 +888,15 @@ $nbcols = 0;
 				// Comments integration trigger when separate_comments in plugin is set to yes/1
 				if (isset($match->team1_result))
 				{
-					$joomleage_comments_object_group = 'com_joomleague_matchreport';
+					$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
 				}
 				else {
-					$joomleage_comments_object_group = 'com_joomleague_nextmatch';
+					$joomleage_comments_object_group = 'com_sportsmanagement_nextmatch';
 				}
 			}
 			else {
 				// Comments integration trigger when separate_comments in plugin is set to no/0
-				$joomleage_comments_object_group = 'com_joomleague';
+				$joomleage_comments_object_group = 'com_sportsmanagement';
 			}
 
 			$options 					= array();
@@ -909,7 +909,7 @@ $nbcols = 0;
 			if ($count == 1) {
 				$imgTitle		= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -926,7 +926,7 @@ $nbcols = 0;
 			elseif ($count > 1) {
 				$imgTitle	= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -943,7 +943,7 @@ $nbcols = 0;
 			else {
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_joomleague/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}

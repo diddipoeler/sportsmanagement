@@ -165,7 +165,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 
 		if ( !$result = $this->_db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else

@@ -31,6 +31,7 @@ class sportsmanagementViewRanking extends JView
         //$version = urlencode(JoomleagueHelper::getVersion());
 		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 		//$document->addStyleSheet($css);
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
@@ -281,7 +282,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //   $document->addScriptDeclaration($this->map->JLshowMap(false));
   
 	}
-	  $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+	  $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 	  
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );

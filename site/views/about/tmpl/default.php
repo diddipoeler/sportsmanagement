@@ -18,8 +18,8 @@ defined('_JEXEC') or die('Restricted access');
 */
 
 /*
-<object type="application/x-shockwave-flash" data="media/com_joomleague/jl_images/joomleague_logo.swf" id="movie" width="410" height="200">
-<param name="movie" value="media/com_joomleague/jl_images/joomleague_logo.swf" />
+<object type="application/x-shockwave-flash" data="media/com_sportsmanagement/jl_images/joomleague_logo.swf" id="movie" width="410" height="200">
+<param name="movie" value="media/com_sportsmanagement/jl_images/joomleague_logo.swf" />
 <param name="bgcolor" value="#FFFFFF" />
 <param name="quality" value="high" />
 <param name="loop" value="false" />
@@ -32,7 +32,11 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td align="center">
 <?PHP 
-$backgroundimage = 'media/com_joomleague/jl_images/JL-logo.png';       
+$option = JRequest::getCmd('option');
+$backgroundimage = 'administrator/components/'.$option.'/assets/icons/sm-sports-manager.png';  
+
+//echo $backgroundimage.'<br>';
+     
 echo "<img class=\"\" style=\"\" src=\"".$backgroundimage."\" alt=\"\" >";
 ?>		
 		</td>
@@ -162,6 +166,12 @@ echo "<img class=\"\" style=\"\" src=\"".$backgroundimage."\" alt=\"\" >";
 		<td><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DESIGNER'); ?></b></td>
 		<td><?php echo $this->about->designer; ?></td>
 	</tr>
+    <tr>
+		<td><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DEVELOPERS'); ?></b></td>
+		<td><?php echo $this->about->developer; ?></td>
+	</tr>
+    
+    
 <!--    
 	<tr>
 		<td><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_ICONS'); ?></b></td>
@@ -193,6 +203,9 @@ echo "<img class=\"\" style=\"\" src=\"".$backgroundimage."\" alt=\"\" >";
 </table>
 <!-- backbutton -->
 <?php
+
+//	echo $this->loadTemplate('backbutton');
+
 /*
 if ($this->config['show_back_button'] > "0")
 {

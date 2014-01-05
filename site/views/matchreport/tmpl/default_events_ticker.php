@@ -57,7 +57,7 @@
                     
                     if ($me->event_type_id > 0) {
                         
-                        if ($pic_tab == 'images/com_joomleague/database/events/event.gif')
+                        if ($pic_tab == 'images/com_sportsmanagement/database/events/event.gif')
                         {
                             $txt_tab = $eventname;
                         }
@@ -126,7 +126,7 @@
                     else
                     {
                         //EventType 0, therefore text comment
-                        $txt_tab = JHTML::image('media/com_joomleague/jl_images/discuss.gif','','');
+                        $txt_tab = JHTML::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
                         echo '<td colspan="" style="text-align:center">'.$txt_tab.'</td>';
                         echo '<td colspan= style="text-align:center">...</td>';
                         
@@ -161,9 +161,9 @@
                     //$pic_tab=$IconArr[$me->event_type_id];
                     //$eventname=JText::_($TextArr[$me->event_type_id]);
 		    
-		    $pic_time='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-		    $pic_out='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		    $pic_in='images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		    $pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+		    $pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		    $pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
                     
                     //Time
                     $prefix = '';

@@ -296,7 +296,7 @@ class sportsmanagementModelResults extends JModel
 		if ($user->id != 0)
 		{
 			$project =& $this->getProject();
-			$hasACLPermssion = $user->authorise('results.saveshort', 'com_joomleague');
+			$hasACLPermssion = $user->authorise('results.saveshort', 'com_sportsmanagement');
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;
 			

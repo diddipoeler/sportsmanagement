@@ -1118,9 +1118,13 @@ abstract class sportsmanagementHelper
 		if ($showIcons)
 		{
 			$output .= JHtml::link('javascript:void(0);',$desc,$params);
-			$output .= '<'.$container.' id="'.$containerId.'" style="'.$style_append.';">';
+            //$output .= '<ul id="submenu"><li><a id="'.$containerId.'" >'.$formattedTeamName.'</a></li></ul>';
+			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';">';
+            //$output .= '<div id="config-document">';
+            //$output .= '<'.$container.' id="page-'.$containerId.'" >';
 			$output .= self::showTeamIcons ($team,$config);
 			$output .= '</'.$container.'>';
+            //$output .= '</div>';
 		}
 		else
 		{

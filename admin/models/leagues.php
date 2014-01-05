@@ -111,7 +111,7 @@ class sportsmanagementModelLeagues extends JModelList
         $db->setQuery($query);
         if (!$result = $db->loadObjectList())
         {
-            $this->setError($db->getErrorMsg());
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
             return array();
         }
         foreach ($result as $league)

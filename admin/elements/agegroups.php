@@ -55,7 +55,7 @@ class JFormFieldagegroups extends JFormField
 		if (!$result=$db->loadObjectList())
 		{
 			//$mainframe->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$this->setError($db->getErrorMsg());
+      sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $sportstype)

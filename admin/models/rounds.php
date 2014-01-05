@@ -151,7 +151,7 @@ class sportsmanagementModelRounds extends JModelList
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList ())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -173,7 +173,7 @@ class sportsmanagementModelRounds extends JModelList
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -196,7 +196,7 @@ class sportsmanagementModelRounds extends JModelList
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -225,7 +225,7 @@ class sportsmanagementModelRounds extends JModelList
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -257,7 +257,7 @@ class sportsmanagementModelRounds extends JModelList
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;		

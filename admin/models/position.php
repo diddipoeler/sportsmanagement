@@ -105,7 +105,7 @@ class sportsmanagementModelposition extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -138,7 +138,7 @@ class sportsmanagementModelposition extends JModelAdmin
 			$tblPosition->parent_id	= $post['parent_id'.$pks[$x]];
 
 			if(!$tblPosition->store()) {
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
 		}
