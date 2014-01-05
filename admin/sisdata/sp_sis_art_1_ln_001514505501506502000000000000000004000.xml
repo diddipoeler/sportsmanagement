@@ -3627,35 +3627,6 @@
     <Spieltag>20</Spieltag>
   </Spiel>
   <Spiel>
-    <Liga>001514505501506502000000000000000004121</Liga>
-    <Aktualisierungsdatum>2013-11-30T20:24:32.207+01:00</Aktualisierungsdatum>
-    <SpielDatum>2014-04-05T00:00:00+02:00</SpielDatum>
-    <Mannschaft1>001514505501506502000000000000000004001</Mannschaft1>
-    <Mannschaft2>001514505501506502000000000000000004011</Mannschaft2>
-    <Tore01>0</Tore01>
-    <Tore02>0</Tore02>
-    <Tore1>0</Tore1>
-    <Tore2>0</Tore2>
-    <Punkte1>0</Punkte1>
-    <Punkte2>0</Punkte2>
-    <Halle>1310208804</Halle>
-    <Schiri>1310208103</Schiri>
-    <Anmerkung/>
-    <SpielBericht/>
-    <SpielVon>2014-04-05T00:00:00+02:00</SpielVon>
-    <SpielBis>2014-04-05T01:29:00+02:00</SpielBis>
-    <Heim>HSC Haltern-Sythen</Heim>
-    <HeimNr>1310208041</HeimNr>
-    <Gast>TV Wattenscheid 01</Gast>
-    <GastNr>1310208072</GastNr>
-    <HallenName>Sph. Schulzentrum Haltern</HallenName>
-    <HallenStrasse>Holtwickerstr. 3</HallenStrasse>
-    <HallenOrt>45721 Haltern</HallenOrt>
-    <LigaName>0055 Bezirksliga Frauen St. 5</LigaName>
-    <GespannName>Scholl / Schumann</GespannName>
-    <Spieltag>21</Spieltag>
-  </Spiel>
-  <Spiel>
     <Liga>001514505501506502000000000000000004124</Liga>
     <Aktualisierungsdatum>2013-11-30T20:24:32.237+01:00</Aktualisierungsdatum>
     <SpielDatum>2014-04-05T00:00:00+02:00</SpielDatum>
@@ -3800,6 +3771,35 @@
     <HallenOrt>45964 Gladbeck</HallenOrt>
     <LigaName>0055 Bezirksliga Frauen St. 5</LigaName>
     <GespannName>Drack/Schwiederski</GespannName>
+    <Spieltag>21</Spieltag>
+  </Spiel>
+  <Spiel>
+    <Liga>001514505501506502000000000000000004121</Liga>
+    <Aktualisierungsdatum>2014-01-04T15:54:34.993+01:00</Aktualisierungsdatum>
+    <SpielDatum>2014-04-06T00:00:00+02:00</SpielDatum>
+    <Mannschaft1>001514505501506502000000000000000004001</Mannschaft1>
+    <Mannschaft2>001514505501506502000000000000000004011</Mannschaft2>
+    <Tore01>0</Tore01>
+    <Tore02>0</Tore02>
+    <Tore1>0</Tore1>
+    <Tore2>0</Tore2>
+    <Punkte1>0</Punkte1>
+    <Punkte2>0</Punkte2>
+    <Halle>1310208835</Halle>
+    <Schiri>1310208103</Schiri>
+    <Anmerkung>Anwurfzeit- und Hallen&#xE4;nderung vom 04.01.2014.Redell</Anmerkung>
+    <SpielBericht>Anwurfzeit- und Hallen&#xE4;nderung vom 04.01.2014.Redell</SpielBericht>
+    <SpielVon>2014-04-06T17:30:00+02:00</SpielVon>
+    <SpielBis>2014-04-06T18:59:00+02:00</SpielBis>
+    <Heim>HSC Haltern-Sythen</Heim>
+    <HeimNr>1310208041</HeimNr>
+    <Gast>TV Wattenscheid 01</Gast>
+    <GastNr>1310208072</GastNr>
+    <HallenName>Seestadthalle</HallenName>
+    <HallenStrasse>Lippspieker 25</HallenStrasse>
+    <HallenOrt>45721 Haltern</HallenOrt>
+    <LigaName>0055 Bezirksliga Frauen St. 5</LigaName>
+    <GespannName>Scholl / Schumann</GespannName>
     <Spieltag>21</Spieltag>
   </Spiel>
   <Spiel>

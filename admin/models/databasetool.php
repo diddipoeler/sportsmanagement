@@ -214,6 +214,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $xml = JFactory::getXMLParser( 'Simple' );
        $xml->loadFile($filename); 
        
+       // schleife altersgruppen anfang
        foreach( $xml->document->agegroups as $agegroup ) 
 {
    $name = $agegroup->getElementByPath('agegroup');
@@ -225,6 +226,12 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    $info = $attributes['info'];
    $picture = 'images/com_sportsmanagement/database/agegroups/'.$attributes['picture'];
    
+   $query="SELECT id
+            FROM #__".COM_SPORTSMANAGEMENT_TABLE."_agegroup where name like '".$agegroup."' and country like '".$search_nation."' and sportstype_id = ".$filter_sports_type;
+		    $this->_db->setQuery($query);
+		    // altersgruppe nicht vorhanden ?
+            if ( !$this->_db->loadResult() )
+            {
    // Get a db connection.
         $db = JFactory::getDbo();
         // Create a new query object.
@@ -249,14 +256,14 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		}
         else
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$name->data()),'Notice');
+        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
         
         }
         
-   
+   }
    
    }
-       
+   // schleife altersgruppen ende    
        
        
        
@@ -633,7 +640,7 @@ foreach( $xml->document->events as $event )
         }
         }
         
-        return true;
+        return $sports_type_id;
     }
     
     

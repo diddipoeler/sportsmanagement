@@ -72,8 +72,9 @@ class sportsmanagementViewcpanel extends JView
         $params = JComponentHelper::getParams( $option );
         $sporttypes = $params->get( 'cfg_sport_types' );
         $sm_quotes = $params->get( 'cfg_quotes' );
+        $country = $params->get( 'cfg_country_associations' );
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sm_quotes,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
         if ( $sm_quotes )
         {
@@ -94,13 +95,31 @@ class sportsmanagementViewcpanel extends JView
         // es können aber auch neue positionen oder ereignisse dazu kommen
         $insert_sport_type = $databasetool->insertSportType($type); 
         
+        if ( $country )
+        {
+        foreach ( $country as $keyc => $typec )
+        {    
+        $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
+        }
+        }
+        
         }
         else
         {
         $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
         
-        $insert_sport_type = $databasetool->insertSportType($type);    
-        //$checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
+        // es können aber auch neue positionen oder ereignisse dazu kommen
+        $insert_sport_type = $databasetool->insertSportType($type); 
+        
+        if ( $country )
+        {
+        foreach ( $country as $keyc => $typec )
+        {    
+        $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
+        }
+        }
+           
+        
         }
         
         }
