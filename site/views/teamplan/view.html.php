@@ -23,6 +23,8 @@ class sportsmanagementViewTeamPlan extends JView
         $option = JRequest::getCmd('option');
 		$model = $this->getModel();
         
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject();
 		$config = $mdlProject->getTemplateConfig($this->getName());

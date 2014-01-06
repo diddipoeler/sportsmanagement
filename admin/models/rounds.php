@@ -271,12 +271,17 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	function getRoundsOptions($project_id, $ordering='ASC')
 	{
-	   // Get a db connection.
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds getRoundsOptions project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+        
+       // Get a db connection.
         $db = JFactory::getDbo();
 		$query="SELECT
 					id as value,
 				    CASE LENGTH(name)
-				    	when 0 then CONCAT('".JText::_('COM_JOOMLEAGUE_GLOBAL_MATCHDAY_NAME'). "',' ', id)
+				    	when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME'). "',' ', id)
 				    	else name
 				    END as text, id, name, round_date_first, round_date_last, roundcode 
 				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round

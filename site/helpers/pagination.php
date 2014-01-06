@@ -32,7 +32,7 @@ class sportsmanagementPagination
 		$lastlink = '';
 		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
 		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
-		//$mdlRounds->setProjectId($project->id);
+		//sportsmanagementModelRounds::setProjectId($project->id);
 
 		$firstRound			= sportsmanagementModelRounds::getFirstRound($project->id);
 		$lastRound			= sportsmanagementModelRounds::getLastRound($project->id);

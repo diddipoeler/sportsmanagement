@@ -28,7 +28,7 @@ function visibleMenu(obj) {
 
 function switchMenu(obj) 
 {
-
+jQuery('div.rankingteam').hide();
 //alert(obj);
 jQuery("#page-" + obj ).show();
 

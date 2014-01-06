@@ -209,10 +209,11 @@ class sportsmanagementHelperHtml {
 
 	function getRoundSelectNavigation($form)
 	{
-		$rounds = $this->get('RoundOptions');
+		$rounds = sportsmanagementModelProject::getRoundOptions();
 		$division = JRequest::getInt('division',0);
 
-		if($form){
+		if($form)
+        {
 			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
 			$options=array();
 			foreach ($rounds as $r)
@@ -220,7 +221,9 @@ class sportsmanagementHelperHtml {
 				$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
 				$options[]=JHTML::_('select.option', $link, $r->text);
 			}
-		} else {
+		} 
+        else 
+        {
 			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
 			$options=array();
 			foreach ($rounds as $r)
@@ -229,7 +232,7 @@ class sportsmanagementHelperHtml {
 				$options[]=JHTML::_('select.option', $link, $r->text);
 			}
 		}
-		return JHTML::_('select.genericlist',$options,'select-round','onchange="joomleague_changedoc(this);"','value','text',$currenturl);
+		return JHTML::_('select.genericlist',$options,'select-round','onchange="top.location.href=this.options[this.selectedIndex].value;"','value','text',$currenturl);
 	}
 
 	/**

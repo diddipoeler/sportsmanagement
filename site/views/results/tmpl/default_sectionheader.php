@@ -36,9 +36,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 		</td>
 			<?php if ($this->config['show_matchday_dropdown']==1) { ?>
+            <form name='resultsRoundSelector' method='post'>
+		<input type='hidden' name='option' value='com_sportsmanagement' />
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
 			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE); ?>
 				</td>
+                </form>
     	    <?php } ?>
 		</tr>
 </table>

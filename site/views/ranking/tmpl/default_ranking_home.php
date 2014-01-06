@@ -34,6 +34,7 @@ foreach ( $this->homeRank as $division => $cu_rk )
 		}
 		$this->division = $division;
 		$this->current  = &$cu_rk;
+        $this->teamrow  = 'hr';
 		echo $this->loadTemplate('rankingrows');
 	?>
 	</table>
@@ -47,6 +48,7 @@ foreach ( $this->homeRank as $division => $cu_rk )
 			echo $this->loadTemplate('rankingheading');
 			$this->division = $division;
 			$this->current  = &$cu_rk;
+            $this->teamrow  = 'hr';
 			echo $this->loadTemplate('rankingrows');
 		?>
 	</table>

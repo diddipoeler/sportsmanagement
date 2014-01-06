@@ -400,7 +400,9 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getRoundOptions($ordering='ASC')
 	{
-		$query="SELECT
+		// Get a db connection.
+        $db = JFactory::getDbo();
+        $query="SELECT
 					id as value,
 				    CASE LENGTH(name)
 				    	when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id)
@@ -410,8 +412,8 @@ class sportsmanagementModelProject extends JModel
 				  WHERE project_id=".(int)$this->projectid."
 				  ORDER BY roundcode ".$ordering;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 	function getTeaminfo($projectteamid)
