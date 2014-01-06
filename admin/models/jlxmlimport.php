@@ -60,6 +60,8 @@ class sportsmanagementModelJLXMLImport extends JModel
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
     var $show_debug_info = false;
+    var $_league_new_country = '';
+    var $_import_project_id = 0;
 
 	private function _getXml()
 	{
@@ -96,6 +98,7 @@ class sportsmanagementModelJLXMLImport extends JModel
     $update_project = $model->getProject($project_id);  
     //$update_project = JTable::getInstance('Project','Table');
     //$update_project->load($project_id);
+    //$mainframe->enqueueMessage(JText::_('_displayUpdate import_project_id -> '.'<pre>'.print_r($update_project->import_project_id ,true).'</pre>' ),'');
     return $update_project->import_project_id;  
     }
     else
@@ -138,7 +141,7 @@ class sportsmanagementModelJLXMLImport extends JModel
                                     );
 					$my_text .= '<br />';
                     
-     $update_match = JTable::getInstance('Match','Table');
+     $update_match = JTable::getInstance('Match','sportsmanagementTable');
      $match_id = (int) $match_data->id;
      $update_match->load($match_id);
      if ( $value->team1_result )
@@ -167,6 +170,12 @@ class sportsmanagementModelJLXMLImport extends JModel
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $this->_import_project_id = $mainframe->getUserState($option.'projectidimport'); ;
+        
+        //$mainframe->enqueueMessage(JText::_('getData post<br><pre>'.print_r($post ,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_('getData _import_project_id<br><pre>'.print_r($this->_import_project_id ,true).'</pre>'),'');
+        
         libxml_use_internal_errors(true);
 		if (!$xmlData=$this->_getXml())
 		{
@@ -482,6 +491,10 @@ class sportsmanagementModelJLXMLImport extends JModel
 				$i++;
 			}
             
+            
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_datas['league'],true).'</pre>'   ),'');
+            $this->_league_new_country = (string) $this->_datas['league']->country;
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_league_new_country,true).'</pre>'   ),'');
             
             // textelemente bereinigen
             $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
@@ -1192,7 +1205,7 @@ class sportsmanagementModelJLXMLImport extends JModel
                 
 				$p_league->set('name',trim($this->_league_new));
 				$p_league->set('alias',JFilterOutput::stringURLSafe($this->_league_new));
-				//$p_league->set('country',$this->_league_new_country);
+				$p_league->set('country',$this->_league_new_country);
 
 				if ($p_league->store()===false)
 				{
@@ -2565,6 +2578,7 @@ $this->dump_variable("import_team", $import_team);
 		$p_project->set('name',trim($this->_name));
 		$p_project->set('alias',JFilterOutput::stringURLSafe(trim($this->_name)));
 		$p_project->set('league_id',$this->_league_id);
+        $p_project->set('import_project_id',$this->_import_project_id);
 		$p_project->set('season_id',$this->_season_id);
 		$p_project->set('admin',$this->_joomleague_admin);
 		$p_project->set('editor',$this->_joomleague_editor);

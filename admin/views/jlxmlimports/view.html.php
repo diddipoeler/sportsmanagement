@@ -84,12 +84,12 @@ class sportsmanagementViewJLXMLImports extends JView
        $option = JRequest::getCmd('option');
        //$project_id = (int) $mainframe->getUserState($option.'project', 0);
        //$mainframe->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
-       $model			= JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-	   $data			= $model->getData();
+       $model = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+	   $data = $model->getData();
        $update_matches = $model->getDataUpdate(); 
        $this->assignRef('xml', $data);
        $this->assignRef('importData', $update_matches);
-       $this->assignRef('projektfussballineuropa',$model->getDataUpdateImportID() );
+       $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
        $this->assignRef('option',$option);
        
        // Get a refrence of the page instance in joomla
@@ -99,6 +99,7 @@ class sportsmanagementViewJLXMLImports extends JView
         $document->addCustomTag($stylelink);
        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
+        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
