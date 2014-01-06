@@ -83,4 +83,19 @@
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">AL</parentname>
 </parentpositions>
 
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FIELD_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">GOAL_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">TIME_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">SEKR_REFEREE</parentname>
+</parentpositions>
+
+
+
 </structur>
