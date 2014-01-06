@@ -126,7 +126,7 @@ class sportsmanagementViewTemplate extends JView
 		$userId = $user->id;
 		$isNew = $this->template->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->template->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_NEW') : JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_EDIT'), 'template');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT'), 'template');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
