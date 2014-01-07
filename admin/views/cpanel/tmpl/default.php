@@ -168,21 +168,21 @@ JHTML::_('behavior.tooltip');
           <div style="width:48px; float:right">            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW')?>"               target="_blank" href=               "https://www.facebook.com/joomlasportsmanagement">
-                <img src=               "/administrator/components/com_sportsmanagement/assets/icons/facebook.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/facebook.png"               width="48px" height="48px"></a>            
             </div>            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_GITHUB_FOLLOW')?>"               target="_blank" href=               "https://www.github.com/diddipoeler/sportsmanagement">
-                <img src=               "/administrator/components/com_sportsmanagement/assets/icons/github.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/github.png"               width="48px" height="48px"></a>            
             </div>            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_HELP_LINK')?>" target=               "_blank" href=               "http://www.joomleaguewiki.grammatikas-grill.de/index.php/Hauptseite">               
-                <img src=               "/administrator/components/com_sportsmanagement/assets/icons/hilfe.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"               width="48px" height="48px"></a>            
             </div>          
           </div>          
           <div style="width:80%">            
             <div>              
               <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target=               "_blank" href="http://www.fussballineuropa.de">
-                <img src=               "/administrator/components/com_sportsmanagement/assets/icons/boxklein.png"               width="100%" height="auto" max-width="100%"></a>            
+                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/boxklein.png"               width="100%" height="auto" max-width="100%"></a>            
             </div>          
           </div>        
         </div>        
@@ -194,19 +194,19 @@ JHTML::_('behavior.tooltip');
         <div style="text-align: center">          
           <div style=           "text-align: center; width: 142px;height: 190px;float:left;">            
             <a title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://www.fussballineuropa.de">
-              <img src=             "/administrator/components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg"></a>          
+              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://www.esv-knittelfeld.at">
-              <img src=             "/administrator/components/com_sportsmanagement/assets/icons/galun-siegfried02.png"></a>          
+              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/galun-siegfried02.png"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://svdoerpum.de/">
-              <img src=             "/administrator/components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg"></a>          
+              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="">
-              <img src=             "/administrator/components/com_sportsmanagement/assets/icons/keller-jens.jpg"></a>          
+              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/keller-jens.jpg"></a>          
           </div>        
         </div>
         <br />
@@ -287,7 +287,7 @@ JHTML::_('behavior.tooltip');
       <br />      
       
               <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target= "_blank" href="http://www.fussballineuropa.de">
-                <img src= "/administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto"</a>            
+                <img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto"</a>            
       <br />
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
       <br />      
