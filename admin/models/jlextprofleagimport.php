@@ -1247,6 +1247,7 @@ foreach ($exportplayer as $row)
 {
 $playerposition = $exportplayerpositiontemp[ (string) $row->plid];
 $row->position_id = $this->getProfLeagPosition( $playerposition ,'' );
+$row->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 }
 
 //$exportpositioneventtype = $this->getPlProjectEventPosition($selectposition);
