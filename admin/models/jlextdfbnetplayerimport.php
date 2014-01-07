@@ -1653,7 +1653,24 @@ $valueperson2 = $csv->data[$a]['Assistent 2'];
 if (array_key_exists($valueperson, $exportpersonstemp))
 {
 
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+    
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1699,7 +1716,24 @@ $temp->position_id = 1000;
 $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+    
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1722,7 +1756,24 @@ $lfdnumberperson++;
 if (array_key_exists($valueperson1, $exportpersonstemp))
 {
 
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+    
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1768,7 +1819,24 @@ $temp->position_id = 1001;
 $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+    
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1791,7 +1859,24 @@ $lfdnumberperson++;
 if (array_key_exists($valueperson2, $exportpersonstemp))
 {
 
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+    
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1837,8 +1922,23 @@ $temp->position_id = 1002;
 $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
-
-if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1858,9 +1958,24 @@ $lfdnumberperson++;
 }
 
 
-  
+if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+    }  
 //   echo 'paarung -> '.$csv->data[$a]['Heimmannschaft']." <-> ".$csv->data[$a]['Gastmannschaft'].'<br>';
-  if ( $csv->data[$a]['Heimmannschaft'] == 'Spielfrei' || $csv->data[$a]['Gastmannschaft'] == 'Spielfrei' )
+  if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
   {
   // nichts machen
   }
@@ -1916,8 +2031,24 @@ $lfdnumberperson++;
 	$tempmatch->show_report = 1;
 	$tempmatch->projectteam1_id = 0;
 	$tempmatch->projectteam2_id = 0;
-	$tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heimmannschaft'];
-	$tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gastmannschaft'];
+    if ( isset($csv->data[$a]['Heimmannschaft']) )
+    {
+    $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heimmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gastmannschaft']) )
+    {
+    $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gastmannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Heim Mannschaft']) )
+    {
+    $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heim Mannschaft'];    
+    }
+    if ( isset($csv->data[$a]['Gast Mannschaft']) )
+    {
+    $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gast Mannschaft'];    
+    }
+	
+	
 	$tempmatch->team1_result = '';
 	$tempmatch->team2_result = '';
 	$tempmatch->summary = '';

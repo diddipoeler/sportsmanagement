@@ -545,6 +545,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             
             
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
+            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport match<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');
             
             // länder bei den spielorten vervollständigen
             if ( isset($this->_datas['playground']) )
@@ -3626,15 +3627,15 @@ $this->dump_variable("import_team", $import_team);
 				{
 					if ($match->projectteam1_id > 0)
 					{
-						$teamname1=$this->_getTeamName($p_match->projectteam1_id);
+						$teamname1 = $this->_getTeamName($p_match->projectteam1_id);
 					}
 					else
 					{
-						$teamname1='<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+						$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
 					}
 					if ($match->projectteam2_id > 0)
 					{
-						$teamname2=$this->_getTeamName($p_match->projectteam2_id);
+						$teamname2 = $this->_getTeamName($p_match->projectteam2_id);
 					}
 					else
 					{
