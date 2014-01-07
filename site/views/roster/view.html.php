@@ -17,6 +17,7 @@ class sportsmanagementViewRoster extends JView
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
 		$this->assign('project',sportsmanagementModelProject::getProject());
+        $model->seasonid = $this->project->season_id;
 		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
 		//$this->assignRef('staffconfig',$model->getTemplateConfig('teamstaff'));
 		$this->assignRef('config',$config);
@@ -43,7 +44,7 @@ class sportsmanagementViewRoster extends JView
 		if ($this->projectteam)
 		{
 			$this->assign('team',$model->getTeam());
-			$this->assign('rows',$model->getTeamPlayers());
+			$this->assign('rows',$model->getTeamPlayers(1));
 			// events
 			if ($this->config['show_events_stats'])
 			{
@@ -57,17 +58,20 @@ class sportsmanagementViewRoster extends JView
 				$this->assign('playerstats',$model->getRosterStats());
 			}
 
-			$this->assign('stafflist',$model->getStaffList());
+			//$this->assign('stafflist',$model->getStaffList());
+            $this->assign('stafflist',$model->getTeamPlayers(2));
+            
+            //$mainframe->enqueueMessage(JText::_('getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre>'),'');
 
 			// Set page title
-			$document->setTitle(JText::sprintf('COM_JOOMLEAGUE_ROSTER_TITLE',$this->team->name));
+			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
 		}
 		else
 		{
 			// Set page title
-			$document->setTitle(JText::sprintf('COM_JOOMLEAGUE_ROSTER_TITLE', "Project team does not exist"));
+			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
 		}
-
+/*
     $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
 		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
     
@@ -109,19 +113,19 @@ $js .= "}\n";
     \n";
     
     $document->addScriptDeclaration( $js );
-    
+*/    
     // select roster view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "player_standard", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_card", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_johncage", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+    $opp_arr[] = JHTML :: _('select.option', "player_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
+	$opp_arr[] = JHTML :: _('select.option', "player_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
+	$opp_arr[] = JHTML :: _('select.option', "player_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
 
 	$lists['type'] = $opp_arr;
   // select staff view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "staff_standard", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_card", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", JText :: _('COM_JOOMLEAGUE_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+    $opp_arr[] = JHTML :: _('select.option', "staff_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
+	$opp_arr[] = JHTML :: _('select.option', "staff_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
+	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
 
 	$lists['typestaff'] = $opp_arr;
 	$this->assignRef('lists', $lists);

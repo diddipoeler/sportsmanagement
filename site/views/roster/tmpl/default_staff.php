@@ -1,4 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+
+//echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -48,11 +51,11 @@ if (count($this->stafflist) > 0)
 				echo '&nbsp;';
 				if ($this->config['show_team_shortform'] == 1)
 				{
-					echo JText::sprintf('COM_JOOMLEAGUE_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
+					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
 				}
 				else
 				{
-					echo JText::sprintf('COM_JOOMLEAGUE_ROSTER_STAFF_OF',$this->team->name);
+					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF',$this->team->name);
 				}
 				?>
 			</td>
@@ -63,13 +66,13 @@ if (count($this->stafflist) > 0)
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-					<?php echo JText::_("COM_JOOMLEAGUE_ROSTER_STAFF").'&nbsp;'; ?>
+					<?php echo JText::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF").'&nbsp;'; ?>
 				</th>
 				<?php
 				if ($this->config['show_birthday_staff'] > 0)
 				{ ?>
 				<th class="td_c">
-				  <?php echo JText::_("COM_JOOMLEAGUE_ROSTER_BIRTHDAY").'&nbsp;'; ?>
+				  <?php echo JText::_("COM_SPORTSMANAGEMENT_ROSTER_BIRTHDAY").'&nbsp;'; ?>
 				</th><?php
 				}
 				elseif ($this->config['show_birthday'] > 0)
@@ -78,7 +81,7 @@ if (count($this->stafflist) > 0)
 					?>
 				<th class="td_c">&nbsp;</th><?php
 				} ?>
-				<th><?php echo JText::_('COM_JOOMLEAGUE_ROSTER_STAFF_FUNCTION'); ?></th>
+				<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION'); ?></th>
 			</tr>
 		</thead>
 		<?php
@@ -86,6 +89,9 @@ if (count($this->stafflist) > 0)
 			for ($i=0, $n=count($this->stafflist); $i < $n; $i++)
 			{
 				$row =& $this->stafflist[$i];
+                
+                //echo 'getTeamPlayers stafflist<br><pre>'.print_r($row,true).'</pre><br>';
+                
 				?>
 			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 				<?php
@@ -94,27 +100,27 @@ if (count($this->stafflist) > 0)
 					?>
 				<td width="30" class="td_c">&nbsp;</td><?php
 				}
-				$playerName = JoomleagueHelper::formatName(null, $row->firstname, 
+				$playerName = sportsmanagementHelper::formatName(null, $row->firstname, 
 															$row->nickname, 
 															$row->lastname, 
 															$this->config["name_format_staff"]);
 				if ($this->config['show_staff_icon'])
 				{
 					$picture = $row->picture;
-					if ((empty($picture)) || ($picture == JoomleagueHelper::getDefaultPlaceholder("player") ))
+					if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ))
 					{
 						$picture = $row->ppic;
 					}
 					if ( !file_exists( $picture ) )
 					{
-						$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					} ?>
 				<td width="40" class="td_c" nowrap="nowrap">
                 <?php
                 if ( !$this->config['show_highslide'] )
 		{
 					/*
-          echo JoomleagueHelper::getPictureThumb($picture, $playerName,
+          echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
 															$this->config['staff_picture_width'],
 															$this->config['staff_picture_height']);
 															*/
@@ -154,7 +160,7 @@ if (count($this->stafflist) > 0)
 				<td class="td_l"><?php
 				if ($this->config['link_staff']==1)
 				{
-					$link=JoomleagueHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$row->slug);
+					$link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$row->slug);
 					echo JHTML::link($link, '<span class="staffname">'. $playerName.'</span>');
 				}
 				else
@@ -172,14 +178,14 @@ if (count($this->stafflist) > 0)
 						switch ($this->config['show_birthday_staff'])
 						{
 							case 1:	 // show Birthday and Age
-								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));
-								$birthdateStr.="&nbsp;(".JoomleagueHelper::getAge($row->birthday,$row->deathday).")";
+								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 2:	 // show Only Birthday
-								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));
+								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								break;
 							case 3:	 // show Only Age
-								$birthdateStr = "(".JoomleagueHelper::getAge($row->birthday,$row->deathday).")";
+								$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 4:	 // show Only Year of birth
 								$birthdateStr = JHTML::date($row->birthday, 'Y');
@@ -196,7 +202,7 @@ if (count($this->stafflist) > 0)
 					// deathday
 					if ( $row->deathday !="0000-00-00" )
 					{
-						$birthdateStr .= ' [ &dagger; '.JHTML::date($row->deathday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE')).']';
+						$birthdateStr .= ' [ &dagger; '.JHTML::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 					}
 							
 					echo $birthdateStr;
@@ -213,11 +219,11 @@ if (count($this->stafflist) > 0)
 				switch ($this->config['staff_position_format'])
 				{
 					case 2:	 // show member with text
-								$staff_position = JText::sprintf('COM_JOOMLEAGUE_ROSTER_MEMBER_OF',JText::_($row->parentname));
+								$staff_position = JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($row->parentname));
 								break;
 
 					case 3:	 // show function with text
-								$staff_position .= JText::sprintf('COM_JOOMLEAGUE_ROSTER_FUNCTION_IS',JText::_($row->position));
+								$staff_position .= JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',JText::_($row->position));
 								break;
 
 					case 4:	 // show only function
@@ -229,9 +235,9 @@ if (count($this->stafflist) > 0)
 								break;
 
 					default: // show member+function with text
-								$staff_position = JText::sprintf('COM_JOOMLEAGUE_ROSTER_MEMBER_OF',JText::_($row->parentname));
+								$staff_position = JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($row->parentname));
 								$staff_position .= '<br />';
-								$staff_position .= JText::sprintf('COM_JOOMLEAGUE_ROSTER_FUNCTION_IS',JText::_($row->position));
+								$staff_position .= JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',JText::_($row->position));
 								break;
 				}
 				echo $staff_position;

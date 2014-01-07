@@ -7,31 +7,32 @@ jimport('joomla.application.component.model');
 
 class sportsmanagementModelRoster extends JModel
 {
-	var $projectid=0;
-	var $projectteamid=0;
-	var $projectteam=null;
-	var $team=null;
+	var $projectid = 0;
+	var $projectteamid = 0;
+	var $projectteam = null;
+	var $team = null;
+    var $seasonid = 0;
 
 	/**
 	 * caching for team in out stats
 	 * @var array
 	 */
-	var $_teaminout=null;
+	var $_teaminout = null;
 
 	/**
 	 * caching players
 	 * @var array
 	 */
-	var $_players=null;
+	var $_players = null;
 
 	function __construct()
 	{
 		parent::__construct();
 
-		$this->projectid=JRequest::getInt('p',0);
-		$this->teamid=JRequest::getInt('tid',0);
-		$this->projectteamid=JRequest::getInt('ttid',0);
-		$this->getProjectTeam();
+		$this->projectid = JRequest::getInt('p',0);
+		$this->teamid = JRequest::getInt('tid',0);
+		$this->projectteamid = JRequest::getInt('ttid',0);
+		self::getProjectTeam();
 	}
 
 	/**
@@ -95,7 +96,7 @@ class sportsmanagementModelRoster extends JModel
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
 						WHERE t.id='.$this->_db->Quote($this->teamid);
 			$this->_db->setQuery($query);
-			$this->team=$this->_db->loadObject();
+			$this->team = $this->_db->loadObject();
 		}
 		return $this->team;
 	}
@@ -104,12 +105,48 @@ class sportsmanagementModelRoster extends JModel
 	 * return team players by positions
 	 * @return array
 	 */
-	function getTeamPlayers()
+	function getTeamPlayers($persontype = 1)
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$projectteam = self::getprojectteam();
-		if (empty($this->_players))
-		{
-			$query='	SELECT	pr.firstname, 
+		//if (empty($this->_players))
+		//{
+			
+        // Select some fields
+		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.picture AS ppic');
+        $query->select('tp.id AS playerid,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');    
+        $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug');
+        $query->select('pos.name AS position');
+        $query->select('ppos.position_id,ppos.id as pposid');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');    
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id = pr.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
+        switch ( $persontype )
+        {
+            case 1:
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+            break;
+            case 2:
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS posparent ON pos.parent_id = posparent.id');
+            break;
+        }
+        
+        $query->where('pt.id='.$this->_db->Quote($projectteam->id));
+        $query->where('pr.published = 1');
+        $query->where('tp.published = 1');
+        $query->where('tp.persontype = '.$persontype);
+        $query->where('tp.season_id = '.$this->seasonid);  
+        $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
+            
+            /*
+            $query='	SELECT	pr.firstname, 
 								pr.nickname,
 								pr.lastname,
 								pr.country,
@@ -138,24 +175,46 @@ class sportsmanagementModelRoster extends JModel
 						AND pr.published = 1
 						AND tp.published = 1
 						ORDER BY pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname';
+                        
 			$this->_db->setQuery($query);
-			$this->_players=$this->_db->loadObjectList();
-		}
-		$bypos=array();
-		foreach ($this->_players as $player)
-		{
+			$this->_players = $this->_db->loadObjectList();
+            */
+            
+            $db->setQuery($query);
+            $this->_players = $db->loadObjectList();
+            if ( !$this->_players )
+            {
+              
+            $mainframe->enqueueMessage(JText::_('getTeamPlayers _players<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');    
+            }
+            
+		//}
+        switch ( $persontype )
+        {
+            case 1:
+            $bypos = array();
+		      foreach ($this->_players as $player)
+		      {
 			if (isset($bypos[$player->position_id]))
 			{
-				$bypos[$player->position_id][]=$player;
+				$bypos[$player->position_id][] = $player;
 			}
 			else
 			{
-				$bypos[$player->position_id]= array($player);
+				$bypos[$player->position_id] = array($player);
 			}
-		}
-		return $bypos;
+		      }
+		      return $bypos;
+            break;
+            case 2:
+            return $this->_players;
+            break;
+        }
+        
+		
 	}
 
+/*
 	function getStaffList()
 	{
 		$projectteam = self::getprojectteam();
@@ -189,10 +248,10 @@ class sportsmanagementModelRoster extends JModel
 					  AND ts.published = 1
 					ORDER BY pos.parent_id, pos.ordering, ts.ordering';
 		$this->_db->setQuery($query);
-		$stafflist=$this->_db->loadObjectList();
+		$stafflist = $this->_db->loadObjectList();
 		return $stafflist;
 	}
-
+*/
 	function getPositionEventTypes($positionId=0)
 	{
 		$result=array();
@@ -335,7 +394,7 @@ class sportsmanagementModelRoster extends JModel
 
 	function getTeamEventStat($eventtype_id)
 	{
-		$projectteam =& $this->getprojectteam();
+		$projectteam = self::getprojectteam();
 		$query='	SELECT	SUM(me.event_sum) as total,
 							tp.person_id
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me
@@ -350,7 +409,7 @@ class sportsmanagementModelRoster extends JModel
 
 	function getInOutStats($player_id)
 	{
-		$teaminout=&$this->_getTeamInOutStats();
+		$teaminout = self::_getTeamInOutStats();
 		if (isset($teaminout[$player_id])) {
 			return $teaminout[$player_id];
 		}
@@ -361,7 +420,7 @@ class sportsmanagementModelRoster extends JModel
 
 	function _getTeamInOutStats()
 	{
-		$projectteam=&$this->getprojectteam();
+		$projectteam = self::getprojectteam();
 		if (empty($this->_teaminout))
 		{
 			$projectteam_id = $this->_db->Quote($projectteam->id);

@@ -63,11 +63,16 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'databasetool.php');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'sportsmanagement.php');    
 
-/*
-$document	= JFactory::getDocument();
-$file = JPATH_COMPONENT.DS.'assets'.DS.'js'.DS.'smsportsmanagement.js';
-$document->addScript($file);
-*/
+// sprachdatei aus dem backend laden
+$langtag = JFactory::getLanguage();
+//echo 'Current language is: ' . $langtag->getTag();
+
+$lang = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
     
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );

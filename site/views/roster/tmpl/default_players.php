@@ -105,19 +105,19 @@ if (!empty($this->rows))
 				switch ( $this->config['show_birthday'] )
 				{
 					case 	1:			// show Birthday and Age
-						$outputStr = 'COM_JOOMLEAGUE_PERSON_BIRTHDAY_AGE';
+						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
 						break;
 
 					case 	2:			// show Only Birthday
-						$outputStr = 'COM_JOOMLEAGUE_PERSON_BIRTHDAY';
+						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
 						break;
 
 					case 	3:			// show Only Age
-						$outputStr = 'COM_JOOMLEAGUE_PERSON_AGE';
+						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
 						break;
 
 					case 	4:			// show Only Year of birth
-						$outputStr = 'COM_JOOMLEAGUE_PERSON_YEAR_OF_BIRTH';
+						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 						break;
 				}
 				echo JText::_( $outputStr );
@@ -136,7 +136,7 @@ if (!empty($this->rows))
 			if ($this->config['show_games_played'])
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_JOOMLEAGUE_ROSTER_PLAYED');
+				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
 				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
@@ -145,23 +145,23 @@ if (!empty($this->rows))
 			if ($this->config['show_substitution_stats'])
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_JOOMLEAGUE_ROSTER_STARTING_LINEUP');
+				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_JOOMLEAGUE_ROSTER_IN');
+				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
 				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_JOOMLEAGUE_ROSTER_OUT');
+				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
 				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
         
         <th class="td_c"><?php
-				$imageTitle=JText::_('COM_JOOMLEAGUE_PLAYED_TIME');
+				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
@@ -186,7 +186,8 @@ if (!empty($this->rows))
 						}
 						else
 						{
-							$iconPath=$eventtype->icon;
+							$iconPath = $eventtype->icon;
+                            //echo $iconPath.'<br>';
 							if (!strpos(' '.$iconPath,'/'))
 							{
 								$iconPath='images/com_sportsmanagement/database/events/'.$iconPath;
@@ -226,7 +227,7 @@ if (!empty($this->rows))
 	{
 	?>
 		<th class="td_c">
-			<?php echo JText::_('COM_JOOMLEAGUE_EURO_MARKET_VALUE');?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE');?>
 		</th>
 						<?php
 	}
@@ -258,27 +259,27 @@ if (!empty($this->rows))
 			?>
 		<td width="30" class="td_c"><?php echo $value;?></td><?php
 		}
-		$playerName = JoomleagueHelper::formatName(null, $row->firstname, 
+		$playerName = sportsmanagementHelper::formatName(null, $row->firstname, 
 													$row->nickname, 
 													$row->lastname, 
 													$this->config["name_format"]);
 		if ($this->config['show_player_icon'])
 		{
 			$picture = $row->picture;
-			if ((empty($picture)) || ($picture == JoomleagueHelper::getDefaultPlaceholder("player") ))
+			if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ))
 			{
 				$picture = $row->ppic;
 			}
 			if ( !file_exists( $picture ) )
 			{
-				$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 			} ?>
 		<td width="40" class="td_c" nowrap="nowrap">
         <?php
 		if ( !$this->config['show_highslide'] )
 		{
         	/*
-          echo JoomleagueHelper::getPictureThumb($picture, $playerName,
+          echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
 													$this->config['player_picture_width'],
 													$this->config['player_picture_height']);
         */
@@ -316,7 +317,7 @@ if (!empty($this->rows))
 		<td class="td_l"><?php
 		if ($this->config['link_player']==1)
 		{
-			$link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
+			$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
 			echo JHTML::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else
@@ -326,22 +327,22 @@ if (!empty($this->rows))
 		?></td>
 		<td width="5%" style="text-align: left;" class="nowrap">&nbsp; <?php
 		$model = $this->getModel();
-		$this->assignRef('playertool',$model->getTeamPlayer($this->project->current_round,$row->playerid));
+		$this->assign('playertool',$model->getTeamPlayer($this->project->current_round,$row->playerid));
 		if (!empty($this->playertool[0]->injury))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_INJURED');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_SUSPENDED');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_AWAY');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
@@ -356,14 +357,14 @@ if (!empty($this->rows))
 				switch ($this->config['show_birthday'])
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));
-						$birthdateStr.="&nbsp;(".JoomleagueHelper::getAge($row->birthday,$row->deathday).")";
+						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 						break;
 					case 2:	 // show Only Birthday
-						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));
+						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						break;
 					case 3:	 // show Only Age
-						$birthdateStr = "(".JoomleagueHelper::getAge($row->birthday,$row->deathday).")";
+						$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 						break;
 					case 4:	 // show Only Year of birth
 						$birthdateStr = JHTML::date($row->birthday, 'Y');
@@ -374,8 +375,8 @@ if (!empty($this->rows))
 				}
         // das alter berechnen zur weiterberechnung des durchschnittsalters
         // nicht das alter normal berechnen, sonder das alter des spielers in der saison
-        //$age += JoomleagueHelper::getAge( $row->birthday,$row->deathday );
-        $age += JoomleagueHelper::getAge( $row->birthday,$this->lastseasondate );
+        //$age += sportsmanagementHelper::getAge( $row->birthday,$row->deathday );
+        $age += sportsmanagementHelper::getAge( $row->birthday,$this->lastseasondate );
         $countplayer++;
         
 			}
@@ -386,7 +387,7 @@ if (!empty($this->rows))
 			// deathday
 			if ( $row->deathday !="0000-00-00" )
 			{
-				$birthdateStr .= ' [&dagger; '.JHTML::date($row->deathday, JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE')).']';
+				$birthdateStr .= ' [&dagger; '.JHTML::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}
 					
 			echo $birthdateStr;
@@ -400,9 +401,9 @@ if (!empty($this->rows))
 		}
 		if ($this->overallconfig['use_jl_substitution'])
 		{
-			// Events of COM_JOOMLEAGUE_substitutions are shown
+			// Events of COM_SPORTSMANAGEMENT_substitutions are shown
 			$model = $this->getModel();
-			$this->assignRef('InOutStat',$model->getInOutStats($row->pid));
+			$this->assign('InOutStat',$model->getInOutStats($row->pid));
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{
 				//$played  = $this->InOutStat->played;
@@ -434,7 +435,7 @@ if (!empty($this->rows))
             
             // spielzeit des spielers
             $timePlayed = 0;
-            $this->assignRef('timePlayed',$model->getTimePlayed($row->playerid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+            $this->assign('timePlayed',$model->getTimePlayed($row->playerid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
             $timePlayed  = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{
@@ -559,8 +560,8 @@ if (!empty($this->rows))
   }
 		?>
 	<tr class='<?php echo ($k==0? 'sectiontableentry1' : 'sectiontableentry2').' totals'; ?>'>
-    <td class="td_r" colspan="3"><?php echo JText::_('COM_JOOMLEAGUE_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
-		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo JText::_('COM_JOOMLEAGUE_ROSTER_TOTAL'); ?></b></td>
+    <td class="td_r" colspan="3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
+		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?></b></td>
         <td class="td_r"> : </td>
 		<?php
 		if ($this->config['show_events_stats'])
