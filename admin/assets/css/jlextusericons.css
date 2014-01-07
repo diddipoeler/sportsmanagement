@@ -1,4 +1,5 @@
 /* mod_quickicon */
+
 #cpanel {
 	text-align: center;
 	vertical-align: middle;
@@ -40,6 +41,7 @@
 	display: block;
 	padding-top: 3px;
 }
+
 /** header icons component**/
 .icon-48-agegroups {
 	background-image: url(../icons/altersklassen.png);
