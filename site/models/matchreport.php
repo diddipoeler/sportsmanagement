@@ -31,11 +31,13 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	var $_staffsbasicstats=null;
 
-	function __construct()
-	{
-		$this->matchid = JRequest::getInt('mid',0);
-		parent::__construct();
-	}
+/**
+ * 	function __construct()
+ * 	{
+ * 		$this->matchid = JRequest::getInt('mid',0);
+ * 		parent::__construct();
+ * 	}
+ */
 
 /**
  * 	// Functions (some specific for Matchreport) below to be replaced to project.php when recoded to general functions
@@ -44,8 +46,8 @@ class sportsmanagementModelMatchReport extends JModel
  * 		if (is_null($this->match))
  * 		{
  * 			$query=' SELECT m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.project_id '
- * 			      .' FROM #__joomleague_match AS m '
- * 			      .' INNER JOIN #__joomleague_round AS r on r.id=m.round_id '
+ * 			      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
+ * 			      .' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on r.id=m.round_id '
  * 			      .' WHERE m.id='. $this->_db->Quote($this->matchid)
  * 			            ;
  * 			$this->_db->setQuery($query,0,1);
@@ -157,9 +159,9 @@ class sportsmanagementModelMatchReport extends JModel
 	{
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
-					FROM #__joomleague_position AS pos
-					INNER JOIN #__joomleague_project_position AS ppos ON pos.id=ppos.position_id
-					INNER JOIN #__joomleague_match_player AS mp ON ppos.id=mp.project_position_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON ppos.id=mp.project_position_id
 					WHERE mp.match_id='.(int)$this->matchid.'
 					GROUP BY pos.id
 					ORDER BY pos.ordering ASC ';
@@ -171,9 +173,9 @@ class sportsmanagementModelMatchReport extends JModel
 	{
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
-					FROM #__joomleague_position AS pos
-					INNER JOIN #__joomleague_project_position AS ppos ON pos.id=ppos.position_id
-					INNER JOIN #__joomleague_match_staff AS mp ON ppos.id=mp.project_position_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp ON ppos.id=mp.project_position_id
 					WHERE mp.match_id='.(int)$this->matchid.'
 					GROUP BY pos.id
 					ORDER BY pos.ordering ASC ';
@@ -185,9 +187,9 @@ class sportsmanagementModelMatchReport extends JModel
 	{
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
-					FROM #__joomleague_position AS pos
-					INNER JOIN #__joomleague_project_position AS ppos ON pos.id=ppos.position_id
-					INNER JOIN #__joomleague_match_referee AS mp ON ppos.id=mp.project_position_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp ON ppos.id=mp.project_position_id
 					WHERE mp.match_id='.(int)$this->matchid.'
 					GROUP BY pos.id
 					ORDER BY pos.ordering ASC ';
@@ -197,6 +199,12 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getMatchPlayers()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$query=' SELECT	pt.id,'
 		      .' tp.person_id,'
 		      .' p.firstname,'
@@ -213,23 +221,33 @@ class sportsmanagementModelMatchReport extends JModel
 			  .' p.picture AS ppic,'
 		      .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
 		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-		      .' FROM #__joomleague_match_player AS mp '
-		      .' INNER JOIN	#__joomleague_team_player AS tp ON tp.id=mp.teamplayer_id '
-		      .' INNER JOIN	#__joomleague_project_team AS pt ON pt.id=tp.projectteam_id '
-		      .' INNER JOIN	#__joomleague_team AS t ON t.id=pt.team_id '
-		      .' INNER JOIN	#__joomleague_person AS p ON tp.person_id=p.id '
-		      .' LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=mp.project_position_id '
-		      .' LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id '
+		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id '
 		      .' WHERE mp.match_id='.(int)$this->matchid
 		      .' AND mp.came_in=0 '
 		      .' AND p.published = 1 '
 		      .' ORDER BY mp.ordering, tp.jerseynumber, p.lastname ';
 		$this->_db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Error');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Error');
+        
 		return $this->_db->loadObjectList();
 	}
 
 	function getMatchStaff()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$query=' SELECT	p.id,'
 		      .' p.id AS person_id,'
 		      .' ms.team_staff_id,'
@@ -243,23 +261,27 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' tp.picture,'
 			  .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
 			  .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-		      .' FROM #__joomleague_match_staff AS ms '
-		      .' INNER JOIN	#__joomleague_team_staff AS tp ON tp.id=ms.team_staff_id '
-		      .' INNER JOIN	#__joomleague_project_team AS pt ON pt.id=tp.projectteam_id '
-		      .' INNER JOIN	#__joomleague_person AS p ON tp.person_id=p.id '
-		      .' INNER JOIN	#__joomleague_team AS t ON t.id=pt.team_id '
-		      .' LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=ms.project_position_id '
-		      .' LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id '
+		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id=ms.team_staff_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=tp.team__id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ms.project_position_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
 		      .' WHERE ms.match_id='.(int)$this->matchid
 		      .'  AND p.published = 1';
 		       $this->_db->setQuery($query);
+               
+               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Error');
+               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Error');
+               
 		return $this->_db->loadObjectList();
 	}
 
 	function getMatchCommentary()
     {
         $query = "SELECT *  
-    FROM #__joomleague_match_commentary
+    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
     WHERE match_id = ".(int)$this->matchid." 
     ORDER BY event_time DESC";
     $this->_db->setQuery($query);
@@ -277,11 +299,11 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' ppos.id AS pposid,'
 		      .' pos.name AS position_name ,'
 		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-		      .' FROM #__joomleague_match_referee AS mr '
-		      .' LEFT JOIN #__joomleague_project_referee AS pref ON mr.project_referee_id=pref.id '
-		      .' INNER JOIN #__joomleague_person AS p ON pref.person_id=p.id '
-		      .' LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=mr.project_position_id '
-		      .' LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id '
+		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id '
+		      .' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mr.project_position_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
 		      .' WHERE mr.match_id='.(int)$this->matchid
 		      .' AND p.published = 1';
 		$this->_db->setQuery($query);
@@ -311,20 +333,20 @@ class sportsmanagementModelMatchReport extends JModel
 						ppos2.id AS pposid2,
 						CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,
 						CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug
-					FROM #__joomleague_match_player AS mp
-						LEFT JOIN #__joomleague_team_player AS tp ON mp.teamplayer_id=tp.id
-						LEFT JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id
-						LEFT JOIN #__joomleague_person AS p ON tp.person_id=p.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON mp.teamplayer_id=tp.id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON tp.projectteam_id=pt.id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id
 						  AND p.published = 1
-						LEFT JOIN #__joomleague_team_player AS tp2 ON mp.in_for=tp2.id
-						LEFT JOIN #__joomleague_person AS p2 ON tp2.person_id=p2.id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp2 ON mp.in_for=tp2.id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id=p2.id
 						  AND p2.published = 1
-						LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=mp.project_position_id
-						LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id
-						LEFT JOIN #__joomleague_match_player AS mp2 ON mp.match_id=mp2.match_id and mp.in_for=mp2.teamplayer_id
-						LEFT JOIN #__joomleague_project_position AS ppos2 ON ppos2.id=mp2.project_position_id
-						LEFT JOIN #__joomleague_position AS pos2 ON ppos2.position_id=pos2.id
-						INNER JOIN #__joomleague_team AS t ON t.id=pt.team_id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mp.project_position_id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp2 ON mp.match_id=mp2.match_id and mp.in_for=mp2.teamplayer_id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos2 ON ppos2.id=mp2.project_position_id
+						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id=pos2.id
+						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id
 					WHERE mp.match_id = '.(int)$this->matchid.' 
 					  AND mp.came_in > 0
 					GROUP BY mp.in_out_time, mp.teamplayer_id, pt.team_id
@@ -340,9 +362,9 @@ class sportsmanagementModelMatchReport extends JModel
 		$query='	SELECT	et.id,
 							et.name,
 							et.icon
-					FROM #__joomleague_eventtype AS et
-					INNER JOIN #__joomleague_position_eventtype AS pet ON pet.eventtype_id=et.id					
-					LEFT JOIN #__joomleague_match_event AS me ON et.id=me.event_type_id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id					
+					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id
 					WHERE me.match_id='.(int)$this->matchid.'
 					GROUP BY et.id
 					ORDER BY pet.ordering ';
@@ -367,7 +389,7 @@ class sportsmanagementModelMatchReport extends JModel
 	function getMatchStats()
 	{
 		$match = sportsmanagementModelMatch::getMatchData($this->matchid);
-		$query=' SELECT * FROM #__joomleague_match_statistic '
+		$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 		      .' WHERE match_id='. $this->_db->Quote($match->id);
 		$this->_db->setQuery($query);
 		$res=$this->_db->loadObjectList();
@@ -393,7 +415,7 @@ class sportsmanagementModelMatchReport extends JModel
 		{
 			$match=&$this->getMatch();
 
-			$query=' SELECT * FROM #__joomleague_match_statistic '
+			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 			      .' WHERE match_id='. $this->_db->Quote($match->id);
 			$this->_db->setQuery($query);
 			$res=$this->_db->loadObjectList();
@@ -422,7 +444,7 @@ class sportsmanagementModelMatchReport extends JModel
 		{
 			$match = sportsmanagementModelMatch::getMatchData($this->matchid);
 
-			$query=' SELECT * FROM #__joomleague_match_event '
+			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '
 			      .' WHERE match_id='. $this->_db->Quote($match->id);
 			$this->_db->setQuery($query);
 			$res=$this->_db->loadObjectList();
@@ -451,7 +473,7 @@ class sportsmanagementModelMatchReport extends JModel
 		{
 			$match = sportsmanagementModelMatch::getMatchData($this->matchid);
 
-			$query=' SELECT * FROM #__joomleague_match_staff_statistic '
+			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic '
 			      .' WHERE match_id='. $this->_db->Quote($match->id);
 			$this->_db->setQuery($query);
 			$res=$this->_db->loadObjectList();
@@ -474,11 +496,11 @@ class sportsmanagementModelMatchReport extends JModel
 		$query="SELECT	m.*,
 						t1.name t1name,
 						t2.name t2name
-				FROM #__joomleague_match AS m
-				INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id
-				INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id
-				INNER JOIN #__joomleague_team AS t1 ON pt1.team_id=t1.id
-				INNER JOIN #__joomleague_team AS t2 ON pt2.team_id=t2.id
+				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
+				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt1 ON m.projectteam1_id=pt1.id
+				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt2 ON m.projectteam2_id=pt2.id
+				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t1 ON pt1.team_id=t1.id
+				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t2 ON pt2.team_id=t2.id
 				WHERE m.id=".$match_id."
 				AND m.published=1
 				ORDER BY m.match_date,t1.short_name";
@@ -495,7 +517,7 @@ class sportsmanagementModelMatchReport extends JModel
   if ( $schemahome )
   {
   $query =" SELECT extended"
-				. " FROM #__joomleague_rosterposition "
+				. " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_rosterposition "
 				. " WHERE name LIKE '" . $schemahome ."'"
 				. " AND short_name = 'HOME_POS'";
 		$db->setQuery($query);
@@ -530,7 +552,7 @@ class sportsmanagementModelMatchReport extends JModel
   if ( $schemaaway )
   {
   $query =" SELECT extended"
-				. " FROM #__joomleague_rosterposition "
+				. " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_rosterposition "
 				. " WHERE name LIKE '" . $schemaaway ."'"
 				. " AND short_name = 'AWAY_POS'";
 		$db->setQuery($query);

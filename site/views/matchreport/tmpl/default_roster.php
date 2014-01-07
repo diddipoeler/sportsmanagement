@@ -43,9 +43,9 @@ if (!empty($this->matchplayerpositions))
 										?>
 										<li <?php echo ($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_left"' : 'class="list"') ?>>
 											<?php
-											$player_link = JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
+											$player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
 											$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
-											$match_player = JoomleagueHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+											$match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 											$isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
                                             if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
@@ -73,17 +73,17 @@ if (!empty($this->matchplayerpositions))
                                             {
                                                 $imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
                                                 $picture=$player->picture;
-                                                if ((empty($picture)) || ($picture == JoomleagueHelper::getDefaultPlaceholder("player") ) || !file_exists( $picture ) )
+                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !file_exists( $picture ) )
                                                 {
                                                     $picture = $player->ppic;
                                                 }
                                                 if ( !file_exists( $picture ) )
                                                 {
-                                                    $picture = JoomleagueHelper::getDefaultPlaceholder("player");
+                                                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                                                 }
                                                 if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) ){
 												/*
-                                                	echo JHTML::link($player_link,JoomleagueHelper::getPictureThumb($picture,
+                                                	echo JHTML::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
 																													$imgTitle,
 																													$this->config['player_picture_width'],
 																													$this->config['player_picture_height']));
@@ -97,7 +97,7 @@ if (!empty($this->matchplayerpositions))
                                                 <?PHP
                                                 } else {
 													/*
-                                                    echo JoomleagueHelper::getPictureThumb($picture,
+                                                    echo sportsmanagementHelper::getPictureThumb($picture,
 																							$imgTitle,
 																							$this->config['player_picture_width'],
 																							$this->config['player_picture_height']);
@@ -146,26 +146,26 @@ if (!empty($this->matchplayerpositions))
 										?>
 										<li <?php echo ($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_right"' : 'class="list"') ?>>
 											<?php
-											$player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
+											$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
 											$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
-											$match_player=JoomleagueHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+											$match_player=sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 											$isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
                                             if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
                                             {
                                                 $imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
                                                 $picture=$player->picture;
-                                                if ((empty($picture)) || ($picture == JoomleagueHelper::getDefaultPlaceholder("player") ) || !file_exists( $picture ) )
+                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !file_exists( $picture ) )
                                                 {
                                                     $picture = $player->ppic;
                                                 }
                                                 if ( !file_exists( $picture ) )
                                                 {
-                                                    $picture = JoomleagueHelper::getDefaultPlaceholder("player");
+                                                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                                                 }
                                                  if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) ){
 													/*
-                                                    echo JHTML::link($player_link,JoomleagueHelper::getPictureThumb($picture,
+                                                    echo JHTML::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
 																													$imgTitle,
 																													$this->config['player_picture_width'],
 																													$this->config['player_picture_height']));
@@ -178,7 +178,7 @@ if (!empty($this->matchplayerpositions))
                                                     }
                                                 } else {
 													/*
-                                                    echo JoomleagueHelper::getPictureThumb($picture,
+                                                    echo sportsmanagementHelper::getPictureThumb($picture,
 																							$imgTitle,
 																							$this->config['player_picture_width'],
 																							$this->config['player_picture_height']);

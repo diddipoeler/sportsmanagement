@@ -106,7 +106,7 @@ class sportsmanagementModelProject extends JModel
 
 	function getSportsType()
 	{
-		if (!$project = $this->getProject())
+		if (!$project = self::getProject())
 		{
 			$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 			return false;

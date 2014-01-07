@@ -28,6 +28,8 @@ class sportsmanagementViewMatchReport extends JView
         $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
 		$model = $this->getModel();
+        $model->matchid = JRequest::getInt('mid',0);
+        
 		$config=sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project=sportsmanagementModelProject::getProject();
 		$match=sportsmanagementModelMatch::getMatchData(JRequest::getInt( "mid", 0 ));
@@ -58,7 +60,7 @@ class sportsmanagementViewMatchReport extends JView
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
 		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc));
 		$this->assign('playground',$model->getPlayground($this->match->playground_id));
-        $this->assignRef('stats',sportsmanagementModelProject::getProjectStats());
+        $this->assign('stats',sportsmanagementModelProject::getProjectStats());
 		$this->assign('playerstats',$model->getMatchStats());
 		$this->assign('staffstats',$model->getMatchStaffStats());
 		$this->assignRef('model',$model);

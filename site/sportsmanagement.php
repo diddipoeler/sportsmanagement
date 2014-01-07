@@ -49,6 +49,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'project.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'person.php');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'divisions.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'rounds.php');
