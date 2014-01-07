@@ -32,6 +32,11 @@ JHTML::_('behavior.tooltip');
         <div class="cpanel">          
           <div class="icon-wrapper">            
             <div id="icon">              
+              <?php echo $this->addIcon('sportarten.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
+            </div>          
+          </div>        
+          <div class="icon-wrapper">            
+            <div id="icon">              
               <?php echo $this->addIcon('saisons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>            
             </div>          
           </div>          
