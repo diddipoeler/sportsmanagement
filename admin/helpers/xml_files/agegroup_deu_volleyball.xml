@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<agegroups><agegroup country="DEU" info="F-Jugend(U12)" picture="" >F-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Jugend(U13)weibl." picture="" >w.E-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Jugend(U13)maennl." picture="" >m.E-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Jugend(U14)weibl." picture="" >w.D-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Jugend(U14)maennl." picture="" >m.D-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Jugend(U16)weibl." picture="" >w.C-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Jugend(U16)maennl." picture="" >m.C-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Jugend(U18)weibl." picture="" >w.B-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Jugend(U18)maennl." picture="" >m.B-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="A-Jugend(U20)weibl." picture="" >w.A-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="A-Jugend(U20)maennl." picture="" >m.A-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Herren" picture="" >Herren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Frauen" picture="" >Frauen</agegroup></agegroups>
+
+</structur>
