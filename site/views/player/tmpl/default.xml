@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_JOOMLEAGUE_XML_PLAYER_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_JOOMLEAGUE_XML_PLAYER_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_JOOMLEAGUE_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_joomleague/elements">
+
+			<field	name="p" type="project"
+					label="COM_JOOMLEAGUE_XML_SELECT_PROJECT_LABEL"
+					description="COM_JOOMLEAGUE_XML_SELECT_PROJECT_DESCR"
+					required="true">
+			</field>
+			<field	name="pid" type="dependsql" depends="p" task="projectplayeroptions" 
+					label="COM_JOOMLEAGUE_XML_PLAYER_SELECT_PLAYER_LABEL"
+					description="COM_JOOMLEAGUE_XML_PLAYER_SELECT_PLAYER_DESCR"
+					required="true">
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>
