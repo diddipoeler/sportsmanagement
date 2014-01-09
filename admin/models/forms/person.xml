@@ -2,7 +2,8 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
+	
+  <fieldset name="details"
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
@@ -22,13 +23,60 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
+			size="90"
 			required="true"/>		
 		<field
 			name="nickname"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME_DESC"
-			class="inputbox"/>		
+			class="inputbox"/>	
+      
+<field
+			name="person_art"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
+		</field>	
+
+<field
+			name="person_id1"
+			type="hidden"
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+<field
+			name="person_id2"
+			type="hidden"
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+          	
 		<field
 			name="published"
 			type="list"
@@ -231,7 +279,12 @@
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
 			class="inputbox"/>  
-       	
+
+	
+
+
+
+           	
 	</fieldset>
 	
 <fieldset name="maps"

@@ -491,7 +491,15 @@ class sportsmanagementModelJLXMLImport extends JModel
 				$i++;
 			}
             
-            
+            // bilderpfade anpassen
+            if ( isset($this->_datas['person']) )
+            {
+            foreach ($this->_datas['person'] as $person)
+            {
+                $person->picture = str_replace('com_joomleague', $option, $person->picture);
+            }    
+            }
+                
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_datas['league'],true).'</pre>'   ),'');
             $this->_league_new_country = (string) $this->_datas['league']->country;
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_league_new_country,true).'</pre>'   ),'');
@@ -514,7 +522,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
             
             // klartexte in textvariable umwandeln.
-            $query="SELECT name,alias FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name LIKE '%".$sport_type_name."%'";
+            $query = "SELECT name,alias FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name LIKE '%".$sport_type_name."%'";
             $this->_db->setQuery($query);
 		    $this->_db->query();
 		    if ($this->_db->getAffectedRows())
@@ -5075,6 +5083,7 @@ $this->dump_variable("import_team", $import_team);
         $db = JFactory::getDbo();
         // $this->_project_id
         // $this->_season_id 
+        $my_text='';
         
         // die schiedsrichter verarbeiten
         $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
@@ -5099,7 +5108,7 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
@@ -5132,10 +5141,44 @@ $this->dump_variable("import_team", $import_team);
          
         foreach ( $result_pt as $proteam )
         {
-            //$table_ST = JTable::getInstance("seasonteam", "sportsmanagementTable");
-            
             //echo "<b>seasonteam</b><pre>".print_r($table_ST,true)."</pre>";
             
+            // ist das team schon durch ein anderes projekt angelegt ?
+            $query = $db->getQuery(true);
+		    $query->select('id');		
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->where('t.team_id = '.$proteam->team_id);
+            $query->where('t.season_id = '.$this->_season_id);
+		    $db->setQuery($query);
+		    $new_team_id = $db->loadResult();
+                        
+            if ( $new_team_id )
+            {
+                $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'mannschaft vorhanden season_team_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+													"</span><strong>$proteam->team_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+                        
+                // die project team tabelle updaten
+                $new_team_id = $db->insertid();
+                // Fields to update.
+                $query = $db->getQuery(true);
+                $fields = array(
+                $db->quoteName('team_id') . '=' . $new_team_id
+                );
+                // Conditions for which records should be updated.
+                $conditions = array(
+                $db->quoteName('team_id') . '=' . $proteam->team_id
+                );
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $result = $db->query();
+            }
+            else
+            {
             // Create a new query object.
             $insertquery = $db->getQuery(true);
             // Insert columns.
@@ -5152,7 +5195,7 @@ $this->dump_variable("import_team", $import_team);
             
 			if (!$db->query())
 			{
-			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			}
 			else
 			{
@@ -5174,13 +5217,45 @@ $this->dump_variable("import_team", $import_team);
                 
 			}
             
+            $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+						$my_text .= JText::sprintf(	'mannschaft nicht vorhanden und angelegt season_team_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+													"</span><strong>$proteam->team_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+            
+            }
+            
             // die spieler verarbeiten
             $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
             $this->_db->setQuery($query);
 		    $result_tp = $this->_db->loadObjectList();
             foreach ( $result_tp as $team_member )
             {
+                // ist der spieler schon durch ein anderes projekt angelegt ?
+                $query = $db->getQuery(true);
+		        $query->select('id');		
+		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		        $query->where('t.person_id = '.$team_member->person_id);
+                $query->where('t.season_id = '.$this->_season_id);
+                $query->where('t.persontype = 1');
+		        $db->setQuery($query);
+		        $new_player_id = $db->loadResult();
                 
+                if ( $new_player_id )
+                {
+                    // vorhanden
+                    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'spieler vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_player_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                else
+                {
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5197,12 +5272,39 @@ $this->dump_variable("import_team", $import_team);
             
 	            if (!$db->query())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
 			    }
                 
+                }
+                
+                // spieler dem team/saison schon zugeordnet ?
+                $query = $db->getQuery(true);
+		        $query->select('id');		
+		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS t');
+		        $query->where('t.person_id = '.$team_member->person_id);
+                $query->where('t.season_id = '.$this->_season_id);
+                $query->where('t.team_id = '.$new_team_id);
+                $query->where('t.persontype = 1');
+		        $db->setQuery($query);
+		        $new_match_player_id = $db->loadResult();
+                
+                if ( $new_match_player_id )
+                {
+                    // vorhanden
+                    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'spieler vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_match_player_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                else
+                {
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5219,12 +5321,24 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
 			    // die match player tabelle updaten
                 $new_match_player_id = $db->insertid();
+                $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+						$my_text .= JText::sprintf(	'spieler nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_match_player_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                
+                }
+                
                 // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
@@ -5245,7 +5359,7 @@ $this->dump_variable("import_team", $import_team);
                 // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
-                $db->quoteName('teamplayer_id') . '=' . $new_match_player_id
+                $db->quoteName('in_for') . '=' . $new_match_player_id
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
@@ -5255,7 +5369,7 @@ $this->dump_variable("import_team", $import_team);
                 $db->setQuery($query);
                 $result = $db->query(); 
                  
-			    }
+			    
             }
             
             // staffs verarbeiten
@@ -5265,6 +5379,29 @@ $this->dump_variable("import_team", $import_team);
             foreach ( $result_tp as $team_member )
             {
                 
+                // ist der spieler schon durch ein anderes projekt angelegt ?
+                $query = $db->getQuery(true);
+		        $query->select('id');		
+		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		        $query->where('t.person_id = '.$team_member->person_id);
+                $query->where('t.season_id = '.$this->_season_id);
+                $query->where('t.persontype = 2');
+		        $db->setQuery($query);
+		        $new_staff_id = $db->loadResult();
+                
+                if ( $new_staff_id )
+                {
+                    // vorhanden
+                    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'trainer vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_staff_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                else
+                {
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5281,13 +5418,38 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
-			     
 			    }
+                }
                 
+                // spieler dem team/saison schon zugeordnet ?
+                $query = $db->getQuery(true);
+		        $query->select('id');		
+		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS t');
+		        $query->where('t.person_id = '.$team_member->person_id);
+                $query->where('t.season_id = '.$this->_season_id);
+                $query->where('t.team_id = '.$new_team_id);
+                $query->where('t.persontype = 2');
+		        $db->setQuery($query);
+		        $new_match_staff_id = $db->loadResult();
+                
+                if ( $new_match_staff_id )
+                {
+                    //vorhanden
+                    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'trainer vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_match_staff_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                else
+                {
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5304,12 +5466,24 @@ $this->dump_variable("import_team", $import_team);
                 
 	            if (!$db->query())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
 			    // die match staff tabelle updaten
-                $new_match_staff_id = $db->insertid(); 
+                $new_match_staff_id = $db->insertid();
+                $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+						$my_text .= JText::sprintf(	'trainer nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_season_id</strong>",
+                                                    "<strong>$new_match_staff_id</strong>",
+                                                    "<strong>$new_team_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                
+                } 
+                
                 // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
@@ -5322,10 +5496,7 @@ $this->dump_variable("import_team", $import_team);
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();
-                
-                
-                
-			    }
+
             }
             
             
@@ -5337,6 +5508,8 @@ $this->dump_variable("import_team", $import_team);
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
+        
+        $this->_success_text[__FUNCTION__] = $my_text;
         
         self::setNewRoundDates();
         

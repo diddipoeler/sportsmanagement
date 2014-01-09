@@ -53,7 +53,9 @@ class sportsmanagementModelperson extends JModelAdmin
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        
+        
+        
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.person', 'person', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -61,6 +63,18 @@ class sportsmanagementModelperson extends JModelAdmin
 			return false;
 		}
         
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson form<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
+        
+        switch($form->getValue('person_art'))
+        {
+            case 1:
+            break;
+            case 2:
+            $form->setFieldAttribute('person_id1', 'type', 'personlist');
+            $form->setFieldAttribute('person_id2', 'type', 'personlist');
+            break;
+            
+        }
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -299,11 +313,36 @@ class sportsmanagementModelperson extends JModelAdmin
        $option = JRequest::getCmd('option');
        $post = JRequest::get('post');
        $address_parts = array();
+       $person_double = array();
        // Get a db connection.
         $db = JFactory::getDbo();
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       switch($data['person_art'])
+        {
+            case 1:
+            break;
+            case 2:
+            if ( $data['person_id1'] && $data['person_id2'] )
+            {
+            $person_1 = $data['person_id1'];
+            $person_2 = $data['person_id2'];
+            $table = 'person';
+            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
+            $row->load((int) $person_1);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $row->load((int) $person_2);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $data['lastname'] = implode(" - ",$person_double);
+            $data['firstname'] = '';
+            }
+            break;
+            
+        }
+       
+       
        
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{

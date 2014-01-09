@@ -42,9 +42,10 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
+<table width="100%" border="0">
+	<tr>
+		<td width="100%" valign="top">
 			<div id="cpanel">
-      <div class="icon-wrapper">            
-            <div id="icon">
 				<?php 
                 
                 foreach ( $this->sporttypes as $key => $value )
@@ -80,21 +81,8 @@ defined('_JEXEC') or die('Restricted access');
         		
                 
 			</div>
-      </div>
-      </div>
-
-<div style="text-align:center; clear:both">      
-      <br />      
-      <br />      
-      
-              <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target= "_blank" href="http://www.fussballineuropa.de">
-                <img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto"</a>            
-      <br />
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
-      <br />      
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy; 
-      <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
-      <br />      
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
-      <?php echo JText::sprintf( '%1$s', $this->version ); ?>     
-    </div>
+		</td>
+		
+	</tr>
+	
+</table>
