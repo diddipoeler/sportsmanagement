@@ -36,6 +36,7 @@
 			name="person_art"
 			type="list"
 			class="inputbox"
+			onchange="javascript:EditshowPersons();"
 			default="1"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
@@ -50,7 +51,7 @@
 
 <field
 			name="person_id1"
-			type="hidden"
+			type="personlist"
 			class="inputbox"
 			style="display:none"
 			default="0"
@@ -64,7 +65,7 @@
 		</field>	
 <field
 			name="person_id2"
-			type="hidden"
+			type="personlist"
 			class="inputbox"
 			style="display:none"
 			default="0"

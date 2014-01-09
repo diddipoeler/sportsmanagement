@@ -19,6 +19,8 @@ class sportsmanagementViewPerson extends JView
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel();
         $option = JRequest::getCmd('option');
+        // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
     // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -68,6 +70,18 @@ class sportsmanagementViewPerson extends JView
     {
         $this->form->setValue('agegroup_id', null, $person_range);
     }
+    
+    $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+    
+    $javascript = "\n";
+    $javascript .= "window.addEvent('domready', function() {";   
+    $javascript .= 'StartEditshowPersons('.$form->getValue('person_art').');' . "\n"; 
+    $javascript .= '});' . "\n"; 
+    $document->addScriptDeclaration( $javascript );
+    
+    
+    
+    
     
     //echo 'ext_fields<br><pre>'.print_r($this->ext_fields, true).'</pre><br>';
 

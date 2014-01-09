@@ -68,10 +68,12 @@ class sportsmanagementModelperson extends JModelAdmin
         switch($form->getValue('person_art'))
         {
             case 1:
+//            $form->setFieldAttribute('person_id1', 'type', 'hidden');
+//            $form->setFieldAttribute('person_id2', 'type', 'hidden');            
             break;
             case 2:
-            $form->setFieldAttribute('person_id1', 'type', 'personlist');
-            $form->setFieldAttribute('person_id2', 'type', 'personlist');
+//            $form->setFieldAttribute('person_id1', 'type', 'personlist');
+//            $form->setFieldAttribute('person_id2', 'type', 'personlist');
             break;
             
         }

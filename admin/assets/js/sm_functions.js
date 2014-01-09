@@ -25,3 +25,51 @@ function move_down(sourceid)
     if (next.length > 0)
         selected.detach().insertAfter(next);
 }
+
+function EditshowPersons() 
+{
+//alert('hier bin ich');
+var selected = jQuery( "#jform_person_art" ).val();
+//alert(selected);
+
+if (selected == 1) 
+{
+		document.getElementById('jform_person_id1').style.display = 'none';
+		document.getElementById('jform_person_id2').style.display = 'none';
+		document.getElementById('jform_person_id1-lbl').style.display = 'none';
+		document.getElementById('jform_person_id2-lbl').style.display = 'none';
+} 
+if (selected == 2) 
+{
+		document.getElementById('jform_person_id1').style.display = 'block';
+		document.getElementById('jform_person_id2').style.display = 'block';
+		document.getElementById('jform_person_id1-lbl').style.display = 'block';
+		document.getElementById('jform_person_id2-lbl').style.display = 'block';
+}
+	
+}
+
+function StartEditshowPersons(selected) 
+{
+//alert('hier bin ich');
+//var selected = jQuery( "#jform_person_art" ).val();
+//alert(selected);
+
+if (selected == 1) 
+{
+		document.getElementById('jform_person_id1').style.display = 'none';
+		document.getElementById('jform_person_id2').style.display = 'none';
+		document.getElementById('jform_person_id1-lbl').style.display = 'none';
+		document.getElementById('jform_person_id2-lbl').style.display = 'none';
+} 
+if (selected == 2) 
+{
+		document.getElementById('jform_person_id1').style.display = 'block';
+		document.getElementById('jform_person_id2').style.display = 'block';
+		document.getElementById('jform_person_id1-lbl').style.display = 'block';
+		document.getElementById('jform_person_id2-lbl').style.display = 'block';
+}
+	
+}
+
+
