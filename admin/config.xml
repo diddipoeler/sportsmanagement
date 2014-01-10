@@ -11,7 +11,7 @@
 	
   <field name="cfg_help_server" 
   type="text" 
-  default="http://joomleaguewiki.grammatikas-grill.de/index.php/"
+  default="http://smwiki.diddipoeler.de/index.php/"
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
