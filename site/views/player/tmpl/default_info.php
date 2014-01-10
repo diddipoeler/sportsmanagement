@@ -25,7 +25,12 @@
 												$this->config['picture_width'],
 												$this->config['picture_height']);
     */
-    echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));                    
+    //echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
+    ?>
+        <a href="<?php echo $picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
+</a>
+<?PHP                    
 		?></td>
 		<?php
 	}

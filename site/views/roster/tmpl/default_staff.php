@@ -117,23 +117,22 @@ if (count($this->stafflist) > 0)
 					} ?>
 				<td width="40" class="td_c" nowrap="nowrap">
                 <?php
-                if ( !$this->config['show_highslide'] )
-		{
+                
 					/*
           echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
 															$this->config['staff_picture_width'],
 															$this->config['staff_picture_height']);
 															*/
-					        echo JHTML::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'] ));
-                  }
-                  else
-			{
+					        //echo JHTML::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'] ));
+                  
+                  
+
       ?>
-<a href="<?php echo $picture;?>" alt="<?php echo $playerName;?>" title="<?php echo $playerName;?>" class="highslide" onclick="return hs.expand(this)">
-<img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" title="zum Zoomen anklicken" width="<?php echo $this->config['staff_picture_width'];?>" /></a>
-    <?php
-      }	
-                    
+        <a href="<?php echo $picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+</a>
+<?PHP
+              
                     ?>
 				</td>
 				<?php

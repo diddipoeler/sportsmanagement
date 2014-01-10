@@ -67,7 +67,8 @@ class sportsmanagementViewTeamInfo extends JView
 }
 
 		}
-		
+
+/*		
     $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
 		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
     
@@ -104,6 +105,7 @@ class sportsmanagementViewTeamInfo extends JView
     \n";
     
     $document->addScriptDeclaration( $js );
+*/
     	
 		$extended = sportsmanagementHelper::getExtended($team->teamextended, 'team');
 		$this->assignRef( 'extended', $extended );

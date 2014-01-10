@@ -363,7 +363,7 @@ class sportsmanagementModelPlayer extends JModel
     
 //    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' player_id -> '.'<pre>'.print_r($player_id,true).'</pre>' ),'');
 //    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' game_regular_time -> '.'<pre>'.print_r($game_regular_time,true).'</pre>' ),'');
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id -> '.'<pre>'.print_r($match_id,true).'</pre>' ),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id -> '.'<pre>'.print_r($match_id,true).'</pre>' ),'');
 //    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cards -> '.'<pre>'.print_r($cards,true).'</pre>' ),'');
     
     $result = 0;
@@ -372,13 +372,7 @@ class sportsmanagementModelPlayer extends JModel
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
     $query->where('teamplayer_id = '.$player_id);
     $query->where('came_in = 0');
-/*
-select COUNT(*) as totalmatch
-from jos_sportsmanagement_match_player
-WHERE  teamplayer_id =6
-and came_in = 0
-and match_id = 12
-*/
+
     if ( $match_id )
     {
     $query->where('match_id = '.$match_id);
@@ -389,7 +383,7 @@ and match_id = 12
     $db->setQuery($query);
     $totalresult = $db->loadObject();
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' totalresult -> '.'<pre>'.print_r($totalresult,true).'</pre>' ),'');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' totalresult -> '.'<pre>'.print_r($totalresult,true).'</pre>' ),'');
     
     if ( $totalresult )
     {
@@ -411,7 +405,7 @@ and match_id = 12
     $db->setQuery($query2);
     $cameinresult = $db->loadObject();
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameinresult -> '.'<pre>'.print_r($cameinresult,true).'</pre>' ),'');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameinresult -> '.'<pre>'.print_r($cameinresult,true).'</pre>' ),'');
     
     if ( $cameinresult )
     {
@@ -424,14 +418,6 @@ and match_id = 12
 	$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
     $query3->where('in_for = '.$player_id);
     $query3->where('came_in = 1');
-
-/*
-select count(distinct match_id) as totalmatch, SUM(in_out_time) as totalout
-from jos_sportsmanagement_match_player
-WHERE  in_for =4
-and came_in = 1
-and match_id = 60
-*/
  
     if ( $match_id )
     {
@@ -440,7 +426,7 @@ and match_id = 60
     $db->setQuery($query3);
     $cameautresult = $db->loadObject();
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameautresult -> '.'<pre>'.print_r($cameautresult,true).'</pre>' ),'');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameautresult -> '.'<pre>'.print_r($cameautresult,true).'</pre>' ),'');
     
     if ( $cameautresult )
     {
@@ -469,7 +455,7 @@ and match_id = 60
     //$mainframe->enqueueMessage(JText::_('cardsresult -> '.'<pre>'.print_r($cardsresult,true).'</pre>' ),'');
     }
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
     
     
     return $result;    

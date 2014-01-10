@@ -107,8 +107,10 @@ if (count($this->games))
 			$total['out']=0;
             $total['playedtime']=0;
 			$total_event_stats=array();
-            echo ' games<br><pre>'.print_r($this->games,true).'</pre><br>';
-			foreach ($this->games as $game)
+            
+            //echo ' games<br><pre>'.print_r($this->games,true).'</pre><br>';
+			
+            foreach ($this->games as $game)
 			{
 				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
 				$teaminfo_home_link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam1_id]->team_id);
@@ -118,6 +120,10 @@ if (count($this->games))
                 $timePlayed = 0;
                 $this->assign('timePlayed',$model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']));
                 $timePlayed  = $this->timePlayed;
+                
+//                echo ' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';
+//                echo ' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
+//                echo ' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
                 
                 ?>
 				<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
