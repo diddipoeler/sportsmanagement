@@ -39,9 +39,15 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					{
 						?>
 						<td>
+
+<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" class="modal">
+<img src="<?php echo $this->project->sport_type_picture;?>" alt="<?php echo $this->project->sport_type_name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
+</a>                        
+                        
+                        
 						<?php
                         // diddipoeler
-                        echo JHTML::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'width' => $this->overallconfig['picture_width'] ));
+//                        echo JHTML::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'width' => $this->overallconfig['picture_width'] ));
 						/*
                         echo JoomleagueHelper::getPictureThumb($this->project->sport_type_picture,
 																$this->project->sport_type_name,
@@ -64,9 +70,12 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
                         
                         ?>
 						<td>
+<a href="<?php echo $picture;?>" title="<?php echo $this->project->name;?>" class="modal">
+<img src="<?php echo $picture;?>" alt="<?php echo $this->project->name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
+</a>                        
 						<?php
                         // diddipoeler
-                        echo JHTML::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));
+                        //echo JHTML::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));
 						/*
                         echo JoomleagueHelper::getPictureThumb($this->project->picture,
 																$this->project->name,

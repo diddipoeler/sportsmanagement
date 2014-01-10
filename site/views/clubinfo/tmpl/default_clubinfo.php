@@ -27,9 +27,14 @@ else
 								$this->config['team_picture_height'],
 								1);
                 */
-     echo JHTML::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'width' => $this->config['team_picture_width'] ));           			
+     //echo JHTML::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'width' => $this->config['team_picture_width'] ));           			
 		}
 		?>
+        
+<a href="<?php echo $picture;?>" title="<?php echo $club_emblem_title;?>" class="modal">
+<img src="<?php echo $picture;?>" alt="<?php echo $club_emblem_title;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+</a>        
+        
 		<!-- SHOW LOGO - END -->
 		<!-- SHOW SMALL LOGO - START -->
 		<?php
