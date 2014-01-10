@@ -1,5 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
-
+<?php 
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $path='/administrator/components/com_sportsmanagement/assets/images/';
 $user = JFactory::getUser();
 JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_TITLE'));
@@ -108,3 +110,8 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 		</td>
 	</tr>
 </table>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

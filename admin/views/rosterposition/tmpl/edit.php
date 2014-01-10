@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.modal');
@@ -71,3 +72,8 @@ echo JHtml::_('tabs.end');
 	<input type="hidden" name="task" value="rosterposition.edit" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

@@ -46,5 +46,21 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
 			class="inputbox"
 			format="%Y-%m-%d"/>				
-	</fieldset>				
+	</fieldset>		
+  
+  <fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+			<field
+				name="picture"
+				type=""
+				default=""				
+				label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"	
+        targetfolder="rounds"			
+				directory=""/>
+	</fieldset>
+  		
 </form>

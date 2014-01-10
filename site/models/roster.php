@@ -145,40 +145,7 @@ class sportsmanagementModelRoster extends JModel
         $query->where('tp.season_id = '.$this->seasonid);  
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
             
-            /*
-            $query='	SELECT	pr.firstname, 
-								pr.nickname,
-								pr.lastname,
-								pr.country,
-								pr.birthday,
-								pr.deathday,
-								tp.id AS playerid,
-								pr.id AS pid,
-								pr.picture AS ppic,
-								tp.jerseynumber AS position_number,
-								tp.notes AS description,
-								tp.injury AS injury,
-                                tp.market_value AS market_value,
-								tp.suspension AS suspension,
-								pt.team_id,
-								tp.away AS away,tp.picture,
-								pos.name AS position,
-								ppos.position_id,
-								ppos.id as pposid,
-								CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player tp
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id=tp.projectteam_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id=pr.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=tp.project_position_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
-						WHERE tp.projectteam_id='.$this->_db->Quote($projectteam->id).'
-						AND pr.published = 1
-						AND tp.published = 1
-						ORDER BY pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname';
-                        
-			$this->_db->setQuery($query);
-			$this->_players = $this->_db->loadObjectList();
-            */
+
             
             $db->setQuery($query);
             $this->_players = $db->loadObjectList();
@@ -325,7 +292,8 @@ class sportsmanagementModelRoster extends JModel
     function getTimePlayed($player_id,$game_regular_time,$match_id=NULL,$cards=NULL)
     {
         $mainframe = JFactory::getApplication();
-    //    $mainframe->enqueueMessage(JText::_('player_id -> '.'<pre>'.print_r($player_id,true).'</pre>' ),'');
+    
+        $mainframe->enqueueMessage(JText::_('player_id -> '.'<pre>'.print_r($player_id,true).'</pre>' ),'');
     //    $mainframe->enqueueMessage(JText::_('game_regular_time -> '.'<pre>'.print_r($game_regular_time,true).'</pre>' ),'');
     
     $result = 0;

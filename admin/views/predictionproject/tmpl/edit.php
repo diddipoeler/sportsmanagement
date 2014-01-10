@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -142,3 +143,8 @@ function change_champ () {
     ?>
 </form>
 <script type="text/javascript">change_published();</script>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

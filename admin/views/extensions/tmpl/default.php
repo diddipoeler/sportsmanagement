@@ -41,6 +41,8 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <table width="100%" border="0">
 	<tr>
@@ -86,3 +88,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	
 </table>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

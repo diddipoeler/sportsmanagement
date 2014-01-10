@@ -1,5 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 
@@ -43,3 +45,9 @@ JHtml::_('behavior.formvalidation');
 	</div>
 	</fieldset>
 </form>
+
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

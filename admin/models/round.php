@@ -52,12 +52,20 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
 		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.round', 'round', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/rounds');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     

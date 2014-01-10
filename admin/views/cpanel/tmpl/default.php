@@ -193,7 +193,35 @@ JHTML::_('behavior.tooltip');
         </div>        
         <div style="float:left">        
         </div>
-        <?php echo $this->pane->startPane( 'stat-pane' );echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_DEVELOPER') , 'developer' );?>        
+        <?php 
+        echo $this->pane->startPane( 'stat-pane' );echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_INFORMATION') , 'information' );
+        if (is_array($this->importData))
+	{
+		foreach ($this->importData as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}
+	}
+    if (is_array($this->importData2))
+	{
+		foreach ($this->importData2 as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}
+	}
+        echo $this->pane->endPanel(); ?>
+        <?php //echo $this->pane->startPane( 'stat-pane' );
+        echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_DEVELOPER') , 'developer' );?>        
         <br />
         <br />
         <div style="text-align: center">          

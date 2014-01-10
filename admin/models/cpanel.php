@@ -56,6 +56,11 @@ jimport('joomla.application.component.model');
 class sportsmanagementModelcpanel extends JModel
 {
 
+var $_success_text = '';
+	var $storeFailedColor = 'red';
+	var $storeSuccessColor = 'green';
+	var $existingInDbColor = 'orange';
+
 public function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();

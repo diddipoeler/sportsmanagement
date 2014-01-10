@@ -1,5 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
-
+<?php 
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //Ordering allowed ?
 //$ordering = ( $this->lists['order'] == 'ppl.ordering' );
 $ordering = ( $this->lists['order'] == 'tp.ordering' );
@@ -374,3 +376,8 @@ JHtml::_('behavior.mootools');
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

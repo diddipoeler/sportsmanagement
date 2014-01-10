@@ -10,7 +10,8 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 
 //echo 'predictionuser<pre>',print_r($this->predictionuser, true),'</pre>';
@@ -86,3 +87,8 @@ $uri =& JFactory::getURI();
 	</div>
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

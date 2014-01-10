@@ -1,5 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
-
+<?php 
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.mootools');
 ?>
 <style>
@@ -304,3 +306,8 @@ $uri=JURI::root();
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

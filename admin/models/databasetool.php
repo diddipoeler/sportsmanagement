@@ -60,6 +60,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     var $_sport_types_events = array();
     var $_sport_types_position = array();
     var $_sport_types_position_parent = array();
+    var $_success_text = '';
+    var $my_text = '';
+	var $storeFailedColor = 'red';
+	var $storeSuccessColor = 'green';
+	var $existingInDbColor = 'orange';
     
     /**
 	 * Method to get the record form.
@@ -141,7 +146,10 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             foreach( $xml->document->version as $version ) 
             {
             $quote_version = $version->data();
-            $mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
+					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             }
             
             foreach( $xml->document->quotes as $quote ) 
@@ -181,8 +189,14 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             }
             
             }
+            else
+            {
+            $this->my_text = '<span style="color:'.$this->existingInDbColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Zitate').'</strong></span><br />';
+					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' ist installiert !').'<br />';    
+            }
         }    
-        
+        return $this->my_text;
     }
 
     
@@ -205,12 +219,21 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     
     if (!JFile::exists($filename)) 
     {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
-        return false;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+        $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+					$this->my_text .= JText::_('Fehlende Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Datei %1$s ist nicht vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;
     }  
     else
     {
-      
+      $this->my_text = '<span style="color:'.$this->existingInDbColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Datei %1$s ist vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
+                    
         $xml = JFactory::getXMLParser( 'Simple' );
        $xml->loadFile($filename); 
        
@@ -256,8 +279,10 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		}
         else
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
-        
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
         }
         
    }
@@ -267,7 +292,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
        
        
        
-       
+    return $this->my_text;   
     }
                    
     
@@ -571,11 +596,25 @@ foreach( $xml->document->events as $event )
     $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
     if ( $result )
     {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error');     
+    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
+    $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
+					
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;    
     }   
     else
     {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');     
+    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
+    $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS').'</strong></span><br />';
+					
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;         
     } 
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
     }
@@ -591,7 +630,9 @@ foreach( $xml->document->events as $event )
         
         if ( !$available )
         {
-            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+            $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)).'</strong></span><br />';
             return false;
         }
         
@@ -633,7 +674,10 @@ foreach( $xml->document->events as $event )
 		}
         else
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)).'</strong></span><br />';
+        
         $sports_type_id = $db->insertid();
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
         self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=0);
@@ -641,6 +685,7 @@ foreach( $xml->document->events as $event )
         }
         
         return $sports_type_id;
+        //return $this->my_text;
     }
     
     
@@ -695,7 +740,9 @@ foreach( $xml->document->events as $event )
         
         if ( !$update )
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name).'</strong></span><br />';
         }
         $i++;
     }
@@ -723,7 +770,9 @@ foreach( $xml->document->events as $event )
     
    if ( !$update )
         {
-    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name).'</strong></span><br />';
     }
     
     // parent position
@@ -758,7 +807,9 @@ foreach( $xml->document->events as $event )
         {
                 if ( $result )
                 {
-                    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
                 }   
                 else
                 {
@@ -772,7 +823,9 @@ foreach( $xml->document->events as $event )
         
         if ( !$update )
         {    
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name).'</strong></span><br />';
          }
             
         }    

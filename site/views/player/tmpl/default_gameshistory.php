@@ -107,11 +107,12 @@ if (count($this->games))
 			$total['out']=0;
             $total['playedtime']=0;
 			$total_event_stats=array();
+            echo ' games<br><pre>'.print_r($this->games,true).'</pre><br>';
 			foreach ($this->games as $game)
 			{
-				$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
-				$teaminfo_home_link=sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam1_id]->team_id);
-				$teaminfo_away_link=sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam2_id]->team_id);
+				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
+				$teaminfo_home_link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam1_id]->team_id);
+				$teaminfo_away_link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam2_id]->team_id);
 				// gespielte zeit
                 $model = $this->getModel();
                 $timePlayed = 0;

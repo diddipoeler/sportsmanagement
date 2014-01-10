@@ -1,6 +1,8 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -41,3 +43,8 @@ $params = $this->form->getFieldsets('params');
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

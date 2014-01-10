@@ -1,5 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
@@ -131,3 +132,8 @@ JHtml::_( 'behavior.tooltip' );
 	<input type="hidden" name="task" value="databasetool.execute" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>  
