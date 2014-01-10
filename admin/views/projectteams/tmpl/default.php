@@ -1,9 +1,11 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $mainframe = JFactory::getApplication();
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 't.name');
 
@@ -386,3 +388,8 @@ $ordering=($this->lists['order'] == 't.name');
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

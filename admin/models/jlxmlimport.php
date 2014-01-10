@@ -499,6 +499,17 @@ class sportsmanagementModelJLXMLImport extends JModel
                 $person->picture = str_replace('com_joomleague', $option, $person->picture);
             }    
             }
+            if ( isset($this->_datas['team']) )
+            {
+            foreach ($this->_datas['team'] as $person)
+            {
+                $person->picture = str_replace('com_joomleague', $option, $person->picture);
+            }    
+            }
+            
+            
+            
+            
                 
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_datas['league'],true).'</pre>'   ),'');
             $this->_league_new_country = (string) $this->_datas['league']->country;
@@ -560,7 +571,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
             foreach ($this->_datas['playground'] as $playground )
             {
-                if ( $playground->country == 0 || empty($playground->country) )
+                if ( $playground->country == '' || empty($playground->country) )
                 {
                     $playground->country = 'DEU';
                 }
@@ -2243,12 +2254,11 @@ $this->dump_header("Function _importTeams");
 		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
 			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)){return true;}
 
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_datas['team']", $this->_datas['team']);
-$this->dump_variable("this->_newteams", $this->_newteams);
-$this->dump_variable("this->_dbteamsid", $this->_dbteamsid);
-}
+
+//$this->dump_variable(__FUNCTION__." this->_datas['team']", $this->_datas['team']);
+//$this->dump_variable(__FUNCTION__." this->_newteams", $this->_newteams);
+//$this->dump_variable(__FUNCTION__." this->_dbteamsid", $this->_dbteamsid);
+
 
 		if (!empty($this->_dbteamsid))
 		{
@@ -2260,14 +2270,15 @@ $this->dump_variable("this->_dbteamsid", $this->_dbteamsid);
 			{
 				if (empty($this->_newteams[$key]))
 				{
-					$oldID=$this->_getDataFromObject($this->_datas['team'][$key],'id');
-					$this->_convertTeamID[$oldID]=$id;
+					$oldID = $this->_getDataFromObject($this->_datas['team'][$key],'id');
+					$this->_convertTeamID[$oldID] = $id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf(	'Using existing team data: %1$s - %2$s - %3$s - %4$s',
+					$my_text .= JText::sprintf(	'Using existing team data: %1$s - %2$s - %3$s - %4$s <- %5$s',
 												'</span><strong>'.$dbTeams[$id]->name.'</strong>',
 												'<strong>'.$dbTeams[$id]->short_name.'</strong>',
 												'<strong>'.$dbTeams[$id]->middle_name.'</strong>',
-												'<strong>'.$dbTeams[$id]->info.'</strong>'
+												'<strong>'.$dbTeams[$id]->info.'</strong>',
+												'<strong>'.$id.'</strong>'
 												);
 					$my_text .= '<br />';
 				}
@@ -2904,8 +2915,8 @@ $this->dump_variable("import_team", $import_team);
 		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
 			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)){return true;}
 
-//$this->dump_variable("projectteam", $this->_datas['projectteam']);
-//$this->dump_variable("_convertTeamID", $this->_convertTeamID);
+//$this->dump_variable(__FUNCTION__." projectteam", $this->_datas['projectteam']);
+//$this->dump_variable(__FUNCTION__." _convertTeamID", $this->_convertTeamID);
 
 		foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
@@ -2913,11 +2924,13 @@ $this->dump_variable("import_team", $import_team);
             $mdl = JModel::getInstance("projectteam", "sportsmanagementModel");
             $p_projectteam = $mdl->getTable();
                 
-			$import_projectteam=$this->_datas['projectteam'][$key];
+			$import_projectteam = $this->_datas['projectteam'][$key];
 //$this->dump_variable("import_projectteam", $import_projectteam);
-			$oldID=$this->_getDataFromObject($import_projectteam,'id');
+			$oldID = $this->_getDataFromObject($import_projectteam,'id');
 			$p_projectteam->set('project_id',$this->_project_id);
 			$p_projectteam->set('team_id',$this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
+
+//$this->dump_variable(__FUNCTION__." _convertTeamID -> team_id", $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
 
 			if (count($this->_convertDivisionID) > 0)
 			{
@@ -2977,11 +2990,15 @@ $this->dump_variable("import_team", $import_team);
 											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>');
 				$my_text .= '<br />';
 			}
-			$insertID=$p_projectteam->id;//$this->_db->insertid();
-			$this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'id')]=$p_projectteam->id;
-//$this->dump_variable("p_projectteam", $p_projectteam);
+			$insertID = $p_projectteam->id;//$this->_db->insertid();
+			$this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'id')] = $p_projectteam->id;
+
+//$this->dump_variable(__FUNCTION__." p_projectteam", $p_projectteam);
+
 		}
-//$this->dump_variable("this->_convertProjectTeamID", $this->_convertProjectTeamID);
+
+//$this->dump_variable(__FUNCTION__." this->_convertProjectTeamID", $this->_convertProjectTeamID);
+
 		$this->_success_text['Importing projectteam data:']=$my_text;
 		return true;
 	}
@@ -4457,7 +4474,7 @@ $this->dump_variable("import_team", $import_team);
 		$this->_newstatisticsname=array();
 		$this->_newstatisticsid=array();
 		$this->_dbstatisticsid=array();
-
+/*
 		//tracking of old -> new ids
 		// The 0 entry is needed to translate an input with ID 0 to an output with ID 0;
 		// this can happen when the exported file contains a field with ID equal to 0
@@ -4483,7 +4500,7 @@ $this->dump_variable("import_team", $import_team);
 		$this->_convertTreetoID=$standard_translation;
 		$this->_convertTreetonodeID=$standard_translation;
 		$this->_convertTreetomatchID=$standard_translation;
-
+*/
 
 		if (is_array($post) && count($post) > 0)
 		{
@@ -5143,6 +5160,7 @@ $this->dump_variable("import_team", $import_team);
         {
             //echo "<b>seasonteam</b><pre>".print_r($table_ST,true)."</pre>";
             
+            
             // ist das team schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
 		    $query->select('id');		
@@ -5162,20 +5180,7 @@ $this->dump_variable("import_team", $import_team);
 													);
 						$my_text .= '<br />';
                         
-                // die project team tabelle updaten
-                $new_team_id = $db->insertid();
-                // Fields to update.
-                $query = $db->getQuery(true);
-                $fields = array(
-                $db->quoteName('team_id') . '=' . $new_team_id
-                );
-                // Conditions for which records should be updated.
-                $conditions = array(
-                $db->quoteName('team_id') . '=' . $proteam->team_id
-                );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
-                $db->setQuery($query);
-                $result = $db->query();
+               
             }
             else
             {
@@ -5199,22 +5204,8 @@ $this->dump_variable("import_team", $import_team);
 			}
 			else
 			{
-			    
                 // die project team tabelle updaten
                 $new_team_id = $db->insertid();
-                // Fields to update.
-                $query = $db->getQuery(true);
-                $fields = array(
-                $db->quoteName('team_id') . '=' . $new_team_id
-                );
-                // Conditions for which records should be updated.
-                $conditions = array(
-                $db->quoteName('team_id') . '=' . $proteam->team_id
-                );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
-                $db->setQuery($query);
-                $result = $db->query();
-                
 			}
             
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -5226,6 +5217,22 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= '<br />';
             
             }
+            // die project team tabelle updaten
+            if ( $new_team_id )
+            {
+            // Fields to update.
+            $query = $db->getQuery(true);
+            $fields = array(
+            $db->quoteName('team_id') . '=' . $new_team_id
+            );
+            // Conditions for which records should be updated.
+            $conditions = array(
+            $db->quoteName('team_id') . '=' . $proteam->team_id
+            );
+            $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
+            $db->setQuery($query);
+            $result = $db->query();
+            }    
             
             // die spieler verarbeiten
             $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;

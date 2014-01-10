@@ -227,7 +227,7 @@ class sportsmanagementModelPlayer extends JModel
  	$this->_playerhistory = $db->loadObjectList();
     if ( !$this->_playerhistory )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }  
        
 
@@ -244,7 +244,7 @@ class sportsmanagementModelPlayer extends JModel
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        
-$query->select('pr.id AS pid,pr.firstname,pr.lastname');
+    $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     $query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
     $query->select('p.name AS project_name,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
     $query->select('s.name AS season_name');
@@ -276,7 +276,7 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
  	$this->_playerhistorystaff = $db->loadObjectList();
     if ( !$this->_playerhistorystaff )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }  
 
 
@@ -356,58 +356,78 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     function getTimePlayed($player_id,$game_regular_time,$match_id = NULL,$cards=NULL)
     {
     $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
     
-    //$mainframe->enqueueMessage(JText::_('player_id -> '.'<pre>'.print_r($player_id,true).'</pre>' ),'');
-    //$mainframe->enqueueMessage(JText::_('game_regular_time -> '.'<pre>'.print_r($game_regular_time,true).'</pre>' ),'');
-    //$mainframe->enqueueMessage(JText::_('match_id -> '.'<pre>'.print_r($match_id,true).'</pre>' ),'');
-    //$mainframe->enqueueMessage(JText::_('cards -> '.'<pre>'.print_r($cards,true).'</pre>' ),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' player_id -> '.'<pre>'.print_r($player_id,true).'</pre>' ),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' game_regular_time -> '.'<pre>'.print_r($game_regular_time,true).'</pre>' ),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id -> '.'<pre>'.print_r($match_id,true).'</pre>' ),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cards -> '.'<pre>'.print_r($cards,true).'</pre>' ),'');
     
     $result = 0;
     // startaufstellung ohne ein und auswechselung
-    $query = 'SELECT count(match_id) as totalmatch
-			FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player 
-			WHERE teamplayer_id = '.$player_id.' and came_in = 0'; 
-    
+    $query->select('COUNT(distinct match_id) as totalmatch');
+	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
+    $query->where('teamplayer_id = '.$player_id);
+    $query->where('came_in = 0');
+
     if ( $match_id )
     {
-    $query .= ' and match_id = '.$match_id;     
+    $query->where('match_id = '.$match_id);
     }   
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id -> '.'<pre>'.print_r($query,true).'</pre>' ),'');
             
-    $this->_db->setQuery($query);
-    $totalresult = $this->_db->loadObject();
-    //$mainframe->enqueueMessage(JText::_('totalresult -> '.'<pre>'.print_r($totalresult,true).'</pre>' ),'');
+    $db->setQuery($query);
+    $totalresult = $db->loadObject();
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' totalresult -> '.'<pre>'.print_r($totalresult,true).'</pre>' ),'');
+    
     if ( $totalresult )
     {
     $result += $totalresult->totalmatch * $game_regular_time;
     }
     
     // einwechselung
-    $query='SELECT count(match_id) as totalmatch, SUM(in_out_time) as totalin
-			FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player 
-			WHERE teamplayer_id = '.$player_id.' and came_in = 1 and in_for IS NOT NULL';    
+    $query2 = $db->getQuery(true);
+    $query2->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalin');
+	$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
+    $query2->where('teamplayer_id = '.$player_id);
+    $query2->where('came_in = 1');
+    $query2->where('in_for IS NOT NULL');
+       
     if ( $match_id )
     {
-    $query .= ' and match_id = '.$match_id;     
-    }
-    $this->_db->setQuery($query);
-    $cameinresult = $this->_db->loadObject();
-    //$mainframe->enqueueMessage(JText::_('cameinresult -> '.'<pre>'.print_r($cameinresult,true).'</pre>' ),'');
+    $query2->where('match_id = '.$match_id);
+    } 
+    $db->setQuery($query2);
+    $cameinresult = $db->loadObject();
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameinresult -> '.'<pre>'.print_r($cameinresult,true).'</pre>' ),'');
+    
     if ( $cameinresult )
     {
     $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
     }
     
     // auswechselung
-    $query='SELECT count(match_id) as totalmatch, SUM(in_out_time) as totalout
-			FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player 
-			WHERE in_for = '.$player_id.' and came_in = 1 ';    
+    $query3 = $db->getQuery(true);
+    $query3->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalout');
+	$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
+    $query3->where('in_for = '.$player_id);
+    $query3->where('came_in = 1');
+ 
     if ( $match_id )
     {
-    $query .= ' and match_id = '.$match_id;     
-    }
-    $this->_db->setQuery($query);
-    $cameautresult = $this->_db->loadObject();
-    //$mainframe->enqueueMessage(JText::_('cameautresult -> '.'<pre>'.print_r($cameautresult,true).'</pre>' ),'');
+    $query3->where('match_id = '.$match_id);
+    } 
+    $db->setQuery($query3);
+    $cameautresult = $db->loadObject();
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameautresult -> '.'<pre>'.print_r($cameautresult,true).'</pre>' ),'');
+    
     if ( $cameautresult )
     {
     // bug erkannt durch @player2000    
@@ -418,15 +438,15 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     // jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
     if ( $cards )
     {
-    $query = 'SELECT *
+    $query3 = 'SELECT *
 			FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event 
 			WHERE teamplayer_id = '.$player_id;
-    $query .= ' and event_type_id in ('.$cards.')';
+    $query3 .= ' and event_type_id in ('.$cards.')';
     if ( $match_id )
     {
-    $query .= ' and match_id = '.$match_id;     
+    $query3 .= ' and match_id = '.$match_id;     
     }
-    $this->_db->setQuery($query);
+    $this->_db->setQuery($query3);
     $cardsresult = $this->_db->loadObjectList();  
     foreach ( $cardsresult as $row )
     {
@@ -435,8 +455,8 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     //$mainframe->enqueueMessage(JText::_('cardsresult -> '.'<pre>'.print_r($cardsresult,true).'</pre>' ),'');
     }
     
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
     
-    //$mainframe->enqueueMessage(JText::_('result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
     
     return $result;    
     }
@@ -714,7 +734,7 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
 		$teamplayers = self::getTeamPlayers();
 		$games = array();
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
         
 		if (count($teamplayers))
 		{
@@ -822,7 +842,7 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
 		$teamplayers = self::getTeamPlayers();
 		$gameevents = array();
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
         
 		if (count($teamplayers))
 		{
@@ -840,7 +860,7 @@ $query->select('pr.id AS pid,pr.firstname,pr.lastname');
 			$this->_db->setQuery($query);
 			$events = $this->_db->loadObjectList();
             
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
             
 			foreach ((array) $events as $ev)
 			{

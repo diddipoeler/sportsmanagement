@@ -1,6 +1,8 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <div id="editcell">
@@ -36,3 +38,8 @@ JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</form>
 </div>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

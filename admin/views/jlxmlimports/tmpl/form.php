@@ -1,7 +1,8 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ( $this->show_debug_info )
 {
 $visible = 'text';
@@ -625,6 +626,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_bottom'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_BOTTOM'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -991,6 +993,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1159,6 +1162,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1310,6 +1314,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1459,6 +1464,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1608,6 +1614,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1769,6 +1776,7 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
 				<?php
 			}
 			?>
@@ -1956,6 +1964,8 @@ if (isset($this->xml) && is_array($this->xml))
 					</table>
 				</fieldset>
 				<p style='text-align:right;'><a href='#page_top'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
+                <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo JText::_('JSAVE') ?></button></p>
+                
 				<?php
 			}
 			?>
@@ -1978,3 +1988,8 @@ if (isset($this->xml) && is_array($this->xml))
 	}
 }
 ?>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

@@ -38,6 +38,8 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $option = JRequest::getCmd('option');
 
 JHTML::_( 'behavior.tooltip' );
@@ -204,3 +206,8 @@ echo '</pre>';
 		<?php echo JHTML::_('form.token')."\n"; ?>
 	</form>
 </div>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

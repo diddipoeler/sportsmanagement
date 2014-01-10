@@ -34,11 +34,8 @@ class sportsmanagementViewjlextlmoimports extends JView
     $document	= JFactory::getDocument();
     
 	
-    $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
     
-    // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1'),'lmo-cpanel');
+		
 		//JLToolBarHelper::onlinehelp();
 
 		$uri = JFactory::getURI();
@@ -57,9 +54,31 @@ class sportsmanagementViewjlextlmoimports extends JView
     
 
     //$this->assignRef('form',  $this->get('form'));
-    
+    $this->addToolbar ();
 		parent::display($tpl);
 	}
+    
+    protected function addToolbar() 
+    {
+        // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
+		
+        
+        // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        // Set toolbar items for the page
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1'),'lmo-cpanel');
+        JToolBarHelper::divider();
+            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			JToolBarHelper::preferences($option);
+
+	}
+    
 
 
 

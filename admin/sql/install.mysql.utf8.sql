@@ -501,6 +501,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
+  `person_id1` INT( 11 ) NOT NULL DEFAULT  '0',
+  `person_id2` INT( 11 ) NOT NULL DEFAULT  '0',
+  `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -807,6 +810,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `modified_by` INT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `extendeduser` TEXT NULL ,
+  `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )

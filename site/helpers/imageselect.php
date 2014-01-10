@@ -289,6 +289,9 @@ var $_foldertype = '';
 			case	"venues":
 				return "venues";
 				break;
+                case	"rounds":
+				return "rounds";
+				break;
                 
             case	"agegroups":
 				return "agegroups";

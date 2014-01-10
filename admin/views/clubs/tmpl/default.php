@@ -6,7 +6,8 @@ $ordering=($this->lists['order'] == 'a.ordering');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 
@@ -256,3 +257,8 @@ JHtml::_('behavior.modal');
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>    

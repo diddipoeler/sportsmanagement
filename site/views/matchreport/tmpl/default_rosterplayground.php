@@ -221,7 +221,7 @@ if ( !file_exists( $picture ) )
 $picture = $player->ppic;    
 if ( !file_exists( $picture ) )
 {
-$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 }
 
@@ -289,7 +289,7 @@ if ( !file_exists( $picture ) )
 $picture = $player->ppic;    
 if ( !file_exists( $picture ) )
 {    
-$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 }
 

@@ -87,7 +87,7 @@
                         }
                         
                         //Club
-                        echo '<td class="ecenter">' . JoomleagueModelProject::getClubIconHtml($eventteam,1) . '</td>';
+                        echo '<td class="ecenter">' . sportsmanagementModelProject::getClubIconHtml($eventteam,1) . '</td>';
                         
                         //Event
                         // only show event sum and match notice when set to on in template cofig
@@ -113,11 +113,11 @@
                             }
                         }
                         
-                        $match_player=JoomleagueHelper::formatName('', $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
+                        $match_player=sportsmanagementHelper::formatName('', $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
                         
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+                            $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHtml::link($player_link,$match_player);
                         }                         
                         
@@ -204,14 +204,14 @@
                         echo '<td class="ecenter">' . JoomleagueModelProject::getClubIconHtml($eventteam,1) . '</td>';
                         
                         //Subs out
-			$outName = JoomleagueHelper::formatName(null, $me->out_firstname, $me->out_nickname, $me->out_lastname, $this->config["name_format"]);
+			$outName = sportsmanagementHelper::formatName(null, $me->out_firstname, $me->out_nickname, $me->out_lastname, $this->config["name_format"]);
 			if($outName != '') {
 			      $isFavTeam = in_array( $me->team_id, explode(",",$this->project->fav_team));
 
 			  if ($this->config['event_link_player'] == 1) {
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
-				    $outName = JHtml::link(JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$outName);
+				    $outName = JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$outName);
 				} else {
 				    $outName = $outName;
 				}
@@ -233,14 +233,14 @@
                         echo '<td class="ecenter">' . JoomleagueModelProject::getClubIconHtml($eventteam,1) . '</td>';
                         
                         //Subs in
-			$inName = JoomleagueHelper::formatName(null, $me->firstname, $me->nickname, $me->lastname, $this->config["name_format"]);
+			$inName = sportsmanagementHelper::formatName(null, $me->firstname, $me->nickname, $me->lastname, $this->config["name_format"]);
 			if($inName != '') {
 			      $isFavTeam = in_array( $me->team_id, explode(",",$this->project->fav_team));
 
 			  if ($this->config['event_link_player'] == 1) {
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
-				    $inName = JHtml::link(JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$inName);
+				    $inName = JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$inName);
 				} else {
 				    $inName = $inName;
 				}

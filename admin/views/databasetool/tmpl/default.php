@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //echo $this->task.'<br>';
 //echo '<pre>'.print_r($this->sm_tables,true).'</pre><br>';
 

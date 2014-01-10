@@ -4,7 +4,8 @@ jimport('joomla.filesystem.file');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 	function searchPerson(val)
@@ -242,3 +243,8 @@ $userId		= $user->get('id');
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

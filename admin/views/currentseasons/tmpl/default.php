@@ -1,7 +1,8 @@
 <?php 
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHtml::_('behavior.tooltip');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //echo 'this->items<br /><pre>~' . print_r($this->items,true) . '~</pre><br />';
 

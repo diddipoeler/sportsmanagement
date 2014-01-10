@@ -132,7 +132,7 @@ switch ($type)
 		$update = JFolder::exists($dest);
 		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
 							'associations','flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
-              'associations','rosterground','matchreport','seasons','sport_types', 'teams','flags','teamplayers','teamstaffs','venues', 'statistics');
+              'associations','rosterground','matchreport','seasons','sport_types', 'rounds','teams','flags','teamplayers','teamstaffs','venues', 'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');

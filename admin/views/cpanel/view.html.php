@@ -65,6 +65,7 @@ class sportsmanagementViewcpanel extends JView
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $model	= $this->getModel();
+        $my_text = '';
         
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
@@ -79,7 +80,8 @@ class sportsmanagementViewcpanel extends JView
         if ( $sm_quotes )
         {
         // zitate
-        $databasetool->checkQuotes($sm_quotes);
+        $result = $databasetool->checkQuotes($sm_quotes);
+        $model->_success_text['Zitate:'] = $result;
         }
             
         foreach ( $sporttypes as $key => $type )
@@ -90,8 +92,13 @@ class sportsmanagementViewcpanel extends JView
         
         if ( $checksporttype )
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
-        
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
+         $my_text .= '<span style="color:'.$model->existingInDbColor.'"><strong>';
+					$my_text .= JText::_('Installierte Sportarten').'</strong></span><br />';
+					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)).'<br />';
+					
+					$model->_success_text['Sportarten:'] = $my_text;
+                    
         // es können aber auch neue positionen oder ereignisse dazu kommen
         $insert_sport_type = $databasetool->insertSportType($type); 
         
@@ -100,23 +107,35 @@ class sportsmanagementViewcpanel extends JView
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
+        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
         }
         }
         
         }
         else
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
-        
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
+        $my_text .= '<span style="color:'.$model->storeFailedColor.'"><strong>';
+					$my_text .= JText::_('Fehlende Sportarten').'</strong></span><br />';
+					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)).'<br />';
+					
+					$model->_success_text['Sportarten:'] = $my_text;
+                    
         // es können aber auch neue positionen oder ereignisse dazu kommen
         $insert_sport_type = $databasetool->insertSportType($type); 
+        $model->_success_text['Sportart ('.$type.')  :'] .= $databasetool->my_text;
         
         if ( $country )
         {
         foreach ( $country as $keyc => $typec )
         {    
-        $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
+        $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
+        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
         }
+        //$databasetool->_success_text['Altersgruppen:'] .= $databasetool->_success_text; 
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($databasetool->my_text,true).'</pre>'),'');
         }
            
         
@@ -133,20 +152,34 @@ class sportsmanagementViewcpanel extends JView
         $checkcountry = $model->checkcountry();
         if ( $checkcountry )
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS'),'');    
+        //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS'),''); 
+        $my_text = '<span style="color:'.$model->existingInDbColor.'"><strong>';
+					$my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS').'</strong></span><br />';
+					//$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS',strtoupper($type)).'<br />';
+					
+					$model->_success_text['Länder:'] = $my_text;   
         }
         else
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error'); 
-        $insert_countries = $databasetool->insertCountries();    
+        //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error');
+        $my_text = '<span style="color:'.$model->storeFailedColor.'"><strong>';
+					$my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR').'</strong></span><br />';
+					//$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS',strtoupper($type)).'<br />';
+					
+					$model->_success_text['Länder:'] = $my_text;  
+                     
+        $insert_countries = $databasetool->insertCountries();  
+        $model->_success_text['Länder:'] .= $insert_countries;   
         }
         
 		jimport('joomla.html.pane');
 		$pane	= JPane::getInstance('sliders');
-		$this->assignRef( 'pane'		, $pane );
-        $this->assignRef( 'sporttypes'		, $sporttypes );
+		$this->assignRef( 'pane' , $pane );
+        $this->assignRef( 'sporttypes' , $sporttypes );
         $this->assign( 'version', $model->getVersion() );
         $this->assign( 'githubrequest', $model->getGithubRequests() );
+        $this->assignRef('importData', $model->_success_text );
+        $this->assignRef('importData2', $databasetool->_success_text );
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -175,6 +208,7 @@ class sportsmanagementViewcpanel extends JView
 	{
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -184,11 +218,10 @@ class sportsmanagementViewcpanel extends JView
 		
 		if ($canDo->get('core.admin')) 
 		{
-			//JToolBarHelper::custom('cpanel.import','upload','upload',JText::_('JTOOLBAR_INSTALL'),false);
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
             JToolBarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences('com_sportsmanagement');
+			JToolBarHelper::preferences($option);
 		}
 	}
     

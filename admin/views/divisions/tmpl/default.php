@@ -1,9 +1,12 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 //Ordering allowed ?
 $ordering=($this->lists['order'] == 'dv.ordering');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -199,3 +202,8 @@ $ordering=($this->lists['order'] == 'dv.ordering');
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

@@ -1,4 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
 <script>
@@ -86,3 +89,8 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		</form>
 	</fieldset>
 </div>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   
