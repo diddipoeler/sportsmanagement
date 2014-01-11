@@ -100,7 +100,7 @@ switch ($type)
     self::setParams($newparams);
 //    self::installComponentLanguages();
 //    self::installModules();
-//	  self::installPlugins();
+    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -109,7 +109,7 @@ switch ($type)
     case "update":
 //    self::installComponentLanguages();
 //    self::installModules();
-//    self::installPlugins();
+    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -204,5 +204,55 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                                 $db->query();
                 }
                 
-        }      
+        }
+        
+        
+	/**
+	 * method to install the plugins
+	 *
+	 * @return void
+	 */
+	public function installPlugins()
+	{
+  $mainframe =& JFactory::getApplication();
+// 	$lang = JFactory::getLanguage(); 
+//   $languages = JLanguageHelper::getLanguages('lang_code');
+  
+  $db =& JFactory::getDBO();
+  $query = $db->getQuery(true);
+  $type = "language";
+  $query->select('a.element');
+  $query->from('#__extensions AS a');
+  $type = $db->Quote($type);
+	$query->where('(a.type = '.$type.')');
+	$query->group('a.element');
+  $db->setQuery($query);
+  $langlist = $db->loadObjectList();
+  
+//		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
+		$src=JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins';
+		$dest=JPATH_SITE.DS.'plugins';
+		$groups = JFolder::folders($src);
+    
+    foreach ( $langlist as $key )
+    {
+    echo 'Copy Plugin(s) language( '.$key->element.' ) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a><br />';
+		foreach ($groups as $group)
+		{
+			$plugins = JFolder::folders($src.DS.$group);
+			foreach ($plugins as $plugin)
+			{
+      if ( JFolder::exists($src.DS.$group.DS.$plugin.DS.'language'.DS.$key->element) )
+		{
+				JFolder::copy($src.DS.$group.DS.$plugin.DS.'language'.DS.$key->element, JPATH_ADMINISTRATOR.DS.'language'.DS.$key->element, '', true);
+		echo ' - <span style="color:green">'.JText::_('Success -> '.$group.' - '.$plugin.' - '.$key->element).'</span><br />';
+    }
+    	}
+		}
+    }
+		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+		echo 'Copy Plugin(s)';
+		JFolder::copy($src, $dest, '', true);
+		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+	}              
 }
