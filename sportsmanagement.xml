@@ -52,6 +52,7 @@
 		<folder>language</folder>
 		<folder>sisdata</folder>
 		<folder>modules</folder>
+		<folder>plugins</folder>
 	</files>
   <languages folder="site">
         <language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
