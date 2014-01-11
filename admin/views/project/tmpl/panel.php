@@ -93,7 +93,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 							<?php
 	 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=jlxmlexports&pid='.$this->project->id);
 							$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT');
-							$imageFile='xmlimport.png';
+							$imageFile='xmlexport.png';
 							$linkParams="<span>$text</span>&nbsp;";
 							$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
