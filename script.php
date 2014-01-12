@@ -278,6 +278,9 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   $db->setQuery($query);
   $install_id = $db->loadResult();    
 
+$mainframe->enqueueMessage(JText::_('install_id<br><pre>'.print_r($install_id,true).'</pre>'   ),'');
+$mainframe->enqueueMessage(JText::_('value<br><pre>'.print_r($value,true).'</pre>'   ),'');
+
 if ( $install_id )
 {
     
