@@ -127,7 +127,10 @@ switch ($type)
     
     public function createImagesFolder()
 	{
-		echo JText::_('Creating new Image Folder structure');
+		$mainframe = JFactory::getApplication();
+  $db = JFactory::getDBO();
+  
+        //echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
 		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
@@ -142,6 +145,9 @@ switch ($type)
         {
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+            
+            $mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
+            
 		}
         
 		foreach ($folders as $folder) {
@@ -156,7 +162,7 @@ switch ($type)
 				}
 			}
 		}
-		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
 	}
     
     
