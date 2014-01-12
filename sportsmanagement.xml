@@ -108,6 +108,7 @@
 			<!-- helpers files section -->
 			<folder>helpers</folder>
 			<folder>sisdata</folder>
+			<folder>modules</folder>
 		</files>
  
 		<languages folder="admin">
