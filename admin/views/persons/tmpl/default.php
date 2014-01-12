@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
-
+JHtml::_('behavior.modal');
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $templatesToLoad = array('footer');
@@ -174,7 +174,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								else
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
+</a>
+<?PHP
 								}
 								?>
 							</td>

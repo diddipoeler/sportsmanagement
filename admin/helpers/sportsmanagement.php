@@ -187,6 +187,7 @@ abstract class sportsmanagementHelper
 	{
 	   $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        $document=JFactory::getDocument();
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
         // the specified default value will be returned.
@@ -206,7 +207,7 @@ abstract class sportsmanagementHelper
             $mainframe->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
         }
-        
+        //$mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
 		
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
 		
@@ -214,9 +215,15 @@ abstract class sportsmanagementHelper
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects');
         
-        if ( $project_id )
+        if ( $project_id != 0 )
         {
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$project_id, $submenu == 'project');
+        }
+        else
+        {
+//         $menu = JToolBar::getInstance('submenu');
+//         $menu->appendButton(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), '', false);    
+        //JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=', false );
         }
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');

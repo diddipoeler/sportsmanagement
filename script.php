@@ -230,10 +230,10 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   $langlist = $db->loadObjectList();
   
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
-		$src=JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins';
-		$dest=JPATH_SITE.DS.'plugins';
+		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
+		$dest = JPATH_SITE.DS.'plugins';
 		$groups = JFolder::folders($src);
-    
+    /*
     foreach ( $langlist as $key )
     {
     echo 'Copy Plugin(s) language( '.$key->element.' ) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a><br />';
@@ -254,5 +254,44 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 		echo 'Copy Plugin(s)';
 		JFolder::copy($src, $dest, '', true);
 		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
-	}              
+	*/
+    
+    // wenn alles kopiert wurde gleich installieren
+    $ordner = JFolder::folders($src);
+    foreach ( $ordner as $key => $value)
+    {
+    // Get an installer instance
+$installer = JInstaller::getInstance();
+// Get the path to the package to install
+$p_dir = $src.DS.$value.DS;
+// Detect the package type
+$type = JInstallerHelper::detectType($p_dir);        
+
+
+$package['packagefile'] = null;
+$package['extractdir'] = null;
+$package['dir'] = $p_dir;
+$package['type'] = $type;
+
+echo 'package<br><pre>'.print_r($package,true).'</pre>';
+
+// Install the package
+		if (!$installer->install($package['dir'])) {
+			// There was an error installing the package
+			$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			//$result = false;
+		} else {
+			// Package installed sucessfully
+			$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			//$result = true;
+		}
+    }
+    
+    }
+    
+    
+    
+    
+    
+                  
 }

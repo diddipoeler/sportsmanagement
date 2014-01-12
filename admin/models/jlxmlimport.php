@@ -494,16 +494,33 @@ class sportsmanagementModelJLXMLImport extends JModel
             // bilderpfade anpassen
             if ( isset($this->_datas['person']) )
             {
-            foreach ($this->_datas['person'] as $person)
+            foreach ($this->_datas['person'] as $temppicture)
             {
-                $person->picture = str_replace('com_joomleague', $option, $person->picture);
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
             }    
             }
             if ( isset($this->_datas['team']) )
             {
-            foreach ($this->_datas['team'] as $person)
+            foreach ($this->_datas['team'] as $temppicture)
             {
-                $person->picture = str_replace('com_joomleague', $option, $person->picture);
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+            }    
+            }
+            if ( isset($this->_datas['club']) )
+            {
+            foreach ($this->_datas['club'] as $temppicture)
+            {
+                $temppicture->logo_big = str_replace('com_joomleague', $option, $temppicture->logo_big);
+                $temppicture->logo_big = str_replace('media', 'images', $temppicture->logo_big);
+                
+                $temppicture->logo_middle = str_replace('com_joomleague', $option, $temppicture->logo_middle);
+                $temppicture->logo_middle = str_replace('media', 'images', $temppicture->logo_middle);
+                
+                $temppicture->logo_small = str_replace('com_joomleague', $option, $temppicture->logo_small);
+                $temppicture->logo_small = str_replace('media', 'images', $temppicture->logo_small);
+                
             }    
             }
             
@@ -575,6 +592,8 @@ class sportsmanagementModelJLXMLImport extends JModel
                 {
                     $playground->country = 'DEU';
                 }
+                $playground->picture = str_replace('com_joomleague', $option, $playground->picture);
+                $playground->picture = str_replace('media', 'images', $playground->picture);
             }    
             }
             

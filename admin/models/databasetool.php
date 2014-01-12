@@ -147,7 +147,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             {
             $quote_version = $version->data();
             //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
-            $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 					$this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
 					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             }
@@ -191,7 +191,14 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             }
             else
             {
-            $this->my_text = '<span style="color:'.$this->existingInDbColor.'"><strong>';
+            
+            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            foreach( $xml->document->version as $version ) 
+            {
+            $quote_version = $version->data();
+            }
+            
+            $this->my_text .= '<span style="color:'.$this->existingInDbColor.'"><strong>';
 					$this->my_text .= JText::_('Installierte Zitate').'</strong></span><br />';
 					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' ist installiert !').'<br />';    
             }

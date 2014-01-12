@@ -158,11 +158,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_big)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                    
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -184,11 +194,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_middle)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                    
+                                                    
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -210,11 +231,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 				  								$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                 
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->logo_small)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                     
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',

@@ -61,9 +61,11 @@ class sportsmanagementViewcpanel extends JView
 	 */
 	function display($tpl = null) 
 	{
-		
+		$document=JFactory::getDocument();
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        
+        $project_id = $mainframe->getUserState( "$option.pid", '0' );
         $model	= $this->getModel();
         $my_text = '';
         
@@ -180,6 +182,15 @@ class sportsmanagementViewcpanel extends JView
         $this->assign( 'githubrequest', $model->getGithubRequests() );
         $this->assignRef('importData', $model->_success_text );
         $this->assignRef('importData2', $databasetool->_success_text );
+        
+        if ( !$project_id )
+        {
+//            //override active menu class to remove active class from other submenu
+//            $menuCssOverrideJs="jQuery(document).ready(function(){
+//            jQuery('ul>li> a[href=\"index.php?option=com_sportsmanagement&view=project&layout=panel&id=\"]:last').removeClass('active');
+//            });";
+//            $document->addScriptDeclaration($menuCssOverrideJs);
+        }    
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

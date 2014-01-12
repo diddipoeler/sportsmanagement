@@ -140,21 +140,32 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							if ($row->picture == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
-								echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+								echo JHtml::_('image',JURI::base().'/components/com_sportsmanagement/assets/images/delete.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 
 							}
 							elseif($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','/administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo JHtml::_(	'image',JURI::base() .'/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+                                                    
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                      
 								}
 								elseif($row->picture !== '')
 									{
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
-										echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+										echo JHtml::_('image',JURI::base().'/components/com_sportsmanagement/assets/images/ok.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                          
 									}
 									?>
 						</td>
