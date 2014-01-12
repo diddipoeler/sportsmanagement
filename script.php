@@ -214,7 +214,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 	 */
 	public function installPlugins()
 	{
-  $mainframe =& JFactory::getApplication();
+  $mainframe = JFactory::getApplication();
 // 	$lang = JFactory::getLanguage(); 
 //   $languages = JLanguageHelper::getLanguages('lang_code');
   
@@ -231,9 +231,9 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
 		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
-		//$dest = JPATH_SITE.DS.'plugins';
+		$dest = JPATH_SITE.DS.'plugins';
 		//$groups = JFolder::folders($src);
-    /*
+ /*   
     foreach ( $langlist as $key )
     {
     echo 'Copy Plugin(s) language( '.$key->element.' ) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a><br />';
@@ -254,12 +254,17 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 		echo 'Copy Plugin(s)';
 		JFolder::copy($src, $dest, '', true);
 		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
-	*/
+*/	
     
     // wenn alles kopiert wurde gleich installieren
     $ordner = JFolder::folders($src);
+    foreach ( $ordner as $key => $value)
+    {
+    JFolder::copy($src.DS.$value, $dest.DS.$value, '', true);    
+    }    
+    //echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
     
-    echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
+    $mainframe->enqueueMessage(JText::_('ordner<br><pre>'.print_r($ordner,true).'</pre>'   ),'');
     
     foreach ( $ordner as $key => $value)
     {
