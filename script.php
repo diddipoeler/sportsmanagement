@@ -268,6 +268,33 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
     
     foreach ( $ordner as $key => $value)
     {
+    $query = $db->getQuery(true);
+    $query->select('a.id');
+  $query->from('#__extensions AS a');
+  //$type = $db->Quote($type);
+	$query->where("a.type LIKE 'plugin' ");
+    $query->where("a.element LIKE '".$value."'");
+	
+  $db->setQuery($query);
+  $install_id = $db->loadResult();    
+
+if ( $install_id )
+{
+    
+    $installer = JInstaller::getInstance();
+    $result = $installer->discover_install($install_id);
+    if (!$result)
+     {
+	$mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $install_id);
+	}
+    else
+    {
+        $mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLSUCCESSFUL'));
+    }
+}
+
+
+/*        
     // Get an installer instance
 $installer = JInstaller::getInstance();
 // Get the path to the package to install
@@ -294,6 +321,7 @@ echo 'package<br><pre>'.print_r($package,true).'</pre>';
 			$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
 			//$result = true;
 		}
+        */
     }
     
     }
