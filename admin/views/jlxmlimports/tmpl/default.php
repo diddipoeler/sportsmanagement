@@ -11,7 +11,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			<thead><tr><th><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TABLE_TITLE_1', $this->config->get('upload_maxsize') ); ?></th></tr></thead>
 			<tfoot><tr><td><?php
 				echo '<p>';
-				echo '<b>'.JText::_('COM_SPORTSMANAGEMENTADMIN_XML_IMPORT_EXTENSION_INFO').'</b>';
+				echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_EXTENSION_INFO').'</b>';
 				echo '</p>';
 				echo '<p>';
 				echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_HINT1').'<br>';
