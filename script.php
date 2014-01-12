@@ -266,7 +266,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
     }    
     //echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
     
-    $mainframe->enqueueMessage(JText::_('ordner<br><pre>'.print_r($ordner,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('ordner<br><pre>'.print_r($ordner,true).'</pre>'   ),'');
     
     foreach ( $ordner as $key => $value)
     {
@@ -280,8 +280,8 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   $db->setQuery($query);
   $install_id = $db->loadResult();    
 
-$mainframe->enqueueMessage(JText::_('install_id<br><pre>'.print_r($install_id,true).'</pre>'   ),'');
-$mainframe->enqueueMessage(JText::_('value<br><pre>'.print_r($value,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('install_id<br><pre>'.print_r($install_id,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('value<br><pre>'.print_r($value,true).'</pre>'   ),'');
 
 if ( $install_id )
 {
@@ -290,11 +290,19 @@ if ( $install_id )
     $result = $installer->discover_install($install_id);
     if (!$result)
      {
-	$mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $install_id,'Error');
+	$mainframe->enqueueMessage($value.': '. $install_id,'Error');
+    // Create an object for the record we are going to update.
+    $object = new stdClass();
+    // Must be a valid primary key value.
+    $object->extension_id = $install_id;
+    $object->enabled = 1;
+    // Update their details in the users table using id as the primary key.
+    $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+    $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] veröffentlicht!',$value));
 	}
     else
     {
-        $mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLSUCCESSFUL'));
+        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] installiert!',$value));
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
@@ -302,6 +310,7 @@ if ( $install_id )
         $object->enabled = 1;
         // Update their details in the users table using id as the primary key.
         $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] veröffentlicht!',$value));
     }
 }
 
