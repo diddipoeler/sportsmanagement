@@ -269,7 +269,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
     foreach ( $ordner as $key => $value)
     {
     $query = $db->getQuery(true);
-    $query->select('a.id');
+    $query->select('a.extension_id');
   $query->from('#__extensions AS a');
   //$type = $db->Quote($type);
 	$query->where("a.type LIKE 'plugin' ");
