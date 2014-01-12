@@ -231,8 +231,8 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
 		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
-		$dest = JPATH_SITE.DS.'plugins';
-		$groups = JFolder::folders($src);
+		//$dest = JPATH_SITE.DS.'plugins';
+		//$groups = JFolder::folders($src);
     /*
     foreach ( $langlist as $key )
     {
@@ -258,6 +258,9 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
     
     // wenn alles kopiert wurde gleich installieren
     $ordner = JFolder::folders($src);
+    
+    echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
+    
     foreach ( $ordner as $key => $value)
     {
     // Get an installer instance
@@ -276,7 +279,8 @@ $package['type'] = $type;
 echo 'package<br><pre>'.print_r($package,true).'</pre>';
 
 // Install the package
-		if (!$installer->install($package['dir'])) {
+		if (!$installer->install($package['dir'])) 
+        {
 			// There was an error installing the package
 			$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
 			//$result = false;

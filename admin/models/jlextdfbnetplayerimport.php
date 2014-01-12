@@ -204,7 +204,7 @@ function property_value_in_array($array, $property, $value)
 
 function getUpdateData()
 	{
-  global $mainframe, $option;
+  $option = JRequest::getCmd('option');
   $mainframe = JFactory::getApplication();
   $document	= JFactory::getDocument();
 
@@ -222,8 +222,8 @@ function getUpdateData()
 //  $country = Countries::convertIso2to3($teile[1]);  
 //   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
-  $option = JRequest::getCmd('option');
-	$project = $mainframe->getUserState( $option . 'project', 0 );
+  
+	$project = $mainframe->getUserState( "$option.pid", '0' );
 	
 	if ( !$project )
 	{
@@ -244,15 +244,16 @@ function getUpdateData()
   
   foreach ( $updatedata as $row)
   {
+  $mdl = JModel::getInstance("match", "sportsmanagementModel");
+  $p_match = $mdl->getTable();
   
-  $p_match = $this->getTable('match');
   
   // paarung ist nicht vorhanden ?  
   if ( !$row->id )
   {
   // sicherheitshalber nachschauen ob die paarung schon da ist
   $query = "SELECT ma.id
-from #__joomleague_match as ma
+from #__".COM_SPORTSMANAGEMENT_TABLE."_match as ma
 where ma.round_id = '$row->round_id'
 and ma.projectteam1_id = '$row->projectteam1_id'
 and ma.projectteam2_id = '$row->projectteam2_id' 
@@ -359,7 +360,7 @@ $tempmatch = new stdClass();
 
 // round_id suchen
 $query = "SELECT r.id
-from #__joomleague_round as r
+from #__".COM_SPORTSMANAGEMENT_TABLE."_round as r
 where r.project_id = '$project'
 and r.roundcode = '$row->round_id'
 ";
@@ -379,8 +380,8 @@ $tempmatch->projectteam2_dfbnet = $row->projectteam2_dfbnet;
 
 // projectteam1_id suchen
 $query = "SELECT pt.id
-from #__joomleague_project_team as pt
-inner join #__joomleague_team as te
+from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as pt
+inner join #__".COM_SPORTSMANAGEMENT_TABLE."_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam1_dfbnet' 
@@ -390,8 +391,8 @@ $tempmatch->projectteam1_id = $this->_db->loadResult();
 
 // projectteam2_id suchen
 $query = "SELECT pt.id
-from #__joomleague_project_team as pt
-inner join #__joomleague_team as te
+from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as pt
+inner join #__".COM_SPORTSMANAGEMENT_TABLE."_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam2_dfbnet' 
@@ -404,7 +405,7 @@ $tempmatch->team2_result = $row->team2_result;
 $tempmatch->summary = '';
 
 $query = "SELECT ma.id
-from #__joomleague_match as ma
+from #__".COM_SPORTSMANAGEMENT_TABLE."_match as ma
 where ma.round_id = '$tempmatch->round_id'
 and ma.projectteam1_id = '$tempmatch->projectteam1_id'
 and ma.projectteam2_id = '$tempmatch->projectteam2_id' 
@@ -447,7 +448,7 @@ echo $this->pane->startPane('pane');
 //   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
   //$option='com_joomleague';
-  $project = $mainframe->getUserState( $option . 'project', 0 );
+  $project = $mainframe->getUserState( "$option.pid", '0' );
 	
   //$lmoimportuseteams=$mainframe->getUserState($option.'lmoimportuseteams');
   $whichfile=$mainframe->getUserState($option.'whichfile');
