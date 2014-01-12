@@ -180,7 +180,7 @@ JHTML::_('behavior.tooltip');
                 <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/github.png"               width="48px" height="48px"></a>            
             </div>            
             <div style="margin-bottom:5px">              
-              <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_HELP_LINK')?>" target=               "_blank" href=               "http://www.joomleaguewiki.grammatikas-grill.de/index.php/Hauptseite">               
+              <a title=               "<?php echo JText::_('COM_SPORTSMANAGEMENT_HELP_LINK')?>" target=               "_blank" href=               "http://smwiki.diddipoeler.de/index.php/Hauptseite">               
                 <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"               width="48px" height="48px"></a>            
             </div>          
           </div>          
