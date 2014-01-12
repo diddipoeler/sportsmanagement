@@ -218,7 +218,8 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 // 	$lang = JFactory::getLanguage(); 
 //   $languages = JLanguageHelper::getLanguages('lang_code');
   
-  $db =& JFactory::getDBO();
+  $db = JFactory::getDBO();
+/*  
   $query = $db->getQuery(true);
   $type = "language";
   $query->select('a.element');
@@ -228,6 +229,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 	$query->group('a.element');
   $db->setQuery($query);
   $langlist = $db->loadObjectList();
+*/
   
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
 		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
@@ -288,11 +290,18 @@ if ( $install_id )
     $result = $installer->discover_install($install_id);
     if (!$result)
      {
-	$mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $install_id);
+	$mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $install_id,'Error');
 	}
     else
     {
         $mainframe->enqueueMessage(JText::_('COM_INSTALLER_MSG_DISCOVER_INSTALLSUCCESSFUL'));
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->extension_id = $install_id;
+        $object->enabled = 1;
+        // Update their details in the users table using id as the primary key.
+        $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
     }
 }
 
