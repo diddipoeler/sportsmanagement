@@ -4,32 +4,6 @@ $backgroundimage = JURI::root().'media/'.$this->option.'/rosterground/'.$this->i
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 $picture = JURI::root().'images/'.$this->option.'/database/placeholders/placeholder_150_2.png';
 
-/*
-// bildpositionen für die spielsysteme
-$bildpositionen = array();
-$bildpositionen[4231][0][heim][oben] = 5;
-$bildpositionen[4231][0][heim][links] = 233;
-$bildpositionen[4231][1][heim][oben] = 113;
-$bildpositionen[4231][1][heim][links] = 69;
-$bildpositionen[4231][2][heim][oben] = 113;
-$bildpositionen[4231][2][heim][links] = 179;
-$bildpositionen[4231][3][heim][oben] = 113;
-$bildpositionen[4231][3][heim][links] = 288;
-$bildpositionen[4231][4][heim][oben] = 113;
-$bildpositionen[4231][4][heim][links] = 397;
-$bildpositionen[4231][5][heim][oben] = 236;
-$bildpositionen[4231][5][heim][links] = 179;
-$bildpositionen[4231][6][heim][oben] = 236;
-$bildpositionen[4231][6][heim][links] = 288;
-$bildpositionen[4231][7][heim][oben] = 318;
-$bildpositionen[4231][7][heim][links] = 69;
-$bildpositionen[4231][8][heim][oben] = 318;
-$bildpositionen[4231][8][heim][links] = 233;
-$bildpositionen[4231][9][heim][oben] = 318;
-$bildpositionen[4231][9][heim][links] = 397;
-$bildpositionen[4231][10][heim][oben] = 400;
-$bildpositionen[4231][10][heim][links] = 233;
-*/
 
 ?>
 <style type="text/css">

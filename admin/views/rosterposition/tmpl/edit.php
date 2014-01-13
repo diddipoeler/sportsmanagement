@@ -40,10 +40,12 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.modal');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 //jimport('joomla.html.pane');
-jimport( 'joomla.html.html.tabs' );
+//jimport( 'joomla.html.html.tabs' );
+
+/*
 $options = array(
     'onActive' => 'function(title, description){
         description.setStyle("display", "block");
@@ -56,31 +58,80 @@ $options = array(
     'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
     'useCookie' => true, // this must not be a string. Don't use quotes.
 );
+*/
+
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
+
+/*
+echo JHtml::_('tabs.start', 'tab_group_id', array('useCookie'=>1));
+echo JHtml::_('tabs.panel', JText::_('PANEL_1_TITLE'), 'panel_1_id');
+echo $this->loadTemplate('details');
+echo JHtml::_('tabs.panel', JText::_('PANEL_2_TITLE'), 'panel_2_id');
+echo $this->loadTemplate('playground_jquery');
+echo JHtml::_('tabs.panel', JText::_('PANEL_3_TITLE'), 'panel_3_id');
+echo $this->loadTemplate('extended');
+echo JHtml::_('tabs.end');
+*/
 
 ?>
 
 
 
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-	<div class="col50">
-		<?php
 
-echo JHtml::_('tabs.start', 'tab_group_id', $options);
- 
-echo JHtml::_('tabs.panel', JText::_('PANEL_1_TITLE'), 'panel_1_id');
-echo $this->loadTemplate('details');
- 
-echo JHtml::_('tabs.panel', JText::_('PANEL_2_TITLE'), 'panel_2_id');
-echo $this->loadTemplate('playground_jquery');
-
-echo JHtml::_('tabs.panel', JText::_('PANEL_3_TITLE'), 'panel_3_id');
-echo $this->loadTemplate('extended');
- 
-echo JHtml::_('tabs.end');
+		
 
 
-		?>
+<div class="width-40 fltlft">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_DETAILS'); ?></legend>
+			<ul class="adminformlist">
+			<?php foreach($this->form->getFieldset('details') as $field) :?>
+				<li><?php echo $field->label; ?>
+				<?php echo $field->input; ?></li>
+			<?php endforeach; ?>
+			</ul>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_EXTENDED'); ?></legend>
+			<ul class="adminformlist">
+            <?php
+			echo $this->loadTemplate('extended');
+            ?>
+			</ul>
+		</fieldset>
 	</div>
+
+<div class="width-40 fltrt">
+		<?php
+		echo JHtml::_('sliders.start');
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'details') :
+				continue;
+			endif;
+            if ($fieldset->name == 'extended') :
+				continue;
+			endif;
+			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+		if (isset($fieldset->description) && !empty($fieldset->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+			endif;
+		echo $this->loadTemplate($fieldset->name);
+        //$this->fieldset = $fieldset->name;
+        //echo $this->loadTemplate('fieldsets');
+		endforeach; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
+
+	
+	</div>    
+
+
+
+
+
+		
 	<div class="clr"></div>
 	
 	

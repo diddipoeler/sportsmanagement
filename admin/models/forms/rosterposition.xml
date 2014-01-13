@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
 	
-addrulepath="/administrator/components/com_joomleague/models/rules"
-	addfieldpath="/administrator/components/com_joomleague/models/fields">
+addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
@@ -13,18 +13,18 @@ addrulepath="/administrator/components/com_joomleague/models/rules"
 <field
 			name="name"
 			type="text"
-			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_NAME"
-			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_NAME"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME"
 			class="inputbox"
 			required="true"/>
 
 <field
 			name="short_name"
 			type="list"
-			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
-			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
 			class="inputbox"
-      default="HOME_POS"
+      default=""
       size="2"
 			>
       <option
@@ -40,27 +40,40 @@ addrulepath="/administrator/components/com_joomleague/models/rules"
 			type="text"
 			class="inputbox"
 			default="11"
-			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_PLAYERS"
-			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_PLAYERS"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS"
 			/>
 			
 <field
 			name="country"
 			type="country"
-			label="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY"
-			description="COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY"
 			class="inputbox">
-		<option value="">COM_JOOMLEAGUE_GLOBAL_SELECT_COUNTRY</option>
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
                 
+
+</fieldset>	
+
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
+  
+<fieldset name="playground_jquery"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
 <field name="picture" 
 type="imagelist" 
 default="spielfeld_578x1050.png" 
 
-label="COM_JOOMLEAGUE_FES_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
-description="COM_JOOMLEAGUE_FES_DESC_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
+label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT" 
+description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
 directory="images/com_sportsmanagement/database/rosterground" 
 />	
-</fieldset>	
+</fieldset>
+
   			
 </form>
