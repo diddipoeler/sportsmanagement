@@ -167,9 +167,11 @@ if ( $schemahome )
 {
 ?>
 <div style="position:absolute; width:103px; left:0px; top:0px; text-align:center;">
+
 <a href="<?php echo $this->team1_club->logo_big;?>" alt="<?php echo $this->team1_club->name;?>" title="<?php echo $this->team1_club->name;?>" class="highslide" onclick="return hs.expand(this)">
 <img class="bild_s" style="width:<?PHP echo $this->config['roster_playground_team_picture_width']; ?>px;" src="<?PHP echo $this->team1_club->logo_big; ?>" alt="" /><br />
 </a>
+
 </div>
 <?PHP
 }
@@ -178,9 +180,11 @@ if ( $schemaguest )
 {
 ?>
 <div style="position:absolute; width:103px; left:0px; top:950px; text-align:center;">
+
 <a href="<?php echo $this->team2_club->logo_big;?>" alt="<?php echo $this->team2_club->name;?>" title="<?php echo $this->team2_club->name;?>" class="highslide" onclick="return hs.expand(this)">
 <img class="bild_s" style="width:<?PHP echo $this->config['roster_playground_team_picture_width']; ?>px;" src="<?PHP echo $this->team2_club->logo_big; ?>" alt="" /><br />
 </a>
+
 </div>
 <?PHP
 }
@@ -236,9 +240,11 @@ echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['links']; ?>px; top:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['oben']; ?>px; text-align:center;">
+
 <a href="<?php echo $picture;?>" alt="<?php echo $player->lastname;?>" title="<?php echo $player->lastname;?>" class="highslide" onclick="return hs.expand(this)">
 <img id="<?php echo $player->person_id;?>" class="bild_s" style="width:<?PHP echo $this->config['roster_playground_player_picture_width']; ?>px; " src="<?PHP echo $picture; ?>" alt="" /><br />
 </a>
+
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
 </div>
                                       
@@ -296,9 +302,11 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">
+
 <a href="<?php echo $picture;?>" alt="<?php echo $player->lastname;?>" title="<?php echo $player->lastname;?>" class="highslide" onclick="return hs.expand(this)">
 <img id="<?php echo $player->person_id;?>" class="bild_s" style="width:<?PHP echo $this->config['roster_playground_player_picture_width']; ?>px;" src="<?PHP echo $picture; ?>" alt="" /><br />
 </a>
+
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
 </div>
                                       

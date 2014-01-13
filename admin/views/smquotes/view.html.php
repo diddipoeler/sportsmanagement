@@ -117,7 +117,7 @@ class sportsmanagementViewsmquotes extends JView
 		JToolBarHelper::editList('smquote.edit');
 		JToolBarHelper::custom('smquote.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
         
-        JToolBarHelper::custom('smquote.edittxt','featured.png','featured_f2.png',JText::_('JTOOLBAR_EDIT'),false);
+        JToolBarHelper::custom('smquotes.edittxt','featured.png','featured_f2.png',JText::_('JTOOLBAR_EDIT'),false);
         
         $bar = JToolBar::getInstance('toolbar');
         $bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');

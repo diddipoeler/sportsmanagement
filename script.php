@@ -99,7 +99,7 @@ switch ($type)
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
-//    self::installModules();
+    self::installModules();
     self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
@@ -108,7 +108,7 @@ switch ($type)
     break;
     case "update":
 //    self::installComponentLanguages();
-//    self::installModules();
+    self::installModules();
     self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
@@ -221,48 +221,12 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 	public function installPlugins()
 	{
   $mainframe = JFactory::getApplication();
-// 	$lang = JFactory::getLanguage(); 
-//   $languages = JLanguageHelper::getLanguages('lang_code');
   
   $db = JFactory::getDBO();
-/*  
-  $query = $db->getQuery(true);
-  $type = "language";
-  $query->select('a.element');
-  $query->from('#__extensions AS a');
-  $type = $db->Quote($type);
-	$query->where('(a.type = '.$type.')');
-	$query->group('a.element');
-  $db->setQuery($query);
-  $langlist = $db->loadObjectList();
-*/
   
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
 		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
 		$dest = JPATH_SITE.DS.'plugins';
-		//$groups = JFolder::folders($src);
- /*   
-    foreach ( $langlist as $key )
-    {
-    echo 'Copy Plugin(s) language( '.$key->element.' ) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a><br />';
-		foreach ($groups as $group)
-		{
-			$plugins = JFolder::folders($src.DS.$group);
-			foreach ($plugins as $plugin)
-			{
-      if ( JFolder::exists($src.DS.$group.DS.$plugin.DS.'language'.DS.$key->element) )
-		{
-				JFolder::copy($src.DS.$group.DS.$plugin.DS.'language'.DS.$key->element, JPATH_ADMINISTRATOR.DS.'language'.DS.$key->element, '', true);
-		echo ' - <span style="color:green">'.JText::_('Success -> '.$group.' - '.$plugin.' - '.$key->element).'</span><br />';
-    }
-    	}
-		}
-    }
-		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
-		echo 'Copy Plugin(s)';
-		JFolder::copy($src, $dest, '', true);
-		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
-*/	
     
     // wenn alles kopiert wurde gleich installieren
     $ordner = JFolder::folders($src);
@@ -321,40 +285,88 @@ if ( $install_id )
 }
 
 
-/*        
-    // Get an installer instance
-$installer = JInstaller::getInstance();
-// Get the path to the package to install
-$p_dir = $src.DS.$value.DS;
-// Detect the package type
-$type = JInstallerHelper::detectType($p_dir);        
 
-
-$package['packagefile'] = null;
-$package['extractdir'] = null;
-$package['dir'] = $p_dir;
-$package['type'] = $type;
-
-echo 'package<br><pre>'.print_r($package,true).'</pre>';
-
-// Install the package
-		if (!$installer->install($package['dir'])) 
-        {
-			// There was an error installing the package
-			$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
-			//$result = false;
-		} else {
-			// Package installed sucessfully
-			$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
-			//$result = true;
-		}
-        */
     }
     
     }
     
     
+    /**
+	 * method to install the modules
+	 *
+	 * @return void
+	 */
+	public function installModules()
+	{
+  $mainframe = JFactory::getApplication();
+  
+  $db = JFactory::getDBO();
+  
+//		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
+		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'modules';
+		$dest = JPATH_SITE.DS.'modules';
     
+    // wenn alles kopiert wurde gleich installieren
+    $ordner = JFolder::folders($src);
+    foreach ( $ordner as $key => $value)
+    {
+    JFolder::copy($src.DS.$value, $dest.DS.$value, '', true);    
+    }    
+    //echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
+    
+    //$mainframe->enqueueMessage(JText::_('ordner<br><pre>'.print_r($ordner,true).'</pre>'   ),'');
+    
+    foreach ( $ordner as $key => $value)
+    {
+    $query = $db->getQuery(true);
+    $query->select('a.extension_id');
+  $query->from('#__extensions AS a');
+  //$type = $db->Quote($type);
+	$query->where("a.type LIKE 'module' ");
+    $query->where("a.element LIKE '".$value."'");
+	
+  $db->setQuery($query);
+  $install_id = $db->loadResult();    
+
+//$mainframe->enqueueMessage(JText::_('install_id<br><pre>'.print_r($install_id,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(JText::_('value<br><pre>'.print_r($value,true).'</pre>'   ),'');
+
+if ( $install_id )
+{
+    
+    $installer = JInstaller::getInstance();
+    $result = $installer->discover_install($install_id);
+    if (!$result)
+     {
+	$mainframe->enqueueMessage($value.': '. $install_id,'Error');
+    // Create an object for the record we are going to update.
+    $object = new stdClass();
+    // Must be a valid primary key value.
+    $object->extension_id = $install_id;
+    $object->enabled = 1;
+    // Update their details in the users table using id as the primary key.
+    $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+    $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] veröffentlicht!',$value));
+	}
+    else
+    {
+        $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] installiert!',$value));
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->extension_id = $install_id;
+        $object->enabled = 1;
+        // Update their details in the users table using id as the primary key.
+        $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+        $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] veröffentlicht!',$value));
+    }
+}
+
+
+
+    }
+    
+    }
     
     
                   

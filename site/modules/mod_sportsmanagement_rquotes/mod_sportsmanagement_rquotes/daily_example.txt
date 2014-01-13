@@ -1,0 +1,32 @@
+This line will be displayed on the 1st day of every mounth.
+This line will be displayed on the 2nd day of every mounth.
+This line will be displayed on the 3rd day of every mounth.
+This line will be displayed on the 4th day of every mounth.
+This line will be displayed on the 5th day of every mounth.
+This line will be displayed on the 6th day of every mounth.
+This line will be displayed on the 7th day of every mounth.
+This line will be displayed on the 8th day of every mounth.
+This line will be displayed on the 9thday of every mounth.
+This line will be displayed on the 10th day of every mounth.
+This line will be displayed on the 11th day of every mounth.
+This line will be displayed on the 12th day of every mounth.
+This line will be displayed on the 13th day of every mounth.
+This line will be displayed on the 14th day of every mounth.
+This line will be displayed on the 15th day of every mounth. Here you could repeat from line 1 if you only have 14 items to display
+This line will be displayed on the 16th day of every mounth.
+This line will be displayed on the 17th day of every mounth.
+This line will be displayed on the 18th day of every mounth.
+This line will be displayed on the 19th day of every mounth.
+This line will be displayed on the 20th day of every mounth.
+This line will be displayed on the 21st day of every mounth.
+This line will be displayed on the 22nd day of every mounth.
+This line will be displayed on the 23rd day of every mounth.
+This line will be displayed on the 24th day of every mounth.
+This line will be displayed on the 25th day of every mounth.
+This line will be displayed on the 26th day of every mounth.
+This line will be displayed on the 27th day of every mounth.
+This line will be displayed on the 28th day of every mounth.
+This line will be displayed on the 29th day of every mounth.
+This line will be displayed on the 30th day of every mounth.
+This line will be displayed on the 31st day of every mounth.
+This line will "NOT" be displayed if using daily param.You can edit this file any way you like. Remember that the file must contain all 31 line to display a new quote every day

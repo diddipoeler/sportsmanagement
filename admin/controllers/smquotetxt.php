@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
  
 
-class sportsmanagementControllersmextxmleditor extends JControllerForm
+class sportsmanagementControllersmquotetxt extends JControllerForm
 {
     
     /**
@@ -20,13 +20,13 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 		parent::__construct($config);
 
 		// Apply, Save & New, and Save As copy should be standard on forms.
-		$this->registerTask('apply',		'save');
+		$this->registerTask('apply','save');
 	}
     
     public function cancel()
 	{
     // Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
+				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
     }
     
     /**
@@ -52,7 +52,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 				//$app->setUserState($context.'.data',	null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$data['filename'], false));
+				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name='.$data['filename'], false));
 				break;
 
 			default:
@@ -61,7 +61,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 				//$app->setUserState($context.'.data', null);
 
 				// Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
+				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
 				break;
 		}
         
@@ -78,7 +78,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 	 *
 	 * @return	object	The model.
 	 */
-	public function getModel($name = 'smextxmleditor', $prefix = 'sportsmanagementModel', $config = array())
+	public function getModel($name = 'smquotetxt', $prefix = 'sportsmanagementModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, $config);
 		return $model;
