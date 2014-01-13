@@ -75,7 +75,15 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
-        $return = JFile::write($filePath, $data['source']);
+        //$return = JFile::write($filePath, $data['source']);
+        if ( !JFile::write($filePath, $data['source']) )
+        {
+        JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
+        }
+        else
+        {
+        JError::raiseNotice(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
+        }
     }    
   
   /**

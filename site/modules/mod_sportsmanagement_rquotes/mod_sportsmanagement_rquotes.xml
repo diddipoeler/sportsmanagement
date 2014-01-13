@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension 
+type="module"
+version="2.5"
+	client="site"
+	method="upgrade">
+	<name>Sportsmanagement Zitate Modul</name>
+	<author>diddipoeler</author>
+	<creationDate>Feb 2014</creationDate>
+	<copyright>(C) 2014</copyright>
+	<license>GPL2</license>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>www.fussballineuropa.de</authorUrl>
+	<version>1.0.00</version>
+	<description>MOD_SPORTSMANAGEMENTRQUOTES_XML_DESCRIPTION</description>
+	
+	<!-- The updateservers element is required to enable the automatic update. -->
+<!-- It is used to add the rows to #__update_sites and #__update_sites_extensions tables -->
+
+<!--
+<updateservers>
+   <server type="extension" priority="1" name="Rquotes"
+   >http://mytidbits.us/updateserver/mod_rquotes-update.xml</server>
+</updateservers>
+-->
+
+	<files>
+		<filename module="mod_sportsmanagement_rquotes">mod_sportsmanagement_rquotes.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>assets</folder>
+		<folder>elements</folder>
+		
+		<folder>mod_sportsmanagement_rquotes</folder>
+		
+		<folder>tmpl</folder>
+		
+	</files>
+	
+
+<languages folder="languages">
+		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotess.ini</language>
+		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
+		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotess.ini</language>
+		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
+    </languages>
+
+
+	<config>
+
+	<fields name="params" >	
+	  
+		<fieldset name="basic">
+
+
+	<field 
+		name="source"
+		type="list"
+		default="text" 
+		label="MOD_RQUOTES_FIELD_QUOTE_SOURCE"
+		description="MOD_RQUOTES_FIELD_QUOTE_SOURCE_DESC">
+			<option value="text">TEXT_FILE</option>
+			<option value="db">DATABASE</option>
+	</field>
+	
+	<field 
+	type="spacer" 
+	default=""
+	label="MOD_RQUOTES_LABEL_SELECT_TEXT_FILE" 
+	/>
+	
+	
+ 
+	<field 
+	name="filename"
+	 type="filelist"
+	 default="rquotes.txt"
+	 label="MOD_RQUOTES_FIELD_SELECT_TEXT_FILE" 
+	 description="MOD_RQUOTES_FIELD_SELECT_TEXT_FILE_DESC" 
+	 directory="modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes" 
+	 filter="" 
+	 exclude="" 
+	 stripext="" 
+	 hide_default='true' 
+	 hide_none='true'
+	 />
+
+	<field 
+	name="randomtext" 
+	type="radio" 
+	default="0" 
+	label="MOD_RQUOTES_FIELD_TEXT_FILE_ROTATE" 
+	description="MOD_RQUOTES_FIELD_ROTATE_TEXT_FILE_DESC"
+	 >
+		<option value ="1">MOD_RQUOTES_SELECT_DAILY_TEXT</option>
+		<option value ="0">MOD_RQUOTES_SELECT_RANDOM_TEXT</option>
+	</field>
+
+	
+	<field 
+	type="spacer" 
+	default=""
+	label="MOD_RQUOTES_LABEL_SELECT_DB" 
+	/>
+
+	
+
+	 
+ <field 
+ 		name="category" 
+ 		type="sql" 
+ 		default="" 
+ 		label="JCATEGORY" 
+ 		description="MOD_RQUOTES_FIELD_CATEGORY_DESC"
+ 		multiple="true" 
+ 		query=" SELECT id AS value , title AS category  FROM  #__categories WHERE published ='1' AND extension ='com_sportsmanagement'"
+ 		 /> 
+
+
+ 	<field name="rotate" 
+ 		type="list" 
+ 		default="single_random" 
+ 		label="MOD_RQUOTES_FIELD_LABEL_ROTATE" 
+ 		description="MOD_RQUOTES_FIELD_ROTATE_DESC" >
+			<option value ="single_random">SELECT_SINGLE_RANDOM</option>
+			<option value ="multiple_random">SELECT_MULTIPLE_RANDOM</option>
+			<option value ="sequential">SELECT_SEQUENTIAL</option>
+			<option value ="daily">SELECT_DB_DAILY</option>
+			<option value ="weekly">SELECT_DB_WEEKLY</option>
+			<option value ="monthly">SELECT_DB_MONTHLY</option>
+			<option value ="yearly">SELECT_DB_YEARLY</option>
+			<option value ="today">SELECT_DB_TODAY</option>
+	</field>
+	
+	<field 
+		name="num_of_random" 
+		type="text"
+		default="2" 
+		label="MOD_RQUOTES_NUMBER_RANDOM_QUOTES" 
+		description="MOD_RQUOTES_NUN_RANDOM_QUOTES_DESC" />
+		
+		<field name="@spacer" 
+		type="spacer" 
+		default="rotate_note" 
+		label="MOD_RQUOTES_STYLE_TEXT"
+		 description="MOD_RQUOTES_STYLE_TEXT_DESC" />
+		
+		
+
+	<field name="style" 
+		type="list" 
+		default="default" 
+		label="MOD_RQUOTES_LABEL_DISPLAY_OPTIONS"
+		description="MOD_RQUOTES_LABEL_DISPLAY_OPTIONS_DESC">		
+			<option value="default">JDEFAULT</option>
+			<option value="bold">SELECT_BOLD</option>
+			<option value="italic">SELECT_ITALIC</option>
+			<option value="style">SELECT_CSS</option>
+	</field>
+		
+			
+	
+	<field name="quotemarks" 
+		type="list" 
+		default="0" 
+		label="MOD_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS" 
+		description="MOD_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">TEXT</option>
+			<option value="2">GRAPHIC</option>
+			<option value="3">CSS_STYLE</option>
+	</field>
+
+</fieldset>
+
+<fieldset
+name="advanced">
+<field
+name="layout"
+type="modulelayout"
+label="JFIELD_ALT_LAYOUT_LABEL"
+description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+<field
+name="moduleclass_sfx"
+type="text"
+label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+<field
+name="cache"
+type="list"
+default="1"
+label="COM_MODULES_FIELD_CACHING_LABEL"
+description="COM_MODULES_FIELD_CACHING_DESC">
+<option value="1">JGLOBAL_USE_GLOBAL</option>
+<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+</field>
+
+<field
+name="cache_time"
+type="text"
+default="900"
+label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+
+<field
+name="cachemode"
+type="hidden"
+default="itemid">
+<option value="itemid"></option>
+</field>
+
+</fieldset>
+
+</fields>
+</config>
+</extension>

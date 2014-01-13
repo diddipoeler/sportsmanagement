@@ -38,7 +38,7 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');

@@ -1,7 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML'); ?></legend>
@@ -44,3 +45,8 @@ foreach ( $this->files as $file )
 ?>
 </table>
 </fieldset>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>  

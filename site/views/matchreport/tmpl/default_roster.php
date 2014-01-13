@@ -1,4 +1,6 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.modal');
 ?>
 <!-- START: game roster -->
 <!-- Show Match players -->
@@ -89,7 +91,12 @@ if (!empty($this->matchplayerpositions))
 																													$this->config['player_picture_height']));
 												*/
                                                 ?>
-                                                <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
+                                                
+
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+</a>
+                                                
                                                 <?PHP
                                                 echo JHTML::link($player_link,JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
                                                 ?>
@@ -104,7 +111,10 @@ if (!empty($this->matchplayerpositions))
 													
                                                     */
                                                     ?>
-                                                <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+</a>                                               
+                                               
                                                 <?PHP
                                                     echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                         ?>
@@ -183,7 +193,10 @@ if (!empty($this->matchplayerpositions))
 																							$this->config['player_picture_width'],
 																							$this->config['player_picture_height']);
 													*/                         ?>
-                                                <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
+    
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+</a>
                                                 <?PHP
                                                     
                                                     echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));

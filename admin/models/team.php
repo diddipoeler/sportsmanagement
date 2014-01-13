@@ -5,8 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelteam
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelteam extends JModelAdmin
 {

@@ -108,6 +108,7 @@ if ( $this->config['show_pictures'] == 1 )
 		}
 		$document->setTitle( $pageTitle );
 
+/*
     $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
 		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
     
@@ -144,6 +145,9 @@ if ( $this->config['show_pictures'] == 1 )
     \n";
     
     $document->addScriptDeclaration( $js );
+    
+*/
+    
 /*    
     $startfade = 1000;
     

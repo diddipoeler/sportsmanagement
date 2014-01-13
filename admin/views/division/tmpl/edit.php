@@ -37,7 +37,7 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */ 
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');

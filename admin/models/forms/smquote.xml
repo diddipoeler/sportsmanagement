@@ -48,8 +48,8 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			extension="com_sportsmanagement"
 			class="inputbox"
 			default=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_CATID_LABEL"
-			description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_FIELD_CATID_DESC"
+			label="JCATEGORY"
+			description="JFIELD_CATEGORY_DESC"
 			required="false"
 		>
 			<option value="0">JOPTION_SELECT_CATEGORY</option>

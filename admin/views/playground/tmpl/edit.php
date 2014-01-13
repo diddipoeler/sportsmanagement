@@ -38,7 +38,7 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -70,7 +70,12 @@ $fieldsets = $this->form->getFieldsets();
                 $picture = sportsmanagementHelper::getPictureClub($field->value);
                 //echo $picture;
                 //echo JHtml::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
-                echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));  
+                //echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));  
+?>
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Club';?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Club';?>" width="50" />
+</a>
+<?PHP                  
                 }
                 
                 ?></li>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<fieldset group="Extended Preferences..." name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES" addpath="/administrator/components/com_joomleague/elements">
+	<fieldset group="Extended Preferences..." name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES" addpath="/administrator/components/com_sportsmanagement/elements">
 	
 		<field name="COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_1_TOP" type="text" rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_1_TOP_DESCRIPTION" description="COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_1_TOP_DESCRIPTION_DESC" backendonly="">
 		</field>

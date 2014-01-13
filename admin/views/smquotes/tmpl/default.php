@@ -54,17 +54,17 @@ JHtml::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_QUOTES_AUTHOR','obj.author',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_QUOTES_QUOTE','obj.author',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_QUOTES_CATID','obj.catid',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JCATEGORY','obj.catid',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="10%">

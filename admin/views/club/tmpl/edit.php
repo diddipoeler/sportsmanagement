@@ -38,7 +38,7 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //jimport( 'joomla.html.html.tabs' );
 jimport('joomla.html.pane');
@@ -83,7 +83,12 @@ $fieldsets = $this->form->getFieldsets();
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
                 //echo $picture;
                 //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
-                echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+                //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+?>
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+</a>
+<?PHP                   
                 }
                 
                 if ( $field->name == 'jform[website]' )

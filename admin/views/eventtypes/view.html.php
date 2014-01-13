@@ -84,7 +84,8 @@ class sportsmanagementViewEventtypes extends JView
 	*/
 	protected function addToolbar()
 	{
-  		// Get a refrence of the page instance in joomla
+  		$option = JRequest::getCmd('option');
+          // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
@@ -106,6 +107,7 @@ class sportsmanagementViewEventtypes extends JView
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd($option));
 	}
 }
 ?>

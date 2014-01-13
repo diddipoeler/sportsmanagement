@@ -90,6 +90,7 @@ class sportsmanagementViewClub extends JView
 	{
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -132,6 +133,9 @@ class sportsmanagementViewClub extends JView
 			}
 			JToolBarHelper::cancel('club.cancel', 'JTOOLBAR_CLOSE');
 		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd($option));
 	}
 	/**
 	 * Method to set up the document properties
