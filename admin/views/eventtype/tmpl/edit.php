@@ -38,7 +38,7 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -74,7 +74,9 @@ $fieldsets = $this->form->getFieldsets();
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
-		echo $this->loadTemplate($fieldset->name);
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
 

@@ -73,6 +73,7 @@ class sportsmanagementViewrosterpositions extends JView
 	{
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
+        $option = JRequest::getCmd('option');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -86,8 +87,8 @@ class sportsmanagementViewrosterpositions extends JView
 		//JToolBarHelper::deleteList();
 		JToolBarHelper::deleteList('', 'rosterposition.remove');
 		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd($option));
        
        
        

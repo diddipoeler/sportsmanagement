@@ -13,6 +13,10 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
+
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -44,3 +48,8 @@ JHtml::_('behavior.keepalive');
 	<?php echo $this->form->getInput('filename'); ?>
 
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>  
