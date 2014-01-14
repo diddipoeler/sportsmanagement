@@ -41,7 +41,7 @@ $my_text = '';
 if ( !copy($link,$filepath) )
 {
 //echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED' )."'); </script>\n";
-$my_text = '<span style="color:'.$this->$storeFailedColor.'">';
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
 $my_text .= JText::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
 $my_text .= '<br />';
 }
@@ -49,7 +49,7 @@ else
 {
 //echo "<script> alert('" . JText::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 //echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_SUCCESS' )."');   </script>\n";
-$my_text = '<span style="color:'.$this->$storeSuccessColor.'">';
+$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= JText::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
 $my_text .= '<br />';
 
@@ -83,7 +83,7 @@ $my_text = '';
         {
 			// There was an error installing the package
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
-            $my_text = '<span style="color:'.$this->$storeFailedColor.'">';
+            $my_text = '<span style="color:'.$this->storeFailedColor.'">';
 			$my_text .= JText::sprintf('Die Komponente [ %1$s ] konnte nicht installiert werden!',"</span><strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
 			//$result = false;
