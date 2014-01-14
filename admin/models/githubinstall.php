@@ -124,14 +124,14 @@ if (!$installer->install($package['dir']))
 			// There was an error installing the package
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
             $my_text .= '<span style="color:'.$this->storeFailedColor.'">';
-			$my_text .= JText::sprintf('Das Plugin [ %1$s ] konnte nicht installiert werden!',"</span><strong>".$value."</strong>");
+			$my_text .= JText::sprintf('Das Plugin [ %1$s ] [ %2$s ] konnte nicht installiert werden!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
 			//$result = false;
 		} else {
 			// Package installed sucessfully
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-			$my_text .= JText::sprintf('Die Plugin [ %1$s ] wurde installiert!',"</span><strong>".$value."</strong>");
+			$my_text .= JText::sprintf('Die Plugin [ %1$s ] [ %2$s ] wurde installiert!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
                         
 			//$result = true;
