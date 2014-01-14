@@ -5,8 +5,11 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<p style='text-align:right;'><button type="button" onclick="Joomla.submitform('githubinstall.store')"><?php echo JText::_('JSAVE') ?></button></p>
-<input type="hidden" name="task"				value="" />
+<p style='text-align:right;'>
+
+<input class='button' type='submit' value='<?php echo JText::_('JSAVE'); ?>' />
+</p>
+<input type="hidden" name="task"				value="githubinstall.store" />
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
