@@ -112,6 +112,23 @@ $paramsdata = JComponentHelper::getParams($option);
     
     }
     
+    
+    function getInstalledPlugin($plugin)
+    {
+    $mainframe = JFactory::getApplication();
+  $option = JRequest::getCmd('option'); 
+  $db = JFactory::getDBO();    
+        $query = $db->getQuery(true);
+    $query->select('a.extension_id');
+  $query->from('#__extensions AS a');
+  //$type = $db->Quote($type);
+	$query->where("a.type LIKE 'plugin' ");
+    $query->where("a.element LIKE '".$plugin."'");
+	
+  $db->setQuery($query);
+  return $db->loadResult();    
+    }
+    
     function checkUpdateVersion()
     {
         $mainframe = JFactory::getApplication(); 

@@ -31,6 +31,46 @@ function CopyGithubLink($link)
     $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
+        
+        $gitinstall = $mainframe->getUserState( "$option.install");
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
+
+if ( $gitinstall )
+{
+// Get an installer instance
+$installer = JInstaller::getInstance();   
+$my_text = ''; 
+$p_dir = JPATH_SITE.DS.'components'.DS.$option.DS.'plugins'.DS.'system'.DS.$gitinstall.DS;
+$p_dir = JPath::clean($p_dir);
+// Detect the package type
+$type = JInstallerHelper::detectType($p_dir); 
+$package['packagefile'] = null;
+$package['extractdir'] = null;
+$package['dir'] = $p_dir;
+$package['type'] = $type;
+if (!$installer->install($package['dir'])) 
+        {
+			// There was an error installing the package
+			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+            $my_text .= '<span style="color:'.$this->storeFailedColor.'">';
+			$my_text .= JText::sprintf('Das Plugin [ %1$s ] [ %2$s ] konnte nicht installiert werden!',"</span><strong>".$gitinstall."</strong>","<strong>".strtoupper($package['type'])."</strong>");
+			$my_text .= '<br />';
+			//$result = false;
+		} else {
+			// Package installed sucessfully
+			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+            $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+			$my_text .= JText::sprintf('Das Plugin [ %1$s ] [ %2$s ] wurde installiert!',"</span><strong>".$gitinstall."</strong>","<strong>".strtoupper($package['type'])."</strong>");
+			$my_text .= '<br />';
+                        
+			//$result = true;
+		}
+$this->_success_text['Plugins:'] = $my_text;
+    
+}   
+else
+{     
         //set the target directory
 		$base_Dir = JPATH_SITE . DS . 'tmp'. DS;
         $file['name'] = basename($link);
@@ -137,7 +177,7 @@ if (!$installer->install($package['dir']))
 			// Package installed sucessfully
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-			$my_text .= JText::sprintf('Die Plugin [ %1$s ] [ %2$s ] wurde installiert!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
+			$my_text .= JText::sprintf('Das Plugin [ %1$s ] [ %2$s ] wurde installiert!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
                         
 			//$result = true;
@@ -184,13 +224,7 @@ if (!$installer->install($package['dir']))
 } 
 $this->_success_text['Module:'] = $my_text;
 
-
-
-
-
-
-
-
+}
 
 foreach ($this->_success_text as $key => $value)
 		{
@@ -200,8 +234,7 @@ foreach ($this->_success_text as $key => $value)
 				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
 			</fieldset>
 			<?php
-		}
-            
+		}            
 }
 
 

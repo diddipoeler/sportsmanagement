@@ -77,6 +77,30 @@ class sportsmanagementViewcpanel extends JView
         $sm_quotes = $params->get( 'cfg_quotes' );
         $country = $params->get( 'cfg_country_associations' );
         
+        // JPluginHelper::isEnabled( 'system', 'jqueryeasy' )
+        if ( $model->getInstalledPlugin('jqueryeasy')  )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_AVAILABLE'),'Notice');
+            $this->jquery = '0';
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_AVAILABLE'),'Error');
+            $this->jquery = '1';
+        }
+        
+        if ( $model->getInstalledPlugin('plugin_googlemap3') )
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'),'Notice');
+            $this->googlemap = '0';
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_AVAILABLE'),'Error');
+            $this->googlemap = '1';
+        }
+        
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
         $this->aktversion = $model->checkUpdateVersion();
@@ -228,7 +252,8 @@ class sportsmanagementViewcpanel extends JView
 	 */
 	protected function addToolBar() 
 	{
-  		// Get a refrence of the page instance in joomla
+  		$mainframe = JFactory::getApplication(); 
+          // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
         // Set toolbar items for the page
@@ -240,6 +265,20 @@ class sportsmanagementViewcpanel extends JView
 		
 		if ($canDo->get('core.admin')) 
 		{
+            if ( $this->jquery )
+            {
+            $mainframe->setUserState( "$option.install", 'jqueryeasy');    
+            sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),'githubinstall',1);
+            //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
+            }
+            
+            if ( $this->googlemap )
+            {
+            $mainframe->setUserState( "$option.install", 'plugin_googlemap3');    
+            sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'),'githubinstall',1);
+            //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
+            }
+            
             //if ( $this->aktversion )
             //{
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
