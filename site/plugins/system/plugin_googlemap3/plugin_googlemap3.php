@@ -463,7 +463,7 @@ class plgSystemPlugin_googlemap3 extends JPlugin
 				JError::raiseWarning(1, 'plgSystemPlugin_googlemap3::install_params: '.JText::_('SQL Error')." ".$database->stderr(true));
 			
 			$params = $database->loadResult();
-			if (substr($this->jversion,0,3)=="3.0")
+			if (substr($this->jversion,0,2)=="3.")
 				$savparams = $database->escape($params);
 			else
 				$savparams = $database->getEscaped($params);

@@ -83,7 +83,7 @@ class plugin_googlemap3_css {
 			while (@ob_end_clean());
 			
 			// Set correct header
-			header('Content-type: text/css; charset: UTF-8');
+			header('Content-type: text/css; charset=utf-8');
 
 			echo $mapcss;
 		}

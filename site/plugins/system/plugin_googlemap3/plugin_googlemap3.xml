@@ -2,18 +2,20 @@
 <extension version="1.6.0" type="plugin" group="system" method="upgrade">
 	<name>System - Google Maps</name>
 	<author>Mike Reumer</author>
-	<creationDate>January 2013</creationDate>
+	<creationDate>July 2013</creationDate>
 	<copyright>(C) 2013 Reumer</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>tech@reumer.net</authorEmail>
 	<authorUrl>tech.reumer.net</authorUrl>
-	<version>3.0</version>
+	<version>3.1</version>
 	<description>PLUGIN_GOOGLE_MAP3_INSTALLATION</description>
 	<files>
 		<filename plugin="plugin_googlemap3">plugin_googlemap3.php</filename>
 		<filename>plugin_googlemap3_helper.php</filename>
 		<filename>plugin_googlemap3_proxy.php</filename>
 		<filename>plugin_googlemap3_twitter_kml.php</filename>
+		<filename>plugin_googlemap3_OAuth.php</filename>
+		<filename>plugin_googlemap3_twitteroauth.php</filename>
 		<filename>plugin_googlemap3.perm</filename>
 		<filename>gpl.txt</filename>
 		<filename>index.html</filename>
@@ -61,7 +63,7 @@
 					<option value="0">No</option>
 				</field>
 				<field name="mapclass" type="text" size= "40" default="" export='1' label="GOOGLEMAPS_MAP_CLASS" description="GOOGLEMAPS_TT_MAP_CLASS" />
-				<field name="mapcss" type="textarea" rows="3" cols="40" default="/* For img in the map remove borders, shadow, no margin and no max-width&#13;*/&#13;.map img, .svPanel img {&#13;    border: 0px;&#13;    box-shadow: 0px;&#13;    margin: 0px !important;&#13;    padding: 0px !important;&#13;    max-width: none !important;&#13;    background: none !important;&#13;}&#13;&#13;/* Make sure the directions are below the map&#13;*/&#13;.directions {&#13;    clear: left;&#13;}&#13;&#13;.adp-directions {&#13;    width: 100%;&#13;}&#13;&#13;/* Solve problems in chrome with the show of the direction steps in full width&#13;*/&#13;.adp-placemark {&#13;    width : 100%;&#13;}&#13;&#13;/* Padding for image overlay&#13;*/&#13;.controlDiv {&#13;    padding : 5px;&#13;}&#13;" export='0' label="GOOGLEMAPS_MAPS_CSS" description="GOOGLEMAPS_TT_MAPS_CSS" />
+				<field name="mapcss" type="textarea" rows="3" cols="40" default="/* For img in the map remove borders, shadow, no margin and no max-width&#13;*/&#13;.map img, .svPanel img {&#13;    border: 0px;&#13;    box-shadow: none;&#13;    margin: 0px !important;&#13;    padding: 0px !important;&#13;    max-width: none !important;&#13;    background: none !important;&#13;}&#13;&#13;/* Make sure the directions are below the map&#13;*/&#13;.directions {&#13;    clear: left;&#13;}&#13;&#13;.adp-directions {&#13;    width: 100%;&#13;}&#13;&#13;/* Solve problems in chrome with the show of the direction steps in full width&#13;*/&#13;.adp-placemark {&#13;    width : 100%;&#13;}&#13;&#13;/* Padding for image overlay&#13;*/&#13;.controlDiv {&#13;    padding : 5px;&#13;}&#13;" export='0' label="GOOGLEMAPS_MAPS_CSS" description="GOOGLEMAPS_TT_MAPS_CSS" />
 				<field name="loadmootools" type="radio" size= "1" default="1" export='1' label="GOOGLEMAPS_LOADWITHMOOTOOLS" description="GOOGLEMAPS_TT_LOADWITHMOOTOOLS">
 					<option value="1">GOOGLEMAPS_LOADWITHMOOTOOLSMOOTOOLS</option>
 					<option value="0">GOOGLEMAPS_LOADWITHMOOTOOLSTIMEINTERVAL</option>
@@ -631,6 +633,7 @@
 				</field>
 				<field name="txtaddr" type="textarea" filter="raw" rows="3" cols="40" default="Address: ##" export='1' label="GOOGLEMAPS_MAPS_TXTADDRESSINFOWINDOW" description="GOOGLEMAPS_TT_MAPS_TXTADDRESSINFOWINDOW" />
 				<field name="erraddr" type="textarea" filter="raw" rows="3" cols="40" default="Address ## not found!" export='1' label="GOOGLEMAPS_MAPS_ADDRERRTXT" description="GOOGLEMAPS_TT_MAPS_ADDRERRTXT" />
+				<field name="txtgotoaddr" type="textarea" rows="3" cols="40" default="Goto" export='1' label="GOOGLEMAPS_MAPS_TXTGOTOADDR" description="GOOGLEMAPS_TT_MAPS_TXTGOTOADDR" />
 				<field name="clientgeotype" type="radio" size= "1" default="google" export='1' label="GOOGLEMAPS_MAPS_GEOTYPE" description="GOOGLEMAPS_TT_MAPS_GEOTYPE">
 					<option value="google">GOOGLEMAPS_MAPS_GEOTYPE_GOOGLE</option>
 					<option value="local">GOOGLEMAPS_MAPS_GEOTYPE_LOCAL</option>
@@ -803,6 +806,13 @@
 				<option value="1">Yes</option>
 				<option value="0">No</option>
 				</field>
+				<field name="txtsrchnrby" type="textarea" rows="3" cols="40" default="Search nearby" export='1' label="GOOGLEMAPS_MAPS_TXTSRCHNRBY" description="GOOGLEMAPS_TT_MAPS_TXTSRCHNRBY" />
+				<field name="txtzoomhere" type="textarea" rows="3" cols="40" default="Zoom Here" export='1' label="GOOGLEMAPS_MAPS_TXTZOOMHERE" description="GOOGLEMAPS_TT_MAPS_TXTZOOMHERE" />
+				<field name="txtaddrstart" type="textarea" rows="3" cols="40" default="Start address:" export='1' label="GOOGLEMAPS_MAPS_TXTADDRSTART" description="GOOGLEMAPS_TT_MAPS_TXTADDRSTART" />
+				<field name="txtkmlgetdir" type="textarea" rows="3" cols="40" default="Go" export='1' label="GOOGLEMAPS_MAPS_TXTKMLGETDIR" description="GOOGLEMAPS_TT_MAPS_TXTKMLGETDIR" />
+				<field name="txtback" type="textarea" rows="3" cols="40" default="&#171; Back" export='1' label="GOOGLEMAPS_MAPS_TXTBACK" description="GOOGLEMAPS_TT_MAPS_TXTBACK" />
+				<field name="txtsearchnearby" type="textarea" rows="3" cols="40" default="Search nearby: e.g. pizza" export='1' label="GOOGLEMAPS_MAPS_TXTSEARCHNEARBY" description="GOOGLEMAPS_TT_MAPS_TXTSEARCHNEARBY" />
+				<field name="txtsearch" type="textarea" rows="3" cols="40" default="Go" export='1' label="GOOGLEMAPS_MAPS_TXTSEARCH" description="GOOGLEMAPS_TT_MAPS_TXTSEARCH" />	
 				<field name="maxcluster" type="text" size= "3" default="" export='1' label="GOOGLEMAPS_MAPS_CLUSTERMAXMARKERS" description="GOOGLEMAPS_TT_MAPS_CLUSTERMAXMARKERS" />
 				<field name="clustericonurl" type="text" size="60" maxsize="255" default="/media/plugin_googlemap3/site/geoxmlv3/images/m" export='1' label="GOOGLEMAPS_CLUSTER_ICON_URL" description="GOOGLEMAPS_TT_CLUSTER_ICON_URL" />
 				<field name="gridsize" type="text" size= "3" default="" export='1' label="GOOGLEMAPS_MAPS_CLUSTERGRIDSIZE" description="GOOGLEMAPS_TT_MAPS_CLUSTERGRIDSIZE" />
@@ -844,6 +854,9 @@
 					<option value="1">1</option>
 					<option value="0">0</option>
 				</field>
+				<field name="txtzoomin" type="textarea" rows="3" cols="40" default="Zoom in to show more" export='1' label="GOOGLEMAPS_MAPS_ZOOMIN" description="GOOGLEMAPS_TT_MAPS_ZOOMIN" />	
+				<field name="txtclustercount1" type="textarea" rows="3" cols="40" default="...and" export='1' label="GOOGLEMAPS_MAPS_TXTCLUSTERCOUNT1" description="GOOGLEMAPS_TT_MAPS_TXTCLUSTERCOUNT1" />	
+				<field name="txtclustercount2" type="textarea" rows="3" cols="40" default="more" export='1' label="GOOGLEMAPS_MAPS_TXTCLUSTERCOUNT2" description="GOOGLEMAPS_TT_MAPS_TXTCLUSTERCOUNT2" />	
 			</fieldset>
 			<fieldset name="GOOGLEMAP_CUSTOMTILE">
 				<field name="tilelayer" type="text" size="60" maxsize="255" default="" export='1' label="GOOGLEMAPS_MAPS_TILELAYER" description="GOOGLEMAPS_TT_MAPS_TILELAYER" />
@@ -926,6 +939,10 @@
 				<field name="twitterline" type="text" size= "10" default="#ff0000ff" export='1' label="GOOGLEMAPS_TWITTER_LINE" description="GOOGLEMAPS_TT_TWITTER_LINE" />
 				<field name="twitterlinewidth" type="text" size= "2" default="4" export='1' label="GOOGLEMAPS_TWITTER_LINEWIDTH" description="GOOGLEMAPS_TT_TWITTER_LINEWIDTH" />
 				<field name="twitterstartloc" type="text" size= "30" default="0,0,0" export='1' label="GOOGLEMAPS_TWITTER_STARTLOC" description="GOOGLEMAPS_TT_TWITTER_STARTLOC" />
+				<field name="twitterconsumerkey" type="text" size="60" maxsize="255" default="" export='0' label="GOOGLEMAPS_TWITTER_CONSUMERKEY" description="GOOGLEMAPS_TT_TWITTER_CONSUMERKEY" />
+				<field name="twitterconsumersecret" type="text" size="60" maxsize="255" default="" export='0' label="GOOGLEMAPS_TWITTER_CONSUMERSECRET" description="GOOGLEMAPS_TT_TWITTER_CONSUMERSECRET" />
+				<field name="twitteraccesstoken" type="text" size="60" maxsize="255" default="" export='0' label="GOOGLEMAPS_TWITTER_ACCESSTOKEN" description="GOOGLEMAPS_TT_TWITTER_ACCESSTOKEN" />
+				<field name="twitteraccesstokensecret" type="text" size="60" maxsize="255" default="" export='0' label="GOOGLEMAPS_TWITTER_ACCESSTOKENSECRET" description="GOOGLEMAPS_TT_TWITTER_ACCESSTOKENSECRET" />
 			</fieldset>
 		</fields>
 	</config>

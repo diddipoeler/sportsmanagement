@@ -184,7 +184,9 @@ class plgSystemPlugin_googlemap3_helper
 		$this->_mp->latitude='';
 		$this->_mp->longitude='';
 		$this->_mp->waypoints = array();
-
+		$this->_mp->openbyid = "";
+		$this->_mp->openbyname = "";
+		
 		// Give the map a random name so it won't interfere with another map
 		$this->_mp->mapnm = $this->id."_".$this->_randomkeys(5)."_".$counter;
 		
@@ -295,6 +297,7 @@ class plgSystemPlugin_googlemap3_helper
 		//$this->_findgeoparam();
 		
 		//Translate parameters
+		$this->_mp->txtgotoaddr = $this->_translate($this->_mp->txtgotoaddr, $this->_mp->lang);
 		$this->_mp->erraddr = $this->_translate($this->_mp->erraddr, $this->_mp->lang);
 		$this->_mp->txtaddr = $this->_translate($this->_mp->txtaddr, $this->_mp->lang);
 		$this->_mp->txtaddr = str_replace(array("\r\n", "\r", "\n"), '', $this->_mp->txtaddr );
@@ -312,6 +315,16 @@ class plgSystemPlugin_googlemap3_helper
 		$this->_mp->txt_alternatives = $this->_translate($this->_mp->txt_alternatives, $this->_mp->lang);
 		$this->_langanim = $this->_translate($this->langanim, $this->_mp->lang);
 		$this->_langanim = explode("|", $this->_langanim);
+		$this->_mp->txtsrchnrby = $this->_translate($this->_mp->txtsrchnrby, $this->_mp->lang);
+		$this->_mp->txtzoomhere = $this->_translate($this->_mp->txtzoomhere, $this->_mp->lang);
+		$this->_mp->txtaddrstart = $this->_translate($this->_mp->txtaddrstart, $this->_mp->lang);
+		$this->_mp->txtkmlgetdir = $this->_translate($this->_mp->txtkmlgetdir, $this->_mp->lang);
+		$this->_mp->txtback = $this->_translate($this->_mp->txtback, $this->_mp->lang);
+		$this->_mp->txtsearchnearby = $this->_translate($this->_mp->txtsearchnearby, $this->_mp->lang);
+		$this->_mp->txtsearch = $this->_translate($this->_mp->txtsearch, $this->_mp->lang);
+		$this->_mp->txtzoomin = $this->_translate($this->_mp->txtzoomin, $this->_mp->lang);
+		$this->_mp->txtclustercount1 = $this->_translate($this->_mp->txtclustercount1, $this->_mp->lang);
+		$this->_mp->txtclustercount2 = $this->_translate($this->_mp->txtclustercount2, $this->_mp->lang);
 
 		$this->_debug_log("clientgeotype: ".$this->clientgeotype);
 		
@@ -478,7 +491,7 @@ class plgSystemPlugin_googlemap3_helper
 		$this->_debug_log("Memory Usage End: " . $endmem . " KB (".$diffmem." KB)");
 
 		// Add code to text
-		$code = "\n<!-- Plugin Google Maps version 3.0 by Mike Reumer ".(($this->debug_text!='')?$this->debug_text."\n":"")."-->".$code;
+		$code = "\n<!-- Plugin Google Maps version 3.1 by Mike Reumer ".(($this->debug_text!='')?$this->debug_text."\n":"")."-->".$code;
 
 		// Clean up debug text for next _process
 		$this->debug_text = '';
@@ -539,6 +552,7 @@ class plgSystemPlugin_googlemap3_helper
 		$lbcode='';
 		
 		//Detect browsers for special changes
+
 		$iphone = strpos($_SERVER['HTTP_USER_AGENT']," iPhone");
 		$android = strpos($_SERVER['HTTP_USER_AGENT'],"Android");
 		$ipod = strpos($_SERVER['HTTP_USER_AGENT']," iPod");
@@ -1068,9 +1082,9 @@ class plgSystemPlugin_googlemap3_helper
 			$this->_mp->geoxmloptions->clickablelines = false;
 			$this->_mp->geoxmloptions->dohilite = false;
 		}
-			
+
 		if ($this->_mp->kmlzoommarkers!='0')
-			$this->_mp->geoxmloptions->zoommarkers = $this->_mp->kmlzoommarkers;
+			$this->_mp->geoxmloptions->zoomhere = intval($this->_mp->kmlzoommarkers);
 
 		if ($this->_mp->kmlopendivmarkers!='')
 			$this->_mp->geoxmloptions->opendivmarkers = $this->_mp->kmlopendivmarkers;
@@ -1104,6 +1118,26 @@ class plgSystemPlugin_googlemap3_helper
 		if ($this->_mp->icon!='')
 			$this->_mp->geoxmloptions->baseicon = "A";
 
+		$this->_mp->geoxmloptions->lang = new stdClass();
+		$this->_mp->geoxmloptions->lang->txtdir = $this->_mp->txtdir;
+		$this->_mp->geoxmloptions->lang->txtto = $this->_mp->txtto;
+		$this->_mp->geoxmloptions->lang->txtfrom = $this->_mp->txtfrom;
+		$this->_mp->geoxmloptions->lang->txtsrchnrby = $this->_mp->txtsrchnrby;
+		$this->_mp->geoxmloptions->lang->txtzoomhere = $this->_mp->txtzoomhere;
+		$this->_mp->geoxmloptions->lang->txtaddrstart = $this->_mp->txtaddrstart;
+		$this->_mp->geoxmloptions->lang->txtgetdir = $this->_mp->txtkmlgetdir;
+		$this->_mp->geoxmloptions->lang->txtback = $this->_mp->txtback;
+		$this->_mp->geoxmloptions->lang->txtsearchnearby = $this->_mp->txtsearchnearby;
+		$this->_mp->geoxmloptions->lang->txtsearch = $this->_mp->txtsearch;
+
+		$this->_mp->geoxmloptions->inputsize = $this->_mp->inputsize;
+		
+		if ($this->_mp->openbyid!="")
+			$this->_mp->geoxmloptions->openbyid = $this->_mp->openbyid;
+		
+		if ($this->_mp->openbyname!="")
+			$this->_mp->geoxmloptions->openbyname = $this->_mp->openbyname;
+		
 		if ($this->_mp->maxcluster!=''&&$this->_mp->gridsize!='') {
 			$clusteroptions = new stdClass();
 			if ($this->_mp->maxcluster!='')
@@ -1123,10 +1157,15 @@ class plgSystemPlugin_googlemap3_helper
 			if ($this->_mp->clustericonurl!='')
 				$clusteroptions->ClusterIconUrl = $this->_mp->clustericonurl;
 
+			$clusteroptions->lang = new stdClass();
+			$clusteroptions->lang->txtzoomin = $this->_mp->txtzoomin;
+			$clusteroptions->lang->txtclustercount1 = $this->_mp->txtclustercount1;
+			$clusteroptions->lang->txtclustercount2 = $this->_mp->txtclustercount2;
+
 			$this->_mp->geoxmloptions->clustering = $clusteroptions;
 		}
 		
-		unset($this->_mp->kmlmessshow, $this->_mp->kmlfoldersopen, $this->_mp->kmlhide, $this->_mp->kmlscale, $this->_mp->kmlopenmethod, $this->_mp->kmlsbsort, $this->_mp->kmlsbsort, $this->_mp->kmlclickablemarkers, $this->_mp->kmlzoommarkers, $this->_mp->kmlopendivmarkers, $this->_mp->kmlcontentlinkmarkers, $this->_mp->kmllinkablemarkers, $this->_mp->kmllinktarget, $this->_mp->kmllinkmethod, $this->_mp->polyhighlite, $this->_mp->kmlpolylabel, $this->_mp->kmlpolylabelclass, $this->_mp->kmlmarkerlabel, $this->_mp->kmlmarkerlabelclass, $this->_mp->maxcluster, $this->_mp->gridsize, $this->_mp->maxcluster, $this->_mp->minmarkerscluster, $this->_mp->maxlinesinfocluster, $this->_mp->clusterinfowindow, $this->_mp->clusterzoom, $this->_mp->clustermarkerzoom, $this->_mp->clustericonurl, $clusteroptions, $idx, $val);
+		unset($this->_mp->kmlmessshow, $this->_mp->kmlfoldersopen, $this->_mp->kmlhide, $this->_mp->kmlscale, $this->_mp->kmlopenmethod, $this->_mp->kmlsbsort, $this->_mp->kmlsbsort, $this->_mp->kmlclickablemarkers, $this->_mp->kmlzoommarkers, $this->_mp->kmlopendivmarkers, $this->_mp->kmlcontentlinkmarkers, $this->_mp->kmllinkablemarkers, $this->_mp->kmllinktarget, $this->_mp->kmllinkmethod, $this->_mp->polyhighlite, $this->_mp->kmlpolylabel, $this->_mp->kmlpolylabelclass, $this->_mp->kmlmarkerlabel, $this->_mp->kmlmarkerlabelclass, $this->_mp->txtsrchnrby, $this->_mp->txtzoomhere, $this->_mp->txtaddrstart, $this->_mp->txtkmlgetdir, $this->_mp->txtback, $this->_mp->txtsearchnearby, $this->_mp->txtsearch, $this->_mp->openbyid, $this->_mp->openbyname, $this->_mp->maxcluster, $this->_mp->gridsize, $this->_mp->maxcluster, $this->_mp->minmarkerscluster, $this->_mp->maxlinesinfocluster, $this->_mp->clusterinfowindow, $this->_mp->clusterzoom, $this->_mp->clustermarkerzoom, $this->_mp->clustericonurl, $this->_mp->txtzoomin, $this->_mp->txtclustercount1,  $this->_mp->txtclustercount2, $clusteroptions, $idx, $val);
 	}
 	
 	function _processMapv3_template() {
@@ -1163,8 +1202,9 @@ class plgSystemPlugin_googlemap3_helper
 		if ($this->_mp->gotoaddr=='1')	{
 			$code.="<form id=\"gotoaddress".$this->_mp->mapnm."\" class=\"gotoaddress\" onSubmit=\"javascript:googlemap".$this->_mp->mapnm.".gotoAddress();return false;\">";
 			$code.="	<input id=\"txtAddress".$this->_mp->mapnm."\" name=\"txtAddress".$this->_mp->mapnm."\" type=\"text\" size=\"".$this->_mp->inputsize."\" value=\"\">";
-			$code.="	<input name=\"goto\" type=\"button\" class=\"button\" onClick=\"javascript:googlemap".$this->_mp->mapnm.".gotoAddress();return false;\" value=\"Goto\">";
+			$code.="	<input name=\"Goto\" type=\"button\" class=\"button\" onClick=\"javascript:googlemap".$this->_mp->mapnm.".gotoAddress();return false;\" value=\"".$this->_mp->txtgotoaddr."\">";
 			$code.="</form>";
+
 		}
 
 		if ($this->_mp->latitudeform=='1')	{
@@ -1569,12 +1609,14 @@ class plgSystemPlugin_googlemap3_helper
 	}
 	
 	function _make_absolute($link) {
-		if(substr($link,0, 7)!='http://'&&substr($link,0, 8)!='https://') {
-			if(substr($link,0,1)=='/') {
-				return $this->url.$link;
-			} else {
-				return $this->url.'/'.$link;
-			}
+		if (substr($link,0, 7)!='http://'&&substr($link,0, 8)!='https://') {
+			if (substr($link,0, 4)!='www.') {
+				if (substr($link,0,1)=='/')
+					return $this->url.$link;
+				else
+					return $this->url.'/'.$link;
+			} else
+				return $this->protocol.$link;
 		}
 		return $link;
 	}

@@ -220,20 +220,47 @@ class plgSystemJqueryeasy extends JPlugin {
 		
 		// jQuery Migrate
 		
-		$localPathMigrate = trim($this->params->get('localpathmigrate'.$suffix, ''));		
-		if ($localPathMigrate) {
-			if (JFile::exists(JPATH_ROOT.$localPathMigrate)) {
-				$this->_jqmigratepath = JURI::root(true).$localPathMigrate;
-			} else {
-				if ($this->_showreport) {
-					$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localPathMigrate);
+        $migrateVersion = trim($this->params->get('migrateversion'.$suffix, ''));
+        if ($migrateVersion != 'none') {
+	        if ($migrateVersion) {
+	        	$this->_jqmigratepath = $jQueryHTTP.'//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-'.$migrateVersion.$jQueryCompressed.'.js';
+	        } else {
+				$localPathMigrate = trim($this->params->get('localpathmigrate'.$suffix, ''));		
+				if ($localPathMigrate) {
+					if (JFile::exists(JPATH_ROOT.$localPathMigrate)) {
+						$this->_jqmigratepath = JURI::root(true).$localPathMigrate;
+					} else {
+						if ($this->_showreport) {
+							$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localPathMigrate);
+						}
+					}
 				}
-			}
-		}		
-		
-        if (!empty($this->_jqmigratepath)) {
-        	$doc->addScript("JQEASY_JQMIGRATELIB");	
-        }	
+	        }	
+	
+	        $migrateVersion = $this->params->get('migrateversion'.$suffix, 'none');
+	        if ($migrateVersion == 'local') {
+	        	$localPathMigrate = trim($this->params->get('localpathmigrate'.$suffix, ''));
+	        	if ($localPathMigrate) {
+	        		if (JFile::exists(JPATH_ROOT.$localPathMigrate)) {
+	        			$this->_jqmigratepath = JURI::root(true).$localPathMigrate;
+	        		} else {
+	        			if ($this->_showreport) {
+	        				$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localPathMigrate);
+	        			}
+	        		}
+	        	} else {
+	        		if ($this->_showreport) {
+	        			$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_EMPTYLOCALFILE', 'Migrate');
+	        		}
+	        	}
+	        } else {
+	        	$this->_jqmigratepath = $jQueryHTTP.'//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-'.$migrateVersion.$jQueryCompressed.'.js';
+	        }
+			
+	        if (!empty($this->_jqmigratepath)) {
+	        	$doc->addScript("JQEASY_JQMIGRATELIB");	
+	        }	
+        }
 		
         // no conflict path
         
@@ -301,7 +328,7 @@ class plgSystemJqueryeasy extends JPlugin {
 					}
 				} else {
 					if ($this->_showreport) {
-						$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_EMPTYLOCALCSSFILE', 'jQuery UI');
+						$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_EMPTYLOCALCSSFILE');
 					}
 				}
 			} else {
@@ -524,7 +551,7 @@ class plgSystemJqueryeasy extends JPlugin {
 				
 				// remove potential jquery-noconflict.js (different combinations)
 				$count = 0;
-				$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]no[.-]*[cC]onflict\.js"#', 'GARBAGE', $body, -1, $count);
+				$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]no[.-]*[cC]onflict\.js(.*?)"#', 'GARBAGE', $body, -1, $count);
 				if ($count > 0 && $this->_showreport) {
 					$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_REMOVEDNOCONFLICTSCRIPTS', $count);
 				}				
@@ -546,13 +573,13 @@ class plgSystemJqueryeasy extends JPlugin {
 			
 			if (empty($ignoreScripts) && $add_when_missing && $replace_when_unique) { // faster this way
 				$count = 0;
-				$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery([0-9\.-]|core|min|pack)*?.js"#', 'GARBAGE', $body, -1, $count); // find jQuery versions
+				$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery([0-9\.-]|core|min|pack)*?.js(.*?)"#', 'GARBAGE', $body, -1, $count); // find jQuery versions
 				if ($count > 0 && $this->_showreport) {
 					$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_REMOVEDJQUERY', $count);
 				}
 			} else {			
 				$matches = array();
-				if (preg_match_all('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery([0-9\.-]|core|min|pack)*?.js"#', $body, $matches, PREG_SET_ORDER) >= 0) {
+				if (preg_match_all('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery([0-9\.-]|core|min|pack)*?.js(.*?)"#', $body, $matches, PREG_SET_ORDER) >= 0) {
 										
 					$nbr_of_matches = sizeof($matches);
 					if ($nbr_of_matches == 0 && !$add_when_missing) {
@@ -617,6 +644,13 @@ class plgSystemJqueryeasy extends JPlugin {
 				}
 			}
 			
+			// remove all references to Migrate scripts
+			$count = 0;
+			$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery([0-9\.-])*?migrate([0-9\.-]|core|min|pack)*?.js(.*?)"#', 'GARBAGE', $body, -1, $count); // find Migrate versions
+			if ($count > 0 && $this->_showreport) {
+				$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_REMOVEDMIGRATE', $count);
+			}
+			
 			// use jQuery Migrate
 			if (!empty($this->_jqmigratepath)) {
 				$body = preg_replace('#([\\\/a-zA-Z0-9_:\.-]*)JQEASY_JQMIGRATELIB#', $this->_jqmigratepath, $body, 1);
@@ -661,7 +695,7 @@ class plgSystemJqueryeasy extends JPlugin {
 				// remove all other references to jQuery UI library
 				if (!$replace_when_unique) {
 					$matches = array();
-					if (preg_match_all('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.js"#', $body, $matches, PREG_SET_ORDER) > 0) {
+					if (preg_match_all('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.js(.*?)"#', $body, $matches, PREG_SET_ORDER) > 0) {
 							
 						$nbr_of_matches = sizeof($matches);
 						if ($nbr_of_matches == 1) {
@@ -685,7 +719,7 @@ class plgSystemJqueryeasy extends JPlugin {
 					}
 				} else { // faster this way
 					$count = 0;
-					$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.js"#', 'GARBAGE', $body, -1, $count); // find jQuery UI versions
+					$body = preg_replace('#src="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.js(.*?)"#', 'GARBAGE', $body, -1, $count); // find jQuery UI versions
 					if ($count > 0 && $this->_showreport) {
 						$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_REMOVEDJQUERYUI', $count);
 					}
@@ -714,7 +748,7 @@ class plgSystemJqueryeasy extends JPlugin {
 				// remove all other references to jQuery UI stylesheets
 				if (!$replace_when_unique) {
 					$matches = array();
-					if (preg_match_all('#href="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.css"#', $body, $matches, PREG_SET_ORDER) > 0) {
+					if (preg_match_all('#href="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.css(.*?)"#', $body, $matches, PREG_SET_ORDER) > 0) {
 							
 						$nbr_of_matches = sizeof($matches);
 						if ($nbr_of_matches == 1) {
@@ -738,7 +772,7 @@ class plgSystemJqueryeasy extends JPlugin {
 					}
 				} else { // faster this way
 					$count = 0;
-					$body = preg_replace('#href="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.css"#', 'GARBAGE', $body, -1, $count); // find jQuery UI CSS versions
+					$body = preg_replace('#href="([\\\/a-zA-Z0-9_:\.-]*)jquery[.-]ui([0-9\.-]|core|custom|min|pack)*?.css(.*?)"#', 'GARBAGE', $body, -1, $count); // find jQuery UI CSS versions
 					if ($count > 0 && $this->_showreport) {
 						$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_REMOVEDJQUERYUICSS', $count);
 					}
@@ -844,9 +878,12 @@ class plgSystemJqueryeasy extends JPlugin {
 		if ($this->_showreport) {
 			
 			$pattern = '#</body>#';
-			$replacement = '<div style="display: block; float: left; width: 100%; background-color: #D9EDF7; color: #48484C;">';
-			$replacement .= '<dl style="padding: 15px; margin: 20px; border: 1px solid #BCE8F1; border-radius: 4px; background-color: #FFFFFF;">';
-			$replacement .= '<dt style="padding: 5px; border: 1px solid #DDDDDD; border-radius: 4px; background-color: #F5F5F5; margin-bottom: 10px">'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_JQUERYEASY').'</dt>';
+			$replacement = '<div id="jqueryeasy_report" style="display: block; float: left; width: 100%; background-color: #D9EDF7; color: #48484C;">'.chr(13);
+			
+			$replacement .= '<style type="text/css">#jqueryeasy_report code { white-space: normal; word-break: break-all; }</style>'.chr(13);			
+			
+			$replacement .= '<dl style="padding: 15px; margin: 20px; border: 1px solid #BCE8F1; border-radius: 4px; background-color: #FFFFFF;">'.chr(13);
+			$replacement .= '<dt style="padding: 5px; border: 1px solid #DDDDDD; border-radius: 4px; background-color: #F5F5F5; margin-bottom: 10px">'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_JQUERYEASY').'</dt>'.chr(13);
 			
 			if (!empty($this->_verbose_array)) {
 				foreach ($this->_verbose_array as $verbose) {
@@ -860,15 +897,15 @@ class plgSystemJqueryeasy extends JPlugin {
 						default: $color = '#48484C'; break;
 					}
 								
-					$replacement .= '<dd style="color: '.$color.';">'.substr($verbose, 4).'</dd>';
+					$replacement .= '<dd style="color: '.$color.';">'.substr($verbose, 4).'</dd>'.chr(13);
 				}
 			} else {
-				$replacement .= '<dd>'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_NOCHANGESMADE').'</dd>';
+				$replacement .= '<dd>'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_NOCHANGESMADE').'</dd>'.chr(13);
 			}
 			
-			$replacement .= '<dd style="padding-top: 10px">'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_EXECUTIONTIME').': '.($this->_timeafterroute + $this->_timebeforerender + $this->_timeafterrender).'</dd>';
+			$replacement .= '<dd style="padding-top: 10px">'.JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_EXECUTIONTIME').': '.($this->_timeafterroute + $this->_timebeforerender + $this->_timeafterrender).'</dd>'.chr(13);
 						
-			$output = preg_replace($pattern, $replacement.'</dl></div></body>', $output, 1);
+			$output = preg_replace($pattern, $replacement.'</dl>'.chr(13).'</div>'.chr(13).'</body>', $output, 1);
 		}
 				
 		JResponse::setBody($output);

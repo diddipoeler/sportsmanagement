@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 3 or later</license>
 	<authorEmail>olivier.buisard@simplifyyourweb.com</authorEmail>
 	<authorUrl>www.simplifyyourweb.com</authorUrl>
-	<version>1.5.2</version>
+	<version>1.5.4</version>
 	<description>PLG_SYSTEM_JQUERYEASY_XML_DESCRIPTION</description>
 	<scriptfile>installer.php</scriptfile>
 	<files>
@@ -23,6 +23,12 @@
 	   <language tag="en-GB">language/en-GB/en-GB.plg_system_jqueryeasy.sys.ini</language>
 	   <language tag="fr-FR">language/fr-FR/fr-FR.plg_system_jqueryeasy.ini</language>
 	   <language tag="fr-FR">language/fr-FR/fr-FR.plg_system_jqueryeasy.sys.ini</language>
+	   <language tag="nl-NL">language/nl-NL/nl-NL.plg_system_jqueryeasy.ini</language>
+	   <language tag="nl-NL">language/nl-NL/nl-NL.plg_system_jqueryeasy.sys.ini</language>
+	   <language tag="es-CO">language/es-CO/es-CO.plg_system_jqueryeasy.ini</language>
+	   <language tag="es-CO">language/es-CO/es-CO.plg_system_jqueryeasy.sys.ini</language>
+	   <language tag="it-IT">language/it-IT/it-IT.plg_system_jqueryeasy.ini</language>
+	   <language tag="it-IT">language/it-IT/it-IT.plg_system_jqueryeasy.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params" addfieldpath="/plugins/system/jqueryeasy/fields">
@@ -65,8 +71,18 @@
 					
 				<field type="message" style="example" text="PLG_SYSTEM_JQUERYEASY_EXAMPLE_JQUERYPATH" />
 				
+				<field type="subtitle" title="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATE_LABEL" />
+				
 				<field type="message" style="info" text="PLG_SYSTEM_JQUERYEASY_INFO_JQUERYMIGRATE" />
 					
+				<field name="migrateversionfrontend" type="list" default="none" 
+					label="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATEVERSION_LABEL" 
+					description="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATEVERSION_DESC">	
+	            	<option value="none">PLG_SYSTEM_JQUERYEASY_VALUE_NONE</option>			
+	                <option value="1.2.1">1.2.1</option>
+	                <option value="local">PLG_SYSTEM_JQUERYEASY_VALUE_LOCAL</option>
+				</field>
+				
 				<field name="localpathmigratefrontend" type="text" default="" size="50" 
 					label="PLG_SYSTEM_JQUERYEASY_FIELD_LOCALPATHMIGRATE_LABEL" 
 					description="PLG_SYSTEM_JQUERYEASY_FIELD_LOCALPATHMIGRATE_DESC" />
@@ -322,7 +338,17 @@
 					label="PLG_SYSTEM_JQUERYEASY_FIELD_LOCALVERSION_LABEL" 
 					description="PLG_SYSTEM_JQUERYEASY_FIELD_LOCALVERSION_DESC" />    
 				
+				<field type="subtitle" title="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATE_LABEL" />
+				
 				<field type="message" style="info" text="PLG_SYSTEM_JQUERYEASY_INFO_JQUERYMIGRATE" />
+										
+				<field name="migrateversionbackend" type="list" default="none" 
+					label="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATEVERSION_LABEL" 
+					description="PLG_SYSTEM_JQUERYEASY_FIELD_MIGRATEVERSION_DESC">	
+	            	<option value="none">PLG_SYSTEM_JQUERYEASY_VALUE_NONE</option>			
+	                <option value="1.2.1">1.2.1</option>
+	                <option value="local">PLG_SYSTEM_JQUERYEASY_VALUE_LOCAL</option>
+				</field>
 					
 				<field name="localpathmigratebackend" type="text" default="" size="50" 
 					label="PLG_SYSTEM_JQUERYEASY_FIELD_LOCALPATHMIGRATE_LABEL" 

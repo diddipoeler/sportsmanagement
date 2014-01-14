@@ -62,20 +62,29 @@ class Twitter {
 	private $user = null;
 	private $tweets = null;
 	
-	function __construct($user) {
+	function __construct($user, $twitterconsumerkey, $twitterconsumersecret, $twitteraccesstoken, $twitteraccesstokensecret) {
 		$this->user = $user;
+		require_once 'plugin_googlemap3_twitteroauth.php';
+		$this->twitterConnection = new TwitterOAuth(
+			$twitterconsumerkey, // Consumer Key
+			$twitterconsumersecret, // Consumer secret
+			$twitteraccesstoken, // Access token
+			$twitteraccesstokensecret	// Access token secret
+		);
 	}
 	
 	function getUserTimeLine($count = 19, $retweets=0) {
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name='.$this->user.'&count='.$count.'&&include_rts='.$retweets);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$this->tweets = json_decode($data);
-		
+		$this->tweets = $this->twitterConnection->get(
+			'statuses/user_timeline',
+			array(
+				'screen_name' => $this->user,
+				'count' => $count,
+				'include_rts' => $retweets
+			)
+		);
+	
 		if (is_object($this->tweets)&&isset($this->tweets->errors))
 			$this->tweets = array();
 		
@@ -163,6 +172,11 @@ class plugin_googlemap3_twitter_kml
 			}
 			
 			// Get params
+			$twitterconsumerkey = $params->get('twitterconsumerkey', '');
+			$twitterconsumersecret = $params->get('twitterconsumersecret', '');
+			$twitteraccesstoken = $params->get('twitteraccesstoken', '');
+			$twitteraccesstokensecret = $params->get('twitteraccesstokensecret', '');
+			
 			$twittername = urldecode(JRequest::getVar('twittername', ''));
 			if ($twittername=="")
 				$twittername = $params->get('twittername', '');
@@ -183,7 +197,7 @@ class plugin_googlemap3_twitter_kml
 			if ($twitterstartloc=="")
 				$twitterstartloc = $params->get('twitterstartloc', '5');
 				
-			$twitter = new Twitter(ltrim(rtrim($twittername)));
+			$twitter = new Twitter(ltrim(rtrim($twittername)), $twitterconsumerkey, $twitterconsumersecret, $twitteraccesstoken, $twitteraccesstokensecret);
 			$tweets = $twitter->getUserTimeLine(ltrim(rtrim($twittertweets)), 1);
 			$profile = $twitter->getProfile();
 			

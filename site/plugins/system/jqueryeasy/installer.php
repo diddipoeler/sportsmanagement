@@ -36,10 +36,12 @@ class plgsystemjqueryeasyInstallerScript
 	{	
 		echo '<dl>';
 		echo '    <dt>Change log</dt>';
-		echo '    <dd>ADDED: versions 1.10+ and 2.0+ of jQuery</dd>';
-		echo '    <dd>ADDED: info on jQuery Migrate for jQuery 1.9+</dd>';
-		echo '    <dd>ADDED: jQuery Migrate local path field</dd>';
-		echo '    <dd>ADDED: warning on jQuery 2.0+</dd>';
+		echo '    <dd>ADDED: style id to report and new lines</dd>';
+		echo '    <dd>ADDED: style properties to code tag to fit the container</dd>';
+		echo '    <dd>ADDED: remove Migrate scripts</dd>';
+		echo '    <dd>ADDED: load the Migrate script from Microsoft CDN</dd>';
+		echo '    <dd>ADDED: Columbian and Italian translations (thanks to OpenTranslators)</dd>';
+		echo '    <dd>MODIFIED: regular expressions for finding scripts or stylesheets (to handle "src" tag having \'?\' after \'.js\' or \'.css\')</dd>';
 		echo '</dl>';
 		
 		return true;

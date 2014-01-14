@@ -7,7 +7,7 @@
 // no direct access
 defined( '_JEXEC' ) or die;
 
-$plugin_documentation_link = 'http://www.simplifyyourweb.com/index.php/downloads/category/8-loading-jquery';
+$plugin_documentation_link = 'http://www.simplifyyourweb.com/index.php/downloads/category/8-loading-jquery#downloads';
 $plugin_forum = 'http://www.simplifyyourweb.com/index.php/forum/19-jquery-easy';
 
 $solvingissues_article_link = 'http://www.simplifyyourweb.com/index.php/developers-corner/90-solving-jquery-jquery-and-jquery-mootools-conflict-issues-with-the-jquery-easy-plugin';
