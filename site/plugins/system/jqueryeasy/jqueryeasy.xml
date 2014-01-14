@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<extension type="plugin" version="1.6.0" group="system" method="upgrade">
+<extension type="plugin" version="2.5" group="system" method="upgrade">
 	<name>System - jQuery Easy</name>
 	<author>Olivier Buisard</author>
 	<creationDate>2012-03-11</creationDate>
