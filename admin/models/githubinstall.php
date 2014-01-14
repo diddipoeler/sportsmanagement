@@ -105,7 +105,7 @@ $this->_success_text['Komponente:'] = $my_text;
 // jetzt die plugins
 $my_text = '';
 
-$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
+$src = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'site'.DS.'plugins'.DS.'system';
 $ordner = JFolder::folders($src);
 
 foreach ( $ordner as $key => $value)
@@ -143,7 +143,7 @@ $this->_success_text['Plugins:'] = $my_text;
 // jetzt die module
 $my_text = '';
 
-$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'modules';
+$src = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'site'.DS.'modules';
 $ordner = JFolder::folders($src);
 
 foreach ( $ordner as $key => $value)
@@ -162,14 +162,14 @@ if (!$installer->install($package['dir']))
 			// There was an error installing the package
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
             $my_text .= '<span style="color:'.$this->storeFailedColor.'">';
-			$my_text .= JText::sprintf('Das Modul [ %1$s ] konnte nicht installiert werden!',"</span><strong>".$value."</strong>");
+			$my_text .= JText::sprintf('Das Modul [ %1$s ] konnte nicht installiert werden!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
 			//$result = false;
 		} else {
 			// Package installed sucessfully
 			//$msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-			$my_text .= JText::sprintf('Das Modul [ %1$s ] wurde installiert!',"</span><strong>".$value."</strong>");
+			$my_text .= JText::sprintf('Das Modul [ %1$s ] wurde installiert!',"</span><strong>".$value."</strong>","<strong>".strtoupper($package['type'])."</strong>");
 			$my_text .= '<br />';
                         
 			//$result = true;

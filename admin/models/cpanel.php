@@ -112,6 +112,41 @@ $paramsdata = JComponentHelper::getParams($option);
     
     }
     
+    function checkUpdateVersion()
+    {
+        $mainframe = JFactory::getApplication(); 
+        $option = JRequest::getCmd('option');  
+        $xml = JFactory::getXMLParser( 'Simple' );
+        $version = sportsmanagementHelper::getVersion();
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
+                
+        //Laden
+		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
+		//Parsen
+		$doc = DOMDocument::loadXML($content);
+        $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        
+        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
+        foreach( $xml->document->version as $version ) 
+            {
+            $github_version = $version->data();
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+            }
+            
+            if ( $github_version == $version )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+                    
+    }
+    
     function checkcountry()
     {
         $query='SELECT count(*) AS count
