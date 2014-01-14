@@ -79,9 +79,9 @@ class sportsmanagementViewcpanel extends JView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
-        $aktversion = $model->checkUpdateVersion();
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($aktversion,true).'</pre>'),'Notice');
-        if ( $aktversion )
+        $this->aktversion = $model->checkUpdateVersion();
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->aktversion,true).'</pre>'),'Notice');
+        if ( !$this->aktversion )
         {
             $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE'),'');
         }  
@@ -240,7 +240,10 @@ class sportsmanagementViewcpanel extends JView
 		
 		if ($canDo->get('core.admin')) 
 		{
+            if ( $this->aktversion )
+        {
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
+            }
             JToolBarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
 			JToolBarHelper::preferences($option);
