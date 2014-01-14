@@ -117,8 +117,9 @@ $paramsdata = JComponentHelper::getParams($option);
         $mainframe = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
         $xml = JFactory::getXMLParser( 'Simple' );
+        $return = true;
         $version = sportsmanagementHelper::getVersion();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
                 
         //Laden
 		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
@@ -132,18 +133,21 @@ $paramsdata = JComponentHelper::getParams($option);
         foreach( $xml->document->version as $version ) 
             {
             $github_version = $version->data();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
             }
             
-            if ( $github_version == $version )
+            if ( $github_version != $version )
             {
-                return true;
+                $return =  false;
             }
             else
             {
-                return false;
+                $return =  true;
             }
             
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            
+            return $return;
                     
     }
     

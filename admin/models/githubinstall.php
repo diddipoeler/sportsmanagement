@@ -112,6 +112,7 @@ foreach ( $ordner as $key => $value)
 {
 // Get the path to the package to install
 $p_dir = $src.DS.$value.DS;
+$p_dir = JPath::clean($p_dir);
 // Detect the package type
 $type = JInstallerHelper::detectType($p_dir); 
 $package['packagefile'] = null;
@@ -119,6 +120,11 @@ $package['extractdir'] = null;
 $package['dir'] = $p_dir;
 $package['type'] = $type;
 
+// Did you give us a valid package?
+		if (!$type) {
+			JError::raiseWarning('', JText::_('COM_INSTALLER_MSG_INSTALL_PATH_DOES_NOT_HAVE_A_VALID_PACKAGE'));
+		}
+        
 if (!$installer->install($package['dir'])) 
         {
 			// There was an error installing the package
