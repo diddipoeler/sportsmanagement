@@ -82,6 +82,10 @@ class sportsmanagementViewcpanel extends JView
         {
             $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_AVAILABLE'),'Notice');
             $this->jquery = '0';
+            if ( !JPluginHelper::isEnabled( 'system', 'jqueryeasy' )  )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_ENABLED'),'Error');
+            }
         }
         else
         {
@@ -93,6 +97,10 @@ class sportsmanagementViewcpanel extends JView
         {
             $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'),'Notice');
             $this->googlemap = '0';
+            if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'),'Error');
+            }
         }
         else
         {
