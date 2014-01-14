@@ -146,7 +146,7 @@ switch ($type)
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             
-            $mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
+            //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
             
 		}
         

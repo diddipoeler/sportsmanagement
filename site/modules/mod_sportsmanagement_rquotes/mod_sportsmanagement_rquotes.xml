@@ -39,9 +39,9 @@ version="2.5"
 	
 
 <languages folder="languages">
-		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotess.ini</language>
+		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotes.ini</language>
 		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
-		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotess.ini</language>
+		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotes.ini</language>
 		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
     </languages>
 
