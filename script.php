@@ -99,8 +99,8 @@ switch ($type)
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
-    self::installModules();
-    self::installPlugins();
+//    self::installModules();
+//    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -108,8 +108,8 @@ switch ($type)
     break;
     case "update":
 //    self::installComponentLanguages();
-    self::installModules();
-    self::installPlugins();
+//    self::installModules();
+//    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
