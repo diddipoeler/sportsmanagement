@@ -240,10 +240,10 @@ class sportsmanagementViewcpanel extends JView
 		
 		if ($canDo->get('core.admin')) 
 		{
-            if ( $this->aktversion )
-        {
+            //if ( $this->aktversion )
+            //{
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
-            }
+            //}
             JToolBarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
 			JToolBarHelper::preferences($option);
