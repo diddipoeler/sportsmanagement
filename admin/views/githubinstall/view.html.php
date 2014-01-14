@@ -5,8 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
+
 /**
- * SportsManagement View
+ * sportsmanagementViewgithubinstall
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewgithubinstall extends JView
 {
@@ -19,35 +26,13 @@ class sportsmanagementViewgithubinstall extends JView
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
+        $uri	= JFactory::getURI();
         
         $github_link = JComponentHelper::getParams($option)->get('cfg_update_server_file','');
         $this->assignRef( 'github_link', $github_link );
         $copy_github_link = $model->CopyGithubLink($github_link);
+        $this->assign('request_url',$uri->toString());
         
-        /*
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-        */
-		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
-//		$this->assignRef( 'extended', $extended );
-//		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
- 
-		// Set the toolbar
-		//$this->addToolBar();
  
 		// Display the template
 		parent::display($tpl);
