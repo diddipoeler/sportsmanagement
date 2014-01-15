@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<agegroups><agegroup country="AUT" info="Herren" picture="" >Herren</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U18" picture="" >U18</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U17" picture="" >U17</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U16" picture="" >U16</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U15" picture="" >U15</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U14" picture="" >U14</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Jugend U13" picture="" >U13</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder U12" picture="" >U12</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder U11" picture="" >U11</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder U10" picture="" >U10</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder U9" picture="" >U9</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder >U8" picture="" >U8</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Kinder U7" picture="" >U7</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Frauen" picture="" >Frauen</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Mädchen U18" picture="" >U18</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Mädchen U17" picture="" >U17</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Mädchen U16" picture="" >U16</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Mädchen U15" picture="" >U15</agegroup></agegroups>
+<agegroups><agegroup country="AUT" info="Mädchen U14" picture="" >U14</agegroup></agegroups>
+
+</structur>
