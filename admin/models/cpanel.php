@@ -112,6 +112,84 @@ $paramsdata = JComponentHelper::getParams($option);
     
     }
     
+    
+    function getInstalledPlugin($plugin)
+    {
+    $mainframe = JFactory::getApplication();
+  $option = JRequest::getCmd('option'); 
+  $db = JFactory::getDBO();    
+        $query = $db->getQuery(true);
+    $query->select('a.extension_id');
+  $query->from('#__extensions AS a');
+  //$type = $db->Quote($type);
+	$query->where("a.type LIKE 'plugin' ");
+    $query->where("a.element LIKE '".$plugin."'");
+	
+  $db->setQuery($query);
+  return $db->loadResult();    
+    }
+    
+    function checkUpdateVersion()
+    {
+        $mainframe = JFactory::getApplication(); 
+        $option = JRequest::getCmd('option');  
+        $xml = JFactory::getXMLParser( 'Simple' );
+        $return = 0;
+        $version = sportsmanagementHelper::getVersion() ;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
+        
+        $temp = explode(".",$version);  
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
+              
+        //Laden
+		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
+		//Parsen
+		$doc = DOMDocument::loadXML($content);
+        $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        
+        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
+        foreach( $xml->document->version as $version ) 
+            {
+            $github_version = $version->data();
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+            }
+                     
+            $temp2 = explode(".",$github_version);  
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
+        
+            if ( $github_version !== $version )
+            {
+                $return =  false;
+            }
+            else
+            {
+                $return =  true;
+            }
+            
+            foreach( $temp as $key => $value )
+            {
+            if ( (int)$temp[$key] !== (int)$temp2[$key] )
+            {
+                $return = $temp[$key];
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
+                break;
+            }    
+            }
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            
+            //$anzahl = strcspn($github_version,$version);
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
+            
+            //$return = strcmp (trim($github_version), trim($version));
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            
+            return $return;
+                    
+    }
+    
     function checkcountry()
     {
         $query='SELECT count(*) AS count
