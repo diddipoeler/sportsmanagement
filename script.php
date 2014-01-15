@@ -133,9 +133,40 @@ switch ($type)
         //echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
-		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
-							'associations','flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
-              'associations','rosterground','matchreport','seasons','sport_types', 'rounds','teams','flags','teamplayers','teamstaffs','venues', 'statistics');
+		$folders = array('agegroups',
+		'clubs',
+		'clubs/large',
+		'clubs/medium',
+		'clubs/small',
+		'clubs/trikot_home',
+		'clubs/trikot_away',
+		'events',
+		'leagues',
+		'divisions',
+		'person_playground',
+		'associations',
+		'flags_associations',
+		'persons',
+		'placeholders',
+		'predictionusers',
+		'playgrounds',
+		'projects',
+		'projectreferees',
+		'projectteams',
+		'projectteams/trikot_home',
+		'projectteams/trikot_away',
+		'associations',
+		'rosterground',
+		'matchreport',
+		'seasons',
+		'sport_types',
+		'rounds',
+		'teams',
+		'flags',
+		'teamplayers',
+		'teamstaffs',
+		'venues',
+		'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
@@ -268,7 +299,7 @@ if ( $install_id )
     $object->enabled = 1;
     // Update their details in the users table using id as the primary key.
     $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-    $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] veröffentlicht!',$value));
+    $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] verï¿½ffentlicht!',$value));
 	}
     else
     {
@@ -280,7 +311,7 @@ if ( $install_id )
         $object->enabled = 1;
         // Update their details in the users table using id as the primary key.
         $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] veröffentlicht!',$value));
+        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] verï¿½ffentlicht!',$value));
     }
 }
 
@@ -346,7 +377,7 @@ if ( $install_id )
     $object->enabled = 1;
     // Update their details in the users table using id as the primary key.
     $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-    $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] veröffentlicht!',$value));
+    $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] verï¿½ffentlicht!',$value));
 	}
     else
     {
@@ -358,7 +389,7 @@ if ( $install_id )
         $object->enabled = 1;
         // Update their details in the users table using id as the primary key.
         $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-        $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] veröffentlicht!',$value));
+        $mainframe->enqueueMessage(JText::sprintf('Modul [ %1$s ] verï¿½ffentlicht!',$value));
     }
 }
 
