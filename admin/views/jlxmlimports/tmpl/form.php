@@ -126,8 +126,7 @@ if (isset($this->xml) && is_array($this->xml))
 	}
 	if (!empty($teamsClubs)){$teamsClubsCount=count($teamsClubs);}
 ?>
-<script><!--
-
+<script>
 
 	function chkFormular()
 	{
@@ -288,7 +287,7 @@ if (isset($this->xml) && is_array($this->xml))
 		}
 	}
 
-//--></script>
+</script>
 <?php
 	$useExistingEntryColor = "orange";
 	$useNewEntryColor = "lightgreen";
@@ -330,7 +329,7 @@ if (isset($this->xml) && is_array($this->xml))
 				</tr>
 			</tbody>
 		</table>
-		<form name='adminForm' id='adminForm' action='<?php echo $this->request_url; ?>' method='post' onsubmit='return chkFormular();' >
+		<form name='adminForm' id='adminForm' action='<?php echo $this->request_url; ?>' method='post' onsubmit='' >
 			<input type='hidden' name='importProject' value="<?php echo $xmlProjectImport; ?>" />
 			<input type='hidden' name='importType' value="<?php echo $xmlImportType; ?>" />
 			<input type='hidden' name='whichfile' value="<?php echo $this->whichfile; ?>" />
