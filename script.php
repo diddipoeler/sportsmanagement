@@ -276,6 +276,13 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
         
+        
+        $path = $src.DS.'plugins'.DS.$name;
+        $installer = new JInstaller;
+        $result = $installer->install($path);
+        
+        
+        
         }    
 
     
