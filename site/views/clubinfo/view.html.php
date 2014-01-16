@@ -94,7 +94,7 @@ class sportsmanagementViewClubInfo extends JView
 	  {
             // diddipoeler
         $this->geo = new simpleGMapGeocoder();
-        $this->geo->genkml3file($this->club->id,$this->address_string,'club',$this->club->logo_big,$this->club->name);  
+        $this->geo->genkml3file($this->club->id,$this->address_string,'club',$this->club->logo_big,$this->club->name,$this->club->latitude,$this->club->longitude);  
 }
 
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );

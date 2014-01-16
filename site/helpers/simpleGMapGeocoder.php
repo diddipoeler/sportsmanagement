@@ -87,7 +87,7 @@ echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
 }
 
 
-function genkml3file($id, $address_string, $type, $picture, $name)
+function genkml3file($id, $address_string, $type, $picture, $name,$latitude = 255,$longitude = 255)
 {
 $params		 	=	JComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big	=	$params->get('ph_logo_big',0);
@@ -95,6 +95,8 @@ $ph_logo_big	=	$params->get('ph_logo_big',0);
 $lat = '';
 $lng = '';
 
+if ( $latitude == 255 )
+{ 
 $coords = $this->JLgetGeoCoords($address_string);
 		
         if ( $coords["status"] == 'OK')
@@ -119,7 +121,12 @@ $coords = $this->JLgetGeoCoords($address_string);
     }
     
     }
-
+}
+else
+{
+    $lat = $latitude;
+$lng = $longitude;
+}
 // Creates an array of strings to hold the lines of the KML file.
 $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
 $kml[] = '<kml xmlns="http://earth.google.com/kml/2.1">';
@@ -339,6 +346,13 @@ $address_parts = array();
     }
 
 }
+else
+{
+    $row->lat = $row->latitude;
+    $row->lng = $row->longitude;    
+    
+}
+
 /*
 echo 'genkml3 allteams<br><pre>';
     print_r($coords);

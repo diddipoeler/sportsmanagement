@@ -1792,7 +1792,9 @@ if (!$db->query())
 		$mainframe = JFactory::getApplication();
     $coords = array();
 		$data = self::getAddressData($address);
-		//$mainframe->enqueueMessage(JText::_('google -> '.'<pre>'.print_r($data,true).'</pre>' ),'');
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data,true).'</pre>'),'Error');
+		
 		if($data){
 			if($data->status == 'OK')
 			{

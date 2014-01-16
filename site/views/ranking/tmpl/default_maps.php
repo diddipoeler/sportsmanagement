@@ -1,4 +1,5 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' ); 
+<?php 
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
 if ( $this->show_debug_info )
 {
@@ -8,7 +9,7 @@ echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
 //$kmlpath = JURI::root().'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'ranking'.DS.'tmpl'.DS.'default_genkml3.php';
 $kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 
-echo $kmlpath.'<br>';
+//echo $kmlpath.'<br>';
 
 ?>
 <div style="width: 100%; float: left">

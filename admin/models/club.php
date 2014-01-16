@@ -193,7 +193,7 @@ class sportsmanagementModelclub extends JModelAdmin
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         foreach( $coords as $key => $value )
 		{
