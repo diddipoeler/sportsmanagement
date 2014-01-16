@@ -39,7 +39,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="GOOGLEMAP_BASIC">
-				<field name="publ" type="radio" size="1" default="" export='0' label="Published" description="GOOGLEMAP_TT_CONFIG_PUBLISHED">
+				<field name="publ" type="radio" size="1" default="1" export='0' label="Published" description="GOOGLEMAP_TT_CONFIG_PUBLISHED">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>

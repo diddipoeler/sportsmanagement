@@ -34,7 +34,7 @@
 		<fields name="params" addfieldpath="/plugins/system/jqueryeasy/fields">
 			<fieldset name="basic_front" label="PLG_SYSTEM_JQUERYEASY_FIELD_BASICFRONT_LABEL" description="PLG_SYSTEM_JQUERYEASY_FIELD_BASICFRONT_DESC"> 
 							
-				<field name="jqueryinfrontend" type="radio" default="0" 
+				<field name="jqueryinfrontend" type="radio" default="2" 
 	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYINFRONTEND_LABEL" 
 	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYINFRONTEND_DESC">
 	                <option value="0">PLG_SYSTEM_JQUERYEASY_VALUE_NONE</option>
@@ -91,7 +91,7 @@
 	            
 	            <field type="title" title="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUI_LABEL" imagesrc="../plugins/system/jqueryeasy/images/jqueryui.png" />
 	            
-	            <field name="jqueryuiversionfrontend" type="list" default="1.9" 
+	            <field name="jqueryuiversionfrontend" type="list" default="1.8" 
 	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_LABEL" 
 	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_DESC">
 	            	<option value="1.10">PLG_SYSTEM_JQUERYEASY_VALUE_LATESTUI110</option>
@@ -303,7 +303,7 @@
 			
 			<fieldset name="basic_back" label="PLG_SYSTEM_JQUERYEASY_FIELD_BASICBACK_LABEL" description="PLG_SYSTEM_JQUERYEASY_FIELD_BASICBACK_DESC">
 				
-	            <field name="jqueryinbackend" type="radio" default="0" 
+	            <field name="jqueryinbackend" type="radio" default="2" 
 	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYINBACKEND_LABEL" 
 	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYINBACKEND_DESC">
 	                <option value="0">PLG_SYSTEM_JQUERYEASY_VALUE_NONE</option>
@@ -356,7 +356,7 @@
 
 	            <field type="title" title="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUI_LABEL" imagesrc="../plugins/system/jqueryeasy/images/jqueryui.png" />
 	            
-	            <field name="jqueryuiversionbackend" type="list" default="1.9" 
+	            <field name="jqueryuiversionbackend" type="list" default="1.8" 
 	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_LABEL" 
 	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_DESC">
 	            	<option value="1.10">PLG_SYSTEM_JQUERYEASY_VALUE_LATESTUI110</option>
