@@ -3,7 +3,9 @@
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
-	<fieldset name="details">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
@@ -121,6 +123,28 @@
 				value="FRIENDLY_MATCHES">
 				COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES</option>
 		</field>
+		
+		
+		<field
+			name="project_art_id"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_PROJECT_ART"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_PROJECT_ART_DESC">
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_TEAMS_ONLY</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_TEAMS_PLAYER</option>
+			<option
+				value="3">
+				COM_SPORTSMANAGEMENT_PLAYER_ONLY</option>
+			
+		</field>
+		
 				
 		<field
 			name="admin"
@@ -188,7 +212,9 @@
 		
 	</fieldset>
 		
-	<fieldset name="date">
+	<fieldset name="date"
+  label="COM_SPORTSMANAGEMENT_TABS_DATE"
+  description="COM_SPORTSMANAGEMENT_TABS_DATE_DESC">
 		<field
 			name="start_date"
 			type="calendar"
@@ -216,7 +242,9 @@
 			default="Europe/Amsterdam"/>		
 	</fieldset>
 	
-	<fieldset name="project">	
+	<fieldset name="project"
+  label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
+  description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
 		<field
 			name="current_round_auto"
 			type="list"
@@ -261,7 +289,9 @@
 			
 	</fieldset>
 	
-	<fieldset name="competition">
+	<fieldset name="competition"
+  label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
+  description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
 	
 		<field
 			name="game_regular_time"
@@ -347,7 +377,9 @@
 			default="3,1,0"/>
 	</fieldset>
 	
-	<fieldset name="favorite">
+	<fieldset name="favorite"
+  label="COM_SPORTSMANAGEMENT_TABS_FAVORITE"
+  description="COM_SPORTSMANAGEMENT_TABS_FAVORITE_DESC">
 	
 		<field
 			name="fav_team"
@@ -394,7 +426,9 @@
 		</field>
 	</fieldset>	
 	
-		<fieldset name="picture">
+		<fieldset name="picture"
+    label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type=""
@@ -406,5 +440,9 @@
 				directory=""/>
 	</fieldset>
 	
-	
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>	
 </form>
