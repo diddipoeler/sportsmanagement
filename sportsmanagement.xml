@@ -138,9 +138,9 @@
 </modules>
 
 <plugins>
-<plugin plugin="jqueryeasy" group="" />	
-<plugin plugin="jw_ts" group="" />
-<plugin plugin="plugin_googlemap3" group="" />
+<plugin plugin="jqueryeasy" group="system" />	
+<plugin plugin="jw_ts" group="content" />
+<plugin plugin="plugin_googlemap3" group="system" />
 </plugins>
      
 </extension>
