@@ -1803,16 +1803,18 @@ public function getOSMGeoCoords($address)
     // call OSM geoencoding api
     // limit to one result (limit=1) without address details (addressdetails=0)
     // output in JSON
-    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=0&q=".
+    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
                   urlencode($address);
     
     $result = json_decode(file_get_contents($geoCodeURL), true);
+    
+    
 //    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
     
     if ( isset($result[0]) )
     {        
-    $coords['lat'] = $result[0]["lat"];
-    $coords['lng'] = $result[0]["lon"];
+    $coords['latitude'] = $result[0]["lat"];
+    $coords['longitude'] = $result[0]["lon"];
     }
     
     $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
@@ -1826,8 +1828,9 @@ public function getOSMGeoCoords($address)
     $coords = array();
 		$data = self::getAddressData($address);
         
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($address,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
-		
+		$osm = self::getOSMGeoCoords($address);  
 		if($data)
         {
 			if($data->status == 'OK')
@@ -1871,11 +1874,11 @@ public function getOSMGeoCoords($address)
 				
 				return $coords;
 			}
-            else
-            {
-                $osm = self::getOSMGeoCoords($row->address_string);
-            }
-            
+//            else
+//            {
+//                $osm = self::getOSMGeoCoords($address);
+//            }
+          
 		}
         
 	}
