@@ -15,7 +15,7 @@ if(count($this->extended->getFieldsets()) > 0)
         }
         else
         {
-            $fields = $this->extended->getFieldset('COM_JOOMLEAGUE_EXT_EXTENDED_PREFERENCES');
+            $fields = $this->extended->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
         }
         
 		if (count($fields) > 0)

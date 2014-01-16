@@ -58,13 +58,13 @@ if ( !$this->config['show_highslide'] )
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php 
-							echo JText::_('COM_JOOMLEAGUE_ROSTER_STAFF_FUNCTION');
+							echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION');
 ?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
 						if (!empty($this->row->parentname)) {
-						echo JText::sprintf('COM_JOOMLEAGUE_ROSTER_MEMBER_OF',JText::_($this->row->parentname));
+						echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($this->row->parentname));
 						}
 						echo $this->row->position;
 						?>
@@ -78,12 +78,12 @@ if ( !$this->config['show_highslide'] )
 			case 1:	 // show Birthday and Age
 				$showbirthday = 1;
 				$showage = 1;
-				$birthdayformat = JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE');
+				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 2:	 // show Only Birthday
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE');
+				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 3:	 // show Only Age
 				$showbirthday = 0;
@@ -104,7 +104,7 @@ if ( !$this->config['show_highslide'] )
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_AGE");?>
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_AGE");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo JoomleagueHelper::getAge($this->row->birthday,$this->row->deathday);?>
@@ -117,7 +117,7 @@ if ( !$this->config['show_highslide'] )
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_BIRTHDAY");?>
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo JHTML::date($this->row->birthday,$birthdayformat);?>
@@ -131,10 +131,10 @@ if ( !$this->config['show_highslide'] )
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_DEATHDAY");?>[ &dagger; ]
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_DEATHDAY");?>[ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHTML::date($this->row->deathday,JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));?>
+							<?php echo JHTML::date($this->row->deathday,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
 						</span>
 					</div>
 <?php
@@ -145,7 +145,7 @@ if ( !$this->config['show_highslide'] )
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_NATIONALITY");?>
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_NATIONALITY");?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php

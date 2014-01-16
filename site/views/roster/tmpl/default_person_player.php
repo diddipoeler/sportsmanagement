@@ -85,7 +85,7 @@ if ($this->config['show_player_numbers'])
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_('COM_JOOMLEAGUE_PERSON_STATUS'); ?>
+							<?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php 
@@ -93,19 +93,19 @@ if ($this->config['show_player_numbers'])
 		$this->assignRef('playertool',$model->getTeamPlayer($this->project->current_round,$this->row->playerid));
 		if (!empty($this->playertool[0]->injury))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_INJURED');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_SUSPENDED');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
-			$imageTitle=JText::_('COM_JOOMLEAGUE_PERSON_AWAY');
+			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
 			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
@@ -123,12 +123,12 @@ if ($this->config['show_player_numbers'])
 			case 1:	 // show Birthday and Age
 				$showbirthday = 1;
 				$showage = 1;
-				$birthdayformat = JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE');
+				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 2:	 // show Only Birthday
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE');
+				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 3:	 // show Only Age
 				$showbirthday = 0;
@@ -150,7 +150,7 @@ if ($this->config['show_player_numbers'])
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php
-			echo JText::_("COM_JOOMLEAGUE_PERSON_AGE");
+			echo JText::_("COM_SPORTSMANAGEMENT_PERSON_AGE");
 ?>
 						</span>
 						<span class="jl_roster_persondetails_data">
@@ -166,7 +166,7 @@ if ($this->config['show_player_numbers'])
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_BIRTHDAY");?>
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo JHTML::date($this->row->birthday,$birthdayformat);?>
@@ -181,12 +181,12 @@ if ($this->config['show_player_numbers'])
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php 
-			echo JText::_("COM_JOOMLEAGUE_ROSTER_DEATHDAY");
+			echo JText::_("COM_SPORTSMANAGEMENT_ROSTER_DEATHDAY");
 ?>
  [ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-<?php echo JHTML::date($this->row->deathday,JText::_('COM_JOOMLEAGUE_GLOBAL_DAYDATE'));?>
+<?php echo JHTML::date($this->row->deathday,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
 						</span>
 					</div>
 <?php
@@ -197,7 +197,7 @@ if ($this->config['show_player_numbers'])
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_JOOMLEAGUE_PERSON_NATIONALITY");?>
+							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_NATIONALITY");?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
@@ -225,7 +225,7 @@ if ($this->config['show_player_numbers'])
 				if ($this->config['show_games_played'] AND isset($this->InOutStat->played) )
 				{
 					$cnt++;
-					echo '<div title="'.$this->InOutStat->played.' '.JText::_('COM_JOOMLEAGUE_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
+					echo '<div title="'.$this->InOutStat->played.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
 					'.$this->InOutStat->played.'		</div>
 				';
 				}
@@ -234,21 +234,21 @@ if ($this->config['show_player_numbers'])
 					if ( isset($this->InOutStat->started) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->started.' '.JText::_('COM_JOOMLEAGUE_ROSTER_STARTING_LINEUP').'" class="jl_roster_in_out'.'2'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->started.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP').'" class="jl_roster_in_out'.'2'.' jl_roster_in_out">
 						'.$this->InOutStat->started.'		</div>
 						';
 					}
 					if ( isset($this->InOutStat->sub_in) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->sub_in.' '.JText::_('COM_JOOMLEAGUE_ROSTER_IN').'" class="jl_roster_in_out'.'3'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->sub_in.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN').'" class="jl_roster_in_out'.'3'.' jl_roster_in_out">
 						'.$this->InOutStat->sub_in.'		</div>
 						';
 					}
 					if ( isset($this->InOutStat->sub_out) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->sub_out.' '.JText::_('COM_JOOMLEAGUE_ROSTER_OUT').'" class="jl_roster_in_out'.'4'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->sub_out.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT').'" class="jl_roster_in_out'.'4'.' jl_roster_in_out">
 						'.$this->InOutStat->sub_out.'		</div>
 						';
 					}

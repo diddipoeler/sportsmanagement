@@ -19,7 +19,7 @@
 			<tr class="sectiontableheader">
 				<th>
 					<?php
-					echo '&nbsp;' . JText::_( 'COM_JOOMLEAGUE_ROSTER_TEAMINFORMATION' );
+					echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_ROSTER_TEAMINFORMATION' );
 					?>
 				</th>
 			</tr>

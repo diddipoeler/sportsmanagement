@@ -112,7 +112,11 @@ class sportsmanagementViewProject extends JView
     // function syntax is setUserState( $key, $value );
     $mainframe->setUserState( "$option.pid", $this->project->id);
     $mainframe->setUserState( "$option.season_id", $this->project->season_id);  
-       
+    
+    JToolBarHelper::divider();
+	sportsmanagementHelper::ToolbarButtonOnlineHelp();
+	JToolBarHelper::preferences(JRequest::getCmd('option'));
+           
     parent::display($tpl);   
     }
        
@@ -175,7 +179,9 @@ class sportsmanagementViewProject extends JView
 		}
         
         JToolBarHelper::divider();
+		
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
     
     /**

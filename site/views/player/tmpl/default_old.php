@@ -72,7 +72,7 @@ if (isset($this->person))
 		$idxTab = 1;
 		echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));
 		foreach ($output as $templ) {
-			echo JHTML::_('tabs.panel', JText::_('COM_JOOMLEAGUE_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
+			echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
 			echo $this->loadTemplate($templ);
 		}
 		echo JHTML::_('tabs.end');

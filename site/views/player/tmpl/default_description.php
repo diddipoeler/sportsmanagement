@@ -17,7 +17,7 @@
 	if ( !empty($description) )
 	{
 		?>
-		<h2><?php echo JText::_( 'COM_JOOMLEAGUE_PERSON_INFO' );	?></h2>
+		<h2><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INFO' );	?></h2>
 		<div class="personinfo">
 			<?php	
 			$description = JHTML::_('content.prepare', $description);

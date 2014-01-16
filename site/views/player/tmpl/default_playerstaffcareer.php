@@ -4,16 +4,16 @@
 if (count($this->historyPlayerStaff) > 0)
 {
 	?>
-	<h2><?php echo JText::_('COM_JOOMLEAGUE_PERSON_STAFF_CAREER'); ?></h2>
+	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>
 	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
 				<table id="playerhistory">
 					<tr class="sectiontableheader">
-						<th class="td_l"><?php echo JText::_('COM_JOOMLEAGUE_PERSON_COMPETITION'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_JOOMLEAGUE_PERSON_SEASON'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_JOOMLEAGUE_PERSON_TEAM'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_JOOMLEAGUE_PERSON_POSITION'); ?></th>
+						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
+						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
 					</tr>
 					<?php
 					$k=0;

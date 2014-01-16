@@ -66,7 +66,7 @@ class sportsmanagementViewClubInfo extends JView
 	  {
     $mod_name               = "mod_jw_srfr";
     $rssfeeditems = '';
-    $rssfeedlink = $this->extended->getValue('COM_JOOMLEAGUE_CLUB_RSS_FEED');
+    $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
     
     //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     if ( $rssfeedlink )
@@ -100,7 +100,7 @@ class sportsmanagementViewClubInfo extends JView
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
     $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
     
-		$pageTitle = JText::_( 'COM_JOOMLEAGUE_CLUBINFO_PAGE_TITLE' );
+		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE' );
 		if ( isset( $this->club ) )
 		{
 			$pageTitle .= ': ' . $this->club->name;

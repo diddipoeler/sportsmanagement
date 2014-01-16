@@ -19,7 +19,7 @@
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
 					}					
-					$imgTitle = JText::sprintf( 'COM_JOOMLEAGUE_ROSTER_PICTURE_TEAM', $this->team->name );
+					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
                     if ( !$this->config['show_highslide'] || !$this->config['show_team_logo_highslide'] )
 		{
 					/*

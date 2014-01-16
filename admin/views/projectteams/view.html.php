@@ -53,7 +53,7 @@ class sportsmanagementViewprojectteams extends JView
         if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
         $lists['divisions'] = $projectdivisions;
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewprojectteams items<br><pre>'.print_r($items,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
 		// table ordering
 		$lists['order_Dir']=$filter_order_Dir;

@@ -7,7 +7,7 @@ if ( $this->gmap )
 <div style="width: 100%; float: left">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_JOOMLEAGUE_GMAP_DIRECTIONS'); ?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 		</div>
 	</div>
 

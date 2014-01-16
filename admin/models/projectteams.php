@@ -79,10 +79,10 @@ class sportsmanagementModelProjectteams extends JModelList
         $query->select('(' . $subQuery2 . ') AS staffcount');
         }
         
-        
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on tl.team_id = st.id');
         // Join over the team
 		$query->select('t.name,t.club_id');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on tl.team_id = t.id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on st.team_id = t.id');
         // Join over the club
 		$query->select('c.email AS club_email');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c on t.club_id = c.id');

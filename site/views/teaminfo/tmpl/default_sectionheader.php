@@ -9,15 +9,15 @@ $modalwidth = JComponentHelper::getParams('com_sportsmanagement')->get('modal_po
 <!-- START: Contentheading -->
 <div class="contentpaneopen">
 	<div class="contentheading">
-		<?php echo JText::_('COM_JOOMLEAGUE_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
+		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
 			/*
             $link = JoomleagueHelperRoute::getProjectTeamInfoRoute( $this->project->id, $this->projectteamid, 'projectteam.edit' );
 			$desc = JHTML::image(
 					"media/com_sportsmanagement/jl_images/edit.png",
-					JText::_( 'COM_JOOMLEAGUE_PROJECTTEAM_EDIT' ),
-					array( "title" => JText::_( "COM_JOOMLEAGUE_PROJECTTEAMEDIT" ) )
+					JText::_( 'COM_SPORTSMANAGEMENT_PROJECTTEAM_EDIT' ),
+					array( "title" => JText::_( "COM_SPORTSMANAGEMENT_PROJECTTEAMEDIT" ) )
 			);
 			echo " ";
 			echo JHTML::_('link', $link, $desc );
@@ -28,8 +28,8 @@ $modalwidth = JComponentHelper::getParams('com_sportsmanagement')->get('modal_po
 									 class="modal">
 									<?php
 									echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_JOOMLEAGUE_ADMIN_TEAMINFO_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_JOOMLEAGUE_ADMIN_TEAMINFO_EDIT_DETAILS').'"');
+													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS').'"');
 									?>
 								</a>
                 <?PHP    

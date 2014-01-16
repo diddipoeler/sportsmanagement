@@ -128,6 +128,7 @@ if (isset($this->xml) && is_array($this->xml))
 ?>
 <script>
 
+
 	function chkFormular()
 	{
 		return true;

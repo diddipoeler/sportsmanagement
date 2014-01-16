@@ -6,11 +6,11 @@
 				echo '&nbsp;';
 				if ( $this->config['show_team_shortform'] == 1 )
 				{
-					echo JText::sprintf( 'COM_JOOMLEAGUE_ROSTER_STAFF_OF2', $this->team->name, $this->team->short_name );
+					echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2', $this->team->name, $this->team->short_name );
 				}
 				else
 				{
-					echo JText::sprintf( 'COM_JOOMLEAGUE_ROSTER_STAFF_OF', $this->team->name );
+					echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF', $this->team->name );
 				}
 				?>
 			</td>
