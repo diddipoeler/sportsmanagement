@@ -68,9 +68,14 @@
     <folder>flags</folder>
 		<folder>flags_associations</folder>
 		<folder>jl_images</folder>
+		<folder>leagues</folder>
 		<folder>person_playground</folder>
+		<folder>persons</folder>
 		<folder>placeholders</folder>
+		<folder>playgrounds</folder>
+		<folder>predictionusers</folder>
 		<folder>rosterground</folder>
+		<folder>sport_types</folder>
 		<folder>teamplayers</folder>
 		<folder>treebracket</folder>
 	</media>
