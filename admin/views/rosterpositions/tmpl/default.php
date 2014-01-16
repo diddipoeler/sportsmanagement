@@ -29,29 +29,29 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_JOOMLEAGUE_GLOBAL_NUM'); ?></th>
+					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20" style="vertical-align: top; ">
 						<input  type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 					</th>
 					<th width="20" style="vertical-align: top; ">&nbsp;</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>					
 					<th width="10%" class="title" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_JOOMLEAGUE_GLOBAL_ORDER','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
 						echo '<br />';
 						//echo JHtml::_('grid.order',$this->items);
 						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'rosterpositions.saveorder');
@@ -88,7 +88,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							<td style="text-align:center; ">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -102,10 +102,10 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						<td style="text-align:center; "><?php echo Countries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'orderup','COM_JOOMLEAGUE_GLOBAL_ORDER_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'rosterpositions.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'orderdown','COM_JOOMLEAGUE_GLOBAL_ORDER_DOWN',$ordering); ?>
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'rosterpositions.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
