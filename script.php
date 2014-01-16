@@ -1,9 +1,17 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+jimport('joomla.installer.installer');
  
+
 /**
- * Script file of com_sportsmanagement component
+ * com_sportsmanagementInstallerScript
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class com_sportsmanagementInstallerScript
 {
