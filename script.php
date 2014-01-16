@@ -342,8 +342,22 @@ if ( $install_id )
   $manifest = $parent->getParent()->manifest;
   $db = JFactory::getDBO();
   
-  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'Error');
-  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'Error');
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  
+  
+  $modules = $manifest->xpath('modules/module');
+        foreach ($modules as $module)
+        {
+            $name = (string)$module->attributes()->module;
+            $client = (string)$module->attributes()->client;
+            
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
+        }    
+  
+  
+  
   /*
   $modules = $manifest->getElementByPath('modules');
     if (is_a($modules, 'JSimpleXMLElement') && count($modules->children()))
