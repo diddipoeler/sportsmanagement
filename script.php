@@ -354,6 +354,15 @@ if ( $install_id )
             
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
+            
+            if (is_null($client))
+            {
+                $client = 'site';
+            }
+            $path = $client == 'administrator' ? $src.DS.'administrator'.DS.'modules'.DS.$mname : $src.DS.'modules'.DS.$mname;
+            $installer = new JInstaller;
+            $result = $installer->install($path);
+            
         }    
   
   

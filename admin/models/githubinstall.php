@@ -38,6 +38,7 @@ function CopyGithubLink($link)
 
 if ( $gitinstall )
 {
+/*    
 // Get an installer instance
 $installer = JInstaller::getInstance();   
 $my_text = ''; 
@@ -94,7 +95,7 @@ if (!$installer->install($package['dir']))
 		}
                 
 $this->_success_text['Plugins:'] = $my_text;
-    
+*/    
 }   
 else
 {     
@@ -169,6 +170,8 @@ $this->_success_text['Komponente:'] = $my_text;
 //echo "<script> alert('".$msg."');window.parent.SqueezeBox.close();   </script>\n";
 //echo "<script> alert('".$msg."');   </script>\n";
 
+
+/*
 // jetzt die plugins
 $my_text = '';
 
@@ -329,6 +332,7 @@ if (!$installer->install($package['dir']))
 
 } 
 $this->_success_text['Module Admin:'] = $my_text;
+*/
 
 }
 
