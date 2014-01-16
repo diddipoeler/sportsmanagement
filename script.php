@@ -352,6 +352,9 @@ if ( $install_id )
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
             
+            $position = (string)$module->attributes()->position;
+            $published = (string)$module->attributes()->published;
+            
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
             
@@ -363,6 +366,12 @@ if ( $install_id )
             $installer = new JInstaller;
             $result = $installer->install($path);
             
+            if ( $position )
+            {
+                $query = "UPDATE #__modules SET position='".$position."', ordering=99, published=".$published." WHERE module='".$mname."' ";
+                $db->setQuery($query);
+                $db->query();
+            }
         }    
   
   
