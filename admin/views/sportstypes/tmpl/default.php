@@ -97,7 +97,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<?php
 							$picture=JPATH_SITE.DS.$row->icon;
 							$desc=JText::_($row->name);
-							echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
+							//echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
+                            ?>                                    
+<a href="<?php echo JURI::root().$row->icon;?>" title="<?php echo $desc;?>" class="modal">
+<img src="<?php echo JURI::root().$row->icon;?>" alt="<?php echo $desc;?>" width="20" />
+</a>
+<?PHP
 							?>
 						</td>
                         <td>

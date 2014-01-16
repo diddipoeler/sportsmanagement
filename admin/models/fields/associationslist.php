@@ -52,7 +52,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		
 		if ($select_id)
 		{		
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('country');		
 		$query->from('#__sportsmanagement_'.$vartable.' AS t');
@@ -61,7 +61,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$country = $db->loadResult();
 		//echo 'country<br /><pre>~' . print_r($country,true) . '~</pre><br />';
 				
-			$db = &JFactory::getDbo();
+			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id AS value, t.name AS text');
@@ -99,7 +99,7 @@ foreach ( $list as $item )
 	
 function JJ_categoryArray($admin=0,$country) 
   {
-$db = &JFactory::getDBO(); 
+$db = JFactory::getDBO(); 
     // get a list of the menu items
 	$query = "SELECT * FROM #__sportsmanagement_associations where country = '".$country."'";
 

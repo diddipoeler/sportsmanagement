@@ -51,6 +51,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
+                    
+                    <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+					</th>
+                    
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
@@ -100,6 +104,34 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->short_name; ?></td>
 						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+                        
+                        <td class="center">
+								<?php
+								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+								{
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
+								{
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								else
+								{
+									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
+</a>
+<?PHP
+								}
+								?>
+							</td>
+                            
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'leagues.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>

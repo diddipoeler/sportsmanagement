@@ -1,0 +1,63 @@
+/**
+ * @version		2.7
+ * @package		Tabs & Sliders (plugin)
+ * @author    JoomlaWorks - http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
+ * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ */
+
+/* Please note: if you wish to target IE6 to IE8 specifically, prepend any selector with "body.jwts_IsIEX" replacing X with either 6, 7 or 8 */
+
+/* Generic
+------------------------------------------ */
+a:active,
+a:focus {outline:0;}
+.jwts_clr {display:block;clear:both;height:0;line-height:0;margin:0;padding:0;border:0;}
+
+
+
+/* Tabs
+------------------------------------------ */
+.jwts_tabber {display:none;}
+.jwts_tabberlive {margin:4px 0;padding:0;}
+
+/* The tab navigation */
+ul.jwts_tabbernav {text-align:left!important;margin:0 8px!important;padding:0!important;list-style:none!important;list-style-image:none!important;background:none!important;line-height:normal!important;height:auto!important;}
+ul.jwts_tabbernav li {margin:0!important;padding:0!important;line-height:normal!important;list-style:none!important;list-style-image:none!important;background:none!important;display:inline!important;}
+ul.jwts_tabbernav li a {font-size:15px;margin:0 3px 0 0;padding:6px 10px 2px;color:#333;border:1px solid #bbb;border-bottom:none;background:#eee;}
+ul.jwts_tabbernav li a:hover {color:#c64934;border:1px solid #aaa;border-bottom:none;background:#f2f2f2;text-decoration:none;}
+ul.jwts_tabbernav li a:active,
+ul.jwts_tabbernav li a:focus {outline:0;}
+ul.jwts_tabbernav li.jwts_tabberactive a {background:#fff;border-bottom:1px solid #fff;}
+ul.jwts_tabbernav li.jwts_tabberactive a:hover {background:#fff;border-bottom:1px solid #fff;text-decoration:none;}
+ul.jwts_tabbernav li.jwts_tabberactive,
+ul.jwts_tabbernav li.jwts_tabberinactive {background:none;padding:0;margin:0;}
+
+/* The tab content */
+.jwts_tabberlive .jwts_tabbertab {text-align:left;margin:2px 0 0!important;padding:8px;border-top:1px solid #bbb;}
+.jwts_tabberlive .jwts_tabbertab h2.jwts_heading,
+.jwts_tabberlive .jwts_tabbertabhide {display:none;}
+
+/* IE7 specific */
+body.jwts_IsIE7 ul.jwts_tabbernav {position:relative;z-index:9;}
+body.jwts_IsIE7 .jwts_tabberlive .jwts_tabbertab {position:relative;z-index:8;margin:2px 0 0!important;}
+
+
+
+/* Sliders (accordion)
+------------------------------------------ */
+div.jwts_toggleControlContainer {}
+	div.jwts_toggleControlContainer a.jwts_toggleControl {font-size:15px;font-weight:normal;text-decoration:none;display:block;border-top:1px solid #ccc;border-bottom:1px solid #ccc;background:#fff;padding:4px;margin-top:-1px;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn {background:#fafafa;border-bottom:1px dotted #ccc;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleMinus,
+		div.jwts_toggleControlContainer a.jwts_toggleOff span.jwts_togglePlus {display:inline-block;width:16px;text-align:center;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_togglePlus,
+		div.jwts_toggleControlContainer a.jwts_toggleOff span.jwts_toggleMinus {display:none;}
+		div.jwts_toggleControlContainer a.jwts_toggleControl span.jwts_toggleControlTitle {}
+		div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleControlNotice {color:#999;font-style:italic;font-size:11px;display:block;float:right;}
+		div.jwts_toggleControlContainer a.jwts_toggleOff span.jwts_toggleControlNotice {display:none;}
+div.jwts_toggleContent {}
+	div.jwts_content {padding:4px;}
+
+/* IE7 specific */
+body.jwts_IsIE7 div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleControlNotice {display:none;}

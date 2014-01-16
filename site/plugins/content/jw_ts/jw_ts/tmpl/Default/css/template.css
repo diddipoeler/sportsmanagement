@@ -1,0 +1,62 @@
+/**
+ * @version		2.7
+ * @package		Tabs & Sliders (plugin)
+ * @author    JoomlaWorks - http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
+ * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ */
+
+/* Please note: if you wish to target IE6 to IE8 specifically, prepend any selector with "body.jwts_IsIEX" replacing X with either 6, 7 or 8 */
+
+/* Generic
+------------------------------------------ */
+a:active,
+a:focus {outline:0;}
+.jwts_clr {display:block;clear:both;height:0;line-height:0;margin:0;padding:0;border:0;}
+
+
+
+/* Tabs
+------------------------------------------ */
+.jwts_tabber {display:none;}
+.jwts_tabberlive {margin:4px 0;padding:0;}
+
+/* The tab navigation */
+ul.jwts_tabbernav {margin:0 0 0 8px!important;padding:0!important;list-style:none!important;list-style-image:none!important;background:none!important;line-height:normal!important;height:auto!important;text-align:left!important;}
+ul.jwts_tabbernav li {margin:0!important;padding:0!important;line-height:normal!important;list-style:none!important;list-style-image:none!important;background:none!important;display:inline!important;}
+ul.jwts_tabbernav li a {font-size:14px;margin:0 2px 0 0;padding:4px 10px 2px;color:#222;border-radius:2px 2px 0 0;border:1px solid #bbb;border-bottom:none;background:#eee url(../images/tab_bg.jpg) repeat-x 50%;}
+ul.jwts_tabbernav li a:hover {color:#c64934;border:1px solid #aaa;border-bottom:none;background:#f2f2f2;text-decoration:none;}
+ul.jwts_tabbernav li a:active,
+ul.jwts_tabbernav li a:focus {outline:0;}
+ul.jwts_tabbernav li.jwts_tabberactive a {background:#fff;border-bottom:1px solid #fff;}
+ul.jwts_tabbernav li.jwts_tabberactive a:hover {background:#fff;border-bottom:1px solid #fff;text-decoration:none;}
+ul.jwts_tabbernav li.jwts_tabberactive,
+ul.jwts_tabbernav li.jwts_tabberinactive {background:none;padding:0;margin:0;}
+
+/* The tab content */
+.jwts_tabberlive .jwts_tabbertab {text-align:left;margin:2px 0 0!important;padding:8px;border:1px solid #bbb;border-radius:2px;background:#fff;}
+.jwts_tabberlive .jwts_tabbertab h2.jwts_heading,
+.jwts_tabberlive .jwts_tabbertabhide {display:none;}
+
+/* IE7 specific */
+body.jwts_IsIE7 ul.jwts_tabbernav {position:relative;z-index:9;}
+body.jwts_IsIE7 .jwts_tabberlive .jwts_tabbertab {position:relative;z-index:8;margin:2px 0 0!important;}
+
+
+
+/* Sliders (accordion)
+------------------------------------------ */
+div.jwts_toggleControlContainer {}
+	div.jwts_toggleControlContainer a.jwts_toggleControl {font-size:14px;font-weight:normal;text-decoration:none;display:block;border:1px solid #ccc;border-radius:2px;background:url(../images/tab_bg.jpg) repeat-x;background-position-y:40%;padding:4px;margin-bottom:1px;line-height:normal;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn {color:#c64934;margin-bottom:0;border-radius:2px 2px 0 0;}
+		div.jwts_toggleControlContainer a.jwts_toggleControl span.jwts_togglePlus,
+		div.jwts_toggleControlContainer a.jwts_toggleControl span.jwts_toggleMinus {display:none;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleControlTitle {line-height:normal;background:url(../images/arrows.png) no-repeat 0 -146px;padding-left:20px;}
+		div.jwts_toggleControlContainer a.jwts_toggleOff span.jwts_toggleControlTitle {line-height:normal;background:url(../images/arrows.png) no-repeat 0 -1px;padding-left:20px;}
+		div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleControlNotice {color:#999;font-size:10px;display:block;float:right;line-height:14px;vertical-align:bottom;}
+		div.jwts_toggleControlContainer a.jwts_toggleOff span.jwts_toggleControlNotice {display:none;}
+div.jwts_toggleContent {}
+	div.jwts_content {padding:4px 8px;margin-bottom:1px;border:1px solid #ccc;border-radius:0 0 2px 2px;border-top:0;}
+
+/* IE7 specific */
+body.jwts_IsIE7 div.jwts_toggleControlContainer a.jwts_toggleOn span.jwts_toggleControlNotice {display:none;}
