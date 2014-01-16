@@ -107,7 +107,7 @@ switch ($type)
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
-    self::installModules();
+    self::installModules($parent);
 //    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
@@ -116,7 +116,7 @@ switch ($type)
     break;
     case "update":
 //    self::installComponentLanguages();
-    self::installModules();
+    self::installModules($parent);
 //    self::installPlugins();
     self::createImagesFolder();
 //    self::migratePicturePath();
@@ -335,11 +335,13 @@ if ( $install_id )
 	 *
 	 * @return void
 	 */
-	public function installModules()
+	public function installModules($parent)
 	{
   $mainframe = JFactory::getApplication();
-  $src = $this->parent->getPath('source');
+  $src = $parent->getParent()->getPath('source');
   $db = JFactory::getDBO();
+  
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'Error');
   
   $modules = $this->manifest->getElementByPath('modules');
     if (is_a($modules, 'JSimpleXMLElement') && count($modules->children()))
