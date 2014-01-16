@@ -32,7 +32,8 @@ function CopyGithubLink($link)
         $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
         
-        $gitinstall = $mainframe->getUserState( "$option.install");
+        $gitinstall = '';
+        //$gitinstall = $mainframe->getUserState( "$option.install");
         
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
 
