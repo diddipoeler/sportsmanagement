@@ -281,7 +281,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         $installer = new JInstaller;
         $result = $installer->install($path);
         
-        $query = "UPDATE #__extensions SET published=1 WHERE type='plugin' AND element='".$name."' AND folder='".$group."'";
+        $query = "UPDATE #__extensions SET enabled=1 WHERE type='plugin' AND element='".$name."' AND folder='".$group."'";
         $db->setQuery($query);
         $db->query();
         
