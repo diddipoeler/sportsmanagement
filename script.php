@@ -108,7 +108,7 @@ switch ($type)
     self::setParams($newparams);
 //    self::installComponentLanguages();
     self::installModules($parent);
-//    self::installPlugins();
+    self::installPlugins($parent);
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -117,7 +117,7 @@ switch ($type)
     case "update":
 //    self::installComponentLanguages();
     self::installModules($parent);
-//    self::installPlugins();
+    self::installPlugins($parent);
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -257,75 +257,27 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
 	 *
 	 * @return void
 	 */
-	public function installPlugins()
+	public function installPlugins($parent)
 	{
   $mainframe = JFactory::getApplication();
-  
+  $src = $parent->getParent()->getPath('source');
+  $manifest = $parent->getParent()->manifest;
   $db = JFactory::getDBO();
   
-//		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
-		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'plugins'.DS.'system';
-		$dest = JPATH_SITE.DS.'plugins';
-    
-    // wenn alles kopiert wurde gleich installieren
-    $ordner = JFolder::folders($src);
-    foreach ( $ordner as $key => $value)
-    {
-    JFolder::copy($src.DS.$value, $dest.DS.$value, '', true);    
-    }    
-    //echo 'ordner<br><pre>'.print_r($ordner,true).'</pre>';
-    
-    //$mainframe->enqueueMessage(JText::_('ordner<br><pre>'.print_r($ordner,true).'</pre>'   ),'');
-    
-    foreach ( $ordner as $key => $value)
-    {
-    $query = $db->getQuery(true);
-    $query->select('a.extension_id');
-  $query->from('#__extensions AS a');
-  //$type = $db->Quote($type);
-	$query->where("a.type LIKE 'plugin' ");
-    $query->where("a.element LIKE '".$value."'");
-	
-  $db->setQuery($query);
-  $install_id = $db->loadResult();    
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  
+  $plugins = $manifest->xpath('plugins/plugin');
+  foreach ($plugins as $plugin)
+        {
+        $name = (string)$plugin->attributes()->plugin;
+        $group = (string)$plugin->attributes()->group;
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
+        
+        }    
 
-//$mainframe->enqueueMessage(JText::_('install_id<br><pre>'.print_r($install_id,true).'</pre>'   ),'');
-//$mainframe->enqueueMessage(JText::_('value<br><pre>'.print_r($value,true).'</pre>'   ),'');
-
-if ( $install_id )
-{
-    
-    $installer = JInstaller::getInstance();
-    $result = $installer->discover_install($install_id);
-    if (!$result)
-     {
-	$mainframe->enqueueMessage($value.': '. $install_id,'Error');
-    // Create an object for the record we are going to update.
-    $object = new stdClass();
-    // Must be a valid primary key value.
-    $object->extension_id = $install_id;
-    $object->enabled = 1;
-    // Update their details in the users table using id as the primary key.
-    $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-    $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] ver�ffentlicht!',$value));
-	}
-    else
-    {
-        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] installiert!',$value));
-        // Create an object for the record we are going to update.
-        $object = new stdClass();
-        // Must be a valid primary key value.
-        $object->extension_id = $install_id;
-        $object->enabled = 1;
-        // Update their details in the users table using id as the primary key.
-        $result_update = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
-        $mainframe->enqueueMessage(JText::sprintf('Plugin [ %1$s ] ver�ffentlicht!',$value));
-    }
-}
-
-
-
-    }
     
     }
     
