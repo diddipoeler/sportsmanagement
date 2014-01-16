@@ -339,8 +339,10 @@ if ( $install_id )
 	{
   $mainframe = JFactory::getApplication();
   $src = $parent->getParent()->getPath('source');
+  $manifest = $parent->getParent()->manifest;
   $db = JFactory::getDBO();
   
+  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'Error');
   $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'Error');
   
   $modules = $this->manifest->getElementByPath('modules');
