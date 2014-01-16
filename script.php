@@ -344,7 +344,7 @@ if ( $install_id )
   
   $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'Error');
   $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'Error');
-  
+  /*
   $modules = $manifest->getElementByPath('modules');
     if (is_a($modules, 'JSimpleXMLElement') && count($modules->children()))
     {
@@ -356,18 +356,11 @@ if ( $install_id )
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($mname,true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'Error');
             
-            /*
-            if (is_null($client))
-            {
-                $client = 'site';
-            }
-            $path = $client == 'administrator' ? $src.DS.'administrator'.DS.'modules'.DS.$mname : $src.DS.'modules'.DS.$mname;
-            $installer = new JInstaller;
-            $result = $installer->install($path);
-            $status->modules[] = array('name' => $mname, 'client' => $client, 'result' => $result);
-            */
+            
         }    
     }    
+    */
+    
 /*  
 //		echo 'Copy Plugin(s) language(s) provided by <a href="https://opentranslators.transifex.com/projects/p/joomleague/">Transifex</a>';
 		$src = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'modules';
