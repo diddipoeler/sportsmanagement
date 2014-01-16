@@ -443,6 +443,10 @@ class sportsmanagementModelProjectteams extends JModelList
                     c.logo_middle,
                     c.country as club_country,
                     c.website AS club_www,
+                    
+                    c.latitude AS latitude,
+                    c.longitude AS longitude,
+                    
 				    CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( ':', t.id, t.alias ) ELSE t.id END AS team_slug,
 				    CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( ':', c.id, c.alias ) ELSE c.id END AS club_slug
                   FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as tl

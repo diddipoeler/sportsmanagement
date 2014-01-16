@@ -273,6 +273,12 @@ echo 'genkml3 allteams<br><pre>';
     echo '</pre><br>';
 */
 
+/*
+echo 'genkml3 allteams<br><pre>';
+    print_r($allteams);
+    echo '</pre><br>';
+*/
+
 foreach ( $allteams as $row )
 {
 $address_parts = array();
@@ -299,9 +305,16 @@ $address_parts = array();
 		{
 			$address_parts[] = Countries::getShortCountryName($row->club_country);
 		}
+        
+        
 		$row->address_string = implode(', ', $address_parts);
 		$row->type = 'bar';
-		$coords = $this->JLgetGeoCoords($row->address_string);
+		
+        
+        if ( $row->latitude == 255 )
+		{
+		  
+        $coords = $this->JLgetGeoCoords($row->address_string);
 		if ( $coords["status"] == 'OK')
 		{
     $row->lat = $coords["results"][0]["geometry"]["location"]["lat"];
@@ -325,6 +338,7 @@ $address_parts = array();
     
     }
 
+}
 /*
 echo 'genkml3 allteams<br><pre>';
     print_r($coords);
