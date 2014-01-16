@@ -359,7 +359,7 @@ if ( $install_id )
             {
                 $client = 'site';
             }
-            $path = $client == 'administrator' ? $src.DS.'administrator'.DS.'modules'.DS.$mname : $src.DS.'modules'.DS.$mname;
+            $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$mname : $src.DS.'modules'.DS.$mname;
             $installer = new JInstaller;
             $result = $installer->install($path);
             
