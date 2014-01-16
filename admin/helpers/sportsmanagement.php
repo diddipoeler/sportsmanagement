@@ -1810,14 +1810,26 @@ public function getOSMGeoCoords($address)
     
     
 //    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
-    
+
+/*
+[COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME] => Dörpum
+[COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME] => Bordelum
+[COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME] => Schleswig-Holstein
+[COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME] => SH
+*/    
     if ( isset($result[0]) )
     {        
     $coords['latitude'] = $result[0]["lat"];
     $coords['longitude'] = $result[0]["lon"];
+    $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $result[0]["address"]["state"];
+    
+    $coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $result[0]["address"]["city"];
+    $coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $result[0]["address"]["residential"];
+    $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
+    
     }
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
     return $coords;
 }
@@ -1828,9 +1840,10 @@ public function getOSMGeoCoords($address)
     $coords = array();
 		$data = self::getAddressData($address);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($address,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
-		$osm = self::getOSMGeoCoords($address);  
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($address,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
+//		$osm = self::getOSMGeoCoords($address);  
+        
 		if($data)
         {
 			if($data->status == 'OK')

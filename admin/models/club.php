@@ -193,7 +193,7 @@ class sportsmanagementModelclub extends JModelAdmin
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($coords,true).'</pre>' ),'');
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         if ( $coords )
         {
@@ -223,8 +223,14 @@ class sportsmanagementModelclub extends JModelAdmin
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);
 		
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($coords,true).'</pre>' ),'');
-            
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        $data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }    
         }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
