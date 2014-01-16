@@ -345,7 +345,7 @@ if ( $install_id )
   $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'Error');
   $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'Error');
   
-  $modules = $this->manifest->getElementByPath('modules');
+  $modules = $manifest->getElementByPath('modules');
     if (is_a($modules, 'JSimpleXMLElement') && count($modules->children()))
     {
     foreach ($modules->children() as $module)
