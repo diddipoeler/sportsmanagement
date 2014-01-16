@@ -333,6 +333,33 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                 $query = "UPDATE #__modules SET position='".$position."', ordering=99, published=".$published." WHERE module='".$name."' ";
                 $db->setQuery($query);
                 $db->query();
+                if ( $client == 'administrator' )
+                {
+                $query		 = $db->getQuery(true);
+								$query->select('id')->from($db->qn('#__modules'))
+									->where($db->qn('module') . ' = ' . $db->q($name));
+								$db->setQuery($query);
+								$moduleid	 = $db->loadResult();
+
+								$query		 = $db->getQuery(true);
+								$query->select('*')->from($db->qn('#__modules_menu'))
+									->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
+								$db->setQuery($query);
+								$assignments = $db->loadObjectList();
+								$isAssigned	 = !empty($assignments);
+
+								if (!$isAssigned)
+								{
+									$o = (object) array(
+											'moduleid'	 => $moduleid,
+											'menuid'	 => 0
+									);
+									$db->insertObject('#__modules_menu', $o);
+								}
+                
+                
+                }   
+                
             }
         }    
   
