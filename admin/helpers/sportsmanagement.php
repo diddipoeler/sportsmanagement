@@ -1787,15 +1787,49 @@ if (!$db->query())
 		return $status;
 	}
     
+    /**
+* @function     getOSMGeoCoords
+* @param        $address : string
+* @returns      -
+* @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
+*/
+public function getOSMGeoCoords($address)
+{
+    $mainframe = JFactory::getApplication();
+    $coords = array();
+        
+    //$address = utf8_encode($address);
+    
+    // call OSM geoencoding api
+    // limit to one result (limit=1) without address details (addressdetails=0)
+    // output in JSON
+    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=0&q=".
+                  urlencode($address);
+    
+    $result = json_decode(file_get_contents($geoCodeURL), true);
+//    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
+    
+    if ( isset($result[0]) )
+    {        
+    $coords['lat'] = $result[0]["lat"];
+    $coords['lng'] = $result[0]["lon"];
+    }
+    
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+
+    return $coords;
+}
+
     public function resolveLocation($address)
 	{
 		$mainframe = JFactory::getApplication();
     $coords = array();
 		$data = self::getAddressData($address);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data,true).'</pre>'),'Error');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
 		
-		if($data){
+		if($data)
+        {
 			if($data->status == 'OK')
 			{
 				$this->latitude  = $data->results[0]->geometry->location->lat;
@@ -1835,10 +1869,15 @@ if (!$db->query())
         
         }
 				
-				
 				return $coords;
 			}
+            else
+            {
+                $osm = self::getOSMGeoCoords($row->address_string);
+            }
+            
 		}
+        
 	}
     
     // Return content of the given url
