@@ -19,12 +19,13 @@ class sportsmanagementModelTeamPlan extends JModel
 
 	function __construct()
 	{
-		parent::__construct();
+		
 
 		$this->projectid=JRequest::getInt('p',0);
 		$this->teamid=JRequest::getInt('tid',0);
 		$this->divisionid=JRequest::getInt('division',0);
 		$this->mode=JRequest::getInt("mode",0);
+        parent::__construct();
 	}
 
 	function getDivisionID()

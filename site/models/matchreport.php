@@ -31,13 +31,13 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	var $_staffsbasicstats=null;
 
-/**
- * 	function __construct()
- * 	{
- * 		$this->matchid = JRequest::getInt('mid',0);
- * 		parent::__construct();
- * 	}
- */
+
+	function __construct()
+	{
+		$this->matchid = JRequest::getInt('mid',0);
+		parent::__construct();
+	}
+
 
 /**
  * 	// Functions (some specific for Matchreport) below to be replaced to project.php when recoded to general functions
