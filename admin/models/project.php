@@ -158,6 +158,7 @@ class sportsmanagementModelProject extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObject();
 	}
+
     
     /**
 	 * Method to return the project teams array (id, name)
@@ -166,6 +167,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 * @return  array
 	 * @since 0.1
 	 */
+/*
 	function getProjectTeams($project_id)
 	{
 		$option = JRequest::getCmd('option');
@@ -194,6 +196,7 @@ class sportsmanagementModelProject extends JModelAdmin
 			return $result;
 		}
 	}
+*/
     
     /**
 	 * @param int iDivisionId
@@ -204,23 +207,51 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
+        
 		//$project_id = $mainframe->getUserState($option . 'project');
-
+        
+        if ( $this->project_art_id == 3 )
+        {
+            // Select some fields
+		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text");
+            // From table
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on st.person_id = t.id');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        }
+        else
+        {
+            // Select some fields
+		    $query->select('pt.id AS value');
+            $query->select('CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        }
+/*
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
 		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
 		. ' WHERE pt.project_id = ' . $project_id;
-		if($iDivisionId>0)  {
-			$query .=' AND pt.division_id = ' .$iDivisionId;
+*/		
+        $query->where('pt.project_id = ' . $project_id);
+        
+        if( $iDivisionId > 0 )  
+        {
+            $query->where('pt.division_id = ' . $iDivisionId);
 		}
-		$query .= ' ORDER BY text ASC ';
+		
+        $query->order('text ASC'); 
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $this->_db->getErrorMsg());
+			JError::raiseError(0, $db->getErrorMsg());
 			return false;
 		}
 		else

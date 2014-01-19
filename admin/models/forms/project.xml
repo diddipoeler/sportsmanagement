@@ -63,7 +63,6 @@
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
 			required="true"
-			
 			validate="superiorzero">
 			<option
 				value="0">

@@ -14,12 +14,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewprojectteams
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewprojectteams extends JView
 {
@@ -31,7 +34,7 @@ class sportsmanagementViewprojectteams extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+		
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word');
 		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search','search','','string');
 		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search_mode','search_mode','','string');
@@ -42,7 +45,17 @@ class sportsmanagementViewprojectteams extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
+        if ( $this->project_art_id == 3 )
+        {
+            $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
+        } 
+        else
+        {
+            $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+        }
+        
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
@@ -53,15 +66,108 @@ class sportsmanagementViewprojectteams extends JView
         if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
         $lists['divisions'] = $projectdivisions;
         
+        //build the html select list for project assigned teams
+		$ress = array();
+		$res1 = array();
+		$notusedteams = array();
+
+		if ($ress = $model->getProjectTeams($this->project_id))
+		{
+			$teamslist=array();
+			foreach($ress as $res)
+			{
+				if(empty($res1->info))
+				{
+					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text);
+				}
+				else
+				{
+					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text.' ('.$res->info.')');
+				}
+			}
+
+			$lists['project_teams'] = JHTMLSelect::genericlist($project_teamslist, 'project_teamslist[]',
+																' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($ress)).'"',
+																'value',
+																'text');
+		}
+		else
+		{
+			$lists['project_teams']= '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+
+		if ($ress1 = $model->getTeams())
+		{
+			if ($ress = $model->getProjectTeams($this->project_id))
+			{
+				foreach ($ress1 as $res1)
+				{
+					$used=0;
+					foreach ($ress as $res)
+					{
+						if ($res1->value == $res->value){$used=1;}
+					}
+
+					if ($used == 0 && !empty($res1->info)){
+						$notusedteams[]=JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+					}
+					elseif($used == 0 && empty($res1->info))
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+					}
+				}
+			}
+			else
+			{
+				foreach ($ress1 as $res1)
+				{
+					if(empty($res1->info))
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+					}
+					else
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+					}
+				}
+			}
+		}
+		else
+		{
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM').'<br /><br />');
+		}
+
+		//build the html select list for teams
+		if (count($notusedteams) > 0)
+		{
+			$lists['teams'] = JHTMLSelect::genericlist( $notusedteams,
+														'teamslist[]',
+														' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($notusedteams)).'"',
+														'value',
+														'text');
+		}
+		else
+		{
+			$lists['teams'] = '<select name="teamslist[]" id="teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+
+		unset($res);
+		unset($res1);
+		unset($notusedteams);
+        
+        
+        
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
 		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order'] = $filter_order;
 
 		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
+		$lists['search'] = $search;
+		$lists['search_mode'] = $search_mode;
         
         $myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
@@ -78,6 +184,7 @@ class sportsmanagementViewprojectteams extends JView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
+        $this->assignRef('project_art_id',$this->project_art_id);
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -91,11 +198,20 @@ class sportsmanagementViewprojectteams extends JView
 	{
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
+        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'),'projectteams');
+        if ( $this->project_art_id != 3 )
+        {
+            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'),'projectteams');
+        }
+        else
+        {
+            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE'),'projectpersons');
+        }
+		
         JToolBarHelper::deleteList('', 'projectteam.remove');
 
 		JToolBarHelper::apply('projectteams.saveshort');

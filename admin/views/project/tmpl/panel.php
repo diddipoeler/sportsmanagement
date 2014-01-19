@@ -2,14 +2,14 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);$path='/administrator/components/com_sportsmanagement/assets/icons/';
-        $user = JFactory::getUser();
+$document = JFactory::getDocument();
+$stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+$document->addCustomTag($stylelink);$path='/administrator/components/com_sportsmanagement/assets/icons/';
+$user = JFactory::getUser();
 JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_TITLE'),'projects');
-//load navigation menu
-//$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
+
 ?>
 			<div id="element-box">
 				<div class="m">
@@ -59,6 +59,9 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 								<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
 							<?php
 							}
+                            
+                            if ( $this->project->project_art_id != 3 )
+                            {
 							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions&pid='.$this->project->id);
 							$text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions);
 							$imageFile='positionen.png';
@@ -67,6 +70,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 							?>
 							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
 							<?php
+                            }
 							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&pid='.$this->project->id);
 							$text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees);
 							$imageFile='projektschiedsrichter.png';

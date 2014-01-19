@@ -5,8 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelperson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelperson extends JModelAdmin
 {
@@ -77,7 +84,7 @@ class sportsmanagementModelperson extends JModelAdmin
             break;
             
         }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
@@ -367,7 +374,7 @@ class sportsmanagementModelperson extends JModelAdmin
 
 		if (!$db->query())
 		{
-    $mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
@@ -402,6 +409,8 @@ class sportsmanagementModelperson extends JModelAdmin
 		
 		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
         
+        if ( $coords )
+        {
         foreach( $coords as $key => $value )
 		{
         $post['extended'][$key] = $value;
@@ -409,6 +418,34 @@ class sportsmanagementModelperson extends JModelAdmin
 		
 		$data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
+        }
+        else
+        {
+        $address_parts = array();
+        if (!empty($data['address']))
+		{
+		$address_parts[] = $data['address'];
+		}
+        if (!empty($data['location']))
+		{
+		$address_parts[] = $data['location'];
+		}
+		if (!empty($data['country']))
+		{
+		$address_parts[] = Countries::getShortCountryName($data['country']);
+		}
+        $address = implode(',', $address_parts);
+        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
+		
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        $data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }    
+        }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

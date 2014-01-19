@@ -5,12 +5,38 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
+
 /**
- * SportsManagements Controller
+ * sportsmanagementControllerprojectteams
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllerprojectteams extends JControllerAdmin
 {
 	
+  /**
+	 * Method to assign persons or teams
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+  function assign()
+	{
+		$post = JRequest::get('post');
+        // Check for request forgeries
+		//JRequest::checkToken() or die('JINVALID_TOKEN');
+
+        $model = $this->getModel();
+       $msg = $model->storeAssign($post);
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
+  
+  
   /**
 	 * Method to update checked projectteams
 	 *

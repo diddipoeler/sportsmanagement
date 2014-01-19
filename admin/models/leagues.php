@@ -36,11 +36,14 @@ class sportsmanagementModelLeagues extends JModelList
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.*');
+        $query->select('st.name AS sportstype');
 		// From the hello table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as obj');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sports_type_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+        
         if ($search || $search_nation)
 		{
         $query->where(self::_buildContentWhere());

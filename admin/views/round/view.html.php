@@ -14,18 +14,29 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-/**
- * HTML View class for the Sportsmanagement Component
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	Sportsmanagement
- * @since	0.1
- */
 
+
+/**
+ * sportsmanagementViewRound
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewRound extends JView
 {
 	function display($tpl=null)
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
+        
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
+        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );;
+        
 		// get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -38,16 +49,21 @@ class sportsmanagementViewRound extends JView
 			return false;
 		}
         
-        $project_id	= $this->item->project_id;
+        //$project_id	= $this->item->project_id;
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($project_id);
-        $this->assignRef('project',$project);
+	    $project = $mdlProject->getProject($this->project_id);
+        $this->assignRef('project',$this->project_id);
         
+        
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'   ),'');
         
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        //$this->item->project_id = $this->project_id;
+        $this->form->setValue('project_id', null, $this->project_id);
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -74,7 +90,7 @@ class sportsmanagementViewRound extends JView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->item->project_id);
+        JRequest::setVar('pid', $this->project_id);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
@@ -112,6 +128,9 @@ class sportsmanagementViewRound extends JView
 			}
 			JToolBarHelper::cancel('round.cancel', 'JTOOLBAR_CLOSE');
 		}
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 	}
     

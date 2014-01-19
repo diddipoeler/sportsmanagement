@@ -10,6 +10,15 @@ jimport('joomla.filesystem.file');
 JHtml::_('behavior.mootools');
 
 
+/**
+ * sportsmanagementViewMatch
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewMatch extends JView
 {
 

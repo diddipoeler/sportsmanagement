@@ -1541,7 +1541,9 @@ abstract class sportsmanagementHelper
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
     $view = JRequest::getVar( "view") ;
+    $layout= JRequest::getVar( "layout") ;
     $view = ucfirst(strtolower($view));
+    $layout = ucfirst(strtolower($layout));
     
     $window_width = '<script>alert($(window).width()); </script>';
     $window_height = '<script>alert(window.screen.height); </script>';
@@ -1564,9 +1566,16 @@ abstract class sportsmanagementHelper
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
     
+    if ( $layout )
+    {
+    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
+         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'-'.$layout   .'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';    
+    }
+    else
+    {
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
-	
+	}
     /*
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';	

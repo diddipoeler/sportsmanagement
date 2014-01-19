@@ -170,6 +170,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
+</a>
+<?PHP                                                    
 								}
 								else
 								{

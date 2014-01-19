@@ -14,14 +14,16 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-/**
- * HTML View class for the Joomleague component
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	JoomLeague
- * @since	0.1
-*/
 
+/**
+ * sportsmanagementViewMatches
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewMatches extends JView
 {
 	function display($tpl=null)
@@ -29,7 +31,7 @@ class sportsmanagementViewMatches extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
-        $model		= $this->getModel();
+        $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
 
@@ -46,6 +48,8 @@ class sportsmanagementViewMatches extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
         //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
         $this->project_id	= JRequest::getvar('pid', 0);
@@ -103,8 +107,15 @@ class sportsmanagementViewMatches extends JView
                 $row->divawayid = 0;
             }
             
+            if ( $this->project_art_id == 3 )
+            {
+                $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON'));
+            }
+            else
+            {
+                $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+            }
             
-            $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 			$divhomeid = 0;
 			//apply the filter only if both teams are from the same division
 			//teams are not from the same division in tournament mode with divisions

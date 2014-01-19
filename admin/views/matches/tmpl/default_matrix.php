@@ -1,4 +1,5 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 ?>
 
 <!--[if IE]>
@@ -63,7 +64,7 @@
 </fieldset>
 <?php
 
-$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+$mdlProject = JModel::getInstance("Projectteams", "sportsmanagementModel");
 $teams= $mdlProject->getProjectTeams($this->project_id);
 $matrix ='';
 

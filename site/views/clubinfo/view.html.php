@@ -5,6 +5,15 @@ jimport( 'joomla.application.component.view' );
 
 //require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php' );
 
+/**
+ * sportsmanagementViewClubInfo
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewClubInfo extends JView
 {
 
@@ -105,7 +114,12 @@ class sportsmanagementViewClubInfo extends JView
 		{
 			$pageTitle .= ': ' . $this->club->name;
 		}
-		$document->setTitle( $pageTitle );
+		
+        $document->setTitle( $pageTitle );
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 		parent::display( $tpl );
 	}
 }

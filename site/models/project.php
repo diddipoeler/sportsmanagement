@@ -7,6 +7,15 @@ jimport( 'joomla.utilities.arrayhelper' );
 
 //require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
 
+/**
+ * sportsmanagementModelProject
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelProject extends JModel
 {
 	var $_project = null;
@@ -60,13 +69,13 @@ class sportsmanagementModelProject extends JModel
 	 */
 	var $_current_round;
 
-/**
- * 	function __construct()
- * 	{
- * //		$this->projectid = JRequest::getInt('p',0);
- * 		parent::__construct();
- * 	}
- */
+
+	function __construct()
+	{
+		$this->projectid = JRequest::getInt('p',0);
+		parent::__construct();
+	}
+
 
 	function getProject()
 	{
@@ -716,13 +725,25 @@ class sportsmanagementModelProject extends JModel
 
 	function getTemplateConfig($template)
 	{
-		// Get a db connection.
+		$option = JRequest::getCmd('option');
+        $mainframe	= JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query2 = $db->getQuery(true);
         
         //first load the default settings from the default <template>.xml file
 		$paramsdata="";
 		$arrStandardSettings=array();
-		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) {
+        
+        $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'Error');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Error');
+        
+        /*
+		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) 
+        {
 			$strXmlFile = JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml';
 			$form = JForm::getInstance($template, $strXmlFile);
 			$fieldsets = $form->getFieldsets();
@@ -732,6 +753,8 @@ class sportsmanagementModelProject extends JModel
 				}				
 			}
 		}
+        */
+        
 /*
 		//second load the default settings from the default extensions <template>.xml file
 		$extensions=JoomleagueHelper::getExtensions(JRequest::getInt('p'));
@@ -750,28 +773,40 @@ class sportsmanagementModelProject extends JModel
 			}
 		}
 */
-		if($this->projectid == 0) return $arrStandardSettings;
+		if( $this->projectid == 0) return $arrStandardSettings;
 
-		$query= "SELECT t.params
-				   FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
-				   INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
-				   WHERE t.template=".$db->Quote($template)."
-				   AND p.id=".$db->Quote($this->projectid);
+$query->select('t.params');
+$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
+$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
+$query->where('t.template='.$db->Quote($template));
+$query->where('p.id='.$db->Quote($this->projectid));
+
+//        $query= "SELECT t.params
+//				   FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
+//				   INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
+//				   WHERE t.template=".$db->Quote($template)."
+//				   AND p.id=".$db->Quote($this->projectid);
 
 		$db->setQuery($query);
-		if (! $result=$db->loadResult())
+		if (! $result = $db->loadResult())
 		{
-			$project=$this->getProject();
+			$project = self::getProject();
 			if (!empty($project) && $project->master_template>0)
 			{
-				$query="SELECT t.params
-						  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
-						  INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
-						  WHERE t.template=".$db->Quote($template)."
-						  AND p.id=".$db->Quote($project->master_template);
+				$query2->select('t.params');
+                $query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
+                $query2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
+                $query2->where('t.template='.$db->Quote($template));
+                $query2->where('p.id='.$db->Quote($project->master_template));
+                
+//                $query="SELECT t.params
+//						  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
+//						  INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
+//						  WHERE t.template=".$db->Quote($template)."
+//						  AND p.id=".$db->Quote($project->master_template);
 
-				$db->setQuery($query);
-				if (! $result=$db->loadResult())
+				$db->setQuery($query2);
+				if (! $result = $db->loadResult())
 				{
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
@@ -786,14 +821,25 @@ class sportsmanagementModelProject extends JModel
 				return $arrStandardSettings;
 			}
 		}
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($result, 'ini');
+		
+        $jRegistry = new JRegistry;
+		//$jRegistry->loadString($result, 'ini');
+        $jRegistry->loadJSON($result);
+        
+/*        
+        $extended = JForm::getInstance('extended', $xmlfile,
+				array('control'=> 'extended'),
+				false, '/config');
+		$extended->bind($jRegistry);
+*/        
+        
 		$configvalues = $jRegistry->toArray(); 
 
 		//merge and overwrite standard settings with individual view settings
 		$settings = array_merge($arrStandardSettings,$configvalues);
+        return $settings;
 		
-		return $settings;
+		//return $extended;
 	}
 
 	function getOverallConfig()

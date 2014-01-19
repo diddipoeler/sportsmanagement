@@ -38,8 +38,10 @@ class sportsmanagementModelTeams extends JModelList
 		
         // Select some fields
 		$query->select('t.*');
+        $query->select('st.name AS sportstype');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = t.sports_type_id');
         // Join over the clubs
 		$query->select('c.name As clubname');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
