@@ -199,6 +199,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `associations` INT(11) NOT NULL DEFAULT '0',
   `extendeduser` TEXT NULL ,
+  `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC)
   )
@@ -504,6 +505,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `person_id1` INT( 11 ) NOT NULL DEFAULT  '0',
   `person_id2` INT( 11 ) NOT NULL DEFAULT  '0',
   `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
+  `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `position_id` (`position_id`)
@@ -666,6 +668,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `staffel_id` VARCHAR(100) NOT NULL DEFAULT '' ,
   `extendeduser` TEXT NULL ,
   `import_project_id` INT(11) NOT NULL DEFAULT '0' ,
+  `project_art_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),

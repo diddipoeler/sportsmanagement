@@ -15,11 +15,15 @@ defined('_JEXEC') or die('Restricted access');
 // import the Joomla modellist library
 jimport('joomla.application.component.modellist');
 
+
 /**
- * Sportsmanagement Component Seasons Model
- *
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementModelProjects
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelProjects extends JModelList
 {

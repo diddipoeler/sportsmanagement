@@ -53,7 +53,14 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
                 
-
+<field name="picture" 
+type="imagelist" 
+default="spielfeld_578x1050.png" 
+onchange="javascript:changePlayground();"
+label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT" 
+description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
+directory="images/com_sportsmanagement/database/rosterground" 
+/>	
 </fieldset>	
 
 <fieldset name="extended"
@@ -65,6 +72,8 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 <fieldset name="playground_jquery"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
+
+<!--
 <field name="picture" 
 type="imagelist" 
 default="spielfeld_578x1050.png" 
@@ -73,6 +82,8 @@ label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT"
 description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
 directory="images/com_sportsmanagement/database/rosterground" 
 />	
+-->
+
 </fieldset>
 
   			

@@ -16,15 +16,16 @@ class sportsmanagementModelStaff extends JModel
 	 */
 	var $_history=null;
 
-/**
- * 	function __construct()
- * 	{
- * 		parent::__construct();
- * 		$this->projectid=JRequest::getInt('p',0);
- * 		$this->personid=JRequest::getInt('pid',0);
- * 		$this->teamid=JRequest::getInt('tid',0);
- * 	}
- */
+
+ 	function __construct()
+ 	{
+ 		
+ 		$this->projectid=JRequest::getInt('p',0);
+ 		$this->personid=JRequest::getInt('pid',0);
+ 		$this->teamid=JRequest::getInt('tid',0);
+        parent::__construct();
+ 	}
+
 
 	function &getTeamStaff()
 	{

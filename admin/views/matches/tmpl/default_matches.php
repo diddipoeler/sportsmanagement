@@ -320,7 +320,30 @@ fieldset button {
 								<span id="part<?php echo $row->id; ?>" style="display: none">
 									<br />
 									<?php
-									$partresults1=explode(";",$row->team1_result_split);
+									
+                                    if ( $this->projectws->use_legs )
+                                    {
+                                    $partresults1=explode(";",$row->team1_result_split);
+									$partresults2=explode(";",$row->team2_result_split);
+									for ($x=0; $x < ($this->projectws->game_parts); $x++)
+									{
+										 ?>
+
+										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
+												name="team1_result_split<?php echo $row->id;?>[]"
+												value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
+												size="2" tabindex="6" class="inputbox" /> : 
+										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
+												name="team2_result_split<?php echo $row->id; ?>[]"
+												value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
+												size="2" tabindex="6" class="inputbox" />
+										<?php
+										echo '&nbsp;&nbsp;'.($x+1).".<br />";
+									}    
+                                    }
+                                    else
+                                    {
+                                    $partresults1=explode(";",$row->team1_result_split);
 									$partresults2=explode(";",$row->team2_result_split);
 									for ($x=0; $x < ($this->projectws->game_parts); $x++)
 									{
@@ -337,6 +360,9 @@ fieldset button {
 										<?php
 										echo '&nbsp;&nbsp;'.($x+1).".<br />";
 									}
+                                    }
+                                    
+                                    
 									if ($this->projectws->allow_add_time == 1)
 									{
 										 ?>
@@ -466,6 +492,7 @@ fieldset button {
 			<?php $dValue=$this->roundws->round_date_first.' '.$this->projectws->start_time; ?>
 			
 			<input type='hidden' name='match_date' value='<?php echo $dValue; ?>' />
+            <input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>' />
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
 			<input type='hidden' name='filter_order' value='<?php echo $this->lists['order']; ?>' />

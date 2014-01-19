@@ -51,7 +51,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
 						?>
 					</th>
-                    
+                    <th class="title">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->lists['order_Dir'],$this->lists['order']);
+						?>
+					</th>
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
                     
@@ -66,7 +70,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -104,7 +108,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->short_name; ?></td>
 						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
-                        
+                        <td class="center"><?php echo JText::_($row->sportstype); ?></td>
                         <td class="center">
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))

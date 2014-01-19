@@ -80,15 +80,20 @@ class sportsmanagementViewProject extends JView
 	$user = JFactory::getUser();
            
 	$this->project = $this->get('Item');
+    
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project->project_art_id,true).'</pre>'),'');
        
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->project->id);
-		
+	
+    if ( $this->project->project_art_id != 3 )
+    {	
 	$iProjectPositionsCount = 0;
 	$mdlProjectPositions = JModel::getInstance("Projectpositions", "sportsmanagementModel");
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->project->id);
-		
+	}
+    	
 	$iProjectRefereesCount = 0;
 	$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
 	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->project->id);
@@ -112,6 +117,8 @@ class sportsmanagementViewProject extends JView
     // function syntax is setUserState( $key, $value );
     $mainframe->setUserState( "$option.pid", $this->project->id);
     $mainframe->setUserState( "$option.season_id", $this->project->season_id);  
+    $mainframe->setUserState( "$option.project_art_id", $this->project->project_art_id);
+    $mainframe->setUserState( "$option.sports_type_id", $this->project->sports_type_id);  
     
     JToolBarHelper::divider();
 	sportsmanagementHelper::ToolbarButtonOnlineHelp();

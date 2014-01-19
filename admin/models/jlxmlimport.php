@@ -490,7 +490,8 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 				$i++;
 			}
-            
+
+// ############################ anpassungen anfang ###########################################################            
             // bilderpfade anpassen
             if ( isset($this->_datas['person']) )
             {
@@ -498,6 +499,10 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                }
             }    
             }
             if ( isset($this->_datas['team']) )
@@ -506,6 +511,10 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                }
             }    
             }
             if ( isset($this->_datas['club']) )
@@ -520,6 +529,18 @@ class sportsmanagementModelJLXMLImport extends JModel
                 
                 $temppicture->logo_small = str_replace('com_joomleague', $option, $temppicture->logo_small);
                 $temppicture->logo_small = str_replace('media', 'images', $temppicture->logo_small);
+                if (preg_match("/placeholders/i", $temppicture->logo_big)) 
+                {
+                      $temppicture->logo_big = JComponentHelper::getParams($option)->get('ph_logo_big','');
+                }
+                if (preg_match("/placeholders/i", $temppicture->logo_middle)) 
+                {
+                      $temppicture->logo_middle = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+                }
+                if (preg_match("/placeholders/i", $temppicture->logo_small)) 
+                {
+                      $temppicture->logo_small = JComponentHelper::getParams($option)->get('ph_logo_small','');
+                }
                 
             }    
             }
@@ -594,9 +615,13 @@ class sportsmanagementModelJLXMLImport extends JModel
                 }
                 $playground->picture = str_replace('com_joomleague', $option, $playground->picture);
                 $playground->picture = str_replace('media', 'images', $playground->picture);
+                if (preg_match("/placeholders/i", $playground->picture)) 
+                {
+                      $playground->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                }
             }    
             }
-            
+// ############################ anpassungen ende ###########################################################            
             
             
 
@@ -1176,7 +1201,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			$this->_db->setQuery($query);
 			if ($sportstypeObject=$this->_db->loadObject())
 			{
-				$this->_sportstype_id=$sportstypeObject->id;
+				$this->_sportstype_id = $sportstypeObject->id;
 				$my_text .= '<span style="color:orange">';
 				$my_text .= JText::sprintf('Using existing sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
 				$my_text .= '<br />';
@@ -1202,8 +1227,8 @@ class sportsmanagementModelJLXMLImport extends JModel
 				}
 				else
 				{
-					$insertID=$this->_db->insertid();
-					$this->_sportstype_id=$insertID;
+					$insertID = $this->_db->insertid();
+					$this->_sportstype_id = $insertID;
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 					$my_text .= JText::sprintf('Created new sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
 					$my_text .= '<br />';
@@ -1244,7 +1269,12 @@ class sportsmanagementModelJLXMLImport extends JModel
                 
 				$p_league->set('name',trim($this->_league_new));
 				$p_league->set('alias',JFilterOutput::stringURLSafe($this->_league_new));
+                
+                $p_league->set('short_name',JFilterOutput::stringURLSafe($this->_league_new));
+                $p_league->set('middle_name',JFilterOutput::stringURLSafe($this->_league_new));
+                
 				$p_league->set('country',$this->_league_new_country);
+                $p_league->set('sports_type_id',$this->_sportstype_id);
 
 				if ($p_league->store()===false)
 				{
@@ -2357,7 +2387,7 @@ $this->dump_variable("import_team", $import_team);
 				$p_team->set('website',$this->_getDataFromObject($import_team,'website'));
                 
                 $p_team->set('agegroup_id',$this->_getDataFromObject($import_team,'agegroup_id'));
-                $p_team->set('sports_type_id',$this->_getDataFromObject($import_team,'sports_type_id'));
+                $p_team->set('sports_type_id',$this->_sportstype_id);
                 
 				$p_team->set('notes',$this->_getDataFromObject($import_team,'notes'));
 				$p_team->set('picture',$this->_getDataFromObject($import_team,'picture'));

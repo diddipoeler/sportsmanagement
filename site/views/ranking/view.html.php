@@ -56,6 +56,10 @@ class sportsmanagementViewRanking extends JView
 		$this->assign('overallconfig', $mdlProject->getOverallConfig());
 		$this->assignRef('tableconfig', $config);
 		$this->assignRef('config', $config);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
@@ -291,7 +295,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$document->setTitle( $pageTitle );
-		
+		$view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 		parent :: display($tpl);
 	}
 		

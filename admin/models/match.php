@@ -152,11 +152,10 @@ class sportsmanagementModelMatch extends JModelAdmin
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        if ( $show_debug_info )
-        {
-        $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -195,8 +194,42 @@ class sportsmanagementModelMatch extends JModelAdmin
             $tblMatch->round_id	= $post['round_id'.$pks[$x]];
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
+            
+            if ( $post['use_legs'] )
+            {
+                $tblMatch->team1_result	= '';
+                $tblMatch->team2_result	= '';   
+                foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
+                {
+                    if ( $post['team1_result_split'.$pks[$x]][$key] != '' )
+                    {
+                        if ( $post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 1;
+                            $tblMatch->team2_result	+= 0; 
+                        }
+                        if ( $post['team1_result_split'.$pks[$x]][$key] < $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 0;
+                            $tblMatch->team2_result	+= 1; 
+                        }
+                        if ( $post['team1_result_split'.$pks[$x]][$key] == $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 1;
+                            $tblMatch->team2_result	+= 1; 
+                        }
+                    }
+                }
+            }
+            else
+            {
             $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
-            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
+            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];    
+            }
+            
+            
+            $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
+            $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
 			if(!$tblMatch->store()) 
             {

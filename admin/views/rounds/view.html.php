@@ -178,6 +178,7 @@ class sportsmanagementViewRounds extends JView
 		{
 			JToolBarHelper::custom('round.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'),false);
 		}
+        JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}	

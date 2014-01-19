@@ -5,8 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelprojectteam
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelprojectteam extends JModelAdmin
 {
@@ -182,6 +189,27 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		}
 		return $result;
 	}
+    
+    function storeAssign($post)
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        
+        $project_id = $post['project_id'];
+        $assign_id = $post['project_teamslist'];
+        
+        foreach ( $assign_id as $key => $value )
+        {
+        // Create and populate an object.
+        $profile = new stdClass();
+        $profile->project_id = $project_id;
+        $profile->team_id = $value;
+        // Insert the object into the user profile table.
+        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
+        }
+    }
     
     /**
 	 * Method to save the form data.

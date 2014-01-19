@@ -19,15 +19,15 @@ class sportsmanagementModelPlayer extends JModel
 	var $_playerhistory =null;
 	var $_teamplayers = null;
 
-/**
- * 	function __construct()
- * 	{
- * 		parent::__construct();
- * 		$this->projectid=JRequest::getInt('p',0);
- * 		$this->personid=JRequest::getInt('pid',0);
- * 		$this->teamplayerid=JRequest::getInt('pt',0);
- * 	}
- */
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->projectid=JRequest::getInt('p',0);
+		$this->personid=JRequest::getInt('pid',0);
+		$this->teamplayerid=JRequest::getInt('pt',0);
+	}
+
 
 	// Get all teamplayers of the project where the person played in
 	//  (in case the player was transferred team of the project within the season)

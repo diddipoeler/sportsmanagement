@@ -64,6 +64,10 @@ $fieldsets = $this->form->getFieldsets();
                 {
                 echo Countries::getCountryFlag($field->value);    
                 }
+                if ( $field->name == 'jform[website]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
                 if ( $field->name == 'jform[club_id]' )
                 {
                 //echo sportsmanagementHelper::getPictureClub($field->value); 

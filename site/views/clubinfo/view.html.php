@@ -5,6 +5,15 @@ jimport( 'joomla.application.component.view' );
 
 //require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php' );
 
+/**
+ * sportsmanagementViewClubInfo
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewClubInfo extends JView
 {
 
@@ -29,6 +38,7 @@ class sportsmanagementViewClubInfo extends JView
 		$map_config		= sportsmanagementModelProject::getMapConfig();
 		$google_map		= $model->getGoogleMap( $map_config, $address_string );
         $this->assign( 'checkextrafields', $model->checkUserExtraFields() );
+                        
         //$mainframe->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		
         if ( $this->checkextrafields )
@@ -105,7 +115,15 @@ class sportsmanagementViewClubInfo extends JView
 		{
 			$pageTitle .= ': ' . $this->club->name;
 		}
-		$document->setTitle( $pageTitle );
+		
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        
+        $document->setTitle( $pageTitle );
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 		parent::display( $tpl );
 	}
 }

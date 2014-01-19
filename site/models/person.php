@@ -26,16 +26,15 @@ class sportsmanagementModelPerson extends JModel
 	var $_playerhistory = null;
 
 
-/**
- *  	function __construct()
- *  	{
- *  		parent::__construct();
 
- *  		$this->projectid	= JRequest::getInt( 'p', 0 );
- *  		$this->personid		= JRequest::getInt( 'pid', 0 );
- *  		$this->teamplayerid	= JRequest::getInt( 'pt', 0 );
- *  	}
- */
+ 	function __construct()
+  	{
+ 		parent::__construct();
+  		$this->projectid	= JRequest::getInt( 'p', 0 );
+ 		$this->personid		= JRequest::getInt( 'pid', 0 );
+ 		$this->teamplayerid	= JRequest::getInt( 'pt', 0 );
+ 	}
+
 
 
 	function getPerson()

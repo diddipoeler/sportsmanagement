@@ -15,37 +15,56 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.modellist');
 
 
+
 /**
- * Sportsmanagement Component projectteam Model
- *
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementModelProjectteams
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelProjectteams extends JModelList
 {
 	var $_identifier = "pteams";
     var $_project_id = 0;
     var $_season_id = 0;
+    
+    var $project_art_id  = 0;
+    var $sports_type_id= 0;
+    
 
 	protected function getListQuery()
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
+        $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
+        
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         $subQuery= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);
 		$user = JFactory::getUser(); 
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-		$this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
+		
         
         // Select some fields
 		$query->select('tl.id AS projectteamid,tl.*');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
-        
+        if ( $this->project_art_id == 3 )
+        {
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on tl.team_id = st.id'); 
+        $query->select("concat(t.lastname,' - ',t.firstname,'' ) AS name");
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t on st.person_id = t.id');   
+        }
+        else
+        {    
         if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
         {
         // count team player
@@ -91,6 +110,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS plg on plg.id = tl.standard_playground');
         // Join over the division
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d on d.id = tl.division_id');
+        }
         
         // Join over the users for the checked out user.
 		$query->select('u.name AS editor,u.email AS email');
@@ -101,12 +121,20 @@ class sportsmanagementModelProjectteams extends JModelList
         $query->where(self::_buildContentWhere());
         }
 		$query->order(self::_buildContentOrderBy());
+/*
+select
+tl.id AS projectteamid,tl.*,
+concat(t.lastname,' - ',t.firstname,'' ) AS name,
+u.name AS editor,u.email AS email        
+from jos_sportsmanagement_project_team AS tl
+left join jos_sportsmanagement_season_person_id AS st on tl.team_id = st.id
+left join jos_sportsmanagement_person AS t on st.person_id = t.id
+left join jos_users AS u on tl.admin = u.id
+where tl.project_id = 2
 
-        if ( $show_debug_info )
-        {
-        $mainframe->enqueueMessage('getListQuery _project_id<br><pre>'.print_r($this->_project_id, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('getListQuery query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
-        }
+*/        
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query , true).'</pre><br>','Notice');
 
 		return $query;
 	}
@@ -114,11 +142,31 @@ class sportsmanagementModelProjectteams extends JModelList
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
+		$mainframe = JFactory::getApplication();
+        $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
+		//$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word' );
-
-		if ( $filter_order == 't.name' )
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
+        
+        if ( $this->project_art_id == 3 )
+        {
+        $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd' );
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');    
+        if ( $filter_order == 't.lastname' || $filter_order == 't.name' )
+		{
+			$orderby 	= ' t.lastname ' . $filter_order_Dir;
+		}
+		else
+		{
+			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , t.lastname ';
+		}    
+        }
+        else
+        {
+        $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');    
+		if ( $filter_order == 't.name' || $filter_order == 't.lastname' )
 		{
 			$orderby 	= ' t.name ' . $filter_order_Dir;
 		}
@@ -126,6 +174,8 @@ class sportsmanagementModelProjectteams extends JModelList
 		{
 			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , t.name ';
 		}
+        
+        }
 
 		return $orderby;
 	}
@@ -150,6 +200,9 @@ class sportsmanagementModelProjectteams extends JModelList
 		
 		return $where;
 	}
+    
+    
+    
 
 	/**
 	 * Method to update project teams list
@@ -241,16 +294,56 @@ class sportsmanagementModelProjectteams extends JModelList
 	 */
 	function getTeams()
 	{
-		$query = '	SELECT	id AS value,
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
+        $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
+        $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
+        
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
+        
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        
+        if ( $this->project_art_id == 3 )
+        {
+        // Select some fields
+		$query->select("st.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.info");
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on st.person_id = t.id');
+        $query->where('st.season_id = ' . $this->_season_id);
+        $query->where('t.sports_type_id = ' . $this->sports_type_id);
+        $query->order('t.lastname ASC');    
+        }
+        else
+        {
+        // Select some fields
+		$query->select('st.id AS value,t.name AS text,t.info');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->where('st.season_id = ' . $this->_season_id);
+        $query->where('t.sports_type_id = ' . $this->sports_type_id);
+        $query->order('t.name ASC');
+        }
+/*        
+        $query = '	SELECT	id AS value,
 							name AS text,
 							info
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
 					ORDER BY text ASC ';
-
-		$this->_db->setQuery( $query );
-		if ( !$result = $this->_db->loadObjectList() )
+*/
+		$db->setQuery( $query );
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' loadObjectList<br><pre>'.print_r($db->loadObjectList(), true).'</pre><br>','Notice');
+        
+		if ( !$result = $db->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -261,7 +354,7 @@ class sportsmanagementModelProjectteams extends JModelList
 
 	function setNewTeamID()
 	{
-		global $mainframe;
+//		global $mainframe;
 		$mainframe	= JFactory::getApplication();
 
 		$post=JRequest::get('post');
@@ -387,10 +480,39 @@ class sportsmanagementModelProjectteams extends JModelList
 	 */
 	function getProjectTeams($project_id=0)
 	{
+		 $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
+        $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
         
-        $mainframe->enqueueMessage('getProjectTeams project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
         
+        if ( $this->project_art_id == 3 )
+        {
+        // Select some fields
+		$query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.notes, pt.info");
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on st.person_id = t.id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->where('pt.project_id = ' . $project_id);
+        $query->order('t.lastname ASC');    
+        }
+        else
+        {    
+        // Select some fields
+		$query->select('st.id AS value,t.name AS text,t.notes, pt.info');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->where('pt.project_id = ' . $project_id);
+        $query->order('t.name ASC');
+        }
+/*        
         $query = '	SELECT	t.id AS value,
 							t.name AS text,
 							t.notes, pt.info
@@ -398,13 +520,13 @@ class sportsmanagementModelProjectteams extends JModelList
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
 					WHERE pt.project_id = ' . $project_id . '
 					ORDER BY text ASC ';
-
-		$this->_db->setQuery( $query );
-		if ( !$result = $this->_db->loadObjectList() )
+*/
+		$db->setQuery( $query );
+		if ( !$result = $db->loadObjectList() )
 		{
-			//$this->setError( $this->_db->getErrorMsg() );
-            $mainframe->enqueueMessage('getProjectTeams <br><pre>'.print_r($query, true).'</pre><br>','Error');
-            $mainframe->enqueueMessage('getProjectTeams <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+			
+            //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Error');
+            $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
 		else

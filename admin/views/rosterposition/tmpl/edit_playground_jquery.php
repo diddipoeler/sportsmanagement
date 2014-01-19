@@ -1,8 +1,8 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$backgroundimage = JURI::root().'media/'.$this->option.'/rosterground/'.$this->item->picture;
+$backgroundimage = JURI::root().'media/com_sportsmanagement/rosterground/'.$this->item->picture;
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
-$picture = JURI::root().'images/'.$this->option.'/database/placeholders/placeholder_150_2.png';
+$picture = JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 
 
 ?>

@@ -26,6 +26,14 @@ function move_down(sourceid)
         selected.detach().insertAfter(next);
 }
 
+function changePlayground()
+{
+
+var selected = jQuery( "#jform_picture" ).val();
+//alert(selected);
+jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
+}
+
 function EditshowPersons() 
 {
 //alert('hier bin ich');

@@ -12,6 +12,7 @@
 		<field
 			name="name"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
@@ -19,12 +20,14 @@
 		<field
 			name="alias"
 			type="text"
+			size="100"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>	
 		<field
 			name="short_name"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_S_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_S_NAME_DESC"
 			class="inputbox"
@@ -58,6 +61,7 @@
 	<field
 			name="website"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_WEBSITE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_WEBSITE_DESC"
 			class="inputbox"/>	

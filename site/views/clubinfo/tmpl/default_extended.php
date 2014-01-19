@@ -1,10 +1,12 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+<?php 
+defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+
 <!-- EXTENDED DATA-->
 <?php
 if(count($this->extended->getFieldsets()) > 0)
 {
 	// fieldset->name is set in the backend and is localized, so we need the backend language file here
-	JFactory::getLanguage()->load('COM_SPORTSMANAGEMENT', JPATH_ADMINISTRATOR);
+	//JFactory::getLanguage()->load('COM_SPORTSMANAGEMENT', JPATH_ADMINISTRATOR);
 	
 	foreach ($this->extended->getFieldsets() as $fieldset)
 	{
@@ -36,7 +38,12 @@ if(count($this->extended->getFieldsets()) > 0)
 			if ($hasData)
 			{
 				?>
-				<h2><?php echo '&nbsp;' . JText::_($fieldset->name); ?></h2>
+				
+                <div class="contentpaneopen">
+		<div class="contentheading">
+			<?php echo '&nbsp;' . JText::_($fieldset->name); ?>
+		</div>
+	</div>
 				<table>
 					<tbody>
 				<?php

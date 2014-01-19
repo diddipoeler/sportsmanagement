@@ -299,6 +299,7 @@ $javascript .= "\n";
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;

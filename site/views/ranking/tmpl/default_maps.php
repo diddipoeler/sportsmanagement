@@ -30,11 +30,40 @@ $kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
                 //JError::raiseNotice(100,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'));
                 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
                 $paramsPlugin = new JRegistry($plugin->params);
+
+$arrPluginParams = array();
+
+$arrPluginParams[] = "mapType='".$paramsPlugin->get('mapType','')."'";
+$arrPluginParams[] = "zoomWheel='".$paramsPlugin->get('zoomWheel','')."'";
+$arrPluginParams[] = "zoom='".$paramsPlugin->get('zoom','')."'";
+$arrPluginParams[] = "corzoom='".$paramsPlugin->get('corzoom','')."'";
+$arrPluginParams[] = "minzoom='".$paramsPlugin->get('minzoom','')."'";
+$arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
+$arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
+
+$arrPluginParams[] = "kml='".$kmlpath."'";
+$arrPluginParams[] = "kmlrenderer='GeoXML'";
+$arrPluginParams[] = "kmlsidebar='left'";
+$arrPluginParams[] = "kmlsbwidth='200'";
+$arrPluginParams[] = "overview='1'";
+$arrPluginParams[] = "lightbox='1'";
+
+$arrPluginParams[] = "width='".$paramsPlugin->get('width','')."'";
+$arrPluginParams[] = "height='".$paramsPlugin->get('height','')."'";
+
+
+$params  = '{mosmap ';
+		$params .= implode('|', $arrPluginParams);
+		$params .= "}";
+        echo JHtml::_('content.prepare', $params); 
+        
+                        
 //                echo '<pre>'.print_r($paramsPlugin, true).'</pre><br>';
 //                echo $paramsPlugin->get('width','').'<br>';
 //                echo $paramsPlugin->get('height','').'<br>';
-    $params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$kmlpath."'|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
-		echo JHTML::_('content.prepare', $params);
+
+//    $params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$kmlpath."'|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
+//		echo JHtml::_('content.prepare', $params);
                     
             }
             		
