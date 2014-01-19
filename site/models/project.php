@@ -727,6 +727,7 @@ class sportsmanagementModelProject extends JModel
 	{
 		$option = JRequest::getCmd('option');
         $mainframe	= JFactory::getApplication();
+        $this->projectid = JRequest::getInt('p',0);
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -738,8 +739,8 @@ class sportsmanagementModelProject extends JModel
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'Error');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Error');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
         
         /*
 		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) 
