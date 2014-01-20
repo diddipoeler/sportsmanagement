@@ -106,18 +106,23 @@ var $_sis_art = 1;
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' country<br><pre>'.print_r($country,true).'</pre>'   ),'');
         
         $query = $db->getQuery(true);
-        $query->select('staffel_id');    
-        $query->from('#__sportsmanagement_project'); 
+        $query->select('p.staffel_id,p.sports_type_id,st.name');    
+        $query->from('#__sportsmanagement_project as p'); 
+        $query->join('INNER', '#__sportsmanagement_sports_type as st on st.id = p.sports_type_id');
         $query->where('id = '.$projectid); 
         $db->setQuery($query);
-		$staffel_id = $db->loadResult();
-        $teamart = substr( $staffel_id , 17, 4);
+		$result = $db->loadObject();
+        $teamart = substr( $result->staffel_id , 17, 4);
         
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' staffel_id<br><pre>'.print_r($staffel_id,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
         
-        $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
-        $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
+        if ( $result->name == 'COM_SPORTSMANAGEMENT_ST_HANDBALL'  )
+        {
+        $linkresults = self::getLink($sis_nummer,$sis_passwort,$result->staffel_id,$this->_sis_art,$sis_xmllink);
+        $linkspielplan = self::getSpielplan($linkresults,$result->staffel_id,$this->_sis_art);
+        }
+        
         
         
 	}
