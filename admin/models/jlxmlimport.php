@@ -2708,10 +2708,11 @@ $this->dump_variable("import_team", $import_team);
 	 */
 	private function _checklist()
 	{
-		$project_id=$this->_project_id;
-		$defaultpath=JPATH_COMPONENT_SITE.DS.'settings';
-		$extensiontpath=JPATH_COMPONENT_SITE.DS.'extensions'.DS;
-		$predictionTemplatePrefix='prediction';
+		$project_id = $this->_project_id;
+		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
+		$extensiontpath = JPATH_COMPONENT_SITE.DS.'extensions'.DS;
+		$predictionTemplatePrefix = 'prediction';
+        $my_text = '';
 
 		if (!$project_id){return;}
 
@@ -2758,29 +2759,39 @@ $this->dump_variable("import_team", $import_team);
 							$file!='..' &&
 							$file!='do_tipsl' &&
 							strtolower(substr($file,-3))=='xml' &&
-							strtolower(substr($file,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix
+							strtolower(substr($file,0,strlen($predictionTemplatePrefix))) != $predictionTemplatePrefix
 						)
 					{
 						$template=substr($file,0,(strlen($file)-4));
 
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
-							$xmlfile=$xmldir.DS.$file;
-							$arrStandardSettings=array();
+							$xmlfile = $xmldir.DS.$file;
+							$arrStandardSettings = array();
 							if(file_exists($xmlfile)) {
 								$strXmlFile = $xmlfile;
-								$form = JForm::getInstance($template, $strXmlFile);
-								$fieldsets = $form->getFieldsets();
-								foreach ($fieldsets as $fieldset) {
-									foreach($form->getFieldset($fieldset->name) as $field) {
-										$arrStandardSettings[$field->name]=$field->value;
+                                $form = JForm::getInstance($template, $strXmlFile,array('control'=> ''));
+                                $fieldsets = $form->getFieldsets();
+								foreach ($fieldsets as $fieldset) 
+                                {
+									foreach($form->getFieldset($fieldset->name) as $field) 
+                                    {
+										$arrStandardSettings[$field->name] = $field->value;
 									}
 								}
+                                
 							}
-							$defaultvalues=implode("\n",$arrStandardSettings);
+							
+                            $defaultvalues = json_encode( $arrStandardSettings);
+                            
 							$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_template_config (template,title,params,project_id)
 													VALUES ('$template','".$form->getName()."','$defaultvalues','$project_id')";
 							$this->_db->setQuery($query);
+                            
+                            $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+                            $my_text .= JText::sprintf('Created new template data: %1$s %2$s',"</span><strong>$template</strong>","<br><pre>".print_r($defaultvalues,true)."</pre>" );
+			                $my_text .= '<br />';
+                            
 							//echo error,allows to check if there is a mistake in the template file
 							if (!$this->_db->query())
 							{
@@ -2791,6 +2802,9 @@ $this->dump_variable("import_team", $import_team);
 						}
 					}
 				}
+                
+                $this->_success_text['Importing general template data:'] = $my_text;
+                                
 				closedir($handle);
 			}
 		}
@@ -2841,8 +2855,8 @@ $this->dump_variable("import_team", $import_team);
 		}
 		else
 		{
-			$this->_master_template=0;
-			$predictionTemplatePrefix='prediction';
+			$this->_master_template = 0;
+			$predictionTemplatePrefix = 'prediction';
 			if ((isset($this->_datas['template'])) && (is_array($this->_datas['template'])))
 			{
 				foreach ($this->_datas['template'] as $value)
@@ -2889,7 +2903,7 @@ $this->dump_variable("import_team", $import_team);
 		$this->_db->setQuery($query);
 		$this->_db->query();
 		$this->_success_text['Importing template data:']=$my_text;
-		if ($this->_master_template==0)
+		if ( $this->_master_template == 0 )
 		{
 			// check and create missing templates if needed
 			$this->_checklist();

@@ -14,14 +14,17 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
-/**
- * Sportsmanagement Component Templates Model
- *
- * @author	JoomLeague Team
- * @package	Sportsmanagement
- * @since	0.1
- */
 
+
+/**
+ * sportsmanagementModelTemplates
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelTemplates extends JModelList
 {
 	var $_identifier = "templates";

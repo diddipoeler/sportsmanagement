@@ -174,6 +174,8 @@ class sportsmanagementModelplayground extends JModelAdmin
 		
 		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
         
+        if ( $coords )
+        {
         foreach( $coords as $key => $value )
 		{
         $post['extended'][$key] = $value;
@@ -181,6 +183,34 @@ class sportsmanagementModelplayground extends JModelAdmin
 		
 		$data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
+        }
+        else
+        {
+        $address_parts = array();
+        if (!empty($data['address']))
+		{
+		$address_parts[] = $data['address'];
+		}
+        if (!empty($data['location']))
+		{
+		$address_parts[] = $data['location'];
+		}
+		if (!empty($data['country']))
+		{
+		$address_parts[] = Countries::getShortCountryName($data['country']);
+		}
+        $address = implode(',', $address_parts);
+        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
+		
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        $data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }    
+        }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
