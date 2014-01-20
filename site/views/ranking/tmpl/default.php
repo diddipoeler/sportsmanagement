@@ -10,8 +10,9 @@ JHtml::_('behavior.switcher');
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('projectheading', 'backbutton', 'footer');
+$templatesToLoad = array('projectheading', 'backbutton', 'footer', 'googlemap');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 
 ?>
 <div class="joomleague">
@@ -105,7 +106,7 @@ echo JHTML::_('tabs.end');
 	
 	if (($this->config['show_ranking_maps'])==1)
 	{ 
-		echo $this->loadTemplate('maps');
+		echo $this->loadTemplate('googlemap');
 	}
 	
 	if ($this->config['show_help'] == "1")

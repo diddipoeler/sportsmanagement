@@ -13,8 +13,9 @@ echo 'club clubassoc<pre>',print_r($this->clubassoc,true),'</pre><br>';
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('projectheading', 'backbutton', 'footer');
+$templatesToLoad = array('projectheading', 'backbutton', 'footer', 'googlemap');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 ?>
 <div class="joomleague">
 	<?php 
@@ -45,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     
     if (($this->config['show_maps'])==1 && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
 	{ 
-        $output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'maps';
+        $output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
 	}
     if (($this->config['show_teams_of_club'])==1)
 	{ 
@@ -86,7 +87,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 	if (($this->config['show_maps'])==1)
 	{ 
-		echo $this->loadTemplate('maps');
+		echo $this->loadTemplate('googlemap');
 		
 		echo "<div class='jl_defaultview_spacing'>";
 		echo "&nbsp;";

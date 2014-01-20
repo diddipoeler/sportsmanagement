@@ -1,9 +1,19 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 
 //require_once(JPATH_COMPONENT.DS.'helpers'.DS.'pagination.php');
 
 jimport('joomla.application.component.view');
 
+/**
+ * sportsmanagementViewRoster
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewRoster extends JView
 {
 
@@ -88,7 +98,7 @@ class sportsmanagementViewRoster extends JView
 	$lists['typestaff'] = $opp_arr;
 	$this->assignRef('lists', $lists);
 
-$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+//$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 
 		parent::display($tpl);
 	}

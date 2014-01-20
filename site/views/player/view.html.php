@@ -3,6 +3,15 @@ defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.view');
 
+/**
+ * sportsmanagementViewPlayer
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPlayer extends JView
 {
 
@@ -144,6 +153,9 @@ class sportsmanagementViewPlayer extends JView
 		}
 		$this->assignRef('playername', $name);
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 		parent::display($tpl);
 	}

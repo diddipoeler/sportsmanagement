@@ -100,9 +100,9 @@ class SMStatistic extends JObject
 	
 		if (!class_exists($classname))
 		{
-			$file = JPATH_COMPONENT .DS . 'statistics' . DS .$class.'.php';
+			$file = JPATH_COMPONENT_ADMINISTRATOR .DS . 'statistics' . DS .$class.'.php';
 			if (!file_exists($file)) {
-				JError::raiseError(0, $class .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
+				JError::raiseError(0, $classname .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
 			}
 			require_once($file);
 		}
@@ -155,8 +155,8 @@ class SMStatistic extends JObject
 	function getBaseParams()
 	{
 		$paramsdata = $this->baseparams;
-		$paramsdefs = JLG_PATH_ADMIN.DS.'statistics' . DS . 'base.xml';
-		return new JLParameter( $paramsdata, $paramsdefs );
+		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics' . DS . 'base.xml';
+		return new JParameter( $paramsdata, $paramsdefs );
 	}
 	
 	/**
@@ -170,7 +170,7 @@ class SMStatistic extends JObject
 		$currentdir = dirname($rc->getFileName());
 		$paramsdata = $this->params;
 		$paramsdefs = $currentdir. DS . $this->_name .'.xml';
-		return new JLParameter( $paramsdata, $paramsdefs );
+		return new JParameter( $paramsdata, $paramsdefs );
 	}
 	
 	/**
@@ -189,12 +189,12 @@ class SMStatistic extends JObject
 	 * return Statistic params as JParameter objet
 	 * @return object
 	 */
-	function &getParams()
+	function getParams()
 	{
 		if (empty($this->_params))
 		{
-			$this->_params = $this->getBaseParams();
-			$this->_params->merge($this->getClassParams());
+			$this->_params = self::getBaseParams();
+			$this->_params->merge(self::getClassParams());
 		}
 		return $this->_params;
 	}

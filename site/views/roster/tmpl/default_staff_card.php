@@ -72,22 +72,11 @@
 			$picture = JoomleagueHelper::getDefaultPlaceholder("player");
 		}
 		//echo JHTML::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
-        if ( !$this->config['show_highslide'] )
-		{
-		/*
-    echo JoomleagueHelper::getPictureThumb($picture, $imgTitle,
-										$this->config['staff_picture_width'],
-										$this->config['staff_picture_height']);
-		*/
-    echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));								
-		}
-        else
-			{
-      ?>
-<a href="<?php echo $picture;?>" alt="<?php echo $playerName;?>" title="<?php echo $playerName;?>" class="highslide" onclick="return hs.expand(this)">
-<img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" title="zum Zoomen anklicken" width="<?php echo $this->config['staff_picture_width'];?>" /></a>
-    <?php
-      }	
+?>                                    
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+</a>
+<?PHP        
 		?>
 					  
 					</td>

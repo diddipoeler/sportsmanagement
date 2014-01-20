@@ -15,11 +15,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.modellist');
 
 
+
 /**
- * Sportsmanagement Component Teams Model
- *
- * @package		Joomleague
- * @since 0.1
+ * sportsmanagementModelTeams
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelTeams extends JModelList
 {
@@ -126,5 +130,114 @@ class sportsmanagementModelTeams extends JModelList
 		}
 		return false;
 	}
+    
+    
+    function getTeams($playground_id)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        $query2	= $db->getQuery(true);
+        $query3	= $db->getQuery(true);
+        
+        $teams = array();
+
+        //$playground = self::getPlayground();
+        if ( $playground_id > 0 )
+        {
+        // Select some fields
+		$query->select('id, team_id, project_id');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+        $query->where('standard_playground = '.(int)$playground->id);
+        
+/**
+ *             $query = "SELECT id, team_id, project_id
+ *                       FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
+ *                       WHERE standard_playground = ".(int)$playground->id;
+ */
+            $db->setQuery( $query );
+            $rows = $db->loadObjectList();
+			
+            foreach ( $rows as $row )
+            {
+                $teams[$row->id]->project_team[] = $row;
+                // Select some fields
+		$query2->select('name, short_name, notes');
+        // From table
+		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        $query2->where('id='.(int)$row->team_id);
+
+/**
+ *                 $query = "SELECT name, short_name, notes
+ *                           FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team
+ *                           WHERE id=".(int)$row->team_id;
+ */
+                $db->setQuery( $query2 );
+                $teams[ $row->id ]->teaminfo[] = $db->loadObjectList();
+                
+                // Select some fields
+		$query3->select('name');
+        // From table
+		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query3->where('id='.$row->project_id);
+
+/**
+ *                 $query= "SELECT name
+ *                          FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project
+ *                          WHERE id=".(int)$row->project_id;
+ */
+                $db->setQuery( $query3 );
+            	$teams[ $row->id ]->project = $db->loadResult();
+            }
+        }
+        return $teams;
+    }
+    
+    
+    public function getTeamsFromMatches( & $games )
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        
+        $teams = Array();
+
+        if ( !count( $games ) )
+        {
+            return $teams;
+        }
+
+        foreach ( $games as $m )
+        {
+            $teamsId[] = $m->team1;
+            $teamsId[] = $m->team2;
+        }
+        $listTeamId = implode( ",", array_unique( $teamsId ) );
+        
+        // Select some fields
+		$query->select('t.id, t.name');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->where('t.id IN ('.$listTeamId.')');
+
+/**
+ *         $query = "SELECT t.id, t.name
+ *                  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team t
+ *                  WHERE t.id IN (".$listTeamId.")";
+ */
+        $db->setQuery( $query );
+        $result = $db->loadObjectList();
+
+        foreach ( $result as $r )
+        {
+            $teams[$r->id] = $r;
+        }
+
+        return $teams;
+    }
+    
 }
 ?>

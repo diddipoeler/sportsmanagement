@@ -77,9 +77,10 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
     
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' ); 
+$database_table	= $params->get( 'cfg_which_database_table' );
+$show_debug_info = $params->get( 'show_debug_info' );  
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
  
 // import joomla controller library
 jimport('joomla.application.component.controller');

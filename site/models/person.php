@@ -5,6 +5,15 @@ jimport( 'joomla.application.component.model' );
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelPerson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelPerson extends JModel
 {
 

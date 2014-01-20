@@ -49,7 +49,7 @@
 		else
 		{
 			echo '<td width="40">';
-			echo JoomleagueModelProject::getClubIconHtml($this->team1,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1);
 		}
 		?>
 		</td>
@@ -72,7 +72,7 @@
 		else
 		{
 			echo '<td width="40">';
-			echo JoomleagueModelProject::getClubIconHtml($this->team2,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1);
 		}
 		?>
 		</td>

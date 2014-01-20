@@ -234,8 +234,11 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' ORDER BY mp.ordering, tp.jerseynumber, p.lastname ';
 		$this->_db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Error');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Error');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Notice');
+        }
         
 		return $this->_db->loadObjectList();
 	}
@@ -272,8 +275,11 @@ class sportsmanagementModelMatchReport extends JModel
 		      .'  AND p.published = 1';
 		       $this->_db->setQuery($query);
                
-               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Error');
-               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Error');
+               if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
+               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Notice');
+         }
                
 		return $this->_db->loadObjectList();
 	}
@@ -523,7 +529,7 @@ class sportsmanagementModelMatchReport extends JModel
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		
-		$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		$jRegistry->loadString($res, 'ini');
     
@@ -558,7 +564,7 @@ class sportsmanagementModelMatchReport extends JModel
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
-		$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		$jRegistry->loadString($res, 'ini');
     

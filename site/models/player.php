@@ -5,6 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 //require_once('person.php');
 
+/**
+ * sportsmanagementModelPlayer
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelPlayer extends JModel
 {
 	
