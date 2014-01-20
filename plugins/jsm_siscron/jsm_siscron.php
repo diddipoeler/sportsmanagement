@@ -87,6 +87,7 @@ var $_sis_art = 1;
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
         
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        $show_debug_info = $params->get( 'show_debug_info' ); 
         $sis_xmllink = $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort = $params->get( 'sis_meinvereinspasswort' );
@@ -100,22 +101,28 @@ var $_sis_art = 1;
         break;
         }
         
+        if ( $show_debug_info )
+        {
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' country<br><pre>'.print_r($country,true).'</pre>'   ),'');
+        }
         
         $query = $db->getQuery(true);
         $query->select('p.staffel_id,p.sports_type_id,st.name');    
         $query->from('#__sportsmanagement_project as p'); 
         $query->join('INNER', '#__sportsmanagement_sports_type as st on st.id = p.sports_type_id');
-        $query->where('id = '.$projectid); 
+        $query->where('p.id = '.$projectid); 
         $db->setQuery($query);
 		$result = $db->loadObject();
         $teamart = substr( $result->staffel_id , 17, 4);
         
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' staffel_id<br><pre>'.print_r($staffel_id,true).'</pre>'   ),'');
+        if ( $show_debug_info )
+        {
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' staffel_id<br><pre>'.print_r($result->staffel_id,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
+        }
         
         if ( $result->name == 'COM_SPORTSMANAGEMENT_ST_HANDBALL'  )
         {
