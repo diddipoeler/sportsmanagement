@@ -450,6 +450,8 @@ class sportsmanagementModelProject extends JModel
 	{
 	   // Get a db connection.
         $db = JFactory::getDbo();
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         
 		if (empty($this->_teams))
 		{
@@ -508,8 +510,9 @@ class sportsmanagementModelProject extends JModel
 								CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug
 
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tl
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id
+							
                             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id
+                            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id
 							LEFT JOIN #__users u ON tl.admin=u.id
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id
@@ -520,6 +523,9 @@ class sportsmanagementModelProject extends JModel
 
 			$db->setQuery($query);
 			$this->_teams = $db->loadObjectList();
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
 		}
 		return $this->_teams;
 	}
