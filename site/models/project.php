@@ -508,12 +508,13 @@ class sportsmanagementModelProject extends JModel
 								CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug
 
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tl
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON tl.team_id=t.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id
+                            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id
 							LEFT JOIN #__users u ON tl.admin=u.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id=c.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id=tl.division_id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id=tl.standard_playground
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=tl.project_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id = tl.standard_playground
+							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id
 
 						WHERE tl.project_id='.(int)$this->projectid;
 
@@ -531,10 +532,10 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getTeams($division=0)
 	{
-		$teams=array();
+		$teams = array();
 		if ($division != 0)
 		{
-			$divids=$this->getDivisionTreeIds($division);
+			$divids = self::getDivisionTreeIds($division);
 			foreach ((array)$this->_getTeams() as $t)
 			{
 				if (in_array($t->division_id,$divids))
