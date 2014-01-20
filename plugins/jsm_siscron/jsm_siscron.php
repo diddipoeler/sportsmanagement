@@ -84,7 +84,7 @@ var $_sis_art = 1;
         $app = JFactory::getApplication();
         $projectid = JRequest::getInt('p',0);
         
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+        
         
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $show_debug_info = $params->get( 'show_debug_info' ); 
@@ -103,6 +103,7 @@ var $_sis_art = 1;
         
         if ( $show_debug_info )
         {
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');    
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
