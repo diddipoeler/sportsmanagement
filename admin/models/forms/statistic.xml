@@ -22,7 +22,7 @@
 			size="10"
 			maxlength="6"
 			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_ABBREV"
-			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_ABBREV"
+			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_ABBREV_DESC"
 			class="inputbox"
 			required="true"/>
 			
@@ -54,7 +54,7 @@
 			class="inputbox"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_TYPE_DESC"
 			required="true">
 		</field>
 		
@@ -62,7 +62,7 @@
 			name="note"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_NOTE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_NOTE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_NOTE_DESC"
 			class="inputbox"
 			maxlength="100"
 			required="false"/>		

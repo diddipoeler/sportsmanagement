@@ -404,7 +404,7 @@
 			name="fav_team_color"
 			type="jlgcolor"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_COLOR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_COLOR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_COLOR_DESC"
 			class="inputbox"/>	
 			
 		<field
