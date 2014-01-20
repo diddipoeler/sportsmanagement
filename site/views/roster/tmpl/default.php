@@ -94,7 +94,7 @@ if (count($this->stafflist) > 0 AND $this->config['show_staff_icon']==1)
 
 if (!empty($css))
 {
-	$doc = &JFactory::getDocument();
+	$doc = JFactory::getDocument();
 	$doc->addStyleDeclaration($css);
 }
 // johncage css ends    

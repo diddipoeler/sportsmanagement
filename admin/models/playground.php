@@ -196,6 +196,53 @@ class sportsmanagementModelplayground extends JModelAdmin
 		return parent::save($data);   
     }
     
+    
+    function getNextGames( $project = 0 )
+    {
+        $result = array();
+
+        $playground = self::getPlayground();
+        if ( $playground->id > 0 )
+        {
+            $query = "SELECT m.*, DATE_FORMAT(m.time_present, '%H:%i') time_present,
+                             p.name AS project_name, tj.team_id team1, tj2.team_id team2
+                      FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
+                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team tj ON tj.id = m.projectteam1_id 
+                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team tj2 ON tj2.id = m.projectteam2_id 
+                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=tj.project_id
+                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team t ON t.id = tj.team_id
+                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club c ON c.id = t.club_id
+                      WHERE (m.playground_id= " . (int)$playground->id . "
+                          OR (tj.standard_playground = " . (int)$playground->id . " AND m.playground_id IS NULL)
+                          OR (c.standard_playground = " . (int)$playground->id . " AND m.playground_id IS NULL))
+                      AND m.match_date > NOW()
+                      AND m.published = 1
+                      AND p.published = 1";
+            if ( $project )
+            {
+                $query .= " AND project_id= " . (int)$project;
+            }
+            $query .= " GROUP BY m.id ORDER BY match_date ASC";
+            $this->_db->setQuery( $query );
+            $result = $this->_db->loadObjectList();
+        }
+        return $result;
+    }
+    
+    function getPlayground( )
+    {
+        if ( is_null( $this->playground ) )
+        {
+            $pgid = JRequest::getInt( "pgid", 0 );
+            if ( $pgid > 0 )
+            {
+                $this->playground = $this->getTable();
+                $this->playground->load( $pgid );
+            }
+        }
+        return $this->playground;
+    }
+    
     	/**
 	 * Method to get a single record.
 	 *

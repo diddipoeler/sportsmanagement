@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');?>
 		<div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
 <?php 
-$personName = JoomleagueHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
+$personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
 if ($this->config['show_staff_icon']==1) 
 {
 	$imgTitle = JText::sprintf( $personName );
@@ -15,7 +15,7 @@ if ($this->config['show_staff_icon']==1)
 		$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 	}
 	/*
-  $thumbnail = JoomleagueHelper::getPictureThumb($picture, $imgTitle,
+  $thumbnail = sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
 		$this->config['staff_picture_width'],
 		$this->config['staff_picture_height']
 	);
@@ -24,18 +24,13 @@ if ($this->config['show_staff_icon']==1)
 			<div class="jl_rosterperson_staffpicture_column">
 				<div class="jl_roster_staffperson_pic">
 <?php
-if ( !$this->config['show_highslide'] )
-		{
-	//echo $thumbnail;
-	echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
-    }
-    else
-			{
+
       ?>
-<a href="<?php echo $picture;?>" alt="<?php echo $personName;?>" title="<?php echo $personName;?>" class="highslide" onclick="return hs.expand(this)">
-<img src="<?php echo $picture;?>" alt="<?php echo $personName;?>" title="zum Zoomen anklicken" width="<?php echo $this->config['staff_picture_width'];?>" /></a>
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+</a>
     <?php
-      }	
+      	
     
 ?>
 				</div><!-- /.jl_roster_staffperson_pic -->
@@ -48,7 +43,7 @@ if ( !$this->config['show_highslide'] )
 				<span class="jl_rosterperson_name">
 				<?php
 		echo ($this->config['link_staff']==1) ? 
-			JHTML::link(JoomleagueHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$this->row->slug),$personName)
+			JHTML::link(sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$this->row->slug),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;
@@ -107,7 +102,7 @@ if ( !$this->config['show_highslide'] )
 							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_AGE");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JoomleagueHelper::getAge($this->row->birthday,$this->row->deathday);?>
+							<?php echo sportsmanagementHelper::getAge($this->row->birthday,$this->row->deathday);?>
 						</span>
 					</div>
 <?php

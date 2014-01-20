@@ -16,7 +16,7 @@ class sportsmanagementViewMatchReport extends JView
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
-//		$version = urlencode(JoomleagueHelper::getVersion());
+//		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
         
@@ -107,6 +107,9 @@ if ( $this->config['show_pictures'] == 1 )
 			$pageTitle .= ": ".$this->team1->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->team2->name;
 		}
 		$document->setTitle( $pageTitle );
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 /*
     $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
@@ -269,7 +272,7 @@ if ( $this->config['show_pictures'] == 1 )
 		//$result=JHTML::image($pic_time,$imgTitle,$imgTitle2).'&nbsp;'.$sub->in_out_time;
 		$result='<b>'.$sub->in_out_time.'. '. JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
 		$result .= '<br />';
-		$outName = JoomleagueHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
+		$outName = sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
 		if($outName != '') {
 			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 			$imgTitle2=array(' title' => $imgTitle);
@@ -279,7 +282,7 @@ if ( $this->config['show_pictures'] == 1 )
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHTML::link(JoomleagueHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->out_person_id),$outName);
+			    $result .= JHTML::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->out_person_id),$outName);
 			} else {
 			    $result .= $outName;
 			}
@@ -289,7 +292,7 @@ if ( $this->config['show_pictures'] == 1 )
 			}
 			$result .= '<br />';
 		}
-		$inName = JoomleagueHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
+		$inName = sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
 		if($inName!='') {
 			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 			$imgTitle2=array(' title' => $imgTitle);
@@ -299,7 +302,7 @@ if ( $this->config['show_pictures'] == 1 )
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHTML::link(JoomleagueHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->person_id),$inName);
+			    $result .= JHTML::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->person_id),$inName);
 			} else {
 			    $result .= $inName;
 			}
@@ -330,10 +333,10 @@ if ( $this->config['show_pictures'] == 1 )
 					    $prefix = null;
 					}
 
-                    $match_player = JoomleagueHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
+                    $match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+                            $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHTML::link($player_link,$match_player);
                         }
 					$result .= $match_player;
@@ -459,10 +462,10 @@ if ( $this->config['show_pictures'] == 1 )
 		$tiptext .= $time;
 		$tiptext .= ' ::';
 		$tiptext .= JoomleagueViewMatchReport::getHtmlImageForTips($pic_in);
-		$tiptext .= JoomleagueHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
+		$tiptext .= sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$tiptext .= ' &lt;br&gt; ';
 		$tiptext .= JoomleagueViewMatchReport::getHtmlImageForTips($pic_out);
-		$tiptext .= JoomleagueHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
+		$tiptext .= sportsmanagementHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
 		$result='';
 
 		if ($two_substitutions_per_minute == 1) // there were two substitutions in one minute in timelinetop
@@ -494,7 +497,7 @@ if ( $this->config['show_pictures'] == 1 )
 			{
 				if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam1_id)
 				{
-					$placeholder = JoomleagueHelper::getDefaultPlaceholder("player");
+					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					// set teamplayer picture
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
@@ -514,10 +517,10 @@ if ( $this->config['show_pictures'] == 1 )
 
 					if (in_array($me->event_time, $eventcounter))
 					{
-						$result .= JoomleagueViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,1);
+						$result .= sportsmanagementViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,1);
 					}
 					else {
-						$result .= JoomleagueViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,0);
+						$result .= sportsmanagementViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,0);
 					}
 					$eventcounter[] = $me->event_time;
 				}
@@ -536,7 +539,7 @@ if ( $this->config['show_pictures'] == 1 )
 			{
 				if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam2_id)
 				{
-					$placeholder = JoomleagueHelper::getDefaultPlaceholder("player");
+					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					// set teamplayer picture
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
@@ -556,10 +559,10 @@ if ( $this->config['show_pictures'] == 1 )
 
 					if (in_array($me->event_time, $eventcounter))
 					{
-						$result .= JoomleagueViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,2);
+						$result .= sportsmanagementViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,2);
 					}
 					else {
-						$result .= JoomleagueViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,0);
+						$result .= sportsmanagementViewMatchReport::_formatTimelineEvent($me,$event,$me->firstname1,$me->nickname1,$me->lastname1,$picture,0);
 					}
 					$eventcounter[] = $me->event_time;
 				}
@@ -582,7 +585,7 @@ if ( $this->config['show_pictures'] == 1 )
 																		$this->config['player_picture_width'],
 																		$this->config['player_picture_height']);
 		}
-		$tiptext .= '&lt;br /&gt;'.JoomleagueHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
+		$tiptext .= '&lt;br /&gt;'.sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$time=($matchEvent->event_time / $this->getTimelineMatchTime()) *100;
 		if ($two_events_per_minute == 1) // there were two events in one minute in timelinetop
 		{

@@ -130,6 +130,37 @@ class sportsmanagementModelteam extends JModelAdmin
 		return true;
 	}
     
+    
+    function getTeamLogo($team_id)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        
+        // Select some fields
+		$query->select('c.logo_small,c.country');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON c.id = t.club_id');
+        $query->where('t.id = '.$team_id);
+        
+/**
+ *         $query = "
+ *             SELECT c.logo_small,
+ *                    c.country
+ *             FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team t
+ *             LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club c ON c.id = t.club_id
+ *             WHERE t.id = ".$team_id."
+ *         ";
+ */
+        
+        $db->setQuery( $query );
+        $result = $db->loadObjectList();
+
+        return $result;
+    }
+    
     /**
 	 * return 
 	 *

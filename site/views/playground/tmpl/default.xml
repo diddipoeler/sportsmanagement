@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_JOOMLEAGUE_XML_PLAYGROUND_LAYOUT_TITLE">
+		<message>
+		<![CDATA[COM_JOOMLEAGUE_XML_PLAYGROUND_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_JOOMLEAGUE_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_joomleague/elements">
+
+			<field 	name="p" type="project" 
+					label="COM_JOOMLEAGUE_XML_SELECT_PROJECT_LABEL" 
+					description="COM_JOOMLEAGUE_XML_SELECT_PROJECT_DESCR"
+					required="true">
+			</field>
+			<field 	name="pgid" type="sql" 
+					label="COM_JOOMLEAGUE_XML_PLAYGROUND_SELECT_PLAYGROUND_LABEL" 
+					description="COM_JOOMLEAGUE_XML_PLAYGROUND_SELECT_PLAYGROUND_DESCR"
+					query="SELECT id AS value, name AS pgid FROM #__joomleague_playground">
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>
