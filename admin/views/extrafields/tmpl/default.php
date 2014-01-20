@@ -95,7 +95,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_EDIT_DETAILS');
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
