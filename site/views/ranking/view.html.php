@@ -57,8 +57,7 @@ class sportsmanagementViewRanking extends JView
 		$this->assignRef('tableconfig', $config);
 		$this->assignRef('config', $config);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        
 
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
@@ -114,16 +113,13 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('homeRank',      $model->homeRank);
 		$this->assignRef('awayRank',      $model->awayRank);
         
-        //$mainframe->enqueueMessage('sportsmanagementViewRanking currentRanking<br><pre>'.print_r($this->currentRanking, true).'</pre><br>','');
-        //$mainframe->enqueueMessage('sportsmanagementViewRanking previousRanking<br><pre>'.print_r($this->previousRanking, true).'</pre><br>','');
-        //$mainframe->enqueueMessage('sportsmanagementViewRanking homeRank<br><pre>'.print_r($this->homeRank, true).'</pre><br>','');
-        //$mainframe->enqueueMessage('sportsmanagementViewRanking awayRank<br><pre>'.print_r($this->awayRank, true).'</pre><br>','');
+        
        
 		$this->assignRef('current_round', $model->current_round);
         
 		$this->assign('teams',$mdlProject->getTeamsIndexedByPtid());
 		
-        //$mainframe->enqueueMessage('sportsmanagementViewRanking teams<br><pre>'.print_r($this->teams, true).'</pre><br>','');
+        
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
@@ -192,6 +188,21 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     // diddipoeler
 		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
 		
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
+  
+        }
+        
+        
 		if (($this->config['show_ranking_maps'])==1)
 	  {
 	  $this->geo = new simpleGMapGeocoder();
@@ -286,7 +297,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //   $document->addScriptDeclaration($this->map->JLshowMap(false));
   
 	}
-	  $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+	  //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 	  
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
