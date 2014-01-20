@@ -57,9 +57,18 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
 
+/**
+ * PlgSystemjsm_siscron
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class PlgSystemjsm_siscron extends JPlugin
 {
-
+var $_sis_art = 1;
 
 	public function PlgSystemjsm_siscron(&$subject, $params)
 	{
@@ -107,6 +116,9 @@ class PlgSystemjsm_siscron extends JPlugin
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' staffel_id<br><pre>'.print_r($staffel_id,true).'</pre>'   ),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
         
+        $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
+        $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
+        
         
 	}
     
@@ -142,9 +154,69 @@ class PlgSystemjsm_siscron extends JPlugin
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
 	}
     
+    //get sis link
+	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
+    {
+		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
+		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer );	
+		return $link;
+	}
     
-    
-    
+    //get sis spielplan
+	function getSpielplan($linkresults,$liganummer,$sis_art) 
+    {
+        $option = JRequest::getCmd('option');
+  $mainframe = JFactory::getApplication();
+		// XML File
+		$filepath='components/'.$option.'/sisdata/';
+        
+        //$mainframe->enqueueMessage(JText::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
+        
+		//File laden
+		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
+		if (file_exists($datei)) 
+        {
+			$LetzteAenderung = filemtime($datei);
+			if ( (time() - $LetzteAenderung) > 1800) {
+				if(file_get_contents($linkresults)) {
+			 		//Laden
+					$content = file_get_contents($linkresults);
+					//Parsen
+					$doc = DOMDocument::loadXML($content);
+					//Altes File löschen
+					unlink($datei);
+					//Speichern
+					$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
+				}
+			}
+		} 
+        else 
+        {
+			//Laden
+			$content = file_get_contents($linkresults);
+            //$mainframe->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
+            
+			//Parsen
+			$doc = DOMDocument::loadXML($content);
+            //$mainframe->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
+			//Speichern
+			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
+		}
+		$result = simplexml_load_file($datei);
+		// XML File end
+		foreach ($result->Spiel as $temp) 
+        {
+			$nummer = substr( $temp->Liga , -3);
+			$datum = substr( $temp->SpielVon , 0, 10);
+			$datum_en = date("d.m.Y", strToTime($datum));
+			$temp->Date = $datum;
+            $temp->Nummer = $nummer;
+            $temp->Datum = $datum_en;
+			$temp->vonUhrzeit = substr( $temp->SpielVon , 11, 8);
+			$temp->bisUhrzeit = substr( $temp->SpielBis , 11, 8);
+		}
+		return $result;
+	}
     
 
 }    
