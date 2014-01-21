@@ -419,7 +419,7 @@ $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_i
 }
 
 $query->group('m.id ');  
-$query->order('m.match_date ASC,m.match_number');  
+$query->order('m.match_date ASC,m.match_number ASC');  
 
 $matches = array();
 $durchlauf = count($rounds);
@@ -1209,7 +1209,7 @@ $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_i
 
 
 $query->group('m.id ');  
-$query->order('m.match_date ASC,m.match_number');
+$query->order('m.match_date ASC,m.match_number ASC');
     
 // die ergebnisse
 // ergebnisse
