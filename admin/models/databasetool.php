@@ -664,7 +664,7 @@ foreach( $xml->document->events as $event )
         // Insert columns.
         $columns = array('name','icon');
         // Insert values.
-        $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
+        $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'images/com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
         // Prepare the insert query.
         $query
             ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type'))
