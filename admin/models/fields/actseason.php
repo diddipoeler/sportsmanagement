@@ -29,7 +29,7 @@ class JFormFieldactseason extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('s.id AS value, s.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
+			$query->from('#__sportsmanagement_season as s');
 			$query->order('s.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
