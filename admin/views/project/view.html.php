@@ -59,6 +59,13 @@ class sportsmanagementViewProject extends JView
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        
+        $isNew = $this->item->id == 0;
+        if ( $isNew )
+        {
+            $this->form->setValue('start_date', null, date("Y-m-d"));
+            $this->form->setValue('start_time', null, '18:00');
+        }
  
 		// Set the toolbar
 		$this->addToolBar();

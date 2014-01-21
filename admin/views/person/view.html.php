@@ -46,8 +46,8 @@ class sportsmanagementViewPerson extends JView
         {
             $this->map = true;
         }
-		$isNew = $this->item->id == 0;
         
+		$isNew = $this->item->id == 0;
         if ( $isNew )
         {
             $this->form->setValue('person_art', null, '1');
