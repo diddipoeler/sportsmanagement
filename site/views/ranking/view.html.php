@@ -205,7 +205,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
 		if (($this->config['show_ranking_maps'])==1)
 	  {
-	  $this->geo = new simpleGMapGeocoder();
+	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
 	  
 // 	  $this->map = new simpleGMapAPI();

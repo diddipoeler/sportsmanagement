@@ -80,4 +80,15 @@ if (selected == 2)
 	
 }
 
-
+function registerhome(homepage,notes,homepagename,isadmin)
+	{
+var url='http://www.fussballineuropa.de/jlpaket.php';		
+var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var url2='http://www.fussballineuropa.de/jlpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var request = new Request({
+                        url: url2,
+                        method:'post',
+                        data: data
+                        }).send();
+                        		
+		}

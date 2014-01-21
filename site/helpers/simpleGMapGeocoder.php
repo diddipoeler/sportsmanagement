@@ -30,7 +30,7 @@ jimport('joomla.filesystem.file');
 * @copyright    2010 HH
 */
 
-class simpleGMapGeocoder {
+class JSMsimpleGMapGeocoder {
 
 function JLgetGeoCoords($address)
 {

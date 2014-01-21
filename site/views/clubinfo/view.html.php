@@ -103,7 +103,7 @@ class sportsmanagementViewClubInfo extends JView
         if (($this->config['show_maps'])==1)
 	  {
             // diddipoeler
-        $this->geo = new simpleGMapGeocoder();
+        $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->club->id,$this->address_string,'club',$this->club->logo_big,$this->club->name,$this->club->latitude,$this->club->longitude);  
 }
 

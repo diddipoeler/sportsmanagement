@@ -81,6 +81,26 @@ $database_table	= $params->get( 'cfg_which_database_table' );
 $show_debug_info = $params->get( 'show_debug_info' );  
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+
+$document = JFactory::getDocument();
+$mainframe = JFactory::getApplication();
+$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+
+$task = JRequest::getCmd('task');
+$option = JRequest::getCmd('option');
+if ( $mainframe->isAdmin() )
+{
+if($task == '' && $option == 'com_sportsmanagement') 
+{
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+$document->addScriptDeclaration( $js );
+}
+}
+else
+{
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+$document->addScriptDeclaration( $js );    
+}
  
 // import joomla controller library
 jimport('joomla.application.component.controller');
