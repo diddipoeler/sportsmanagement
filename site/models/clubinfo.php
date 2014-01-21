@@ -274,7 +274,7 @@ on prot.team_id = t.id'
 		}
 		if (!empty($club->country))
 		{
-			$address_parts[] = Countries::getShortCountryName($club->country);
+			$address_parts[] = JSMCountries::getShortCountryName($club->country);
 		}
 		$address = implode(', ', $address_parts);
 		return $address;

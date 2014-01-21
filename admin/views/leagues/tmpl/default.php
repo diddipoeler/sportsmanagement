@@ -107,7 +107,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->short_name; ?></td>
-						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+						<td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
                         <td class="center">
 								<?php

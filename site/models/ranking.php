@@ -315,7 +315,7 @@ class sportsmanagementModelRanking extends JModel
 		* create ranking object	
 		*
 		*/
-		$ranking = JLGRanking::getInstance($project);
+		$ranking = JSMRanking::getInstance($project);
 		$ranking->setProjectId( $this->projectid );
 		
 		foreach ( $divisions as $division )

@@ -69,7 +69,7 @@ else
 		if ( ( $this->club->address ) || ( $this->club->zipcode ) )
 		{
 
-			$addressString = Countries::convertAddressString(	$this->club->name,
+			$addressString = JSMCountries::convertAddressString(	$this->club->name,
 																$this->club->address,
 																$this->club->state,
 																$this->club->zipcode,

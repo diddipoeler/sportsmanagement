@@ -211,7 +211,7 @@ function getUpdateData()
 
 //   echo 'Die aktuelle Sprache lautet: ' . $lang->getName() . '<br>';
 //$teile = explode("-",$lang->getTag());
-//  $country = Countries::convertIso2to3($teile[1]);  
+//  $country = JSMCountries::convertIso2to3($teile[1]);  
 //   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
   $option = JRequest::getCmd('option');
@@ -435,7 +435,7 @@ echo $this->pane->startPane('pane');
 
 //   echo 'Die aktuelle Sprache lautet: ' . $lang->getName() . '<br>';
 //  $teile = explode("-",$lang->getTag());
-//  $country = Countries::convertIso2to3($teile[1]);  
+//  $country = JSMCountries::convertIso2to3($teile[1]);  
 //   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
   //$option='com_joomleague';

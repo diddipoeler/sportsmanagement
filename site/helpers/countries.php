@@ -15,7 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
-class Countries
+class JSMCountries
 {
 	function Countries() {
 //      $lang = JFactory::getLanguage();
@@ -137,7 +137,7 @@ $query = $db->getQuery(true);
 
 	public static function getIso3Flag($iso_code_3)
 	{
-		$iso2=Countries::convertIso3to2($iso_code_3);
+		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
 			$path=JURI::root().'media/com_sportsmanagement/flags/'.strtolower($iso2).'.png';
@@ -147,7 +147,7 @@ $query = $db->getQuery(true);
 	}
 
 	/**
-	 * example: echo Countries::getCountryFlag($country);
+	 * example: echo JSMCountries::getCountryFlag($country);
 	 *
 	 * @param string: an iso3 country code, e.g AUT
 	 * @param string: additional html attributes for the img tag
@@ -155,10 +155,10 @@ $query = $db->getQuery(true);
 	 */
 	public static function getCountryFlag($countrycode,$attributes='')
 	{
-		$src=Countries::getIso3Flag($countrycode);
+		$src=self::getIso3Flag($countrycode);
 		if (!$src){return '';}
-		$html='<img src="'.$src.'" alt="'.Countries::getCountryName($countrycode).'" ';
-		$html .= 'title="'.Countries::getCountryName($countrycode).'" '.$attributes.' />';
+		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
+		$html .= 'title="'.self::getCountryName($countrycode).'" '.$attributes.' />';
 		return $html;
 	}
 
@@ -188,7 +188,7 @@ $query = $db->getQuery(true);
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		
-		//$countries=Countries::getCountries();
+		//$countries=JSMCountries::getCountries();
 		if( $res )
 		//return JText::_($countries[$iso3]['name']);
 		return JText::_($res);
@@ -243,9 +243,9 @@ $query = $db->getQuery(true);
 			 (!empty($location))
 		  )
 		{
-			$countryFlag = Countries::getCountryFlag($country);
-			$countryName = Countries::getCountryName($country);
-			$dummy=Countries::removeEmptyFields($name, $address, $state, $zipcode, $location, $countryFlag, $countryName, JText::_($addressString));
+			$countryFlag = self::getCountryFlag($country);
+			$countryName = self::getCountryName($country);
+			$dummy=self::removeEmptyFields($name, $address, $state, $zipcode, $location, $countryFlag, $countryName, JText::_($addressString));
 			$dummy=str_replace('%NAME%',$name,$dummy);
 			$dummy=str_replace('%ADDRESS%',$address,$dummy);
 			$dummy=str_replace('%STATE%',$state,$dummy);
@@ -269,13 +269,13 @@ $query = $db->getQuery(true);
 									$country='',
 									$address)
 	{
-	  if (empty($name)) $address = Countries::checkAddressString('%NAME%', '', $address);
-	  if (empty($address)) $address = Countries::checkAddressString('%ADDRESS%', '', $address);
-	  if (empty($state)) $address = Countries::checkAddressString('%STATE%', '', $address);
-	  if (empty($zipcode)) $address = Countries::checkAddressString('%ZIPCODE%', '', $address);
-	  if (empty($location)) $address = Countries::checkAddressString('%LOCATION%', '', $address);
-	  if (empty($flag)) $address = Countries::checkAddressString('%FLAG%', '', $address);
-	  if (empty($country)) $address = Countries::checkAddressString('%COUNTRY%', '', $address);
+	  if (empty($name)) $address = self::checkAddressString('%NAME%', '', $address);
+	  if (empty($address)) $address = self::checkAddressString('%ADDRESS%', '', $address);
+	  if (empty($state)) $address = self::checkAddressString('%STATE%', '', $address);
+	  if (empty($zipcode)) $address = self::checkAddressString('%ZIPCODE%', '', $address);
+	  if (empty($location)) $address = self::checkAddressString('%LOCATION%', '', $address);
+	  if (empty($flag)) $address = self::checkAddressString('%FLAG%', '', $address);
+	  if (empty($country)) $address = self::checkAddressString('%COUNTRY%', '', $address);
 	  
 		return $address;
 	}

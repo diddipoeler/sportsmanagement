@@ -22,7 +22,7 @@
 		
 		<tr>
 			<td valign="top" align="right" class="key"><label for="ordering"><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_COUNTRY'); ?></label></td>
-			<td><?php echo $this->lists['countries']; ?>&nbsp;<?php echo Countries::getCountryFlag($this->object->country); ?>&nbsp;(<?php echo $this->object->country; ?>)</td>
+			<td><?php echo $this->lists['countries']; ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->object->country); ?>&nbsp;(<?php echo $this->object->country; ?>)</td>
 		</tr>
 		<tr>
 			<td valign="top" align="right" class="key"><label for="ordering"><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_ROSTERPOSITIONS_ORDERING'); ?></label></td>

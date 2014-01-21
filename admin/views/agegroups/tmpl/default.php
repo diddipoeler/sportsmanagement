@@ -130,7 +130,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <td><?php echo $row->age_from; ?></td>
                         <td><?php echo $row->age_to; ?></td>
                         <td><?php echo $row->deadline_day; ?></td>
-						<td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+						<td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         
                         <td class="center">
 								<?php

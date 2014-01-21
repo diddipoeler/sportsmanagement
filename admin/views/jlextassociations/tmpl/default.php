@@ -104,7 +104,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->short_name; ?></td>
-						<td style="text-align:center; "><?php echo Countries::getCountryFlag($row->country); ?></td>
+						<td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td style="text-align:center; ">
             <?php
             $path = JURI::root().$row->assocflag;

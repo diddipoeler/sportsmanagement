@@ -259,7 +259,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <td class=""><?php echo $row->latitude; ?></td>
                         <td class=""><?php echo $row->longitude; ?></td>
                         
-                        <td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+                        <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'clubs.orderup','JLIB_HTML_MOVE_UP',true); ?>

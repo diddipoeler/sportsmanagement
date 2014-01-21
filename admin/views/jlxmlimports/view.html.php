@@ -143,7 +143,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$this->assignRef('uploadArray',$uploadArray);
 		$this->assignRef('starttime',$starttime);
         // diddi
-		$this->assign('countries',Countries::getCountryOptions());
+		$this->assign('countries',JSMCountries::getCountryOptions());
         
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('xml', $data);

@@ -402,7 +402,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		}
 		if (!empty($data['country']))
 		{
-			$address_parts[] = Countries::getShortCountryName($data['country']);
+			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
@@ -432,7 +432,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		}
 		if (!empty($data['country']))
 		{
-		$address_parts[] = Countries::getShortCountryName($data['country']);
+		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
 		}
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);

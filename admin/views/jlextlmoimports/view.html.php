@@ -46,9 +46,9 @@ class sportsmanagementViewjlextlmoimports extends JView
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('config',$config);
 		$teile = explode("-",$lang->getTag());
-    $country = Countries::convertIso2to3($teile[1]);
+    $country = JSMCountries::convertIso2to3($teile[1]);
     $this->assignRef('country',$country);
-		$countries = Countries::getCountryOptions();
+		$countries = JSMCountries::getCountryOptions();
 		$lists['countries']=JHTML::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$country);
 		$this->assignRef('countries',$lists['countries']);
     

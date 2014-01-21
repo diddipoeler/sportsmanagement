@@ -48,8 +48,8 @@
 					</td>
 					<td class="data">
 					<?php
-						echo Countries::getCountryFlag( $this->person->country ) . " " .
-						JText::_( Countries::getCountryName($this->person->country));
+						echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
+						JText::_( JSMCountries::getCountryName($this->person->country));
 						?>
 					</td>
 				</tr>
@@ -188,7 +188,7 @@
 				<tr>
 					<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></td>
 					<td class="data"><?php
-						echo Countries::convertAddressString(	'',
+						echo JSMCountries::convertAddressString(	'',
 																$this->person->address,
 																$this->person->state,
 																$this->person->zipcode,

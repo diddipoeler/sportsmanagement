@@ -48,7 +48,7 @@ else
 	<div class="jl_parentContainer">
 		<span class="clubinfo_listing_item"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS'); ?></span>
 				<?php
-				$dummy = Countries::convertAddressString(	$this->club->name,
+				$dummy = JSMCountries::convertAddressString(	$this->club->name,
 															$this->club->address,
 															$this->club->state,
 															$this->club->zipcode,

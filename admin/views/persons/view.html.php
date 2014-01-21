@@ -70,7 +70,7 @@ class sportsmanagementViewPersons extends JView
 
 		//build the html options for nation
 		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
@@ -154,7 +154,7 @@ class sportsmanagementViewPersons extends JView
         
         //build the html options for nation
 		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = Countries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
         $lists['nation']=$nation;
         
         //build the html select list for positions

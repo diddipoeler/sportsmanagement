@@ -1860,7 +1860,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 	}
 	if (!empty($country))
 	{
-		$address_parts[] = Countries::getShortCountryName($country);
+		$address_parts[] = JSMCountries::getShortCountryName($country);
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
@@ -2108,7 +2108,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 	}
 	if (!empty($country))
 	{
-		$address_parts[] = Countries::getShortCountryName($country);
+		$address_parts[] = JSMCountries::getShortCountryName($country);
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
@@ -2552,7 +2552,7 @@ $this->dump_variable("import_team", $import_team);
 	}
 	if (!empty($country))
 	{
-		$address_parts[] = Countries::getShortCountryName($country);
+		$address_parts[] = JSMCountries::getShortCountryName($country);
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);

@@ -148,7 +148,7 @@
 									?>
 								</td>
 								<td class="nowrap" class="center"><?php echo sportsmanagementHelper::convertDate($row->birthday); ?></td>
-								<td class="nowrap" class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+								<td class="nowrap" class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 								<td align="center"><?php echo $row->id; ?></td>			
 							</tr>
 							<?php

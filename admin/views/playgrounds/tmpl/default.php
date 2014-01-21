@@ -174,7 +174,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <td class=""><?php echo $row->latitude; ?></td>
                         <td class=""><?php echo $row->longitude; ?></td>
                         
-                        <td class="center"><?php echo Countries::getCountryFlag($row->country); ?></td>
+                        <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         
 						<td class="order">
 							<span>

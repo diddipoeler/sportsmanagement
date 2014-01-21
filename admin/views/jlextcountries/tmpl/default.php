@@ -133,7 +133,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td>
                         <?php 
                         //echo JHtml::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
-                        echo Countries::getCountryFlag($row->alpha3);
+                        echo JSMCountries::getCountryFlag($row->alpha3);
                         ?>
                         </td>
 						<td><?php echo $row->alpha2; ?></td>

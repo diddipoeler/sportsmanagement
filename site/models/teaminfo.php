@@ -192,7 +192,7 @@ class sportsmanagementModelTeamInfo extends JModel
 		sportsmanagementModelProject::setProjectID($projectid);
 		$project = sportsmanagementModelProject::getProject();
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking" );
-		$ranking = JLGRanking::getInstance($project);
+		$ranking = JSMRanking::getInstance($project);
 		$ranking->setProjectId( $project->id );
 		$this->ranking = $ranking->getRanking(
 								0,

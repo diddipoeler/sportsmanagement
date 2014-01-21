@@ -28,7 +28,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       </tr>
       <tr>
 			
-			<td><?php echo $this->countries; ?>&nbsp;<?php echo Countries::getCountryFlag($this->country); ?>&nbsp;(<?php echo $this->country; ?>)</td>
+			<td><?php echo $this->countries; ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->country); ?>&nbsp;(<?php echo $this->country; ?>)</td>
 		  </tr>
       </tbody>
 		</table>

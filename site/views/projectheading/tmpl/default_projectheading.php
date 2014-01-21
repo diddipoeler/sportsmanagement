@@ -26,7 +26,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					<td colspan="<?php echo $nbcols; ?>">
 					<?php
 					$country = $this->project->country;
-					echo Countries::getCountryFlag($country) . ' ' . Countries::getCountryName($country);
+					echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 					?>
 					</td>
 				</tr>

@@ -253,11 +253,11 @@ $teamid=JRequest::getInt('tid');
 			case 2 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= Countries::getCountryFlag($hometeam->country);
+					$teamA .= JSMCountries::getCountryFlag($hometeam->country);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= Countries::getCountryFlag($guestteam->country);
+					$teamB .= JSMCountries::getCountryFlag($guestteam->country);
 					$teamB .= '</td>';
 				}
 				break;

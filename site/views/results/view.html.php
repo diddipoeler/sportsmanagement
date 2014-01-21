@@ -206,7 +206,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		elseif ($type==2 && !empty($team->country))
 		{
-			$image=Countries::getCountryFlag($team->country);
+			$image=JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
 				$image=JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
@@ -214,34 +214,34 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )
 		{
-			//$image = Countries::getCountryFlag($team->country);
+			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JHTML::image($team->logo_small,$title,$attribs).' '.Countries::getCountryFlag($team->country);
+				$image = JHTML::image($team->logo_small,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && !JFile::exists($team->logo_small) )
 		{
-			//$image = Countries::getCountryFlag($team->country);
+			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs).' '.Countries::getCountryFlag($team->country);
+				$image = JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
     elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )
 		{
-			//$image = Countries::getCountryFlag($team->country);
+			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = Countries::getCountryFlag($team->country).' '.JHTML::image($team->logo_small,$title,$attribs);
+				$image = JSMCountries::getCountryFlag($team->country).' '.JHTML::image($team->logo_small,$title,$attribs);
 			}
 		}
         elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !JFile::exists($team->logo_small) )
 		{
-			//$image = Countries::getCountryFlag($team->country);
+			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = Countries::getCountryFlag($team->country).' '.JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
+				$image = JSMCountries::getCountryFlag($team->country).' '.JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
 			}
 		}
 		else

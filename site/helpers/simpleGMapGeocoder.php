@@ -233,7 +233,7 @@ $address_parts = array();
 		}
 		if (!empty($row->cb_country))
 		{
-			$address_parts[] = Countries::getShortCountryName($row->cb_country);
+			$address_parts[] = JSMCountries::getShortCountryName($row->cb_country);
 		}
 		$row->address_string = implode(', ', $address_parts);
 		$row->type = 'bar';
@@ -310,7 +310,7 @@ $address_parts = array();
 		}
 		if (!empty($row->club_country))
 		{
-			$address_parts[] = Countries::getShortCountryName($row->club_country);
+			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
         
         

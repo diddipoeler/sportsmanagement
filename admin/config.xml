@@ -258,7 +258,12 @@
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 		addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
-<field name="current_season" type="actseason" default=""
+<field name="current_season" 
+type="actseason" 
+multiple=""  
+    default=""
+    size="10"
+
 			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESC"
       

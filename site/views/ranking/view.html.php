@@ -254,7 +254,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		if (!empty($row->club_country))
 		{
-			$address_parts[] = Countries::getShortCountryName($row->club_country);
+			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
 		$row->address_string = implode(', ', $address_parts);
 //    $this->map->addMarkerByAddress($row->address_string, $row->team_name, '"<a href="'.$row->club_www.'" target="_blank">'.$row->club_www.'</a>"', "http://maps.google.com/mapfiles/kml/pal2/icon49.png");		
@@ -271,7 +271,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
     if ( $lat && $lng )
     {
-    $adressecountry_flag = Countries::getCountryFlag($row->club_country);
+    $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
         
     //echo JURI::root().'<br>';
     						

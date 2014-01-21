@@ -237,7 +237,7 @@ $option = JRequest::getCmd('option');
   
   $post = JRequest::get('post');
   $country = $post['country'];
-  //$country = Countries::convertIso2to3($teile[1]);
+  //$country = JSMCountries::convertIso2to3($teile[1]);
   
   $mainframe->enqueueMessage(JText::_('land '.$country.''),'');
   

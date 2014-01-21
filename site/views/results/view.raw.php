@@ -160,7 +160,7 @@ class JoomleagueViewResults extends JLGView
 		}
 		elseif ($type==2 && !empty($team->country))
 		{
-			$image=Countries::getCountryFlag($team->country);
+			$image=JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
 				$image=JHTML::image(JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_flags.png',$title,$attribs);

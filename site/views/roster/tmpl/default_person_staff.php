@@ -144,7 +144,7 @@ if ($this->config['show_staff_icon']==1)
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
-			echo Countries::getCountryFlag($this->row->country);
+			echo JSMCountries::getCountryFlag($this->row->country);
 ?>
 						</span><!-- /.jl_roster_persondetails_data -->
 					</div>

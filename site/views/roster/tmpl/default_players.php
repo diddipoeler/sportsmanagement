@@ -304,7 +304,7 @@ if (!empty($this->rows))
 		if ($this->config['show_country_flag'])
 		{ ?>
 		<td width="16" nowrap="nowrap" style="text-align:center; ">
-			<?php echo Countries::getCountryFlag($row->country);?>
+			<?php echo JSMCountries::getCountryFlag($row->country);?>
 		</td><?php
 		}
 		elseif ($this->config['show_country_flag_staff'])

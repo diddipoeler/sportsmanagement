@@ -33,7 +33,7 @@
 			<th class="td_r_t" width='30%'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS' ); ?></th>
 			<td width='70%'>
 				<?php
-				echo Countries::convertAddressString(	'',
+				echo JSMCountries::convertAddressString(	'',
 														$this->playground->address,
 														'',
 														$this->playground->zipcode,

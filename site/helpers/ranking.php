@@ -31,14 +31,8 @@
  * http://www.gnu.org/copyleft/gpl.html.
  */
 
-/**
- * Ranking helper.
- *
- * You can extends this class to add functionnalities
- * @author julien
- *
- */
-class JLGRanking
+
+class JSMRanking
 {
 	/**
 	 * project id
@@ -122,7 +116,7 @@ class JLGRanking
 				
 			foreach ($extensions as $type)
 			{
-				$classname = 'JLGRanking'. ucfirst($type);
+				$classname = 'JSMRanking'. ucfirst($type);
 				if (!class_exists($classname))
 				{
 					$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'ranking.php';
@@ -140,11 +134,11 @@ class JLGRanking
 					return $obj;
 				}
 			}
-			$obj = new JLGRanking();
+			$obj = new JSMRanking();
 			$obj->setProjectId($project->id);
 			return $obj;
 		}
-		$obj = new JLGRanking();
+		$obj = new JSMRanking();
 		return $obj;
 	}
 
@@ -330,7 +324,7 @@ class JLGRanking
 			}
 			else
 			{
-				$home = new JLGRankingTeam(0); //in that case, $data wont be affected
+				$home = new JSMRankingTeam(0); //in that case, $data wont be affected
 			}
 			if ($mode == 0 || $mode == 2)
 			{
@@ -338,7 +332,7 @@ class JLGRanking
 			}
 			else
 			{
-				$away = new JLGRankingTeam(0); //in that case, $data wont be affected
+				$away = new JSMRankingTeam(0); //in that case, $data wont be affected
 			}
 			
 			$shownegpoints = 1;
@@ -623,7 +617,7 @@ class JLGRanking
 	/**
 	 * gets team info from db
 	 *
-	 * @return array of JLGRankingTeam objects
+	 * @return array of JSMRankingTeam objects
 	 */
 	function _initTeams($pid,$division)
 	{
@@ -669,7 +663,7 @@ class JLGRanking
 		$teams = array();
 		foreach ((array) $res as $r)
 		{
-			$t = new JLGRankingTeam($r->ptid);
+			$t = new JSMRankingTeam($r->ptid);
 			$t->setTeamid($r->teamid);
 			// diddipoeler
 			$t->setDivisionid($division);
@@ -1025,8 +1019,8 @@ class JLGRanking
 
 	/**
 	 * alphanumerical comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpAlpha($a, $b)
@@ -1037,8 +1031,8 @@ class JLGRanking
 
 	/**
 	 * Point comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpPoints($a, $b)
@@ -1049,8 +1043,8 @@ class JLGRanking
     
     /**
 	 * Point comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpPenaltypoints($a, $b)
@@ -1063,8 +1057,8 @@ class JLGRanking
 
 	/**
 	 * Bonus points comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpBonus($a, $b)
@@ -1075,8 +1069,8 @@ class JLGRanking
 
 	/**
 	 * Score difference comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpDiff($a, $b)
@@ -1087,8 +1081,8 @@ class JLGRanking
 
 	/**
 	 * Score for comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpFor($a, $b)
@@ -1099,8 +1093,8 @@ class JLGRanking
 
 	/**
 	 * Score against comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpAgainst($a, $b)
@@ -1111,8 +1105,8 @@ class JLGRanking
 
 	/**
 	 * Scoring average comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpScoreAvg($a, $b)
@@ -1123,8 +1117,8 @@ class JLGRanking
 
 	/**
 	 * Scoring percentage comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpScorePct($a, $b)
@@ -1136,8 +1130,8 @@ class JLGRanking
 
 	/**
 	 * Winning percentage comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpWinpct($a, $b)
@@ -1149,8 +1143,8 @@ class JLGRanking
 
 	/**
 	 * Gameback comparison (US sports)
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpGb($a, $b)
@@ -1161,8 +1155,8 @@ class JLGRanking
 
 	/**
 	 * Score away comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpAwayfor($a, $b)
@@ -1173,8 +1167,8 @@ class JLGRanking
 
 	/**
 	 * Head to Head points comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpH2h($a, $b)
@@ -1187,8 +1181,8 @@ class JLGRanking
 
 	/**
 	 * Head to Head score difference comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpH2h_diff($a, $b)
@@ -1199,8 +1193,8 @@ class JLGRanking
 
 	/**
 	 * Head to Head score for comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpH2h_for($a, $b)
@@ -1211,8 +1205,8 @@ class JLGRanking
 
 	/**
 	 * Head to Head scored away comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpH2h_away($a, $b)
@@ -1223,8 +1217,8 @@ class JLGRanking
 
 	/**
 	 * Legs diff comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpLegs_diff($a, $b)
@@ -1235,8 +1229,8 @@ class JLGRanking
 
 	/**
 	 * Legs ratio comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpLegs_ratio($a, $b)
@@ -1248,8 +1242,8 @@ class JLGRanking
 
 	/**
 	 * Legs wins comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpLegs_win($a, $b)
@@ -1260,8 +1254,8 @@ class JLGRanking
 
 	/**
 	 * Total wins comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpWins($a, $b)
@@ -1272,8 +1266,8 @@ class JLGRanking
 
 	/**
 	 * Games played comparison, more games played, higher in rank
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpPlayed($a, $b)
@@ -1284,8 +1278,8 @@ class JLGRanking
 
 		/**
 	 * Games played ASC comparison, less games played, higher in rank
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpPlayedasc($a, $b)
@@ -1295,8 +1289,8 @@ class JLGRanking
 	}
 	/**
 	 * Points ratio comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpPoints_ratio($a, $b)
@@ -1307,8 +1301,8 @@ class JLGRanking
 	}
 	/**
 	 * OT_wins comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpWOT($a, $b)
@@ -1319,8 +1313,8 @@ class JLGRanking
 
 	/**
 	 * SO_wins comparison
-	 * @param JLGRankingTeam a
-	 * @param JLGRankingTeam b
+	 * @param JSMRankingTeam a
+	 * @param JSMRankingTeam b
 	 * @return int
 	 */
 	function _cmpWSO($a, $b)
@@ -1334,7 +1328,7 @@ class JLGRanking
  * Ranking team class
  * Support class for ranking helper
  */
-class JLGRankingTeam
+class JSMRankingTeam
 {
 
 // new for use_finally
@@ -1419,7 +1413,7 @@ class JLGRankingTeam
 	 * contructor requires ptid
 	 * @param int $ptid
 	 */
-	function JLGRankingTeam($ptid)
+	function JSMRankingTeam($ptid)
 	{
 		$this->setPtid($ptid);
 	}

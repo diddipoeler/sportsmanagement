@@ -1021,7 +1021,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		}
 		elseif (($type==2) && (isset($team->country)))
 		{
-			return Countries::getCountryFlag($team->country);
+			return JSMCountries::getCountryFlag($team->country);
 		}
 	}
 

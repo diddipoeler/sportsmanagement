@@ -392,7 +392,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $output->href = JRoute::_($output->href);
 			if ( $output->country)
 			{
-			$flag = Countries::getCountryFlag($output->country);
+			$flag = JSMCountries::getCountryFlag($output->country);
 			$output->flag = $flag;
 			$output->text = $flag.' '.$output->text ;
 			}

@@ -60,7 +60,7 @@ $fieldsets = $this->form->getFieldsets();
                 
                 if ( $field->name == 'jform[country]' || $field->name == 'jform[address_country]' )
                 {
-                echo Countries::getCountryFlag($field->value);    
+                echo JSMCountries::getCountryFlag($field->value);    
                 }
                 
                 if ( $field->name == 'jform[website]' )

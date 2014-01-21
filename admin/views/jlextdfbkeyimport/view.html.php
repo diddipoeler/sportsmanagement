@@ -177,7 +177,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
        {
        $procountry = $model->getCountry($this->project_id);
        //JError::raiseWarning( 500, JText::_( '[DFB-Key Tool] Error: No DFB-Key for '.$dfbteams.'  Teams available!' ) );
-       JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , Countries::getCountryFlag($procountry) , $procountry ));
+       JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , JSMCountries::getCountryFlag($procountry) , $procountry ));
        $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
        }
        
