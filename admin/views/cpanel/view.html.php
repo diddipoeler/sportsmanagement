@@ -111,7 +111,7 @@ class sportsmanagementViewcpanel extends JView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
-        //$this->aktversion = $model->checkUpdateVersion();
+        $this->aktversion = $model->checkUpdateVersion();
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->aktversion,true).'</pre>'),'Notice');
         
         if ( !$this->aktversion )
@@ -265,9 +265,25 @@ class sportsmanagementViewcpanel extends JView
           // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        $task = JRequest::getCmd('task');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        
+        if ( $mainframe->isAdmin() )
+        {
+        if($task == '' && $option == 'com_sportsmanagement') 
+        {
+        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+        $document->addScriptDeclaration( $js );
+        }
+        }
+        else
+        {
+        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+        $document->addScriptDeclaration( $js );    
+        }
         
 		$canDo = sportsmanagementHelper::getActions();
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');

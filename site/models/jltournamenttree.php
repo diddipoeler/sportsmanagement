@@ -96,8 +96,8 @@ function __construct( )
         }
         
         
-	$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
-  if ( $show_debug_info )
+	//$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
+  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
   $this->debug_info = true;
   
@@ -1151,7 +1151,7 @@ break;
 
 case 2:
 //$varteams[] = '[{name: "'.substr($key->firstname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.substr($key->secondname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
-$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
 break;
     
 }

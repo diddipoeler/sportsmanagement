@@ -71,7 +71,7 @@ else
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
 
-
+/*
 $document = JFactory::getDocument();
 $mainframe = JFactory::getApplication();
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
@@ -92,7 +92,7 @@ else
 $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
 $document->addScriptDeclaration( $js );    
 }
-
+*/
 
 /*
 // fehler in der komponente protokollieren 
