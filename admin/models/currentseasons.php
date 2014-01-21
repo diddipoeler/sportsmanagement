@@ -51,9 +51,16 @@ class sportsmanagementModelcurrentseasons extends JModelList
         
         $where = array();
 		$filter_season = JComponentHelper::getParams($option)->get('current_season',0);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_season,true).'</pre>'),'');
+		}
+        
+        $filter_season = implode(",",$filter_season);
 		
 		if($filter_season > 0) {
-			$where[] = 'p.season_id = ' . $filter_season[0];
+			$where[] = 'p.season_id IN (' . $filter_season .')';
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
