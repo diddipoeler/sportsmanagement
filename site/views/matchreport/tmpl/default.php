@@ -116,6 +116,7 @@ if (!empty($this->matchplayerpositions ))
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_PICTURES'] = 'pictures';
 	}    
 
+/*
   // ################################################################
   if ( $this->use_joomlaworks == 0 || $this->config['show_result_tabs'] == "no_tabs" )
     {
@@ -158,19 +159,19 @@ if (!empty($this->matchplayerpositions ))
 			switch ($this->config['use_tabs_events'])
 			{
 				case 0:
-					/** No tabs */
+//					/** No tabs
 					if ( !empty( $this->eventtypes ) ) {
 						echo $this->loadTemplate('events');
 					}
 					break;
 				case 1:
-					/** Tabs */
+//					/** Tabs 
 					if ( !empty( $this->eventtypes ) ) {
 						echo $this->loadTemplate('events_tabs');
 					}
 					break;
 				case 2:
-					/** Table/Ticker layout */
+//					/** Table/Ticker layout 
 					echo $this->loadTemplate('events_ticker');
 					break;
 			}
@@ -243,21 +244,21 @@ if (!empty($this->matchplayerpositions ))
 			switch ($this->config['use_tabs_events'])
 			{
 				case 0:
-					/** No tabs */
+//					/** No tabs 
 					if ( !empty( $this->eventtypes ) ) {
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 						echo $this->loadTemplate('events');
 					}
 					break;
 				case 1:
-					/** Tabs */
+//					/** Tabs 
 					if ( !empty( $this->eventtypes ) ) {
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 						echo $this->loadTemplate('events_tabs');
 					}
 					break;
 				case 2:
-					/** Table/Ticker layout */
+//					/** Table/Ticker layout 
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 					echo $this->loadTemplate('events_ticker');
 					break;
@@ -330,21 +331,21 @@ if (!empty($this->matchplayerpositions ))
 			switch ($this->config['use_tabs_events'])
 			{
 				case 0:
-					/** No tabs */
+//					/** No tabs 
 					if ( !empty( $this->eventtypes ) ) {
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 						echo $this->loadTemplate('events');
 					}
 					break;
 				case 1:
-					/** Tabs */
+//					/** Tabs 
 					if ( !empty( $this->eventtypes ) ) {
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 						echo $this->loadTemplate('events_tabs');
 					}
 					break;
 				case 2:
-					/** Table/Ticker layout */
+//					/** Table/Ticker layout 
 					echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'), 'panel'.($idxTab++));
 					echo $this->loadTemplate('events_ticker');
 					break;
@@ -376,6 +377,8 @@ if (!empty($this->matchplayerpositions ))
   }
   else
   {
+*/
+    
   // diddipoeler
   // anzeige als tabs oder slider von joomlaworks
   $startoutput = '';
@@ -408,7 +411,7 @@ if (!empty($this->matchplayerpositions ))
 
     echo JHTML::_('content.prepare', $params); 
     
-  }
+  //}
   
 	echo "<div>";
 		echo $this->loadTemplate('backbutton');
