@@ -870,7 +870,7 @@ $this->team_strlen = strlen($temp->secondname);
 //$query = $query2;
 $query->clear('where');
 $query->where('m.published = 1 ');  
-$query->where('(m.projectteam1_id = '.$key->projectteam1_id.' or m.projectteam2_id = '.$key->projectteam1_id.' )');
+$query->where('(m.projectteam1_id = '.$key->projectteam2_id.' or m.projectteam2_id = '.$key->projectteam2_id.' )');
 $query->where('r.id = '.$round->id);
 $query->where('r.project_id = '.$this->projectid);
 
