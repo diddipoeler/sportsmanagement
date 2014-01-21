@@ -140,7 +140,11 @@ $query = $db->getQuery(true);
 		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			$path=JURI::root().'media/com_sportsmanagement/flags/'.strtolower($iso2).'.png';
+			$path = JURI::root().'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+            if ( !JFile::exists(JPATH_SITE.DS.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
+			{
+                $path = JURI::root().'administrator/components/com_sportsmanagement/assets/images/delete.png';
+            }    
 			return $path;
 		}
 		return null;
@@ -155,7 +159,7 @@ $query = $db->getQuery(true);
 	 */
 	public static function getCountryFlag($countrycode,$attributes='')
 	{
-		$src=self::getIso3Flag($countrycode);
+		$src = self::getIso3Flag($countrycode);
 		if (!$src){return '';}
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
 		$html .= 'title="'.self::getCountryName($countrycode).'" '.$attributes.' />';
