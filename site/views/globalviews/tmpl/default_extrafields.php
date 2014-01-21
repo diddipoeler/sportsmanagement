@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -35,27 +35,37 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/
-defined( '_JEXEC' ) or die( 'Restricted access' );
+*/ 
 
-jimport( 'joomla.application.component.view' );
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementViewgooglemap
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementViewgooglemap extends JView
+?>
+<table width="100%" class="contentpaneopen">
+	<tr>
+		<td class="contentheading"><?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
+		</td>
+	</tr>
+</table>
+
+<table>
+<tbody>
+<?php
+if ( $this->extrafields )
 {
-	function display( $tpl = null )
-	{
-	
-		parent::display( $tpl );
-	}
-
+foreach ($this->extrafields as $field)
+{
+$value = $field->fvalue;
+if (!empty($value)) // && !$field->backendonly)
+{
+?>
+<tr>
+<td class="label"><?php echo $field->name; ?></td>
+<td class="data"><?php echo $field->fvalue; ?></td>
+<tr>
+<?php
+}
+}
 }
 ?>
+</tbody>
+</table>

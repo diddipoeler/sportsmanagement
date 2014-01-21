@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -35,27 +35,77 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/
-defined( '_JEXEC' ) or die( 'Restricted access' );
+*/ 
 
-jimport( 'joomla.application.component.view' );
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementViewgooglemap
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementViewgooglemap extends JView
-{
-	function display( $tpl = null )
-	{
-	
-		parent::display( $tpl );
-	}
-
-}
 ?>
+<!-- EXTENDED DATA-->
+<?php
+if(count($this->extended->getFieldsets()) > 0)
+{
+	// fieldset->name is set in the backend and is localized, so we need the backend language file here
+	//JFactory::getLanguage()->load('COM_SPORTSMANAGEMENT', JPATH_ADMINISTRATOR);
+	
+	foreach ($this->extended->getFieldsets() as $fieldset)
+	{
+		if ( $this->config['show_extended_geo_values'] )
+        {
+            $fields = $this->extended->getFieldset($fieldset->name);
+        }
+        else
+        {
+            $fields = $this->extended->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
+        }
+		
+        if (count($fields) > 0)
+		{
+			// Check if the extended data contains information 
+			$hasData = false;
+			foreach ($fields as $field)
+			{
+				// TODO: backendonly was a feature of JLGExtraParams, and is not yet available.
+				//       (this functionality probably has to be added later)
+				$value = $field->value;	// Remark: empty($field->value) does not work, using an extra local var does
+				if (!empty($value)) // && !$field->backendonly
+				{
+					$hasData = true;
+					break;
+				}
+			}
+			// And if so, display this information
+			if ($hasData)
+			{
+				?>
+				
+                <div class="contentpaneopen">
+		<div class="contentheading">
+			<?php echo '&nbsp;' . JText::_($fieldset->name); ?>
+		</div>
+	</div>
+				<table>
+					<tbody>
+				<?php
+				foreach ($fields as $field)
+				{
+					$value = $field->value;
+					if (!empty($value)) // && !$field->backendonly)
+					{
+						?>
+						<tr>
+							<td class="label"><?php echo $field->label; ?></td>
+							<td class="data"><?php echo $field->value;?></td>
+						<tr>
+						<?php
+					}
+				}
+				?>
+					</tbody>
+				</table>
+				<br/>
+				<?php
+			}
+		}
+	}
+}
+?>	

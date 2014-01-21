@@ -13,7 +13,7 @@ echo 'club clubassoc<pre>',print_r($this->clubassoc,true),'</pre><br>';
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('projectheading', 'backbutton', 'footer', 'googlemap');
+$templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 ?>
@@ -36,7 +36,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
   
   if (($this->config['show_extra_fields'])==1)
 	{
-	$output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extra_fields';
+	$output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
 	}
     
     if (($this->config['show_extended'])==1)
@@ -71,7 +71,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 	//fix me
     if (($this->config['show_extra_fields'])==1)
 	{
-		echo $this->loadTemplate('extra_fields');
+		echo $this->loadTemplate('extrafields');
 		echo "<div class='jl_defaultview_spacing'>";
 		echo "&nbsp;";
 		echo "</div>";	

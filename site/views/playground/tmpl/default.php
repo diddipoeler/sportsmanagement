@@ -3,7 +3,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('projectheading', 'backbutton', 'footer', 'googlemap');
+$templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
 ?>

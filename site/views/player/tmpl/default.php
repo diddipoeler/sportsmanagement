@@ -13,7 +13,7 @@ echo 'player view person_parent_positions<pre>',print_r($this->person_parent_pos
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('projectheading', 'backbutton', 'footer');
+$templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if (isset($this->person))
 {
@@ -60,7 +60,7 @@ if (isset($this->person))
     
     if ($this->config['show_extra_fields'] == 1)
 	{
-		$output[intval($this->config['show_order_extra_fields'])] = 'extra_fields';
+		$output[intval($this->config['show_order_extra_fields'])] = 'extrafields';
 	}
     
     if ($this->config['show_extended'] == 1 && $this->hasExtendedData )

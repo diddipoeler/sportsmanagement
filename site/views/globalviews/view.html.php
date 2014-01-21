@@ -40,8 +40,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
+
+
 /**
- * sportsmanagementViewgooglemap
+ * sportsmanagementViewglobalviews
  * 
  * @package   
  * @author 
@@ -49,7 +51,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewgooglemap extends JView
+class sportsmanagementViewglobalviews extends JView
 {
 	function display( $tpl = null )
 	{
