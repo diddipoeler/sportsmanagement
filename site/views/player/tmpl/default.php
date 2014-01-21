@@ -91,7 +91,7 @@ if (isset($this->person))
 	{
 		$output[intval($this->config['show_order_stcareer'])] = 'playerstaffcareer';
 	}
-    
+/*    
     if ( $this->use_joomlaworks == 0 )
     {
 	// diddipoeler
@@ -132,6 +132,7 @@ if (isset($this->person))
     }
     else
     {
+*/        
     // diddipoeler
     // anzeige als tabs oder slider von joomlaworks
     // und die spielerinfo immer als erstes
@@ -176,7 +177,7 @@ if (isset($this->person))
 	}
     
      
-    }
+    //}
 	// Person view END
 
 	echo "<div>";
