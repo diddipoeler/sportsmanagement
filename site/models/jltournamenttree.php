@@ -389,7 +389,7 @@ $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS c2');
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp2 ON c2.id = tp2.person_id');
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
-$query2 = $query;       
+//$query2 = $query;       
 }
 else
 {    
@@ -415,7 +415,7 @@ $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id 
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp2 ON t2.id = tp2.team_id');
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
-$query2 = $query;
+//$query2 = $query;
 }
 
 $query->group('m.id ');  
@@ -442,8 +442,9 @@ $result = $db->loadObjectList();
 		
 if ( $this->debug_info )
 {
+echo '1.) zaehler -> <br /><pre>~'.print_r($zaehler,true).'~</pre><br />';
 echo '1.) query -> <br /><pre>~'.print_r($query,true).'~</pre><br />';
-//echo '1.) subQuery -> <br /><pre>~'.print_r($subQuery,true).'~</pre><br />';
+echo '1.) query2 -> <br /><pre>~'.print_r($query2,true).'~</pre><br />';
 echo '1.) result -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
 }
   
@@ -671,8 +672,9 @@ echo '2.) Roundcode &uuml;bernommen -> <br /><pre>~'.print_r($roundcode,true).'~
 
 foreach ( $this->bracket[$roundcode] as $key  )
 {
-unset($query);
-$query = $query2;
+//unset($query);
+//$query = $query2;
+$query->clear('where');
 $query->where('m.published = 1 ');  
 $query->where('(m.projectteam1_id = '.$key->projectteam1_id.' or m.projectteam2_id = '.$key->projectteam1_id.' )');
 $query->where('r.project_id = '.$this->projectid);
@@ -862,8 +864,9 @@ $this->team_strlen = strlen($temp->secondname);
 }
 
 }
-unset($query);
-$query = $query2;
+//unset($query);
+//$query = $query2;
+$query->clear('where');
 $query->where('m.published = 1 ');  
 $query->where('(m.projectteam1_id = '.$key->projectteam1_id.' or m.projectteam2_id = '.$key->projectteam1_id.' )');
 $query->where('r.id = '.$round->id);
@@ -1174,7 +1177,7 @@ $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS 
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 
-$query = $query2;        
+//$query = $query2;        
 }
 else
 {
@@ -1201,7 +1204,7 @@ $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp
 $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 
-$query = $query2;
+//$query = $query2;
 }
 
 
