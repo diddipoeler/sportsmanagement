@@ -3,6 +3,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.filesystem.folder');
+JFormHelper::loadFieldClass('list');
 
 /**
  * JFormFieldactseason
