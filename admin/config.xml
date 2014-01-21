@@ -256,11 +256,12 @@
 <!-- register 3 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
-		addfieldpath="/administrator/components/com_sportsmanagement/elements">
-
+		
+  	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 <field name="current_season" 
 type="actseason" 
-multiple=""  
+multiple="true"  
     default=""
     size="10"
 
