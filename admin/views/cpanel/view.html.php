@@ -111,8 +111,9 @@ class sportsmanagementViewcpanel extends JView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
-        $this->aktversion = $model->checkUpdateVersion();
+        //$this->aktversion = $model->checkUpdateVersion();
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->aktversion,true).'</pre>'),'Notice');
+        
         if ( !$this->aktversion )
         {
             $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE'),'');
