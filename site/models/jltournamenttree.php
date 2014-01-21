@@ -433,6 +433,7 @@ unset($export);
 switch ($zaehler)
 {
 case 1:
+$query->clear('where');
 $query->where('m.published = 1 ');  
 $query->where('r.id = '.$round->id);
 $query->where('r.project_id = '.$this->projectid);
@@ -675,7 +676,8 @@ foreach ( $this->bracket[$roundcode] as $key  )
 //unset($query);
 //$query = $query2;
 $query->clear('where');
-$query->where('m.published = 1 ');  
+$query->where('m.published = 1 ');
+$query->where('r.id = '.$round->id);    
 $query->where('(m.projectteam1_id = '.$key->projectteam1_id.' or m.projectteam2_id = '.$key->projectteam1_id.' )');
 $query->where('r.project_id = '.$this->projectid);
 
