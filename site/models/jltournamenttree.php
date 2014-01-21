@@ -346,8 +346,8 @@ $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
 
-$query2 = $db->getQuery(true);
-$query3 = $db->getQuery(true);
+//$query2 = $db->getQuery(true);
+//$query3 = $db->getQuery(true);
 
 $subQuery = $db->getQuery(true);
 $subQuery2 = $db->getQuery(true);
@@ -1117,7 +1117,7 @@ break;
 
 case 2:
 //$varteams[] = '[{name: "'.substr($key->firstname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.substr($key->secondname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
-$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
 break;
     
 }
@@ -1150,7 +1150,7 @@ $user = JFactory::getUser();
 
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
-$query2 = $db->getQuery(true);
+//$query2 = $db->getQuery(true);
 $subQuery = $db->getQuery(true);
 $subQuery2 = $db->getQuery(true);
     
