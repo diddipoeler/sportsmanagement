@@ -5290,7 +5290,8 @@ $this->dump_variable("import_team", $import_team);
             );
             // Conditions for which records should be updated.
             $conditions = array(
-            $db->quoteName('team_id') . '=' . $proteam->team_id
+            $db->quoteName('team_id') . '=' . $proteam->team_id,
+            $db->quoteName('project_id') . '=' . $this->_project_id
             );
             $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
             $db->setQuery($query);
