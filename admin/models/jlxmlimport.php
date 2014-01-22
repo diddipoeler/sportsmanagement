@@ -5253,7 +5253,7 @@ $this->dump_variable("import_team", $import_team);
             if ( $new_team_id )
             {
                 $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'mannschaft vorhanden season_team_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= JText::sprintf(	'mannschaft vorhanden alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$proteam->team_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_team_id</strong>"
@@ -5289,7 +5289,7 @@ $this->dump_variable("import_team", $import_team);
 			}
             
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'mannschaft nicht vorhanden und angelegt season_team_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= JText::sprintf(	'mannschaft nicht vorhanden und angelegt alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$proteam->team_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_team_id</strong>"
@@ -5312,8 +5312,14 @@ $this->dump_variable("import_team", $import_team);
             );
             $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
             $db->setQuery($query);
-            $result = $db->query();
+            //$result = $db->query();
             
+            if ( !$db->query())
+            {
+            $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' -> '.'<pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');    
+            }
+            else
+            {
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 						$my_text .= JText::sprintf(	'mannschaft updaten _project_team new_team_id: %1$s - proteam->team_id: %2$s - projekt: %3$s',
 													"</span><strong>$new_team_id</strong>",
@@ -5321,7 +5327,7 @@ $this->dump_variable("import_team", $import_team);
                                                     "<strong>$this->_project_id</strong>"
 													);
 						$my_text .= '<br />';
-                        
+            }            
             }    
             
             // die spieler verarbeiten
