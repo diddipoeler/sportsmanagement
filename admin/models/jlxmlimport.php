@@ -3000,6 +3000,8 @@ $this->dump_variable("import_team", $import_team);
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
 			$p_projectteam->set('project_id',$this->_project_id);
 			$p_projectteam->set('team_id',$this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
+            
+            $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
 
 //$this->dump_variable(__FUNCTION__." _convertTeamID -> team_id", $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
 
@@ -3057,8 +3059,9 @@ $this->dump_variable("import_team", $import_team);
 			else
 			{
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new projectteam data: %1$s',
-											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>');
+				$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
+											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
+                                            '<strong>'.$team_id.'</strong>');
 				$my_text .= '<br />';
 			}
 			$insertID = $p_projectteam->id;//$this->_db->insertid();
