@@ -3742,12 +3742,15 @@ $this->dump_variable("import_team", $import_team);
 					}
 
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s ',
+					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
 									'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$teamname1</strong>",
                                     "<strong>$teamname2</strong>",
 									"<strong>$match->projectteam1_id</strong>",
-                                    "<strong>$match->projectteam2_id</strong>");
+                                    "<strong>$match->projectteam2_id</strong>",
+                                    "<strong>$team1</strong>",
+                                    "<strong>$team2</strong>"
+                                    );
 					$my_text .= '<br />';
 				}
 
