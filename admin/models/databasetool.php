@@ -726,6 +726,8 @@ foreach( $xml->document->events as $event )
 	
     // insert events
     $i = 0;
+    if ( isset($this->_sport_types_events[$type]) )
+    {
     foreach ( $this->_sport_types_events[$type] as $event )
     {
         $query = self::build_SelectQuery('eventtypes',$event->name,$id); 
@@ -759,10 +761,12 @@ foreach( $xml->document->events as $event )
         }
         $i++;
     }
-    
+}
     // standardpositionen einf�gen
     $i = 0;
     $j = 0;
+    if ( isset($this->_sport_types_position[$type]) )
+    {
     foreach ( $this->_sport_types_position[$type] as $position )
     {
     $query = self::build_SelectQuery('position',$position->name,$id); 
@@ -849,7 +853,7 @@ foreach( $xml->document->events as $event )
     
     $i++;
     }
-    
+    }
     
     }
     
