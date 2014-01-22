@@ -1,3 +1,12 @@
+var windowWidth = $(window).width(); //retrieve current window width
+var windowHeight = $(window).height(); //retrieve current window height
+var documentWidth = $(document).width(); //retrieve current document width
+var documentHeight = $(document).height(); //retrieve current document height
+var vScrollPosition = $(document).scrollTop(); //retrieve the document scroll ToP position
+var hScrollPosition = $(document).scrollLeft(); //retrieve the document scroll Left position
+
+
+
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
