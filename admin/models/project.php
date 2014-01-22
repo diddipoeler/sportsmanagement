@@ -302,8 +302,8 @@ class sportsmanagementModelProject extends JModelAdmin
 		{
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pk);
-            // wir löschen mit join
-            /*
+            // wir lï¿½schen mit join
+            
             $query = 'DELETE QUICK t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
@@ -347,7 +347,9 @@ class sportsmanagementModelProject extends JModelAdmin
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
             ON t20.treeto_id = t18.id
             WHERE p.id IN ('.$cids.')';
-            */
+            
+            
+            /*
             $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
             JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
@@ -391,6 +393,7 @@ class sportsmanagementModelProject extends JModelAdmin
             JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
             ON t20.treeto_id = t18.id
             WHERE p.id IN ('.$cids.')';
+            */
             $db->setQuery($query);
             $db->query();
             if (!$db->query()) 
