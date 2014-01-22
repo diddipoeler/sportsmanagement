@@ -2877,7 +2877,7 @@ $this->dump_variable("import_team", $import_team);
 					$defaultvalues = explode('\n', $t_params);
 					$parameter = new JRegistry;
 			$ini = $parameter->loadINI($defaultvalues[0]);
-			$ini = $parameter->toArray($ini);;
+			$ini = $parameter->toArray($ini);
 			$t_params = json_encode( $ini );		
 					$p_template->set('params',$t_params);
 					if	((strtolower(substr($template,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) &&
@@ -2900,7 +2900,7 @@ $this->dump_variable("import_team", $import_team);
 						{
 							$dTitle=(!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
 							$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-							$my_text .= JText::sprintf('Created new template data: %1$ [%2$]',"</span><strong>$dTitle</strong>","><strong>$t_params</strong>);
+							$my_text .= JText::sprintf('Created new template data: %1$ [%2$]',"</span><strong>$dTitle</strong>","<strong>$t_params</strong>");
 							$my_text .= '<br />';
 						}
 					}
