@@ -6,6 +6,17 @@ var vScrollPosition = $(document).scrollTop(); //retrieve the document scroll To
 var hScrollPosition = $(document).scrollLeft(); //retrieve the document scroll Left position
 
 
+function get_documentWidth()
+{
+var documentWidth = jQuery(document).width();
+return documentWidth ;
+}
+
+function get_documentHeight()
+{
+var documentHeight = jQuery(document).height();
+return documentHeight ;
+}
 
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
