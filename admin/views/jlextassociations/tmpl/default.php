@@ -54,6 +54,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
           
           <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
+		  <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
           
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
@@ -107,11 +108,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td style="text-align:center; ">
             <?php
-            $path = JURI::root().$row->assocflag;
-          $attributes='';
-					$html = '<img src="'.$path.'" alt="'.$row->name.'" ';
-		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
-					echo $html;
+//            $path = JURI::root().$row->assocflag;
+//          $attributes='';
+//		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
+//					echo $html;
+?>                                    
+<a href="<?php echo JURI::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JURI::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
+</a>
+<?PHP					
+            ?>
+            </td>
+			<td style="text-align:center; ">
+            <?php
+//            $path = JURI::root().$row->assocflag;
+//          $attributes='';
+//		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
+//					echo $html;
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+</a>
+<?PHP					
             ?>
             </td>
             <td class="order">
