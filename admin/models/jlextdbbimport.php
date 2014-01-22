@@ -74,6 +74,15 @@ jimport( 'joomla.utilities.utility' );
 
 
 
+/**
+ * sportsmanagementModeljlextdbbimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModeljlextdbbimport extends JModel
 {
 

@@ -70,6 +70,15 @@ jimport( 'joomla.utilities.utility' );
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
 
+/**
+ * sportsmanagementModeljlextprofleagimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModeljlextprofleagimport extends JModel
 {
   var $_datas=array();

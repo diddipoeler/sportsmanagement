@@ -3739,30 +3739,32 @@ $this->dump_variable("import_team", $import_team);
 					}
 
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s',
+					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s ',
 									'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$teamname1</strong>",
-									"<strong>$teamname2</strong>");
+                                    "<strong>$teamname2</strong>",
+									"<strong>$match->projectteam1_id</strong>",
+                                    "<strong>$match->projectteam2_id</strong>");
 					$my_text .= '<br />';
 				}
 
-				if ($this->import_version=='OLD')
+				if ($this->import_version == 'OLD')
 				{
 					if ($match->matchpart1 > 0)
 					{
-						$teamname1=$this->_getTeamName2($this->_convertTeamID[intval($match->matchpart1)]);
+						$teamname1 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart1)]);
 					}
 					else
 					{
-						$teamname1='<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+						$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
 					}
 					if ($match->matchpart2 > 0)
 					{
-						$teamname2=$this->_getTeamName2($this->_convertTeamID[intval($match->matchpart2)]);
+						$teamname2 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart2)]);
 					}
 					else
 					{
-						$teamname2='<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
+						$teamname2 = '<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
 					}
 
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';

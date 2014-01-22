@@ -49,6 +49,15 @@ $maxImportTime=480;
 
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModeljlextDfbkeyimport extends JModel
 {
 
