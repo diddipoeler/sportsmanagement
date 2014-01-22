@@ -5209,7 +5209,8 @@ $this->dump_variable("import_team", $import_team);
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('project_referee_id') . '=' . $protref->id
+                $db->quoteName('project_referee_id') . '=' . $protref->id,
+                $db->quoteName('project_id') . '=' . $this->_project_id
                 );
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'))->set($fields)->where($conditions);
                 $db->setQuery($query);
@@ -5304,6 +5305,15 @@ $this->dump_variable("import_team", $import_team);
             $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
             $db->setQuery($query);
             $result = $db->query();
+            
+            $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+						$my_text .= JText::sprintf(	'mannschaft updaten _project_team new_team_id: %1$s - proteam->team_id: %2$s - projekt: %3$s',
+													"</span><strong>$new_team_id</strong>",
+													"<strong>$proteam->team_id</strong>",
+                                                    "<strong>$this->_project_id</strong>"
+													);
+						$my_text .= '<br />';
+                        
             }    
             
             // die spieler verarbeiten
