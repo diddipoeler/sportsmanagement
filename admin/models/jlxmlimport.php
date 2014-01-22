@@ -2871,7 +2871,15 @@ $this->dump_variable("import_team", $import_team);
 					//$p_template->set('func',$this->_getDataFromObject($value,'func'));
 					$p_template->set('title',$this->_getDataFromObject($value,'title'));
 					$p_template->set('project_id',$this->_project_id);
-					$p_template->set('params',$this->_getDataFromObject($value,'params'));
+					
+					$t_params = $this->_getDataFromObject($value,'params');
+					$defaultvalues = array();
+					$defaultvalues = explode('\n', $t_params);
+					$parameter = new JRegistry;
+			$ini = $parameter->loadINI($defaultvalues[0]);
+			$ini = $parameter->toArray($ini);;
+			$t_params = json_encode( $ini );		
+					$p_template->set('params',$t_params);
 					if	((strtolower(substr($template,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) &&
 						($template!='do_tipsl') &&
 						($template!='frontpage') &&
@@ -2892,7 +2900,7 @@ $this->dump_variable("import_team", $import_team);
 						{
 							$dTitle=(!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
 							$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-							$my_text .= JText::sprintf('Created new template data: %1$s',"</span><strong>$dTitle</strong>");
+							$my_text .= JText::sprintf('Created new template data: %1$ [%2$]',"</span><strong>$dTitle</strong>","><strong>$t_params</strong>);
 							$my_text .= '<br />';
 						}
 					}
