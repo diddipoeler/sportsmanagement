@@ -5300,6 +5300,13 @@ $this->dump_variable("import_team", $import_team);
             // die project team tabelle updaten
             if ( $new_team_id )
             {
+            
+            $mdl = JModel::getInstance("projectteam", "sportsmanagementModel");
+            $row = $mdl->getTable();
+            $row->load($proteam->id);
+            $row->team_id = $new_team_id;
+            
+            /*
             // Fields to update.
             $query = $db->getQuery(true);
             $fields = array(
@@ -5313,8 +5320,8 @@ $this->dump_variable("import_team", $import_team);
             $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
             $db->setQuery($query);
             //$result = $db->query();
-            
-            if ( !$db->query())
+            */
+            if ( !$row->store() )
             {
             $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' -> '.'<pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');    
             }
