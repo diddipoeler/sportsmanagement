@@ -112,6 +112,7 @@ class sportsmanagementViewClubPlan extends JView
 	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
 
 	$lists['type'] = $opp_arr;
+    $this->assignRef('lists', $lists);
 
 		// Set page title
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
