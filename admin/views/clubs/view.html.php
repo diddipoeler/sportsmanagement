@@ -14,12 +14,16 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
+
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewClubs
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewClubs extends JView
 {

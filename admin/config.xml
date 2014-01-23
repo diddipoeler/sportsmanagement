@@ -140,7 +140,13 @@
 			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
 			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
 		</field>
-		
+	</fieldset>
+  
+<!-- register 2 -->		
+	<fieldset name="sis-konfiguration"
+	label="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_LABEL"
+		description="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_DESC"
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  	
 		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER" 
           description="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER_DESC" />
      
@@ -152,7 +158,7 @@
 			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
-<!-- register 2 -->		
+<!-- register 3 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
@@ -252,7 +258,7 @@
 				
 	</fieldset>
 
-<!-- register 3 -->	
+<!-- register 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 		

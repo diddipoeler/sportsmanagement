@@ -15,12 +15,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view' );
 #require_once ('libraries/joomla/factory.php');
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @author	Kurt Norgaz
- * @package	Joomleague
- * @since	1.5.0a
+ * sportsmanagementViewJLXMLImport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewJLXMLImport extends JView
 {
@@ -35,8 +38,10 @@ class sportsmanagementViewJLXMLImport extends JView
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
 		JToolBarHelper::back();
-		#JLToolBarHelper::save( 'save', 'Import' );
-		JLToolBarHelper::onlinehelp();
+		
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 		$db		= JFactory::getDBO();
 		$uri	= JFactory::getURI();

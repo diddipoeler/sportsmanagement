@@ -15,12 +15,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view' );
 jimport('joomla.html.parameter.element.timezones');
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @author	diddipoeler
- * @package	SportsManagement
- * @since	1.5.0a
+ * sportsmanagementViewJLXMLImports
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewJLXMLImports extends JView
 {
@@ -73,6 +76,10 @@ class sportsmanagementViewJLXMLImports extends JView
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('config',$config);
         $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
+        
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 		parent::display($tpl);
 	}
@@ -100,6 +107,8 @@ class sportsmanagementViewJLXMLImports extends JView
        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
+		
+        JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
         
@@ -201,7 +210,10 @@ class sportsmanagementViewJLXMLImports extends JView
 		//                       task    image  mouseover_img           alt_text_for_image              check_that_standard_list_item_is_checked
 		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
+		
+        JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 		parent::display($tpl);
 	}
@@ -231,6 +243,10 @@ class sportsmanagementViewJLXMLImports extends JView
 		$this->assign('importData',$model->importData($post));
 		$this->assign('postData',$post);
         $this->assignRef('option',$option);
+        
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 		parent::display($tpl);
 	}

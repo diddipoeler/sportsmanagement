@@ -505,6 +505,46 @@ class sportsmanagementModelJLXMLImport extends JModel
                 }
             }    
             }
+            
+            if ( isset($this->_datas['teamplayer']) )
+            {
+            foreach ($this->_datas['teamplayer'] as $temppicture)
+            {
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                }
+            }    
+            }
+            
+            if ( isset($this->_datas['teamstaff']) )
+            {
+            foreach ($this->_datas['teamstaff'] as $temppicture)
+            {
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                }
+            }    
+            }
+            
+            if ( isset($this->_datas['projectreferee']) )
+            {
+            foreach ($this->_datas['projectreferee'] as $temppicture)
+            {
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                }
+            }    
+            }
+            
             if ( isset($this->_datas['team']) )
             {
             foreach ($this->_datas['team'] as $temppicture)
@@ -517,6 +557,20 @@ class sportsmanagementModelJLXMLImport extends JModel
                 }
             }    
             }
+            
+            if ( isset($this->_datas['projectteam']) )
+            {
+            foreach ($this->_datas['projectteam'] as $temppicture)
+            {
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                {
+                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                }
+            }    
+            }
+            
             if ( isset($this->_datas['club']) )
             {
             foreach ($this->_datas['club'] as $temppicture)
@@ -605,6 +659,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport match<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');
             
             // länder bei den spielorten vervollständigen
+            // bilderpfad ändern
             if ( isset($this->_datas['playground']) )
             {
             foreach ($this->_datas['playground'] as $playground )
