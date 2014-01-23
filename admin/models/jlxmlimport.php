@@ -2999,7 +2999,54 @@ $this->dump_variable("import_team", $import_team);
 //$this->dump_variable("import_projectteam", $import_projectteam);
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
 			$p_projectteam->set('project_id',$this->_project_id);
-			$p_projectteam->set('team_id',$this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
+            $p_projectteam->set('picture',$this->_getDataFromObject($projectteam,'picture'));
+            
+/**
+* jetzt erfolgt die umsetzung der team_id in die neue struktur 
+* $p_projectteam->set('team_id',$this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
+*/            
+			$team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
+            // ist das team schon durch ein anderes projekt angelegt ?
+            $query = $db->getQuery(true);
+		    $query->select('id');		
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->where('t.team_id = '.$team_id);
+            $query->where('t.season_id = '.$this->_season_id);
+		    $db->setQuery($query);
+		    $new_team_id = $db->loadResult();
+            if ( $new_team_id )
+            {
+                $p_projectteam->set('team_id',$new_team_id);
+            }
+            else
+            {
+            // Create a new query object.
+            $insertquery = $db->getQuery(true);
+            // Insert columns.
+            $columns = array('team_id','season_id','picture');
+            // Insert values.
+            $values = array($team_id,$this->_season_id,'\''.$p_projectteam->picture.'\'');
+            // Prepare the insert query.
+            $insertquery
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+            // Set the query using our newly populated query object and execute it.
+            $db->setQuery($insertquery);
+            
+			if (!$db->query())
+			{
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			}
+			else
+			{
+                // die neue id übergeben
+                $new_team_id = $db->insertid();
+                $p_projectteam->set('team_id',$new_team_id);
+			}
+            }
+            
+            
             
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
 
@@ -5249,7 +5296,11 @@ $this->dump_variable("import_team", $import_team);
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
 		    $new_team_id = $db->loadResult();
-                        
+/**
+ * das musste ich aussternen, da die aktualisierung in die neuen strukturen hier
+ * zu spät ist. ein update der projectteam tabelle ist nicht so einfach möglich. 
+ */
+/*                        
             if ( $new_team_id )
             {
                 $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -5305,22 +5356,7 @@ $this->dump_variable("import_team", $import_team);
             $row = $mdl->getTable();
             $row->load($proteam->id);
             $row->team_id = $new_team_id;
-            
-            /*
-            // Fields to update.
-            $query = $db->getQuery(true);
-            $fields = array(
-            $db->quoteName('team_id') . '=' . $new_team_id
-            );
-            // Conditions for which records should be updated.
-            $conditions = array(
-            $db->quoteName('team_id') . '=' . $proteam->team_id,
-            $db->quoteName('project_id') . '=' . $this->_project_id
-            );
-            $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team'))->set($fields)->where($conditions);
-            $db->setQuery($query);
-            //$result = $db->query();
-            */
+
             if ( !$row->store() )
             {
             $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' -> '.'<pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');    
@@ -5336,6 +5372,7 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= '<br />';
             }            
             }    
+*/
             
             // die spieler verarbeiten
             $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
