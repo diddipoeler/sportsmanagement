@@ -66,10 +66,10 @@ class sportsmanagementModelTeamPlan extends JModel
 	{
 		
 
-		$this->projectid=JRequest::getInt('p',0);
-		$this->teamid=JRequest::getInt('tid',0);
-		$this->divisionid=JRequest::getInt('division',0);
-		$this->mode=JRequest::getInt("mode",0);
+		$this->projectid = JRequest::getInt('p',0);
+		$this->teamid = JRequest::getInt('tid',0);
+		$this->divisionid = JRequest::getInt('division',0);
+		$this->mode = JRequest::getInt("mode",0);
         parent::__construct();
 	}
 
@@ -113,13 +113,20 @@ class sportsmanagementModelTeamPlan extends JModel
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ON t.id = st.team_id ');
         // Where
         $query->where('pt.project_id = '.$this->projectid);
-        $query->where('t.team_id='.$this->teamid);
+        $query->where('t.id='.$this->teamid);
                  
 		$db->setQuery($query,0,1);
 		if (! $result = $db->loadResult())
 		{
-			return 0;
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+            return 0;
 		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        }
+        
 		return $result;
 	}
 
