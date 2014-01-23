@@ -142,7 +142,11 @@ class sportsmanagementModelClubInfo extends JModel
 	
     function getClub( )
 	{
-		$this->projectid = JRequest::getInt( "p", 0 );
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $this->projectid = JRequest::getInt( "p", 0 );
 		$this->clubid = JRequest::getInt( "cid", 0 );
         if ( is_null( $this->club ) )
 		{
@@ -150,10 +154,10 @@ class sportsmanagementModelClubInfo extends JModel
 			{
 				$query = ' SELECT c.*'
 				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c '
-				       . ' WHERE c.id = '. $this->_db->Quote($this->clubid)
+				       . ' WHERE c.id = '. $db->Quote($this->clubid)
 				            ;
-				$this->_db->setQuery($query);
-				$this->club = $this->_db->loadObject();
+				$db->setQuery($query);
+				$this->club = $db->loadObject();
 			}
 		}
 		return $this->club;
@@ -161,7 +165,11 @@ class sportsmanagementModelClubInfo extends JModel
 
 	function getTeamsByClubId()
 	{
-		$teams = array( 0 );
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $teams = array( 0 );
 		if ( $this->clubid > 0 )
 		{
 
@@ -185,15 +193,19 @@ class sportsmanagementModelClubInfo extends JModel
 on prot.team_id = t.id'
 				       . ' WHERE club_id = '.(int) $this->clubid. ' group by t.id';
 
-			$this->_db->setQuery( $query );
-			$teams = $this->_db->loadObjectList();
+			$db->setQuery( $query );
+			$teams = $db->loadObjectList();
 		}
 		return $teams;
 	}
 
 	function getStadiums()
 	{
-		$stadiums = array();
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $stadiums = array();
 
 		$club = $this->getClub();
 		if ( !isset( $club ) )
@@ -218,8 +230,8 @@ on prot.team_id = t.id'
 				{
 					$query .= ' AND standard_playground <> '.$club->standard_playground;
 				}
-				$this->_db->setQuery($query);
-				if ( $res = $this->_db->loadResult() )
+				$db->setQuery($query);
+				if ( $res = $db->loadResult() )
 				{
 					$stadiums[] = $res;
 				}
@@ -230,7 +242,11 @@ on prot.team_id = t.id'
 
 	function getPlaygrounds( )
 	{
-		$playgrounds = array();
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $playgrounds = array();
 
 		$stadiums = $this->getStadiums();
 		if ( !isset ( $stadiums ) )
@@ -243,56 +259,60 @@ on prot.team_id = t.id'
 			$query = '	SELECT id AS value, name AS text, pl.*, '
     			     . ' CASE WHEN CHAR_LENGTH( pl.alias ) THEN CONCAT_WS( \':\', pl.id, pl.alias ) ELSE pl.id END AS slug '
 				     . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl '
-				     . ' WHERE id = '. $this->_db->Quote($stadium)
+				     . ' WHERE id = '. $db->Quote($stadium)
 			            ;
-			$this->_db->setQuery($query, 0, 1);
-			$playgrounds[] = $this->_db->loadObject();
+			$db->setQuery($query, 0, 1);
+			$playgrounds[] = $db->loadObject();
 		}
 		return $playgrounds;
 	}
 
-	function getGoogleApiKey( )
-	{
-		$option = JRequest::getCmd('option');
-        $params = JComponentHelper::getParams($option);
-		$apikey=$params->get('cfg_google_api_key');
-		return $apikey;
-	}
+/**
+ * 	function getGoogleApiKey( )
+ * 	{
+ * 		$option = JRequest::getCmd('option');
+ *         $params = JComponentHelper::getParams($option);
+ * 		$apikey=$params->get('cfg_google_api_key');
+ * 		return $apikey;
+ * 	}
+ */
 
-	function getGoogleMap( $mapconfig, $address_string = "" )
-	{
-		$gm = null;
+/**
+ * 	function getGoogleMap( $mapconfig, $address_string = "" )
+ * 	{
+ * 		$gm = null;
 
-		$google_api_key = $this->getGoogleApiKey();
-		if ( ( trim( $google_api_key ) != "" ) &&
-		( trim( $address_string ) != "" ) )
-		{
-			$gm = new EasyGoogleMap( $google_api_key, "jl_pg_map" );
+ * 		$google_api_key = $this->getGoogleApiKey();
+ * 		if ( ( trim( $google_api_key ) != "" ) &&
+ * 		( trim( $address_string ) != "" ) )
+ * 		{
+ * 			$gm = new EasyGoogleMap( $google_api_key, "jl_pg_map" );
 
-			$width = ( is_int( $mapconfig['width'] ) ) ? $mapconfig['width'].'px' : $mapconfig['width'];
+ * 			$width = ( is_int( $mapconfig['width'] ) ) ? $mapconfig['width'].'px' : $mapconfig['width'];
 
-			$gm->SetMapWidth( $mapconfig['width'] );
-			$gm->SetMapHeight( $mapconfig['height'] );
-			$gm->SetMapControl( $mapconfig['map_control'] );
-			$gm->SetMapDefaultType( $mapconfig['default_map_type'] );
+ * 			$gm->SetMapWidth( $mapconfig['width'] );
+ * 			$gm->SetMapHeight( $mapconfig['height'] );
+ * 			$gm->SetMapControl( $mapconfig['map_control'] );
+ * 			$gm->SetMapDefaultType( $mapconfig['default_map_type'] );
 
-			if ( intval( $mapconfig['map_zoom'] ) > 0 )
-			{
-				$gm->SetMapZoom( intval( $mapconfig['map_zoom'] ) );
-			}
+ * 			if ( intval( $mapconfig['map_zoom'] ) > 0 )
+ * 			{
+ * 				$gm->SetMapZoom( intval( $mapconfig['map_zoom'] ) );
+ * 			}
 
-			$gm->mScale = ( intval( $mapconfig['map_scale'] ) > 0 ) ? TRUE : FALSE;
-			$gm->mMapType = ( intval( $mapconfig['map_type_select']) > 0 ) ? TRUE : FALSE;
-			$gm->mContinuousZoom = ( intval( $mapconfig['cont_zoom']) > 0 ) ? TRUE : FALSE;
-			$gm->mDoubleClickZoom = ( intval( $mapconfig['dblclick_zoom']) > 0 ) ? TRUE : FALSE;
-			$gm->mInset = ( intval( $mapconfig['map_inset'] ) > 0 ) ? TRUE : FALSE;
-			$gm->mShowMarker = ( intval( $mapconfig['show_marker'] ) > 0 ) ? TRUE : FALSE;
-			$gm->SetMarkerIconStyle( $mapconfig['map_icon_style'] );
-			$gm->SetMarkerIconColor( $mapconfig['map_icon_color'] );
-			$gm->SetAddress( $address_string );
-		}
-		return $gm;
-	}
+ * 			$gm->mScale = ( intval( $mapconfig['map_scale'] ) > 0 ) ? TRUE : FALSE;
+ * 			$gm->mMapType = ( intval( $mapconfig['map_type_select']) > 0 ) ? TRUE : FALSE;
+ * 			$gm->mContinuousZoom = ( intval( $mapconfig['cont_zoom']) > 0 ) ? TRUE : FALSE;
+ * 			$gm->mDoubleClickZoom = ( intval( $mapconfig['dblclick_zoom']) > 0 ) ? TRUE : FALSE;
+ * 			$gm->mInset = ( intval( $mapconfig['map_inset'] ) > 0 ) ? TRUE : FALSE;
+ * 			$gm->mShowMarker = ( intval( $mapconfig['show_marker'] ) > 0 ) ? TRUE : FALSE;
+ * 			$gm->SetMarkerIconStyle( $mapconfig['map_icon_style'] );
+ * 			$gm->SetMarkerIconColor( $mapconfig['map_icon_color'] );
+ * 			$gm->SetAddress( $address_string );
+ * 		}
+ * 		return $gm;
+ * 	}
+ */
 
 	function getAddressString( )
 	{
