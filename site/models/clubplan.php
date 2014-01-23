@@ -87,12 +87,12 @@ class sportsmanagementModelClubPlan extends JModel
         $teams = array(0);
 		if ($this->clubid > 0)
 		{
-		  // Select some fields
+		// Select some fields
         $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
         // Where
-        $query->where('club_id='.(int) $this->clubid);
+        $query->where('club_id = '.(int) $this->clubid);
 
 			$db->setQuery($query);
 			$teams = $db->loadObjectList();
@@ -230,19 +230,19 @@ class sportsmanagementModelClubPlan extends JModel
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // Join 
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj1 ON tj1.id = m.projectteam1_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj2 ON tj2.id = m.projectteam2_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st1 ON st1.id = tj1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st2 ON st2.id = tj2.team_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = st1.team_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON t2.id = st2.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj1 ON tj1.id = m.projectteam1_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj2 ON tj2.id = m.projectteam2_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj1.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON t1.id = st1.team_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON t2.id = st2.team_id ');
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj1.project_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_league l ON p.league_id = l.id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c1 ON c1.id = t1.club_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c2 ON c2.id = t2.club_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l ON p.league_id = l.id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c1 ON c1.id = t1.club_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
+		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tj1.division_id');
+		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
         $query->where('(m.match_date BETWEEN '.$this->_db->Quote($startdate).' AND '.$this->_db->Quote($enddate).')');

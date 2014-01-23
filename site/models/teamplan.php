@@ -1,5 +1,41 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
@@ -7,6 +43,15 @@ jimport('joomla.application.component.model');
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 //require_once('results.php');
 
+/**
+ * sportsmanagementModelTeamPlan
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelTeamPlan extends JModel
 {
 	var $projectid=0;
@@ -55,12 +100,23 @@ class sportsmanagementModelTeamPlan extends JModel
 
 	function getProjectTeamId()
 	{
-		$query='	SELECT	id
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team
-					WHERE	team_id='.$this->teamid.' AND
-							project_id='.$this->projectid;
-		$this->_db->setQuery($query,0,1);
-		if (! $result=$this->_db->loadResult())
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('pt.id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ON t.id = st.team_id ');
+        // Where
+        $query->where('pt.project_id = '.$this->projectid);
+        $query->where('t.team_id='.$this->teamid);
+                 
+		$db->setQuery($query,0,1);
+		if (! $result = $db->loadResult())
 		{
 			return 0;
 		}
@@ -78,7 +134,7 @@ class sportsmanagementModelTeamPlan extends JModel
 		}
 		foreach ($rounds as $round)
 		{
-			$matches=$this->_getResultsRows($round->roundcode,$this->teamid,$ordering,0,1,$config['show_referee']);
+			$matches = self::_getResultsRows($round->roundcode,$this->teamid,$ordering,0,1,$config['show_referee']);
 			$rm[$round->roundcode]=$matches;
 		}
 		return $rm;
@@ -86,29 +142,29 @@ class sportsmanagementModelTeamPlan extends JModel
 
 	function getMatches($config)
 	{
-		$ordering='DESC';
+		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
-			$ordering=$config['plan_order'];
+			$ordering = $config['plan_order'];
 		}
-		return $this->_getResultsPlan($this->teamid,$ordering,0,1,$config['show_referee']);
+		return self::_getResultsPlan($this->teamid,$ordering,0,1,$config['show_referee']);
 	}
 
 	function getMatchesRefering($config)
 	{
-		$ordering='DESC';
+		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
-			$ordering=$config['plan_order'];
+			$ordering = $config['plan_order'];
 		}
-		return $this->_getResultsPlan(0,$ordering,$this->teamid,1,$config['show_referee']);
+		return self::_getResultsPlan(0,$ordering,$this->teamid,1,$config['show_referee']);
 	}
 
 	function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
 		$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        $matches=array();
-		$joomleague=$mdlProject->getProject();
+        $matches = array();
+		$joomleague = $mdlProject->getProject();
 
 		if ($this->divisionid > 0)
 		{
@@ -201,9 +257,9 @@ class sportsmanagementModelTeamPlan extends JModel
 	function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
 		$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        $matches=array();
+        $matches = array();
 
-		$joomleague=$mdlProject->getProject();
+		$joomleague = $mdlProject->getProject();
 
 		$query_SELECT=' SELECT matches.* ';
 		$query_FROM  =' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches '
@@ -297,16 +353,35 @@ class sportsmanagementModelTeamPlan extends JModel
 
 	function getEventTypes($match_id)
 	{
-		$query=' SELECT	et.id as etid,me.event_type_id as id,et.* '
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('et.id as etid,me.event_type_id as id,et.*');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id = me.match_id ');
+        // Where
+        $query->where('me.match_id = '.$match_id);
+        // Order
+        $query->order('et.ordering');
+        
+        
+/*        
+        $query=' SELECT	et.id as etid,me.event_type_id as id,et.* '
 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et '
 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id=me.event_type_id '
 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id=me.match_id '
 		. ' WHERE me.match_id='.$match_id;
 
 		$query .= " ORDER BY et.ordering";
+*/
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('etid');
+		$db->setQuery($query);
+		return $db->loadObjectList('etid');
 	}
 
 }
