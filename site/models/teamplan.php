@@ -270,10 +270,10 @@ class sportsmanagementModelTeamPlan extends JModel
             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
 		}
 
-		$query=$query_SELECT.$query_FROM.$query_WHERE.$query_END;
-		$this->_db->setQuery($query);
+		
+		$db->setQuery($query);
 
-		$matches=$this->_db->loadObjectList();
+		$matches = $db->loadObjectList();
 
 		if ($getreferee)
 		{
@@ -282,8 +282,8 @@ class sportsmanagementModelTeamPlan extends JModel
 
 if (!$matches )
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query,true).'</pre>' ),'Error');
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>' ),'Error');
+			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query,true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
 		
 		return $matches;
@@ -352,7 +352,7 @@ if (!$matches )
 
 if (!$matches )
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query_SELECT.$query_FROM.$query_WHERE.$query_END,true).'</pre>' ),'Error');
+			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query_SELECT.$query_FROM.$query_WHERE.$query_END,true).'</pre>' ),'Error');
 			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
 
