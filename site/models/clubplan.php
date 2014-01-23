@@ -240,7 +240,7 @@ class sportsmanagementModelClubPlan extends JModel
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_league l ON p.league_id = l.id ');
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c1 ON c1.id = t1.club_id ');
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'club c2 ON c2.id = t2.club_id ');
+		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c2 ON c2.id = t2.club_id ');
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tj1.division_id');
         // Where
