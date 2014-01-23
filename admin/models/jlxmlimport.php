@@ -2978,6 +2978,10 @@ $this->dump_variable("import_team", $import_team);
 
 	private function _importProjectTeam()
 	{
+	   $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 //$this->dump_header("function _importProjectTeam");
 		$my_text='';
 		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0){return true;}
