@@ -370,23 +370,45 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function getMatchData($match_id)
 	{
-		// Get a db connection.
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
-			$query=' SELECT	m.*,
-							CASE m.time_present
-							when NULL then NULL
-							else DATE_FORMAT(m.time_present, "%H:%i")
-							END AS time_present,
-							t1.name AS hometeam, t1.id AS t1id,
-							t2.name as awayteam, t2.id AS t2id,
-							pt1.project_id,
-							m.extended as matchextended
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=m.projectteam1_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
-						WHERE m.id='.(int) $match_id;
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('m.*,CASE m.time_present	when NULL then NULL	else DATE_FORMAT(m.time_present, "%H:%i") END AS time_present,m.extended as matchextended');
+        $query->select('t1.name AS hometeam, t1.id AS t1id');
+        $query->select('t2.name as awayteam, t2.id AS t2id');
+        $query->select('pt1.project_id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st.id = pt1.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st.id = pt2.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        // Where
+        $query->where('m.id = '.(int) $match_id );
+        
+/**
+ * 			$query=' SELECT	m.*,
+ * 							CASE m.time_present
+ * 							when NULL then NULL
+ * 							else DATE_FORMAT(m.time_present, "%H:%i")
+ * 							END AS time_present,
+ * 							t1.name AS hometeam, t1.id AS t1id,
+ * 							t2.name as awayteam, t2.id AS t2id,
+ * 							pt1.project_id,
+ * 							m.extended as matchextended
+ * 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
+ * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=m.projectteam1_id
+ * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
+ * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
+ * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
+ * 						WHERE m.id='.(int) $match_id;
+ */
+                        
 			$db->setQuery($query);
 			//$this->_data=$this->_db->loadObject();
 			return $db->loadObject();

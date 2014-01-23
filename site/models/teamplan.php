@@ -97,7 +97,7 @@ class sportsmanagementModelTeamPlan extends JModel
 		if ( $this->divisionid > 0 )
 		{
 			
-            // Select some fields
+        // Select some fields
         $query->select('d.*,CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\',id,alias) ELSE id END AS slug');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d');
