@@ -68,18 +68,23 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
 		switch ($config['type_matches']) 
         {
-			case 0 : case 4 : // all matches
+			case 0 :
+            case 3 : 
+            case 4 : // all matches
 				$this->assignRef('allmatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 				break;
 			case 1 : // home matches
-				$this->assignRef('homematches',$model->getHomeMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 			case 2 : // away matches
-				$this->assignRef('awaymatches',$model->getAwayMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 			default: // home+away matches
-				$this->assignRef('homematches',$model->getHomeMatches($config['MatchesOrderBy'],$config['type_matches']));
-				$this->assignRef('awaymatches',$model->getAwayMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 		}
 		$this->assignRef('startdate',$model->getStartDate());
