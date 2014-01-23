@@ -189,6 +189,17 @@ class sportsmanagementModelClubPlan extends JModel
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
+       
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
+        
+        
+        }
+        
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -236,13 +247,13 @@ class sportsmanagementModelClubPlan extends JModel
         $query->where('p.published = 1');
         $query->where('(m.match_date BETWEEN '.$this->_db->Quote($startdate).' AND '.$this->_db->Quote($enddate).')');
 
-        if($this->project_id>0) 
+        if( $this->project_id > 0 ) 
         {
 			// Where
             $query->where('p.id = '. $this->_db->Quote($this->project_id));
 		}
 		
-        if($this->clubid >0) 
+        if( $this->clubid > 0 ) 
         {
             // Where
             $query->where('(t1.club_id = '.$this->_db->Quote($this->clubid).' OR t2.club_id = '.$this->_db->Quote($this->clubid) . ')' );
@@ -257,6 +268,12 @@ class sportsmanagementModelClubPlan extends JModel
 		
         $db->setQuery($query);
 		$this->allmatches = $db->loadObjectList();
+        
+        if ( !$this->allmatches )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'');
+        }
+        
 		return $this->allmatches;
 	}
 
