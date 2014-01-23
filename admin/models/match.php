@@ -415,6 +415,11 @@ class sportsmanagementModelMatch extends JModelAdmin
 		    {
 			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		    }
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        }
+        
 			//$this->_data=$this->_db->loadObject();
 			return $result;
 		

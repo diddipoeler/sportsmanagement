@@ -485,23 +485,57 @@ class sportsmanagementModelProject extends JModel
 
 	function getTeaminfo($projectteamid)
 	{
-		// Get a db connection.
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
-        $query=' SELECT t.*, pt.division_id, t.id as team_id,
-				pt.picture AS projectteam_picture,
-				t.picture as team_picture,
-				c.logo_small,
-				c.logo_middle,
-				c.logo_big,
-				IF((ISNULL(pt.picture) OR (pt.picture="")), 
-					(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture,
-				t.extended as teamextended 
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt 
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id=t.id
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id=c.id 
-				WHERE pt.id='. $db->Quote($projectteamid);
+        $query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('t.*,t.id as team_id,t.picture as team_picture,t.extended as teamextended ');
+        $query->select('pt.division_id,pt.picture AS projectteam_picture');
+        $query->select('c.logo_small,c.logo_middle,c.logo_big');
+        $query->select('IF((ISNULL(pt.picture) OR (pt.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id = c.id  ');
+        // Where
+        $query->where('pt.id = '. $db->Quote($projectteamid));
+        
+        
+/**
+ *         $query=' SELECT t.*, pt.division_id, t.id as team_id,
+ * 				pt.picture AS projectteam_picture,
+ * 				t.picture as team_picture,
+ * 				c.logo_small,
+ * 				c.logo_middle,
+ * 				c.logo_big,
+ * 				IF((ISNULL(pt.picture) OR (pt.picture="")), 
+ * 					(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture,
+ * 				t.extended as teamextended 
+ * 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt 
+ * 				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id=t.id
+ * 				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id=c.id 
+ * 				WHERE pt.id='. $db->Quote($projectteamid);
+ */
+                
 		$db->setQuery($query);
-		return $db->loadObject();
+        
+        $result = $db->loadObject();
+            if ( !$result )
+		    {
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		    }
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        }
+        
+        
+        
+		return $result;
 	}
 
 	function & _getTeams()
