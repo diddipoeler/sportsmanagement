@@ -34,7 +34,7 @@ class sportsmanagementViewClubInfo extends JView
 		$stadiums	 	= $model->getStadiums();
 		$playgrounds	= $model->getPlaygrounds();
 		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
-//		$address_string = $model->getAddressString();
+		$address_string = $model->getAddressString();
 //		$map_config		= sportsmanagementModelProject::getMapConfig();
 //		$google_map		= $model->getGoogleMap( $map_config, $address_string );
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
@@ -70,7 +70,7 @@ class sportsmanagementViewClubInfo extends JView
 		$this->assignRef( 'address_string', $address_string);
 		$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 
-		$this->assignRef( 'gmap',			$google_map );
+		//$this->assignRef( 'gmap',			$google_map );
 
     if ( ($this->config['show_club_rssfeed']) == 1 )
 	  {

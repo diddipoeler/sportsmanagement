@@ -314,40 +314,39 @@ on prot.team_id = t.id'
  * 	}
  */
 
-/**
- * 	function getAddressString( )
- * 	{
- * 		$club = $this->getClub();
- * 		if ( !isset ( $club ) ) { return null; }
 
- * 		$address_parts = array();
- * 		if (!empty($club->address))
- * 		{
- * 			$address_parts[] = $club->address;
- * 		}
- * 		if (!empty($club->state))
- * 		{
- * 			$address_parts[] = $club->state;
- * 		}
- * 		if (!empty($club->location))
- * 		{
- * 			if (!empty($club->zipcode))
- * 			{
- * 				$address_parts[] = $club->zipcode. ' ' .$club->location;
- * 			}
- * 			else
- * 			{
- * 				$address_parts[] = $club->location;
- * 			}
- * 		}
- * 		if (!empty($club->country))
- * 		{
- * 			$address_parts[] = JSMCountries::getShortCountryName($club->country);
- * 		}
- * 		$address = implode(', ', $address_parts);
- * 		return $address;
- * 	}
- */
+	function getAddressString( )
+	{
+		$club = $this->getClub();
+		if ( !isset ( $club ) ) { return null; }
+ 		$address_parts = array();
+		if (!empty($club->address))
+		{
+			$address_parts[] = $club->address;
+		}
+		if (!empty($club->state))
+		{
+			$address_parts[] = $club->state;
+		}
+		if (!empty($club->location))
+		{
+			if (!empty($club->zipcode))
+ 			{
+				$address_parts[] = $club->zipcode. ' ' .$club->location;
+			}
+			else
+			{
+				$address_parts[] = $club->location;
+			}
+		}
+		if (!empty($club->country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($club->country);
+		}
+		$address = implode(', ', $address_parts);
+		return $address;
+	}
+
 	
 	function hasEditPermission($task=null)
 	{
