@@ -78,28 +78,42 @@ class sportsmanagementModelClubPlan extends JModel
 
 	function getTeams()
 	{
-		$teams=array(0);
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $teams = array(0);
 		if ($this->clubid > 0)
 		{
-			$database = JFactory::getDBO();
+		  // Select some fields
+        $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        // Where
+        $query->where('club_id='.(int) $this->clubid);
 
-			$query=' SELECT id,'
-			. ' name as team_name,'
-			. ' short_name as team_shortcut,'
-			. ' info as team_description '
-			. ' FROM #__joomleague_team '
-			. ' WHERE club_id='.(int) $this->clubid;
-
-			$this->_db->setQuery($query);
-			$teams=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$teams = $db->loadObjectList();
 		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
+       }
+       
 		return $teams;
 	}
 
 	function getStartDate()
 	{
 	   $mainframe = JFactory::getApplication();
-       //$mainframe->enqueueMessage(JText::_('Model clubplan startdate vorher -> '.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+       
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+       }
 	
     	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
 		if (empty($this->startdate))
@@ -113,14 +127,23 @@ class sportsmanagementModelClubPlan extends JModel
 			$project = sportsmanagementModelProject::getProject();
 			$this->startdate = $project->start_date;
 		}
-        //$mainframe->enqueueMessage(JText::_('Model clubplan startdate nachher -> '.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+        }
 		return $this->startdate;
 	}
 
 	function getEndDate()
 	{
 	   $mainframe = JFactory::getApplication();
-       //$mainframe->enqueueMessage(JText::_('Model clubplan enddate vorher -> '.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+       
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+       }
+       
 		if (empty($this->enddate))
 		{
 			$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
@@ -129,7 +152,12 @@ class sportsmanagementModelClubPlan extends JModel
 			$nextweek = mktime(0,0,0,date("m"),date("d")+ $dayz,date("y"));
 			$this->enddate = date("Y-m-d",$nextweek);
 		}
-        //$mainframe->enqueueMessage(JText::_('Model clubplan enddate vorher -> '.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+        }
+        
 		return $this->enddate;
 	}
 
