@@ -337,22 +337,14 @@ class sportsmanagementModelProject extends JModel
         // Where
         $query->where('project_id = '.$this->projectid);
         
-/**
- *         $query="SELECT id from #__".COM_SPORTSMANAGEMENT_TABLE."_division
- * 				  WHERE project_id=".$this->projectid;
- */
-		
         if ( $divLevel == 1 )
 		{
-			//$query .= " AND (parent_id=0 OR parent_id IS NULL) ";
             $query->where('(parent_id=0 OR parent_id IS NULL)');
 		}
 		else if ($divLevel==2)
 		{
-			//$query .= " AND parent_id>0";
             $query->where('parent_id > 0');
 		}
-		//$query .= " ORDER BY ordering";
         $query->order('ordering');
 		$db->setQuery($query);
 		$res = $db->loadResultArray();
@@ -397,24 +389,35 @@ class sportsmanagementModelProject extends JModel
 
 	function getDivisions($divLevel=0)
 	{
-		$project = $this->getProject(); 
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $project = self::getProject(); 
 		if ($project->project_type == 'DIVISIONS_LEAGUE')
 		{
 			if (empty($this->_divisions))
 			{
-				$query="SELECT * from #__".COM_SPORTSMANAGEMENT_TABLE."_division
-						  WHERE project_id=".$this->projectid;
-				$this->_db->setQuery($query);
-				$this->_divisions=$this->_db->loadObjectList('id');
+				// Select some fields
+                $query->select('*');
+                // From 
+		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+                // Where
+                $query->where('project_id = '.$this->projectid);
+
+				$db->setQuery($query);
+				$this->_divisions = $db->loadObjectList('id');
 			}
 			if ($divLevel)
 			{
-				$ids=$this->getDivisionsId($divLevel);
-				$res=array();
+				$ids = self::getDivisionsId($divLevel);
+				$res = array();
 				foreach ($this->_divisions as $d)
 				{
 					if (in_array($d->id,$ids)) {
-						$res[]=$d;
+						$res[] = $d;
 					}
 				}
 				return $res;
