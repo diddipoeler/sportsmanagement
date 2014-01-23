@@ -34,9 +34,9 @@ class sportsmanagementViewClubInfo extends JView
 		$stadiums	 	= $model->getStadiums();
 		$playgrounds	= $model->getPlaygrounds();
 		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
-		$address_string = $model->getAddressString();
-		$map_config		= sportsmanagementModelProject::getMapConfig();
-		$google_map		= $model->getGoogleMap( $map_config, $address_string );
+//		$address_string = $model->getAddressString();
+//		$map_config		= sportsmanagementModelProject::getMapConfig();
+//		$google_map		= $model->getGoogleMap( $map_config, $address_string );
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
                         
         //$mainframe->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
@@ -91,14 +91,7 @@ class sportsmanagementViewClubInfo extends JView
     
     }
     
-    
-    
-    
-    
-    if (($this->config['show_maps'])==1)
-	  {
-	
-	}
+
 	
         if (($this->config['show_maps'])==1)
 	  {
