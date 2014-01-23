@@ -146,9 +146,12 @@
 	<fieldset name="sis-konfiguration"
 	label="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_LABEL"
 		description="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_DESC"
-		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  	
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  
+    
+<!--    	
 		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER" 
           description="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER_DESC" />
+-->
      
      <field name="sis_xmllink" type="list" default="http://www.sis-handball.de" label="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK_DESC">
 				<option value="http://www.sis-handball.at">SIS Österreich</option>
