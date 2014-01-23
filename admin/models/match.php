@@ -254,8 +254,13 @@ class sportsmanagementModelMatch extends JModelAdmin
             }
             else
             {
+            
+            if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
+            {    
             $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
-            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];    
+            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
+            }
+                
             }
             
             

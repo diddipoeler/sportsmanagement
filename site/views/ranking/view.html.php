@@ -120,6 +120,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         // mannschaften holen
 		$this->assign('teams',$mdlProject->getTeamsIndexedByPtid());
 		
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
+       }
         
 		
 		$no_ranking_reason = '';
