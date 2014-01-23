@@ -271,7 +271,7 @@ class sportsmanagementModelClubPlan extends JModel
         
         if ( !$this->allmatches )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
         
 		return $this->allmatches;
