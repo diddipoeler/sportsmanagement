@@ -58,6 +58,9 @@ class sportsmanagementViewClubPlan extends JView
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
+        $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 		$project = sportsmanagementModelProject::getProject();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$this->assignRef('project',$project);
