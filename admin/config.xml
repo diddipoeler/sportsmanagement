@@ -256,7 +256,7 @@
 				default="Hallo Sportsfreunde, das Spiel am [FROMDATE] um [FROMTIME] Uhr wurde auf den [TODATE] auf [TOTIME] Uhr verlegt.Gruß [MAILFROM]"
 				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT"
 				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
-				width="45ß" 
+				width="450" 
 				filter="safehtml"/>
 				
 	</fieldset>
