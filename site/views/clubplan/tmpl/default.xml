@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_JOOMLEAGUE_XML_CLUBPLAN_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_JOOMLEAGUE_XML_CLUBPLAN_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<!-- Basic options. -->
+		<fieldset	name="request"
+					label="COM_JOOMLEAGUE_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_joomleague/elements">
+
+			<field	name="cid" type="club"
+					label="COM_JOOMLEAGUE_XML_SELECT_CLUB_LABEL"
+					description="COM_JOOMLEAGUE_XML_SELECT_CLUB_DESCR"
+					required="false">
+			</field>
+			<field	name="p" type="dependsql" depends="cid" task="projectsbycluboptions"
+					label="COM_JOOMLEAGUE_XML_SELECT_PROJECT_LABEL"
+					description="COM_JOOMLEAGUE_XML_SELECT_PROJECT_DESCR"
+					required="false">
+			</field>
+			<field	type="spacer">
+			</field>
+			<field	name="startdate" type="calendar"
+					label="COM_JOOMLEAGUE_XML_SELECT_STARTDATE_LABEL"
+					description="COM_JOOMLEAGUE_XML_SELECT_STARTDATE_DESCR">
+			</field>
+			<field	name="enddate" type="calendar"
+					label="COM_JOOMLEAGUE_XML_SELECT_ENDDATE_LABEL"
+					description="COM_JOOMLEAGUE_XML_SELECT_ENDDATE_DESCR">
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>
