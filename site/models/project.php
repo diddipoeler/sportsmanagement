@@ -324,19 +324,38 @@ class sportsmanagementModelProject extends JModel
 
 	function getDivisionsId($divLevel=0)
 	{
-		$query="SELECT id from #__".COM_SPORTSMANAGEMENT_TABLE."_division
-				  WHERE project_id=".$this->projectid;
-		if ($divLevel==1)
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+        // Where
+        $query->where('project_id = '.$this->projectid);
+        
+/**
+ *         $query="SELECT id from #__".COM_SPORTSMANAGEMENT_TABLE."_division
+ * 				  WHERE project_id=".$this->projectid;
+ */
+		
+        if ( $divLevel == 1 )
 		{
-			$query .= " AND (parent_id=0 OR parent_id IS NULL) ";
+			//$query .= " AND (parent_id=0 OR parent_id IS NULL) ";
+            $query->where('(parent_id=0 OR parent_id IS NULL)');
 		}
 		else if ($divLevel==2)
 		{
-			$query .= " AND parent_id>0";
+			//$query .= " AND parent_id>0";
+            $query->where('parent_id > 0');
 		}
-		$query .= " ORDER BY ordering";
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+		//$query .= " ORDER BY ordering";
+        $query->order('ordering');
+		$db->setQuery($query);
+		$res = $db->loadResultArray();
 		if(count($res) == 0) {
 			echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
@@ -351,10 +370,10 @@ class sportsmanagementModelProject extends JModel
 	function getDivisionTreeIds($divisionid)
 	{
 		if ($divisionid == 0) {
-			return $this->getDivisionsId();
+			return self::getDivisionsId();
 		}
-		$divisions=$this->getDivisions();
-		$res=array($divisionid);
+		$divisions = self::getDivisions();
+		$res = array($divisionid);
 		foreach ($divisions as $d)
 		{
 			if ($d->parent_id == $divisionid) {

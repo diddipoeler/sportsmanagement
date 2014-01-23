@@ -333,7 +333,7 @@ class sportsmanagementModelRanking extends JModel
 				$url .= '&amp;divLevel='.$this->divLevel;
 				if ( $this->divLevel )
 				{
-					$divisions = $this->getDivisionsId( $this->divLevel );
+					$divisions = $mdlProject->getDivisionsId( $this->divLevel );
 				//	print_r( $divisions);
 				}
 				else
