@@ -58,6 +58,9 @@ class sportsmanagementViewClubPlan extends JView
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
+        $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 		$project = sportsmanagementModelProject::getProject();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$this->assignRef('project',$project);
@@ -66,20 +69,37 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('showclubconfig',$showclubconfig);
 		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams());
 		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
+        
+        $this->assignRef('type',JRequest::getVar("type", 0));
+        
+        if ( $this->type == '' )
+        {
+            $this->type = $config['type_matches'];
+        }
+        else
+        {
+            $config['type_matches'] = $this->type;
+        }
+        
 		switch ($config['type_matches']) 
         {
-			case 0 : case 4 : // all matches
+			case 0 :
+            case 3 : 
+            case 4 : // all matches
 				$this->assignRef('allmatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 				break;
 			case 1 : // home matches
-				$this->assignRef('homematches',$model->getHomeMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 			case 2 : // away matches
-				$this->assignRef('awaymatches',$model->getAwayMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 			default: // home+away matches
-				$this->assignRef('homematches',$model->getHomeMatches($config['MatchesOrderBy'],$config['type_matches']));
-				$this->assignRef('awaymatches',$model->getAwayMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+
 				break;
 		}
 		$this->assignRef('startdate',$model->getStartDate());
@@ -87,6 +107,15 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('teams',$model->getTeams());
 		$this->assignRef('model',$model);
 		$this->assign('action',$uri->toString());
+        
+        // auswahl welche spiele
+    $opp_arr = array ();
+    $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
+	$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
+	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
+
+	$lists['type'] = $opp_arr;
+    $this->assignRef('lists', $lists);
 
 		// Set page title
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');

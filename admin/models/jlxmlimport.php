@@ -2981,7 +2981,7 @@ $this->dump_variable("import_team", $import_team);
 	private function _importDivisions()
 	{
 		$my_text='';
-		if (!isset($this->_datas['division']) || count($this->_datas['division'])==0){return true;}
+		if (!isset($this->_datas['division']) || count($this->_datas['division']) == 0 ){return true;}
 		if (isset($this->_datas['division']))
 		{
 			foreach ($this->_datas['division'] as $key => $division)
@@ -2990,16 +2990,16 @@ $this->dump_variable("import_team", $import_team);
                 $mdl = JModel::getInstance("division", "sportsmanagementModel");
                 $p_division = $mdl->getTable();
                 
-				$oldId=(int)$division->id;
+				$oldId = (int)$division->id;
 				$p_division->set('project_id',$this->_project_id);
-				if ($division->id ==$this->_datas['division'][$key]->id)
+				if ( $division->id == $this->_datas['division'][$key]->id )
 				{
 					$name=trim($this->_getDataFromObject($division,'name'));
 					$p_division->set('name',$name);
 					$p_division->set('shortname',$this->_getDataFromObject($division,'shortname'));
 					$p_division->set('notes',$this->_getDataFromObject($division,'notes'));
 					$p_division->set('parent_id',$this->_getDataFromObject($division,'parent_id'));
-					if (trim($p_division->alias)!='')
+					if ( trim($p_division->alias) != '' )
 					{
 						$p_division->set('alias',$this->_getDataFromObject($division,'alias'));
 					}
@@ -3023,8 +3023,8 @@ $this->dump_variable("import_team", $import_team);
 					$my_text .= JText::sprintf('Created new division data: %1$s',"</span><strong>$name</strong>");
 					$my_text .= '<br />';
 				}
-				$insertID=$this->_db->insertid();
-				$this->_convertDivisionID[$oldId]=$insertID;
+				$insertID = $this->_db->insertid();
+				$this->_convertDivisionID[$oldId] = $insertID;
 			}
 			$this->_success_text['Importing division data:']=$my_text;
 			return true;
@@ -3737,8 +3737,10 @@ $this->dump_variable("import_team", $import_team);
                 
                 // diddipoeler
                 $p_match->set('import_match_id',$this->_getDataFromObject($match,'id'));
+                // das ist falsch
+                //$p_match->set('division_id',$this->_getDataFromObject($match,'division_id'));
+                $p_match->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')]);
                 
-                $p_match->set('division_id',$this->_getDataFromObject($match,'division_id'));
                 
 			}
 			else // ($this->import_version=='OLD')

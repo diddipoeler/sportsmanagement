@@ -314,12 +314,12 @@ on prot.team_id = t.id'
  * 	}
  */
 
+
 	function getAddressString( )
 	{
 		$club = $this->getClub();
 		if ( !isset ( $club ) ) { return null; }
-
-		$address_parts = array();
+ 		$address_parts = array();
 		if (!empty($club->address))
 		{
 			$address_parts[] = $club->address;
@@ -331,7 +331,7 @@ on prot.team_id = t.id'
 		if (!empty($club->location))
 		{
 			if (!empty($club->zipcode))
-			{
+ 			{
 				$address_parts[] = $club->zipcode. ' ' .$club->location;
 			}
 			else
@@ -346,6 +346,7 @@ on prot.team_id = t.id'
 		$address = implode(', ', $address_parts);
 		return $address;
 	}
+
 	
 	function hasEditPermission($task=null)
 	{

@@ -324,19 +324,30 @@ class sportsmanagementModelProject extends JModel
 
 	function getDivisionsId($divLevel=0)
 	{
-		$query="SELECT id from #__".COM_SPORTSMANAGEMENT_TABLE."_division
-				  WHERE project_id=".$this->projectid;
-		if ($divLevel==1)
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+        // Where
+        $query->where('project_id = '.$this->projectid);
+        
+        if ( $divLevel == 1 )
 		{
-			$query .= " AND (parent_id=0 OR parent_id IS NULL) ";
+            $query->where('(parent_id=0 OR parent_id IS NULL)');
 		}
 		else if ($divLevel==2)
 		{
-			$query .= " AND parent_id>0";
+            $query->where('parent_id > 0');
 		}
-		$query .= " ORDER BY ordering";
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+        $query->order('ordering');
+		$db->setQuery($query);
+		$res = $db->loadResultArray();
 		if(count($res) == 0) {
 			echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
@@ -351,10 +362,10 @@ class sportsmanagementModelProject extends JModel
 	function getDivisionTreeIds($divisionid)
 	{
 		if ($divisionid == 0) {
-			return $this->getDivisionsId();
+			return self::getDivisionsId();
 		}
-		$divisions=$this->getDivisions();
-		$res=array($divisionid);
+		$divisions = self::getDivisions();
+		$res = array($divisionid);
 		foreach ($divisions as $d)
 		{
 			if ($d->parent_id == $divisionid) {
@@ -378,24 +389,35 @@ class sportsmanagementModelProject extends JModel
 
 	function getDivisions($divLevel=0)
 	{
-		$project = $this->getProject(); 
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $project = self::getProject(); 
 		if ($project->project_type == 'DIVISIONS_LEAGUE')
 		{
 			if (empty($this->_divisions))
 			{
-				$query="SELECT * from #__".COM_SPORTSMANAGEMENT_TABLE."_division
-						  WHERE project_id=".$this->projectid;
-				$this->_db->setQuery($query);
-				$this->_divisions=$this->_db->loadObjectList('id');
+				// Select some fields
+                $query->select('*');
+                // From 
+		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+                // Where
+                $query->where('project_id = '.$this->projectid);
+
+				$db->setQuery($query);
+				$this->_divisions = $db->loadObjectList('id');
 			}
 			if ($divLevel)
 			{
-				$ids=$this->getDivisionsId($divLevel);
-				$res=array();
+				$ids = self::getDivisionsId($divLevel);
+				$res = array();
 				foreach ($this->_divisions as $d)
 				{
 					if (in_array($d->id,$ids)) {
-						$res[]=$d;
+						$res[] = $d;
 					}
 				}
 				return $res;

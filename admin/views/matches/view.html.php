@@ -281,7 +281,14 @@ class sportsmanagementViewMatches extends JView
 		unset($divisions);
         */
         
-        
+        //build the html options for divisions
+		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+		if ($res = $mdlDivisions->getDivisions($this->project_id)){
+			$divisions=array_merge($divisions,$res);
+		}
+		$lists['divisions']=$divisions;
+		unset($divisions);
         
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
         // state filter
