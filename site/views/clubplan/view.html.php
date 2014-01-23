@@ -69,7 +69,7 @@ class sportsmanagementViewClubPlan extends JView
         
         $this->assignRef('type',JRequest::getVar("type", 0));
         
-        if ( !$this->type )
+        if ( $this->type == '' )
         {
             $this->type = $config['type_matches'];
         }
