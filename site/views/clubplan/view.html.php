@@ -83,7 +83,7 @@ class sportsmanagementViewClubPlan extends JView
 		}
 		$this->assignRef('startdate',$model->getStartDate());
 		$this->assignRef('enddate',$model->getEndDate());
-		$this->assignRef('teams',sportsmanagementModelProject::getTeams());
+		$this->assignRef('teams',$model->getTeams());
 		$this->assignRef('model',$model);
 		$this->assign('action',$uri->toString());
 
