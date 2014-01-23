@@ -643,7 +643,7 @@ class sportsmanagementModelProject extends JModel
 
 	function getFavTeams()
 	{
-		$project = $this->getProject();
+		$project = self::getProject();
 		if(!is_null($project))
 		return explode(",",$project->fav_team);
 		else

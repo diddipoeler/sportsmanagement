@@ -39,6 +39,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
 
 /**
  * sportsmanagementViewClubPlan
@@ -64,7 +65,7 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('config',$config);
 		$this->assignRef('showclubconfig',$showclubconfig);
 		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams());
-		$this->assignRef('club',$model->getClub());
+		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
 		switch ($config['type_matches']) {
 			case 0 : case 4 : // all matches
 				$this->assignRef('allmatches',$model->getAllMatches($config['MatchesOrderBy']));
