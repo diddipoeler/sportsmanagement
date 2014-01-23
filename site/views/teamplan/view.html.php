@@ -1,4 +1,42 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
@@ -14,6 +52,15 @@ JHTML::_('behavior.tooltip');
 //require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
 //require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
 
+/**
+ * sportsmanagementViewTeamPlan
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewTeamPlan extends JView
 {
 	function display($tpl=null)
@@ -21,34 +68,36 @@ class sportsmanagementViewTeamPlan extends JView
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
 		$model = $this->getModel();
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-		$project = $mdlProject->getProject();
-		$config = $mdlProject->getTemplateConfig($this->getName());
+        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+		$project = sportsmanagementModelProject::getProject();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		
 		if (isset($project))
 		{
 			$this->assignRef('project',$project);
-			$rounds = $mdlProject->getRounds($config['plan_order']);
+			$rounds = sportsmanagementModelProject::getRounds($config['plan_order']);
 
-			$this->assign('overallconfig',$mdlProject->getOverallConfig());
+			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
 			$this->assign('config',array_merge($this->overallconfig,$config));
 			$this->assignRef('rounds',$rounds);
-			$this->assign('teams',$mdlProject->getTeamsIndexedByPtid());
+			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
 			$this->assignRef('match',$match);
-			$this->assign('favteams',$mdlProject->getFavTeams());
+			$this->assign('favteams',sportsmanagementModelProject::getFavTeams());
 			$this->assign('division',$model->getDivision());
 			$this->assign('ptid',$model->getProjectTeamId());
-			$this->assign('projectevents',$mdlProject->getProjectEvents());
+			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents());
 			$this->assign('matches',$model->getMatches($config));
 			$this->assign('matches_refering',$model->getMatchesRefering($config));
 			$this->assign('matchesperround',$model->getMatchesPerRound($config,$rounds));
 			$this->assignRef('model',$model);
 
 		}
+        
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 		// Set page title
 		if (empty($this->ptid))
@@ -108,7 +157,7 @@ class sportsmanagementViewTeamPlan extends JView
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_($event->name);
-					$tab_content = JoomleagueHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
+					$tab_content = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
@@ -150,7 +199,7 @@ class sportsmanagementViewTeamPlan extends JView
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
 					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
-					$tab_content = JoomleagueHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
+					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
@@ -243,7 +292,7 @@ class sportsmanagementViewTeamPlan extends JView
 				// Size of the event icons in the tabs
 				$width = 20; $height = 20; $type = 4;
 				$imgTitle = JText::_($event->name);
-				$icon = JoomleagueHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
+				$icon = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 
 				$output .= $icon;
 			}
@@ -261,7 +310,7 @@ class sportsmanagementViewTeamPlan extends JView
 
 			if (strlen($matchevent->firstname1.$matchevent->lastname1) > 0)
 			{
-				$output .= JoomleagueHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $this->config["name_format"]);
+				$output .= sportsmanagementHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $this->config["name_format"]);
 			}
 			else
 			{
