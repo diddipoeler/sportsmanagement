@@ -260,7 +260,7 @@ class sportsmanagementModelTeamPlan extends JModel
 		}
         
         // Group
-        $query->group('n.id');
+        $query->group('m.id');
         // Order
         $query->order("r.roundcode ".$ordering.",m.match_date,m.match_number");
 
