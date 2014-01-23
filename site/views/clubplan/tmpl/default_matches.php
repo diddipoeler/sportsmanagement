@@ -6,22 +6,22 @@ if ($this->config['type_matches'] != 0) {
 ?>
 	<tr class="sectiontableheader">
 		<?php if ($this->config['show_matchday']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCHDAY'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
 		<?php } ;?>
 		<?php if ($this->config['show_match_nr']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_NR'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
 		<?php } ;?>		
 		<?php if ($this->config['show_match_date']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_DATE');?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
 		<?php } ;?>
 		<?php if ($this->config['show_match_time']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_TIME'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
 		<?php } ;?>
 		<?php if ($this->config['show_time_present']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_TIME_PRESENT'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
 		<?php } ;?>
 		<?php if ($this->config['show_league']==1) { ?>		
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_LEAGUE'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
 		<?php } ;?>		
 		<?php if ($this->config['show_club_logo']==1) { ?>
 		<th></th>
@@ -33,12 +33,12 @@ if ($this->config['type_matches'] != 0) {
 		<?php } ?>
 		<th>&nbsp;</th>
 		<?php if ($this->config['show_referee']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_REFEREE'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
 		<?php } ;?>
 		<?php if ($this->config['show_playground']==1) { ?>
-		<th><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_PLAYGROUND'); ?></th>
+		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
 		<?php } ;?>
-		<th colspan=3 align="center"><?php echo JText::_('COM_JOOMLEAGUE_CLUBPLAN_RESULT'); ?></th>
+		<th colspan=3 align="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
 		<?php if ($this->config['show_thumbs_picture']==1) { ?>
 		<th align="center">&nbsp;</th>
 		<?php } ;?>
@@ -57,7 +57,7 @@ if ($this->config['type_matches'] != 0) {
 				?>
 					<tr class="sectiontableheader">
 						<th colspan="16">
-							<?php echo JHTML::date($game->match_date, JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHTML::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<?php
@@ -67,14 +67,14 @@ if ($this->config['type_matches'] != 0) {
 
 
 			$class=($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
-			$result_link=JoomleagueHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link=JoomleagueHelperRoute::getNextmatchRoute($game->project_id,$game->id);
-			$teaminfo1_link =JoomleagueHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
-			$teaminfo2_link =JoomleagueHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
-			$teamstats1_link =JoomleagueHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
-			$teamstats2_link =JoomleagueHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
-			$playground_link =JoomleagueHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);
-			$favs = JoomleagueHelper::getProjectFavTeams($game->project_id);
+			$result_link=sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
+			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->id);
+			$teaminfo1_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
+			$teaminfo2_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
+			$teamstats1_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
+			$teamstats2_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
+			$playground_link =sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);
+			$favs = sportsmanagementHelper::getProjectFavTeams($game->project_id);
 			$favteams = explode(",",$favs->fav_team);
 
 			if ($this->config['which_link2']==1) {
@@ -102,7 +102,7 @@ if ($this->config['type_matches'] != 0) {
 			$hometeam->projectteamid = $game->projectteam1_id;
 			$hometeam->club_slug    = $game->club1_slug;
 			$hometeam->team_slug    = $game->team1_slug;
-			$tname1 = JoomleagueHelper::formatTeamName($hometeam,'clubplanhome'.$cnt++,$this->config,$isFavTeam, $link1);
+			$tname1 = sportsmanagementHelper::formatTeamName($hometeam,'clubplanhome'.$cnt++,$this->config,$isFavTeam, $link1);
 			
 			$isFavTeam              = false;
 			$isFavTeam              = in_array($game->team2_id,$favteams);
@@ -116,7 +116,7 @@ if ($this->config['type_matches'] != 0) {
 			$awayteam->projectteamid = $game->projectteam2_id;
 			$awayteam->club_slug    = $game->club2_slug;
 			$awayteam->team_slug    = $game->team2_slug;
-			$tname2 = JoomleagueHelper::formatTeamName($awayteam,'clubplanaway'.$cnt++,$this->config,$isFavTeam, $link2);
+			$tname2 = sportsmanagementHelper::formatTeamName($awayteam,'clubplanaway'.$cnt++,$this->config,$isFavTeam, $link2);
 
 			$favStyle = '';
 			if ($this->config['highlight_fav'] == 1 && !$club_id) {
@@ -173,7 +173,7 @@ if ($this->config['type_matches'] != 0) {
 				<?php if ($this->config['show_match_date']==1) { ?>
 				<td>
 					<?php
-					echo JHTML::date($game->match_date, JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCHDATE'));
+					echo JHTML::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
 					?>
 				</td>
 					<?php } ;?>
@@ -181,7 +181,7 @@ if ($this->config['type_matches'] != 0) {
 				<?php if ($this->config['show_match_time']==1) { ?>
 				<td nowrap="nowrap">
 					<?php
-					echo JoomleagueHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
+					echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
 					?>
 				</td>
 					<?php } ;?>
@@ -228,7 +228,7 @@ if ($this->config['type_matches'] != 0) {
 					$matchReferees=&$this->model->getMatchReferees($game->id);
 					foreach ($matchReferees AS $matchReferee)
 					{
-						$referee_link=JoomleagueHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
+						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
 						echo JHTML::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
@@ -290,20 +290,20 @@ if ($this->config['type_matches'] != 0) {
 							echo '<td align="center" valign="middle">' .
 							JHTML::image("media/com_joomleague/jl_images/draw.png",
 							"draw.png",
-							array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_DRAW'))
+							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
 								JHTML::image("media/com_joomleague/jl_images/thumbs_up.png",
 								"thumbs_up.png",
-								array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_WON'))
+								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
 								JHTML::image("media/com_joomleague/jl_images/thumbs_down.png",
 								"thumbs_down.png",
-								array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_LOST'))
+								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";
 							}
 							else

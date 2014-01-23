@@ -117,6 +117,9 @@ var $_sis_art = 1;
         $query->where('p.id = '.$projectid); 
         $db->setQuery($query);
 		$result = $db->loadObject();
+        
+        if ( $result )
+        {
         $teamart = substr( $result->staffel_id , 17, 4);
         
         if ( $show_debug_info )
@@ -131,7 +134,7 @@ var $_sis_art = 1;
         $linkspielplan = self::getSpielplan($linkresults,$result->staffel_id,$this->_sis_art);
         }
         
-        
+        }
         
 	}
     

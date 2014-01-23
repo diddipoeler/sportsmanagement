@@ -31,7 +31,7 @@
 <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">				
 					<tr class="sectiontableheader">
 						<th colspan=16>
-							<?php echo JHTML::date($game->match_date,JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHTML::date($game->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				
@@ -42,13 +42,13 @@
 			
 
 			$class=($k==0)? 'sectiontableentry1' : 'sectiontableentry2';
-			$result_link=JoomleagueHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link=JoomleagueHelperRoute::getNextmatchRoute($game->project_id,$game->id);
-			$teaminfo1_link =JoomleagueHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
-			$teaminfo2_link =JoomleagueHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
-			$teamstats1_link =JoomleagueHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
-			$teamstats2_link =JoomleagueHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
-			$playground_link =JoomleagueHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);			
+			$result_link=sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
+			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->id);
+			$teaminfo1_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
+			$teaminfo2_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
+			$teamstats1_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
+			$teamstats2_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
+			$playground_link =sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);			
 
 			$hometeam				= $game;
 			$awayteam				= $game;
@@ -63,7 +63,7 @@
 			$hometeam->project_id	= $game->prid;
 			$hometeam->club_id		= $game->t1club_id;
 			$hometeam->projectteamid = $game->projectteam1_id;
-			$tname1 = JoomleagueHelper::formatTeamName($hometeam,'clubplan',$this->config,$isFavTeam);
+			$tname1 = sportsmanagementHelper::formatTeamName($hometeam,'clubplan',$this->config,$isFavTeam);
 
 			$isFavTeam				= false;
 			$isFavTeam				= in_array($game->team2_id,$this->favteams);
@@ -75,7 +75,7 @@
 			$awayteam->project_id	= $game->prid;
 			$awayteam->club_id		= $game->t2club_id;
 			$awayteam->projectteamid = $game->projectteam2_id;
-			$tname2 = JoomleagueHelper::formatTeamName($awayteam,'clubplan',$this->config,$isFavTeam);
+			$tname2 = sportsmanagementHelper::formatTeamName($awayteam,'clubplan',$this->config,$isFavTeam);
 
 
 			$favStyle = '';
@@ -207,7 +207,7 @@
 					$matchReferees=&$this->model->getMatchReferees($game->id);
 					foreach ($matchReferees AS $matchReferee)
 					{
-						$referee_link=JoomleagueHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
+						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
 						echo JHTML::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
@@ -269,20 +269,20 @@
 							echo '<td align="center" valign="middle">' .
 							JHTML::image("media/com_joomleague/jl_images/draw.png",
 							"draw.png",
-							array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_DRAW'))
+							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
 								JHTML::image("media/com_joomleague/jl_images/thumbs_up.png",
 								"thumbs_up.png",
-								array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_WON'))
+								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
 								JHTML::image("media/com_joomleague/jl_images/thumbs_down.png",
 								"thumbs_down.png",
-								array("title" => JText::_('COM_JOOMLEAGUE_CLUBPLAN_MATCH_LOST'))
+								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";
 							}
 							else

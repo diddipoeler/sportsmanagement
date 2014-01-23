@@ -801,7 +801,7 @@ class sportsmanagementModelProject extends JModel
         
 /*
 		//second load the default settings from the default extensions <template>.xml file
-		$extensions=JoomleagueHelper::getExtensions(JRequest::getInt('p'));
+		$extensions=sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($extensions as $e => $extension) {
 			$JLGPATH_EXTENSION= JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension;
 			$paramsdata="";
