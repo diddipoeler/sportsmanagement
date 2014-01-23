@@ -66,6 +66,18 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('showclubconfig',$showclubconfig);
 		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams());
 		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
+        
+        $this->assignRef('type',JRequest::getVar("type", 0));
+        
+        if ( !$this->type )
+        {
+            $this->type = $config['type_matches'];
+        }
+        else
+        {
+            $config['type_matches'] = $this->type;
+        }
+        
 		switch ($config['type_matches']) 
         {
 			case 0 :
@@ -92,6 +104,14 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('teams',$model->getTeams());
 		$this->assignRef('model',$model);
 		$this->assign('action',$uri->toString());
+        
+        // auswahl welche spiele
+    $opp_arr = array ();
+    $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
+	$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
+	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
+
+	$lists['type'] = $opp_arr;
 
 		// Set page title
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
