@@ -69,7 +69,7 @@ class sportsmanagementModelClubPlan extends JModel
 	{
 		parent::__construct();
 		$this->clubid = JRequest::getInt("cid",0);
-		$this->project_id = JRequest::getInt("p",0);
+//		$this->project_id = JRequest::getInt("p",0);
 		$this->setStartDate(JRequest::getVar("startdate", $this->startdate,'request','string'));
 		$this->setEndDate(JRequest::getVar("enddate",$this->enddate,'request','string'));
 	}
