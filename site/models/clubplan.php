@@ -379,7 +379,7 @@ class sportsmanagementModelClubPlan extends JModel
         if( $this->teamart != '' ) 
         {
 			// Where
-            $query->where("(t1.info LIKE '".$db->Quote($this->teamart)."' OR t2.info LIKE '".$db->Quote($this->teamart) . "')");
+            $query->where("(t1.info LIKE ".$db->Quote($this->teamart)." OR t2.info LIKE ".$db->Quote($this->teamart) . ")");
 		}
         
         if( $this->teamseasons > 0 ) 
