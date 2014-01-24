@@ -651,7 +651,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of players
 	 */
-	function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table='player')
+	function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table)
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -661,13 +661,13 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         
-        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
-        {
-            
-            
-        }
-        else
-        {
+//        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+//        {
+//            
+//            
+//        }
+//        else
+//        {
         switch($table)
         {
             case 'player':
@@ -680,7 +680,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         // Select some fields
         $query->select('mp.'.$id.',mp.project_position_id');
-        $query->select('tpl.id AS value,tpl.projectteam_id');
+        $query->select('sp.id AS value');
         $query->select('pl.firstname,pl.nickname,pl.lastname');
         $query->select('pos.name AS positionname');
         $query->select('ppos.position_id,ppos.id AS pposid');
@@ -692,24 +692,12 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
-        
-/*        
-        $query='	SELECT	
-        
-					
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_'.$table.' AS tpl ON tpl.id = mp.'.$id.'
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = tpl.person_id
-					
-                    INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id
-                    INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id
-
-*/                    
 
 		// Where
         $query->where('mp.match_id = '.$match_id);
         $query->where('pl.published = 1');
-        $query->where('tpl.published = 1');
-        $query->where('tpl.projectteam_id = '.$projectteam_id);
+//        $query->where('tpl.published = 1');
+//        $query->where('tpl.projectteam_id = '.$projectteam_id);
             
         if ( $project_position_id > 0 )
 		{
@@ -722,7 +710,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		// Order
         $query->order('mp.project_position_id, mp.ordering,	pl.lastname, pl.firstname ASC');
         $db->setQuery($query);
-        }
+        //}
         
         $result = $db->loadObjectList($id);
         

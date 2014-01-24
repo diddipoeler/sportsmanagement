@@ -346,13 +346,13 @@ class sportsmanagementViewMatch extends JView
 		$starters = $model->getMatchPersons($tid,0,$this->item->id,'player');
         $starters_id = array_keys($starters);
  
-        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup starters player<br><pre>'.print_r($starters, true).'</pre><br>','');
-        //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup starters_id<br><pre>'.print_r($starters_id, true).'</pre><br>','');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
+        
 
 		// get players not already assigned to starter
 		$not_assigned = $model->getTeamPlayers($tid,$starters_id);
         
-        //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup not_assigned<br><pre>'.print_r($not_assigned, true).'</pre><br>','');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup not_assigned< player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
         
 		if (!$not_assigned && !$starters_id)
 		{
@@ -362,8 +362,8 @@ class sportsmanagementViewMatch extends JView
 
 		$projectpositions = $model->getProjectPositionsOptions(0, 1,$project_id);
         
-        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup player projectpositions<br><pre>'.print_r($projectpositions, true).'</pre><br>','');
-		
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup player projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
+        		
         if (!$projectpositions)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
@@ -445,7 +445,7 @@ class sportsmanagementViewMatch extends JView
 		 */
 		$staffpositions = $model->getProjectPositionsOptions(0, 2,$project_id);	// get staff not already assigned to starter
         
-        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup staff projectpositions<br><pre>'.print_r($staffpositions, true).'</pre><br>','');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup staff projectpositions'.'<pre>'.print_r($staffpositions,true).'</pre>' ),'');
         
 		//echo '<pre>'.print_r($staffpositions,true).'</pre>';
 
@@ -454,8 +454,8 @@ class sportsmanagementViewMatch extends JView
         $assigned = $model->getMatchPersons($tid,0,$this->item->id,'staff');
 		$assigned_id = array_keys($assigned);
         
-        $mainframe->enqueueMessage('sportsmanagementViewMatch editlineup assigned staff<br><pre>'.print_r($assigned, true).'</pre><br>','');
-        //$mainframe->enqueueMessage('sportsmanagementViewMatch editlineup assigned_id<br><pre>'.print_r($assigned_id, true).'</pre><br>','');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup assigned staff'.'<pre>'.print_r($assigned,true).'</pre>' ),'');
+        
         
 		// not assigned staff
 		$not_assigned = $model->getTeamStaffs($tid,$assigned_id);
