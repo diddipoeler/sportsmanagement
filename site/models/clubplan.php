@@ -273,7 +273,7 @@ class sportsmanagementModelClubPlan extends JModel
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
         }
         
 		return $this->enddate;
@@ -284,10 +284,10 @@ class sportsmanagementModelClubPlan extends JModel
 	   $mainframe = JFactory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
-			$this->startdate=strftime("%Y-%m-%d",strtotime($date));
+			$this->startdate = strftime("%Y-%m-%d",strtotime($date));
 		}
 		else {
-			$this->startdate=null;
+			$this->startdate = null;
 		}
 	}
 
@@ -296,10 +296,10 @@ class sportsmanagementModelClubPlan extends JModel
 	   $mainframe = JFactory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
-			$this->enddate=strftime("%Y-%m-%d",strtotime($date));
+			$this->enddate = strftime("%Y-%m-%d",strtotime($date));
 		}
 		else {
-			$this->enddate=null;
+			$this->enddate = null;
 		}
 	}
 
@@ -361,7 +361,11 @@ class sportsmanagementModelClubPlan extends JModel
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
+        
+        if ( $this->teamprojects > 0 )
+        {
         $query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
+        }
 
         if( $this->project_id > 0 ) 
         {
