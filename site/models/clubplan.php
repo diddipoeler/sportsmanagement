@@ -456,7 +456,7 @@ class sportsmanagementModelClubPlan extends JModel
         
         $result = $db->loadObjectList();
         
-        if ( !$result )
+        if ( !$result && $db->getErrorMsg() )
        {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
