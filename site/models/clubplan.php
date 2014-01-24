@@ -367,10 +367,22 @@ class sportsmanagementModelClubPlan extends JModel
         $query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
         }
 
-        if( $this->project_id > 0 && $this->teamart == 0 && $this->teamseasons == 0 ) 
+        if( $this->project_id > 0 ) 
         {
 			// Where
             $query->where('p.id = '. $db->Quote($this->project_id));
+		}
+        
+        if( $this->teamart > 0 ) 
+        {
+			// Where
+            $query->where("(t1.info LIKE '".$db->Quote($this->teamart)." OR t2.info LIKE '".$db->Quote($this->teamart) . "')");
+		}
+        
+        if( $this->teamseasons > 0 ) 
+        {
+			// Where
+            $query->where('p.season_id = '. $db->Quote($this->teamseasons));
 		}
 		
         if( $this->clubid > 0 ) 
