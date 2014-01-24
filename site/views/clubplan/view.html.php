@@ -73,7 +73,7 @@ class sportsmanagementViewClubPlan extends JView
         $this->assignRef('type',JRequest::getVar("type", 0));
         $this->assignRef('teamartsel',JRequest::getVar("teamartsel", 0));
         $model->teamart = $this->teamartsel;
-        $this->assignRef('teamprojectssel',JRequest::getVar("teamartsel", 0));
+        $this->assignRef('teamprojectssel',JRequest::getVar("teamprojectssel", 0));
         $model->teamprojects = $this->teamprojectssel;
         $this->assignRef('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
         $model->teamseasons = $this->teamseasonssel;
@@ -116,15 +116,15 @@ class sportsmanagementViewClubPlan extends JView
         $this->assignRef('teamprojects',$model->getTeamsProjects());
         $this->assignRef('teamseasons',$model->getTeamsSeasons());
         
-        $fromteamart[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+        $fromteamart[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);
 		$lists['fromteamart'] = $fromteamart;
         
-        $fromteamprojects[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+        $fromteamprojects[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
 		$fromteamprojects = array_merge($fromteamprojects, $this->teamprojects);
 		$lists['fromteamprojects'] = $fromteamprojects;
         
-        $fromteamseasons[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+        $fromteamseasons[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
 		$lists['fromteamseasons'] = $fromteamseasons;
         
