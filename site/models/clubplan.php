@@ -69,21 +69,90 @@ class sportsmanagementModelClubPlan extends JModel
 		$this->setStartDate(JRequest::getVar("startdate", $this->startdate,'request','string'));
 		$this->setEndDate(JRequest::getVar("enddate",$this->enddate,'request','string'));
 	}
+    
+    
+    function getTeamsArt()
+    {
+        $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        if ($this->clubid > 0)
+		{
+		// Select some fields
+        $query->select('info as value,info as text');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        // Where
+        $query->where('club_id = '.(int) $this->clubid);
+        // Group
+        $query->group('info');
+        // Order
+        $query->order('info ASC');
 
-/**
- * 	function getClub()
- * 	{
- * 		if (is_null($this->club))
- * 		{
- * 			if ($this->clubid > 0)
- * 			{
- * 				$this->club =& $this->getTable('Club','Table');
- * 				$this->club->load($this->clubid);
- * 			}
- * 		}
- * 		return $this->club;
- * 	}
- */
+		$db->setQuery($query);
+		$teamsart = $db->loadObjectList();
+		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
+       }
+        
+        return $teamsart;
+    }
+    
+    function getTeamsProjects()
+    {
+        $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+    }
+    
+    function getTeamsSeasons()
+    {
+        $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        if ($this->clubid > 0)
+		{
+		// Select some fields
+        $query->select('s.id as value,s.name as text');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.team_id = t.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s ON s.id = st.season_id ');
+        
+        // Where
+        $query->where('t.club_id = '.(int) $this->clubid);
+        // Group
+        $query->group('s.id,s.name');
+        // Order
+        $query->order('s.name DESC');
+
+		$db->setQuery($query);
+		$teamsseasons = $db->loadObjectList();
+		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsseasons'.'<pre>'.print_r($teamsseasons,true).'</pre>' ),'');
+       }
+        
+        return $teamsseasons;
+        
+        
+    }
+
+
 
 	function getTeams()
 	{

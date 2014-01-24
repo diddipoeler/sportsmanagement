@@ -105,6 +105,11 @@ class sportsmanagementViewClubPlan extends JView
 		$this->assignRef('startdate',$model->getStartDate());
 		$this->assignRef('enddate',$model->getEndDate());
 		$this->assignRef('teams',$model->getTeams());
+        
+        $this->assignRef('teamart',$model->getTeamsArt());
+        $this->assignRef('teamprojects',$model->getTeamsProjects());
+        $this->assignRef('teamseasons',$model->getTeamsSeasons());
+        
 		$this->assignRef('model',$model);
 		$this->assign('action',$uri->toString());
         
