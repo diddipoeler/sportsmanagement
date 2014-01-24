@@ -315,7 +315,6 @@ class sportsmanagementModelClubPlan extends JModel
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
-        
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
          }
@@ -433,19 +432,37 @@ class sportsmanagementModelClubPlan extends JModel
 
 	function getMatchReferees($matchID)
 	{
-		$query=' SELECT	p.id,'
-		      .' p.firstname,'
-		      .' p.lastname,'
-		      .' mp.project_position_id,'
-		    .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp '
-		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mp.project_referee_id=pref.id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id '
-		      .' WHERE mp.match_id='.(int)$matchID
-		      .' AND p.published = 1';
+	   $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        // Select some fields
+		$query->select('p.id,p.firstname,p.lastname,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+        $query->select('mp.project_position_id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp');
+        // Join 
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mp.project_referee_id = pref.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON pref.person_id = sp.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON sp.person_id = p.id ');
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		// Where
+        $query->where('mp.match_id = '.(int)$matchID);
+        $query->where('p.published = 1');
+        
+        $db->setQuery($query);
+        
+        $result = $db->loadObjectList();
+        
+        if ( !$result )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        }
+        
+		return $result;
+       
 	}
 
 	function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
