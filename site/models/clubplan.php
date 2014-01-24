@@ -241,7 +241,8 @@ class sportsmanagementModelClubPlan extends JModel
 			$prevweek = mktime(0,0,0,date("m"),date("d")- $dayz,date("y"));
 			$this->startdate = date("Y-m-d",$prevweek);
 		}
-		if($config['use_project_start_date']=="1") {
+		if( $config['use_project_start_date'] == "1" && empty($this->startdate) ) 
+        {
 			$project = sportsmanagementModelProject::getProject();
 			$this->startdate = $project->start_date;
 		}

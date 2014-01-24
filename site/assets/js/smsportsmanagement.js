@@ -1,4 +1,3 @@
-
 //add 1.5 compatibility layer
 window.addEvent('domready', function() {
 	if($('adminForm')) {
@@ -24,6 +23,20 @@ function visibleMenu(obj) {
 	else {
 		joomleague_el.style.visibility = 'visible';
 	}
+}
+
+
+function hideclubplandate()
+{
+// Get the value from a dropdown select
+var teamartsel = jQuery( "select.teamartsel option:selected").val();
+var teamprojectssel = jQuery( "select.teamprojectssel option:selected").val();
+var teamseasonssel = jQuery( "select.teamseasonssel option:selected").val();
+
+alert(teamartsel);
+alert(teamprojectssel);
+alert(teamseasonssel);
+
 }
 
 function switchMenu(obj) 
