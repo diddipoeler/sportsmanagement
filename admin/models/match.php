@@ -417,18 +417,19 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
         // Select some fields
         $query->select('sp.id AS value');
-        $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,pl.jerseynumber,pl.ordering');
+        $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
         $query->select('pos.name AS positionname');
         $query->select('ppos.position_id,ppos.id AS pposid');
-        $query->select('');
-        $query->select('');
-        $query->select('');
+//        $query->select('');
+//        $query->select('');
+//        $query->select('');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
@@ -437,6 +438,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
+        $query->where('sp.persontype = 1');
+        $query->where('sp.season_id = '.$this->_season_id);
 //        $query->where('tpl.published = 1');
 
 
