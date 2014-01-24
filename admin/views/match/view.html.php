@@ -352,7 +352,7 @@ class sportsmanagementViewMatch extends JView
 		// get players not already assigned to starter
 		$not_assigned = $model->getTeamPlayers($tid,$starters_id);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup not_assigned< player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
         
 		if (!$not_assigned && !$starters_id)
 		{
