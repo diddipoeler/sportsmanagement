@@ -5296,6 +5296,22 @@ $this->dump_variable("import_team", $import_team);
         
         foreach ( $result_pr as $protref )
         {
+            // ist der schiedsrichter schon durch ein anderes projekt angelegt ?
+            $query = $db->getQuery(true);
+		    $query->select('id');		
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		    $query->where('t.person_id = '.$protref->person_id);
+            $query->where('t.season_id = '.$this->_season_id);
+            $query->where('t.persontype = 3');
+		    $db->setQuery($query);
+		    $new_person_id = $db->loadResult();
+         
+         if ( $new_person_id )
+         {
+         $new_match_referee_id = $new_person_id;  
+         }
+         else
+         {   
             // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5318,7 +5334,10 @@ $this->dump_variable("import_team", $import_team);
 			    {
 			    // die match referee tabelle updaten
                 $new_match_referee_id = $db->insertid();
-                // Fields to update.
+                                 
+			    }
+        }
+        // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
                 $db->quoteName('project_referee_id') . '=' . $new_match_referee_id
@@ -5335,8 +5354,6 @@ $this->dump_variable("import_team", $import_team);
 			    {
 			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    } 
-                 
-			    }
         
         }
         
