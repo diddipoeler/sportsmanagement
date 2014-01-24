@@ -66,7 +66,7 @@ class sportsmanagementViewJLXMLImports extends JView
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		
 
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
@@ -236,15 +236,15 @@ class sportsmanagementViewJLXMLImports extends JView
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'xmlimport');
-		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			
 
 		$this->assignRef('starttime',$starttime);
 		$this->assign('importData',$model->importData($post));
 		$this->assign('postData',$post);
         $this->assignRef('option',$option);
-        
+                
         JToolBarHelper::divider();
+        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
 

@@ -107,7 +107,7 @@ if ($this->config['type_matches'] != 0) {
 
 			$class=($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
 			$result_link=sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->id);
+			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->match_id);
 			$teaminfo1_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
 			$teaminfo2_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
 			$teamstats1_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
@@ -264,7 +264,7 @@ if ($this->config['type_matches'] != 0) {
 					<?php if ($this->config['show_referee']==1) { ?>
 				<td>
 					<?php
-					$matchReferees=&$this->model->getMatchReferees($game->id);
+					$matchReferees = $this->model->getMatchReferees($game->match_id);
 					foreach ($matchReferees AS $matchReferee)
 					{
 						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);

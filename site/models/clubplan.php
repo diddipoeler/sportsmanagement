@@ -335,7 +335,7 @@ class sportsmanagementModelClubPlan extends JModel
 		}
         
         // Select some fields
-		$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+		$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS roundname');
         $query->select('l.name AS l_name');
