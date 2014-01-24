@@ -82,7 +82,11 @@ class sportsmanagementViewClubPlan extends JView
         }
         $this->assignRef('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
         $model->teamseasons = $this->teamseasonssel;
-        if ( $this->teamseasonssel > 0 || $this->teamartsel > 0 )
+        if ( $this->teamseasonssel > 0 )
+        {
+            $model->project_id = 0;
+        }
+        if ( $this->teamartsel != '' )
         {
             $model->project_id = 0;
         }
@@ -126,7 +130,7 @@ class sportsmanagementViewClubPlan extends JView
         $this->assignRef('teamprojects',$model->getTeamsProjects());
         $this->assignRef('teamseasons',$model->getTeamsSeasons());
         
-        $fromteamart[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+        $fromteamart[] = JHTML :: _('select.option', '', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);
 		$lists['fromteamart'] = $fromteamart;
         
