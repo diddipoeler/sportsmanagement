@@ -390,25 +390,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
         // Where
         $query->where('m.id = '.(int) $match_id );
-        
-/**
- * 			$query=' SELECT	m.*,
- * 							CASE m.time_present
- * 							when NULL then NULL
- * 							else DATE_FORMAT(m.time_present, "%H:%i")
- * 							END AS time_present,
- * 							t1.name AS hometeam, t1.id AS t1id,
- * 							t2.name as awayteam, t2.id AS t2id,
- * 							pt1.project_id,
- * 							m.extended as matchextended
- * 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
- * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=m.projectteam1_id
- * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
- * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
- * 						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
- * 						WHERE m.id='.(int) $match_id;
- */
-                        
+                
 			$db->setQuery($query);
             $result = $db->loadObject();
             if ( !$result )

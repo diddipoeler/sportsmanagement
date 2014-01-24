@@ -194,19 +194,24 @@ class sportsmanagementModelTeamPlan extends JModel
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $query2 = $db->getQuery(true);
         
-		$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+		//$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
         $matches = array();
-		$joomleague = $mdlProject->getProject();
+		$joomleague = sportsmanagementModelProject::getProject();
 
 		if ($this->divisionid > 0)
 		{
-			$query='	SELECT id
-					  	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division
-					  	WHERE parent_id='.(int)$this->divisionid;
-			$this->_db->setquery($query);
-			$div_for_teams=$this->_db->loadResultArray();
-			$div_for_teams[]=$this->getDivision()->id;
+		// Select some fields
+        $query->select('id');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'__division');
+        // Where
+        $query->where('parent_id = '.(int)$this->divisionid);
+
+			$db->setquery($query);
+			$div_for_teams = $db->loadResultArray();
+			$div_for_teams[] = self::getDivision()->id;
 		}
 
 		// Select some fields
@@ -218,8 +223,6 @@ class sportsmanagementModelTeamPlan extends JModel
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
         // Where
         $query->where('m.published=1');
-
-		
 
 //win matches
 		if (($this->mode)== 1)

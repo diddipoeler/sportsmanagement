@@ -444,7 +444,7 @@ class sportsmanagementModelMatchReport extends JModel
 		$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 		      .' WHERE match_id='. $this->_db->Quote($match->id);
 		$this->_db->setQuery($query);
-		$res=$this->_db->loadObjectList();
+		$res = $this->_db->loadObjectList();
 
 		$stats = array(	$match->projectteam1_id => array(),
 						$match->projectteam2_id => array());
