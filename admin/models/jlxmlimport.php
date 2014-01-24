@@ -5340,20 +5340,22 @@ $this->dump_variable("import_team", $import_team);
         // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
-                $db->quoteName('project_referee_id') . '=' . $new_match_referee_id
+                $db->quoteName('person_id') . '=' . $new_match_referee_id
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('project_referee_id') . '=' . $protref->id,
+                $db->quoteName('person_id') . '=' . $protref->person_id,
                 $db->quoteName('project_id') . '=' . $this->_project_id
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();  
                 if (!$result)
 			    {
 			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
 			    } 
+                
+                
         
         }
         
