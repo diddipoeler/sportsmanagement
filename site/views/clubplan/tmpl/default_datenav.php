@@ -48,7 +48,9 @@ defined('_JEXEC') or die('Restricted access');
 				echo ' - '.JHTML::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
                 
                 echo "".JHTML::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
-				?><input type="submit" class="button" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" /></td>
+				?>
+                <input type="submit" class="button" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
+                </td>
 			
             
             <td>

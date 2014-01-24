@@ -42,6 +42,15 @@ jimport('joomla.application.component.model');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelClubPlan
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelClubPlan extends JModel
 {
 	var $clubid = 0;
@@ -98,6 +107,12 @@ class sportsmanagementModelClubPlan extends JModel
 			$teams = $db->loadObjectList();
 		}
         
+       
+       if ( !$teams )
+       {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        }
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
@@ -144,7 +159,7 @@ class sportsmanagementModelClubPlan extends JModel
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
        }
        
-		if (empty($this->enddate))
+		if ( empty($this->enddate) )
 		{
 			$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
 			$dayz = $config['days_after'];
@@ -196,9 +211,7 @@ class sportsmanagementModelClubPlan extends JModel
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
-        
-        
-        }
+         }
         
        // Get a db connection.
         $db = JFactory::getDbo();
@@ -245,12 +258,12 @@ class sportsmanagementModelClubPlan extends JModel
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
-        $query->where('(m.match_date BETWEEN '.$this->_db->Quote($startdate).' AND '.$this->_db->Quote($enddate).')');
+        $query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
 
         if( $this->project_id > 0 ) 
         {
 			// Where
-            $query->where('p.id = '. $this->_db->Quote($this->project_id));
+            $query->where('p.id = '. $db->Quote($this->project_id));
 		}
 		
         if( $this->clubid > 0 ) 
@@ -261,15 +274,15 @@ class sportsmanagementModelClubPlan extends JModel
             case 3:  
             case 4: 
             // Where
-            $query->where('(t1.club_id = '.$this->_db->Quote($this->clubid).' OR t2.club_id = '.$this->_db->Quote($this->clubid) . ')' );
+            $query->where('(t1.club_id = '.$db->Quote($this->clubid).' OR t2.club_id = '.$db->Quote($this->clubid) . ')' );
             break;
             case 1:
             // Where
-            $query->where('t1.club_id = '.$this->_db->Quote($this->clubid) );
+            $query->where('t1.club_id = '.$db->Quote($this->clubid) );
             break;
             case 2:
             // Where
-            $query->where('t2.club_id = '.$this->_db->Quote($this->clubid) );
+            $query->where('t2.club_id = '.$db->Quote($this->clubid) );
             break;
         }
             
