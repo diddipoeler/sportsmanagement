@@ -29,13 +29,22 @@ function visibleMenu(obj) {
 function hideclubplandate()
 {
 // Get the value from a dropdown select
-var teamartsel = jQuery( "select.teamartsel option:selected").val();
-var teamprojectssel = jQuery( "select.teamprojectssel option:selected").val();
-var teamseasonssel = jQuery( "select.teamseasonssel option:selected").val();
+var teamartsel = jQuery( "#teamartsel" ).val();
+var teamprojectssel = jQuery( "#teamprojectssel" ).val();
+var teamseasonssel = jQuery( "#teamseasonssel" ).val();
 
-alert(teamartsel);
-alert(teamprojectssel);
-alert(teamseasonssel);
+//alert(teamartsel);
+//alert(teamprojectssel);
+//alert(teamseasonssel);
+
+if (teamartsel == '' && teamprojectssel == 0 && teamseasonssel == 0 ) 
+{
+jQuery('div.clubplandate').show();
+}
+else
+{
+jQuery('div.clubplandate').hide();
+}
 
 }
 
