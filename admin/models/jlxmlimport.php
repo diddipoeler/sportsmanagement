@@ -5331,7 +5331,10 @@ $this->dump_variable("import_team", $import_team);
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();  
-                 
+                if (!$result)
+			    {
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			    } 
                  
 			    }
         
