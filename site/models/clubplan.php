@@ -314,6 +314,9 @@ class sportsmanagementModelClubPlan extends JModel
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
          }
         
        // Get a db connection.
@@ -376,7 +379,7 @@ class sportsmanagementModelClubPlan extends JModel
         if( $this->teamart > 0 ) 
         {
 			// Where
-            $query->where("(t1.info LIKE '".$db->Quote($this->teamart)." OR t2.info LIKE '".$db->Quote($this->teamart) . "')");
+            $query->where("(t1.info LIKE '".$db->Quote($this->teamart)."' OR t2.info LIKE '".$db->Quote($this->teamart) . "')");
 		}
         
         if( $this->teamseasons > 0 ) 
