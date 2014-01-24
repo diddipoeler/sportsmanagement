@@ -43,6 +43,14 @@ defined('_JEXEC') or die('Restricted access');
 	<?php $dateformat="%d-%m-%Y"; ?>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
+        <td><?php
+                echo "".JHTML::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->teamartsel )."";
+                echo "".JHTML::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->teamprojectssel )."";
+                echo "".JHTML::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->teamseasonssel )."";                
+				?>
+            <td>
+        </tr>
+        <tr>
 			<td><?php
 				echo JHTML::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
 				echo ' - '.JHTML::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
@@ -63,14 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 			if ( $this->club )
 			{
 				$picture=$this->club->logo_big;
-/**
- * 				echo sportsmanagementHelper::getPictureThumb($picture, 
- * 										$this->club->name,
- * 										50,
- * 										50,
- * 										2);
- */
-			
+
 ?>                                    
 <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
 <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
@@ -79,6 +80,7 @@ defined('_JEXEC') or die('Restricted access');
             }
 			?></td>
 		</tr>
+        
 	</table>
 	<?php echo JHTML::_('form.token')."\n"; ?>
 </form><br />
