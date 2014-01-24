@@ -75,6 +75,10 @@ class sportsmanagementViewClubPlan extends JView
         $model->teamart = $this->teamartsel;
         $this->assignRef('teamprojectssel',JRequest::getVar("teamprojectssel", 0));
         $model->teamprojects = $this->teamprojectssel;
+        if ( $this->teamprojectssel > 0 )
+        {
+            $model->project_id = $this->teamprojectssel;
+        }
         $this->assignRef('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
         $model->teamseasons = $this->teamseasonssel;
         
