@@ -61,6 +61,13 @@ class sportsmanagementViewClubPlan extends JView
         $option = JRequest::getCmd('option');
         $mainframe = JFactory::getApplication();
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        
+        $js = "window.addEvent('domready', function() {"."\n";
+        $js .= "hideclubplandate()".";\n";
+        $js .= "})"."\n";
+        $document->addScriptDeclaration( $js );
+        
+        
 		$project = sportsmanagementModelProject::getProject();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$this->assignRef('project',$project);
