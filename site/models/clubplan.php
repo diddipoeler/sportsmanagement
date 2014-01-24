@@ -112,6 +112,36 @@ class sportsmanagementModelClubPlan extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        if ($this->clubid > 0)
+		{
+		// Select some fields
+        $query->select('p.id as value,p.name as text');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.team_id = t.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s ON s.id = st.season_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt ON pt.team_id = st.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.id = pt.project_id ');
+        // Where
+        $query->where('t.club_id = '.(int) $this->clubid);
+        // Group
+        $query->group('p.id,p.name');
+        // Order
+        $query->order('p.name DESC');
+
+		$db->setQuery($query);
+		$teamsprojects = $db->loadObjectList();
+		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsprojects'.'<pre>'.print_r($teamsprojects,true).'</pre>' ),'');
+       }
+        
+        return $teamsprojects;
+        
+        
+        
     }
     
     function getTeamsSeasons()
