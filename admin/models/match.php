@@ -560,6 +560,10 @@ class sportsmanagementModelMatch extends JModelAdmin
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($team_id,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_position_id'.'<pre>'.print_r($project_position_id,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');
+        
         // Select some fields
         $query->select('mp.id AS table_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number');
         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
@@ -577,7 +581,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
         $query->where('mp.match_id = '.$match_id);
-        $query->where('tpl.projectteam_id = '.$team_id);
+        //$query->where('tpl.projectteam_id = '.$team_id);
         $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
         $query->where('pl.published = 1');
         
