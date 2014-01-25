@@ -553,28 +553,62 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function getRoster($team_id, $project_position_id=0, $match_id)
 	{
-		$query='SELECT	mp.id AS table_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number,'
-		.' pl.firstname,'
-		.' pl.nickname,'
-		.' pl.lastname,'
-		.' tpl.jerseynumber'
-		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('mp.id AS table_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number');
+        $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
+        $query->select('pos.name AS positionname');
+        $query->select('ppos.position_id,ppos.id AS pposid');
+//        $query->select('');
+//        $query->select('');
+//        $query->select('');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+        
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
+        //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
+        $query->where('mp.match_id = '.$match_id);
+        $query->where('tpl.projectteam_id = '.$team_id);
+        $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
+        $query->where('pl.published = 1');
+        
+        
+/*        
+
+		
 		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.id=mp.teamplayer_id '
 		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id=tpl.person_id '
 		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id '
-		.' WHERE mp.match_id='.$match_id
-		.' AND tpl.projectteam_id='.$team_id
-		.' AND mp.came_in='.self::MATCH_ROSTER_STARTER
-		.' AND pl.published = 1 '
+
+
 		.' AND tpl.published = 1 '
 		.' AND tpl.published = 1 ';
-		if ($project_position_id > 0)
+*/		
+        if ($project_position_id > 0)
 		{
-			$query .= " AND mp.project_position_id='".$project_position_id."' ";
+		  $query->where('mp.project_position_id = '.$project_position_id);
+			//$query .= " AND mp.project_position_id='".$project_position_id."' ";
 		}
-		$query .= " ORDER BY ppos.position_id, mp.ordering ASC";
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList('value');
+        
+		//$query .= " ORDER BY ppos.position_id, mp.ordering ASC";
+        $query->order('ppos.position_id, mp.ordering ASC');
+		$db->setQuery($query);
+		$result = $db->loadObjectList('value');
+        
+        if ( !$result )
+		    {
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		    }
+            
 		return $result;
 	}
     
@@ -757,7 +791,6 @@ class sportsmanagementModelMatch extends JModelAdmin
         // Join 
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
-        
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
 

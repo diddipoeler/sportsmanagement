@@ -379,7 +379,7 @@ class sportsmanagementViewMatch extends JView
 			  									sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
 			  									' - ('.JText::_($p->positionname).')');
 		}
-		$lists['team_players']=JHtml::_(	'select.genericlist',$not_assigned_options,'roster[]',
+		$lists['team_players'] = JHtml::_(	'select.genericlist',$not_assigned_options,'roster[]',
 											'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"',
 											'value','text');
 
@@ -392,23 +392,23 @@ class sportsmanagementViewMatch extends JView
 		//$allplayers = $model->getTeamPlayers($tid);
         $allplayers = $model->getTeamPersons($tid,FALSE,1);
 		
-        $playersoptionsout=array();
-		$playersoptionsout[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
+        $playersoptionsout = array();
+		$playersoptionsout[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
 		
         foreach ((array)$starters AS $player)
         //foreach ((array)$allplayers AS $player)
 		{
-			$playersoptionsout[]=JHtml::_('select.option',$player->value,
+			$playersoptionsout[] = JHtml::_('select.option',$player->value,
 			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
         
-        $playersoptionsin=array();
-		$playersoptionsin[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
+        $playersoptionsin = array();
+		$playersoptionsin[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
 		
         foreach ((array)$not_assigned AS $player)
         //foreach ((array)$allplayers AS $player)
 		{
-			$playersoptionsin[]=JHtml::_('select.option',$player->value,
+			$playersoptionsin[] = JHtml::_('select.option',$player->value,
 			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
 
@@ -431,7 +431,7 @@ class sportsmanagementViewMatch extends JView
 			$options=array();
 			foreach ((array) $players AS $p)
 			{
-				$options[]=JHtml::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
+				$options[] = JHtml::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
 				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
 			}
 
