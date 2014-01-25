@@ -389,7 +389,8 @@ class sportsmanagementViewMatch extends JView
 		$lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text', NULL, false, true);
 		
         // build player select
-		$allplayers = $model->getTeamPlayers($tid);
+		//$allplayers = $model->getTeamPlayers($tid);
+        $allplayers = $model->getTeamPersons($tid,FALSE,1);
 		
         $playersoptionsout=array();
 		$playersoptionsout[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
