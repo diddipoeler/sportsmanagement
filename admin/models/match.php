@@ -407,13 +407,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		
 	}
     
-    /**
-	 * Returns the team players
-	 * @param in project team id
-	 * @param array teamplayer_id to exclude
-	 * @return array
-	 */
-	function getTeamPlayers($projectteam_id,$filter=false)
+    function getTeamPersons($projectteam_id,$filter=false,$persontype)
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -438,30 +432,10 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
-        $query->where('sp.persontype = 1');
+        $query->where('sp.persontype = '.$persontype);
         $query->where('sp.season_id = '.$this->_season_id);
 //        $query->where('tpl.published = 1');
 
-
-/*        
-		$query='	SELECT	,
-							,
-							tpl.projectteam_id,
-							
-							,
-							,
-							,
-							
-                            
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.person_id=pl.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=tpl.project_position_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
-					WHERE tpl.projectteam_id='.  $projectteam_id.'
-					AND pl.published = 1
-					AND tpl.published = 1';
-                    
-*/                    
 		if (is_array($filter) && count($filter) > 0)
 		{
 			//$query .= " AND tpl.id NOT IN (".implode(',',$filter).")";
@@ -481,6 +455,58 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         return $result;
 	}
+    
+/**
+ *  
+ * 	function getTeamPlayers($projectteam_id,$filter=false)
+ * 	{
+ * 	   $option = JRequest::getCmd('option');
+ * 		$mainframe = JFactory::getApplication();
+ *         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+ *         // Get a db connection.
+ *         $db = JFactory::getDbo();
+ *         $query = $db->getQuery(true);
+ *         
+ *         // Select some fields
+ *         $query->select('sp.id AS value');
+ *         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
+ *         $query->select('pos.name AS positionname');
+ *         $query->select('ppos.position_id,ppos.id AS pposid');
+ * //        $query->select('');
+ * //        $query->select('');
+ * //        $query->select('');
+ *         // From 
+ * 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
+ *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
+ *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
+ *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
+ *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
+ *         $query->where('pt.id = '.  $projectteam_id);
+ *         $query->where('pl.published = 1');
+ *         $query->where('sp.persontype = 1');
+ *         $query->where('sp.season_id = '.$this->_season_id);
+ * //        $query->where('tpl.published = 1');
+
+ * 		if (is_array($filter) && count($filter) > 0)
+ * 		{
+ * 			//$query .= " AND tpl.id NOT IN (".implode(',',$filter).")";
+ *             // Where
+ *             $query->where("sp.id NOT IN (".implode(',',$filter).")");
+ * 		}
+ * 		//$query .= " ORDER BY pos.ordering, pl.lastname ASC ";
+ *         $query->order("pos.ordering, pl.lastname ASC");
+ * 		$db->setQuery($query);
+ * 		
+ *         $result = $db->loadObjectList();
+ *             if ( !$result )
+ * 		    {
+ * 			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+ * 		    }
+ *         
+ *         
+ *         return $result;
+ * 	}
+ */
     
     /**
 	 * Method to return substitutions made by a team during a match
@@ -657,31 +683,33 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param array teamplayer_id to exclude
 	 * @return array
 	 */
-	function getTeamStaffs($projectteam_id,$filter=false)
-	{
-		$query='	SELECT	ts.id AS value,
-							pl.firstname,
-							pl.nickname,
-							pl.lastname,
-							ts.projectteam_id,
-							pl.info,
-							pos.name AS positionname,
-							ppos.position_id
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pl.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
-					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam_id)
-					.' AND pl.published = 1'
-					.' AND ts.published = 1';
-		if (is_array($filter) && count($filter) > 0)
-		{
-			$query .= " AND ts.id NOT IN (".implode(',',$filter).")";
-		}
-		$query .= " ORDER BY pl.lastname ASC ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+/**
+ * 	function getTeamStaffs($projectteam_id,$filter=false)
+ * 	{
+ * 		$query='	SELECT	ts.id AS value,
+ * 							pl.firstname,
+ * 							pl.nickname,
+ * 							pl.lastname,
+ * 							ts.projectteam_id,
+ * 							pl.info,
+ * 							pos.name AS positionname,
+ * 							ppos.position_id
+ * 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
+ * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pl.id
+ * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
+ * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
+ * 					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam_id)
+ * 					.' AND pl.published = 1'
+ * 					.' AND ts.published = 1';
+ * 		if (is_array($filter) && count($filter) > 0)
+ * 		{
+ * 			$query .= " AND ts.id NOT IN (".implode(',',$filter).")";
+ * 		}
+ * 		$query .= " ORDER BY pl.lastname ASC ";
+ * 		$this->_db->setQuery($query);
+ * 		return $this->_db->loadObjectList();
+ * 	}
+ */
     
     
     /**
