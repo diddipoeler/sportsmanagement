@@ -5,26 +5,38 @@
 <name icon="yellow_card.png">YELLOW_CARD</name>
 </events>
 <events>
-<name icon="yellow_red_card.png">YELLOW-RED_CARD</name>
+<name icon="cumulative_foul.png">CUMULATIVE_FOUL</name>
 </events>
 <events>
 <name icon="red_card.png">RED_CARD</name>
 </events>
 <events>
+<name icon="penalty_goal_6m.png">PENALTY_GOAL_6_METER</name>
+</events>
+<events> 
+<events>
+<name icon="penalty_goal_10m.png">PENALTY_GOAL_10_METER</name>
+</events>
+<events>
 <name icon="injured.png">INJURY</name>
+</events>
+<events>
+<name icon="goal.png">GOAL</name>
+</events>
+<events>
+<name icon="own_goal.png">OWN_GOAL</name>
+</events>
+<events>
+<name icon="foul.png">FOUL</name>
+</events>
+<events>
+<name icon="foul_time.png">FOUL_TIME</name>
 </events>
 <events>
 <name icon="timeout.png">TIMEOUT</name>
 </events>
-<events>
-<name icon="serve.png">SERVE</name>
-</events>
-<events>
-<name icon="substitution.png">SUBSTITUTION</name>
-</events>
-<events>
-<name icon="libero.png">LIBERO</name>
-</events>
+
+
 <mainpositions>
 <mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
 </mainpositions>
@@ -43,30 +55,30 @@
 <mainpositions>
 <mainname switch="persontype" parent="0" content="4">CLUB_STAFF</mainname>
 </mainpositions>
+
+
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LIBERO</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">OUTSIDE_HITTER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">OPPOSITE_HITTER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MIDDLE_HITTER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">PIVOT</parentname>
 </parentpositions>
-<parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">TEAM_CAPTAIN</parentname>
-</parentpositions>
-<parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SETTER</parentname>
-</parentpositions>
+
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
 </parentpositions>
 
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">GOALKEEPER_COACH</parentname>
 </parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">HEAD_COACH</parentname>
@@ -82,24 +94,22 @@
 </parentpositions>
 
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">MAIN_REFEREE</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FIRST_REFEREE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTANCE_REFEREE</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">SECOND_REFEREE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">LINEJUDGES</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTANT_REFEREE</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">SCORER</parentname>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">TIME_KEEPER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTANT_SCORER</parentname>
-</parentpositions>
-
 <parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
 </parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>
 </parentpositions>
+
 </structur>
