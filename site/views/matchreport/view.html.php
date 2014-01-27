@@ -59,7 +59,8 @@ class sportsmanagementViewMatchReport extends JView
 
 	function display($tpl=null)
 	{
-		// Get a refrence of the page instance in joomla
+		$mainframe = JFactory::getApplication();
+        // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
 //		$version = urlencode(sportsmanagementHelper::getVersion());
@@ -110,6 +111,15 @@ class sportsmanagementViewMatchReport extends JView
 		$this->assign('playerstats',$model->getMatchStats());
 		$this->assign('staffstats',$model->getMatchStaffStats());
 		$this->assignRef('model',$model);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
+        }
+
 
 
 
@@ -130,8 +140,8 @@ $extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
     $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
     $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
 
-$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
+//    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+//    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
     
 if ( $this->config['show_pictures'] == 1 )
 	  {

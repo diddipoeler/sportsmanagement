@@ -427,9 +427,10 @@ class sportsmanagementModelMatch extends JModelAdmin
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
         $query->where('sp.persontype = '.$persontype);
@@ -519,8 +520,27 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
-		$in_out=array();
+        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+		//$project_id=$mainframe->getUserState($option.'project');
+		$in_out = array();
+        $query->select('mp.*,mp.came_in');
+        $query->select('p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname');
+        $query->select('p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname');
+        $query->select('pos.name AS in_position');
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp1 ON sp1.id = mp.teamplayer_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p1 ON sp1.person_id = p1.id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = p1.position_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp2 ON sp2.id = mp.in_for ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON sp2.person_id = p2.id ');
+        
+/*        
 		$query='SELECT mp.*,'
 		.' p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname,'
 		.' p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname,'
@@ -538,8 +558,22 @@ class sportsmanagementModelMatch extends JModelAdmin
 		.'   AND came_in>0 '
 		.'   AND tp1.projectteam_id='.$tid
 		.' ORDER by (mp.in_out_time+0) ';
-		$this->_db->setQuery($query);
-		$in_out[$tid]=$this->_db->loadObjectList();
+*/        
+        
+        $query->where('mp.match_id = '.$match_id);
+        $query->where('came_in > 0');
+        //$query->where('tp1.projectteam_id = '.$tid);
+        $query->order("(mp.in_out_time+0)");
+        
+		$db->setQuery($query);
+		$in_out[$tid] = $db->loadObjectList();
+        
+        if ( !$in_out[$tid] )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+        
 		return $in_out;
 	}
     
@@ -599,11 +633,11 @@ class sportsmanagementModelMatch extends JModelAdmin
 */		
         if ($project_position_id > 0)
 		{
-		  $query->where('mp.project_position_id = '.$project_position_id);
-			//$query .= " AND mp.project_position_id='".$project_position_id."' ";
+		  //$query->where('mp.project_position_id = '.$project_position_id);
+          $query->where('pl.position_id = '.$project_position_id);
+
 		}
         
-		//$query .= " ORDER BY ppos.position_id, mp.ordering ASC";
         $query->order('ppos.position_id, mp.ordering ASC');
 		$db->setQuery($query);
 		$result = $db->loadObjectList('value');

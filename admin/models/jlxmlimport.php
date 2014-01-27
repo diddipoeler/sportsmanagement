@@ -499,7 +499,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
                 }
@@ -512,7 +512,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
                 }
@@ -525,7 +525,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
                 }
@@ -538,7 +538,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
                 }
@@ -551,7 +551,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if ( preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
                 }
@@ -564,7 +564,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
                 $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture)) 
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
                 }
@@ -583,15 +583,15 @@ class sportsmanagementModelJLXMLImport extends JModel
                 
                 $temppicture->logo_small = str_replace('com_joomleague', $option, $temppicture->logo_small);
                 $temppicture->logo_small = str_replace('media', 'images', $temppicture->logo_small);
-                if (preg_match("/placeholders/i", $temppicture->logo_big)) 
+                if (preg_match("/placeholders/i", $temppicture->logo_big) || empty($temppicture->logo_big) ) 
                 {
                       $temppicture->logo_big = JComponentHelper::getParams($option)->get('ph_logo_big','');
                 }
-                if (preg_match("/placeholders/i", $temppicture->logo_middle)) 
+                if (preg_match("/placeholders/i", $temppicture->logo_middle) || empty($temppicture->logo_middle) ) 
                 {
                       $temppicture->logo_middle = JComponentHelper::getParams($option)->get('ph_logo_medium','');
                 }
-                if (preg_match("/placeholders/i", $temppicture->logo_small)) 
+                if (preg_match("/placeholders/i", $temppicture->logo_small) || empty($temppicture->logo_small) ) 
                 {
                       $temppicture->logo_small = JComponentHelper::getParams($option)->get('ph_logo_small','');
                 }
@@ -670,7 +670,7 @@ class sportsmanagementModelJLXMLImport extends JModel
                 }
                 $playground->picture = str_replace('com_joomleague', $option, $playground->picture);
                 $playground->picture = str_replace('media', 'images', $playground->picture);
-                if (preg_match("/placeholders/i", $playground->picture)) 
+                if (preg_match("/placeholders/i", $playground->picture) || empty($playground->picture) ) 
                 {
                       $playground->picture = JComponentHelper::getParams($option)->get('ph_team','');
                 }
@@ -2844,7 +2844,7 @@ $this->dump_variable("import_team", $import_team);
 							$this->_db->setQuery($query);
                             
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-                            $my_text .= JText::sprintf('Created new template data: %1$s %2$s',"</span><strong>$template</strong>","<br><pre>".print_r($defaultvalues,true)."</pre>" );
+                            $my_text .= JText::sprintf('Created new template data for empty Projectdata: %1$s %2$s',"</span><strong>$template</strong>","<br><strong>".$defaultvalues."</strong>" );
 			                $my_text .= '<br />';
                             
 							//echo error,allows to check if there is a mistake in the template file
@@ -2955,7 +2955,7 @@ $this->dump_variable("import_team", $import_team);
 						{
 							$dTitle=(!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
 							$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-							$my_text .= JText::sprintf('Created new template data: %1$ [%2$]',"</span><strong>$dTitle</strong>","<strong>$t_params</strong>");
+							$my_text .= JText::sprintf('Created new template data from Import-Project: %1$ [%2$]',"</span><strong>$dTitle</strong>","<strong>$t_params</strong>");
 							$my_text .= '<br />';
 						}
 					}
@@ -5373,12 +5373,22 @@ $this->dump_variable("import_team", $import_team);
             
             // ist das team schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
-		    $query->select('id');		
+		    /*
+            $query->select('id');		
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
 		    $query->where('t.team_id = '.$proteam->team_id);
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
 		    $new_team_id = $db->loadResult();
+            */
+            $query->select('team_id');		
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->where('t.id = '.$proteam->team_id);
+            $query->where('t.season_id = '.$this->_season_id);
+		    $db->setQuery($query);
+		    $new_team_id = $db->loadResult();
+            
+            
 /**
  * das musste ich aussternen, da die aktualisierung in die neuen strukturen hier
  * zu spät ist. ein update der projectteam tabelle ist nicht so einfach möglich. 

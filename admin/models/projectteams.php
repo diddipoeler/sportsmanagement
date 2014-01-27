@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -49,7 +77,7 @@ class sportsmanagementModelProjectteams extends JModelList
         $subQuery= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);
 		$user = JFactory::getUser(); 
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 		
         
         // Select some fields
@@ -67,11 +95,13 @@ class sportsmanagementModelProjectteams extends JModelList
         {    
         if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
         {
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on tl.team_id = st.id');    
         // count team player
         $subQuery->select('count(tp.id)');
         $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $subQuery->where('tp.published = 1');
-        $subQuery->where('tp.team_id = tl.team_id');
+        //$subQuery->where('tp.team_id = tl.team_id');
+        $subQuery->where('tp.team_id = st.team_id');
         $subQuery->where('tp.persontype = 1');
         $subQuery->where('tp.season_id = '.$this->_season_id);
         $query->select('(' . $subQuery . ') AS playercount');
@@ -79,7 +109,8 @@ class sportsmanagementModelProjectteams extends JModelList
         $subQuery2->select('count(tp.id)');
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $subQuery2->where('tp.published = 1');
-        $subQuery2->where('tp.team_id = tl.team_id');
+        //$subQuery2->where('tp.team_id = tl.team_id');
+        $subQuery2->where('tp.team_id = st.team_id');
         $subQuery2->where('tp.persontype = 2');
         $subQuery2->where('tp.season_id = '.$this->_season_id);
         $query->select('(' . $subQuery2 . ') AS staffcount');    
@@ -98,7 +129,7 @@ class sportsmanagementModelProjectteams extends JModelList
         $query->select('(' . $subQuery2 . ') AS staffcount');
         }
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on tl.team_id = st.id');
+        //$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on tl.team_id = st.id');
         // Join over the team
 		$query->select('t.name,t.club_id');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on st.team_id = t.id');
@@ -152,7 +183,12 @@ where tl.project_id = 2
         if ( $this->project_art_id == 3 )
         {
         $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd' );
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');    
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
+        }
+            
         if ( $filter_order == 't.lastname' || $filter_order == 't.name' )
 		{
 			$orderby 	= ' t.lastname ' . $filter_order_Dir;
@@ -165,7 +201,12 @@ where tl.project_id = 2
         else
         {
         $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');    
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
+        }
+            
 		if ( $filter_order == 't.name' || $filter_order == 't.lastname' )
 		{
 			$orderby 	= ' t.name ' . $filter_order_Dir;
@@ -300,9 +341,12 @@ where tl.project_id = 2
         $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
         $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
         $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
+        }
         
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
@@ -488,7 +532,10 @@ where tl.project_id = 2
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+        }
         
         if ( $this->project_art_id == 3 )
         {

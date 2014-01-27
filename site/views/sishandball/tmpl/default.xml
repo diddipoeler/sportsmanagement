@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_SISHANDBALL_VIEW_DEFAULT_TITLE" option="COM_SPORTSMANAGEMENT_SISHANDBALL_VIEW_DEFAULT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_SISHANDBALL_VIEW_DEFAULT_DESC]]>
+		</message>
+	</layout>
+	<config>
+		<fields name="params">
+			<fieldset name="XML SIS Handball Einstellungen" label="XML SIS Handball Einstellungen">"
+
+<!--		
+			<field name="sis_xmllink" type="list" default="http://www.sis-handball.at" label="SETSISXMLLINK" description="SETSISXMLLINK_DESC">
+				<option value="http://www.sis-handball.at">SIS Österreich</option>
+				<option value="http://www.sis-handball.de">SIS Deutschland</option>
+			</field>
+-->		
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+	
+<!--	
+			<field name="sis_meinevereinsnummer" type="text" size="40" default="" label="SETMEINEVEREINSNUMMER" description="SETMEINEVEREINSNUMMER_DESC" />
+			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="SETMEINEVEREINSPASS" description="SETMEINEVEREINSPASS_DESC" />
+-->      		
+			<field name="sis_liganummer" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETSISLIGANUMMER" description="COM_SPORTSMANAGEMENT_SETSISLIGANUMMER_DESC" />
+			<field name="sis_ueberschrift" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETUEBERSCHRIFT" description="SCOM_SPORTSMANAGEMENT_ETUEBERSCHRIFT_DESC" />
+			<field name="sis_clubnummer" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETCLUBNUMMER" description="COM_SPORTSMANAGEMENT_SETCLUBNUMMER_DESC" />
+			<field name="sis_clubnummer1" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETCLUBNUMMER1" description="COM_SPORTSMANAGEMENT_SETCLUBNUMMER1_DESC" />
+			<field name="sis_jahr" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETJAHRAKT" description="COM_SPORTSMANAGEMENT_SETJAHRAKT_DESC" />
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+			<field name="sis_ics_vereinsnameshort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETICSVEREINSNAMESHORT" description="COM_SPORTSMANAGEMENT_SETICSVEREINSNAMESHORT_DESC" />
+			<field name="sis_ics_dir" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETICSDIR" description="COM_SPORTSMANAGEMENT_SETICSDIR_DESC" />
+			<field name="sis_ics" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETICS" description="COM_SPORTSMANAGEMENT_SETICS_DESC" />
+			<field name="sis_linkhilfeics" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETLINKHILFEICS" description="COM_SPORTSMANAGEMENT_SETLINKHILFEICS_DESC" />
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+			<field name="sis_link1name" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETLINK1NAME" description="COM_SPORTSMANAGEMENT_SETLINK1NAME_DESC" />
+			<field name="sis_link1" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETLINK1" description="COM_SPORTSMANAGEMENT_SETLINK1_DESC" />
+			<field name="sis_link2name" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETLINK2NAME" description="COM_SPORTSMANAGEMENT_SETLINK2NAME_DESC" />
+			<field name="sis_link2" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETLINK2" description="COM_SPORTSMANAGEMENT_SETLINK2_DESC" />
+	
+		
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+
+			<field name="sis_art" type="list" default="4" label="COM_SPORTSMANAGEMENT_SETSISART" description="COM_SPORTSMANAGEMENT_SETSISART_DESC">
+				<option value="4">Tabelle</option>
+				<option value="6">Heimtabelle</option>
+				<option value="7">Auswaertstabelle</option>
+			
+				<option value="1">Alle Spiele</option>
+				<option value="1a">Alle Spiele von heute bis Jahr Team</option>
+				<option value="2">letzten 15 Spiele</option>
+				<option value="3">naechsten 15 Spiele</option>
+				<option value="10">letzten 30 Spiele</option>
+				<option value="11">naechsten 30 Spiele</option>
+				
+				<option value="x">Aktuelle Spiele eigenes Team</option>
+				<option value="12">Torschützen eigenes Team</option>
+				<option value="12a">Torschützen alle Teams</option>
+			</field>
+
+		
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+
+			<field name="sis_getxmldatei" type="radio" default="0" label="COM_SPORTSMANAGEMENT_GETSISXMLANZEIGEN" description="COM_SPORTSMANAGEMENT_GETSISXMLANZEIGEN_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="@spacer" type="spacer" default="" label="" description="" />
+		
+			<field name="sis_getliganummer" type="radio" default="1" label="COM_SPORTSMANAGEMENT_GETSISLIGANUMMER" description="COM_SPORTSMANAGEMENT_GETSISLIGANUMMER_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field name="sis_getschiedsrichter" type="radio" default="1" label="COM_SPORTSMANAGEMENT_GETSISSCHIEDSRICHTER" description="COM_SPORTSMANAGEMENT_GETSISSCHIEDSRICHTER_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field name="sis_getspielort" type="radio" default="1" label="COM_SPORTSMANAGEMENT_GETSISSPIELORT" description="COM_SPORTSMANAGEMENT_GETSISSPIELORT_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			</fieldset>
+		</fields>
+	</config>
+		
+</metadata>

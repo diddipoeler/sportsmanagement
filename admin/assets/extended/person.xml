@@ -52,7 +52,61 @@
 			label="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ" description="COM_SPORTSMANAGEMENT_EXT_PERSON_ICQ_DESC"
 			backendonly="">
 		</field>
-		
+
+<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION" 
+    type="list" 
+    size="17" 
+    default="" 
+    multiple="" 
+    label="COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION"
+ description="Select one items from the list.">
+ 
+<option value="hp1">Torwart</option>
+<option value="hp2">Libero</option>
+<option value="hp3l">Innenverteidiger Links</option>
+<option value="hp3r">Innenverteidiger Rechts</option>
+<option value="hp4">Linker Verteidiger</option>
+<option value="hp5">Rechter Verteidiger</option>
+<option value="hp6">Defensives Mittelfeld</option>
+<option value="hp7">Zentrales Mittelfeld</option>
+<option value="hp8">Rechtes Mittelfeld</option>
+<option value="hp9">Linkes Mittelfeld</option>
+<option value="hp10">Offensives Mittelfeld</option>
+<option value="hp11m">Linksaußen</option>
+<option value="hp11s">offensiver Linksaußen</option>
+<option value="hp12m">Rechtsaußen</option>
+<option value="hp12s">offensiver Rechtsaußen</option>
+<option value="hp13">Hängende Spitze</option>
+<option value="hp14">Mittelstürmer</option>
+ 
+
+</field>
+
+<field name="COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS" 
+    type="list" 
+    size="17" 
+    default="" 
+    multiple="multiple" 
+    label="COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS"
+ description="Select one or more items from the list.  You can use Ctrl-click to select more than one item.">
+	<option value="np1">Torwart</option>
+<option value="np2">Libero</option>
+<option value="np3l">Innenverteidiger Links</option>
+<option value="np3r">Innenverteidiger Rechts</option>
+<option value="np4">Linker Verteidiger</option>
+<option value="np5">Rechter Verteidiger</option>
+<option value="np6">Defensives Mittelfeld</option>
+<option value="np7">Zentrales Mittelfeld</option>
+<option value="np8">Rechtes Mittelfeld</option>
+<option value="np9">Linkes Mittelfeld</option>
+<option value="np10">Offensives Mittelfeld</option>
+<option value="np11m">Linksaußen</option>
+<option value="np11s">offensiver Linksaußen</option>
+<option value="np12m">Rechtsaußen</option>
+<option value="np12s">offensiver Rechtsaußen</option>
+<option value="np13">Hängende Spitze</option>
+<option value="np14">Mittelstürmer</option>
+</field>		
 		
 		<field 	name="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME" type="text" 
 				label="COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME_LABEL"

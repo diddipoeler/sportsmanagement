@@ -260,8 +260,9 @@ class sportsmanagementModelMatchReport extends JModel
               .' mp.trikot_number,'
 		      .' ppos.position_id,'
 		      .' ppos.id AS pposid,'
-		      .' pt.team_id,'
-		      .' pt.id as ptid,'
+		      .' st.team_id,'
+		      //.' pt.id as ptid,'
+              .' st.id as ptid,'
 		      .' mp.teamplayer_id,'
 		      .' tp.picture,'
 			  .' p.picture AS ppic,'
@@ -269,24 +270,32 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
 		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
+              .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
 		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id '
 		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id '
-		      .' WHERE mp.match_id='.(int)$this->matchid
-		      .' AND mp.came_in=0 '
+		      .' WHERE mp.match_id = '.(int)$this->matchid
+		      .' AND mp.came_in = 0 '
 		      .' AND p.published = 1 '
 		      .' ORDER BY mp.ordering, tp.jerseynumber, p.lastname ';
-		$this->_db->setQuery($query);
+              
+		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->loadObjectList(),true).'</pre>'),'Notice');
         }
         
-		return $this->_db->loadObjectList();
+        $result = $db->loadObjectList();
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+		return $result;
 	}
 
 	function getMatchStaff()
@@ -306,28 +315,40 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' ppos.position_id,'
 		      .' ppos.id AS pposid,'
 		      .' pt.team_id,'
-		      .' pt.id as ptid,'
+		      //.' pt.id as ptid,'
+              .' st.id as ptid,'
 		      .' tp.picture,'
 			  .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
 			  .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
 		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id=ms.team_staff_id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=tp.team__id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id '
-		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ms.project_position_id '
-		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.team_staff_id '
+              .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ms.project_position_id '
+		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id '
 		      .' WHERE ms.match_id='.(int)$this->matchid
 		      .'  AND p.published = 1';
-		       $this->_db->setQuery($query);
+              
+              
+              
+              
+		       $db->setQuery($query);
                
                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
-               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->loadObjectList(),true).'</pre>'),'Notice');
+               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->loadObjectList(),true).'</pre>'),'Notice');
          }
                
-		return $this->_db->loadObjectList();
+		$result = $db->loadObjectList();
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+        return $result;
 	}
 
 	function getMatchCommentary()

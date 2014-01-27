@@ -441,6 +441,7 @@ class sportsmanagementViewMatch extends JView
 		}
 
 		$substitutions = $model->getSubstitutions($tid,$this->item->id);
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' substitutions'.'<pre>'.print_r($substitutions,true).'</pre>' ),'');
 
 		/**
 		 * staff positions
@@ -475,14 +476,14 @@ class sportsmanagementViewMatch extends JView
 										'value','text');
 
 		// generate selection list for each position
-		$options=array();
+		$options = array();
 		foreach ($staffpositions AS $position_id => $pos)
 		{
 			// get players assigned to this position
 			$options=array();
 			foreach ($assigned as $staff)
 			{
-				if ($staff->project_position_id == $pos->pposid)
+				if ($staff->position_id == $pos->pposid)
 				{
 					$options[]=JHtml::_('select.option',$staff->team_staff_id,
 					  sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
