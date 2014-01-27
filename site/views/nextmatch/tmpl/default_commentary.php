@@ -38,43 +38,45 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-
+<!-- START of match commentary -->
 <?php
-	// Show team-picture if defined.
-	if ( ( $this->config['show_team_logo'] == 1 ) )
-	{
-		?>
-		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<td align="center">
-					<?php
 
-					$picture = $this->projectteam->picture;
-					if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") ))
-					{
-						$picture = $this->team->picture;
-					}
-					if ( !file_exists( $picture ) )
-					{
-						$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
-					}					
-					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
-           
-      
-      ?>
-
-
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->team->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
-</a>
-
-
-    <?php
-      	
-                    ?>
-				</td>
-			</tr>
-		</table>
-	<?php
-	}
+if (!empty($this->matchcommentary))
+{
 	?>
+	<table width="100%" class="contentpaneopen">
+		<tr>
+			<td class="contentheading">
+				<?php
+				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY' );
+				?>
+			</td>
+		</tr>
+	</table>
+    
+<table class="matchreport" border="0">
+			<?php
+			foreach ( $this->matchcommentary as $commentary )
+			{
+				?>
+				
+				<tr>
+					<td class="list">
+						<dl>
+							<?php echo $commentary->event_time; ?>
+						</dl>
+					</td>
+					<td class="list">
+						<dl>
+							<?php echo $commentary->notes; ?>
+						</dl>
+					</td>
+				</tr>
+				<?php
+			}
+			?>
+</table>        
+<?PHP    
+}    
+
+?>

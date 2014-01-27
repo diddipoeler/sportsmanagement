@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_LAYOUT_TITLE">
+		<message>
+        <![CDATA[COM_SPORTSMANAGEMENT_XML_NEXTMATCH_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+			<field	name="p" type="project"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required="true">
+			</field>
+			<field	name="ptid" type="dependsql" depends="p" task="projectteamsptidoptions" 
+					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_DESCR"
+					required="false">
+			</field>
+			<field	name="mid" type="dependsql" depends="p" task="matchesoptions"
+					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_MATCH_LABEL"
+					description="COM_SPORTSMANAGEMENTXML_NEXTMATCH_SELECT_MATCH_DESCR"
+					required="false"
+					>
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>

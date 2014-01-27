@@ -38,43 +38,69 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+<!-- START of match preview -->
+<?php
+
+// workaround to support {jcomments (off|lock)} in match preview
+// no comments are shown if {jcomments (off|lock)} is found in the match preview
+$commentsDisabled = 0;
+
+if (!empty($this->match->preview) && preg_match('/{jcomments\s+(off|lock)}/is', $this->match->preview))
+{
+	$commentsDisabled = 1;
+}
+
+if (!empty($this->match->preview))
+{
+	?>
+<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
+<table class="matchreport">
+	<tr>
+		<td><?php
+		$preview = $this->match->preview;
+		$preview = JHTML::_('content.prepare', $preview);
+
+		if ($commentsDisabled) {
+			$preview = preg_replace('#{jcomments\s+(off|lock)}#is', '', $preview);
+		}
+
+		echo $preview;
+		?>
+		</td>
+	</tr>
+</table>
+<!-- END of match preview -->
 
 <?php
-	// Show team-picture if defined.
-	if ( ( $this->config['show_team_logo'] == 1 ) )
-	{
-		?>
-		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<td align="center">
-					<?php
+}
 
-					$picture = $this->projectteam->picture;
-					if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") ))
-					{
-						$picture = $this->team->picture;
-					}
-					if ( !file_exists( $picture ) )
-					{
-						$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
-					}					
-					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
-           
-      
-      ?>
+// Comments integration
+if (!$commentsDisabled) {
 
+	JPluginHelper::importPlugin( 'joomleague' );
+	$dispatcher = JDispatcher::getInstance();
+	$comments = '';
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->team->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
-</a>
-
-
-    <?php
-      	
-                    ?>
-				</td>
-			</tr>
-		</table>
-	<?php
+	// get joomleague comments plugin params
+	$plugin	= JPluginHelper::getPlugin('content', 'joomleague_comments');
+	if (is_object($plugin)) {
+		$pluginParams = new JParameter($plugin->params);
 	}
-	?>
+	else {
+		$pluginParams = new JParameter('');
+	}
+	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
+
+	if ($separate_comments) {
+		// Comments integration trigger when separate_comments in plugin is set to yes/1
+		if ($dispatcher->trigger( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
+			echo $comments;
+		}
+	}
+	else {
+		// Comments integration trigger when separate_comments in plugin is set to no/0
+		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
+			echo $comments;
+		}
+	}
+}
