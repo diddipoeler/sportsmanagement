@@ -117,7 +117,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<div class="notice">
 			<?php 
                 $text = JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED" );
-                echo JHTML::link( $report_link, $text );
+                echo JHtml::link( $report_link, $text );
 			?>
 			</div>
 			<?php 

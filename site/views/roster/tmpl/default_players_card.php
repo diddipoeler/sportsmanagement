@@ -35,7 +35,7 @@
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 				}
-				//echo JHTML::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
+				//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 				
 ?>                                    
 <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
@@ -52,7 +52,7 @@
 				  	if ($this->config['link_player']==1)
 					{
 						$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
-						echo JHTML::link($link,'<i>'.$playerName.'</i>');
+						echo JHtml::link($link,'<i>'.$playerName.'</i>');
 					}
 					else
 					{

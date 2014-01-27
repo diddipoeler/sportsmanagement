@@ -142,40 +142,40 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
     
     $params .= $endoutput;
-    echo JHTML::_('content.prepare', $params);
+    echo JHtml::_('content.prepare', $params);
 
         }
         else
         {
     $idxTab = 1;
-  echo JHTML::_('tabs.start','tabs_nextmatch', array('useCookie'=>1));
+  echo JHtml::_('tabs.start','tabs_nextmatch', array('useCookie'=>1));
 	if (($this->config['show_details'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('details');
 		}
 
 		if (($this->config['show_preview'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('preview');
 		}
 
 		if (($this->config['show_stats'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('stats');
 		}
 
 		if (($this->config['show_history'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('history');
 		}
 
 		if (($this->config['show_previousx'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
 			$this->currentteam = $this->match->projectteam1_id;
 			echo $this->loadTemplate('previousx');
 			$this->currentteam = $this->match->projectteam2_id;
@@ -184,12 +184,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         
         if (($this->config['show_commentary'])==1 && $this->matchcommentary )
 	{
-	   echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
+	   echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
         echo $this->loadTemplate('commentary');
 	}
         
 	
-	echo JHTML::_('tabs.end');
+	echo JHtml::_('tabs.end');
     }
     
 	}
@@ -243,39 +243,39 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         
         
         
-        echo JHTML::_('content.prepare', $params);
+        echo JHtml::_('content.prepare', $params);
         }
         else
         {   
 	$idxTab = 1;
-  echo JHTML::_('sliders.start','slider_nextmatch', array('useCookie'=>1));
+  echo JHtml::_('sliders.start','slider_nextmatch', array('useCookie'=>1));
 	if (($this->config['show_details'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('details');
 		}
 
 		if (($this->config['show_preview'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('preview');
 		}
 
 		if (($this->config['show_stats'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('stats');
 		}
 
 		if (($this->config['show_history'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
 			echo $this->loadTemplate('history');
 		}
 
 		if (($this->config['show_previousx'])==1)
 		{
-		echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
+		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
 			$this->currentteam = $this->match->projectteam1_id;
 			echo $this->loadTemplate('previousx');
 			$this->currentteam = $this->match->projectteam2_id;
@@ -284,12 +284,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         
         if (($this->config['show_commentary'])==1 && $this->matchcommentary )
 	{
-	   echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
+	   echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
         echo $this->loadTemplate('commentary');
 	}
         
 	
-	echo JHTML::_('sliders.end');
+	echo JHtml::_('sliders.end');
     }
     
 	}

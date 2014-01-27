@@ -58,7 +58,7 @@ class sportsmanagementViewResults extends JView
 //		$document->addStyleSheet($css);
 
 		//add js file
-		JHTML::_('behavior.mootools');
+		JHtml::_('behavior.mootools');
 		$model	= $this->getModel();
 				
 		$matches = $model->getMatches();
@@ -141,7 +141,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        }
        
        
-			$lists['rounds'] = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
+			$lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->assignRef('lists',$lists);
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}
@@ -236,11 +236,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		{
 			if (!empty($team->logo_small) && JFile::exists($team->logo_small))
 			{
-				$image=JHTML::image($team->logo_small,$title,$attribs);
+				$image=JHtml::image($team->logo_small,$title,$attribs);
 			}
 			else
 			{
-				$image=JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -248,7 +248,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$image=JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image=JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
 			}
 		}
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )
@@ -256,7 +256,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JHTML::image($team->logo_small,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
+				$image = JHtml::image($team->logo_small,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && !JFile::exists($team->logo_small) )
@@ -264,7 +264,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
     elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )
@@ -272,7 +272,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JSMCountries::getCountryFlag($team->country).' '.JHTML::image($team->logo_small,$title,$attribs);
+				$image = JSMCountries::getCountryFlag($team->country).' '.JHtml::image($team->logo_small,$title,$attribs);
 			}
 		}
         elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !JFile::exists($team->logo_small) )
@@ -280,7 +280,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = JSMCountries::getCountryFlag($team->country).' '.JHTML::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
+				$image = JSMCountries::getCountryFlag($team->country).' '.JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
 			}
 		}
 		else
@@ -328,9 +328,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
 		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
-		$desc=JHTML::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
+		$desc=JHtml::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
-		echo JHTML::link($link,$desc,$params);
+		echo JHtml::link($link,$desc,$params);
 
 		echo '<span id="part'.$match->id.'" style="display:none">';
 		echo '<br />';
@@ -611,9 +611,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$imgTitle=JText::_('Has match summary');
 				$img='media/com_sportsmanagement/jl_images/zoom.png';
 			}
-			$output .= JHTML::_(	'link',
+			$output .= JHtml::_(	'link',
 			$report_link,
-			JHTML::image(JURI::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
+			JHtml::image(JURI::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
 			array("title" => $imgTitle));
 		}
 		else
@@ -721,9 +721,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
 				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-				$imgTime = JHTML::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut  = JHTML::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn   = JHTML::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$imgTime = JHtml::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut  = JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn   = JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				$output .= $result->startPanel($tab_content,'0');
 				$output .= '<table class="matchreport" border="0">';
@@ -802,7 +802,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		// 2=For favorite team(s) only
 		if($this->config['show_link_matchreport'] == 1 || ($this->config['show_link_matchreport'] == 2 && $fav))
 		{
-			$output = JHTML::_(	'link', $reportLink,
+			$output = JHtml::_(	'link', $reportLink,
 					'<span class="score0">'.$this->showMatchState($game,$this->config).'</span>',
 			array("title" => JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
 		}

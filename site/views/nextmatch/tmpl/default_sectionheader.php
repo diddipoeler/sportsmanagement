@@ -4,7 +4,7 @@
 <table width="100%" class="contentpaneopen">
 	<tr>
 		<td class="contentheading"><?php
-		echo JHTML::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ). " ".
+		echo JHtml::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ). " ".
 		sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); 
 		?></td>
 	</tr>

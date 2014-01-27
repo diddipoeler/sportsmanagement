@@ -123,7 +123,7 @@ if (count($this->stafflist) > 0)
 															$this->config['staff_picture_width'],
 															$this->config['staff_picture_height']);
 															*/
-					        //echo JHTML::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'] ));
+					        //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'] ));
                   
                   
 
@@ -163,7 +163,7 @@ if (count($this->stafflist) > 0)
 				if ($this->config['link_staff']==1)
 				{
 					$link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$row->slug);
-					echo JHTML::link($link, '<span class="staffname">'. $playerName.'</span>');
+					echo JHtml::link($link, '<span class="staffname">'. $playerName.'</span>');
 				}
 				else
 				{
@@ -180,17 +180,17 @@ if (count($this->stafflist) > 0)
 						switch ($this->config['show_birthday_staff'])
 						{
 							case 1:	 // show Birthday and Age
-								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 2:	 // show Only Birthday
-								$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								break;
 							case 3:	 // show Only Age
 								$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 4:	 // show Only Year of birth
-								$birthdateStr = JHTML::date($row->birthday, 'Y');
+								$birthdateStr = JHtml::date($row->birthday, 'Y');
 								break;
 							default:
 								$birthdateStr = "";
@@ -204,7 +204,7 @@ if (count($this->stafflist) > 0)
 					// deathday
 					if ( $row->deathday !="0000-00-00" )
 					{
-						$birthdateStr .= ' [ &dagger; '.JHTML::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+						$birthdateStr .= ' [ &dagger; '.JHtml::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 					}
 							
 					echo $birthdateStr;

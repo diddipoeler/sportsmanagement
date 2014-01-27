@@ -8,7 +8,7 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 
 // load javascripts
 $document = JFactory::getDocument();
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 $version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
 ?>
@@ -26,9 +26,9 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 					{
 						$link = JoomleagueHelperRoute::getResultsRoute( $this->project->id, $this->roundid );
 						$imgTitle = JText::_('Exit Edit Mode');
-						$desc = JHTML::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
-						echo JHTML::link($link, $desc);
+						echo JHtml::link($link, $desc);
 					}
 				}
 				?>
@@ -119,7 +119,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 		<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' onclick="$('checkmycontainers').value=0; " />
 		-->
 		<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo JHtml::_('form.token'); ?>
 		<!-- Main END -->
 	</form>
 </div>

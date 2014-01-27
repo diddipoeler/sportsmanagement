@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -48,7 +48,7 @@ $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel=
 //$mainframe->addCustomHeadTag( $cssHTML );
 $document->addCustomTag( $cssHTML );
 
-echo JHTML::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
+echo JHtml::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
 
 // Anzeige Titel
 if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>

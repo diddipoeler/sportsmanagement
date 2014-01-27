@@ -61,10 +61,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				?>
 			<tr class="<?php echo $class; ?>">
 				<td><?php
-				echo JHTML::link( $result_link, $game->roundcode );
+				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
 				<td nowrap="nowrap"><?php
-				echo JHTML::date( $game->match_date, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
+				echo JHtml::date( $game->match_date, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -86,10 +86,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				<td nowrap="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = JHTML::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					JText::_( 'Match Report' ),
 					array( "title" => JText::_( 'Match Report' ) ) );
-					echo JHTML::link( $report_link, $desc);
+					echo JHtml::link( $report_link, $desc);
 				}
 				$k = 1 - $k;
 				?></td>

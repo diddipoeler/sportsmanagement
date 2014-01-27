@@ -27,7 +27,7 @@ else
 								$this->config['team_picture_height'],
 								1);
                 */
-     //echo JHTML::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'width' => $this->config['team_picture_width'] ));           			
+     //echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'width' => $this->config['team_picture_width'] ));           			
 		}
 		?>
         
@@ -88,7 +88,7 @@ else
 			<span class="clubinfo_listing_item">
 			</span>
 			<span class="clubinfo_listing_value">
-			<?php echo JHTML::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); ?>
+			<?php echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); ?>
       <br />
       </span>
 			
@@ -127,7 +127,7 @@ else
 				}
 				else
 				{
-					echo JHTML::_('email.cloak', $this->club->email );
+					echo JHtml::_('email.cloak', $this->club->email );
 				}
 				?>
 			</span>
@@ -139,7 +139,7 @@ else
 			?>
 			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_WWW' ); ?></span>
 			<span class="clubinfo_listing_value">
-				<?php echo JHTML::_( 'link', $this->club->website, $this->club->website, array( "target" => "_blank" ) ); ?>
+				<?php echo JHtml::_( 'link', $this->club->website, $this->club->website, array( "target" => "_blank" ) ); ?>
 			</span>
 			<?php
       
@@ -211,7 +211,7 @@ else
 					$pl_dummy = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND' );
 					?>
 					<span class="clubinfo_listing_item"><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></span>
-					<span class="clubinfo_listing_value"><?php echo JHTML::link( $link, $playground->name ); ?></span>
+					<span class="clubinfo_listing_value"><?php echo JHtml::link( $link, $playground->name ); ?></span>
 					<?php
 					$playground_number++;
 				}
@@ -228,11 +228,11 @@ else
 <?PHP
 $link = sportsmanagementHelperRoute::getKunenaRoute( $this->club->sb_catid );
 $imgTitle = JText::_($this->club->name.' Forum');
-$desc = JHTML::image('media/COM_SPORTSMANAGEMENT/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
+$desc = JHtml::image('media/COM_SPORTSMANAGEMENT/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 		?>
 <span class="clubinfo_listing_value">
 <?PHP
-echo JHTML::link($link, $desc);
+echo JHtml::link($link, $desc);
 		?>
 </span>
 <?PHP

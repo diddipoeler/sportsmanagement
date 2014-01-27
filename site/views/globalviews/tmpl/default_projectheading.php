@@ -86,7 +86,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
                         
 						<?php
                         // diddipoeler
-//                        echo JHTML::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'width' => $this->overallconfig['picture_width'] ));
+//                        echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'width' => $this->overallconfig['picture_width'] ));
 						/*
                         echo JoomleagueHelper::getPictureThumb($this->project->sport_type_picture,
 																$this->project->sport_type_name,
@@ -114,7 +114,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 </a>                        
 						<?php
                         // diddipoeler
-                        //echo JHTML::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));
+                        //echo JHtml::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));
 						/*
                         echo JoomleagueHelper::getPictureThumb($this->project->picture,
 																$this->project->name,
@@ -172,9 +172,9 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
                     {
                     $link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
 						$imgTitle = JText::_($this->project->name.' Forum');
-						$desc = JHTML::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
+						$desc = JHtml::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 						echo '&nbsp;';
-						echo JHTML::link($link, $desc);    
+						echo JHtml::link($link, $desc);    
                     }
 					?>
 					&nbsp;

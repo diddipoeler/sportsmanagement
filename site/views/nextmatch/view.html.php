@@ -74,7 +74,7 @@ class sportsmanagementViewNextMatch extends JView
 			{
 				$ret = $model->getMatchText($match->new_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHTML::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 			$this->assignRef( 'newmatchtext',	$newmatchtext);
@@ -83,7 +83,7 @@ class sportsmanagementViewNextMatch extends JView
 			{
 				$ret = $model->getMatchText($match->old_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHTML::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 			$this->assignRef( 'oldmatchtext',	$prevmatchtext);

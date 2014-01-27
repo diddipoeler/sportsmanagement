@@ -24,7 +24,7 @@ if (count($this->history) > 0)
 						$link1=sportsmanagementHelperRoute::getRefereeRoute($station->project_slug,$this->referee->slug);
 						?>
 						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
-							<td class="td_l"><?php echo JHTML::link($link1,$station->project_name); ?></td>
+							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l"><?php echo ($station->position_name ? JText::_($station->position_name) : ""); ?></td>
 						</tr>

@@ -139,12 +139,12 @@ if (isset($this->person))
 		//$css = 'components/com_joomleague/assets/css/tabs.css';
 		//$document->addStyleSheet($css);
 		$idxTab = 1;
-		echo JHTML::_('tabs.start','playertabs', array('useCookie'=>1));
+		echo JHtml::_('tabs.start','playertabs', array('useCookie'=>1));
 		foreach ($output as $templ) {
-			echo JHTML::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
+			echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
 			echo $this->loadTemplate($templ);
 		}
-		echo JHTML::_('tabs.end');
+		echo JHtml::_('tabs.end');
 	}
     else if($this->config['show_players_layout'] == "player_slider") {
 		//$document = JFactory::getDocument();
@@ -154,10 +154,10 @@ if (isset($this->person))
         echo JHtml::_('sliders.start','playerslider', array('useCookie'=>1, 'show'=>-1, 'display'=>-1, 'startOffset'=>-1));
 		
 		foreach ($output as $templ) {
-			echo JHTML::_('sliders.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
+			echo JHtml::_('sliders.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
 			echo $this->loadTemplate($templ);
 		}
-		echo JHTML::_('sliders.end');
+		echo JHtml::_('sliders.end');
 	}  
     
     else {
@@ -188,7 +188,7 @@ if (isset($this->person))
     $params .= $this->loadTemplate($templ);    
     }    
     $params .= $endoutput;   
-    echo JHTML::_('content.prepare', $params);   
+    echo JHtml::_('content.prepare', $params);   
     }    
     else if($this->config['show_players_layout'] == "player_slider" ) 
     {
@@ -200,7 +200,7 @@ if (isset($this->person))
     $params .= $this->loadTemplate($templ);    
     $params .= $endoutput;
     }    
-    echo JHTML::_('content.prepare', $params);    
+    echo JHtml::_('content.prepare', $params);    
     }    
     else 
     {

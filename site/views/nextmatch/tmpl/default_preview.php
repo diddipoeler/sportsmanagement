@@ -58,7 +58,7 @@ if (!empty($this->match->preview))
 	<tr>
 		<td><?php
 		$preview = $this->match->preview;
-		$preview = JHTML::_('content.prepare', $preview);
+		$preview = JHtml::_('content.prepare', $preview);
 
 		if ($commentsDisabled) {
 			$preview = preg_replace('#{jcomments\s+(off|lock)}#is', '', $preview);

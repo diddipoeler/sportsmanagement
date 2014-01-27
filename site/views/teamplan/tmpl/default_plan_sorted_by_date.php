@@ -32,7 +32,7 @@ $teamid=JRequest::getInt('tid');
 				<table class='fixtures'>
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
-							<?php echo JHTML::date($match->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHtml::date($match->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<h3><?php echo $match->name;?></h3>
@@ -144,10 +144,10 @@ $teamid=JRequest::getInt('tid');
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHTML::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
-				echo JHTML::link($link,$img,$params);
+				echo JHtml::link($link,$img,$params);
 			}
 		?>
 		</td>
@@ -387,7 +387,7 @@ $teamid=JRequest::getInt('tid');
                 }
             
             $ResultsTooltipTitle = $result;
-            $result = JHTML::link($link,$result);
+            $result = JHtml::link($link,$result);
             
             $ResultsTooltipTp = '( ';
             $PartResult = '';
@@ -529,7 +529,7 @@ $teamid=JRequest::getInt('tid');
 						if ($this->config['show_referee_link'])
 						{
 							$link=JoomleagueHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=JHTML::link($link,$ref);
+							$ref=JHtml::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
@@ -581,24 +581,24 @@ $teamid=JRequest::getInt('tid');
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHTML::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
 				$link=JoomleagueHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
-				$viewReport=JHTML::link($link, $href_text);
+				$viewReport=JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
 			{	
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHTML::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = JHtml::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
 				$link=JoomleagueHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
-				$viewPreview=JHTML::link($link, $href_text);
+				$viewPreview=JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}

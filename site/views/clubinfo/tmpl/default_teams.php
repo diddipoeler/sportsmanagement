@@ -25,10 +25,10 @@
 				<td>
 				<span class="">
 					<?php
-					//echo JHTML::link( $link, $team->team_name );
-						//echo JHTML::image($team->trikot_home, $team->team_name, $params).JHTML::link( $link, $team->team_name );
+					//echo JHtml::link( $link, $team->team_name );
+						//echo JHtml::image($team->trikot_home, $team->team_name, $params).JHtml::link( $link, $team->team_name );
 						
-//            echo JHTML::link( $link, $team->team_name.JHTML::image($team->trikot_home, $team->team_name, $params) );
+//            echo JHtml::link( $link, $team->team_name.JHtml::image($team->trikot_home, $team->team_name, $params) );
 						
 						if ( $team->team_shortcut ) 
             { 
@@ -38,11 +38,11 @@
             
             if ( $this->config['show_teams_shortcut_of_club'] )
             {
-            echo JHTML::link( $link, JHTML::image($team->trikot_home, $team->team_name, $params).$team->team_name." (" . $team->team_shortcut . ")" );
+            echo JHtml::link( $link, JHtml::image($team->trikot_home, $team->team_name, $params).$team->team_name." (" . $team->team_shortcut . ")" );
             }
             else
             {
-            echo JHTML::link( $link, JHTML::image($team->trikot_home, $team->team_name, $params).$team->team_name );
+            echo JHtml::link( $link, JHtml::image($team->trikot_home, $team->team_name, $params).$team->team_name );
             }
             
             }
@@ -50,11 +50,11 @@
             {
             if ( $this->config['show_teams_shortcut_of_club'] )
             {
-            echo JHTML::link( $link, $team->team_name." (" . $team->team_shortcut . ")" );
+            echo JHtml::link( $link, $team->team_name." (" . $team->team_shortcut . ")" );
             }
             else
             {
-            echo JHTML::link( $link, $team->team_name );
+            echo JHtml::link( $link, $team->team_name );
             }
             
             }
@@ -64,11 +64,11 @@
             {
             if ( $this->config['show_teams_trikot_of_club'] )
             {
-            echo JHTML::link( $link, JHTML::image($team->trikot_home, $team->team_name, $params).$team->team_name );
+            echo JHtml::link( $link, JHtml::image($team->trikot_home, $team->team_name, $params).$team->team_name );
             }
             else
             {
-            echo JHTML::link( $link, $team->team_name );
+            echo JHtml::link( $link, $team->team_name );
             }
             
             }

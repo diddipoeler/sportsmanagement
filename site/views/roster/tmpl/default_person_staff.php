@@ -43,7 +43,7 @@ if ($this->config['show_staff_icon']==1)
 				<span class="jl_rosterperson_name">
 				<?php
 		echo ($this->config['link_staff']==1) ? 
-			JHTML::link(sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$this->row->slug),$personName)
+			JHtml::link(sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$this->row->slug),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;
@@ -115,7 +115,7 @@ if ($this->config['show_staff_icon']==1)
 							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHTML::date($this->row->birthday,$birthdayformat);?>
+							<?php echo JHtml::date($this->row->birthday,$birthdayformat);?>
 						</span>
 					</div>
 <?php
@@ -129,7 +129,7 @@ if ($this->config['show_staff_icon']==1)
 							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_DEATHDAY");?>[ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHTML::date($this->row->deathday,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
+							<?php echo JHtml::date($this->row->deathday,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
 						</span>
 					</div>
 <?php

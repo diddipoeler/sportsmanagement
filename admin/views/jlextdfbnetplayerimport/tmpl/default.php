@@ -42,8 +42,8 @@ $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $option = JRequest::getCmd('option');
 
-JHTML::_( 'behavior.tooltip' );
-JHTML::_( 'behavior.modal' );
+JHtml::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.modal' );
 
 //$url = JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
 $url = 'administrator'.DS.'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
@@ -109,11 +109,11 @@ echo '</pre>';
 				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TOPIC_FORUM');
-				$forumLink=JHTML::link($link,$linkURL,$linkParams);
+				$forumLink=JHtml::link($link,$linkURL,$linkParams);
 				$linkURL='http://bugtracker.joomleague.net/issues/226';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TOPIC_BUGTRACKER');
-				$bugtrackerLink=JHTML::link($link,$linkURL,$linkParams);
+				$bugtrackerLink=JHtml::link($link,$linkURL,$linkParams);
 				echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT3').'</p>';
 				echo "<p>$forumLink</p>";
 				echo "<p>$bugtrackerLink</p>";
@@ -203,7 +203,7 @@ echo '</pre>';
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type="hidden" name="option" value="com_sportsmanagement" /> 
 		<input type="hidden" name='task' value='jlextdfbnetplayerimport.save' />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </div>
 <?PHP

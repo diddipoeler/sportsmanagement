@@ -22,9 +22,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			{
 				$link = sportsmanagementHelperRoute::getResultsRoute( $this->project->id, $this->roundid, $this->model->divisionid, $this->model->mode, $this->model->order, $this->config['result_style_edit'] );
 				$imgTitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS' );
-				$desc = JHTML::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
+				$desc = JHtml::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
 				echo ' ';
-				echo JHTML::link( $link, $desc );
+				echo JHtml::link( $link, $desc );
 			}
 		}
 		else

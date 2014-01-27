@@ -32,7 +32,7 @@ if ( $this->games )
 							<tr>
 								<td align="left" colspan="<?php echo $colspan; ?>" class="sectiontableheader">
 									<?php
-									echo JHTML::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+									echo JHtml::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>
 								</td>
 							</tr>

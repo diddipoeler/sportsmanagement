@@ -1,6 +1,6 @@
 <?php defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
 //JToolBarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ) ) );
@@ -80,7 +80,7 @@ foreach($this->import as $rowdays)
 $date1 =  JFactory::getDate( $rowdays->match_date)->toFormat( '%d-%m-%Y' );
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHTML::calendar(	$date1,
+echo JHtml::calendar(	$date1,
 														'match_date['.$i.']',
 														'match_date['.$i.']',
 														'%d-%m-%Y',

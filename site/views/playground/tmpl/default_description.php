@@ -9,7 +9,7 @@ if ( $this->playground->notes )
 	<div class="venuecontent">
     <?php 
     $description = $this->playground->notes;
-    $description = JHTML::_('content.prepare', $description);
+    $description = JHtml::_('content.prepare', $description);
     echo $description; 
     ?>
     </div>

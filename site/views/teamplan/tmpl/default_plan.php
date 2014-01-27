@@ -404,10 +404,10 @@ $nbcols = 0;
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHTML::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
-				echo JHTML::link($link,$img,$params);
+				echo JHtml::link($link,$img,$params);
 			}
 		?>
 		</td>
@@ -427,7 +427,7 @@ $nbcols = 0;
 			<td width='5%'>
 			<?php
 			$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug,$match->roundid);
-			echo JHTML::link($link,$match->roundcode);
+			echo JHtml::link($link,$match->roundcode);
 			?>
 			</td>
 		<?php
@@ -476,7 +476,7 @@ $nbcols = 0;
 			<td width="10%"><?php
 			if (!strstr($match->match_date,"0000-00-00"))
 			{
-				echo JHTML::date($match->match_date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
+				echo JHtml::date($match->match_date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 			}
 			else
 			{
@@ -687,7 +687,7 @@ $nbcols = 0;
                 }
 
             $ResultsTooltipTitle = $result;
-            $result = JHTML::link($link,$result);
+            $result = JHtml::link($link,$result);
 
             $ResultsTooltipTp = '( ';
             $PartResult = '';
@@ -829,7 +829,7 @@ $nbcols = 0;
 						if ($this->config['show_referee_link'])
 						{
 							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=JHTML::link($link,$ref);
+							$ref=JHtml::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
@@ -881,24 +881,24 @@ $nbcols = 0;
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHTML::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 
 				$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
-				$viewReport=JHTML::link($link, $href_text);
+				$viewReport=JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHTML::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = JHtml::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
 				$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
-				$viewPreview=JHTML::link($link, $href_text);
+				$viewPreview=JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}
@@ -948,7 +948,7 @@ $nbcols = 0;
 			if ($count == 1) {
 				$imgTitle		= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -959,13 +959,13 @@ $nbcols = 0;
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHTML::link($link, $href_text);
+				$viewComment	= JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
 			elseif ($count > 1) {
 				$imgTitle	= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -976,13 +976,13 @@ $nbcols = 0;
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHTML::link($link, $href_text);
+				$viewComment	= JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
 			else {
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -993,7 +993,7 @@ $nbcols = 0;
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHTML::link($link, $href_text);
+				$viewComment	= JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
 		?></td>

@@ -18,7 +18,7 @@
                                             $this->config['team_picture_width'],
                                             $this->config['team_picture_height'],1);
                 */
-//                echo JHTML::image($this->team1->$pic, $this->team1->name, array('title' => $this->team1->name,'width' => $this->config['team_picture_width'] ))                            
+//                echo JHtml::image($this->team1->$pic, $this->team1->name, array('title' => $this->team1->name,'width' => $this->config['team_picture_width'] ))                            
                 ?>
 
 <a href="<?php echo JURI::root().$this->team1->$pic;?>" title="<?php echo $this->team1->name;?>" class="modal">
@@ -40,7 +40,7 @@
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
 			*/
-    //  echo JHTML::image($this->team2->$pic, $this->team2->name, array('title' => $this->team2->name,'width' => $this->config['team_picture_width'] ))							
+    //  echo JHtml::image($this->team2->$pic, $this->team2->name, array('title' => $this->team2->name,'width' => $this->config['team_picture_width'] ))							
 		?>
 <a href="<?php echo JURI::root().$this->team2->$pic;?>" title="<?php echo $this->team2->name;?>" class="modal">
 <img src="<?php echo JURI::root().$this->team2->$pic;?>" alt="<?php echo $this->team2->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />

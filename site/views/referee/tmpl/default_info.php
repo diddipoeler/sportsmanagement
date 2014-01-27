@@ -112,14 +112,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute( $this->referee->user_id );
-											$outputName = JHTML::link( $link, $outputName );
+											$outputName = JHtml::link( $link, $outputName );
 											break;
 
 								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->referee->user_id,
 																									$this->project->id,
 																									$this->referee->id );
-											$outputName = JHTML::link( $link, $outputName );
+											$outputName = JHtml::link( $link, $outputName );
 											break;
 
 								default:	break;
@@ -188,13 +188,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHTML::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHTML::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -203,7 +203,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHTML::date( $this->referee->birthday, JText::_( '%Y' ) ) : "-";
+															JHtml::date( $this->referee->birthday, JText::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -309,7 +309,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 							}
 							else
 							{
-								echo JHTML::_('email.cloak', $this->referee->email );
+								echo JHtml::_('email.cloak', $this->referee->email );
 							}
 							?>
 						</td>
@@ -330,7 +330,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 						</td>
 						<td class="data">
 							<?php
-							echo JHTML::_(	'link',
+							echo JHtml::_(	'link',
 											$this->referee->website,
 											$this->referee->website,
 											array( 'target' => '_blank' ) );

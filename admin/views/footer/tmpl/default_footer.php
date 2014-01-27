@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_( 'behavior.modal' );
+JHtml::_( 'behavior.modal' );
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;

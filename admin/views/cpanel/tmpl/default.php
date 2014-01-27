@@ -19,7 +19,7 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 ?>
     <div>      
       <div class="cpanel-left">        

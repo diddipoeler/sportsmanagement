@@ -104,10 +104,10 @@ if (!empty($this->matchplayerpositions))
 												
                         if ( $this->config['show_player_profile_link_alignment'] == 0 )
 												{
-                        echo JHTML::link($player_link,$match_player.JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+                        echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
                         }
-													//echo JHTML::link($player_link,$match_player);
-                          //echo JHTML::link($player_link,$match_player.JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+													//echo JHtml::link($player_link,$match_player);
+                          //echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
 												}
                                             } else {
 												if ($this->config['show_player_picture'] == 2) {
@@ -132,7 +132,7 @@ if (!empty($this->matchplayerpositions))
                                                 if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
                                                 {
 												/*
-                                                	echo JHTML::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
+                                                	echo JHtml::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
 																													$imgTitle,
 																													$this->config['player_picture_width'],
 																													$this->config['player_picture_height']));
@@ -145,7 +145,7 @@ if (!empty($this->matchplayerpositions))
 </a>
                                                 
                                                 <?PHP
-                                                //echo JHTML::link($player_link,JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
+                                                //echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
                                                 ?>
                                                 </a>
                                                 <?PHP
@@ -165,14 +165,14 @@ if (!empty($this->matchplayerpositions))
 </a>                                               
                                                
                                                 <?PHP
-                                                //    echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
+                                                //    echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                         ?>
                                                 </a>
                                                 <?PHP
                         if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												{
 												echo '<br>';
-                        echo JHTML::link($player_link,$match_player.JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+                        echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
                         }
                                                     
                                                     echo '&nbsp;';
@@ -232,16 +232,16 @@ if (!empty($this->matchplayerpositions))
                                                  if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
                                                  {
 													/*
-                                                    echo JHTML::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
+                                                    echo JHtml::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
 																													$imgTitle,
 																													$this->config['player_picture_width'],
 																													$this->config['player_picture_height']));
                                                     */
-                                                    echo JHTML::link($player_link,JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
+                                                    echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
 												                            if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {
                                                     echo '<br>';
-                                                    echo JHTML::link($player_link,JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                                                    echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                                                     }
                                                 }
                                                 else 
@@ -258,7 +258,7 @@ if (!empty($this->matchplayerpositions))
 </a>
                                                 <?PHP
                                                     
-                                                    //echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
+                                                    //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                                                     
                                                      ?>
                                                      </a>
@@ -266,7 +266,7 @@ if (!empty($this->matchplayerpositions))
                                                     if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {
                                                     echo '<br>';
-                                                    echo JHTML::link($player_link,JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                                                    echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                                                     }
                                                     echo '&nbsp;';
                                                 }
@@ -277,10 +277,10 @@ if (!empty($this->matchplayerpositions))
 												if ($this->config['show_player_picture'] == 2) {
 													echo '';
 												} else {
-													//echo JHTML::link($player_link,$match_player);
+													//echo JHtml::link($player_link,$match_player);
 												if ( $this->config['show_player_profile_link_alignment'] == 0 )
 												{
-                          echo JHTML::link($player_link,JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                          echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                         }
                           
 												}
@@ -288,7 +288,7 @@ if (!empty($this->matchplayerpositions))
 												if ($this->config['show_player_picture'] == 2) {
 													echo '';
 												} else {
-													//echo JHTML::link($player_link,JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+													//echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                           echo $match_player;
 												}
                                             }

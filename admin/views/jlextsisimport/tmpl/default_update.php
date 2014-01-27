@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 ?>
 
 <div id='editcell'>

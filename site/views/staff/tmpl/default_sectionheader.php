@@ -1,6 +1,6 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-JHTML::_('behavior.mootools');
+JHtml::_('behavior.mootools');
 $option = JRequest::getCmd('option');
 $modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
@@ -18,13 +18,13 @@ $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900
 	{
 		/*
     $link = JoomleagueHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
-		$desc = JHTML::image(
+		$desc = JHtml::image(
 			"media/com_joomleague/jl_images/edit.png",
 			JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EDIT' ),
 			array( "title" => JText::_( "COM_SPORTSMANAGEMENT_PERSON_EDIT" ) )
 		);
 	    echo " ";
-	    echo JHTML::_('link', $link, $desc );
+	    echo JHtml::_('link', $link, $desc );
 	    */
 	
 	?>   
@@ -32,7 +32,7 @@ $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900
 									href="index.php?option=com_joomleague&tmpl=component&view=editperson&cid=<?php echo $this->person->id; ?>"
 									 class="modal">
 									<?php
-									echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_joomleague/assets/images/edit.png',
 													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
 									?>

@@ -150,7 +150,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
     
     $params .= '</div>';    
 
-    echo JHTML::_('content.prepare', $params); 
+    echo JHtml::_('content.prepare', $params); 
     
     
     }

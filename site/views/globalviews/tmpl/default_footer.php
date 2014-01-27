@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_( 'behavior.modal' );
+JHtml::_( 'behavior.modal' );
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
@@ -67,7 +67,7 @@ $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_hei
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
       <?php 
       //echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); 
-      echo JHTML::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
+      echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
       ?>
       <br />      
       <?php

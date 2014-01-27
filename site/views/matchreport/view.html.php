@@ -325,20 +325,20 @@ if ( $this->config['show_pictures'] == 1 )
 
 		//$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE');
 		//$imgTitle2=array(' title' => $imgTitle);
-		//$result=JHTML::image($pic_time,$imgTitle,$imgTitle2).'&nbsp;'.$sub->in_out_time;
+		//$result=JHtml::image($pic_time,$imgTitle,$imgTitle2).'&nbsp;'.$sub->in_out_time;
 		$result='<b>'.$sub->in_out_time.'. '. JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
 		$result .= '<br />';
 		$outName = sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
 		if($outName != '') {
 			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 			$imgTitle2=array(' title' => $imgTitle);
-			$result .= JHTML::image($pic_out,$imgTitle,$imgTitle2).'&nbsp;';
+			$result .= JHtml::image($pic_out,$imgTitle,$imgTitle2).'&nbsp;';
 
 			$isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team));
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHTML::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->out_person_id),$outName);
+			    $result .= JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->out_person_id),$outName);
 			} else {
 			    $result .= $outName;
 			}
@@ -352,13 +352,13 @@ if ( $this->config['show_pictures'] == 1 )
 		if($inName!='') {
 			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 			$imgTitle2=array(' title' => $imgTitle);
-			$result .= JHTML::image($pic_in,$imgTitle,$imgTitle2).'&nbsp;';
+			$result .= JHtml::image($pic_in,$imgTitle,$imgTitle2).'&nbsp;';
 
 			$isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team));
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHTML::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->person_id),$inName);
+			    $result .= JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->person_id),$inName);
 			} else {
 			    $result .= $inName;
 			}
@@ -393,7 +393,7 @@ if ( $this->config['show_pictures'] == 1 )
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
                             $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
-                            $match_player = JHTML::link($player_link,$match_player);
+                            $match_player = JHtml::link($player_link,$match_player);
                         }
 					$result .= $match_player;
 

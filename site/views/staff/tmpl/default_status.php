@@ -19,14 +19,14 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 				//injury start
 				if (array_key_exists($this->inprojectinfo->injury_date, $this->roundsdata))
 				{
-					$injury_date = JHTML::date($this->roundsdata[$this->inprojectinfo->injury_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$injury_date = JHtml::date($this->roundsdata[$this->inprojectinfo->injury_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$injury_date .= " - ".$this->inprojectinfo->injury_date.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 
 				//injury end
 				if (array_key_exists($this->inprojectinfo->injury_end, $this->roundsdata))
 				{
-					$injury_end = JHTML::date($this->roundsdata[$this->inprojectinfo->injury_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$injury_end = JHtml::date($this->roundsdata[$this->inprojectinfo->injury_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$injury_end .= " - ".$this->inprojectinfo->injury_end.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 			}
@@ -38,7 +38,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
@@ -59,7 +59,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -121,14 +121,14 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 				//suspension start
 				if (array_key_exists($this->inprojectinfo->suspension_date, $this->roundsdata))
 				{
-					$suspension_date = JHTML::date($this->roundsdata[$this->inprojectinfo->suspension_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$suspension_date = JHtml::date($this->roundsdata[$this->inprojectinfo->suspension_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$suspension_date .= " - ".$this->inprojectinfo->suspension_date.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 
 				//suspension end
 				if (array_key_exists($this->inprojectinfo->suspension_end, $this->roundsdata))
 				{
-					$suspension_end = JHTML::date($this->roundsdata[$this->inprojectinfo->suspension_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$suspension_end = JHtml::date($this->roundsdata[$this->inprojectinfo->suspension_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$suspension_end .= " - ".$this->inprojectinfo->suspension_end.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 			}
@@ -141,7 +141,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 						
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
@@ -164,7 +164,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 						
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -229,14 +229,14 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 				//suspension start
 				if (array_key_exists($this->inprojectinfo->away_date, $this->roundsdata))
 				{
-					$away_date = JHTML::date($this->roundsdata[$this->inprojectinfo->away_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$away_date = JHtml::date($this->roundsdata[$this->inprojectinfo->away_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$away_date .= " - ".$this->inprojectinfo->away_date.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 
 				//suspension end
 				if (array_key_exists($this->inprojectinfo->away_end, $this->roundsdata))
 				{
-					$away_end = JHTML::date($this->roundsdata[$this->inprojectinfo->away_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
+					$away_end = JHtml::date($this->roundsdata[$this->inprojectinfo->away_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
 					$away_end .= " - ".$this->inprojectinfo->away_end.". ".JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
 				}
 			}
@@ -249,7 +249,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 						
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
@@ -272,7 +272,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 						
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
-							echo "&nbsp;&nbsp;" . JHTML::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>

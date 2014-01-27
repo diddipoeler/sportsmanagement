@@ -5,7 +5,7 @@ defined('_JEXEC') or die(JText('Restricted access'));
 
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 

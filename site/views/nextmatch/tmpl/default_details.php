@@ -79,7 +79,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		if ($this->match->match_date > 0): ?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_DATE' ); ?></span>
-					<span><?php echo JHTML::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
+					<span><?php echo JHtml::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
 				</td>
 			</tr>
 			<?php endif;
@@ -143,7 +143,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->id, $this->match->playground_id);?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
-					<span><?php echo JHTML::link ($playground_link, $this->playground->name); ?></span>
+					<span><?php echo JHtml::link ($playground_link, $this->playground->name); ?></span>
 				</td>
 			</tr>
 		<?php endif;
@@ -158,7 +158,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE' ); ?></span>
 				<?php foreach ($this->referees AS $ref): ?> <?php $referee_link = sportsmanagementHelperRoute::getRefereeRoute($this->project->id, $ref->person_id);?>
-				<?php $html[] = JHTML::link ($referee_link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
+				<?php $html[] = JHtml::link ($referee_link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
 				<?php endforeach;?> <span><?php echo implode('</span>, <span>', $html); ?></span>
 				</td>
 			</tr>

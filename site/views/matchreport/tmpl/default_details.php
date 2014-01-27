@@ -45,7 +45,7 @@
             <tr>
                 <td colspan="3" >
                     <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></span>
-                    <span><?php echo JHTML::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?></span>
+                    <span><?php echo JHtml::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?></span>
                 </td>
             </tr>
             <?php
@@ -111,7 +111,7 @@
         <tr>
             <td colspan="3" >
                 <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND' ); ?></span>
-                <span><?php echo JHTML::link ($playground_link, $this->playground->name); ?></span>
+                <span><?php echo JHtml::link ($playground_link, $this->playground->name); ?></span>
             </td>
         </tr>
         <?php endif;
@@ -134,7 +134,7 @@
                         if (!$first) {
                             echo ', ';
                         }
-                        $link = JHTML::link( $referee_link, sportsmanagementHelper::formatName(null,$referee->firstname,$referee->nickname,$referee->lastname, $this->config["name_format"]));
+                        $link = JHtml::link( $referee_link, sportsmanagementHelper::formatName(null,$referee->firstname,$referee->nickname,$referee->lastname, $this->config["name_format"]));
                         if ($this->config["show_referee_position"] == 1) $link .= ' ('.$referee->position_name.')';
                         ?><span><?php echo $link; ?></span>
                         <?php

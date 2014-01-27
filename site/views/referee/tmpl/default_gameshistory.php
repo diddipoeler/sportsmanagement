@@ -25,7 +25,7 @@
 
 					<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 						<td><?php
-						echo JHTML::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
+						echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 						?>
 						</td>
 						<td class="td_r"><?php echo $this->teams[$game->projectteam1_id]->name; ?>
