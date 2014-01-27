@@ -51,6 +51,8 @@
 		<folder>controllers</folder>
 		<folder>language</folder>
 		<folder>sisdata</folder>
+		<folder>data</folder>
+		<folder>lib</folder>
 		
 	</files>
   <languages folder="site">
