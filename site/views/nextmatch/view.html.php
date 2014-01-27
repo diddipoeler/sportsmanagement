@@ -113,7 +113,7 @@ class sportsmanagementViewNextMatch extends JView
 			
 			
 			$previousx = $this->get('previousx');
-			$teams = $this->get('TeamsIndexedByPtid');
+			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 			
 			$this->assignRef('previousx', $previousx);
 			$this->assignRef('allteams',  $teams);
