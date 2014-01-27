@@ -100,56 +100,28 @@ class sportsmanagementModelNextMatch extends JModel
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t2 ON t2.id = m.projectteam2_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = t1.project_id ');
             $query->where('DATE_ADD(m.match_date, INTERVAL '.$db->Quote($expiry_time).' MINUTE) >= NOW()');
-/**
- *             $query =  ' SELECT m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present, t1.project_id '
- * 			  . '              , r.roundcode '
- * 				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
- * 			  . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
- * 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t1 ON t1.id = m.projectteam1_id '
- * 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t2 ON t2.id = m.projectteam2_id '
- * 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = t1.project_id '
- * 				. ' WHERE DATE_ADD(m.match_date, INTERVAL '.$this->_db->Quote($expiry_time).' MINUTE)'
- * // TODO: for now the timezone implementation does not work for quite some users, so it is temporarily disabled.
- * // Because the old serveroffset field is not available anymore in the database schema, this means that the times
- * // are not correctly translated to some timezone; the times as present in the database are just taken. 
- * //				. '    >= CONVERT_TZ(UTC_TIMESTAMP(), '.$this->_db->Quote('UTC').', p.timezone)'
- * 				. '    >= NOW()'
- * 			. ' AND m.cancel=0';
- */
-            
+           
             $query->where('m.cancel = 0');
 			if ($matchId)
 			{
-				//$query .= ' AND m.id = ' . $this->_db->Quote($matchId);
                 $query->where('m.id = '.$db->Quote($matchId) );
 			}
 			else
 			{
-				//$query .= ' AND (team1_result is null  OR  team2_result is null) ';
                 $query->where('(team1_result is null  OR  team2_result is null)');
 				if ($projectTeamId)
 				{
-/**
- *                     $query .= ' AND '
- * 						. ' ( '
- * 						. '       m.projectteam1_id = '. $this->_db->Quote($projectTeamId).' OR '
- * 						. '       m.projectteam2_id = '. $this->_db->Quote($projectTeamId)
- * 						. ' ) ';
- */
                          $query->where('(m.projectteam1_id = '.$db->Quote($projectTeamId).' OR m.projectteam2_id = '. $db->Quote($projectTeamId).')');
 				}
 				else
 				{
-					//$query .= ' AND (m.projectteam1_id > 0  OR  m.projectteam2_id > 0) ';
                     $query->where('(m.projectteam1_id > 0  OR  m.projectteam2_id > 0)');
 				}
 			}
 			if ($projectId)
 			{
-				//$query .= ' AND t1.project_id = '.$this->_db->Quote($projectId);
                 $query->where('t1.project_id = '.$db->Quote($projectId) );
 			}
-			//$query .= ' ORDER BY m.match_date';
             $query->order('m.match_date');
             
 			$db->setQuery($query, 0, 1);
@@ -191,16 +163,6 @@ class sportsmanagementModelNextMatch extends JModel
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t1 ON t1.id = m.projectteam1_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
         $query->where('m.id = '. $db->Quote($this->matchid) );
-        
-        
-/**
- * 			$query = ' SELECT m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present, t1.project_id, r.roundcode '
- * 			. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
- * 			. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t1 ON t1.id = m.projectteam1_id '
- * 		  . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
- * 			. ' WHERE m.id = '. $db->Quote($this->matchid);
- */
-            
             
 			$db->setQuery($query, 0, 1);
             
@@ -259,15 +221,7 @@ class sportsmanagementModelNextMatch extends JModel
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary ');
         $query->where('match_id = '.(int)$this->matchidid );
         $query->order('event_time DESC');
-       
-/**
- *         $query = "SELECT *  
- *     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary
- *     WHERE match_id = ".(int)$this->matchid." 
- *     ORDER BY event_time DESC";
- */
-    
-    
+
     $db->setQuery($query);
 		return $db->loadObjectList();
     }
@@ -280,18 +234,22 @@ class sportsmanagementModelNextMatch extends JModel
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        
-		$match = $this->getMatch();
-		$query = ' SELECT p.firstname, p.nickname, p.lastname, p.country, pos.name AS position_name, p.id as person_id '
-		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr '
-		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = pref.person_id '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position ppos ON ppos.id = mr.project_position_id'
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id '
-		. ' WHERE mr.match_id = '. $this->_db->Quote($match->id)
-		. '  AND p.published = 1 '
-		;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$match = self::getMatch();
+        
+        // Select some fields
+		$query->select('p.firstname, p.nickname, p.lastname, p.country, p.id as person_id');
+        $query->select('pos.name AS position_name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr  ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id = pref.id  ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = pref.person_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position ppos ON ppos.id = mr.project_position_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id  ');
+   
+        $query->where('mr.match_id = '. $db->Quote($match->id) );
+        $query->where('p.published = 1');
+        
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 	function _getRanking()
@@ -309,8 +267,8 @@ class sportsmanagementModelNextMatch extends JModel
 
 	function getHomeRanked()
 	{
-		$match = $this->getMatch();
-		$rankings = $this->_getRanking();
+		$match = self::getMatch();
+		$rankings = self::_getRanking();
 		foreach ($rankings as $ptid => $team)
 		{
 			if ($ptid == $match->projectteam1_id) {
@@ -322,8 +280,8 @@ class sportsmanagementModelNextMatch extends JModel
 
 	function getAwayRanked()
 	{
-		$match = $this->getMatch();
-		$rankings = $this->_getRanking();
+		$match = self::getMatch();
+		$rankings = self::_getRanking();
 
 		foreach ($rankings as $ptid => $team)
 		{
@@ -400,42 +358,6 @@ class sportsmanagementModelNextMatch extends JModel
 		return $db->loadObject();
 	}
     
-    
-    
-    
-/**
- *     function _getHighestHomeWin($teamid)
- * 	{
- * 	   $mainframe = JFactory::getApplication();
- *        $option = JRequest::getCmd('option');
- *        // Create a new query object.		
- * 	   $db = JFactory::getDBO();
- * 	   $query = $db->getQuery(true);
- *        
- * 		$match = $this->getMatch();
-
- * 		$query = ' SELECT t1.name AS hometeam, '
- * 		. ' t2.name AS awayteam, '
- * 		. ' team1_result AS homegoals, '
- * 		. ' team2_result AS awaygoals, '
- * 		. ' pt1.project_id AS pid, '
- * 		. ' m.id AS mid '
- * 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = pt1.team_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON t2.id = pt2.team_id '
- * 		. ' WHERE pt1.project_id = ' . $this->_db->Quote($match->project_id)
- * 		. ' AND m.published = 1 '
- * 		. ' AND m.alt_decision = 0 '
- * 		. ' AND t1.id = '. $this->_db->Quote($teamid)
- * 		. ' AND (team1_result - team2_result > 0) '
- * 		. ' ORDER BY (team1_result - team2_result) DESC '
- * 		;
- * 		$this->_db->setQuery($query, 0, 1);
- * 		return $this->_db->loadObject();
- * 	}
- */
 
 	function getHomeHighestHomeWin( )
 	{
@@ -459,40 +381,6 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'WIN');
 	}
 
-/**
- * 	function _getHighestHomeDef( $teamid )
- * 	{
- * 	   $mainframe = JFactory::getApplication();
- *        $option = JRequest::getCmd('option');
- *        // Create a new query object.		
- * 	   $db = JFactory::getDBO();
- * 	   $query = $db->getQuery(true);
- *        
- * 		$match = $this->getMatch();
-
- * 		$query = ' SELECT t1.name AS hometeam, '
- * 		. ' t2.name AS awayteam, '
- * 		. ' team1_result AS homegoals, '
- * 		. ' team2_result AS awaygoals, '
- * 		. ' pt1.project_id AS pid, '
- * 		. ' m.id AS mid '
- * 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = pt1.team_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON t2.id = pt2.team_id '
- * 		. ' WHERE pt1.project_id = ' . $this->_db->Quote($match->project_id)
- * 		. ' AND m.published = 1 '
- * 		. ' AND m.alt_decision = 0 '
- * 		. ' AND t1.id = '. $this->_db->Quote($teamid)
- * 		. ' AND (team1_result - team2_result < 0) '
- * 		. ' ORDER BY (team1_result - team2_result) ASC '
- * 		;
- * 		$this->_db->setQuery($query, 0, 1);
- * 		return $this->_db->loadObject();
- * 	}
- */
-
 	function getHomeHighestHomeDef()
 	{
 		$teams = $this->getMatchTeams();
@@ -515,40 +403,6 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'LOST');
 	}
 
-/**
- * 	function _getHighestAwayWin( $teamid )
- * 	{
- * 	   $mainframe = JFactory::getApplication();
- *        $option = JRequest::getCmd('option');
- *        // Create a new query object.		
- * 	   $db = JFactory::getDBO();
- * 	   $query = $db->getQuery(true);
- *        
- * 		$match = $this->getMatch();
-
- * 		$query = ' SELECT t1.name AS hometeam, '
- * 		. ' t2.name AS awayteam, '
- * 		. ' team1_result AS homegoals, '
- * 		. ' team2_result AS awaygoals, '
- * 		. ' pt1.project_id AS pid, '
- * 		. ' m.id AS mid '
- * 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = pt1.team_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON t2.id = pt2.team_id '
- * 		. ' WHERE pt1.project_id = ' . $this->_db->Quote($match->project_id)
- * 		. ' AND m.published = 1 '
- * 		. ' AND m.alt_decision = 0 '
- * 		. ' AND t2.id = '. $this->_db->Quote($teamid)
- * 		. ' AND (team2_result - team1_result > 0) '
- * 		. ' ORDER BY (team2_result - team1_result) DESC '
- * 		;
- * 		$this->_db->setQuery($query, 0, 1);
- * 		return $this->_db->loadObject();
- * 	}
- */
-
 	function getHomeHighestAwayWin( )
 	{
 		$teams = $this->getMatchTeams();
@@ -570,41 +424,6 @@ class sportsmanagementModelNextMatch extends JModel
 		//return $this->_getHighestAwayWin( $teams[1]->team_id );
         return self::_getHighestMatches( $teams[1]->team_id , 'HOME' , 'WIN');
 	}
-
-/**
- * 	function _getHighestAwayDef( $teamid )
- * 	{
- * 	   $mainframe = JFactory::getApplication();
- *        $option = JRequest::getCmd('option');
- *        // Create a new query object.		
- * 	   $db = JFactory::getDBO();
- * 	   $query = $db->getQuery(true);
- *        
- * 		$match = $this->getMatch();
-
- * 		$query = ' SELECT t1.name AS hometeam, '
- * 		. ' t2.name AS awayteam, '
- * 		. ' team1_result AS homegoals, '
- * 		. ' team2_result AS awaygoals, '
- * 		. ' pt1.project_id AS pid, '
- * 		. ' m.id AS mid '
- * 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = pt1.team_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON t2.id = pt2.team_id '
- * 		. ' WHERE pt1.project_id = ' . $this->_db->Quote($match->project_id)
- * 		. ' AND m.published = 1 '
- * 		. ' AND m.alt_decision = 0 '
- * 		. ' AND t2.id = '. $this->_db->Quote($teamid)
- * 		. ' AND (team1_result - team2_result > 0) '
- * 		. ' ORDER BY (team2_result - team1_result) ASC '
- * 		;
- * 		$this->_db->setQuery($query, 0, 1);
- * 		return $this->_db->loadObject();
- * 	}
- */
-
 
 	function getHomeHighestAwayDef()
 	{
@@ -663,29 +482,7 @@ class sportsmanagementModelNextMatch extends JModel
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->group('m.id');
         $query->order('p.ordering, m.match_date ASC');
-        
-
-/**
- * 		$query = ' SELECT m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present, pt1.project_id, '
- * 		. ' p.name AS project_name, '
- * 		. ' r.id AS roundid, '
- * 		. ' r.roundcode AS roundcode, '
- * 		. ' r.name AS mname, '
- * 		. ' p.id AS prid '
- * 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id '
- * 		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id=r.id '
- * 		. ' WHERE ((pt1.team_id = '. $teams[0]->team_id .' AND pt2.team_id = '.$teams[1]->team_id .') '
- * 		. '        OR (pt1.team_id = '.$teams[1]->team_id .' AND pt2.team_id = '.$teams[0]->team_id .')) '
- * 		. ' AND p.published = 1 '
- * 		. ' AND m.published = 1 '
- * 		. ' AND m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL';
-
- * 		$query .= " GROUP BY m.id ORDER BY p.ordering, m.match_date ASC";
- */
-        
+  
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
 
@@ -721,14 +518,6 @@ class sportsmanagementModelNextMatch extends JModel
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
         $query->where('pt.id IN ('.$listTeamId.')' );
-        
-/**
- *         $query = "SELECT t.id, t.name, pt.id as ptid
- *                  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
- *                  INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id
- *                  WHERE pt.id IN (".$listTeamId.")";
- */
-                 
                  
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
@@ -758,12 +547,7 @@ class sportsmanagementModelNextMatch extends JModel
 		$query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ');
         $query->where('id = '. $db->Quote($pgid));
-       
-/**
- * 		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground
- * 					WHERE id = '. $this->_db->Quote($pgid);
- */
-                    
+    
 		$db->setQuery($query, 0, 1);
         
         if ( !$db->loadObject() )
@@ -795,20 +579,6 @@ class sportsmanagementModelNextMatch extends JModel
         $query->where('m.id = ' . $match_id );
         $query->where('m.published = 1');
         $query->order('m.match_date, t1.short_name');
-        
-/**
- * 		$query = "SELECT m.*, t1.name t1name,  t2.name t2name
- * 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON pt1.team_id=t1.id
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON pt2.team_id=t2.id
- * 					WHERE m.id = " . $match_id . "
- * 					AND m.published = 1
- * 					ORDER BY m.match_date, t1.short_name"
- * 					;
- */
-                    
                     
 		$db->setQuery($query);
         
@@ -911,20 +681,7 @@ class sportsmanagementModelNextMatch extends JModel
         $query->where('m.published = 1');
         $query->order('r.roundcode DESC');
         $query->setLimit('0,'.$nblast);
-
-/*        
-		$query = ' SELECT m.*, r.project_id, r.id AS roundid, r.roundcode '
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
-		       . ' WHERE (m.projectteam1_id = ' . $ptid
-		       . '       OR m.projectteam2_id = ' . $ptid.')'
-		       . '   AND r.roundcode < '.$current_roundcode
-		       . '   AND m.published = 1 '
-		       . ' ORDER BY r.roundcode DESC '
-		       .  ' LIMIT 0, '.$nblast
-		       ;
-*/
-               
+              
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
         
