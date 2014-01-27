@@ -87,10 +87,10 @@ if ( $this->games )
 					?>
 			<tr class="<?php echo $class; ?>">
 				<td><?php
-				echo JHTML::link( $result_link, $game->roundcode );
+				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
 				<td class="nowrap"><?php
-				echo JHTML::date( $date, JText::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
+				echo JHtml::date( $date, JText::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -112,10 +112,10 @@ if ( $this->games )
 				<td class="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					JText::_( 'Match Report' ),
 					array( "title" => JText::_( 'Match Report' ) ) );
-					echo JHTML::link( $report_link, $desc);
+					echo JHtml::link( $report_link, $desc);
 				}
 				$k = 1 - $k;
 				?></td>

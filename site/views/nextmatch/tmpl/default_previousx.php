@@ -86,7 +86,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				<td nowrap="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = JHTML::image( "media/com_joomleague/jl_images/zoom.png",
+					$desc = JHTML::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					JText::_( 'Match Report' ),
 					array( "title" => JText::_( 'Match Report' ) ) );
 					echo JHTML::link( $report_link, $desc);
