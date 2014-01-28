@@ -11,7 +11,7 @@ class sportsmanagementModelAjax extends JModel
 {
         public function addGlobalSelectElement($elements, $required=false) {
                 if(!$required) {
-                        $mitems = array(JHTML::_('select.option', '', JText::_('COM_JOOMLEAGUE_GLOBAL_SELECT')));
+                        $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                         return array_merge($mitems, $elements);
                 }
                 return $elements;
