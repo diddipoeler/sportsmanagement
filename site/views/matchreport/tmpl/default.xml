@@ -8,7 +8,7 @@
 	<fields name="request">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath="/administrator/components/com_joomleague/elements">
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 			<field	name="p" type="project" 
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
