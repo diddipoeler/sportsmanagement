@@ -89,6 +89,9 @@
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">YOUTH_COACH</parentname>
 </parentpositions>
 <parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">FITNESS_COACH</parentname>
+</parentpositions>
+<parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">ASSISTANT_COACH</parentname>
 </parentpositions>
 <parentpositions>
