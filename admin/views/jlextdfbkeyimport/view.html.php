@@ -129,7 +129,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
     //build the html options for projectteams
 		if ( $res =  $model->getProjectteams($this->project_id) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   $lists['projectteams'] = $projectteams;
 		   
@@ -216,7 +216,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   //$lists['projectteams'] = $projectteams;
 		   
@@ -268,7 +268,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   $lists['projectteams'] = $projectteams;
 		   

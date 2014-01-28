@@ -29,23 +29,23 @@ if (count($this->games))
 						?>
 					<th class="td_c"><?php
 					$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
-					echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
+					echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 					$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
-					echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
+					echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 					$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
-					echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
+					echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 					$imageTitle,array(' title' => $imageTitle));
 					?></th>
                     
                     <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
@@ -64,7 +64,7 @@ if (count($this->games))
 					{
 						$iconPath="images/com_sportsmanagement/database/events/".$iconPath;
 					}
-					echo JHTML::image(	$iconPath,JText::_($eventtype->name),
+					echo JHtml::image(	$iconPath,JText::_($eventtype->name),
 					array(	"title" => JText::_($eventtype->name),
 																		"align" => "top",
 																		"hspace" => "2"));
@@ -128,12 +128,12 @@ if (count($this->games))
                 ?>
 				<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 					<td class="td_l"><?php
-					echo JHTML::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
+					echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 					?></td>
 					<td class="td_r<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
 						<?php 
 						if ($this->config['show_gameshistory_teamlink'] == 1) {
-							echo JHTML::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
+							echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
 						} else {
 							echo $this->teams[$game->projectteam1_id]->name;
 						}
@@ -145,7 +145,7 @@ if (count($this->games))
 					<td class="td_l<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
 						<?php 
 						if ($this->config['show_gameshistory_teamlink'] == 1) {
-							echo JHTML::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
+							echo JHtml::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
 						} else {
 							echo $this->teams[$game->projectteam2_id]->name;
 						}

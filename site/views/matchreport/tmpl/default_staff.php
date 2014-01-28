@@ -65,7 +65,7 @@ if (!empty($this->matchstaffpositions))
 										<?php
 										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);
 										$match_player=sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-										echo JHTML::link($player_link,$match_player);
+										echo JHtml::link($player_link,$match_player);
 										$imgTitle=JText::sprintf('Picture of %1$s',$match_player);
 										$picture=$player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
@@ -79,7 +79,7 @@ if (!empty($this->matchstaffpositions))
                                         ?>
                                         <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
                                         <?php
-                                        echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
+                                        echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
                                         ?>
                                         </a>
 									</li>
@@ -115,13 +115,13 @@ if (!empty($this->matchstaffpositions))
                                         ?>
                                         <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
                                         <?PHP
-                                        echo JHTML::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
+                                        echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
                                         ?>
                                         </a>
                                         <?php
                                         echo '&nbsp;';
 										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);
-										echo JHTML::link($player_link,$match_player);
+										echo JHtml::link($player_link,$match_player);
 										?>
 									</li>
 									<?php

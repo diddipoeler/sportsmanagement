@@ -29,13 +29,13 @@ if (count($this->historyPlayer) > 0)
 						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 							<td class="td_l">
 							<?php 
-								echo JHTML::link($link1,$station->project_name);
+								echo JHtml::link($link1,$station->project_name);
 							?></td>
 							<td class="td_l"><?php echo $station->season_name;
 								?></td>
 							<td class="td_l"><?php 
 							if ($this->config['show_playercareer_teamlink'] == 1) {
-								echo JHTML::link($link2,$station->team_name);
+								echo JHtml::link($link2,$station->team_name);
 							} else {
 								echo $station->team_name;
 							}

@@ -30,7 +30,7 @@
 			<tr>
 				<td>
 					<?php
-					$description = JHTML::_('content.prepare', $description);
+					$description = JHtml::_('content.prepare', $description);
 					echo stripslashes( $description );
 					?>
 				</td>

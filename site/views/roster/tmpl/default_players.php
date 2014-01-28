@@ -139,7 +139,7 @@ if (!empty($this->rows))
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php 
@@ -148,23 +148,23 @@ if (!empty($this->rows))
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
         
         <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
@@ -194,7 +194,7 @@ if (!empty($this->rows))
 							{
 								$iconPath='images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-							$eventtype_header = JHTML::image(	$iconPath,
+							$eventtype_header = JHtml::image(	$iconPath,
 																JText::_($eventtype->name),
 																array(	'title'=> JText::_($eventtype->name),
 																		  'align'=> 'top',
@@ -252,7 +252,7 @@ if (!empty($this->rows))
 		{
 			if ($this->config['player_numbers_pictures'])
 			{
-				$value = JHTML::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr));
+				$value = JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr));
 			}
 			else
 			{
@@ -284,7 +284,7 @@ if (!empty($this->rows))
 													$this->config['player_picture_width'],
 													$this->config['player_picture_height']);
         */
-        //echo JHTML::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['player_picture_width'] ));
+        //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['player_picture_width'] ));
 ?>
         <a href="<?php echo $picture;?>" title="<?php echo $playerName;?>" class="modal">
 <img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
@@ -318,7 +318,7 @@ if (!empty($this->rows))
 		if ($this->config['link_player']==1)
 		{
 			$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
-			echo JHTML::link($link,'<span class="playername">'.$playerName.'</span>');
+			echo JHtml::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else
 		{
@@ -331,19 +331,19 @@ if (!empty($this->rows))
 		if (!empty($this->playertool[0]->injury))
 		{
 			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
-			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
 			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
-			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
 			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
-			echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
+			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		?></td>
@@ -357,17 +357,17 @@ if (!empty($this->rows))
 				switch ($this->config['show_birthday'])
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 						break;
 					case 2:	 // show Only Birthday
-						$birthdateStr = JHTML::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						break;
 					case 3:	 // show Only Age
 						$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 						break;
 					case 4:	 // show Only Year of birth
-						$birthdateStr = JHTML::date($row->birthday, 'Y');
+						$birthdateStr = JHtml::date($row->birthday, 'Y');
 						break;
 					default:
 						$birthdateStr = "";
@@ -387,7 +387,7 @@ if (!empty($this->rows))
 			// deathday
 			if ( $row->deathday !="0000-00-00" )
 			{
-				$birthdateStr .= ' [&dagger; '.JHTML::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+				$birthdateStr .= ' [&dagger; '.JHtml::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}
 					
 			echo $birthdateStr;

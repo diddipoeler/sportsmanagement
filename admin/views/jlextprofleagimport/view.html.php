@@ -31,7 +31,7 @@ class sportsmanagementViewjlextprofleagimport extends JView
     $country = JSMCountries::convertIso2to3($teile[1]);
     $this->assignRef('country',$country);
 		$countries = JSMCountries::getCountryOptions();
-		$lists['countries']=JHTML::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$country);
+		$lists['countries']=JHtml::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$country);
 		$this->assignRef('countries',$lists['countries']);
     
 

@@ -21,7 +21,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
 				<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array(' title' => $imageTitle,' width' => 20,' height' => 20));
 				?></th>
 				<?php
@@ -32,17 +32,17 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 						?>
 				<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 				$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 				$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 				$imageTitle,array(' title' => $imageTitle));
 				?></th>
                 
@@ -51,7 +51,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
                 ?>
                 <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
+				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
@@ -68,7 +68,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 				<th class="td_c"><?php
 				$iconPath=$eventtype->icon;
 				if (!strpos(" ".$iconPath,"/")){$iconPath="images/com_sportsmanagement/database/events/".$iconPath;}
-				echo JHTML::image($iconPath,
+				echo JHtml::image($iconPath,
 					JText::_($eventtype->name),
 					array(	"title" => JText::_($eventtype->name),
 						"align" => "top",
@@ -120,12 +120,12 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 					$link2=sportsmanagementHelperRoute::getTeamInfoRoute($player_hist->project_slug,$player_hist->team_slug);
 					?>
 			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
-				<td class="td_l" nowrap="nowrap"><?php echo JHTML::link($link1,$player_hist->project_name); ?>
+				<td class="td_l" nowrap="nowrap"><?php echo JHtml::link($link1,$player_hist->project_name); ?>
 				</td>
 				<td class="td_l" class="nowrap">
 				<?php
 					if ($this->config['show_playerstats_teamlink'] == 1) {
-						echo JHTML::link($link2,$player_hist->team_name);
+						echo JHtml::link($link2,$player_hist->team_name);
 					} else {
 						echo $player_hist->team_name;
 					} 

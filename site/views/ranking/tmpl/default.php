@@ -93,28 +93,28 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
     }
     
     $params .= $endoutput;
-    echo JHTML::_('content.prepare', $params);
+    echo JHtml::_('content.prepare', $params);
     }
     else
     {
     $idxTab = 1;
-  echo JHTML::_('tabs.start','tabs_ranking', array('useCookie'=>1));
-  echo JHTML::_('tabs.panel', JText::_($this->config['table_text_1']), 'panel'.($idxTab++));
+  echo JHtml::_('tabs.start','tabs_ranking', array('useCookie'=>1));
+  echo JHtml::_('tabs.panel', JText::_($this->config['table_text_1']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking');
-        echo JHTML::_('tabs.panel', JText::_($this->config['table_text_2']), 'panel'.($idxTab++));
+        echo JHtml::_('tabs.panel', JText::_($this->config['table_text_2']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking_home');
-        echo JHTML::_('tabs.panel', JText::_($this->config['table_text_3']), 'panel'.($idxTab++));
+        echo JHtml::_('tabs.panel', JText::_($this->config['table_text_3']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking_away');
     
     if ($this->config['show_half_of_season']==1)
 	{
-	echo JHTML::_('tabs.panel', JText::_($this->config['table_text_4']), 'panel'.($idxTab++));
+	echo JHtml::_('tabs.panel', JText::_($this->config['table_text_4']), 'panel'.($idxTab++));
 	echo $this->loadTemplate('ranking_first');
-    echo JHTML::_('tabs.panel', JText::_($this->config['table_text_5']), 'panel'.($idxTab++));
+    echo JHtml::_('tabs.panel', JText::_($this->config['table_text_5']), 'panel'.($idxTab++));
 	echo $this->loadTemplate('ranking_second');
     }   
         
-echo JHTML::_('tabs.end');    
+echo JHtml::_('tabs.end');    
     }
     
     }

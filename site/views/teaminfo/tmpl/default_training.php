@@ -1,24 +1,30 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<table width="100%" class="contentpaneopen">
-	<tr>
-		<td class="contentheading"><?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
-		</td>
-	</tr>
-</table>
+
+
+<fieldset>
+<legend>
+<strong>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
+</strong>
+</legend>
+
+<table width="100%" class="fixtures">
 
 <?php
 
 ?>
 
-<table class="fixtures" >
+<table width="100%"  class="fixtures" >
+<thead>
 	<tr class="sectiontableheader">
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></td>
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></td>
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></td>
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></td>
-		<td><?php //echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></td>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php //echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
 	</tr>
+	</thead>
 	<?php
 	$k=0;
 	$count_note=0;

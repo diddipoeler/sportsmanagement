@@ -141,7 +141,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         
     }    
 
-    echo JHTML::_('content.prepare', $params);     
+    echo JHtml::_('content.prepare', $params);     
         
     }
 		

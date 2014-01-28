@@ -38,7 +38,7 @@
 						if ($this->config['link_player']==1)
 						{
 							$link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
-							echo JHTML::link($link,'<i>'.$playerName.'</i>');
+							echo JHtml::link($link,'<i>'.$playerName.'</i>');
 						}
 						else
 						{
@@ -71,7 +71,7 @@
 		{
 			$picture = JoomleagueHelper::getDefaultPlaceholder("player");
 		}
-		//echo JHTML::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
+		//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 ?>                                    
 <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
 <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
@@ -86,7 +86,7 @@
 				?></div>
 					  <div class="player-name"><?php $projectid = $this->project->id;
 							$link = JoomleagueHelperRoute::getStaffRoute( $this->project->slug, $this->team->slug, $row->slug );
-							echo JHTML::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
+							echo JHtml::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
 					</td>
 				  </tr>
 				</tbody></table>

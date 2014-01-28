@@ -28,7 +28,7 @@ if (!empty($this->match->summary))
 			<td>
 			<?php
 			$summary = $this->match->summary;
-			$summary = JHTML::_('content.prepare', $summary);
+			$summary = JHtml::_('content.prepare', $summary);
 
 			if ($commentsDisabled) {
 				$summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);

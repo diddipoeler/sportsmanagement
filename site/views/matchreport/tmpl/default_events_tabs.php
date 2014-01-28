@@ -38,7 +38,7 @@ $visible = 'hidden';
 				{
 					$imgTitle=JText::_($event->name);
 					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-					$txt_tab=JHTML::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+					$txt_tab=JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
 				}
 
 				echo $result->startPanel($txt_tab,$event->id);
@@ -63,7 +63,7 @@ $visible = 'hidden';
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
                             $player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
-                            $match_player = JHTML::link($player_link,$match_player);
+                            $match_player = JHtml::link($player_link,$match_player);
                         }
                         echo $match_player;
 
@@ -115,7 +115,7 @@ $visible = 'hidden';
 						if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 						{
 							$player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
-							$match_player = JHTML::link($player_link,$match_player);
+							$match_player = JHtml::link($player_link,$match_player);
 						}
 						echo $match_player;
 

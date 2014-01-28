@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');JHTML::_('behavior.modal');
+JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -35,7 +35,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<input type='hidden' name='sent' value='1' />
 		<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type='hidden' name='task' value='jlextprofleagimport.save' />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </div>
 <?PHP

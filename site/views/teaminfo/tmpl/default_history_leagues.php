@@ -1,11 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<table width="100%" class="contentpaneopen">
-	<tr>
-		<td class="contentheading"><?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_PER_LEAGUE_SUMMARY'); ?>
-		</td>
-	</tr>
-</table>
+
 
 <fieldset>
 <legend>
@@ -15,7 +10,7 @@
 </legend>
 
 
-<table class='adminlist'>
+<table width="100%" class='adminlist'>
 
 <thead>
 <tr class="sectiontableheader">

@@ -1109,7 +1109,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 				$small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
-			return JHTML::image($small_club_icon,'',$params);
+			return JHtml::image($small_club_icon,'',$params);
 		}
 		elseif (($type==2) && (isset($team->country)))
 		{

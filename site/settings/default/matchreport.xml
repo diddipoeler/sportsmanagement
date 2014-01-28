@@ -306,7 +306,7 @@
 type="imagelist" default="spielfeld_578x1050.png" 
 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
 description="COM_SPORTSMANAGEMENT_FES_DESC_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
-directory="images/com_joomleague/database/rosterground" 
+directory="images/com_sportsmanagement/database/rosterground" 
 />
 		
 <!--

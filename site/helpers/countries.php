@@ -68,7 +68,7 @@ $query = $db->getQuery(true);
 		$options=array();
 		foreach ($countries AS $k )
 		{
-			$options[]=JHTML::_('select.option',$k['alpha3'],JText::_($k['name']),$value_tag,$text_tag);
+			$options[]=JHtml::_('select.option',$k['alpha3'],JText::_($k['name']),$value_tag,$text_tag);
 		}
 		
 		//Now Sort the countries

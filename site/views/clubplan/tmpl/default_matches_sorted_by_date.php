@@ -31,7 +31,7 @@
 <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">				
 					<tr class="sectiontableheader">
 						<th colspan=16>
-							<?php echo JHTML::date($game->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHtml::date($game->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				
@@ -116,12 +116,12 @@
 					?>
 					<?php if ($this->config['which_link']==1) { ?>
 					<?php
-					echo JHTML::link($result_link,$game->roundid);
+					echo JHtml::link($result_link,$game->roundid);
 					}
 					?>
 					<?php if ($this->config['which_link']==2) { ?>
 					<?php
-					echo JHTML::link($nextmatch_link,$game->roundid);
+					echo JHtml::link($nextmatch_link,$game->roundid);
 					}
 					?>
 				</td>
@@ -162,12 +162,12 @@
 					?>
 					<?php if ($this->config['which_link2']==1) { ?>
 					<?php
-					echo JHTML::link($teaminfo1_link,$tname1);
+					echo JHtml::link($teaminfo1_link,$tname1);
 					}
 					?>
 					<?php if ($this->config['which_link2']==2) { ?>
 					<?php
-					echo JHTML::link($teamstats1_link,$tname1);
+					echo JHtml::link($teamstats1_link,$tname1);
 					}
 					?>
 				</td>
@@ -192,12 +192,12 @@
 					?>
 					<?php if ($this->config['which_link2']==1) { ?>
 					<?php
-					echo JHTML::link($teaminfo2_link,$tname2);
+					echo JHtml::link($teaminfo2_link,$tname2);
 					}
 					?>
 					<?php if ($this->config['which_link2']==2) { ?>
 					<?php
-					echo JHTML::link($teamstats2_link,$tname2);
+					echo JHtml::link($teamstats2_link,$tname2);
 					}
 					?>
 				</td>
@@ -208,7 +208,7 @@
 					foreach ($matchReferees AS $matchReferee)
 					{
 						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
-						echo JHTML::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
+						echo JHtml::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
 					?>
@@ -217,7 +217,7 @@
 					<?php if ($this->config['show_playground']==1) { ?>
 				<td>
 					<?php
-					echo JHTML::link($playground_link,$game->pl_name);
+					echo JHtml::link($playground_link,$game->pl_name);
 					?>
 				</td>
 					<?php } ;?>
@@ -267,20 +267,20 @@
 					   }
 						if(isset($team1) && isset($team2) && ($team1==$team2)) {
 							echo '<td align="center" valign="middle">' .
-							JHTML::image("media/com_joomleague/jl_images/draw.png",
+							JHtml::image("media/com_joomleague/jl_images/draw.png",
 							"draw.png",
 							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
-								JHTML::image("media/com_joomleague/jl_images/thumbs_up.png",
+								JHtml::image("media/com_joomleague/jl_images/thumbs_up.png",
 								"thumbs_up.png",
 								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
-								JHTML::image("media/com_joomleague/jl_images/thumbs_down.png",
+								JHtml::image("media/com_joomleague/jl_images/thumbs_down.png",
 								"thumbs_down.png",
 								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";

@@ -98,9 +98,9 @@ else
 		$user = &JFactory::getUser();
 		if (($user->id) or (!$this->overallconfig['nospam_email']))
 		{
-			echo JHTML::link('mailto:'. $this->club->email, $this->club->email);
+			echo JHtml::link('mailto:'. $this->club->email, $this->club->email);
 		} else {
-			echo JHTML::_('email.cloak', $this->club->email);
+			echo JHtml::_('email.cloak', $this->club->email);
 		}
 		?>
 		</span>
@@ -115,7 +115,7 @@ else
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
 		<span class="clubinfo_listing_value"> <?php
 		$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $this->club->slug);
-		echo JHTML::link($link, $this->club->name);
+		echo JHtml::link($link, $this->club->name);
 		?>
 		</span>
 	</div>
@@ -127,7 +127,7 @@ else
 				?>
 	<div class="jl_parentContainer">
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_SITE'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo JHTML::link($this->club->website, $this->club->website, array( "target" => "_blank")); ?></span>
+		<span class="clubinfo_listing_value"> <?php echo JHtml::link($this->club->website, $this->club->website, array( "target" => "_blank")); ?></span>
 	</div>
 			<?php
 			}
@@ -149,7 +149,7 @@ else
       <span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
 		<span class="clubinfo_listing_value"> <?php
 		$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $merge_clubs->slug);
-		echo JHTML::link($link, $merge_clubs->name);
+		echo JHtml::link($link, $merge_clubs->name);
 		?>
 		</span>
       <?PHP
@@ -168,7 +168,7 @@ else
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></span>
 		<span class="clubinfo_listing_value"> <?php
 		$link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug, $this->team->slug);
-		echo JHTML::link($link, $this->team->tname);
+		echo JHtml::link($link, $this->team->tname);
 		?>
 		</span>
 	</div>
@@ -176,7 +176,7 @@ else
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></span>
 		<span class="clubinfo_listing_value"> <?php
 		$link = sportsmanagementHelperRoute::getTeamStatsRoute($this->project->slug, $this->team->slug);
-		echo JHTML::link($link, $this->team->short_name);
+		echo JHtml::link($link, $this->team->short_name);
 		?>
 		</span>
 	</div>
@@ -196,7 +196,7 @@ else
 				?>
 	<div class="jl_parentContainer">
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo JHTML::link($this->team->team_website, $this->team->team_website, array( "target" => "_blank")); ?></span>
+		<span class="clubinfo_listing_value"> <?php echo JHtml::link($this->team->team_website, $this->team->team_website, array( "target" => "_blank")); ?></span>
 	</div>
 			<?php
 			}

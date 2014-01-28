@@ -37,7 +37,7 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 $current  = &$this->current;
 //$current  = &$this->currentRanking;
@@ -237,7 +237,7 @@ foreach( $current as $ptid => $team )
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
 					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1);
-					echo JHTML::link($teamplan_link, $team->cnt_won);
+					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
 				{
@@ -256,7 +256,7 @@ foreach( $current as $ptid => $team )
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
 					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2);
-					echo JHTML::link($teamplan_link, $team->cnt_draw);
+					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
 				{
@@ -275,7 +275,7 @@ foreach( $current as $ptid => $team )
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
 					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3);
-					echo JHTML::link($teamplan_link, $team->cnt_lost);
+					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else
 				{
@@ -638,7 +638,7 @@ foreach( $current as $ptid => $team )
 					}
 
 					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
-					echo JHTML::link($url, $img, $attr);
+					echo JHtml::link($url, $img, $attr);
 				}
 				echo '</td>';
 				echo "\n";

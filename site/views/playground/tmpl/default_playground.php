@@ -57,7 +57,7 @@
 			</th>
 			<td>
 				<?php
-				echo JHTML::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
+				echo JHtml::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
 				?>
 			</td>
 		</tr>

@@ -10,7 +10,7 @@
 				?>
 				<tr>
 					<td colspan="2" class="eventid">
-						<?php echo JHTML::_( 'image', $event->icon, JText::_($event->icon ), NULL ) . JText::_($event->name); ?>
+						<?php echo JHtml::_( 'image', $event->icon, JText::_($event->icon ), NULL ) . JText::_($event->name); ?>
 					</td>
 				</tr>
 				<tr>

@@ -13,7 +13,7 @@
 			<div class="clubteaminfo">
         	<?php
         	$description = $teaminfo->notes;
-        	echo (!empty($description) ? JText :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . JHTML::_('content.prepare', $description) : ''); ?>
+        	echo (!empty($description) ? JText :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . JHtml::_('content.prepare', $description) : ''); ?>
 			</div>
 		<?php endforeach; ?>
 	<?php endforeach; ?>

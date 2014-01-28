@@ -59,6 +59,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'team.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'club.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'playground.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projectteams.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projectteam.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'match.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'databasetool.php');
 

@@ -45,7 +45,7 @@
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHTML::link( $player_link, $match_player );
+											echo JHtml::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -75,7 +75,7 @@
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHTML::link( $player_link, $match_player );
+											echo JHtml::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -132,7 +132,7 @@
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHTML::link( $player_link, $match_player );
+											echo JHtml::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 

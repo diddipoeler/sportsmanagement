@@ -126,7 +126,7 @@
                     else
                     {
                         //EventType 0, therefore text comment
-                        $txt_tab = JHTML::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
+                        $txt_tab = JHtml::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
                         echo '<td colspan="" style="text-align:center">'.$txt_tab.'</td>';
                         echo '<td colspan= style="text-align:center">...</td>';
                         

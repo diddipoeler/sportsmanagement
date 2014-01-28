@@ -1,7 +1,7 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 $url = 'components/com_joomleague/extensions/jlextdfbkey/admin/assets/images/dfb-key.jpg';
 $alt = 'Lmo Logo';
@@ -96,12 +96,12 @@ echo "<td>".$rowdfb->spieltag."</td>";
 
 $teile = explode(",", $rowdfb->paarung);
 echo "<td>".$teile[0]."</td>"; // Teil1
-//echo "<td>".JHTML::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
-echo "<td>".JHTML::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
+//echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
+echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
 
 echo "<td>".$teile[1]."</td>"; // Teil2
-//echo "<td>".JHTML::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
-echo "<td>".JHTML::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
+//echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
+echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
 
 echo "<td>".$rowdfb->spielnummer."</td></tr>";
 }

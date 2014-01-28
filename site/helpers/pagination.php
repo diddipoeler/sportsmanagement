@@ -66,12 +66,12 @@ class sportsmanagementPagination
 			$params['r'] = $backward;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
-			$prevlink = JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
+			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
 
 			$params['r'] = $firstRound['id'];
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
-			$firstlink = JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
+			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
 		else
 		{
@@ -84,12 +84,12 @@ class sportsmanagementPagination
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
 			$nextlink = $spacer4;
-			$nextlink .= JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
+			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
 			$params['r'] = $lastRound['id'];
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
-			$lastlink = $spacer4 . JHTML::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
+			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
 		else
 		{
@@ -117,7 +117,7 @@ class sportsmanagementPagination
 					$params['r']= $round->id;
 					$query		= JURI::buildQuery($params);
 					$link		= JRoute::_('index.php?' . $query . '#'.$option.'_top');
-					$pageNav   .= $spacer4 . JHTML::link($link,$pagenumber);
+					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);
 				}
 				else
 				{

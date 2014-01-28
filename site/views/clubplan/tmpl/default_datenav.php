@@ -44,20 +44,20 @@ defined('_JEXEC') or die('Restricted access');
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
         <td><?php
-                echo "".JHTML::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
-                echo "".JHTML::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
-                echo "".JHTML::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
+                echo "".JHtml::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
+                echo "".JHtml::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
+                echo "".JHtml::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
 				?>
             <td>
         </tr>
         <tr>
 			<td><div class="clubplandate"><?php
-				echo JHTML::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
-				echo ' - '.JHTML::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
+				echo JHtml::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
+				echo ' - '.JHtml::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
                 ?>
                 </div>
                 <?PHP
-                echo "".JHTML::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
+                echo "".JHtml::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
 				?>
                 <input type="submit" class="button" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
                 </td>
@@ -84,5 +84,5 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
         
 	</table>
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo JHtml::_('form.token')."\n"; ?>
 </form><br />

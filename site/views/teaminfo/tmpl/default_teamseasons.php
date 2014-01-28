@@ -73,20 +73,20 @@ if ($season->projectname)
 		}
 
 		$picture_descr = JText::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
-		echo JHTML::image($picture, $picture_descr, array("title" => $picture_descr));
+		echo JHtml::image($picture, $picture_descr, array("title" => $picture_descr));
 	}
 	?> <br />
 	<?php
 	$link = JoomleagueHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug);
-	echo JHTML::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
+	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
 	?> <br />
 	<?php
 	$link = JoomleagueHelperRoute::getResultsRoute($season->project_slug);
-	echo JHTML::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
+	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
 	?> <br />
 	<?php
 	$link = JoomleagueHelperRoute::getRankingRoute($season->project_slug);
-	echo JHTML::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
+	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
 	?> <br />
 </div>
 	<?php

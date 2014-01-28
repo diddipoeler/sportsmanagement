@@ -24,7 +24,7 @@ if ($setItems > $actualItems) {
 $j = 0;
 foreach ( $this->matchimages as $images )
 {
-// echo JHTML::image($images->sitepath.DS.$images->name, $images->name , array('title' => $images->name ,'width' => "200" ));
+// echo JHtml::image($images->sitepath.DS.$images->name, $images->name , array('title' => $images->name ,'width' => "200" ));
 // echo '<br>';
 
 if (($j % $rssitems_colums) == 0 ) : 
@@ -40,7 +40,7 @@ if (($j % $rssitems_colums) == 0 ) :
 					<td class="item" style="width:<?php echo floor(99/$rssitems_colums)."%";?>">
           <a href="<?php echo $images->sitepath.DS.$images->name;?>" alt="<?php echo $images->name;?>" title="<?php echo $images->name;?>" class="highslide" onclick="return hs.expand(this)">
 					<?php
-echo JHTML::image($images->sitepath.DS.$images->name, $images->name , array('title' => $images->name ,'width' => $pictures_width ));					
+echo JHtml::image($images->sitepath.DS.$images->name, $images->name , array('title' => $images->name ,'width' => $pictures_width ));					
 					?>
           </a>
 					</td>

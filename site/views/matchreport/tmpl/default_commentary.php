@@ -32,7 +32,7 @@ if (!empty($this->matchcommentary))
                     <td class="list">
 						<dl>
 							<?php 
-                            echo JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
+                            echo JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
                             ?>
 						</dl>
 					</td>

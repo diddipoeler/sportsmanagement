@@ -1,6 +1,6 @@
 <?php defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JHTML::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.tooltip' );
 
 //// Set toolbar items for the page
 //JToolBarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ) ) );
@@ -63,7 +63,7 @@ foreach($this->newmatchdays as $rowdays)
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHTML::calendar(	$date1,
+echo JHtml::calendar(	$date1,
 														'round_date_first['.$i.']',
 														'round_date_first['.$i.']',
 														'%d-%m-%Y',
@@ -77,7 +77,7 @@ echo JHTML::calendar(	$date1,
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHTML::calendar(	$date1,
+echo JHtml::calendar(	$date1,
 														'round_date_last['.$i.']',
 														'round_date_last['.$i.']',
 														'%d-%m-%Y',
