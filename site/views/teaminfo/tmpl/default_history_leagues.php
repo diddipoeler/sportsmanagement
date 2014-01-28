@@ -15,7 +15,7 @@
 </legend>
 
 
-<table class='adminlist'>
+<table width="100%" class='adminlist'>
 
 <thead>
 <tr class="sectiontableheader">
