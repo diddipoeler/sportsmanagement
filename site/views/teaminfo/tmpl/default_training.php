@@ -1,17 +1,21 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<table width="100%" class="contentpaneopen">
-	<tr>
-		<td class="contentheading"><?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
-		</td>
-	</tr>
-</table>
+
+
+<fieldset>
+<legend>
+<strong>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
+</strong>
+</legend>
+
+<table width="100%" class="fixtures">
 
 <?php
 
 ?>
 
-<table class="fixtures" >
+<table width="100%"  class="fixtures" >
 	<tr class="sectiontableheader">
 		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></td>
 		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></td>
