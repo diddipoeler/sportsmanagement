@@ -22,7 +22,7 @@
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_POINTS'); ?></th>
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></th>
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></th>
-		v<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS'); ?></td>
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS'); ?></th>
         
         <?PHP
         if( $this->config['show_teams_roster_mean_age'] )
