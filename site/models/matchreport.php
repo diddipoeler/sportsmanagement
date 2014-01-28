@@ -207,6 +207,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
@@ -226,6 +227,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
@@ -245,6 +247,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
@@ -372,6 +375,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
         $query = "SELECT *  
     FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
@@ -388,6 +392,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query=' SELECT	p.id,'
 		      .' p.firstname,'
@@ -414,6 +419,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query=' SELECT	mp.in_out_time,
 						mp.teamplayer_id,
@@ -466,6 +472,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query='	SELECT	et.id,
 							et.name,
@@ -500,6 +507,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$match = sportsmanagementModelMatch::getMatchData($this->matchid);
 		$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
@@ -528,6 +536,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		if (!($this->_playersbasicstats))
 		{
@@ -562,6 +571,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		if (!($this->_playersevents))
 		{
@@ -596,6 +606,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		if (!($this->_staffsbasicstats))
 		{
@@ -625,6 +636,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
 		$query="SELECT	m.*,
 						t1.name t1name,
@@ -647,6 +659,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
   $bildpositionen = array();
   $position = 1;
@@ -686,6 +699,7 @@ class sportsmanagementModelMatchReport extends JModel
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
   $bildpositionen = array();
   $position = 1;
