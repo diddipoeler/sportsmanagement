@@ -139,6 +139,7 @@
 			<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
 			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
 			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
+			<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
 		</field>
 	</fieldset>
   
