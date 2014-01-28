@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -203,6 +203,11 @@ class sportsmanagementModelMatchReport extends JModel
   
 	function getMatchPlayerPositions()
 	{
+	$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
@@ -217,6 +222,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getMatchStaffPositions()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
@@ -231,6 +241,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getMatchRefereePositions()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query='	SELECT	pos.id, pos.name, 
 							ppos.position_id AS position_id, ppos.id as pposid
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
@@ -353,6 +368,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getMatchCommentary()
     {
+    	$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
         $query = "SELECT *  
     FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
     WHERE match_id = ".(int)$this->matchid." 
@@ -364,6 +384,11 @@ class sportsmanagementModelMatchReport extends JModel
     
     function getMatchReferees()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query=' SELECT	p.id,'
 		      .' p.firstname,'
 		      .' p.nickname,'
@@ -385,6 +410,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getSubstitutes()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query=' SELECT	mp.in_out_time,
 						mp.teamplayer_id,
 						pt.team_id,
@@ -432,6 +462,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getEventTypes()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query='	SELECT	et.id,
 							et.name,
 							et.icon
@@ -461,6 +496,11 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	function getMatchStats()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$match = sportsmanagementModelMatch::getMatchData($this->matchid);
 		$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 		      .' WHERE match_id='. $this->_db->Quote($match->id);
@@ -484,6 +524,11 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	function getPlayersStats()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (!($this->_playersbasicstats))
 		{
 			$match=&$this->getMatch();
@@ -513,6 +558,11 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	function getPlayersEvents()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (!($this->_playersevents))
 		{
 			$match = sportsmanagementModelMatch::getMatchData($this->matchid);
@@ -542,6 +592,11 @@ class sportsmanagementModelMatchReport extends JModel
 	 */
 	function getMatchStaffStats()
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		if (!($this->_staffsbasicstats))
 		{
 			$match = sportsmanagementModelMatch::getMatchData($this->matchid);
@@ -566,6 +621,11 @@ class sportsmanagementModelMatchReport extends JModel
 
 	function getMatchText($match_id)
 	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
 		$query="SELECT	m.*,
 						t1.name t1name,
 						t2.name t2name
@@ -583,7 +643,11 @@ class sportsmanagementModelMatchReport extends JModel
 	
 	function getSchemaHome($schemahome)
   {
-  $db = Jfactory::getDBO();
+  $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
   $bildpositionen = array();
   $position = 1;
   
@@ -618,7 +682,11 @@ class sportsmanagementModelMatchReport extends JModel
   
   function getSchemaAway($schemaaway)
   {
-  $db = Jfactory::getDBO();
+  $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        
   $bildpositionen = array();
   $position = 1;
     
