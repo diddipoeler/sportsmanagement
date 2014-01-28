@@ -9,7 +9,7 @@
 		<!-- Basic options. -->
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath="/administrator/components/com_joomleague/elements">
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 			<field	name="p" type="dependsql" depends="cid" task="projectsbycluboptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
