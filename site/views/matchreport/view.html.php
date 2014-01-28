@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -167,45 +167,7 @@ if ( $this->config['show_pictures'] == 1 )
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
-/*
-    $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
-		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
-    
-    $js = "hs.graphicsDir = '".JURI::base(true) . "/components/com_sportsmanagement/assets/css/highslide/graphics/"."';\n";
-    $js .= "hs.outlineType = 'rounded-white';\n";
-    $js .= "
-    hs.lang = {
-   cssDirection:     'ltr',
-   loadingText :     'Lade...',
-   loadingTitle :    'Klick zum Abbrechen',
-   focusTitle :      'Klick um nach vorn zu bringen',
-   fullExpandTitle : 'Zur Originalgr&ouml;&szlig;e erweitern',
-   fullExpandText :  'Vollbild',
-   creditsText :     '',
-   creditsTitle :    '',
-   previousText :    'Voriges',
-   previousTitle :   'Voriges (Pfeiltaste links)',
-   nextText :        'N&auml;chstes',
-   nextTitle :       'N&auml;chstes (Pfeiltaste rechts)',
-   moveTitle :       'Verschieben',
-   moveText :        'Verschieben',
-   closeText :       'Schlie&szlig;en',
-   closeTitle :      'Schlie&szlig;en (Esc)',
-   resizeTitle :     'Gr&ouml;&szlig;e wiederherstellen',
-   playText :        'Abspielen',
-   playTitle :       'Slideshow abspielen (Leertaste)',
-   pauseText :       'Pause',
-   pauseTitle :      'Pausiere Slideshow (Leertaste)',
-   number :          'Bild %1/%2',
-   restoreTitle :    'Klick um das Bild zu schlie&szlig;en, klick und ziehe um zu verschieben. Benutze Pfeiltasten für vor und zurück.'
-};
 
-    
-    \n";
-    
-    $document->addScriptDeclaration( $js );
-    
-*/
     
 /*    
     $startfade = 1000;
