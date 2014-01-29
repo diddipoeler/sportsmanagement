@@ -128,10 +128,33 @@ if (!empty($this->matchplayerpositions ))
 		}
         if (($this->config['show_events'])==1)
 		{
+			switch ($this->config['use_tabs_events'])
+			{
+				case 0:
+					/** No tabs */
 					if ( !empty( $this->eventtypes ) ) 
                     {
-                        $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events';
+						$output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events';
 					}
+					break;
+				case 1:
+					/** Tabs */
+					if ( !empty( $this->eventtypes ) ) 
+                    {
+						//echo $this->loadTemplate('events_tabs');
+                        $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events_tabs';
+					}
+					break;
+				case 2:
+					/** Table/Ticker layout */
+					//echo $this->loadTemplate('events_ticker');
+                    $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events_ticker';
+					break;
+			}
+                    
+                    
+                    
+                    
         }
         
     }    
@@ -153,7 +176,10 @@ if (!empty($this->matchplayerpositions ))
 	if (($this->config['show_pictures'])==1 && $this->matchimages )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_PICTURES'] = 'pictures';
-	}    
+	} 
+    
+    
+       
 
 /*
   // ################################################################

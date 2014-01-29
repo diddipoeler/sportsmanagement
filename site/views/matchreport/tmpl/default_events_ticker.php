@@ -240,7 +240,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         }
                         
                         //Club
-                        echo '<td class="ecenter">' . JoomleagueModelProject::getClubIconHtml($eventteam,1) . '</td>';
+                        echo '<td class="ecenter">' . sportsmanagementModelProject::getClubIconHtml($eventteam,1) . '</td>';
                         
                         //Subs out
 			$outName = sportsmanagementHelper::formatName(null, $me->out_firstname, $me->out_nickname, $me->out_lastname, $this->config["name_format"]);
@@ -269,7 +269,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			 <?php
 			echo '<td>&nbsp;</td>';
 			echo '<td class="ecenter">' . $txt_tab_in . '</td>';
-                        echo '<td class="ecenter">' . JoomleagueModelProject::getClubIconHtml($eventteam,1) . '</td>';
+                        echo '<td class="ecenter">' . sportsmanagementModelProject::getClubIconHtml($eventteam,1) . '</td>';
                         
                         //Subs in
 			$inName = sportsmanagementHelper::formatName(null, $me->firstname, $me->nickname, $me->lastname, $this->config["name_format"]);

@@ -64,7 +64,7 @@ $visible = 'hidden';
             $result='';
 		    $txt_tab='';
             // Make event tabs with JPane integrated function in Joomla 1.5 API
-			$result =& JPane::getInstance('tabs',array('startOffset'=>0));
+			$result = JPane::getInstance('tabs',array('startOffset'=>0));
 			echo $result->startPane('pane');
 			foreach ($this->eventtypes AS $event)
 			{
@@ -98,10 +98,10 @@ $visible = 'hidden';
 						    $prefix = null;
 						} 
 						
-						$match_player = JoomleagueHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
+						$match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+                            $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHtml::link($player_link,$match_player);
                         }
                         echo $match_player;
@@ -150,10 +150,10 @@ $visible = 'hidden';
 						    $prefix = null;
 						}
 
-						$match_player = JoomleagueHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
+						$match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
 						if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 						{
-							$player_link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+							$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
 							$match_player = JHtml::link($player_link,$match_player);
 						}
 						echo $match_player;
