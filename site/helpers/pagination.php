@@ -1,4 +1,41 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -6,6 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 //require_once (JLG_PATH_ADMIN .DS.'models'.DS.'round.php');
 //require_once (JLG_PATH_ADMIN .DS.'models'.DS.'rounds.php');
 
+/**
+ * sportsmanagementPagination
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementPagination
 {
 
@@ -18,6 +64,8 @@ class sportsmanagementPagination
 	function pagenav($project)
 	{
 	   $option = JRequest::getCmd('option');
+       $mainframe = JFactory::getApplication();
+       
 		$pageNav = '';
 		$spacer2 = '&nbsp;&nbsp;';
 		$spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -67,6 +115,8 @@ class sportsmanagementPagination
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
 
 			$params['r'] = $firstRound['id'];
 			$query = JURI::buildQuery($params);
@@ -78,7 +128,8 @@ class sportsmanagementPagination
 			$prevlink = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV');
 			$firstlink = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START') . $spacer4;
 		}
-		if ($lastRound['id'] != $roundid)
+		
+        if ($lastRound['id'] != $roundid)
 		{
 			$params['r'] = $forward;
 			$query = JURI::buildQuery($params);
@@ -96,6 +147,7 @@ class sportsmanagementPagination
 			$nextlink = $spacer4 . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT');
 			$lastlink = $spacer4 . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END');
 		}
+        
 		$limit = count($arrRounds);
 		$low = $currentRoundcode - 3;
 		$high = $currentRoundcode + 3;
@@ -124,6 +176,12 @@ class sportsmanagementPagination
 					$pageNav .= $spacer4 . $pagenumber;
 				}
 		}
+        
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
+        
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
 	}
 

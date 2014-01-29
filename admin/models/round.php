@@ -308,7 +308,7 @@ class sportsmanagementModelround extends JModelAdmin
 	   // Get a db connection.
         $db = JFactory::getDbo();
 		$query='SELECT id
-				FROM #__joomleague_round 
+				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
 				WHERE roundcode='.$roundcode.'
 				  AND project_id='.(int) $project_id;
 		$db->setQuery($query);
