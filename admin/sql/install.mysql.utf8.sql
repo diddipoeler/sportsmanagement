@@ -856,9 +856,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `picture` VARCHAR(250) NULL ,
   `logo_big` VARCHAR(250) NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE KEY `combi` (`team_id`,`season_id`) ),
+  UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`)
+  )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
@@ -877,10 +878,11 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `picture` VARCHAR(250) NULL ,
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
-  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ),
+  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`),
   KEY `person_id` (`person_id`)
+  )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
@@ -914,10 +916,11 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   
   PRIMARY KEY (`id`) ,
-  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ),
+  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`),
   KEY `person_id` (`person_id`)
+  )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
