@@ -591,19 +591,29 @@ if ( $this->config['show_pictures'] == 1 )
 	 */
 	function showEvents_Timelines1($eventid=0,$projectteamid=0)
 	{
-		$result='';
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        $result = '';
 		$eventcounter = array();
 		foreach ($this->eventtypes AS $event)
 		{
 			foreach ($this->matchevents AS $me)
 			{
-				if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam1_id)
+				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
 				{
-					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
+					
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tppicture1'.'<pre>'.print_r($me,true).'</pre>' ),'');
+                    
+                    $placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					// set teamplayer picture
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
+                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				        {
+                        $picture = $placeholder;
+                        }
+                        
 					}
 					// when teamplayer picture is empty or a placeholder icon look for the general player picture
 					elseif
@@ -612,9 +622,14 @@ if ( $this->config['show_pictures'] == 1 )
 					)
 					{
 						$picture = $me->picture1;
+                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				        {
+                        $picture = $placeholder;
+                        }
 					}
 					else {
-						$picture = '';
+						//$picture = '';
+                        $picture = $placeholder;
 					}
 
 					if (in_array($me->event_time, $eventcounter))
@@ -640,19 +655,24 @@ if ( $this->config['show_pictures'] == 1 )
 	 */
 	function showEvents_Timelines2($eventid=0,$projectteamid=0)
 	{
-		$result='';
+		$result = '';
 		$eventcounter = array();
 		foreach ($this->eventtypes AS $event)
 		{
 			foreach ($this->matchevents AS $me)
 			{
-				if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam2_id)
+				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam2_id )
 				{
 					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					// set teamplayer picture
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
+                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				        {
+                        $picture = $placeholder;
+                        }
+                        
 					}
 					// when teamplayer picture is empty or a placeholder icon look for the general player picture
 					elseif
@@ -661,9 +681,14 @@ if ( $this->config['show_pictures'] == 1 )
 					)
 					{
 						$picture = $me->picture1;
+                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				        {
+                        $picture = $placeholder;
+                        }
 					}
 					else {
-						$picture = '';
+						//$picture = '';
+                        $picture = $placeholder;
 					}
 
 					if (in_array($me->event_time, $eventcounter))

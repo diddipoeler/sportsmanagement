@@ -1297,6 +1297,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
         $query->select('pt.team_id AS team_id');
         $query->select('et.name AS eventtype_name');
         $query->select('t.name AS team_name');
+        $query->select('tp.picture AS tppicture1');
         $query->select('p.id AS playerid,p.firstname AS firstname1,p.nickname AS nickname1,p.lastname AS lastname1,p.picture AS picture1');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
