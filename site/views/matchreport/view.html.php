@@ -108,7 +108,8 @@ class sportsmanagementViewMatchReport extends JView
 		$this->assign('matchrefereepositions',$model->getMatchRefereePositions());
 		$this->assign('matchreferees',$model->getMatchReferees());
         $this->assign('matchcommentary',$model->getMatchCommentary());
-		$this->assign('substitutes',$model->getSubstitutes());
+		//$this->assign('substitutes',$model->getMatchSubstitutions());
+        $this->assign('substitutes',sportsmanagementModelProject::getMatchSubstitutions($model->matchid));
 		$this->assign('eventtypes',$model->getEventTypes());
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
 		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc));

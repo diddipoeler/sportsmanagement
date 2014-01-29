@@ -55,10 +55,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
  * 								$this->config['team_picture_width'],
  * 								$this->config['team_picture_height'],1);
  */
-                                
+        
+        $picture = $this->teams[0]->$pic;
+        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+        {
+        $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+        }                        
 		?>
-<a href="<?php echo JURI::root().$this->teams[0]->$pic;?>" title="<?php echo $this->teams[0]->name;?>" class="modal">
-<img src="<?php echo JURI::root().$this->teams[0]->$pic;?>" alt="<?php echo $this->teams[0]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->teams[0]->name;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->teams[0]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>
 
         </td>
@@ -71,10 +76,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
  * 								$this->config['team_picture_width'],
  * 								$this->config['team_picture_height'],1);
  */
-                                
+        $picture = $this->teams[1]->$pic;
+        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+        {
+        $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+        }                         
 		?>
-<a href="<?php echo JURI::root().$this->teams[1]->$pic;?>" title="<?php echo $this->teams[1]->name;?>" class="modal">
-<img src="<?php echo JURI::root().$this->teams[1]->$pic;?>" alt="<?php echo $this->teams[1]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->teams[1]->name;?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->teams[1]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>        
         
         </td>

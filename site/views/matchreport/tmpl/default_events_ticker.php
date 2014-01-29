@@ -156,7 +156,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                         
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+                            $player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHtml::link($player_link,$match_player);
                         }                         
                         

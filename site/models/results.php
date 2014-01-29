@@ -1,5 +1,41 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 defined('_JEXEC') or die(JText('Restricted access'));
 
@@ -9,6 +45,15 @@ JHtml::_('behavior.tooltip');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelResults
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelResults extends JModel
 {
 	var $projectid	= 0;
@@ -21,6 +66,11 @@ class sportsmanagementModelResults extends JModel
 	var $project = null;
 	var $matches = null;
 
+	/**
+	 * sportsmanagementModelResults::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -39,17 +89,27 @@ class sportsmanagementModelResults extends JModel
 		$this->config = sportsmanagementModelProject::getTemplateConfig('results');
 	}
 
+	/**
+	 * sportsmanagementModelResults::getDivisionID()
+	 * 
+	 * @return
+	 */
 	function getDivisionID()
 	{
 		return $this->divisionid;
 	}
 
+	/**
+	 * sportsmanagementModelResults::getDivision()
+	 * 
+	 * @return
+	 */
 	function getDivision()
 	{
 		$division=null;
 		if ($this->divisionid > 0)
 		{
-			$division =& $this->getTable('Division','Table');
+			$division = $this->getTable('Division','sportsmanagementTable');
 			$division->load($this->divisionid);
 		}
 
@@ -57,6 +117,13 @@ class sportsmanagementModelResults extends JModel
 	}
     
     // limit count word
+	/**
+	 * sportsmanagementModelResults::limitText()
+	 * 
+	 * @param mixed $text
+	 * @param mixed $wordcount
+	 * @return
+	 */
 	function limitText($text, $wordcount)
 	{
 		if(!$wordcount) {
@@ -76,6 +143,13 @@ class sportsmanagementModelResults extends JModel
 		return $text;
 	}
     
+    /**
+     * sportsmanagementModelResults::getRssFeeds()
+     * 
+     * @param mixed $rssfeedlink
+     * @param mixed $rssitems
+     * @return
+     */
     function getRssFeeds($rssfeedlink,$rssitems)
     {
     $rssIds	= array();    
@@ -116,15 +190,17 @@ class sportsmanagementModelResults extends JModel
     return $lists;         
     }
 
+	
 	/**
-	 * get games
-	 * @return array
+	 * sportsmanagementModelResults::getMatches()
+	 * 
+	 * @return
 	 */
 	function getMatches()
 	{
 		if (is_null($this->matches))
 		{
-			$this->matches = $this->getResultsRows($this->roundid,$this->divisionid,$this->config);
+			$this->matches = self::getResultsRows($this->roundid,$this->divisionid,$this->config);
 		}
 		
 		$allowed = $this->isAllowed();
@@ -146,83 +222,98 @@ class sportsmanagementModelResults extends JModel
 		return $this->matches;
 	}
 
+	
 	/**
-	 * return array of games
-	 * @param int round id,0 for current round
-	 * @param int division id (0 for project)
-	 * @param array config
-	 * @param int teamId for this team games only
-	 * @param string ordering
-	 * @param boolean unpublished
-	 * @return array
+	 * sportsmanagementModelResults::getResultsRows()
+	 * 
+	 * @param mixed $round
+	 * @param mixed $division
+	 * @param mixed $config
+	 * @return
 	 */
 	function getResultsRows($round,$division,&$config)
 	{
-		$project = sportsmanagementModelProject::getProject();
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $project = sportsmanagementModelProject::getProject();
 
-		if (!$round) {
-			$round = $this->getCurrentRound();
+		if (!$round) 
+        {
+			$round = sportsmanagementModelProject::getCurrentRound();
 		}
 
-		$result=array();
-
-		$query_SELECT='
-		SELECT	m.*,
-			DATE_FORMAT(m.time_present,"%H:%i") time_present,
-			playground.name AS playground_name,
-			playground.short_name AS playground_short_name,
-			pt1.project_id, d1.name as divhome, d2.name as divaway,
-			CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ';
-
-		$query_FROM='
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
-			INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id=r.id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id=d1.id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id=d2.id
-			LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id=m.playground_id';
-
-		$query_WHERE	= ' WHERE m.published=1 
-							  AND r.id='.$round.' 
-							  AND r.project_id='.(int)$project->id;
-		$query_END		= ' GROUP BY m.id ORDER BY m.match_date ASC,m.match_number';
+		$result = array();
+        // select some fields
+        $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
+        $query->select('pt1.project_id');
+        $query->select('d1.name as divhome');
+        $query->select('d2.name as divaway');
+        $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+        // from 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        // join
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id=r.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
+		
+        // where
+        $query->where('m.published = 1');
+        $query->where('r.id='.$round);
+        $query->where('r.project_id = '.(int)$project->id);
+        // group
+        $query->group('m.id ');
+        // order
+        $query->order('m.match_date ASC,m.match_number');    
 
 		if ($division>0)
 		{
-			$query_WHERE .= '
- AND	(
-			d1.id='.$division.' OR
-			d1.parent_id='.$division.' OR
-			d2.id='.$division.' OR
-			d2.parent_id='.$division.'
-		)';
+		  $query->where('(d1.id = '.$division.' OR d1.parent_id = '.$division.' OR d2.id = '.$division.' OR d2.parent_id = '.$division.')');
 		}
 
-		$query=$query_SELECT.$query_FROM.$query_WHERE.$query_END;
-		//echo '<br /><pre>~'.print_r($query,true).'~</pre><br />';
-		if (!is_null($round)) {
-			$this->_db->setQuery($query);
+		if (!is_null($round)) 
+        {
+			$db->setQuery($query);
+            $result = $db->loadObjectList();
 		}
 		
-		if (!$result = $this->_db->loadObjectList()) {
-			JError::raiseWarning(0, $this->_db->getErrorMsg());
-		}
-
-		//echo '<br /><pre>~'.print_r(count($result),true).'~</pre><br />';
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
 		return $result;
 	}
 
+	
 	/**
-	 * returns match referees
-	 * @param int match id
-	 * @return array
+	 * sportsmanagementModelResults::getMatchReferees()
+	 * 
+	 * @param mixed $match_id
+	 * @return
 	 */
 	function getMatchReferees($match_id)
 	{
-		$query='	SELECT	pref.id AS person_id,
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query='	SELECT	pref.id AS person_id,
 								p.firstname,
 								p.lastname,
 								pos.name AS position_name
@@ -233,19 +324,33 @@ class sportsmanagementModelResults extends JModel
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
 						WHERE mr.match_id='.(int)$match_id.' AND p.published = 1 ORDER BY pos.name,mr.ordering ';
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+        
+        $result = $this->_db->loadObjectList();
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+		return $result;
+		
 	}
 
+	
 	/**
-	 * returns referees (as teamname) who ruled in specific match
-	 *
-	 * @param int $team_id
-	 * @param int $position_id
-	 * @return array of players
+	 * sportsmanagementModelResults::getMatchRefereeTeams()
+	 * 
+	 * @param mixed $match_id
+	 * @return
 	 */
 	function getMatchRefereeTeams($match_id)
 	{
-		$query='	SELECT	mr.project_referee_id AS value,
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query='	SELECT	mr.project_referee_id AS value,
 								t.name AS teamname,
 								pos.name AS position_name
 
@@ -257,10 +362,23 @@ class sportsmanagementModelResults extends JModel
 						WHERE mr.match_id='.(int) $match_id.' ORDER BY pos.name,mr.ordering ASC ';
 
 		$this->_db->setQuery($query);
+        
+        $result = $this->_db->loadObjectList('value');
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+		return $result;
 
-		return $this->_db->loadObjectList('value');
 	}
 
+	/**
+	 * sportsmanagementModelResults::isTeamEditor()
+	 * 
+	 * @param mixed $userid
+	 * @return
+	 */
 	function isTeamEditor($userid)
 	{
 		if ($userid > 0)
@@ -277,6 +395,13 @@ class sportsmanagementModelResults extends JModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelResults::isMatchAdmin()
+	 * 
+	 * @param mixed $matchid
+	 * @param mixed $userid
+	 * @return
+	 */
 	function isMatchAdmin($matchid,$userid)
 	{
 		$query=' SELECT COUNT(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
@@ -289,6 +414,11 @@ class sportsmanagementModelResults extends JModel
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * sportsmanagementModelResults::isAllowed()
+	 * 
+	 * @return
+	 */
 	function isAllowed()
 	{
 		$allowed = false;
@@ -308,6 +438,11 @@ class sportsmanagementModelResults extends JModel
 		return $allowed;
 	}
 
+	/**
+	 * sportsmanagementModelResults::getShowEditIcon()
+	 * 
+	 * @return
+	 */
 	function getShowEditIcon()
 	{
 		$allowed = $this->isAllowed();
@@ -324,6 +459,15 @@ class sportsmanagementModelResults extends JModel
 		return $showediticon;
 	}
 
+	/**
+	 * sportsmanagementModelResults::save_array()
+	 * 
+	 * @param mixed $cid
+	 * @param mixed $post
+	 * @param bool $zusatz
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
 	{
 		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
@@ -414,6 +558,12 @@ class sportsmanagementModelResults extends JModel
 		return $this->_db->query($query);
 	}
 
+	/**
+	 * sportsmanagementModelResults::getFavTeams()
+	 * 
+	 * @param mixed $project
+	 * @return
+	 */
 	function getFavTeams(&$project)
 	{
 		$favteams=explode(',',$project->fav_team);

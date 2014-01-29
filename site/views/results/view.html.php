@@ -57,7 +57,8 @@ class sportsmanagementViewResults extends JView
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
 
-		//add js file
+		$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        //add js file
 		JHtml::_('behavior.mootools');
 		$model	= $this->getModel();
 				

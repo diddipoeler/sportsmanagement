@@ -131,8 +131,8 @@ $teamid=JRequest::getInt('tid');
 			?>
 		<td width='5' class='ko'>
 		<?php
- 			$events	= $this->model->getMatchEvents($match->id);
- 			$subs	= $this->model->getMatchSubstitutions($match->id);
+ 			$events	= sportsmanagementModelProject::getMatchEvents($match->id);
+ 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($match->id);
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
