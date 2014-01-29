@@ -51,11 +51,27 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php' );
 
+/**
+ * plgSearchsearch_sportsmanagement
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class plgSearchsearch_sportsmanagement extends JPlugin
 {
 
 
 
+	/**
+	 * plgSearchsearch_sportsmanagement::plgSearchsearch_sportsmanagement()
+	 * 
+	 * @param mixed $subject
+	 * @param mixed $params
+	 * @return
+	 */
 	public function plgSearchsearch_sportsmanagement(&$subject, $params)
 	{
 		parent::__construct($subject, $params);
@@ -63,6 +79,11 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 		JPlugin::loadLanguage( 'plg_search_sportsmanagement', JPATH_ADMINISTRATOR );
 	}
 
+	/**
+	 * plgSearchsearch_sportsmanagement::onContentSearchAreas()
+	 * 
+	 * @return
+	 */
 	function onContentSearchAreas()
 	{
 		static $areas = array(
@@ -71,6 +92,15 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * plgSearchsearch_sportsmanagement::onContentSearch()
+	 * 
+	 * @param mixed $text
+	 * @param string $phrase
+	 * @param string $ordering
+	 * @param mixed $areas
+	 * @return
+	 */
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 		$db 	= JFactory::getDBO();

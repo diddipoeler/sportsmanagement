@@ -669,6 +669,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `extendeduser` TEXT NULL ,
   `import_project_id` INT(11) NOT NULL DEFAULT '0' ,
   `project_art_id` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `project_live_update` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
