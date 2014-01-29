@@ -1187,21 +1187,45 @@ $query->where('p.id='.$db->Quote($this->projectid));
 	 */
 	function getMatchSubstitutions($match_id)
 	{
-	   // Get a db connection.
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+       // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('mp.in_out_time');
+        $query->select('pt.team_id,pt.id AS ptid');
+        $query->select('p.firstname,p.nickname,p.lastname');
+        $query->select('pos.name AS in_position');
+        $query->select('pos2.name AS out_position');
+        $query->select('p2.id AS out_ptid,p2.firstname AS out_firstname,p2.nickname AS out_nickname,p2.lastname AS out_lastname');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id');
         
+        
+        
+/*        
 		$query=' SELECT	mp.in_out_time,
+        
 							pt.team_id,
 							pt.id AS ptid,
-							p2.id AS out_ptid,
-							p.firstname,
+                            
+							
+							
+                            p.firstname,
 							p.nickname,
 							p.lastname,
-							pos.name AS in_position,
-							pos2.name AS out_position,
-							p2.firstname AS out_firstname,
+							
+                            pos.name AS in_position,
+							
+                            pos2.name AS out_position,
+                            
+							p2.id AS out_ptid,
+                            p2.firstname AS out_firstname,
 							p2.nickname AS out_nickname,
 							p2.lastname AS out_lastname
+                            
 						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON mp.teamplayer_id=tp.id
 							  AND tp.published=1
@@ -1218,8 +1242,23 @@ $query->where('p.id='.$db->Quote($this->projectid));
 						WHERE	mp.match_id='.(int)$match_id.' AND
 								mp.came_in=1 AND p.published = 1 AND p2.published = 1
 						ORDER by (mp.in_out_time+0) ';
+*/                        
+        // Where
+        $query->where('mp.match_id = '.(int)$match_id);
+        $query->where('mp.came_in = 1 AND p.published = 1 AND p2.published = 1');
+        // order
+        $query->order('(mp.in_out_time+0)');                
+                        
 		$db->setQuery( $query );
-		return $db->loadObjectList();
+        
+        $result = $db->loadObjectList();
+        
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+		return $result;
 	}
 
 	/**
@@ -1229,56 +1268,69 @@ $query->where('p.id='.$db->Quote($this->projectid));
 	 */
 	function getMatchEvents($match_id,$showcomments=0,$sortdesc=0)
 	{
-		// Get a db connection.
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
-        if ($showcomments == 1) {
+        if ($showcomments == 1) 
+        {
 		    $join = 'LEFT';
-		    $addline = ' me.notes,';
-		} else {
+		    //$addline = ' me.notes,';
+            $query->select('me.notes');
+		} 
+        else 
+        {
 		    $join = 'INNER';
-		    $addline = '';
+		    //$addline = '';
 		}
 		$esort = '';
         $arrayobjectsort = '1';
-		if ($sortdesc == 1) {
+		if ($sortdesc == 1) 
+        {
 		    $esort = ' DESC';
             $arrayobjectsort = '-1';
 		}
-		$query = ' 	SELECT 	me.event_type_id,
-							me.id as event_id,
-							me.event_time,
-							me.notice,'
-							. $addline .
-							'pt.team_id AS team_id, 
-							et.name AS eventtype_name,
-							t.name AS team_name,
-							me.projectteam_id AS ptid,
-							me.event_sum,
-							p.id AS playerid,
-							p.firstname AS firstname1,
-							p.nickname AS nickname1,
-							p.lastname AS lastname1,
-							p.picture AS picture1,
-							tp.picture AS tppicture1
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me
-					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON me.event_type_id = et.id
-					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON me.projectteam_id = pt.id
-					'.$join.' JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id = t.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id = me.teamplayer_id
-						  AND tp.published = 1
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id
-						  AND p.published = 1
-					WHERE me.match_id = ' . $match_id . ' 
-					ORDER BY (me.event_time + 0)'. $esort .', me.event_type_id, me.id';
-			
+        // Select some fields
+        $query->select('me.event_type_id,me.id as event_id,me.event_time,me.notice,me.projectteam_id AS ptid,me.event_sum');
+        $query->select('pt.team_id AS team_id');
+        $query->select('et.name AS eventtype_name');
+        $query->select('t.name AS team_name');
+        $query->select('p.id AS playerid,p.firstname AS firstname1,p.nickname AS nickname1,p.lastname AS lastname1,p.picture AS picture1');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON me.event_type_id = et.id');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON me.projectteam_id = pt.id');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.team_id = st.team_id AND tp.id = me.teamplayer_id');
+        $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id');
+
+		// Where
+        $query->where('me.match_id = '.$match_id );
+        $query->where('p.published = 1');
+        // order
+        $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
+        	
 		$db->setQuery( $query );
 		
         $events = $db->loadObjectList();
         
-        $query = "SELECT *  
-    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
-    WHERE match_id = ".(int)$this->matchid;
+        if ( !$events )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
+    $query = $db->getQuery(true);    
+    $query->clear();
+    // Select some fields
+        $query->select('*');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
+        // Where
+        $query->where('match_id = '. (int)$this->matchid );
+    
     $db->setQuery($query);
 		$commentary = $db->loadObjectList();
         if ( $commentary )
@@ -1314,7 +1366,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 			//if no ACL permission, check for overruling permission by project admin/editor (compatibility < 2.5)
 			if(!$allowed) {
 				// If not, then check if user is project admin or editor
-				$project = $this->getProject();
+				$project = self::getProject();
 				if($this->isUserProjectAdminOrEditor($user->id, $project))
 				{
 					$allowed = true;

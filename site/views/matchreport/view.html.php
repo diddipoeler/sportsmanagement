@@ -57,6 +57,12 @@ jimport('joomla.html.pane');
 class sportsmanagementViewMatchReport extends JView
 {
 
+	/**
+	 * sportsmanagementViewMatchReport::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$mainframe = JFactory::getApplication();
@@ -185,6 +191,12 @@ if ( $this->config['show_pictures'] == 1 )
 
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showLegresult()
+	 * 
+	 * @param integer $team
+	 * @return
+	 */
 	function showLegresult($team=0)
 	{
 		if($this->match->alt_decision==0) {
@@ -234,6 +246,11 @@ if ( $this->config['show_pictures'] == 1 )
 		}
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showOvertimeResult()
+	 * 
+	 * @return
+	 */
 	function showOvertimeResult()
 	{
 		if(isset($this->match->team1_result_ot) || isset($this->match->team2_result_ot))
@@ -244,6 +261,11 @@ if ( $this->config['show_pictures'] == 1 )
 		return false;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showShotoutResult()
+	 * 
+	 * @return
+	 */
 	function showShotoutResult()
 	{
 		if(isset($this->match->team1_result_so) || isset($this->match->team2_result_so))
@@ -254,6 +276,13 @@ if ( $this->config['show_pictures'] == 1 )
 		return false;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showMatchresult()
+	 * 
+	 * @param mixed $decision
+	 * @param mixed $team
+	 * @return
+	 */
 	function showMatchresult($decision,$team)
 	{
 		if ($decision==1)
@@ -279,6 +308,12 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showSubstitution()
+	 * 
+	 * @param mixed $sub
+	 * @return
+	 */
 	function showSubstitution($sub)
 	{
 		$pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
@@ -333,6 +368,13 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showEvents()
+	 * 
+	 * @param integer $eventid
+	 * @param integer $projectteamid
+	 * @return
+	 */
 	function showEvents($eventid=0,$projectteamid=0)
 	{
 		$result='';
@@ -388,9 +430,14 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
-	/** timeline */
+	
 
 
+	/**
+	 * sportsmanagementViewMatchReport::getTimelineMatchTime()
+	 * 
+	 * @return
+	 */
 	function getTimelineMatchTime()
 	{
 		$result_type=$this->match->match_result_type;
@@ -415,6 +462,11 @@ if ( $this->config['show_pictures'] == 1 )
 		return $matchtime;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::getEventsTimes()
+	 * 
+	 * @return
+	 */
 	function getEventsTimes()
 	{
 		$eventstimecounter = array();
@@ -426,6 +478,12 @@ if ( $this->config['show_pictures'] == 1 )
 		return $eventstimecounter;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showSubstitution_Timelines1()
+	 * 
+	 * @param integer $sub
+	 * @return
+	 */
 	function showSubstitution_Timelines1($sub=0)
 	{
 		$result='';
@@ -435,10 +493,10 @@ if ( $this->config['show_pictures'] == 1 )
 			if ($sub->ptid == $this->match->projectteam1_id) {
 				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
 				{
-					$result .= JoomleagueViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,1);
+					$result .= sportsmanagementViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,1);
 				}
 				else {
-					$result .= JoomleagueViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,0);
+					$result .= sportsmanagementViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,0);
 				}
 				$substitutioncounter[] = $sub->in_out_time;
 			}
@@ -446,6 +504,12 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showSubstitution_Timelines2()
+	 * 
+	 * @param integer $sub
+	 * @return
+	 */
 	function showSubstitution_Timelines2($sub=0)
 	{
 		$result='';
@@ -455,10 +519,10 @@ if ( $this->config['show_pictures'] == 1 )
 			if ($sub->ptid == $this->match->projectteam2_id) {
 				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
 				{
-					$result .= JoomleagueViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,2);
+					$result .= sportsmanagementViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,2);
 				}
 				else {
-					$result .= JoomleagueViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,0);
+					$result .= sportsmanagementViewMatchReport::_formatTimelineSubstitution($sub,$sub->firstname,$sub->nickname,$sub->lastname,$sub->out_firstname,$sub->out_nickname,$sub->out_lastname,0);
 				}
 				$substitutioncounter[] = $sub->in_out_time;
 			}
@@ -466,6 +530,19 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::_formatTimelineSubstitution()
+	 * 
+	 * @param mixed $sub
+	 * @param mixed $firstname
+	 * @param mixed $nickname
+	 * @param mixed $lastname
+	 * @param mixed $out_firstname
+	 * @param mixed $out_nickname
+	 * @param mixed $out_lastname
+	 * @param integer $two_substitutions_per_minute
+	 * @return
+	 */
 	function _formatTimelineSubstitution($sub,$firstname,$nickname,$lastname,$out_firstname,$out_nickname,$out_lastname,$two_substitutions_per_minute=0)
 	{
 
@@ -479,10 +556,10 @@ if ( $this->config['show_pictures'] == 1 )
 		$tiptext=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
 		$tiptext .= $time;
 		$tiptext .= ' ::';
-		$tiptext .= JoomleagueViewMatchReport::getHtmlImageForTips($pic_in);
+		$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($pic_in);
 		$tiptext .= sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$tiptext .= ' &lt;br&gt; ';
-		$tiptext .= JoomleagueViewMatchReport::getHtmlImageForTips($pic_out);
+		$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($pic_out);
 		$tiptext .= sportsmanagementHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
 		$result='';
 
@@ -505,6 +582,13 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showEvents_Timelines1()
+	 * 
+	 * @param integer $eventid
+	 * @param integer $projectteamid
+	 * @return
+	 */
 	function showEvents_Timelines1($eventid=0,$projectteamid=0)
 	{
 		$result='';
@@ -547,6 +631,13 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::showEvents_Timelines2()
+	 * 
+	 * @param integer $eventid
+	 * @param integer $projectteamid
+	 * @return
+	 */
 	function showEvents_Timelines2($eventid=0,$projectteamid=0)
 	{
 		$result='';
@@ -589,6 +680,18 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::_formatTimelineEvent()
+	 * 
+	 * @param mixed $matchEvent
+	 * @param mixed $event
+	 * @param mixed $firstname
+	 * @param mixed $nickname
+	 * @param mixed $lastname
+	 * @param mixed $picture
+	 * @param integer $two_events_per_minute
+	 * @return
+	 */
 	function _formatTimelineEvent($matchEvent,$event,$firstname,$nickname,$lastname,$picture,$two_events_per_minute=0)
 	{
 		$result='';
@@ -599,7 +702,7 @@ if ( $this->config['show_pictures'] == 1 )
 		$tiptext .= ' ::';
 		if (file_exists($picture))
 		{
-			$tiptext .= JoomleagueViewMatchReport::getHtmlImageForTips($picture,
+			$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($picture,
 																		$this->config['player_picture_width'],
 																		$this->config['player_picture_height']);
 		}
@@ -625,6 +728,14 @@ if ( $this->config['show_pictures'] == 1 )
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementViewMatchReport::getHtmlImageForTips()
+	 * 
+	 * @param mixed $picture
+	 * @param integer $width
+	 * @param integer $height
+	 * @return
+	 */
 	function getHtmlImageForTips($picture,$width=0,$height=0)
 	{
 		// diddipoeler

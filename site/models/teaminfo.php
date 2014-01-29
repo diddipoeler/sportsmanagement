@@ -1,4 +1,41 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -7,6 +44,15 @@ jimport( 'joomla.application.component.model' );
 //require_once( JPATH_COMPONENT.DS . 'helpers' . DS . 'ranking.php' );
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelTeamInfo
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelTeamInfo extends JModel
 {
 	var $project = null;
@@ -384,48 +430,9 @@ class sportsmanagementModelTeamInfo extends JModel
 		return $allowed;
 	}
     
-    function checkUserExtraFields()
-    {
-        $mainframe = JFactory::getApplication();
-        //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r(JRequest::getVar('view'),true).'</pre>' ),'');
-    $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_frontend LIKE '".JRequest::getVar('view')."' and published = 1 ";
-			//$mainframe->enqueueMessage(JText::_('query -> '.'<pre>'.print_r($query,true).'</pre>' ),'');
-			$this->_db->setQuery($query);
-			if ($this->_db->loadResult())
-			{
-				//$mainframe->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($this->_db->loadResult(),true).'</pre>' ),'');
-                return true;
-			}
-            else
-            {
-                return false;
-            }    
-        
-    }
+
     
-    function getUserExtraFields($jlid)
-    {
-        $mainframe = JFactory::getApplication();
-    	$query = "SELECT ef.*,
-        ev.fieldvalue as fvalue,
-        ev.id as value_id 
-        FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
-        LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields_values as ev 
-        ON ef.id = ev.field_id 
-        AND ev.jl_id = ".$jlid." 
-        WHERE ef.template_frontend LIKE '".JRequest::getVar('view')."'
-        and ef.published = 1  
-        ORDER BY ef.ordering";    
-        $this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-        //$mainframe->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
-		return $result;
     
-    }
 	
 }
 ?>

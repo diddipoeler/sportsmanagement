@@ -289,20 +289,20 @@ $mainframe = JFactory::getApplication();
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 									echo JHtml::image('administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
-									$imageParams=array();
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
+									$imageParams = array();
 									$imageParams['title']=$imageTitle ;
 									$imageParams['height']=30;
 									//$imageParams['width'] =40;

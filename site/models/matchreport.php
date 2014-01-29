@@ -78,6 +78,11 @@ class sportsmanagementModelMatchReport extends JModel
 	var $_staffsbasicstats=null;
 
 
+	/**
+	 * sportsmanagementModelMatchReport::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 		$this->matchid = JRequest::getInt('mid',0);
@@ -116,6 +121,12 @@ class sportsmanagementModelMatchReport extends JModel
  * 	}
  */
 
+	/**
+	 * sportsmanagementModelMatchReport::getClubinfo()
+	 * 
+	 * @param mixed $clubid
+	 * @return
+	 */
 	function getClubinfo($clubid)
 	{
 		//$this->club =& $this->getTable('Club','Table');
@@ -126,6 +137,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->club;
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getRound()
+	 * 
+	 * @return
+	 */
 	function getRound()
 	{
 		//$match=$this->getMatch();
@@ -146,6 +162,12 @@ class sportsmanagementModelMatchReport extends JModel
 		return $round;
 	}
 
+  /**
+   * sportsmanagementModelMatchReport::getMatchPictures()
+   * 
+   * @param mixed $folder
+   * @return
+   */
   function getMatchPictures($folder)
   {
   $basePath = JPATH_SITE.DS.'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
@@ -201,6 +223,11 @@ class sportsmanagementModelMatchReport extends JModel
   	
   }
   
+	/**
+	 * sportsmanagementModelMatchReport::getMatchPlayerPositions()
+	 * 
+	 * @return
+	 */
 	function getMatchPlayerPositions()
 	{
 	$option = JRequest::getCmd('option');
@@ -221,6 +248,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchStaffPositions()
+	 * 
+	 * @return
+	 */
 	function getMatchStaffPositions()
 	{
 		$option = JRequest::getCmd('option');
@@ -241,6 +273,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchRefereePositions()
+	 * 
+	 * @return
+	 */
 	function getMatchRefereePositions()
 	{
 		$option = JRequest::getCmd('option');
@@ -261,6 +298,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchPlayers()
+	 * 
+	 * @return
+	 */
 	function getMatchPlayers()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -289,7 +331,7 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id '
               .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
 		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id '
@@ -316,6 +358,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchStaff()
+	 * 
+	 * @return
+	 */
 	function getMatchStaff()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -341,7 +388,7 @@ class sportsmanagementModelMatchReport extends JModel
 		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.team_staff_id '
               .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
-		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.team_id '
+		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
 		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
 		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ms.project_position_id '
@@ -369,6 +416,11 @@ class sportsmanagementModelMatchReport extends JModel
         return $result;
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchCommentary()
+	 * 
+	 * @return
+	 */
 	function getMatchCommentary()
     {
     	$option = JRequest::getCmd('option');
@@ -386,6 +438,11 @@ class sportsmanagementModelMatchReport extends JModel
     }
     
     
+    /**
+     * sportsmanagementModelMatchReport::getMatchReferees()
+     * 
+     * @return
+     */
     function getMatchReferees()
 	{
 		$option = JRequest::getCmd('option');
@@ -413,6 +470,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getSubstitutes()
+	 * 
+	 * @return
+	 */
 	function getSubstitutes()
 	{
 		$option = JRequest::getCmd('option');
@@ -421,51 +483,65 @@ class sportsmanagementModelMatchReport extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-		$query=' SELECT	mp.in_out_time,
-						mp.teamplayer_id,
-						pt.team_id,
-						pt.id AS ptid,
-						tp.person_id,
-						tp.jerseynumber,
-						tp2.person_id AS out_person_id,
-						mp.in_for,
-						p2.id AS out_ptid,
-						p.firstname,
-						p.nickname,
-						p.lastname,
-						pos.name AS in_position,
-						pos2.name AS out_position,
-						p2.firstname AS out_firstname,
-						p2.nickname AS out_nickname,
-						p2.lastname AS out_lastname,
-						ppos.id AS pposid1,
-						ppos2.id AS pposid2,
-						CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,
-						CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON mp.teamplayer_id=tp.id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON tp.projectteam_id=pt.id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id
-						  AND p.published = 1
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp2 ON mp.in_for=tp2.id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id=p2.id
-						  AND p2.published = 1
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mp.project_position_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp2 ON mp.match_id=mp2.match_id and mp.in_for=mp2.teamplayer_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos2 ON ppos2.id=mp2.project_position_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id=pos2.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id
-					WHERE mp.match_id = '.(int)$this->matchid.' 
-					  AND mp.came_in > 0
-					GROUP BY mp.in_out_time, mp.teamplayer_id, pt.team_id
-					ORDER by (mp.in_out_time+0)';
-		$this->_db->setQuery($query);
+        // Select some fields
+        $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');
+        $query->select('pt.team_id,pt.id AS ptid');
+        $query->select('tp1.person_id,tp1.jerseynumber');
+        $query->select('tp2.person_id AS out_person_id');
+        $query->select('p2.id AS out_ptid,p2.firstname AS out_firstname,p2.nickname AS out_nickname,p2.lastname AS out_lastname');
+        $query->select('p.firstname,p.nickname,p.lastname');
+        $query->select('pos.name AS in_position');
+        $query->select('ppos.id AS pposid1');
+        $query->select('pos2.name AS out_position');
+        $query->select('ppos2.id AS pposid2');
+        $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
+        $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+        
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp1.person_id = p.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp2 ON tp2.id = mp.in_for');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id = p2.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp2 ON mp.match_id = mp2.match_id AND mp.in_for = mp2.teamplayer_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos2 ON ppos2.id = mp2.project_position_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id = pos2.id');
+   
+        // Where
+        $query->where('mp.match_id = '.(int)$this->matchid);
+        $query->where('mp.came_in > 0');
+        $query->where('p.published = 1');
+        $query->where('p2.published = 1');
+        // group
+        $query->group('mp.in_out_time, mp.teamplayer_id, pt.team_id');
+        // order
+        $query->order('(mp.in_out_time+0)');                
+                    
+		$db->setQuery($query);
 		//echo($this->_db->getQuery());
-		$result=$this->_db->loadObjectList();
+		$result = $db->loadObjectList();
+        
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    }
+        
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getEventTypes()
+	 * 
+	 * @return
+	 */
 	function getEventTypes()
 	{
 		$option = JRequest::getCmd('option');
@@ -487,6 +563,12 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getPlayground()
+	 * 
+	 * @param mixed $pgid
+	 * @return
+	 */
 	function getPlayground($pgid)
 	{
 		//$this->playground =& $this->getTable('Playground','Table');
@@ -497,9 +579,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->playground;
 	}
 
+	
 	/**
-	 * get match statistics as an array (projectteam_id => teamplayer_id => statistic_id)
-	 * @return array
+	 * sportsmanagementModelMatchReport::getMatchStats()
+	 * 
+	 * @return
 	 */
 	function getMatchStats()
 	{
@@ -526,9 +610,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $stats;
 	}
 
+	
 	/**
-	 * get match statistics as array(teamplayer_id => array(statistic_id => value))
-	 * @return array
+	 * sportsmanagementModelMatchReport::getPlayersStats()
+	 * 
+	 * @return
 	 */
 	function getPlayersStats()
 	{
@@ -561,9 +647,11 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_playersbasicstats;
 	}
 
+	
 	/**
-	 * get match statistics as array(teamplayer_id => array(event_type_id => value))
-	 * @return array
+	 * sportsmanagementModelMatchReport::getPlayersEvents()
+	 * 
+	 * @return
 	 */
 	function getPlayersEvents()
 	{
@@ -576,13 +664,17 @@ class sportsmanagementModelMatchReport extends JModel
 		if (!($this->_playersevents))
 		{
 			$match = sportsmanagementModelMatch::getMatchData($this->matchid);
+            // Select some fields
+        $query->select('*');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event');
+        // Where
+        $query->where('match_id = '. $db->Quote($match->id) );
+			
+            $db->setQuery($query);
+			$res = $db->loadObjectList();
 
-			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '
-			      .' WHERE match_id='. $this->_db->Quote($match->id);
-			$this->_db->setQuery($query);
-			$res=$this->_db->loadObjectList();
-
-			$events=array();
+			$events = array();
 			if (count($res))
 			{
 				foreach ($res as $event)
@@ -590,15 +682,17 @@ class sportsmanagementModelMatchReport extends JModel
 					@$events[$event->teamplayer_id][$event->event_type_id] += $event->event_sum;
 				}
 			}
-			$this->_playersevents=$events;
+			$this->_playersevents = $events;
 		}
 
 		return $this->_playersevents;
 	}
 
+	
 	/**
-	 * get match statistics as an array (team_staff_id => statistic_id)
-	 * @return array
+	 * sportsmanagementModelMatchReport::getMatchStaffStats()
+	 * 
+	 * @return
 	 */
 	function getMatchStaffStats()
 	{
@@ -630,6 +724,12 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_staffsbasicstats;
 	}
 
+	/**
+	 * sportsmanagementModelMatchReport::getMatchText()
+	 * 
+	 * @param mixed $match_id
+	 * @return
+	 */
 	function getMatchText($match_id)
 	{
 		$option = JRequest::getCmd('option');
@@ -653,6 +753,12 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_db->loadObject();
 	}
 	
+	/**
+	 * sportsmanagementModelMatchReport::getSchemaHome()
+	 * 
+	 * @param mixed $schemahome
+	 * @return
+	 */
 	function getSchemaHome($schemahome)
   {
   $option = JRequest::getCmd('option');
@@ -694,6 +800,12 @@ class sportsmanagementModelMatchReport extends JModel
   
   }
   
+  /**
+   * sportsmanagementModelMatchReport::getSchemaAway()
+   * 
+   * @param mixed $schemaaway
+   * @return
+   */
   function getSchemaAway($schemaaway)
   {
   $option = JRequest::getCmd('option');

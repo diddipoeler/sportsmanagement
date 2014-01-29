@@ -1,9 +1,63 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+/**
+ * sportsmanagementViewTeamInfo
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewTeamInfo extends JView
 {
+	/**
+	 * sportsmanagementViewTeamInfo::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display( $tpl = null )
 	{
 		// Get a reference of the page instance in joomla
@@ -14,7 +68,7 @@ class sportsmanagementViewTeamInfo extends JView
 		$model		= $this->getModel();
 		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName() );
 		$project	= sportsmanagementModelProject::getProject();
-        $this->assign( 'checkextrafields', $model->checkUserExtraFields() );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
 //        $mainframe->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		$this->assignRef( 'project', $project );
 		$isEditor = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
@@ -38,7 +92,7 @@ class sportsmanagementViewTeamInfo extends JView
 			$this->assignRef( 'trainingData', $trainingData );
             if ( $this->checkextrafields )
             {
-            $this->assignRef( 'extrafields', $model->getUserExtraFields($model->teamid) );
+            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($model->teamid) );
             }
 
 			$daysOfWeek=array(
@@ -68,44 +122,7 @@ class sportsmanagementViewTeamInfo extends JView
 
 		}
 
-/*		
-    $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/highslide.js');
-		$document->addStyleSheet( JURI::base(true) . '/components/com_sportsmanagement/assets/css/highslide/highslide.css' );
-    
-    $js = "hs.graphicsDir = '".JURI::base(true) . "/components/com_sportsmanagement/assets/css/highslide/graphics/"."';\n";
-    $js .= "hs.outlineType = 'rounded-white';\n";
-    $js .= "
-    hs.lang = {
-   cssDirection:     'ltr',
-   loadingText :     'Lade...',
-   loadingTitle :    'Klick zum Abbrechen',
-   focusTitle :      'Klick um nach vorn zu bringen',
-   fullExpandTitle : 'Zur Originalgr&ouml;&szlig;e erweitern',
-   fullExpandText :  'Vollbild',
-   creditsText :     '',
-   creditsTitle :    '',
-   previousText :    'Voriges',
-   previousTitle :   'Voriges (Pfeiltaste links)',
-   nextText :        'N&auml;chstes',
-   nextTitle :       'N&auml;chstes (Pfeiltaste rechts)',
-   moveTitle :       'Verschieben',
-   moveText :        'Verschieben',
-   closeText :       'Schlie&szlig;en',
-   closeTitle :      'Schlie&szlig;en (Esc)',
-   resizeTitle :     'Gr&ouml;&szlig;e wiederherstellen',
-   playText :        'Abspielen',
-   playTitle :       'Slideshow abspielen (Leertaste)',
-   pauseText :       'Pause',
-   pauseTitle :      'Pausiere Slideshow (Leertaste)',
-   number :          'Bild %1/%2',
-   restoreTitle :    'Klick um das Bild zu schlie&szlig;en, klick und ziehe um zu verschieben. Benutze Pfeiltasten für vor und zurück.'
-};
 
-    
-    \n";
-    
-    $document->addScriptDeclaration( $js );
-*/
     	
 		$extended = sportsmanagementHelper::getExtended($team->teamextended, 'team');
 		$this->assignRef( 'extended', $extended );
