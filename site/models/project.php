@@ -116,9 +116,12 @@ class sportsmanagementModelProject extends JModel
 	function getProject()
 	{
 		$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
-       // Get a db connection.
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
        $this->projectid = JRequest::getInt('p',0);
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'   ),'');
@@ -191,7 +194,15 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function increaseRound()
 	{
-		if (!$this->_current_round)
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
+        
+        if (!$this->_current_round)
 		{
 			if (!$project = self::getProject()) {
 				$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
@@ -477,8 +488,13 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getRoundOptions($ordering='ASC')
 	{
-		// Get a db connection.
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
         $query="SELECT
 					id as value,
 				    CASE LENGTH(name)
@@ -550,10 +566,13 @@ class sportsmanagementModelProject extends JModel
 
 	function & _getTeams()
 	{
-	   // Get a db connection.
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $query = $db->getQuery(true);
+        
+
         
 		if (empty($this->_teams))
 		{
@@ -718,6 +737,13 @@ class sportsmanagementModelProject extends JModel
 
 	function getEventTypes($evid=0)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
 		$query="SELECT	et.id AS etid,
 							me.event_type_id AS id,
 							et.*
@@ -742,6 +768,13 @@ class sportsmanagementModelProject extends JModel
 
 	function getprojectteamID($teamid)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
 		$query="SELECT id
 				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 				  WHERE team_id=".(int)$teamid."
@@ -762,6 +795,13 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getPlaygrounds()
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
 		$query='	SELECT	id AS value,
 							name AS text
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground
@@ -784,6 +824,13 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getProjectGameRegularTime($project_id)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
 		$gameprojecttime = 0;
         $query = 'SELECT game_regular_time 
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project 
@@ -802,6 +849,12 @@ class sportsmanagementModelProject extends JModel
 
 	function getReferees()
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
 		$project=$this->getProject();
 		if ($project->teams_as_referees)
 		{
@@ -969,6 +1022,13 @@ $query->where('p.id='.$db->Quote($this->projectid));
    	*/
    	function getProjectCountry()
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
 		 $query = 'SELECT l.country
 					from #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l
 					inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro
@@ -986,8 +1046,13 @@ $query->where('p.id='.$db->Quote($this->projectid));
 	 */
 	function getProjectEvents($position_id=0)
 	{
-	   // Get a db connection.
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
         
 		$query=' SELECT	et.id,
 						et.name,
@@ -1014,8 +1079,13 @@ $query->where('p.id='.$db->Quote($this->projectid));
 	 */
 	function getProjectStats($statid=0,$positionid=0)
 	{
-	   // Get a db connection.
+	  $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
         
 		if (empty($this->_stats))
 		{
@@ -1081,8 +1151,13 @@ $query->where('p.id='.$db->Quote($this->projectid));
 
 	function getProjectPositions()
 	{
-	   // Get a db connection.
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+
         
 		if (empty($this->_positions))
 		{
