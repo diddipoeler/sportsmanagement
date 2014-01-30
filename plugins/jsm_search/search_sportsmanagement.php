@@ -76,7 +76,8 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 	{
 		parent::__construct($subject, $params);
 		// load language file for frontend
-		JPlugin::loadLanguage( 'plg_search_sportsmanagement', JPATH_ADMINISTRATOR );
+		//JPlugin::loadLanguage( 'plg_search_sportsmanagement', JPATH_ADMINISTRATOR );
+        $this->loadLanguage();
 	}
 
 	/**
