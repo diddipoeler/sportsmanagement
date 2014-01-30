@@ -271,14 +271,21 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
     function getMaxRound($project_id)
 	{
-		$result=0;
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('COUNT(roundcode)');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('project_id = '.(int) $project_id);
+        
+		$result = 0;
 		if ($project_id > 0)
 		{
-			$query='SELECT COUNT(roundcode) 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
-					WHERE project_id='.(int) $project_id;
-			$this->_db->setQuery($query);
-			$result=$this->_db->loadResult();
+			$db->setQuery($query);
+			$result = $db->loadResult();
 		}
 		return $result;
 	}
@@ -289,10 +296,15 @@ class sportsmanagementModelround extends JModelAdmin
    {
     // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('roundcode');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('id = '.$round_id);
         
-    		$query='SELECT roundcode
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-				  WHERE id='.$round_id;
+
 		$db->setQuery($query);
 		return $db->loadResult();
     
@@ -307,10 +319,15 @@ class sportsmanagementModelround extends JModelAdmin
 	{
 	   // Get a db connection.
         $db = JFactory::getDbo();
-		$query='SELECT id
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
-				WHERE roundcode='.$roundcode.'
-				  AND project_id='.(int) $project_id;
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('id');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('roundcode = '.$roundcode);
+        $query->where('project_id = '.(int) $project_id);
+        
 		$db->setQuery($query);
 		$result = $db->loadResult();
 		return $result;
@@ -324,11 +341,18 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	function getRound($round_id)
 	{
-		$query='SELECT *
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-				  WHERE id='.$round_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('*');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('id = '.$round_id);
+
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
     
     

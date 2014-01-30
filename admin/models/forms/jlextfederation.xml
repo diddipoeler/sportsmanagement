@@ -40,14 +40,30 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		
   <field
 			name="parent_id"
-			type="associationslist"
+			type="federationslist"
 			class="inputbox"
 			size="30"
 			multiple="false"
-			targettable="associations"
+			targettable="federations"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
+
+<field
+			name="sports_type_id"
+			type="sportstypelist"
 			
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+    			
 	<field
 			name="website"
 			type="text"
@@ -55,14 +71,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
    		label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>	
       
-      <field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>	
+      
   
   	
 </fieldset>

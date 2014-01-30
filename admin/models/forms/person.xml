@@ -78,6 +78,23 @@
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
 		</field>	
 
+    <field
+			name="sports_type_id"
+			type="sportstypelist"
+			
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+		
+<!--
 <field
 			name="sports_type_id"
 			type="sportstypelist"
@@ -92,6 +109,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
+-->
               	
 		<field
 			name="published"
@@ -143,6 +161,20 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
 			format="%Y-%m-%d"/>
+
+      <!--
+<field	name="agegroup_id" 
+type="dependsql"
+size="10"
+depends="sports_type_id" 
+      task="agegroupsbysportstypesoptions"
+      
+					label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+					description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC" 
+					required="">
+			</field>
+-->
+			
 			
 		<field
 			name="agegroup_id"
@@ -158,7 +190,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-    	
+
 		<field
 			name="deathday"
 			type="calendar"

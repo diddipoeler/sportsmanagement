@@ -45,7 +45,7 @@ jimport('joomla.application.component.modeladmin');
  
 
 /**
- * sportsmanagementModeljlextassociation
+ * sportsmanagementModeljlextfederation
  * 
  * @package   
  * @author 
@@ -53,7 +53,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextassociation extends JModelAdmin
+class sportsmanagementModeljlextfederation extends JModelAdmin
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -79,7 +79,7 @@ class sportsmanagementModeljlextassociation extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'jlextassociation', $prefix = 'sportsmanagementTable', $config = array()) 
+	public function getTable($type = 'jlextfederation', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -100,7 +100,7 @@ class sportsmanagementModeljlextassociation extends JModelAdmin
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.jlextassociation', 'jlextassociation', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_sportsmanagement.jlextfederation', 'jlextfederation', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
@@ -136,7 +136,7 @@ class sportsmanagementModeljlextassociation extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.jlextassociation.data', array());
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.jlextfederation.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();

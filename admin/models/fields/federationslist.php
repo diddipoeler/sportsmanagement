@@ -44,8 +44,9 @@ jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
 
+
 /**
- * JFormFieldAssociationsList
+ * JFormFieldFederationsList
  * 
  * @package   
  * @author 
@@ -53,13 +54,13 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldAssociationsList extends JFormFieldList
+class JFormFieldFederationsList extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'AssociationsList';
+	public $type = 'FederationsList';
 
 	/**
 	 * Method to get the field options.
@@ -81,37 +82,37 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$select_id = JRequest::getVar('id');
 //echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
- 			$select_id = $select_id[0];
+ 			$select_id = $select_id;
  		}
 		
 		
 		if ($select_id)
 		{		
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('country');		
-		$query->from('#__sportsmanagement_'.$vartable.' AS t');
-		$query->where('t.id = '.$select_id);
-		$db->setQuery($query);
-		$country = $db->loadResult();
+//		$db = JFactory::getDbo();
+//		$query = $db->getQuery(true);
+//		$query->select('country');		
+//		$query->from('#__sportsmanagement_'.$vartable.' AS t');
+//		$query->where('t.id = '.$select_id);
+//		$db->setQuery($query);
+//		$country = $db->loadResult();
 		//echo 'country<br /><pre>~' . print_r($country,true) . '~</pre><br />';
 				
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id AS value, t.name AS text');
-			$query->from('#__sportsmanagement_associations AS t');
-			$query->where("t.country = '".$country."'");
+			$query->from('#__sportsmanagement_federations AS t');
+			//$query->where("t.country = '".$country."'");
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
 			//$options = $db->loadObjectList();
 			
 			$sections = $db->loadObjectList ();
-  $categoryparent = empty($sections) ? 0 : $sections[0]->id;
+  $categoryparent = empty($sections) ? 0 : $sections->id;
   //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
   //$options = $this->JJ_categoryArray();
-$list = $this->JJ_categoryArray(0, $country);
+$list = $this->JJ_categoryArray(0);
 
 $preoptions = array();
 $name = 'parent_id';
@@ -132,11 +133,11 @@ foreach ( $list as $item )
 		return $options;
 	}
 	
-function JJ_categoryArray($admin=0,$country) 
+function JJ_categoryArray($admin=0) 
   {
 $db = JFactory::getDBO(); 
     // get a list of the menu items
-	$query = "SELECT * FROM #__sportsmanagement_associations where country = '".$country."'";
+	$query = "SELECT * FROM #__sportsmanagement_federations ";
 
     $query .= " ORDER BY ordering, name";
     $db->setQuery($query);

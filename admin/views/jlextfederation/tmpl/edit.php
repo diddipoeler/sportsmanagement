@@ -98,7 +98,7 @@ $fieldsets = $this->form->getFieldsets();
  <div class="clr"></div>	
  
 	<div>
-		<input type="hidden" name="task" value="jlextassociation.edit" />
+		<input type="hidden" name="task" value="jlextfederation.edit" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

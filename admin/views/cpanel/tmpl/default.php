@@ -45,16 +45,23 @@ JHtml::_('behavior.tooltip');
               <?php echo $this->addIcon('ligen.png','index.php?option=com_sportsmanagement&view=leagues', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>            
             </div>          
           </div>          
+          
+          <div class="icon-wrapper">            
+            <div id="icon">              
+              <?php echo $this->addIcon('federation.png','index.php?option=com_sportsmanagement&view=jlextfederations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'));?>            
+            </div>          
+          </div>
+          <div class="icon-wrapper">            
+            <div id="icon">              
+              <?php echo $this->addIcon('laender.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>            
+            </div>          
+          </div>
           <div class="icon-wrapper">            
             <div id="icon">              
               <?php echo $this->addIcon('landesverbaende.png','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>            
             </div>          
           </div>          
-          <div class="icon-wrapper">            
-            <div id="icon">              
-              <?php echo $this->addIcon('laender.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>            
-            </div>          
-          </div>          
+                    
           <div class="icon-wrapper">            
             <div id="icon">              
               <?php echo $this->addIcon('positionen.png','index.php?option=com_sportsmanagement&view=positions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'));?>            

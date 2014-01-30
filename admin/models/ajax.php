@@ -94,10 +94,39 @@ class sportsmanagementModelAjax extends JModel
         $query->order('p.name');
 
                 $db->setQuery( $query );
-                
-                
-                                                                        
-                                                                        
+                                                           
+                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+        }
+        
+         /**
+         * sportsmanagementModelAjax::getAgeGroupsBySportsTypesOptions()
+         * 
+         * @param mixed $sports_type_id
+         * @param bool $required
+         * @return
+         */
+        function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+       
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END AS value,a.name AS text');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS a');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = a.sportstype_id ');
+        // Where
+        $query->where('a.sports_type_id = ' . $db->Quote($sports_type_id) );
+        // order
+        $query->order('a.name');
+
+                $db->setQuery( $query );
+                                                           
                 return $this->addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
