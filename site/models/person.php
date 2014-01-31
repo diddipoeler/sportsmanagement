@@ -107,6 +107,12 @@ class sportsmanagementModelPerson extends JModel
         //$mainframe->enqueueMessage(JText::_('getPerson query<br><pre>'.print_r($query,true).'</pre>'),'');
         
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+                {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+                }
+                
 		$this->person = $db->loadObject();
 		//}
 		return $this->person;
@@ -256,6 +262,12 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function getAllEvents()
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$history = sportsmanagementModelPlayer::getPlayerHistory();
 		$positionhistory = array();
 		foreach($history as $h)
@@ -263,18 +275,34 @@ class sportsmanagementModelPerson extends JModel
 			if (!in_array($h->position_id, $positionhistory))
 				$positionhistory[] = $h->position_id;
 		}
-		if (!count($positionhistory)) {
+		if (!count($positionhistory)) 
+        {
 			return array();
 		}
-		$query = ' SELECT et.* '
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id '
-				. ' WHERE published = 1 '
-				. '   AND pet.position_id IN ('. implode(',', $positionhistory) .')'
-				. ' ORDER BY et.ordering '
-				;
-				$this->_db->setQuery( $query );
-				$info = $this->_db->loadObjectList();
+        
+        $query->select('et.*');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et'); 
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
+       $query->where('published = 1');
+       $query->where('pet.position_id IN ('. implode(',', $positionhistory) .')');
+       $query->order('et.ordering');
+       
+//		$query = ' SELECT et.* '
+//				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et '
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id '
+//				. ' WHERE published = 1 '
+//				. '   AND pet.position_id IN ('. implode(',', $positionhistory) .')'
+//				. ' ORDER BY et.ordering '
+//				;
+                
+				$db->setQuery( $query );
+                
+                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+                {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+                }
+                
+				$info = $db->loadObjectList();
 		return $info;
 	}
 
@@ -327,11 +355,11 @@ class sportsmanagementModelPerson extends JModel
 				$db->setQuery($query);
 				$result = $db->loadResult();
                 
-                if ( !$result )
+                if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -343,14 +371,29 @@ class sportsmanagementModelPerson extends JModel
 
 	function getPlayerChangedRecipients()
 	{
-		$query = "SELECT email
-				FROM #__users
-				WHERE usertype = 'Super Administrator'
-				OR usertype = 'Administrator'";
+	    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
+       $query->select('email');
+       $query->from('#__users'); 
+       $query->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
+       
+//		$query = "SELECT email
+//				FROM #__users
+//				WHERE usertype = 'Super Administrator'
+//				OR usertype = 'Administrator'"; COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO
 
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        }
 
-		return $this->_db->loadResultArray();
+		return $db->loadResultArray();
 	}
 
 	function sendMailTo($listOfRecipients, $subject, $message)
@@ -427,25 +470,62 @@ class sportsmanagementModelPerson extends JModel
 
 	function _getProjectTeamIds4UserId($userId)
 	{
-		// team_player
-		$query='	SELECT tp.projectteam_id
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id=pr.id
-				WHERE pr.user_id='.$userId.'
-						AND pr.published = 1
-						AND tp.published = 1 ';
-		$this->_db->setQuery($query);
-		$projectTeamIds=array();
-		$projectTeamIds=$this->_db->loadResultArray();
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
+       // team_player
+       $query->select('tp.projectteam_id');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
+       $query->where('pr.user_id ='.$userId);
+       $query->where('pr.published = 1');
+       $query->where('tp.persontype = 1');
+       
+		
+//		$query='	SELECT tp.projectteam_id
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr
+//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id=pr.id
+//				WHERE pr.user_id='.$userId.'
+//						AND pr.published = 1
+//						AND tp.published = 1 ';
+                        
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        }
+        
+		$projectTeamIds = array();
+		$projectTeamIds = $db->loadResultArray();
+        
+        
 		// team_staff
-		$query='	SELECT ts.projectteam_id
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person pr
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pr.id
-				WHERE pr.user_id='.$userId.'
-						AND pr.published = 1
-						AND ts.published = 1';
-		$this->_db->setQuery($query);
-		$projectTeamIds=array_merge($projectTeamIds,$this->_db->loadResultArray());
+        $query->select('tp.projectteam_id');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
+       $query->where('pr.user_id ='.$userId);
+       $query->where('pr.published = 1');
+       $query->where('tp.persontype = 2');
+       
+//		$query='	SELECT ts.projectteam_id
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person pr
+//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pr.id
+//				WHERE pr.user_id='.$userId.'
+//						AND pr.published = 1
+//						AND ts.published = 1';
+                        
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        }
+        
+		$projectTeamIds = array_merge($projectTeamIds,$db->loadResultArray());
 		return $projectTeamIds;
 	}
 

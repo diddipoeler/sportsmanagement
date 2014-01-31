@@ -124,11 +124,11 @@ class sportsmanagementModelPlayer extends JModel
         $db->setQuery($query);
 		$this->_teamplayers = $db->loadObjectList('projectteam_id');
         
-        if ( !$this->_teamplayers )
+        if ( !$this->_teamplayers && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -168,11 +168,11 @@ class sportsmanagementModelPlayer extends JModel
        
  		$db->setQuery($query);
  		$this->_inproject = $db->loadObjectList();
-        if ( !$this->_inproject )
+        if ( !$this->_inproject && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -211,11 +211,12 @@ class sportsmanagementModelPlayer extends JModel
        
        $db->setQuery($query);
  	$this->_inproject = $db->loadObject();
-    if ( !$this->_inproject )
+    
+    if ( !$this->_inproject && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -280,11 +281,11 @@ class sportsmanagementModelPlayer extends JModel
 			}
 		}
         
-        if ( !$result)
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -338,12 +339,13 @@ class sportsmanagementModelPlayer extends JModel
      
      $db->setQuery($query);
  	$this->_playerhistory = $db->loadObjectList();
-    if ( !$this->_playerhistory )
+    
+    if ( !$this->_playerhistory && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         } 
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
                 $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             } 
@@ -400,9 +402,14 @@ class sportsmanagementModelPlayer extends JModel
      
      $db->setQuery($query);
  	$this->_playerhistorystaff = $db->loadObjectList();
-    if ( !$this->_playerhistorystaff )
+    
+    if ( !$this->_playerhistorystaff && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        }
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }  
 
 
@@ -436,6 +443,8 @@ class sportsmanagementModelPlayer extends JModel
 //					AND catid='.$catid;
                     
 		$db->setQuery($query);
+        
+        
 		$contact_id = $db->loadResult();
 		return $contact_id;
 	}
@@ -1074,11 +1083,11 @@ class sportsmanagementModelPlayer extends JModel
 			$games =  $db->loadObjectList();
 		}
         
-        if ( !$games )
+        if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($subquery1->dump(),true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');

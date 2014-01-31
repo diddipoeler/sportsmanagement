@@ -235,11 +235,12 @@ class sportsmanagementModelRoster extends JModel
             
             $db->setQuery($query);
             $this->_players = $db->loadObjectList();
-            if ( !$this->_players )
+            
+            if ( !$this->_players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');    
             }
-            else
+            elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
                 $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
@@ -501,11 +502,16 @@ class sportsmanagementModelRoster extends JModel
        
         $db->setQuery($query);
 		$result = $db->loadObjectList('person_id');
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        }
+        
 		return $result;
 	}
 
@@ -541,9 +547,12 @@ class sportsmanagementModelRoster extends JModel
        $subquery1 = $db->getQuery(true);
        $subquery2 = $db->getQuery(true);
        
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayer_id<br><pre>'.print_r($teamplayer_id,true).'</pre>'),'');
+       }
         
         if ( empty($projectteam_id) )
         {
@@ -600,11 +609,11 @@ class sportsmanagementModelRoster extends JModel
 			$db->setQuery($query);
 			$this->_teaminout = $db->loadObjectList('person_id');
             
-            if ( !$this->_teaminout )
+            if ( !$this->_teaminout && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
@@ -659,11 +668,11 @@ class sportsmanagementModelRoster extends JModel
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();
             
-            if ( !$rows )
+            if ( !$rows && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         } 
-        else
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
