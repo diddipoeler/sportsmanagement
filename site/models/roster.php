@@ -1,10 +1,57 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelRoster
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelRoster extends JModel
 {
 	var $projectid = 0;
@@ -25,6 +72,11 @@ class sportsmanagementModelRoster extends JModel
 	 */
 	var $_players = null;
 
+	/**
+	 * sportsmanagementModelRoster::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -35,19 +87,31 @@ class sportsmanagementModelRoster extends JModel
 		self::getProjectTeam();
 	}
 
+	
 	/**
-	 * returns project team info
-	 * @return object
+	 * sportsmanagementModelRoster::getProjectTeam()
+	 * 
+	 * @return
 	 */
 	function getProjectTeam()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		if (is_null($this->projectteam))
 		{
 			if ($this->projectteamid)
 			{
-				$query='	SELECT	pt.*
-							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
-							WHERE pt.id='.$this->_db->Quote($this->projectteamid);
+			 $query = $db->getQuery(true);
+             $query->clear();
+				$query->select('pt.*');
+	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt'); 
+                $query->where('pt.id = '.$db->Quote($this->projectteamid));
+    
+                
 			}
 			else
 			{
@@ -61,24 +125,39 @@ class sportsmanagementModelRoster extends JModel
 					$this->setError(JText::_('Missing project id'));
 					return false;
 				}
-				$query='	SELECT	pt.*
-							FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
-							WHERE pt.team_id='.$this->_db->Quote($this->teamid).' 
-							  AND pt.project_id='.$this->_db->Quote($this->projectid);
+                
+                $query = $db->getQuery(true);
+                $query->clear();
+                $query->select('pt.*');
+	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt'); 
+                $query->where('pt.team_id = '.$db->Quote($this->teamid));
+                $query->where('pt.project_id = '.$db->Quote($this->projectid));
+               
 			}
-			$this->_db->setQuery($query);
-			$this->projectteam=$this->_db->loadObject();
+			$db->setQuery($query);
+			$this->projectteam = $db->loadObject();
 			if ($this->projectteam)
 			{
-				$this->projectid=$this->projectteam->project_id; // if only ttid was set
-				$this->teamid=$this->projectteam->team_id; // if only ttid was set
+				$this->projectid = $this->projectteam->project_id; // if only ttid was set
+				$this->teamid = $this->projectteam->team_id; // if only ttid was set
 			}
 		}
 		return $this->projectteam;
 	}
 
+	/**
+	 * sportsmanagementModelRoster::getTeam()
+	 * 
+	 * @return
+	 */
 	function getTeam()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		if (is_null($this->team))
 		{
 			if (!$this->teamid)
@@ -91,19 +170,25 @@ class sportsmanagementModelRoster extends JModel
 				$this->setError(JText::_('Missing project id'));
 				return false;
 			}
-			$query='	SELECT	t.*,
-								CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS slug
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-						WHERE t.id='.$this->_db->Quote($this->teamid);
-			$this->_db->setQuery($query);
-			$this->team = $this->_db->loadObject();
+            
+            $query->select('t.*');
+            $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS slug');
+	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t'); 
+                $query->where('t.id = '.$db->Quote($this->teamid));
+                
+                        
+			$db->setQuery($query);
+			$this->team = $db->loadObject();
 		}
 		return $this->team;
 	}
 
+	
 	/**
-	 * return team players by positions
-	 * @return array
+	 * sportsmanagementModelRoster::getTeamPlayers()
+	 * 
+	 * @param integer $persontype
+	 * @return
 	 */
 	function getTeamPlayers($persontype = 1)
 	{
@@ -123,8 +208,9 @@ class sportsmanagementModelRoster extends JModel
         $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug');
         $query->select('pos.name AS position');
         $query->select('ppos.position_id,ppos.id as pposid');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');    
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');    
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id = pr.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
         switch ( $persontype )
@@ -138,7 +224,7 @@ class sportsmanagementModelRoster extends JModel
             break;
         }
         
-        $query->where('pt.id='.$this->_db->Quote($projectteam->id));
+        $query->where('pt.id='.$db->Quote($projectteam->id));
         $query->where('pr.published = 1');
         $query->where('tp.published = 1');
         $query->where('tp.persontype = '.$persontype);
@@ -151,8 +237,11 @@ class sportsmanagementModelRoster extends JModel
             $this->_players = $db->loadObjectList();
             if ( !$this->_players )
             {
-              
-            $mainframe->enqueueMessage(JText::_('getTeamPlayers _players<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');    
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');    
+            }
+            else
+            {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
 		//}
@@ -181,44 +270,13 @@ class sportsmanagementModelRoster extends JModel
 		
 	}
 
-/*
-	function getStaffList()
-	{
-		$projectteam = self::getprojectteam();
-		$query='	SELECT	pr.firstname, 
-							pr.nickname,
-							pr.lastname,
-							pr.country,
-							pr.birthday,
-							pr.deathday,
-							ts.id AS ptid,
-							ppos.position_id,
-							ppos.id AS pposid,
-							pr.id AS pid,
-							pr.picture AS ppic,
-							pos.name AS position,
-							ts.picture,
-							ts.notes AS description,
-							ts.injury AS injury,
-							ts.suspension AS suspension,
-							ts.away AS away,
-							pos.parent_id,
-							posparent.name AS parentname,				
-							CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff ts
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON ts.person_id=pr.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS posparent ON pos.parent_id=posparent.id
-					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam->id).'
-					  AND pr.published = 1
-					  AND ts.published = 1
-					ORDER BY pos.parent_id, pos.ordering, ts.ordering';
-		$this->_db->setQuery($query);
-		$stafflist = $this->_db->loadObjectList();
-		return $stafflist;
-	}
-*/
+
+	/**
+	 * sportsmanagementModelRoster::getPositionEventTypes()
+	 * 
+	 * @param integer $positionId
+	 * @return
+	 */
 	function getPositionEventTypes($positionId=0)
 	{
 		$mainframe = JFactory::getApplication();
@@ -264,13 +322,18 @@ class sportsmanagementModelRoster extends JModel
 		return array();
 	}
 
+	/**
+	 * sportsmanagementModelRoster::getPlayerEventStats()
+	 * 
+	 * @return
+	 */
 	function getPlayerEventStats()
 	{
 		$playerstats=array();
 		$rows = self::getTeamPlayers();
 		if (!empty($rows))
 		{
-			$positioneventtypes = $this->getPositionEventTypes();
+			$positioneventtypes = self::getPositionEventTypes();
 			//init
 			foreach ($rows as $position => $players)
 			{
@@ -296,6 +359,15 @@ class sportsmanagementModelRoster extends JModel
 		return $playerstats;
 	}
     
+    /**
+     * sportsmanagementModelRoster::getTimePlayed()
+     * 
+     * @param mixed $player_id
+     * @param mixed $game_regular_time
+     * @param mixed $match_id
+     * @param mixed $cards
+     * @return
+     */
     function getTimePlayed($player_id,$game_regular_time,$match_id=NULL,$cards=NULL)
     {
         $mainframe = JFactory::getApplication();
@@ -329,18 +401,19 @@ class sportsmanagementModelRoster extends JModel
     }
     
     // einwechselung
-    $query2 = $db->getQuery(true);
-    $query2->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalin');
-	$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
-    $query2->where('teamplayer_id = '.$player_id);
-    $query2->where('came_in = 1');
-    $query2->where('in_for IS NOT NULL');
+    $query = $db->getQuery(true);    
+    $query->clear();
+    $query->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalin');
+	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
+    $query->where('teamplayer_id = '.$player_id);
+    $query->where('came_in = 1');
+    $query->where('in_for IS NOT NULL');
        
     if ( $match_id )
     {
-    $query2->where('match_id = '.$match_id);
+    $query->where('match_id = '.$match_id);
     } 
-    $db->setQuery($query2);
+    $db->setQuery($query);
     $cameinresult = $db->loadObject();
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameinresult -> '.'<pre>'.print_r($cameinresult,true).'</pre>' ),'');
@@ -350,17 +423,18 @@ class sportsmanagementModelRoster extends JModel
     }
     
     // auswechselung
-    $query3 = $db->getQuery(true);
-    $query3->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalout');
-	$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
-    $query3->where('in_for = '.$player_id);
-    $query3->where('came_in = 1');
+    $query = $db->getQuery(true);    
+    $query->clear();
+    $query->select('count(distinct match_id) as totalmatch, SUM(in_out_time) as totalout');
+	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'); 
+    $query->where('in_for = '.$player_id);
+    $query->where('came_in = 1');
  
     if ( $match_id )
     {
-    $query3->where('match_id = '.$match_id);
+    $query->where('match_id = '.$match_id);
     } 
-    $db->setQuery($query3);
+    $db->setQuery($query);
     $cameautresult = $db->loadObject();
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' cameautresult -> '.'<pre>'.print_r($cameautresult,true).'</pre>' ),'');
@@ -374,16 +448,20 @@ class sportsmanagementModelRoster extends JModel
     // jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
     if ( $cards )
     {
-    $query = 'SELECT *
-			FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event 
-			WHERE teamplayer_id = '.$player_id;
-    $query .= ' and event_type_id in ('.$cards.')';
+        $query = $db->getQuery(true);    
+    $query->clear();
+    $query->select('*');
+	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '); 
+    $query->where('teamplayer_id = '.$player_id);
+    $query->where('event_type_id in ('.$cards.')');
+
     if ( $match_id )
     {
-    $query .= ' and match_id = '.$match_id;     
+        $query->where('match_id = '.$match_id);
+    
     }
-    $this->_db->setQuery($query);
-    $cardsresult = $this->_db->loadObjectList(); 
+    $db->setQuery($query);
+    $cardsresult = $db->loadObjectList(); 
     foreach ( $cardsresult as $row )
     {
         $result -= ( $game_regular_time - $row->event_time );
@@ -396,6 +474,12 @@ class sportsmanagementModelRoster extends JModel
     return $result;    
     }
 
+	/**
+	 * sportsmanagementModelRoster::getTeamEventStat()
+	 * 
+	 * @param mixed $eventtype_id
+	 * @return
+	 */
 	function getTeamEventStat($eventtype_id)
 	{
 		$mainframe = JFactory::getApplication();
@@ -409,7 +493,8 @@ class sportsmanagementModelRoster extends JModel
         $query->select('tp.person_id');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me'); 
     $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id');
+    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');  
+    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
     $query->where('me.event_type_id = '.$db->Quote($eventtype_id));
     $query->where('pt.id = '.$db->Quote($projectteam->id));
     $query->group('tp.person_id');
@@ -418,11 +503,18 @@ class sportsmanagementModelRoster extends JModel
 		$result = $db->loadObjectList('person_id');
         if ( !$result )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _teaminout<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelRoster::getInOutStats()
+	 * 
+	 * @param mixed $player_id
+	 * @return
+	 */
 	function getInOutStats($player_id)
 	{
 		$teaminout = self::_getTeamInOutStats();
@@ -434,14 +526,34 @@ class sportsmanagementModelRoster extends JModel
 		}
 	}
 
-	function _getTeamInOutStats()
+	/**
+	 * sportsmanagementModelRoster::_getTeamInOutStats()
+	 * 
+	 * @return
+	 */
+	function _getTeamInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0)
 	{
 		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       $subquery1 = $db->getQuery(true);
+       $subquery2 = $db->getQuery(true);
+       
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayer_id<br><pre>'.print_r($teamplayer_id,true).'</pre>'),'');
+        
+        if ( empty($projectteam_id) )
+        {
         $projectteam = self::getprojectteam();
+        $projectteam_id = $db->Quote($projectteam->id);
+        }
+        
 		if (empty($this->_teaminout))
 		{
-			$projectteam_id = $this->_db->Quote($projectteam->id);
+			//$projectteam_id = $db->Quote($projectteam->id);
 
 			// Split the problem in two;
 			// 1. Get the number of matches played per teamplayer of the projectteam.
@@ -450,82 +562,131 @@ class sportsmanagementModelRoster extends JModel
 			//    This is derived from the match_player table only.
 
 			// Sub 1: get number of matches played by teamplayers of the projectteam
-
-
-			
-//			$common_query_part 	= ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id'
-//								. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id = md.teamplayer_id'
-//								. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id=tp.projectteam_id'
-//								. ' WHERE pt.id='.$projectteam_id;
             
-            // neue version
-            $common_query_part 	= ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id'
-								. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id'
-								. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp.team_id'
-								. ' WHERE pt.id='.$projectteam_id;                    
-
-			// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
-			// All of them have a match_id and teamplayer_id.
-			$query_mp = ' SELECT DISTINCT m.id AS mid, tp.id AS tpid, pt.id as projectteam_id'
-					  . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS md'
-					  . $common_query_part
-					  . ' AND (md.came_in = 0 || md.came_in = 1)';
-                     
-
-$query	= ' SELECT pse.person_id, '
-					. '        COUNT(pse.mid) AS played,'
-					. '        0 AS started,'
-					. '        0 AS sub_in,'
-					. '        0 AS sub_out'
-					. ' FROM'
-					. ' ('
-					. '     SELECT DISTINCT m.id as mid, tp.id as tpid, tp.person_id'
-					. '     FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'
-					. '     INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id '
-					. '     INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
-					. '     LEFT  JOIN ('.$query_mp.') AS mp ON mp.mid = m.id'
-					. '     INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp'
-					. '             ON ( tp.id = mp.tpid )'
-					. '     WHERE mp.projectteam_id = '.$projectteam_id
-					. '       AND m.published = 1 '
-					. '       AND p.published = 1 '
-					. ' ) AS pse'
-					. ' GROUP BY pse.tpid';       
+            if ( $teamplayer_id )
+            {
+            
+            }
+            else
+            {    
+            $subquery1->select('m.id AS mid');
+            $subquery1->select('tp.id AS tpid');
+            $subquery1->select('pt.id as projectteam_id');
+            $subquery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS md');
+            $subquery1->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
+            $subquery1->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id');
+            $subquery1->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');  
+            $subquery1->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id'); 
+            $subquery1->where('pt.id = '.$projectteam_id);
+            $subquery1->where('(md.came_in = 0 || md.came_in = 1)');
+            
+            $subquery2->select('m.id as mid');
+            $subquery2->select('tp.id as tpid, tp.person_id');
+            $subquery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+            $subquery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
+            $subquery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id');
+            $subquery2->join('LEFT','('.$subquery1.') AS mp ON mp.mid = m.id');
+            $subquery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.tpid');
+            $subquery2->where('mp.projectteam_id = '.$projectteam_id);
+            $subquery2->where('m.published = 1');
+            $subquery2->where('p.published = 1');
+            
+            $query->select('pse.person_id,COUNT(pse.mid) AS played');
+            $query->select('0 AS started,0 AS sub_in,0 AS sub_out');
+            $query->from('('.$subquery2.') AS pse');
+            $query->group('pse.tpid');
+            }
                     
-			$this->_db->setQuery($query);
-			$this->_teaminout = $this->_db->loadObjectList('person_id');
+			$db->setQuery($query);
+			$this->_teaminout = $db->loadObjectList('person_id');
             
             if ( !$this->_teaminout )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _teaminout<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
-        } 
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+        
+        // Sub 2: get the in/out stats
+        $query = $db->getQuery(true); 
+        $query->clear();
+        
+        //$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'); 
+        
+        if ( $teamplayer_id )
+        {
+        $query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.match_id = m.id');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON ( tp1.id = mp.teamplayer_id OR tp1.id = mp.in_for)');
+        
+        $query->where('tp1.id='.$db->Quote((int)$teamplayer_id));
+        
+        $query->where('( pt1.project_id='.$db->Quote((int)$project_id).' OR pt2.project_id='.$db->Quote((int)$project_id).' )');
+        $query->where('( pt1.id = '.$db->Quote((int)$projectteam_id).' OR pt2.id = '.$db->Quote((int)$projectteam_id).' )');
+        $query->where('m.published = 1');
+        $query->where('p.published = 1');
+        }
+        else
+        {    
+        $query->select('tp1.id AS tp_id1,tp1.person_id AS person_id1');
+        $query->select('tp2.id AS tp_id2,tp2.person_id AS person_id2');
+        $query->select('m.id AS mid,mp.came_in, mp.out, mp.in_for');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.match_id = m.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp1.team_id');  
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp2 ON tp2.id = mp.in_for');
+        $query->where('pt.id = '.$db->Quote($projectteam->id));
+        $query->where('m.published = 1');
+        $query->where('p.published = 1');
+        }
+        
+        //$query->where('m.published = 1');
+        //$query->where('p.published = 1');
 
-			// Sub 2: get the in/out stats
-			$query	= ' SELECT tp1.id AS tp_id1, '
-					. ' tp1.person_id AS person_id1, '
-					. ' tp2.id AS tp_id2, '
-					. ' tp2.person_id AS person_id2,'
-					. ' m.id AS mid, '
-					. ' mp.came_in, mp.out, mp.in_for'
-					. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'
-					. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id '
-					. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
-					. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.match_id = m.id '
-					. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id'
-                    . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = tp1.team_id'
-					. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp2 ON tp2.id = mp.in_for'
-					. ' WHERE pt.id = '.$this->_db->Quote($projectteam->id)
-					. ' AND m.published = 1 '
-					. ' AND p.published = 1 ';
-			$this->_db->setQuery($query);
-			$rows = $this->_db->loadObjectList();
+			$db->setQuery($query);
+			$rows = $db->loadObjectList();
             
             if ( !$rows )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' rows<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         } 
+        else
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        }
         
-			foreach ($rows AS $row)
+			
+            if ( $teamplayer_id )
+            {
+              $inoutstat = new stdclass;
+		      $inoutstat->played = $played;
+		      $inoutstat->started = 0;
+		      $inoutstat->sub_in = 0;
+		      $inoutstat->sub_out = 0;
+		      foreach ($rows AS $row)
+		      {
+			     $inoutstat->started += ($row->came_in == 0);
+			     $inoutstat->sub_in  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
+			     $inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
+		      }
+              $this->_teaminout = $inoutstat;   
+            }
+            else
+            {
+            foreach ($rows AS $row)
 			{
 				$this->_teaminout[$row->person_id1]->started += ($row->came_in == 0);
 				$this->_teaminout[$row->person_id1]->sub_in  += ($row->came_in == 1);
@@ -536,25 +697,29 @@ $query	= ' SELECT pse.person_id, '
 				{
 					$this->_teaminout[$row->person_id2]->sub_out++;
 				}
-			}
+            }
+            }
 		}
 
 		return $this->_teaminout;
 	}
 
+	
 	/**
-	 * return the injury,suspension,away data from a player
-	 *
-	 * @param int $round_id
-	 * @param int $player_id
-	 *
-	 * @access public
-	 * @since  1.5.0a
-	 *
-	 * @return object
+	 * sportsmanagementModelRoster::getTeamPlayer()
+	 * 
+	 * @param mixed $round_id
+	 * @param mixed $player_id
+	 * @return
 	 */
 	function getTeamPlayer($round_id,$player_id)
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$query="	SELECT	tp.injury AS injury,
 							tp.suspension AS suspension,
 							tp.away AS away, pt.picture,
@@ -571,11 +736,18 @@ $query	= ' SELECT pse.person_id, '
 					  AND pr.published = '1'
 					  AND tp.published = '1'
 					  ";
+                      
+                      
 		$this->_db->setQuery($query);
-		$rows=$this->_db->loadObjectList();
+		$rows = $this->_db->loadObjectList();
 		return $rows;
 	}
 
+	/**
+	 * sportsmanagementModelRoster::getRosterStats()
+	 * 
+	 * @return
+	 */
 	function getRosterStats()
 	{
 		$stats = sportsmanagementModelProject::getProjectStats();
@@ -591,12 +763,28 @@ $query	= ' SELECT pse.person_id, '
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelRoster::getLastSeasonDate()
+     * 
+     * @return
+     */
     function getLastSeasonDate()
     {
-        $query='SELECT max(round_date_last) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
-					WHERE project_id='.$this->projectid;
-        $this->_db->setQuery($query);
-        if (!$result=$this->_db->loadResult())
+        $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
+       $query->select('max(round_date_last)');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'__round '); 
+        $query->where('project_id ='.$this->projectid);
+        
+//        $query='SELECT max(round_date_last) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
+//					WHERE project_id='.$this->projectid;
+                    
+        $db->setQuery($query);
+        if (!$result = $db->loadResult())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

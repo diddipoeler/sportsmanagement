@@ -221,6 +221,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `associations` INT(11) NOT NULL DEFAULT '0',
   `extendeduser` TEXT NULL ,
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
+  
+  `federation` int(11) NOT NULL DEFAULT '0',
+  `website` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC)
   )
@@ -327,6 +330,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_event` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `penalty_points` INT(11) NOT NULL DEFAULT '0' ,
+  `game_part` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `projectteam_id` (`projectteam_id`),
@@ -356,6 +360,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_player` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `trikot_number` INT(11) NOT NULL DEFAULT '0' ,
+  `game_part` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `teamplayer_id` (`teamplayer_id`),

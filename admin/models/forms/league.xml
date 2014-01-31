@@ -39,6 +39,15 @@
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>	
+			
+			<field
+			name="website"
+			size="100"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
+			class="inputbox"/>	
+			
 	<field
 			name="country"
 			type="country"
@@ -47,6 +56,17 @@
 			class="inputbox">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
+	
+	<field
+			name="federation"
+			type="federationslist"
+			class="inputbox"
+			size="30"
+			multiple="false"
+			targettable="federations"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
+	
 			<field
 			name="sports_type_id"
 			type="sportstypelist"

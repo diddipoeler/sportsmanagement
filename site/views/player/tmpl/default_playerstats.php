@@ -1,4 +1,42 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access'); 
 
 if ( $this->show_debug_info )
@@ -98,22 +136,27 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			<tbody>
 			<?php
 			$k=0;
-			$career=array();
-			$career['played']=0;
-			$career['started']=0;
-			$career['in']=0;
-			$career['out']=0;
+			$career = array();
+			$career['played'] = 0;
+			$career['started'] = 0;
+			$career['in'] = 0;
+			$career['out'] = 0;
 			$player = JModel::getInstance("Person","sportsmanagementModel");
 
 			if (count($this->historyPlayer) > 0)
 			{
 				foreach ($this->historyPlayer as $player_hist)
 				{
-					$model = $this->getModel();
-					$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
-					// gespielte zeit
+					//$model = $this->getModel();
+					//$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+                    
+                    $this->assign('inoutstat',sportsmanagementModelRoster::_getTeamInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+					
+                    //$this->assign('inoutstat',$player->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+                    
+                    // gespielte zeit
                     $timePlayed = 0;
-                    $this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+                    $this->assign('timePlayed',sportsmanagementModelRoster::getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
                     $timePlayed  = $this->timePlayed;
             
                     $link1=sportsmanagementHelperRoute::getPlayerRoute($player_hist->project_slug,$player_hist->team_slug,$this->person->slug);
@@ -182,7 +225,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 					{
 						foreach($this->AllEvents as $eventtype)
 						{
-							$stat=$player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid);
+							$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid);
 							?>
 				
 				<td class="td_c"><?php echo ($stat > 0) ? $stat : $this->overallconfig['zero_events_value']; ?></td>

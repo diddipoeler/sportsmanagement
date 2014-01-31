@@ -256,7 +256,7 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function getAllEvents()
 	{
-		$history = &$this->getPlayerHistory();
+		$history = sportsmanagementModelPlayer::getPlayerHistory();
 		$positionhistory = array();
 		foreach($history as $h)
 		{
@@ -286,6 +286,20 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null)
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
+       $query->select('SUM(me.event_sum) as total');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me'); 
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st1.id = pt.team_id');
+
+
+/*       
 		$query = ' SELECT	SUM(me.event_sum) as total '
 				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me '
 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON me.teamplayer_id = tp.id '
@@ -293,38 +307,39 @@ class sportsmanagementModelPerson extends JModel
 				. ' WHERE me.event_type_id=' . $this->_db->Quote((int) $eventid)
 				. ' AND tp.person_id = ' . $this->_db->Quote((int) $this->personid)
 				;
+*/        
+        $query->where('me.event_type_id =' . $db->Quote((int) $eventid));
+        $query->where('tp1.person_id = ' . $db->Quote((int) $this->personid));
+                        
 				if ($projectteamid)
 				{
-					$query .= ' AND pt.id='.$this->_db->Quote((int) $projectteamid);
+					//$query .= ' AND pt.id='.$this->_db->Quote((int) $projectteamid);
+                    $query->where('pt.id ='.$db->Quote((int) $projectteamid));
 				}
 				if ($projectid)
 				{
-					$query .= ' AND pt.project_id=' . $this->_db->Quote((int) $projectid);
+					//$query .= ' AND pt.project_id=' . $this->_db->Quote((int) $projectid);
+                    $query->where('pt.project_id =' . $db->Quote((int) $projectid));
 				}
-				$query .= ' GROUP BY tp.person_id';
+				//$query .= ' GROUP BY tp.person_id';
+                $query->group('tp1.person_id');
 
-				$this->_db->setQuery($query);
-				$result = $this->_db->loadResult();
+				$db->setQuery($query);
+				$result = $db->loadResult();
+                
+                if ( !$result )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        }
+        else
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+        
 				return $result;
 	}
 
-	function getInOutStats( $project_id, $person_id )
-	{
-		$query = ' SELECT	sum(IF(came_in=0,1,0)+max(came_in=1)) AS played, '
-				. ' sum(mp.came_in) AS sub_in, '
-				. ' sum(mp.out = 1) AS sub_out '
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON mp.match_id = m.id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id = mp.teamplayer_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON m.projectteam1_id = pt.id '
-				. ' WHERE tp.person_id=' . $this->_db->Quote((int)$person_id)
-				. ' AND pt.project_id=' . $this->_db->Quote((int)$project_id)
-				. ' AND tp.published = 1 ';
-		$this->_db->setQuery( $query );
-		$inoutstat = $this->_db->loadObjectList();
 
-		return $inoutstat;
-	}
 
 	function getPlayerChangedRecipients()
 	{
