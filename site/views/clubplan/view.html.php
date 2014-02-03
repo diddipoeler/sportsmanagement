@@ -168,14 +168,14 @@ class sportsmanagementViewClubPlan extends JView
 		}
 		$document->setTitle($pageTitle);
 		
-		//$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
+		//$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		//build feed links
 		$project_id = (!empty($this->project->id)) ? '&p='.$this->project->id : '';
 		$club_id = (!empty($this->club->id)) ? '&cid='.$this->club->id : '';
 		$rssVar = (!empty($this->club->id)) ? $club_id : $project_id;
 
-		//$feed='index.php?option=com_joomleague&view=clubplan&cid='.$this->club->id.'&format=feed';
+		//$feed='index.php?option=com_sportsmanagement&view=clubplan&cid='.$this->club->id.'&format=feed';
 		$feed='index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
 		$rss=array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 

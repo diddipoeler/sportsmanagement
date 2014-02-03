@@ -76,14 +76,14 @@ class sportsmanagementViewTeamInfo extends JView
 		if ( isset($this->project->id) )
 		{
 			$overallconfig = sportsmanagementModelProject::getOverallConfig();
-			$this->assignRef( 'overallconfig',  $overallconfig);
-			$this->assignRef( 'config', $config );
+			$this->assignRef('overallconfig',  $overallconfig);
+			$this->assignRef('config', $config );
 			$team = $model->getTeamByProject();
-			$this->assignRef( 'team',  $team );
+			$this->assignRef('team',  $team );
 			$club = $model->getClub() ;
-			$this->assignRef( 'club', $club);
+			$this->assignRef('club', $club);
 			$seasons = $model->getSeasons( $config );
-			$this->assignRef( 'seasons', $seasons );
+			$this->assignRef('seasons', $seasons );
 			$this->assignRef('showediticon', $isEditor);
 			$this->assignRef('projectteamid', $model->projectteamid);
             $this->assignRef('teamid', $model->teamid);
@@ -114,20 +114,24 @@ class sportsmanagementViewTeamInfo extends JView
       }
       
             
-            if ($this->config['show_history_leagues']==1)
+            if ( $this->config['show_history_leagues'] == 1 )
 	{
             $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasons ) );
 			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasons ) );
 }
 
 		}
-
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+}
 
     	
 		$extended = sportsmanagementHelper::getExtended($team->teamextended, 'team');
 		$this->assignRef( 'extended', $extended );
-    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-    $this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
+    //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+    //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
     
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE' );

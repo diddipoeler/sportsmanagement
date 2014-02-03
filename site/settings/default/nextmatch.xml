@@ -75,7 +75,7 @@
 	</fieldset>
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
-		addfieldpath="/administrator/components/com_joomleague/elements">
+		addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field name="name_format" type="nameformat" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_NAME_FORMAT" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_NAME_FORMAT">

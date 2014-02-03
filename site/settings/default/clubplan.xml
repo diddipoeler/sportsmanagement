@@ -123,7 +123,7 @@
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 				
 		<field name="which_link2" type="list" default="2"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_LABEL_WHICH_LINK2" description="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_DESCR_WHICH_LINK2">

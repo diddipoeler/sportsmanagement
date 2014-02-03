@@ -74,6 +74,7 @@ class sportsmanagementViewTeamPlan extends JView
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$project = sportsmanagementModelProject::getProject();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		
@@ -98,7 +99,10 @@ class sportsmanagementViewTeamPlan extends JView
 
 		}
         
-    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
+        
+    //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+    
 		// Set page title
 		if (empty($this->ptid))
 		{

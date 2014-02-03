@@ -267,20 +267,20 @@
 					   }
 						if(isset($team1) && isset($team2) && ($team1==$team2)) {
 							echo '<td align="center" valign="middle">' .
-							JHtml::image("media/com_joomleague/jl_images/draw.png",
+							JHtml::image("media/com_sportsmanagement/jl_images/draw.png",
 							"draw.png",
 							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_joomleague/jl_images/thumbs_up.png",
+								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
 								"thumbs_up.png",
 								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_joomleague/jl_images/thumbs_down.png",
+								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
 								"thumbs_down.png",
 								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";

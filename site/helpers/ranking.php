@@ -1,35 +1,42 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
-
-/* JoomLeague League Management and Prediction Game for Joomla!
- * Copyright (C) 2007  Robert Moss
- *
- * Homepage: http://www.JoomLeague.net
- * Support: htt://www.JoomLeague.net/forum/
- *
- * This file is part of JoomLeague.
- *
- * JoomLeague is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * Please note that the GPL states that any headers in files and
- * Copyright notices as well as credits in headers, source files
- * and output (screens, prints, etc.) can not be removed.
- * You can extend them with your own credits, though...
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * The "GNU General Public License" (GPL) is available at
- * http://www.gnu.org/copyleft/gpl.html.
- */
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 class JSMRanking
@@ -112,14 +119,16 @@ class JSMRanking
 	{
 		if ($project)
 		{
-			$extensions = sportsmanagementHelper::getExtensions($project->id);
+			//$this->_roundcodes = null;
+            
+            $extensions = sportsmanagementHelper::getExtensions($project->id);
 				
 			foreach ($extensions as $type)
 			{
 				$classname = 'JSMRanking'. ucfirst($type);
 				if (!class_exists($classname))
 				{
-					$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'ranking.php';
+					$file = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$type.DS.'ranking.php';
 					if (file_exists($file))
 					{
 						require_once($file);
@@ -150,10 +159,20 @@ class JSMRanking
 	 */
 	function setProjectId($id)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    
 		$this->_projectid = (int) $id;
-		$this->_project = new sportsmanagementModelProject();
-		$this->_project->setProjectID($id);
-		$this->_params = $this->_project->getTemplateConfig('ranking');
+//		$this->_project = new sportsmanagementModelProject();
+//		$this->_project->setProjectID($id);
+//		$this->_params = $this->_project->getTemplateConfig('ranking');
+		sportsmanagementModelProject::setProjectID($id);
+		$this->_params = sportsmanagementModelProject::getTemplateConfig('ranking');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
+    }
 
 		// wipe data
 		$this->_data = null;
@@ -186,11 +205,11 @@ class JSMRanking
 		{
     $division = 0;
     }
-		$this->setDivisionId($division);
+		self::setDivisionId($division);
 
-		$teams = $this->_collect();
+		$teams = self::_collect();
 	
-		$rankings = $this->_buildRanking($teams);
+		$rankings = self::_buildRanking($teams);
 			
 		return $rankings;
 	}
@@ -297,7 +316,8 @@ class JSMRanking
 		$from     	= $this->_from;
 		$to       	= $this->_to;
 		$division 	= $this->_division;
-		$project  	= $this->_project->getProject();
+//		$project  	= $this->_project->getProject();
+        $project  	= sportsmanagementModelProject::getProject();
 		$data 		= $this->_initData();
 		
 		foreach ((array)$data->_matches as $match)
@@ -340,17 +360,17 @@ class JSMRanking
 			$decision = $match->decision;
 			if ($decision == 0)
 			{
-				$home_score=$match->home_score;
-				$away_score=$match->away_score;
-				$leg1=$match->l1;
-				$leg2=$match->l2;
+				$home_score = $match->home_score;
+				$away_score = $match->away_score;
+				$leg1 = $match->l1;
+				$leg2 = $match->l2;
 			}
 			else
 			{
-				$home_score=$match->home_score_decision;
-				$away_score=$match->away_score_decision;
-				$leg1=0;
-				$leg2=0;
+				$home_score = $match->home_score_decision;
+				$away_score = $match->away_score_decision;
+				$leg1 = 0;
+				$leg2 = 0;
 			}
 
 			$home->cnt_matches++;
@@ -621,8 +641,13 @@ class JSMRanking
 	 */
 	function _initTeams($pid,$division)
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
 	
-		$db = Jfactory::getDBO();
+		
     
     if ( $division )
     {
@@ -644,7 +669,20 @@ class JSMRanking
     }
     else
     {
-		$query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
+		$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+        $query->select('t.name, t.id as teamid, pt.neg_points_finally');
+        $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
+        $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id'); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
+        $query->where('pt.project_id = ' . $db->Quote($pid));
+        $query->where('pt.is_in_score = 1');
+
+
+
+/*        
+        $query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
 				. ' t.name, t.id as teamid, pt.neg_points_finally, '	
 				// new for use_finally
 				. ' pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally, '
@@ -655,9 +693,25 @@ class JSMRanking
 				. ' WHERE pt.project_id = ' . $db->Quote($pid)
 				//only show it in ranking when is_in_score=1
 				. ' AND pt.is_in_score=1';
-		}		
+*/                
+		}
+        
+        		
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
+        
+        if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        } 
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
 
 
 		$teams = array();
@@ -728,7 +782,12 @@ class JSMRanking
 	 */
 	function _getMatches($pid,$division)
 	{
-    $db = Jfactory::getDBO();
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        $db = Jfactory::getDBO();
+            $query = $db->getQuery(true);
+            
+    
     $viewName = JRequest::getVar( "view");
 
 		$query = ' SELECT m.id, '
@@ -789,6 +848,11 @@ class JSMRanking
 	 */
 	function _getSubDivisions()
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        $db = Jfactory::getDBO();
+            $query = $db->getQuery(true);
+            
 		if (!$this->_division) {
 			return false;
 		}
@@ -818,36 +882,46 @@ class JSMRanking
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null)
 	{
-	
-// echo '_countGame from ->'.$from.'<br>';
-// echo '_countGame to ->'.$to.'<br>';
-// echo '_countGame ptids ->'.$ptids.'<br>';
-
-
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
+    }
+    
+//	$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
+    
  
-// echo '_countGame ptids<br><pre>';
-// print_r($ptids);
-// echo '</pre>';
 	
 		$res = true;
 		
 		if ($from)
 		{
-			if ( $this->_getRoundcode($game->roundid) < $this->_getRoundcode($from) ) {
+			if ( $this->_getRoundcode($game->roundid) < $this->_getRoundcode($from) ) 
+            {
 				return false;
 			}
 		}
 
 		if ($to)
 		{
-			if ( $this->_getRoundcode($game->roundid) > $this->_getRoundcode($to) ) {
+			if ( $this->_getRoundcode($game->roundid) > $this->_getRoundcode($to) ) 
+            {
 				return false;
 			}
 		}
 
 		if ($ptids)
 		{
-			if (!in_array($game->projectteam1_id, $ptids) || !in_array($game->projectteam2_id, $ptids)) {
+			if (!in_array($game->projectteam1_id, $ptids) || !in_array($game->projectteam2_id, $ptids)) 
+            {
 				return false;
 			}
 		}
@@ -863,17 +937,42 @@ class JSMRanking
 	 */
 	function _getRoundcode($round_id)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        $db = Jfactory::getDBO();
+            $query = $db->getQuery(true);
+            
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
+    }
+        
 		if (empty($this->_roundcodes))
 		{
-			$db = Jfactory::getDBO();
 			
-			$query = ' SELECT r.roundcode, r.id ' 
-			       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ' 
-			       . ' WHERE r.project_id = ' . $this->_projectid;
+			$query->select('r.roundcode, r.id ');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
+            $query->where('r.project_id = ' . $this->_projectid);
+            $query->order('r.roundcode');
+            
+//			$query = ' SELECT r.roundcode, r.id ' 
+//			       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ' 
+//			       . ' WHERE r.project_id = ' . $this->_projectid;
 			$db->setQuery($query);
 			$this->_roundcodes = $db->loadAssocList('id');
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
+    }
 		}
-		if (!isset($this->_roundcodes[$round_id])) {
+        
+      
+        
+		if (!isset($this->_roundcodes[$round_id])) 
+        {
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID').': '.$round_id);
 			return false;
 		}

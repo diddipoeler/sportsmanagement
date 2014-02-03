@@ -128,8 +128,12 @@ if (!empty($this->rows))
     $countplayer = 0;
     $age = 0;
     // position header
-		$row=current($players);
-		$position=$row->position;
+		$row = current($players);
+        
+//        echo ' player <br><pre>'.print_r( $row, true).'</pre>';
+        
+        
+		$position = $row->position;
 		$k=0;
 		?>
 	<thead>
@@ -441,7 +445,10 @@ if (!empty($this->rows))
 		{
 			// Events of COM_SPORTSMANAGEMENT_substitutions are shown
 			$model = $this->getModel();
-			$this->assign('InOutStat',$model->getInOutStats($row->pid));
+			
+            //$this->assign('InOutStat',$model->getInOutStats($row->pid));
+            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time));
+            
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{
 				//$played  = $this->InOutStat->played;
@@ -473,7 +480,7 @@ if (!empty($this->rows))
             
             // spielzeit des spielers
             $timePlayed = 0;
-            $this->assign('timePlayed',$model->getTimePlayed($row->playerid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+            $this->assign('timePlayed',sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
             $timePlayed  = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{

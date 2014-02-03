@@ -12,7 +12,7 @@
 					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
 					<th class="td_c"><?php
 						$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
-						echo JHtml::image(	'images/com_joomleague/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+						echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 											$imageTitle,array(' title' => $imageTitle,' width' => 20,' height' => 20));
 						?></th>
 					<?php

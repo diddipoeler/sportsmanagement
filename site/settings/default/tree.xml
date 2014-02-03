@@ -27,7 +27,7 @@
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_fieldS_GROUP_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_fieldS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_fieldS_DESCR_OPTIONS"
-		addfieldpath ="/administrator/components/com_joomleague/elements">
+		addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 
 		<field name="tree_bracket_type" type="list" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_TREE_field_LABEL_BRACKET_TYPE" description="COM_SPORTSMANAGEMENT_FES_TREE_field_DESCR_BRACKET_TYPE">

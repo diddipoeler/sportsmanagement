@@ -67,7 +67,7 @@ if (isset($this->person))
 	}
 	if($this->config['show_players_layout'] == "player_tabbed") {
 		//$document = JFactory::getDocument();
-		//$css = 'components/com_joomleague/assets/css/tabs.css';
+		//$css = 'components/com_sportsmanagement/assets/css/tabs.css';
 		//$document->addStyleSheet($css);
 		$idxTab = 1;
 		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));

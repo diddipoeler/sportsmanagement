@@ -10,7 +10,7 @@ class JoomleagueViewClubplan extends JLGView
 	{
 
 		$document	= JFactory::getDocument();
-		$document->link = JRoute::_('index.php?option=com_joomleague');
+		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$config=$model->getTemplateConfig($this->getName());
 		$this->assignRef( 'config', $config);
@@ -30,11 +30,11 @@ class JoomleagueViewClubplan extends JLGView
 			$result = $game->cancel>0 ?$game->cancel_reason : $game->team1_result . "-" . $game->team2_result;
 			if (!empty($game->team1_result))
 			{
-				$link = 'index.php?option=com_joomleague&view=matchreport&p=';
+				$link = 'index.php?option=com_sportsmanagement&view=matchreport&p=';
 			}
 			else
 			{
-				$link = 'index.php?option=com_joomleague&view=nextmatch&p=';
+				$link = 'index.php?option=com_sportsmanagement&view=nextmatch&p=';
 			}
 
 			$item->title 		= $team1. " - ".$team2. " : ".$result;

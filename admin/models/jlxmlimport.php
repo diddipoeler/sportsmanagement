@@ -5288,7 +5288,23 @@ $this->dump_variable("import_team", $import_team);
         // $this->_project_id
         // $this->_season_id 
         $my_text='';
+        $update_match_ids = array();
         
+        // zum update der neue spieler id benötigen wir die match id´s aus dem projekt.
+        $query = $db->getQuery(true);
+        $query->clear();
+		$query->select('m.id');		
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id');
+        $query->where('p.id = '.$this->_project_id);
+        $db->setQuery($query);
+        $match_ids = $db->loadObjectList();
+        foreach($match_ids as $match_id)
+		{
+			$update_match_ids[] = $match_id->id;
+		}
+            
         // die schiedsrichter verarbeiten
         $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
 		$this->_db->setQuery($query);
@@ -5298,6 +5314,7 @@ $this->dump_variable("import_team", $import_team);
         {
             // ist der schiedsrichter schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
+            $query->clear();
 		    $query->select('id');		
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
 		    $query->where('t.person_id = '.$protref->person_id);
@@ -5579,23 +5596,30 @@ $this->dump_variable("import_team", $import_team);
                 
                 }
                 
-                // Fields to update.
+                // Fields to update. match ids = $update_match_ids
                 $query = $db->getQuery(true);
                 $fields = array(
                 $db->quoteName('teamplayer_id') . '=' . $new_match_player_id
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('teamplayer_id') . '=' . $team_member->id
+                $db->quoteName('teamplayer_id') . '=' . $team_member->id,
+                $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();
-                
+                if (!$result)
+			    {
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			    }
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();
-                
+                if (!$result)
+			    {
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			    }
                 // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(
@@ -5603,12 +5627,16 @@ $this->dump_variable("import_team", $import_team);
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('in_for') . '=' . $team_member->id
+                $db->quoteName('in_for') . '=' . $team_member->id,
+                $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query(); 
-                 
+                if (!$result)
+			    {
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			    } 
 			    
             }
             
@@ -5731,11 +5759,16 @@ $this->dump_variable("import_team", $import_team);
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('team_staff_id') . '=' . $team_member->id
+                $db->quoteName('team_staff_id') . '=' . $team_member->id,
+                $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
                 $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = $db->query();
+                if (!$result)
+			    {
+			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__); 
+			    }
 
             }
             

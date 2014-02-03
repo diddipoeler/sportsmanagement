@@ -108,7 +108,7 @@
 
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field	name="name_format" type="nameformat" default="0"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_NAME_FORMAT"
@@ -196,7 +196,7 @@
 	
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_DESCR_OPTIONS"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 		
 		<field	name="name_format_staff" type="nameformat" default="0"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_NAME_FORMAT"

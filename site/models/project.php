@@ -36,6 +36,7 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
@@ -122,34 +123,69 @@ class sportsmanagementModelProject extends JModel
         $query = $db->getQuery(true);
         
 
-       $this->projectid = JRequest::getInt('p',0);
+      // $this->projectid = JRequest::getInt('p',0);
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'   ),'');
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
+    }
     
         if (is_null($this->_project) && $this->projectid > 0)
 		{
 			//fs_sport_type_name = sport_type folder name
-			$query='SELECT p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name,
-      st.icon AS sport_type_picture, l.picture as leaguepicture, 
-					LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name,
-					CASE WHEN CHAR_LENGTH( p.alias )
-					THEN CONCAT_WS( \':\', p.id, p.alias )
-					ELSE p.id
-					END AS slug
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id 
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id 
-					WHERE p.id='. $db->Quote($this->projectid);
+            $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
+            $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture');
+            $query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
+            $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS slug');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id ');
+            $query->where('p.id ='. $db->Quote($this->projectid));
+            
+//			$query='SELECT p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name,
+//      st.icon AS sport_type_picture, l.picture as leaguepicture, 
+//					LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name,
+//					CASE WHEN CHAR_LENGTH( p.alias )
+//					THEN CONCAT_WS( \':\', p.id, p.alias )
+//					ELSE p.id
+//					END AS slug
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id 
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id 
+//					WHERE p.id='. $db->Quote($this->projectid);
 			$db->setQuery($query,0,1);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    }
+    
 			$this->_project = $db->loadObject();
+            
+            if ( !$this->_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        }
+            
+            
 		}
 		return $this->_project;
 	}
 
 	function setProjectID($id=0)
 	{
-		$this->projectid=$id;
-		$this->_project=null;
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+		$this->projectid = $id;
+		$this->_project = null;
+        $this->_current_round = 0;
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
+        }
+        
 	}
 
 	function getSportsType()
@@ -184,7 +220,7 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getCurrentRoundNumber()
 	{
-		$round = self::$this->increaseRound();
+		$round = self::increaseRound();
 		return ($round ? $round->roundcode : 0);
 	}
 
@@ -204,12 +240,13 @@ class sportsmanagementModelProject extends JModel
         
         if (!$this->_current_round)
 		{
-			if (!$project = self::getProject()) {
+			if (!$project = self::getProject()) 
+            {
 				$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 				return false;
 			}
 			
-			$current_date=strftime("%Y-%m-%d %H:%M:%S");
+			$current_date = strftime("%Y-%m-%d %H:%M:%S");
 	
 			// determine current round according to project settings
 			switch ($project->current_round_auto)
@@ -249,8 +286,8 @@ class sportsmanagementModelProject extends JModel
 							ORDER BY m.match_date ASC LIMIT 1";
 					break;
 			}
-			$this->_db->setQuery($query);
-			$result = $this->_db->loadObject();
+			$db->setQuery($query);
+			$result = $db->loadObject();
 				
 			// If result is empty, it probably means either this is not started, either this is over, depending on the mode. 
 			// Either way, do not change current value
@@ -259,8 +296,8 @@ class sportsmanagementModelProject extends JModel
 				$query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
 				       . ' WHERE r.project_id = '. $project->current_round
 				       ;
-				$this->_db->setQuery($query);
-				$result = $this->_db->loadObject();
+				$db->setQuery($query);
+				$result = $db->loadObject();
 				
 				if (!$result)
 				{
@@ -270,16 +307,16 @@ class sportsmanagementModelProject extends JModel
 						    . ' WHERE r.project_id = '. $project->id
 						    . ' ORDER BY . r.roundcode DESC '
 						    ;
-					    $this->_db->setQuery($query);
-					    $result = $this->_db->loadObject();					
+					    $db->setQuery($query);
+					    $result = $db->loadObject();					
 					} else {
 					    // the current value is invalid... just take the first round
 					    $query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
 						    . ' WHERE r.project_id = '. $project->id
 						    . ' ORDER BY . r.roundcode ASC '
 						    ;
-					    $this->_db->setQuery($query);
-					    $result = $this->_db->loadObject();
+					    $db->setQuery($query);
+					    $result = $db->loadObject();
 					}
 					    
 				}
@@ -289,14 +326,27 @@ class sportsmanagementModelProject extends JModel
 			if ($result && ($project->current_round <> $result->id))
 			{
 				$query = ' UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_project SET current_round = '.$result->id
-				       . ' WHERE id = ' . $this->_db->Quote($project->id);
-				$this->_db->setQuery($query);
-				if (!$this->_db->query()) {
+				       . ' WHERE id = ' . $db->Quote($project->id);
+				$db->setQuery($query);
+				if (!$db->query()) {
 					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));					
 				}
 			}
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+        }
+       
+            
 			$this->_current_round = $result;
 		}
+        
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project->id<br><pre>'.print_r($project->id,true).'</pre>'),'');
+        
+        
 		return $this->_current_round;
 	}
 
@@ -1278,7 +1328,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');  
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');  
         
         // Select some fields
         $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');

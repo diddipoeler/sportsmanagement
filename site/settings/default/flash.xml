@@ -2,7 +2,7 @@
 <form>
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS"
-		group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS" addfieldpath ="/administrator/components/com_joomleague/elements"
+		group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS" addfieldpath ="/administrator/components/com_sportsmanagement/elements"
 		description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_DESCR_SETTINGS">
 
 		<!-- <field name="which_bg" type="list" default="1" label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_WHICH_BG" 

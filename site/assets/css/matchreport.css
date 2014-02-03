@@ -113,13 +113,13 @@ table.playerstats td.playername,table.playerstats th.playername {
 	margin: 0;
 	color: #9FD4FF;
 	padding: 8px 8px 4px;
-	background: url(/media/com_joomleague/jl_images/bubble.png) top left;
+	background: url(/media/com_sportsmanagement/jl_images/bubble.png) top left;
 }
 
 .tool-text {
 	font-size: 11px;
 	padding: 4px 8px 8px;
-	background: url(/media/com_joomleague/jl_images/bubble.png) bottom right;
+	background: url(/media/com_sportsmanagement/jl_images/bubble.png) bottom right;
 }
 
 #timelinetop {

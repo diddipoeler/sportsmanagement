@@ -1,4 +1,41 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -6,12 +43,25 @@ defined('_JEXEC') or die('Restricted access');
 // Component Helper
 jimport('joomla.application.component.helper');
 
+
 /**
- *
+ * sportsmanagementHelperRoute
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementHelperRoute
 {
 	
+  /**
+   * sportsmanagementHelperRoute::getKunenaRoute()
+   * 
+   * @param mixed $sb_catid
+   * @return
+   */
   public static function getKunenaRoute( $sb_catid )
 	{
 		$params = array(	"option" => "com_kunena",
@@ -24,12 +74,20 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
   
-  public static function getTeamInfoRoute( $projectid, $teamid )
+  /**
+   * sportsmanagementHelperRoute::getTeamInfoRoute()
+   * 
+   * @param mixed $projectid
+   * @param mixed $teamid
+   * @return
+   */
+  public static function getTeamInfoRoute( $projectid, $teamid, $projectteamid = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 				"view" => "teaminfo",
 				"p" => $projectid,
-				"tid" => $teamid );
+				"tid" => $teamid,
+					"ptid" => 0 );
 	
 		$query = self::buildQuery( $params );
 		$link = JRoute::_( 'index.php?' . $query, false );
@@ -37,6 +95,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 	
+	/**
+	 * sportsmanagementHelperRoute::getProjectTeamInfoRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $projectteamid
+	 * @param mixed $task
+	 * @return
+	 */
 	public static function getProjectTeamInfoRoute( $projectid, $projectteamid, $task=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -60,6 +126,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 	
+	/**
+	 * sportsmanagementHelperRoute::getRivalsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @return
+	 */
 	public static function getRivalsRoute( $projectid, $teamid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -73,6 +146,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}	
 
+	/**
+	 * sportsmanagementHelperRoute::getClubInfoRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $clubid
+	 * @param mixed $task
+	 * @return
+	 */
 	public static function getClubInfoRoute( $projectid, $clubid, $task=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -97,6 +178,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getClubPlanRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $clubid
+	 * @param mixed $task
+	 * @return
+	 */
 	public static function getClubPlanRoute( $projectid, $clubid, $task=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -112,6 +201,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getPlaygroundRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $plagroundid
+	 * @return
+	 */
 	public static function getPlaygroundRoute( $projectid, $plagroundid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -125,6 +221,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+  /**
+   * sportsmanagementHelperRoute::getTournamentRoute()
+   * 
+   * @param mixed $projectid
+   * @param mixed $round
+   * @return
+   */
   public static function getTournamentRoute( $projectid, $round=null )
   {
   $params = array(	"option" => "com_sportsmanagement",
@@ -140,6 +243,14 @@ class sportsmanagementHelperRoute
   
 	
   
+  /**
+   * sportsmanagementHelperRoute::getRankingAllTimeRoute()
+   * 
+   * @param mixed $leagueid
+   * @param mixed $points
+   * @param mixed $projectid
+   * @return
+   */
   public static function getRankingAllTimeRoute( $leagueid, $points, $projectid)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -153,13 +264,17 @@ class sportsmanagementHelperRoute
 		return $link;			
 	}
   				
-  /**
+  
+	/**
+	 * sportsmanagementHelperRoute::getRankingRoute()
 	 * 
-	 * @param int $projectid
-	 * @param int $round
-	 * @param int $from
-	 * @param int $to
-	 * @param int $type
+	 * @param mixed $projectid
+	 * @param mixed $round
+	 * @param mixed $from
+	 * @param mixed $to
+	 * @param integer $type
+	 * @param integer $division
+	 * @return
 	 */
 	public static function getRankingRoute( $projectid, $round=null, $from=null, $to=null, $type=0, $division=0 )
 	{
@@ -179,6 +294,17 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getResultsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $roundid
+	 * @param integer $divisionid
+	 * @param integer $mode
+	 * @param integer $order
+	 * @param mixed $layout
+	 * @return
+	 */
 	public static function getResultsRoute($projectid, $roundid=null, $divisionid=0, $mode=0, $order=0, $layout=null)
 	{
 		$params = array(	'option' => 'com_sportsmanagement',
@@ -206,6 +332,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getMatrixRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param integer $division
+	 * @param integer $round
+	 * @return
+	 */
 	public static function getMatrixRoute( $projectid, $division=0, $round=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -221,6 +355,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getResultsRankingRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $round
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getResultsRankingRoute( $projectid, $round=null, $division=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -236,6 +378,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getResultsMatrixRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $round
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getResultsMatrixRoute( $projectid, $round=null, $division=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -251,6 +401,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getRankingMatrixRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $round
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getRankingMatrixRoute( $projectid, $round=null, $division=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -266,6 +424,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getResultsRankingMatrixRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $round
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getResultsRankingMatrixRoute( $projectid, $round=null, $division=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -281,13 +447,23 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
-	public static function getTeamPlanRoute( $projectid, $teamid, $division=0, $mode=null )
+	/**
+	 * sportsmanagementHelperRoute::getTeamPlanRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param integer $division
+	 * @param mixed $mode
+	 * @return
+	 */
+	public static function getTeamPlanRoute( $projectid, $teamid, $division=0, $mode=null, $projectteamid = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "teamplan",
 					"p" => $projectid,
 					"tid" => $teamid,
-					"division" => $division );
+					"division" => $division,
+					"ptid" => $projectteamid );
 
 		if ( ! is_null( $mode ) ) { $params["mode"] = $mode; }
 
@@ -297,6 +473,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getMatchReportRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @return
+	 */
 	public static function getMatchReportRoute( $projectid, $matchid = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -311,13 +494,15 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	
 	/**
-	 * return links to a team player
-	 * @param int projectid
-	 * @param int teamid
-	 * @param int personid
-	 * @param string task
-	 * @return url
+	 * sportsmanagementHelperRoute::getPlayerRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param mixed $personid
+	 * @param mixed $task
+	 * @return
 	 */
 	public static function getPlayerRoute($projectid, $teamid, $personid, $task=null)
 	{
@@ -343,12 +528,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	
 	/**
-	 * return links to a team staff
-	 * @param int projectid
-	 * @param int teamid
-	 * @param int personid
-	 * @return url
+	 * sportsmanagementHelperRoute::getStaffRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param mixed $personid
+	 * @return
 	 */
 	public static function getStaffRoute( $projectid, $teamid, $personid )
 	{
@@ -364,13 +551,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+
 	/**
-	 * returns url to a person
-	 * @param int project id
-	 * @param int person id
-	 * @param int Type: 1 for player, 2 for staff, 3 for referee
-	 * @deprecated since 1.5
-	 * @return url
+	 * sportsmanagementHelperRoute::getPersonRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $personid
+	 * @param mixed $showType
+	 * @return
 	 */
 	public static function getPersonRoute( $projectid, $personid, $showType )
 	{
@@ -386,12 +574,21 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
-	public static function getPlayersRoute( $projectid, $teamid, $task=null )
+	/**
+	 * sportsmanagementHelperRoute::getPlayersRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param mixed $task
+	 * @return
+	 */
+	public static function getPlayersRoute( $projectid, $teamid, $task=null, $projectteamid = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "roster",
 					"p" => $projectid,
-					"tid" => $teamid );
+					"tid" => $teamid,
+					"ttid" => $projectteamid );
 
 		$query = self::buildQuery( $params );
 		$link = JRoute::_( 'index.php?' . $query, false );
@@ -399,6 +596,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 	
+	/**
+	 * sportsmanagementHelperRoute::getPlayersRouteAllTime()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param mixed $task
+	 * @return
+	 */
 	public static function getPlayersRouteAllTime( $projectid, $teamid, $task=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -412,6 +617,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getDivisionsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $divisionid
+	 * @param mixed $task
+	 * @return
+	 */
 	public static function getDivisionsRoute( $projectid, $divisionid, $task=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -425,6 +638,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getFavPlayersRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @return
+	 */
 	public static function getFavPlayersRoute( $projectid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -438,6 +657,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getRefereeRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $personid
+	 * @return
+	 */
 	public static function getRefereeRoute( $projectid, $personid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -451,6 +677,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getRefereesRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @return
+	 */
 	public static function getRefereesRoute( $projectid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -463,6 +695,16 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getEventsRankingRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param integer $divisionid
+	 * @param integer $teamid
+	 * @param integer $eventid
+	 * @param integer $matchid
+	 * @return
+	 */
 	public static function getEventsRankingRoute( $projectid, $divisionid=0, $teamid=0, $eventid=0, $matchid=0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -480,6 +722,15 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getCurveRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param integer $teamid1
+	 * @param integer $teamid2
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getCurveRoute($projectid, $teamid1=0, $teamid2=0, $division=0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -496,6 +747,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getStatsChartDataRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getStatsChartDataRoute( $projectid, $division=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -511,6 +769,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getTeamStatsChartDataRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @return
+	 */
 	public static function getTeamStatsChartDataRoute( $projectid, $teamid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -525,6 +790,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getStatsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param integer $division
+	 * @return
+	 */
 	public static function getStatsRoute( $projectid, $division = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -539,6 +811,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getBracketsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @return
+	 */
 	public static function getBracketsRoute( $projectid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -551,6 +829,16 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getStatsRankingRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $divisionid
+	 * @param mixed $teamid
+	 * @param integer $statid
+	 * @param mixed $order
+	 * @return
+	 */
 	public static function getStatsRankingRoute( $projectid, $divisionid = null, $teamid = null, $statid = 0, $order = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -568,6 +856,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getClubsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $divisionid
+	 * @return
+	 */
 	public static function getClubsRoute( $projectid, $divisionid = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -582,6 +877,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getTeamsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $divisionid
+	 * @return
+	 */
 	public static function getTeamsRoute( $projectid, $divisionid = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -596,6 +898,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getTeamStatsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @return
+	 */
 	public static function getTeamStatsRoute( $projectid, $teamid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -609,6 +918,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getTeamStaffRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $playerid
+	 * @param mixed $showType
+	 * @return
+	 */
 	public static function getTeamStaffRoute( $projectid, $playerid, $showType )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -623,6 +940,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getNextMatchRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @return
+	 */
 	public static function getNextMatchRoute( $projectid, $matchid )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -636,6 +960,16 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getEditEventsRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @param mixed $task
+	 * @param mixed $team
+	 * @param mixed $projectTeam
+	 * @return
+	 */
 	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -654,6 +988,17 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getEditEventsRouteNew()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @param mixed $team1
+	 * @param mixed $projectTeam1
+	 * @param mixed $team2
+	 * @param mixed $projectTeam2
+	 * @return
+	 */
 	public static function getEditEventsRouteNew( $projectid, $matchid, $team1 = null, $projectTeam1 = null, $team2 = null, $projectTeam2 = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -672,6 +1017,13 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getEditMatchRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @return
+	 */
 	public static function getEditMatchRoute($projectid, $matchid)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -685,6 +1037,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getContactRoute()
+	 * 
+	 * @param mixed $contactid
+	 * @return
+	 */
 	public static function getContactRoute( $contactid )
 	{
 		/* Old Route to JOOMLA built in contact id
@@ -705,6 +1063,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getUserProfileRouteCBE()
+	 * 
+	 * @param mixed $u_id
+	 * @param mixed $p_id
+	 * @param mixed $pl_id
+	 * @return
+	 */
 	public static function getUserProfileRouteCBE( $u_id, $p_id, $pl_id )
 	{
 		// Old Route to Community Builder User Page with support for CBE-JoomLeague Tab
@@ -721,6 +1087,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getUserProfileRoute()
+	 * 
+	 * @param mixed $userid
+	 * @return
+	 */
 	public static function getUserProfileRoute( $userid )
 	{
 		$params = array(	"option" => "com_comprofiler",
@@ -733,6 +1105,14 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	/**
+	 * sportsmanagementHelperRoute::getIcalRoute()
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $teamid
+	 * @param mixed $pgid
+	 * @return
+	 */
 	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
@@ -748,6 +1128,12 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 	
+	/**
+	 * sportsmanagementHelperRoute::buildQuery()
+	 * 
+	 * @param mixed $parts
+	 * @return
+	 */
 	public static function buildQuery($parts)
 	{
 		if ($item = self::_findItem($parts))
@@ -764,16 +1150,12 @@ class sportsmanagementHelperRoute
 		return JURI::buildQuery( $parts );
 	}
 
+	
 	/**
-	 * Determines the Itemid
-	 *
-	 * searches if a menuitem for this item exists
-	 * if not the first match will be returned
-	 *
-	 * @param array The id and view
-	 * @since 0.9
-	 *
-	 * @return int Itemid
+	 * sportsmanagementHelperRoute::_findItem()
+	 * 
+	 * @param mixed $query
+	 * @return
 	 */
 	public static function _findItem($query)
 	{

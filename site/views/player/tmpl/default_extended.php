@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 if(count($this->extended->getFieldsets()) > 0)
 {
 	// fieldset->name is set in the backend and is localized, so we need the backend language file here
-//	JFactory::getLanguage()->load('com_joomleague', JPATH_ADMINISTRATOR);
+//	JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 	
 	foreach ($this->extended->getFieldsets() as $fieldset)
 	{

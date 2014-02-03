@@ -55,36 +55,58 @@ jimport('joomla.application.component.model');
  */
 class sportsmanagementModelTeamPlan extends JModel
 {
-	var $projectid=0;
-	var $teamid=0;
-	var $pro_teamid=0;
-	var $team=null;
-	var $club=null;
-	var $divisionid=0;
-	var $joomleague=null;
-	var $mode=0;
+	var $projectid = 0;
+	var $teamid = 0;
+    var $projectteamid = 0;
+	var $pro_teamid = 0;
+	var $team = null;
+	var $club = null;
+	var $divisionid = 0;
+	var $joomleague = null;
+	var $mode = 0;
 
+	/**
+	 * sportsmanagementModelTeamPlan::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 		
 
 		$this->projectid = JRequest::getInt('p',0);
 		$this->teamid = JRequest::getInt('tid',0);
+        $this->projectteamid = JRequest::getInt('ptid',0);
 		$this->divisionid = JRequest::getInt('division',0);
 		$this->mode = JRequest::getInt("mode",0);
         parent::__construct();
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getDivisionID()
+	 * 
+	 * @return
+	 */
 	function getDivisionID()
 	{
 		return $this->divisionid;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getMode()
+	 * 
+	 * @return
+	 */
 	function getMode()
 	{
 		return $this->mode;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getDivision()
+	 * 
+	 * @return
+	 */
 	function getDivision()
 	{
 		$option = JRequest::getCmd('option');
@@ -116,6 +138,11 @@ class sportsmanagementModelTeamPlan extends JModel
 		return $division;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getProjectTeamId()
+	 * 
+	 * @return
+	 */
 	function getProjectTeamId()
 	{
 		$option = JRequest::getCmd('option');
@@ -134,22 +161,33 @@ class sportsmanagementModelTeamPlan extends JModel
         $query->where('t.id='.$this->teamid);
                  
 		$db->setQuery($query,0,1);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		if (! $result = $db->loadResult())
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
             $this->pro_teamid = 0;
             return 0;
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
 		$this->pro_teamid = $result;
+        $this->projectteamid = $result;
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getMatchesPerRound()
+	 * 
+	 * @param mixed $config
+	 * @param mixed $rounds
+	 * @return
+	 */
 	function getMatchesPerRound($config,$rounds)
 	{
 		$rm=array();
@@ -167,6 +205,12 @@ class sportsmanagementModelTeamPlan extends JModel
 		return $rm;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getMatches()
+	 * 
+	 * @param mixed $config
+	 * @return
+	 */
 	function getMatches($config)
 	{
 		$ordering = 'DESC';
@@ -177,6 +221,12 @@ class sportsmanagementModelTeamPlan extends JModel
 		return self::_getResultsPlan($this->pro_teamid,$ordering,0,1,$config['show_referee']);
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getMatchesRefering()
+	 * 
+	 * @param mixed $config
+	 * @return
+	 */
 	function getMatchesRefering($config)
 	{
 		$ordering = 'DESC';
@@ -187,6 +237,16 @@ class sportsmanagementModelTeamPlan extends JModel
 		return self::_getResultsPlan(0,$ordering,$this->pro_teamid,1,$config['show_referee']);
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::_getResultsPlan()
+	 * 
+	 * @param integer $team
+	 * @param string $ordering
+	 * @param integer $referee
+	 * @param integer $getplayground
+	 * @param integer $getreferee
+	 * @return
+	 */
 	function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
 		$mainframe = JFactory::getApplication();
@@ -195,6 +255,8 @@ class sportsmanagementModelTeamPlan extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query2 = $db->getQuery(true);
+        
+        // $this->projectteamid
         
 		//$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
         $matches = array();
@@ -227,7 +289,8 @@ class sportsmanagementModelTeamPlan extends JModel
 //win matches
 		if (($this->mode)== 1)
 		{
-		  $query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result < m.team2_result) )');
+		  //$query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result < m.team2_result) )');
+          $query->where('( (m.projectteam1_id= ' .$this->projectteamid. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$this->projectteamid. ' AND m.team1_result < m.team2_result) )');
 		}
 //draw matches
 		if (($this->mode)== 2)
@@ -237,8 +300,8 @@ class sportsmanagementModelTeamPlan extends JModel
 //lost matches
 		if (($this->mode)== 3)
 		{
- 		  $query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result < m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result > m.team2_result) )');
-			
+ 		  //$query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result < m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result > m.team2_result) )');
+			$query->where('( (m.projectteam1_id= ' .$this->projectteamid. ' AND m.team1_result < m.team2_result)'.' OR (m.projectteam2_id= ' .$this->projectteamid. ' AND m.team1_result > m.team2_result) )');
 		}
 	
 		if ($this->divisionid > 0)
@@ -260,7 +323,8 @@ class sportsmanagementModelTeamPlan extends JModel
 
 		if ($this->teamid != 0)
 		{
-            $query->where("(m.projectteam1_id=".$team." OR m.projectteam2_id=".$team.")");
+            //$query->where("(m.projectteam1_id=".$team." OR m.projectteam2_id=".$team.")");
+            $query->where("(m.projectteam1_id=".$this->projectteamid." OR m.projectteam2_id=".$this->projectteamid.")");
 		}
         
         // Group
@@ -276,8 +340,9 @@ class sportsmanagementModelTeamPlan extends JModel
 
 		
 		$db->setQuery($query);
-
 		$matches = $db->loadObjectList();
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		if ($getreferee)
 		{
@@ -287,12 +352,23 @@ class sportsmanagementModelTeamPlan extends JModel
 if (!$matches )
 		{
 			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query,true).'</pre>' ),'Error');
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
 		
 		return $matches;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::_getResultsRows()
+	 * 
+	 * @param integer $roundcode
+	 * @param integer $teamId
+	 * @param string $ordering
+	 * @param integer $unpublished
+	 * @param integer $getplayground
+	 * @param integer $getreferee
+	 * @return
+	 */
 	function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
 		$mainframe = JFactory::getApplication();
@@ -318,7 +394,8 @@ if (!$matches )
 
 		if ($teamId)
 		{
-		  $query->where("(matches.projectteam1_id=".$teamId." OR matches.projectteam2_id=".$teamId.")");
+		  //$query->where("(matches.projectteam1_id=".$teamId." OR matches.projectteam2_id=".$teamId.")");
+          $query->where("(matches.projectteam1_id=".$this->projectteamid." OR matches.projectteam2_id=".$this->projectteamid.")");
 		}
 		// Group
         $query->group('matches.id');
@@ -344,10 +421,9 @@ if (!$matches )
 		}
 
 		$db->setQuery($query);
-		if (!$matches = $db->loadObjectList())
-		{
-			echo $db->getErrorMsg();
-		}
+        $matches = $db->loadObjectList();
+		
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		if ($getreferee)
 		{
@@ -356,13 +432,20 @@ if (!$matches )
 
 if (!$matches )
 		{
-			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query_SELECT.$query_FROM.$query_WHERE.$query_END,true).'</pre>' ),'Error');
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+
+			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
 
 		return $matches;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::_getRefereesByMatch()
+	 * 
+	 * @param mixed $matches
+	 * @param mixed $joomleague
+	 * @return
+	 */
 	function _getRefereesByMatch($matches,$joomleague)
 	{
 		for ($index=0; $index < count($matches); $index++) {
@@ -402,6 +485,12 @@ if (!$matches )
 		return $matches;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlan::getEventTypes()
+	 * 
+	 * @param mixed $match_id
+	 * @return
+	 */
 	function getEventTypes($match_id)
 	{
 		$option = JRequest::getCmd('option');

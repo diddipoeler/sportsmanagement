@@ -30,7 +30,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	else
 	{
 		echo "<div>";
-			echo '<p>'.JText::_('At least you need to submit a project-id to get a teamplan of JoomLeague!').'</p>';
+			echo '<p>'.JText::_('At least you need to submit a project-id to get a teamplan of SportsManagement!').'</p>';
 	}
 
 		echo $this->loadTemplate('backbutton');

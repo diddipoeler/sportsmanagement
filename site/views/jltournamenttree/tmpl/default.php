@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
     }
    
   /* Render function is called for each team label when data is changed, data
-  * media/com_joomleague/flags/'+data.flag+'.png"
+  * media/com_sportsmanagement/flags/'+data.flag+'.png"
    * contains the data object given in init and belonging to this slot. */
   function render_fn(container, data, score) {
     if (!data.flag || !data.name)

@@ -69,7 +69,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
@@ -90,7 +90,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -160,7 +160,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'Suspended' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
@@ -181,7 +181,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'Suspended' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -252,7 +252,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'Away' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
@@ -273,7 +273,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = JText::_( 'Away' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_joomleague/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>

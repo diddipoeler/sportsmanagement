@@ -63,7 +63,7 @@ class sportsmanagementViewResults extends JView
 		$model	= $this->getModel();
 				
 		$matches = $model->getMatches();
-		
+		sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");

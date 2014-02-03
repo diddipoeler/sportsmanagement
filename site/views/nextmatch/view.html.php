@@ -48,7 +48,7 @@ class sportsmanagementViewNextMatch extends JView
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
     //$version = urlencode(sportsmanagementHelper::getVersion());
-//		$css='components/com_joomleague/assets/css/tabs.css?v='.$version;
+//		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
 		
 		$model = $this->getModel();
@@ -120,7 +120,7 @@ class sportsmanagementViewNextMatch extends JView
             $this->assign('matchcommentary',$model->getMatchCommentary());
 		}
         
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
+        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE' );

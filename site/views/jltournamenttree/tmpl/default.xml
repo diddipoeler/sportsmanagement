@@ -56,7 +56,7 @@
 <fields name="params">
     <fieldset	name="basic"
 					label="COM_SPORTSMANAGEMENT_XML_JLTOURNAMENTTREE_ADVANCED_NAME"
-					addfieldpath="/administrator/components/com_joomleague/elements">
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
           <field 	name="jl_tree_font_size" type="text" default="14" 
 				label="COM_SPORTSMANAGEMENT_XML_JLTOURNAMENTTREE_FONT_SIZE_LABEL"

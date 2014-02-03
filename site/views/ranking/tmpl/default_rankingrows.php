@@ -236,7 +236,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->id);
 					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else

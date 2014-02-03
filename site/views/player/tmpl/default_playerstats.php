@@ -142,21 +142,23 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			$career['in'] = 0;
 			$career['out'] = 0;
 			$player = JModel::getInstance("Person","sportsmanagementModel");
+            
+            echo ' games<br><pre>'.print_r($this->historyPlayer,true).'</pre><br>';
 
 			if (count($this->historyPlayer) > 0)
 			{
 				foreach ($this->historyPlayer as $player_hist)
 				{
-					//$model = $this->getModel();
-					//$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+					$model = $this->getModel();
+					$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
                     
-                    $this->assign('inoutstat',sportsmanagementModelRoster::_getTeamInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+                    //$this->assign('inoutstat',sportsmanagementModelRoster::_getTeamInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
 					
                     //$this->assign('inoutstat',$player->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
                     
                     // gespielte zeit
                     $timePlayed = 0;
-                    $this->assign('timePlayed',sportsmanagementModelRoster::getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+                    $this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
                     $timePlayed  = $this->timePlayed;
             
                     $link1=sportsmanagementHelperRoute::getPlayerRoute($player_hist->project_slug,$player_hist->team_slug,$this->person->slug);

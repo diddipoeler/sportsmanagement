@@ -1013,7 +1013,16 @@ abstract class sportsmanagementHelper
 
 	function showTeamIcons(&$team,&$config)
 	{
-		if(!isset($team->projectteamid)) return "";
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+            }
+            
+        if(!isset($team->projectteamid)) return "";
 		$projectteamid = $team->projectteamid;
 		$teamname      = $team->name;
 		$teamid        = $team->team_id;
@@ -1025,8 +1034,8 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_team_link'])
 		{
-			$link =sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
+			$link = sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug,NULL,$projectteamid);
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
@@ -1034,7 +1043,7 @@ abstract class sportsmanagementHelper
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug);
+			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug,NULL,$projectteamid);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1053,8 +1062,8 @@ abstract class sportsmanagementHelper
 		if ($config['show_teaminfo_link'])
 		{
 // 			$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
-			$link =sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug);
-      $title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
+			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid);
+            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);

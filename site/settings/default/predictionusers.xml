@@ -4,7 +4,7 @@
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
-      addfieldpath="/administrator/components/com_joomleague/elements">
+      addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field	name="show_photo" type="radio" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_PHOTO"

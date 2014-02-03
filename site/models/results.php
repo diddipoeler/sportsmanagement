@@ -78,12 +78,15 @@ class sportsmanagementModelResults extends JModel
 		$this->divisionid = JRequest::getInt('division',0);
 		$this->mode = JRequest::getInt('mode',0);
 		$this->order = JRequest::getInt('order',0);
-		$round = JRequest::getInt('r', -1);
+		$round = JRequest::getInt('r', 0);
 		$roundid = $round;
-		if($round) {
+		if($round) 
+        {
 			$roundid = $round;
-		} else {
-			$roundid = $this->getCurrentRound();
+		} 
+        else 
+        {
+			$roundid = sportsmanagementModelProject::getCurrentRound();
 		}
 		$this->roundid = $roundid;
 		$this->config = sportsmanagementModelProject::getTemplateConfig('results');
@@ -272,7 +275,7 @@ class sportsmanagementModelResults extends JModel
 		
         // where
         $query->where('m.published = 1');
-        $query->where('r.id='.$round);
+        $query->where('r.id = '.$round);
         $query->where('r.project_id = '.(int)$project->id);
         // group
         $query->group('m.id ');
@@ -292,7 +295,8 @@ class sportsmanagementModelResults extends JModel
 		
         if ( !$result )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	    }
         
 		return $result;

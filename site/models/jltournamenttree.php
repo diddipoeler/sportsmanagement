@@ -1118,7 +1118,7 @@ $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, {nam
 break;
 
 case 2:
-//$varteams[] = '[{name: "'.substr($key->firstname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.substr($key->secondname,0,10).'", flag: "media/com_joomleague/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+//$varteams[] = '[{name: "'.substr($key->firstname,0,10).'", flag: "media/com_sportsmanagement/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.substr($key->secondname,0,10).'", flag: "media/com_sportsmanagement/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
 $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
 break;
     

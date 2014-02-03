@@ -156,7 +156,7 @@ if (count($this->games))
 				// gespielte zeit
                 $model = $this->getModel();
                 $timePlayed = 0;
-                $this->assign('timePlayed',sportsmanagementModelRoster::getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']));
+                $this->assign('timePlayed',$model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']));
                 $timePlayed  = $this->timePlayed;
                 
 //                echo ' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';

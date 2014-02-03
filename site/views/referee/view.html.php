@@ -86,7 +86,7 @@ class sportsmanagementViewReferee extends JView
 
 		$document->setTitle($titleStr);
         
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
+        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		parent::display($tpl);
 	}

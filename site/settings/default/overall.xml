@@ -132,7 +132,7 @@
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_DATA"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_DATA"
-    addfieldpath ="/administrator/components/com_joomleague/elements">
+    addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 		<field name="nospam_email" type="radio" default="1"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_PROTECT_EMAIL"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_PROTECT_EMAIL">

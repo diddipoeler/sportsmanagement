@@ -136,7 +136,7 @@ if (isset($this->person))
     // joomlaworks nicht anwenden
     if($this->config['show_players_layout'] == "player_tabbed") {
 		//$document = JFactory::getDocument();
-		//$css = 'components/com_joomleague/assets/css/tabs.css';
+		//$css = 'components/com_sportsmanagement/assets/css/tabs.css';
 		//$document->addStyleSheet($css);
 		$idxTab = 1;
 		echo JHtml::_('tabs.start','playertabs', array('useCookie'=>1));
@@ -148,7 +148,7 @@ if (isset($this->person))
 	}
     else if($this->config['show_players_layout'] == "player_slider") {
 		//$document = JFactory::getDocument();
-		//$css = 'components/com_joomleague/assets/css/tabs.css';
+		//$css = 'components/com_sportsmanagement/assets/css/tabs.css';
 		//$document->addStyleSheet($css);
 		$idxTab = 1;
         echo JHtml::_('sliders.start','playerslider', array('useCookie'=>1, 'show'=>-1, 'display'=>-1, 'startOffset'=>-1));
