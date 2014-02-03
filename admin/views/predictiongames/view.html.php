@@ -86,7 +86,7 @@ $items = $this->get('Items');
         /*
         if ($prediction_id==0)
 		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_TITLE'),'pred-cpanel');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE'),'pred-cpanel');
 
 			JToolBarHelper::publishList('predictiongame.publish');
 			JToolBarHelper::unpublishList('predictiongame.unpublish');
@@ -97,15 +97,15 @@ $items = $this->get('Items');
 			//JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', JText::_( 'Copy'), true );
 			JToolBarHelper::divider();
 			//JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'));
-            JToolBarHelper::deleteList( JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_DELETE'), 'predictiongame.remove');
+            JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'), 'predictiongame.remove');
 			JToolBarHelper::divider();
-			JToolBarHelper::customX('rebuild','restore.png','restore_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_REBUILDS'),true);
+			JToolBarHelper::customX('rebuild','restore.png','restore_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_REBUILDS'),true);
 		}
 		else
 		{
 			
             
-            JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_PGAMES_PROJLIST_TITLE' ), 'pred-cpanel' );
+            JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJLIST_TITLE' ), 'pred-cpanel' );
 
 			
 		}

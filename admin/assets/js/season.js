@@ -10,7 +10,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 	// do field validation
 	if (validator.validate(form.name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_SEASON_CSJS_NO_NAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_SEASON_CSJS_NO_NAME'));
 		form.name.focus();		
 		res = false;
 	}

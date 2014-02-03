@@ -174,7 +174,7 @@ $mainframe = JFactory::getApplication();
 		$lists['search'] = $search;
 
 		//build the html select list for prediction games
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res =& $this->getModel()->getPredictionGames() ) { $predictions = array_merge( $predictions, $res ); }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
@@ -189,19 +189,19 @@ $mainframe = JFactory::getApplication();
 		// Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_joomleague/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
     $document->addCustomTag($stylelink);
-		JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBERS_TITLE' ), 'pred-cpanel' );
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'pred-cpanel' );
 
-		JToolBarHelper::custom( 'predictionmember.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
+		JToolBarHelper::custom( 'predictionmember.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
 		JToolBarHelper::divider();
 		
 		if ( $prediction_id )
 		{
 		  JLToolBarHelper::editList('predictionmember.edit');
-    JToolBarHelper::custom('predictionmember.editlist','upload.png','upload_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+    JToolBarHelper::custom('predictionmember.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
  		JToolBarHelper::divider();
  		}
-		JToolBarHelper::publishList( 'predictionmember.publish', JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBERS_APPROVE' ) );
-		JToolBarHelper::unpublishList( 'predictionmember.unpublish', JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBERS_REJECT' ) );
+		JToolBarHelper::publishList( 'predictionmember.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+		JToolBarHelper::unpublishList( 'predictionmember.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
 		JToolBarHelper::divider();
 
 		//JToolBarHelper::addNewX();

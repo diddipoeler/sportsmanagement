@@ -1049,7 +1049,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$result=$this->_db->loadObjectList();
         if ( !$result )
         {
-            $mainframe->enqueueMessage(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
+            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
         }
 		foreach ($result as $event){$event->text=JText::_($event->text);}
 		return $result;
@@ -1267,31 +1267,31 @@ class sportsmanagementModelMatch extends JModelAdmin
 		
         if ( empty($data['project_position_id'])  )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'));
 		return false;
 		}
         
         if ( empty($data['in_out_time'])  )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_TIME'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_TIME'));
 		return false;
 		}
         
         if ( empty($data['in'])  )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_IN'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_IN'));
 		return false;
 		}
         
         if ( empty($data['out'])  )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_NO_SUBST_OUT'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_OUT'));
 		return false;
 		}
         
         if ( (int)$data['in_out_time'] > (int)$data['projecttime'] )
 		{
-		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME',$data['in_out_time'],$data['projecttime']));
+		$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME',$data['in_out_time'],$data['projecttime']));
 		return false;
 		}
         
@@ -1377,12 +1377,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$object = JTable::getInstance('MatchEvent','sportsmanagementTable');
 		//if (!$object->canDelete($event_id))
 //		{
-//			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_ERROR_DELETE');
+//			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETE');
 //			return false;
 //		}
 		if (!$object->delete($event_id))
 		{
-			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED');
+			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED');
 			return false;
 		}
 		return true;
@@ -1407,7 +1407,7 @@ $db->setQuery($query);
 if (!$db->query())
 		{
 			
-            $this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
+            $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
 			return false;
 		}
 
@@ -1415,12 +1415,12 @@ if (!$db->query())
 		$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
 		//if (!$object->canDelete($event_id))
 //		{
-//			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_ERROR_DELETE_COMMENTARY');
+//			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETE_COMMENTARY');
 //			return false;
 //		}
 		if (!$object->delete($event_id))
 		{
-			$this->setError('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
+			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
 			return false;
 		}
 */        
@@ -1434,20 +1434,20 @@ if (!$db->query())
         // live kommentar speichern
         if ( empty($data['event_time']) )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_NO_TIME'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_TIME'));
 		return false;
 		}
 
         
         if ( empty($data['notes']) )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'));
 		return false;
 		}
             
         if ( (int)$data['event_time'] > (int)$data['projecttime'] )
 		{
-		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
+		$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
 		return false;
 		}
         
@@ -1484,7 +1484,7 @@ if (!$db->query())
 		//$object->bind($data);
 		//if (!$object->check())
 //		{
-//			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_CHECK_FAILED'));
+//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
 //			return false;
 //		}
 		
@@ -1506,19 +1506,19 @@ if (!$db->query())
 
         if ( empty($data['event_time']) )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
 		return false;
 		}
         
         if ( empty($data['event_sum']) )
 		{
-		$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM'));
+		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM'));
 		return false;
 		}
         
         if ( (int)$data['event_time'] > (int)$data['projecttime'] )
 		{
-		$this->setError(JText::sprintf('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
+		$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
 		return false;
 		}
    
@@ -1526,7 +1526,7 @@ if (!$db->query())
 		$object->bind($data);
 		//if (!$object->check())
 //		{
-//			$this->setError(JText::_('COM_JOOMLEAGUE_ADMIN_MATCH_MODEL_CHECK_FAILED'));
+//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
 //			return false;
 //		}
 		if (!$object->store())

@@ -8,7 +8,7 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 	$fields = $this->extended->getFieldset($fieldset->name);
 	
 	if(!count($fields)) {
-		echo JText::_('COM_JOOMLEAGUE_GLOBAL_NO_PARAMS');
+		echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
 	}
 	
 	foreach ($fields as $field)

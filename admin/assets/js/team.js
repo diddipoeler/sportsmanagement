@@ -10,15 +10,15 @@ Joomla.submitbutton = function(pressbutton) {
 
 	// do field validation
 	if (validator.validate(form.name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_TEAM_CSJS_NO_NAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_TEAM_CSJS_NO_NAME'));
 		form.name.focus();
 		res = false;
 	} else if (validator.validate(form.short_name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_TEAM_CSJS_NO_SHORTNAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_TEAM_CSJS_NO_SHORTNAME'));
 		form.short_name.focus();		
 		res = false;
 	} else if($('adminForm').club_id.selectedIndex == 0) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_TEAM_CSJS_NO_CLUB'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_TEAM_CSJS_NO_CLUB'));
 		form.clubs.focus();			
 		res = false;
 	}

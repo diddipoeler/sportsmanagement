@@ -107,7 +107,7 @@ public function makeRoute($uri) {
     
     
     $modal = "<script>window.addEvent('domready',function(){SqueezeBox.open('{$this->makeRoute('index.php?option=com_sportsmanagement&view=databasetool&tmpl=component')}',{size:{x:530,y:140},sizeLoading:{x:530,y:140},closable:true,handler:'iframe'});});</script>";
-    $mainframe->enqueueMessage('COM_JOOMLEAGUE_ADMIN_DBTOOL_CTRL_OPTIMIZE... '.$modal);
+    $mainframe->enqueueMessage('COM_SPORTSMANAGEMENT_ADMIN_DBTOOL_CTRL_OPTIMIZE... '.$modal);
     
     /*
 		$query="SHOW TABLES LIKE '%_".COM_SPORTSMANAGEMENT_TABLE."%'";

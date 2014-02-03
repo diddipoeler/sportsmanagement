@@ -78,7 +78,7 @@ class sportsmanagementViewjlextsisimport extends JView
 		*/
         
 		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_JOOMLEAGUE_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
+		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
 		
 		$uri = JFactory::getURI ();

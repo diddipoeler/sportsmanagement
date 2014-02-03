@@ -171,16 +171,16 @@ class sportsmanagementViewTemplate extends JView
 
 		if (!$edit)
 		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATE_ADD_NEW'));
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_ADD_NEW'));
 			JToolBarHelper::divider();
 			JToolBarHelper::cancel('template.cancel');
 		}		
 		else
 		{		
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATE_EDIT'),'FrontendSettings');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT'),'FrontendSettings');
 			JToolBarHelper::divider();
 			// for existing items the button is renamed `close`
-			JToolBarHelper::cancel('template.cancel',JText::_('COM_JOOMLEAGUE_GLOBAL_CLOSE'));
+			JToolBarHelper::cancel('template.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		}
 		//JLToolBarHelper::onlinehelp();
         */

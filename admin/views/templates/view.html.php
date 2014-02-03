@@ -57,7 +57,7 @@ class sportsmanagementViewTemplates extends JView
 			$model->set('_getALL',0);
 			$masterTemplates=$this->get('MasterTemplatesList');
 			$importlist=array();
-			$importlist[]=JHtml::_('select.option',0,JText::_('COM_JOOMLEAGUE_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+			$importlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
 			$importlist=array_merge($importlist,$masterTemplates);
 			$lists['mastertemplates']=JHtml::_('select.genericlist',$importlist,'templateid');
 			$master=$this->get('MasterName');

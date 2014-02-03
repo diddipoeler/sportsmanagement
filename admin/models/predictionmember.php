@@ -112,7 +112,7 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 
     $subject = addslashes(
 				sprintf(
-				JText::_( "COM_JOOMLEAGUE_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
+				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				'perdictionname' ) );
 				
     $message = 'Tip-Results';

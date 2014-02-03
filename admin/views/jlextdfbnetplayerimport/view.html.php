@@ -86,7 +86,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends JView
 		*/
         
 		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_JOOMLEAGUE_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
+		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
 		
 		$uri = JFactory::getURI ();
@@ -116,7 +116,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends JView
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
 		
 		// Set toolbar items for the page
-		// JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_DFBNET_IMPORT_TITLE_3_3'),'generic.png');
+		// JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TITLE_3_3'),'generic.png');
 		// JToolBarHelper::back();
 		// JToolBarHelper::help('screen.joomleague',true);
 		

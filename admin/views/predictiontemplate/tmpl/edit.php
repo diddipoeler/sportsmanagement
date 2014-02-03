@@ -44,7 +44,7 @@ JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 */
-//$component_text = 'COM_JOOMLEAGUE_';
+//$component_text = 'COM_SPORTSMANAGEMENT_';
 
 $i    = 1;
 ?>
@@ -63,10 +63,10 @@ $i    = 1;
 	
 	?>
 	<fieldset class="adminform">
-		<legend><?php echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_JOOMLEAGUE_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
 		<fieldset class="adminform">
 			<?php
-			echo JText::_('COM_JOOMLEAGUE_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
 			?>
 		</fieldset>
 

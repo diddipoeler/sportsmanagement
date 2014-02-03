@@ -188,7 +188,7 @@ function addSportsType()
 	$props 		= $lang->getProperties();
 	$strings 	= &$props['strings'];
 	$status=1;
-	$praefix = 'COM_JOOMLEAGUE_ST_';
+	$praefix = 'COM_SPORTSMANAGEMENT_ST_';
 	foreach ($strings as $key => $value) {
 		// Add all Sport-types e.g. Soccer to #__joomleague_sports_type
 		$pos = strpos($key, $praefix);

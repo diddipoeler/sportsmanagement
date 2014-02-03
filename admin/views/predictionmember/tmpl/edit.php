@@ -45,8 +45,8 @@ JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
 $edit = JRequest::getVar( 'edit', true );
-$text = !$edit ? JText::_( 'COM_JOOMLEAGUE_GLOBAL_NEW' ) : JText::_( 'COM_JOOMLEAGUE_GLOBAL_EDIT' );
-JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBER_PGAME' ) . ': <small><small>[ ' . $text . ' ]</small></small>' );
+$text = !$edit ? JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEW' ) : JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_EDIT' );
+JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_PGAME' ) . ': <small><small>[ ' . $text . ' ]</small></small>' );
 JToolBarHelper::save('predictionmember.save');
 
 if ( !$edit )
@@ -82,7 +82,7 @@ $uri =& JFactory::getURI();
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBER' ).' ['.$this->predictionuser->username.']';
+				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER' ).' ['.$this->predictionuser->username.']';
 				?>
 			</legend>
 

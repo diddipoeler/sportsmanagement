@@ -68,7 +68,7 @@ class sportsmanagementViewpredictiongroup extends JView
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut($user->get('id')))
 		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_JOOMLEAGUE_ADMIN_PREDICTIOGROUP'),$season->name);
+			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP'),$season->name);
 			$mainframe->redirect('index.php?option='.$option,$msg);
 		}
 
@@ -151,23 +151,23 @@ class sportsmanagementViewpredictiongroup extends JView
         /*
         // Set toolbar items for the page
 		$edit=JRequest::getVar('edit',true);
-		$text=!$edit ? JText::_('COM_JOOMLEAGUE_GLOBAL_NEW') : JText::_('COM_JOOMLEAGUE_GLOBAL_EDIT');
+		$text=!$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
 
 		JLToolBarHelper::save('predictiongroup.save');
 
 		if (!$edit)
 		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PREDICTIOGROUP_ADD_NEW'),'predictiongroups');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP_ADD_NEW'),'predictiongroups');
 			JToolBarHelper::divider();
 			JLToolBarHelper::cancel('predictiongroup.cancel');
 		}
 		else
 		{
 			// for existing items the button is renamed `close` and the apply button is showed
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PREDICTIOGROUP_EDIT'),'predictiongroups');
+			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP_EDIT'),'predictiongroups');
 			JLToolBarHelper::apply('predictiongroup.apply');
 			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('predictiongroup.cancel','COM_JOOMLEAGUE_GLOBAL_CLOSE');
+			JLToolBarHelper::cancel('predictiongroup.cancel','COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
 		}
 		JToolBarHelper::divider();
 		JLToolBarHelper::onlinehelp();

@@ -5,8 +5,8 @@ JHtml::_( 'behavior.tooltip' );
 // Set toolbar items for the page
 //$edit = JRequest::getVar('edit',true);
 
-$component_text = 'COM_JOOMLEAGUE_';
-JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_DMIN_PREDICTIONMEMBERS_ASSIGN' ) );
+$component_text = 'COM_SPORTSMANAGEMENT_';
+JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_DMIN_PREDICTIONMEMBERS_ASSIGN' ) );
 #JToolBarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
 JToolBarHelper::save( 'predictionmember.save_memberlist' );
 
@@ -85,7 +85,7 @@ window.addEvent('domready', function() {
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf( 'COM_JOOMLEAGUE_ADMIN_PREDICTIONMEMBERS_ASSIGN_TITLE', '<i>' . $this->prediction_name . '</i>');
+				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_TITLE', '<i>' . $this->prediction_name . '</i>');
 				?>
 			</legend>
 			
@@ -96,7 +96,7 @@ window.addEvent('domready', function() {
 					<td>
 						<b>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PREDICTIONMEMBERS_ASSIGN_AVAIL_MEMBERS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_AVAIL_MEMBERS' );
 							?>
 						</b><br />
 						<?php
@@ -117,7 +117,7 @@ window.addEvent('domready', function() {
 					<td>
 						<b>
 							<?php
-							echo JText::_( 'COM_JOOMLEAGUE_ADMIN_PREDICTIONMEMBERS_ASSIGN_PROJ_MEMBERS' );
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_PROJ_MEMBERS' );
 							?>
 						</b><br />
 						<?php

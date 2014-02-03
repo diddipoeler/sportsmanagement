@@ -54,20 +54,20 @@ jimport('joomla.html.pane');
 //		$pane = JPane::getInstance('tabs',array('startOffset'=>0));
 //		echo $pane->startPane('pane');
 		
-//		echo $pane->startPanel(JText::_('COM_JOOMLEAGUE_TABS_ROSTERPOSITIONS_SYSTEM'),'panel1');
+//		echo $pane->startPanel(JText::_('COM_SPORTSMANAGEMENT_TABS_ROSTERPOSITIONS_SYSTEM'),'panel1');
 //		echo $this->loadTemplate('details');
 //		echo $pane->endPanel();
 		
-//		echo $pane->startPanel(JText::_('COM_JOOMLEAGUE_TABS_ROSTERPOSITIONS_PLAYGROUND'),'panel2');
+//		echo $pane->startPanel(JText::_('COM_SPORTSMANAGEMENT_TABS_ROSTERPOSITIONS_PLAYGROUND'),'panel2');
 //    echo $this->loadTemplate('playground_jquery');
 //    echo $pane->endPanel();
     
     
-//    echo $pane->startPanel(JText::_('COM_JOOMLEAGUE_TABS_ROSTERPOSITIONS'),'panel3');
+//    echo $pane->startPanel(JText::_('COM_SPORTSMANAGEMENT_TABS_ROSTERPOSITIONS'),'panel3');
 //    echo $this->loadTemplate('extended');
 //    echo $pane->endPanel();
     
-//     echo $pane->startPanel(JText::_('COM_JOOMLEAGUE_TABS_ROSTERPOSITIONS_PLAYGROUND'),'panel3');
+//     echo $pane->startPanel(JText::_('COM_SPORTSMANAGEMENT_TABS_ROSTERPOSITIONS_PLAYGROUND'),'panel3');
 //     echo $this->loadTemplate('playground');
 //     echo $pane->endPanel();
 

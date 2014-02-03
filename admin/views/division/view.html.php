@@ -90,7 +90,7 @@ class sportsmanagementViewDivision extends JView
 		// fail if checked out not by 'me'
 		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
 		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_JOOMLEAGUE_ADMIN_DIVISION_THE_DIVISION' ), $division->name );
+			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVISION_THE_DIVISION' ), $division->name );
 			$mainframe->redirect( 'index.php?option=' . $option, $msg );
 		}
 
@@ -117,7 +117,7 @@ class sportsmanagementViewDivision extends JView
 		$projectws =& $this->get( 'Data', 'projectws' );
 
 		//build the html select list for parent divisions
-		$parents[] = JHtml::_( 'select.option', '0', JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PROJECT' ) );
+		$parents[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT' ) );
 		if ( $res =& $model->getParentsDivisions() )
 		{
 			$parents = array_merge( $parents, $res );
