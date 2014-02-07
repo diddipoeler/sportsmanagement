@@ -16,6 +16,8 @@ class sportsmanagementViewsmimageimports extends JView
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
+        
+        $checkimages = $model->getimagesxml();
         $this->assign('files',$model->getXMLFiles());
        
        

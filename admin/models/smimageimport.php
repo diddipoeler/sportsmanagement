@@ -48,7 +48,7 @@ function import()
             //$filename = $file['name'];
             //$filepath = $base_Dir . $filename;
             
-            $file['name'] = $file;
+            //$file['name'] = $file;
             $filename = $file;
             $filepath = $base_Dir . $filename;
             
@@ -61,9 +61,35 @@ function import()
             }
             else
             {
+                
+						  
+                          
+                          
                 $extractdir = JPATH_SITE.DS.'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$directory;
-                $dest = JPATH_SITE.DS.'tmp'.DS.$file['name'];
+                $dest = JPATH_SITE.DS.'tmp'.DS.$filename;
+                
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
+                
+                if (strtolower(JFile::getExt($dest))=='zip')
+						{
                 $result = JArchive::extract($dest,$extractdir);
+                if ($result === false)
+							{
+								JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'));
+								return false;
+							}
+                            else
+                            {
+                                JError::raiseNotice(0,JText::sprintf('Bilderdatei : %1$s endpackt.',$name) ) ;
+                            }
+                }
+                else
+                {
+                    JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'));
+								return false;
+                    
+                }
+                
             }    
             
             

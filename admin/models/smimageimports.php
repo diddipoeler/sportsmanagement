@@ -8,6 +8,17 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModelsmimageimports extends JModel
 {
 
+function getimagesxml()
+{
+    $mainframe = JFactory::getApplication(); 
+        $option = JRequest::getCmd('option');  
+        // sind neue bilder pakete vorhanden ?
+		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
+		//Parsen
+		$doc = DOMDocument::loadXML($content);
+        $doc->save(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml');
+    
+}
 function getXMLFiles()
     {
         $mainframe = JFactory::getApplication();
