@@ -53,6 +53,11 @@ class sportsmanagementViewStaff extends JView
 		$extended = sportsmanagementHelper::getExtended($person->extended, 'staff');
 		$this->assignRef( 'extended', $extended);
 		$document->setTitle($titleStr);
+        
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 
 		parent::display($tpl);
 	}

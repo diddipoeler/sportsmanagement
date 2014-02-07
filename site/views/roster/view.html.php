@@ -125,6 +125,11 @@ class sportsmanagementViewRoster extends JView
 			// Set page title
 			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
 		}
+        
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
 
     // select roster view
     $opp_arr = array ();

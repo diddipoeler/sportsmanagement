@@ -140,6 +140,13 @@ $paramsdata = JComponentHelper::getParams($option);
         
         $temp = explode(".",$version);  
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
+        
+        // sind neue bilder pakete vorhanden ?
+		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
+		//Parsen
+		$doc = DOMDocument::loadXML($content);
+        $doc->save(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml');
+        
               
         //Laden
 		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');

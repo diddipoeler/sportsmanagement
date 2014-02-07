@@ -47,6 +47,7 @@ class sportsmanagementViewNextMatch extends JView
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
     //$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
@@ -129,6 +130,9 @@ class sportsmanagementViewNextMatch extends JView
 			$pageTitle .= ": ".$this->teams[0]->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->teams[1]->name;
 		}
 		$document->setTitle( $pageTitle );
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 		parent::display( $tpl );
 	}

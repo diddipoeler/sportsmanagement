@@ -73,13 +73,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		}
 		?>
 		</td>
-			<?php if ($this->config['show_matchday_dropdown']==1) { ?>
+			<?php if ( $this->config['show_matchday_dropdown'] == 1 ) 
+            { 
+                ?>
             <form name='resultsRoundSelector' method='post'>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
+        <td>
+        <?php
+		echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+        echo 'prevlink -> '.$mdlPagination->prevlink;
+		?>
+        </td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
 			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE); ?>
 				</td>
+                <td>
+        <?php
+		echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+		?>
+        </td>
                 </form>
-    	    <?php } ?>
+    	    <?php 
+            } 
+            ?>
 		</tr>
 </table>

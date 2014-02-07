@@ -40,6 +40,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.application.component.model');
+
 //require_once (JLG_PATH_ADMIN .DS.'models'.DS.'round.php');
 //require_once (JLG_PATH_ADMIN .DS.'models'.DS.'rounds.php');
 
@@ -52,10 +54,22 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class sportsmanagementPagination
+class sportsmanagementModelPagination extends JModel
 {
+    public static $nextlink = '';
+    public static $prevlink = '';
 
-	/**
+	
+    function getnextlink()
+    {
+        $option = JRequest::getCmd('option');
+       $mainframe = JFactory::getApplication();
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextlink,true).'</pre>' ),'');
+        return $this->nextlink;
+    }
+    
+    /**
 	 * create and return the round page navigation
 	 *
 	 * @param object $project
@@ -114,9 +128,10 @@ class sportsmanagementPagination
 			$params['r'] = $backward;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
+            self::$prevlink = $link;
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prevlink'.'<pre>'.print_r($this->prevlink,true).'</pre>' ),'');
 
 			$params['r'] = $firstRound['id'];
 			$query = JURI::buildQuery($params);
@@ -134,6 +149,10 @@ class sportsmanagementPagination
 			$params['r'] = $forward;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
+            self::$nextlink = $link;
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextink,true).'</pre>' ),'');
+            
 			$nextlink = $spacer4;
 			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 

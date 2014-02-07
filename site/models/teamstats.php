@@ -52,6 +52,15 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
+/**
+ * sportsmanagementModelTeamStats
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelTeamStats extends JModel
 {
 	var $projectid = 0;
@@ -108,7 +117,7 @@ class sportsmanagementModelTeamStats extends JModel
 	 * 
 	 * @return
 	 */
-	function getHighest($which)
+	function getHighest($homeaway, $which)
 	{
 	   $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
@@ -141,419 +150,71 @@ class sportsmanagementModelTeamStats extends JModel
         $query->where('matches.published = 1');
         $query->where('alt_decision = 0');
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        switch ($which)
+        switch ($homeaway)
         {
             case 'HOME':
             $query->where('t1.id = '. $this->team->id);
+            
+            switch ($which)
+            {
+            case 'WIN':
             $query->where('team1_result > team2_result');
             $query->order('(team1_result-team2_result) DESC');
             break;
-            case 'AWAY':
-            $query->where('t2.id = '. $this->team->id);
+            case 'DEF':
             $query->where('team2_result > team1_result');
             $query->order('(team2_result-team1_result) DESC');
             break;
-        }
-        
-        
-        
-        
-        
-/*            
-            $query = ' SELECT matches.id AS matchid, t1.name AS hometeam, '
-			       . ' t2.name AS guestteam, '
-			       . ' team1_result AS homegoals, '
-			       . ' team2_result AS guestgoals, '
-			       . ' t1.id AS team1_id, '
-			       . ' t2.id AS team2_id '
-			       . ' FROM #__joomleague_match as matches '
-			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-			       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-			       . ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-			       . ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-			       . ' WHERE pt1.project_id = '.$this->projectid
-			       . ' AND published=1 '
-			       . ' AND alt_decision=0 '
-			       . ' AND t1.id =  '. $this->team->id
-			       . ' AND team1_result > team2_result '
-				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
-			       . ' ORDER BY (team1_result-team2_result) DESC '
-           ;
-*/
-            $db->setQuery($query, 0, 1);
-            //$this->highest_home = $db->loadObject( );
-       
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-        switch ($which)
-        {
-            case 'HOME':
-            if ( is_null( $this->highest_home ) )
-		    {
-		      $this->highest_home = $db->loadObject( );
-              return $this->highest_home;
-		    }
-            break;
-            case 'AWAY':
-            if ( is_null( $this->highest_away ) )
-		    {
-		      $this->highest_away = $db->loadObject( );
-              return $this->highest_away;
-		    }
-            break;
-        }
-        
-        
-        if ( !$this->highest_home || !$this->highest_away)
-        {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        
-        
-        
-        
-        
-    }
-
-    /**
-     * sportsmanagementModelTeamStats::getHighestAway()
-     * 
-     * @return
-     */
-/**
- *     function getHighestAway( )
- *     {
- *     	if ( is_null( $this->highest_away ) )
- *     	{
- * 				$query = ' SELECT matches.id AS matchid, t1.name AS hometeam, '
- * 			       . ' t2.name AS guestteam, '
- * 			       . ' team1_result AS homegoals, '
- * 			       . ' team2_result AS guestgoals, '
- * 			       . ' t1.id AS team1_id, '
- * 			       . ' t2.id AS team2_id '
- * 			       . ' FROM #__joomleague_match as matches '
- * 			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
- * 			       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
- * 			       . ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
- * 			       . ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
- * 			       . ' WHERE pt1.project_id = '.$this->projectid
- * 			       . ' AND published=1 '
- * 			       . ' AND alt_decision=0 '
- * 			       . ' AND t2.id =  '. $this->team->id
- * 			       . ' AND team2_result > team1_result '
- * 				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
- * 			       . ' ORDER BY (team2_result-team1_result) DESC '
- *            ;
-
- *     		$this->_db->setQuery($query, 0, 1);
- *     		$this->highest_away = $this->_db->loadObject( );
- *     	}
- *     	return $this->highest_away;
- *     }
- */
-
-    /**
-     * sportsmanagementModelTeamStats::getHighestDef()
-     * 
-     * @return
-     */
-    function getHighestDef($which)
-    {
-        $option = JRequest::getCmd('option');
-	    $mainframe = JFactory::getApplication();
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('matches.id AS matchid, t1.name AS hometeam');
-            $query->select('t2.name AS guestteam');
-            $query->select('team1_result AS homegoals');
-            $query->select('team2_result AS guestgoals');
-            $query->select('t1.id AS team1_id');
-            $query->select('t2.id AS team2_id');
-        
-        
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as matches ');
-        
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
-           
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-           
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
-        
-        $query->where('pt1.project_id = '.$this->projectid);
-        
-        $query->where('matches.published = 1');
-        $query->where('alt_decision = 0');
-        $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        
-        switch ($which)
-        {
-            case 'HOME':
-            $query->where('t1.id = '. $this->team->id);
-            $query->where('team2_result > team1_result');
-            $query->order('(team2_result-team1_result) DESC');
-            break;
-            case 'AWAY':
-            $query->where('t2.id = '. $this->team->id);
-            $query->where('team1_result > team2_result');
-            $query->order('(team1_result-team2_result) DESC');
-            break;
-        }
-        
-        $db->setQuery($query, 0, 1);
-        
-        
-        
-/*        
-        
-    	if ( is_null( $this->highestdef_home ) )
-    	{
-				$query = ' SELECT matches.id AS matchid, t1.name AS hometeam, '
-			       . ' t2.name AS guestteam, '
-			       . ' team1_result AS homegoals, '
-			       . ' team2_result AS guestgoals, '
-			       . ' t1.id AS team1_id, '
-			       . ' t2.id AS team2_id '
-			       . ' FROM #__joomleague_match as matches '
-			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-			       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-			       . ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-			       . ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-			       . ' WHERE pt1.project_id = '.$this->projectid
-			       . ' AND published=1 '
-			       . ' AND alt_decision=0 '
-			       . ' AND t1.id =  '. $this->team->id
-			       . ' AND team2_result > team1_result '
-				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
-			       . ' ORDER BY (team2_result-team1_result)  DESC '
-           ;
-
-    		$this->_db->setQuery($query, 0, 1);
-    		$this->highestdef_home = $this->_db->loadObject( );
-    	}
-*/        
-        
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-        switch ($which)
-        {
-            case 'HOME':
-            if ( is_null( $this->highestdef_home ) )
-		    {
-		      $this->highestdef_home = $db->loadObject( );
-              return $this->highestdef_home;
-		    }
-            break;
-            case 'AWAY':
-            if ( is_null( $this->highestdef_away ) )
-		    {
-		      $this->highestdef_away = $db->loadObject( );
-              return $this->highestdef_away;
-		    }
-            break;
-        }
-        
-        if ( !$this->highestdef_home || !$this->highestdef_away)
-        {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        
-        
-        
-    	//return $this->highestdef_home;
-    }
-
-    /**
-     * sportsmanagementModelTeamStats::getHighestDefAway()
-     * 
-     * @return
-     */
-/**
- *     function getHighestDefAway( )
- *     {
- *     	if ( is_null( $this->highestdef_away ) )
- *     	{
- * 				$query = ' SELECT matches.id AS matchid, t1.name AS hometeam, '
- * 			       . ' t2.name AS guestteam, '
- * 			       . ' team1_result AS homegoals, '
- * 			       . ' team2_result AS guestgoals, '
- * 			       . ' t1.id AS team1_id, '
- * 			       . ' t2.id AS team2_id '
- * 			       . ' FROM #__joomleague_match as matches '
- * 			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
- * 			       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
- * 			       . ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
- * 			       . ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
- * 			       . ' WHERE pt1.project_id = '.$this->projectid
- * 			       . ' AND published=1 '
- * 			       . ' AND alt_decision=0 '
- * 			       . ' AND t2.id =  '. $this->team->id
- * 			       . ' AND team1_result > team2_result '
- * 				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
- * 			       . ' ORDER BY (team1_result-team2_result)  DESC '
- *            ;
- *     		$this->_db->setQuery($query, 0, 1);
- *     		$this->highestdef_away = $this->_db->loadObject( );
- *     	}
- *     	return $this->highestdef_away;
- *     }
- */
-
-    /**
-     * sportsmanagementModelTeamStats::getHighestDrawAway()
-     * 
-     * @return
-     */
-/**
- *     function getHighestDrawAway( )
- *     {
- *     	if ( is_null( $this->highestdraw_away ) )
- *     	{
- *     		$query = ' SELECT t1.name AS hometeam, '
- *     		. ' t2.name AS guestteam, '
- *     		. ' team1_result AS homegoals, '
- *     		. ' team2_result AS guestgoals '
- *     		. ' FROM #__joomleague_match as matches '
- *     		. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
- *     		. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
- *     		. ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
- *     		. ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
- *     		. ' WHERE pt1.project_id = '.$this->projectid
- *     		. ' AND published=1 '
- *     		. ' AND alt_decision=0 '
- *     		. ' AND t2.id =  '. $this->team->id
- *     		. ' AND team1_result = team2_result '
- *     		. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
- *     		. ' ORDER BY team2_result DESC '
- *     		;
- *     		$this->_db->setQuery($query, 0, 1);
- *     		$this->highestdraw_away = $this->_db->loadObject( );
- *     	}
- *     	return $this->highestdraw_away;
- *         
- *         
- *         
- *         
- *         
- *     }
- */
-    
-    /**
-     * sportsmanagementModelTeamStats::getHighestDrawHome()
-     * 
-     * @return
-     */
-    function getHighestDraw($which)
-    {
-        $option = JRequest::getCmd('option');
-	    $mainframe = JFactory::getApplication();
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('t1.name AS hometeam');
-            $query->select('t2.name AS guestteam');
-            $query->select('team1_result AS homegoals');
-            $query->select('team2_result AS guestgoals');
-            $query->select('t1.id AS team1_id');
-            $query->select('t2.id AS team2_id');
-        
-        
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as matches ');
-        
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
-           
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-           
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
-        
-        $query->where('pt1.project_id = '.$this->projectid);
-        $query->where('matches.published = 1');
-        $query->where('alt_decision = 0');
-        $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        
-        switch ($which)
-        {
-            case 'HOME':
-            $query->where('t1.id = '. $this->team->id);
+            case 'DRAW':
             $query->where('team2_result = team1_result');
             $query->order('team1_result DESC');
             break;
+            }
+            
+            break;
+            
             case 'AWAY':
             $query->where('t2.id = '. $this->team->id);
+            
+            switch ($which)
+            {
+            case 'WIN':
+            $query->where('team2_result > team1_result');
+            $query->order('(team2_result-team1_result) DESC');
+            break;
+            case 'DEF':
+            $query->where('team1_result > team2_result');
+            $query->order('(team1_result-team2_result) DESC');
+            break;
+            case 'DRAW':
             $query->where('team1_result = team2_result');
             $query->order('team2_result DESC');
             break;
+            }
+                        
+            break;
         }
-        
-        $db->setQuery($query, 0, 1);
-        
 
-
-
-/*
-    	if ( is_null( $this->highestdraw_home ) )
-    	{
-    		$query = ' SELECT t1.name AS hometeam, '
-    		. ' t2.name AS guestteam, '
-    		. ' team1_result AS homegoals, '
-    		. ' team2_result AS guestgoals '
-    		. ' FROM #__joomleague_match as matches '
-    		. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-    		. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-    		. ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-    		. ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-    		. ' WHERE pt1.project_id = '.$this->projectid
-    		. ' AND published=1 '
-    		. ' AND alt_decision=0 '
-    		. ' AND t1.id =  '. $this->team->id
-    		. ' AND team2_result = team1_result '
-    		. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
-    		. ' ORDER BY team1_result DESC '
-    		;
-    
-    		$this->_db->setQuery($query, 0, 1);
-    		$this->highestdraw_home = $this->_db->loadObject( );
-    	}
-    	return $this->highestdraw_home;
-*/        
-        
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-        switch ($which)
+            $db->setQuery($query, 0, 1);
+            
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            case 'HOME':
-            if ( is_null( $this->highestdraw_away ) )
-		    {
-		      $this->highestdraw_away = $db->loadObject( );
-              return $this->highestdraw_away;
-		    }
-            break;
-            case 'AWAY':
-            if ( is_null( $this->highestdraw_home ) )
-		    {
-		      $this->highestdraw_home = $db->loadObject( );
-              return $this->highestdraw_home;
-		    }
-            break;
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.$homeaway.' '.$which.   ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
-        if ( !$this->highestdraw_away || !$this->highestdraw_home)
+        $result= $db->loadObject( );
+        
+        if ( !$result )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
+        return $result;
         
         
         
     }
+
     
     /**
      * sportsmanagementModelTeamStats::getNoGoalsAgainst()
@@ -632,7 +293,10 @@ class sportsmanagementModelTeamStats extends JModel
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
         switch ($which)
         {
@@ -657,78 +321,10 @@ class sportsmanagementModelTeamStats extends JModel
     }
     
 
-    /**
-     * sportsmanagementModelTeamStats::getSeasonTotalsHome()
-     * 
-     * @return
-     */
-/**
- *     function getSeasonTotalsHome( )
- *     {
- *     	if ( is_null( $this->totalshome ) )
- *     	{
- *     		$query = ' SELECT '
- * 			       . ' COUNT(matches.id) AS totalmatches, '
- * 			       . ' COUNT(team1_result) AS playedmatches, '
- * 			       . ' IFNULL(SUM(team1_result),0) AS goalsfor, '
- * 			       . ' IFNULL(SUM(team2_result),0) AS goalsagainst, '
- * 			       . ' IFNULL(SUM(team1_result + team2_result),0) AS totalgoals, '
- * 			       . ' IFNULL(SUM(IF(team1_result=team2_result,1,0)),0) AS totaldraw, '
- * 			       . ' IFNULL(SUM(IF(team1_result<team2_result,1,0)),0) AS totalloss, '
- * 			       . ' IFNULL(SUM(IF(team1_result>team2_result,1,0)),0) AS totalwin, '
- * 			       . ' COUNT(crowd) AS attendedmatches, '
- * 			       . ' SUM(crowd) AS sumspectators '
- * 			       . ' FROM #__joomleague_match AS matches'
- * 			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
- * 			       . ' WHERE pt1.project_id = '.$this->projectid
- * 			       . ' AND published=1 '
- * 			       . ' AND pt1.team_id = '.$this->team->id
- * 				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
- * 			       ;
- *     		$this->_db->setQuery($query, 0, 1);
- *     		$this->totalshome = $this->_db->loadObject();
- *     	}
- *     	return $this->totalshome;
- *     }
- */
+    
+    
+    
 
-      
-    
-    
-    /**
-     * sportsmanagementModelTeamStats::getSeasonTotalsAway()
-     * 
-     * @return
-     */
-/**
- *     function getSeasonTotalsAway( )
- *     {
- *     	if ( is_null( $this->totalsaway ) )
- *     	{
- *     		$query = ' SELECT '
- * 			       . ' COUNT(matches.id) AS totalmatches, '
- * 			       . ' COUNT(team1_result) AS playedmatches, '
- * 			       . ' IFNULL(SUM(team2_result),0) AS goalsfor, '
- * 			       . ' IFNULL(SUM(team1_result),0) AS goalsagainst, '
- * 			       . ' IFNULL(SUM(team1_result + team2_result),0) AS totalgoals, '
- * 			       . ' IFNULL(SUM(IF(team2_result=team1_result,1,0)),0) AS totaldraw, '
- * 			       . ' IFNULL(SUM(IF(team2_result<team1_result,1,0)),0) AS totalloss, '
- * 			       . ' IFNULL(SUM(IF(team2_result>team1_result,1,0)),0) AS totalwin, '
- *     				. ' COUNT(crowd) AS attendedmatches, '
- * 			       . ' SUM(crowd) AS sumspectators '
- * 			       . ' FROM #__joomleague_match AS matches'
- * 			       . ' INNER JOIN #__joomleague_project_team pt ON pt.id = matches.projectteam2_id '
- * 			       . ' WHERE pt.project_id = '.$this->projectid
- * 			       . ' AND published=1 '
- * 			       . ' AND pt.team_id = '.$this->team->id
- * 				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
- * 			       ;
- *     		$this->_db->setQuery($query, 0, 1);
- *     		$this->totalsaway = $this->_db->loadObject();
- *     	}
- *     	return $this->totalsaway;
- *     }
- */
 
     
 		/**
@@ -768,29 +364,14 @@ class sportsmanagementModelTeamStats extends JModel
         $query->group('rounds.roundcode');   
 
 
-/*        
-			$query = ' SELECT rounds.id, '
-			       . ' SUM(CASE WHEN pt1.team_id ='.$this->teamid.' THEN matches.team1_result ELSE matches.team2_result END) AS goalsfor, '
-			       . ' SUM(CASE WHEN pt1.team_id ='.$this->teamid.' THEN matches.team2_result ELSE matches.team1_result END) AS goalsagainst, '
-			       . ' rounds.roundcode '
-			       . ' FROM #__joomleague_round AS rounds '
-			       . ' INNER JOIN #__joomleague_match AS matches ON rounds.id = matches.round_id '
-			       . ' INNER JOIN #__joomleague_project_team AS pt1 ON pt1.id = matches.projectteam1_id '
-			       . ' INNER JOIN #__joomleague_project_team AS pt2 ON pt2.id = matches.projectteam2_id '
-			       . ' WHERE rounds.project_id = '.$this->projectid
-			       . '   AND ((pt1.team_id ='.$this->teamid.' ) '
-			       . '     OR (pt2.team_id ='.$this->teamid.' )) '
-				   . '   AND (matches.cancel IS NULL OR matches.cancel = 0)'
-//			       . '   AND team1_result IS NOT NULL '
-			       . ' GROUP BY rounds.roundcode'
-			       ;
-*/                   
-                   
                    
     		$db->setQuery( $query );
     		$this->matchdaytotals = $db->loadObjectList();
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            }
             
             if ( !$this->matchdaytotals )
         {
@@ -840,29 +421,13 @@ class sportsmanagementModelTeamStats extends JModel
            $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
            $query->group('rounds.roundcode');
         
-
-
-/*    	   
-    		$query = ' SELECT rounds.id, '
-			       . ' COUNT(matches.round_id) AS totalmatchespd, '
-			       . ' COUNT(matches.id) as playedmatchespd, '
-			       . ' SUM(matches.team1_result) AS homegoalspd, '
-			       . ' SUM(matches.team2_result) AS guestgoalspd, '
-			       . ' rounds.roundcode '
-			       . ' FROM #__joomleague_round AS rounds '
-			       . ' INNER JOIN #__joomleague_match AS matches ON rounds.id = matches.round_id '
-			       . ' INNER JOIN #__joomleague_project_team AS pt1 ON pt1.id = matches.projectteam1_id '
-			       . ' INNER JOIN #__joomleague_project_team AS pt2 ON pt2.id = matches.projectteam2_id '
-			       . ' WHERE rounds.project_id = '.$this->projectid
-			       . '   AND ((pt1.team_id ='.$this->teamid.' ) '
-			       . '     OR (pt2.team_id ='.$this->teamid.' )) '
-			       . ' GROUP BY rounds.roundcode'
-				   . '   AND (matches.cancel IS NULL OR matches.cancel = 0)'
-			       ;
-*/                   
+            
     		$db->setQuery( $query );
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+         }
             
     		$this->matchdaytotals = $db->loadObjectList();
             
@@ -904,7 +469,11 @@ class sportsmanagementModelTeamStats extends JModel
             $this->totalrounds = $db->loadResult();
         }
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+        
         if ( !$this->totalrounds )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -941,22 +510,15 @@ class sportsmanagementModelTeamStats extends JModel
         $query->where('matches.crowd > 0 ');
         $query->where('matches.published = 1');
 
-/*
-				$query = ' SELECT matches.crowd '
-				       . ' FROM #__joomleague_match AS matches '
-				       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-				       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-				       . ' LEFT JOIN #__joomleague_playground AS playground ON pt1.standard_playground = playground.id '
-				       . ' WHERE pt1.team_id = '.$this->teamid
-				       . '   AND matches.crowd > 0 '
-				       . '   AND matches.published=1 '
-				       ;
-*/                       
+                       
     		$db->setQuery( $query );
     		$this->attendanceranking = $db->loadResultArray();
     	}
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
             
     	         
         if ( !$this->attendanceranking )
@@ -1076,26 +638,15 @@ class sportsmanagementModelTeamStats extends JModel
         $query->where('(m.team1_result IS NOT NULL OR m.alt_decision > 0)');
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
            
-        
-/*        
-		$query = ' SELECT m.id, m.projectteam1_id, m.projectteam2_id, pt1.team_id AS team1_id, pt2.team_id AS team2_id, '
-		       . ' m.team1_result, m.team2_result, '
-		       . ' m.alt_decision, m.team1_result_decision, m.team2_result_decision '
-		       . ' FROM #__joomleague_match AS m '
-		       . ' INNER JOIN #__joomleague_project_team AS pt1 ON pt1.id = m.projectteam1_id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt2 ON pt2.id = m.projectteam2_id '
-		       . ' WHERE m.published = 1 '
-		       . '   AND pt1.project_id = '. $this->_db->Quote($this->projectid)
-		       . '   AND (pt1.team_id = '. $this->_db->Quote($this->teamid) . ' OR pt2.team_id = '. $this->_db->Quote($this->teamid) . ')'
-		       . '   AND (m.team1_result IS NOT NULL OR m.alt_decision > 0)'
-			   . '   AND (m.cancel IS NULL OR m.cancel = 0)'
-		       ;
-*/
+
 
 		$db->setQuery($query);
         $matches = $db->loadObjectList();
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
             
     	         
         if ( !$matches )

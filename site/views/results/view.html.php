@@ -52,6 +52,7 @@ class sportsmanagementViewResults extends JView
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
         
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
@@ -66,7 +67,14 @@ class sportsmanagementViewResults extends JView
 		sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
-		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
+        
+        sportsmanagementModelPagination::pagenav($project);
+		$mdlPagination = JModel::getInstance("Pagination","sportsmanagementModel");
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
+        
 		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
@@ -166,6 +174,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 		parent::display($tpl);
 	}

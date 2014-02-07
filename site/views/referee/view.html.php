@@ -48,6 +48,7 @@ class sportsmanagementViewReferee extends JView
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
+        $option = JRequest::getCmd('option');
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$person = sportsmanagementModelPerson::getPerson();
@@ -85,6 +86,9 @@ class sportsmanagementViewReferee extends JView
 		}
 
 		$document->setTitle($titleStr);
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
         
         //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 

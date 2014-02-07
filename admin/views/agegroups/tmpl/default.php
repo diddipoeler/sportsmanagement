@@ -96,8 +96,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id='.$row->id);
-					$checked=JHtml::_('grid.checkedout',$row,$i);
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id='.$row->id);
+					$checked = JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>

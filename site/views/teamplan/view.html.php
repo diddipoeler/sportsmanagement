@@ -113,6 +113,10 @@ class sportsmanagementViewTeamPlan extends JView
 			if ((isset($this->project)) && $this->ptid){$pageTitle=$this->teams[$this->ptid]->name;}else{$pageTitle='';}
 		}
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
+        
+        $view = JRequest::getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 
 		parent::display($tpl);
 	}
