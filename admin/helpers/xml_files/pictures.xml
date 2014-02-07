@@ -16,5 +16,13 @@
 <pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="stormarn.zip">Wappen Stormarn</picture></pictures>
 
 
+<pictures><picture folder="Flaggen" directory="flags" file="flags.zip">Flaggen</picture></pictures>
+
+<pictures><picture folder="Icons und sonstiges" directory="associations" file="associations.zip">Logos Landesverbände</picture></pictures>
+<pictures><picture folder="Icons und sonstiges" directory="agegroups" file="agegroups.zip">Altersgruppen</picture></pictures>
+
+<pictures><picture folder="Icons und sonstiges" directory="events" file="soccer.zip">Ereignisse Fußball</picture></pictures>
+<pictures><picture folder="Icons und sonstiges" directory="events" file="handball.zip">Ereignisse Handball</picture></pictures>
+<pictures><picture folder="Icons und sonstiges" directory="events" file="hockey.zip">Ereignisse Hockey</picture></pictures>
 
 </structur>
