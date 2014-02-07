@@ -18,11 +18,11 @@
 
 <pictures><picture folder="Flaggen" directory="flags" file="flags.zip">Flaggen</picture></pictures>
 
-<pictures><picture folder="Icons_und_sonstiges" directory="associations" file="associations.zip">Logos Landesverbände</picture></pictures>
-<pictures><picture folder="Icons_und_sonstiges" directory="agegroups" file="agegroups.zip">Altersgruppen</picture></pictures>
+<pictures><picture folder="Sonstiges" directory="associations" file="associations.zip">Logos Landesverbände</picture></pictures>
+<pictures><picture folder="Sonstiges" directory="agegroups" file="agegroups.zip">Altersgruppen</picture></pictures>
 
-<pictures><picture folder="Icons_und_sonstiges" directory="events" file="soccer.zip">Ereignisse Fußball</picture></pictures>
-<pictures><picture folder="Icons_und_sonstiges" directory="events" file="handball.zip">Ereignisse Handball</picture></pictures>
-<pictures><picture folder="Icons_und_sonstiges" directory="events" file="hockey.zip">Ereignisse Hockey</picture></pictures>
+<pictures><picture folder="Sonstiges" directory="events" file="soccer.zip">Ereignisse Fußball</picture></pictures>
+<pictures><picture folder="Sonstiges" directory="events" file="handball.zip">Ereignisse Handball</picture></pictures>
+<pictures><picture folder="Sonstiges" directory="events" file="hockey.zip">Ereignisse Hockey</picture></pictures>
 
 </structur>
