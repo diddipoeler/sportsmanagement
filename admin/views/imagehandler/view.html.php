@@ -26,6 +26,7 @@ class sportsmanagementViewImagehandler extends JView  {
 	{
 		$mainframe	= JFactory::getApplication();
 		$document = JFactory::getDocument();
+        $uri = JFactory::getURI();
 
 
 		if($this->getLayout() == 'upload') {
@@ -53,6 +54,8 @@ class sportsmanagementViewImagehandler extends JView  {
 		//get images
 		$images 	= $this->get('Images');
 		$pageNav 	= $this->get('Pagination');
+        
+        $this->assign('request_url',$uri->toString());
 
 		if (count($images) > 0 || $search) {
 			$this->assignRef('images', 	$images);

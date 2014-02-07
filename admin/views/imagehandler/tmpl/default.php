@@ -11,10 +11,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 // no direct access
-
 defined('_JEXEC') or die('Restricted access');
+
+JHTML::_('behavior.mootools');
+
 ?>
-<form action="<?php JRequest::getURI(); ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="imghead">
 
 	<?php echo JText::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
