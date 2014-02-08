@@ -33,7 +33,7 @@ $row =& $this->files[$i];
 $checked = JHtml::_('grid.checkedout',$row,$i);
 ?>
 <tr class="<?php echo "row$k"; ?>">
-<td class="center"><?php echo $i; ?></td>
+<td class="center"><?php echo ($i +1); ?></td>
 <td class="center"><?php echo $checked; ?></td>
 <td><?php echo $row->picture; ?></td>
 <input type='hidden' name='picture[<?php echo $i; ?>]' value='<?php echo $row->picture; ?>' />
