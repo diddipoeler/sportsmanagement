@@ -10,7 +10,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
 
-<table>
+<table width="100%">
 <thead>
 				<tr>
 					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
