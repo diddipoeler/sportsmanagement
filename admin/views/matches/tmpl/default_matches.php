@@ -178,17 +178,18 @@ fieldset button {
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE').'"');
 									?>
 								</a>
-							</td>
+                                
               <?php
 							// diddipoeler einzelsportart
             
-            if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
+            //if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
+            if ( $this->projectws->project_art_id == 2 )
             {
             
 							?>
-              <td style="text-align:center; ">
+              
 							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&task=jlextindividualsport.jlexteditsinglematches&tmpl=component&cid[]=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>"
+									href="index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>&rid=<?php echo $row->round_id; ?>  "
 									 class="modal"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
 									 <?php
@@ -202,10 +203,14 @@ fieldset button {
 										
 									 									 ?>
 								</a>
-							</td>
+							
               <?php
             }
-            ?>
+            ?>                  
+                                
+                                
+							</td>
+              
 							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
 										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox" />

@@ -94,7 +94,10 @@ class sportsmanagementViewMatches extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+        }
         
         $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($this->rid);;

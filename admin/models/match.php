@@ -177,7 +177,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');

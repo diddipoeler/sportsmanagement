@@ -183,7 +183,8 @@ class sportsmanagementModelperson extends JModelAdmin
 			$tblPerson->deathday	= $post['deathday'.$pks[$x]];
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
-			if(!$tblPerson->store()) {
+			if(!$tblPerson->store()) 
+            {
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
@@ -204,8 +205,9 @@ class sportsmanagementModelperson extends JModelAdmin
     $option = JRequest::getCmd('option');
 	$mainframe	= JFactory::getApplication();  
     $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );;
-    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );;
+    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );
+    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
+    $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
     $cid = $post['cid'];
           
     $mdlPerson = JModel::getInstance("person", "sportsmanagementModel");
@@ -215,18 +217,22 @@ class sportsmanagementModelperson extends JModelAdmin
     switch ($post['type'])
             {
                 case 0:
-                $mdl = JModel::getInstance("teamplayer", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
                 $mdlPersonTable->load($cid[$x]);    
                 $mdlTable = $mdl->getTable();
-                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->team_id = $this->_team_id;
+                $mdlTable->season_id = $this->_season_id;
+                $mdlTable->persontype = 1;
                 $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -235,18 +241,22 @@ class sportsmanagementModelperson extends JModelAdmin
 		        }
                 break;
                 case 1:
-                $mdl = JModel::getInstance("teamstaff", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
                 $mdlPersonTable->load($cid[$x]); 
                 $mdlTable = $mdl->getTable();
-                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->team_id = $this->_team_id;
+                $mdlTable->season_id = $this->_season_id;
+                $mdlTable->persontype = 2;
                 $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -254,8 +264,9 @@ class sportsmanagementModelperson extends JModelAdmin
                  
 		        }
                 break;
+                /*
                 case 2:
-                $mdl = JModel::getInstance("projectreferee", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -266,6 +277,7 @@ class sportsmanagementModelperson extends JModelAdmin
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -273,6 +285,7 @@ class sportsmanagementModelperson extends JModelAdmin
                  
 		        }
                 break;
+                */
                 
             }
     

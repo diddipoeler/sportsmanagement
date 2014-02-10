@@ -63,7 +63,7 @@ class sportsmanagementModelPersons extends JModelList
         if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE && JRequest::getVar('layout') == 'assignplayers' )
         {
             $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = pl.id');
-            $query->where('sp.season_id = '.$this->_season_id.'');
+            $query->where('sp.season_id = '.$this->_season_id);
         }
         
         if ($search || $search_nation)
@@ -76,28 +76,52 @@ class sportsmanagementModelPersons extends JModelList
             switch ($this->_type)
             {
                 case 0:
-                $Subquery->select('person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ');
-                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND tp.person_id = pl.id');
+                $Subquery->select('stp.person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
+                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
+                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->where('stp.season_id = '.$this->_season_id);
+                $Subquery->where('stp.persontype = 1');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 1:
-                $Subquery->select('person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
-                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND ts.person_id = pl.id');
+                $Subquery->select('stp.person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
+                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
+                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->where('stp.season_id = '.$this->_season_id);
+                $Subquery->where('stp.persontype = 2');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
+                
+//                $Subquery->select('person_id');
+//                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
+//                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND ts.person_id = pl.id');
+//                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 2:
-                $Subquery->select('person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
-                $Subquery->where('project_id = '.$this->_project_id.' AND pr.person_id = pl.id');
+                $Subquery->select('stp.person_id');
+                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
+                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
+                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->where('stp.season_id = '.$this->_season_id);
+                $Subquery->where('stp.persontype = 3');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
+                
+//                $Subquery->select('person_id');
+//                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
+//                $Subquery->where('project_id = '.$this->_project_id.' AND pr.person_id = pl.id');
+//                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 
             }
             
             
         }
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$query->order(self::_buildContentOrderBy());
         

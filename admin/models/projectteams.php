@@ -81,7 +81,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		
         
         // Select some fields
-		$query->select('tl.id AS projectteamid,tl.*');
+		$query->select('tl.id AS projectteamid,tl.*,st.team_id as team_id');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
