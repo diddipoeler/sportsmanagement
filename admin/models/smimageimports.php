@@ -16,6 +16,9 @@ function getimagesxml()
 		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
 		//Parsen
 		$doc = DOMDocument::loadXML($content);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        
         $doc->save(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml');
     
 }
