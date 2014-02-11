@@ -30,7 +30,9 @@ class sportsmanagementModelPersons extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $this->_type = JRequest::getInt('type');
+        //$this->_type = JRequest::getInt('type');
+        $this->_type	= $mainframe->getUserState( "$option.persontype", '0' );
+         
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );
         $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
@@ -76,7 +78,7 @@ class sportsmanagementModelPersons extends JModelList
         {
             switch ($this->_type)
             {
-                case 0:
+                case 1:
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
@@ -86,7 +88,7 @@ class sportsmanagementModelPersons extends JModelList
                 $Subquery->where('stp.persontype = 1');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
-                case 1:
+                case 2:
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
@@ -101,7 +103,7 @@ class sportsmanagementModelPersons extends JModelList
 //                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND ts.person_id = pl.id');
 //                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
-                case 2:
+                case 3:
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
