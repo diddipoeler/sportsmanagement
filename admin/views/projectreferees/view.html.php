@@ -115,7 +115,10 @@ class sportsmanagementViewprojectreferees extends JView
 	 */
 	protected function addToolbar()
 	{
-		
+	
+	$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+	 $mainframe->setUserState( "$option.persontype", $this->_persontype );	
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
