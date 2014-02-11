@@ -38,13 +38,14 @@ class sportsmanagementModelPersons extends JModelList
         $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _type<br><pre>'.print_r($this->_type,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery search<br><pre>'.print_r($search,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons getListQuery _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _type<br><pre>'.print_r($this->_type,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' search<br><pre>'.print_r($search,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
         
+
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
