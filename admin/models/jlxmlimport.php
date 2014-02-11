@@ -653,6 +653,25 @@ class sportsmanagementModelJLXMLImport extends JModel
             }
             }
             
+            if ( isset($this->_datas['parentposition']) )
+            {
+            foreach ($this->_datas['parentposition'] as $position)
+            {
+                $position->name = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option).'_'.$sport_type_name, $position->name);
+                if ( $result )
+                {
+                    foreach ( $result as $pos )
+                    {
+                        if ( $position->name == JText::_($pos->name) )
+                        {
+                            $position->name = $pos->name;
+                            $position->alias = $pos->alias;
+                        }
+                    }
+                }
+            }
+            }
+            
             
             
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
