@@ -71,7 +71,7 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
 							<?php
                             }
-							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&pid='.$this->project->id);
+							$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid='.$this->project->id);
 							$text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees);
 							$imageFile='projektschiedsrichter.png';
 							$linkParams="<span>$text</span>&nbsp;";
