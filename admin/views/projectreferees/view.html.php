@@ -69,7 +69,11 @@ class sportsmanagementViewprojectreferees extends JView
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-        
+         $this->_persontype = JRequest::getVar('persontype');
+        if ( empty($this->_persontype) )
+        {
+            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
+        }
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
