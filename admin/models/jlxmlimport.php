@@ -608,7 +608,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_league_new_country,true).'</pre>'   ),'');
             
             // textelemente bereinigen
-            $this->_datas['sportstype']->name = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option), $this->_datas['sportstype']->name);
+            $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
             
             // ereignisse um die textelemente bereinigen
@@ -619,7 +619,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sport_type_name<br><pre>'.print_r($sport_type_name,true).'</pre>'   ),'');
             foreach ($this->_datas['event'] as $event)
             {
-                $event->name = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option).'_'.$sport_type_name, $event->name);
+                $event->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $event->name);
             }
             }
             //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
@@ -638,7 +638,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
             foreach ($this->_datas['position'] as $position)
             {
-                $position->name = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option).'_'.$sport_type_name, $position->name);
+                $position->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $position->name);
                 if ( $result )
                 {
                     foreach ( $result as $pos )
@@ -657,7 +657,7 @@ class sportsmanagementModelJLXMLImport extends JModel
             {
             foreach ($this->_datas['parentposition'] as $position)
             {
-                $position->name = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option).'_'.$sport_type_name, $position->name);
+                $position->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $position->name);
                 if ( $result )
                 {
                     foreach ( $result as $pos )
