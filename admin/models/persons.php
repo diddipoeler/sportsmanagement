@@ -83,7 +83,7 @@ class sportsmanagementModelPersons extends JModelList
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
                 //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->where('st.team_id = '.$this->_team_id);
                 $Subquery->where('stp.season_id = '.$this->_season_id);
                 $Subquery->where('stp.persontype = 1');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
@@ -93,7 +93,7 @@ class sportsmanagementModelPersons extends JModelList
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
                 //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->where('st.team_id = '.$this->_team_id);
                 $Subquery->where('stp.season_id = '.$this->_season_id);
                 $Subquery->where('stp.persontype = 2');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
