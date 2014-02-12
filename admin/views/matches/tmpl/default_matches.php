@@ -353,7 +353,33 @@ fieldset button {
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="inputbox" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="inputbox" />
-								<a	href="javascript:void(0)"
+								
+                                <?PHP
+                                if ( $this->projectws->project_art_id == 2 )
+                                {
+                                ?>
+                                <br />MP
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_matchpoint<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_matchpoint<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" />
+                                
+                                <br />MS
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_sets<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_sets; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_sets<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_sets; ?>" size="2" tabindex="5" class="inputbox" />
+                                
+                                <br />MG
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_games<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_games; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_games<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_games; ?>" size="2" tabindex="5" class="inputbox" />                
+                                <?PHP
+                                }
+                                ?>
+                                
+                                <a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
 									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),

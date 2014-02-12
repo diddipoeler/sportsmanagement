@@ -293,6 +293,9 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $rowmatch->team1_result = $temp->team1_result;
         $rowmatch->team2_result = $temp->team2_result;
         
+        $rowmatch->team1_single_matchpoint = $temp->team1_result;
+        $rowmatch->team2_single_matchpoint = $temp->team2_result;
+        
         $rowmatch->team1_single_sets = $temp->team1_single_sets;
         $rowmatch->team2_single_sets = $temp->team2_single_sets; 
         
