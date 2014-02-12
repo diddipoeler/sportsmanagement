@@ -24,7 +24,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
 			size="90"
-			required="true"/>		
+			required=""/>		
 		<field
 			name="nickname"
 			type="text"

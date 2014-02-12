@@ -90,6 +90,8 @@ class sportsmanagementViewjlextindividualsportes extends JView
 		$projectteam1_id		= JRequest::getvar('team1', 0);
 		$projectteam2_id		= JRequest::getvar('team2', 0);
         
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
+        
         $matches = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -137,8 +139,36 @@ class sportsmanagementViewjlextindividualsportes extends JView
         
         $this->assignRef('projectws',$projectws);
         $this->assignRef('roundws',$roundws);
-        $this->assign('getHomePlayer',$model->getPlayer($projectteam1_id,$project_id));
-        $this->assign('getAwayPlayer',$model->getPlayer($projectteam2_id,$project_id));
+        
+        if ( $result = $model->getPlayer($projectteam1_id,$project_id) )
+        {
+        $this->assign('getHomePlayer',$model->getPlayer($projectteam1_id,$project_id));    
+        }
+        else
+        {
+            $tempplayer = new stdClass();
+            $tempplayer->value = 0;
+            $tempplayer->text = 'TempPlayer';
+            $exportplayer[] = $tempplayer;
+            $this->assign('getHomePlayer',$exportplayer);
+        }
+        
+        if ( $result = $model->getPlayer($projectteam2_id,$project_id) )
+        {
+        $this->assign('getAwayPlayer',$model->getPlayer($projectteam2_id,$project_id));    
+        }
+        else
+        {
+            $tempplayer = new stdClass();
+            $tempplayer->value = 0;
+            $tempplayer->text = 'TempPlayer';
+            $exportplayer[] = $tempplayer;
+            $this->assign('getAwayPlayer',$exportplayer);
+        }
+        
+        // table ordering
+		$lists['order_Dir']=$filter_order_Dir;
+		$lists['order']=$filter_order;
         
         $this->assignRef('lists',$lists);
 

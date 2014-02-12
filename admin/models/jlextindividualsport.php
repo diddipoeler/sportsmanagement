@@ -146,13 +146,16 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
+        $match_id = $post['match_id'];
         
-        
-//        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         
         $result=true;
@@ -178,7 +181,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             
 
             
-            $tblMatch = & $this->getTable();
+            $tblMatch = self::getTable();
 			$tblMatch->id = $pks[$x];
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
             $tblMatch->match_date = $post['match_date'.$pks[$x]];
@@ -189,13 +192,13 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             
-//            if ( $post['use_legs'] )
-//            {
-                $tblMatch->team1_result	= '';
-                $tblMatch->team2_result	= '';   
+
+                 $tblMatch->team1_result	= NULL;
+                 $tblMatch->team2_result	= NULL;
+                        
                 foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
                 {
-                    if ( $post['team1_result_split'.$pks[$x]][$key] != '' )
+                    if ( $post['team1_result_split'.$pks[$x]][$key] != '' && $post['team2_result_split'.$pks[$x]][$key] != ''  )
                     {
                         if ( $post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] )
                         {
@@ -213,19 +216,13 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                             $tblMatch->team2_result	+= 1; 
                         }
                     }
+                    else
+                    {
+//                        $tblMatch->team1_result	= NULL;
+//                        $tblMatch->team2_result	= NULL;  
+                    }
                 }
-//            }
-//            else
-//            {
-//            
-//            if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
-//            {    
-//            $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
-//            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
-//            }
-//                
-//            }
-            
+
             
             $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
@@ -236,7 +233,79 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
+            else
+            {
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($tblMatch,true).'</pre>'),'');
+            }
 		}
+        
+        // alles ok
+        // jetzt die einzelergebnisse zum hauptspiel addieren 
+        // Select some fields
+		$query->select('mc.*');
+		// From the hello table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+        $query->where('mc.match_id = '.$match_id);
+        $db->setQuery($query);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		$result = $db->loadObjectList();
+        $temp = new stdClass();
+        foreach ( $result as $row )
+        {
+            if ( $row->team1_result > $row->team2_result )
+            {
+            $temp->team1_result	+= 1;
+            $temp->team2_result	+= 0; 
+            }
+            if ( $row->team1_result < $row->team2_result )
+            {
+            $temp->team1_result	+= 0;
+            $temp->team2_result	+= 1; 
+            }
+            if ( $row->team1_result == $row->team2_result )
+            {
+            $temp->team1_result	+= 1;
+            $temp->team2_result	+= 1; 
+            }
+            
+            $temp->team1_single_sets	+= $row->team1_result;
+            $temp->team2_single_sets	+= $row->team2_result;  
+            
+            $team1_result_split	= explode(";",$row->team1_result_split);
+            $team2_result_split	= explode(";",$row->team2_result_split);  
+            
+            foreach ( $team1_result_split as $key => $value )
+            {
+                $temp->team1_single_games	+= $value;
+            }
+            foreach ( $team2_result_split as $key => $value )
+            {
+                $temp->team2_single_games	+= $value;
+            }
+            
+            
+        }
+        
+        $rowmatch = JTable::getInstance( 'match', 'sportsmanagementTable' );
+        $rowmatch->load($match_id);
+        $rowmatch->team1_result = $temp->team1_result;
+        $rowmatch->team2_result = $temp->team2_result;
+        
+        $rowmatch->team1_single_sets = $temp->team1_single_sets;
+        $rowmatch->team2_single_sets = $temp->team2_single_sets; 
+        
+        $rowmatch->team1_single_games = $temp->team1_single_games;
+        $rowmatch->team2_single_games = $temp->team2_single_games;
+        if(!$rowmatch->store()) 
+            {
+			}
+            else
+            {
+            }    
+            
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
         
         // Proceed with the save
 		//return parent::save($data);

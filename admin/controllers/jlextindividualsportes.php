@@ -43,8 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
+
 /**
- * SportsManagements Controller
+ * sportsmanagementControllerjlextindividualsportes
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 {
@@ -66,9 +73,12 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
         
 	   $model = $this->getModel();
        $model->saveshort();
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-       $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
-		$this->setRedirect($link,$msg);
+       
+//       $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
+//		$this->setRedirect($link,$msg);
+        
+        $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
     }
     
     /**
@@ -88,7 +98,7 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
         
        $model = $this->getModel();
        $model->saveshort();
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       
        
        $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
 		$this->setRedirect($link,$msg);

@@ -335,11 +335,10 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         $season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-//$projectteam1_id		= JRequest::getvar('team1', 0);
 
 // Select some fields
 		$query->select('tp.id AS value');
-        $query->select('concat(pl.firstname,pl.nickname,pl.lastname) as text');
+        $query->select('concat(pl.firstname," - ",pl.nickname," - ",pl.lastname) as text');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pl.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');  
@@ -353,23 +352,6 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
         $query->where('pl.published = 1');
         $query->order('pl.lastname ASC');
         
-/*
-  $query='SELECT tpl.id AS value,
-							
-							concat(pl.firstname,
-							pl.nickname,
-							pl.lastname) as text
-							
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.person_id=pl.id
-					
-					WHERE tpl.projectteam_id='. $this->_db->Quote($projectteam1_id).
-					'AND pl.published = 1';
-		$query .= " ORDER BY  pl.lastname ASC ";
-        */
-        
-        
-        
 		$db->setQuery($query);
         $result = $db->loadObjectList(); 
         
@@ -381,30 +363,7 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
 		return $result;
   
   }
-/*
-	function getAwayPlayer()
-	{
- 	$option = JRequest::getCmd('option');
-	$mainframe	=& JFactory::getApplication();
-//  $projectteam_id	= JRequest::getCmd('team2');
-  $projectteam2_id		= $mainframe->getUserState( $option . 'projectteam2_id' );
-  $query='SELECT tpl.id AS value,
-							
-							concat(pl.firstname,
-							pl.nickname,
-							pl.lastname) as text
-							
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.person_id=pl.id
-					
-					WHERE tpl.projectteam_id='. $this->_db->Quote($projectteam2_id).
-					'AND pl.published = 1';
-		$query .= " ORDER BY pl.lastname ASC ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-  
-  }
-*/  
+ 
   function getSportType($id)
   {
   $option = JRequest::getCmd('option');

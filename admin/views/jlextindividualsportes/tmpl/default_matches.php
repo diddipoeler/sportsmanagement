@@ -171,7 +171,7 @@ if($close == 1) {
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="4" class="inputbox" />
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHTML::_(	'image','administrator/components/com_joomleague/assets/images/arrow_open.png',
+									<?php echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
 															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
 									?>
