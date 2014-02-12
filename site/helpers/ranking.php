@@ -39,6 +39,15 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
+/**
+ * JSMRanking
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class JSMRanking
 {
 	/**
@@ -358,12 +367,22 @@ class JSMRanking
 			$shownegpoints = 1;
 
 			$decision = $match->decision;
+            
+                     
 			if ($decision == 0)
 			{
 				$home_score = $match->home_score;
 				$away_score = $match->away_score;
 				$leg1 = $match->l1;
 				$leg2 = $match->l2;
+                
+                $mp1 = $match->mp1;
+				$mp2 = $match->mp2;
+                $se1 = $match->se1;
+				$se2 = $match->se2;
+                $ga1 = $match->ga1;
+				$ga2 = $match->ga2;
+                
 			}
 			else
 			{
@@ -392,12 +411,13 @@ class JSMRanking
 			$draw_points = (isset($arr[1])) ? $arr[1] : 1;
 			$loss_points = (isset($arr[2])) ? $arr[2] : 0;
 
-			$home_ot=$match->home_score_ot;
-			$away_ot=$match->away_score_ot;			
-			$home_so=$match->home_score_so;
-			$away_so=$match->away_score_so;
+			$home_ot = $match->home_score_ot;
+			$away_ot = $match->away_score_ot;			
+			$home_so = $match->home_score_so;
+			$away_so = $match->away_score_so;
 
-			if ($decision!=1) {
+			if ($decision!=1) 
+            {
 				if( $home_score > $away_score )
 				{
 					switch ($resultType) 
@@ -621,12 +641,33 @@ class JSMRanking
 			$home->sum_team2_legs   += $leg2;
 			$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
 
+            $home->sum_team1_matchpoint   += $mp1;
+			$home->sum_team2_matchpoint   += $mp2;
+			$home->diff_team_matchpoint   = $home->sum_team1_matchpoint - $home->sum_team2_matchpoint;
+            $home->sum_team1_sets   += $se1;
+			$home->sum_team2_sets   += $se2;
+			$home->diff_team_sets   = $home->sum_team1_sets - $home->sum_team2_sets;
+            $home->sum_team1_games   += $ga1;
+			$home->sum_team2_games   += $ga2;
+			$home->diff_team_games   = $home->sum_team1_games - $home->sum_team2_games;
+
 			$away->sum_team1_result += $away_score;
 			$away->sum_team2_result += $home_score;
 			$away->diff_team_results = $away->sum_team1_result - $away->sum_team2_result;
 			$away->sum_team1_legs   += $leg2;
 			$away->sum_team2_legs   += $leg1;
 			$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
+            
+            $away->sum_team1_matchpoint   += $mp1;
+			$away->sum_team2_matchpoint   += $mp1;
+			$away->diff_team_matchpoint   = $away->sum_team1_matchpoint - $away->sum_team2_matchpoint;
+            $away->sum_team1_sets   += $se2;
+			$away->sum_team2_sets   += $se1;
+			$away->diff_team_sets   = $away->sum_team1_sets - $away->sum_team2_sets;
+            $away->sum_team1_games   += $ga2;
+			$away->sum_team2_games   += $ga1;
+			$away->diff_team_games   = $away->sum_team1_games - $away->sum_team2_games;
+            
 
 			$away->sum_away_for += $away_score;
 		}
@@ -790,43 +831,56 @@ class JSMRanking
     
     $viewName = JRequest::getVar( "view");
 
-		$query = ' SELECT m.id, '
-		. ' m.projectteam1_id, '
-		. ' m.projectteam2_id, '
-		. ' m.team1_result AS home_score, '
-		. ' m.team2_result AS away_score, '
-		. ' m.team1_bonus AS home_bonus, '
-		. ' m.team2_bonus AS away_bonus, '
-		. ' m.team1_legs AS l1, '
-		. ' m.team2_legs AS l2, '
-		. ' m.match_result_type AS match_result_type, '
-		. ' m.alt_decision as decision, '
-		. ' m.team1_result_decision AS home_score_decision, '
-		. ' m.team2_result_decision AS away_score_decision, '
-			. ' m.team1_result_ot AS home_score_ot, '
-			. ' m.team2_result_ot AS away_score_ot, '
-			. ' m.team1_result_so AS home_score_so, '
-			. ' m.team2_result_so AS away_score_so, '
-		. ' r.id as roundid, m.team_won, r.roundcode '
-		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match m '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id '
-		. ' WHERE ((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) '
-		. ' OR (m.alt_decision=1)) '
-//		. ' AND m.count_result '
-		. ' AND m.published = 1 '
-    . ' AND r.published = 1 '
-		. ' AND pt1.project_id = '.$db->Quote($pid)
-		. ' AND m.division_id = '.$division
-		. ' AND (m.cancel IS NULL OR m.cancel = 0) '
-		. ' AND m.projectteam1_id>0 AND m.projectteam2_id>0 ';
+//		$query = 
+        $query->select('m.id');
+		$query->select('m.projectteam1_id');
+		$query->select('m.projectteam2_id');
+		$query->select('m.team1_result AS home_score');
+		$query->select('m.team2_result AS away_score');
+		$query->select('m.team1_bonus AS home_bonus');
+		$query->select('m.team2_bonus AS away_bonus');
+		$query->select('m.team1_legs AS l1');
+		$query->select('m.team2_legs AS l2');
+        
+        $query->select('m.team1_single_matchpoint AS mp1');
+		$query->select('m.team2_single_matchpoint AS mp2');
+        
+        $query->select('m.team1_single_sets AS se1');
+		$query->select('m.team2_single_sets AS se2');
+        
+        $query->select('m.team1_single_games AS ga1');
+		$query->select('m.team2_single_games AS ga2');
+        
+        
+		$query->select('m.match_result_type AS match_result_type');
+		$query->select('m.alt_decision as decision');
+		$query->select('m.team1_result_decision AS home_score_decision');
+		$query->select('m.team2_result_decision AS away_score_decision');
+		$query->select('m.team1_result_ot AS home_score_ot');
+		$query->select('m.team2_result_ot AS away_score_ot');
+		$query->select('m.team1_result_so AS home_score_so');
+		$query->select('m.team2_result_so AS away_score_so');
+		$query->select('r.id as roundid, m.team_won, r.roundcode ');
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');
+        
+        $query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
+        $query->where('m.published = 1');
+        $query->where('r.published = 1');
+        $query->where('pt1.project_id = '.$db->Quote($pid));
+        $query->where('m.division_id = '.$division);
+        $query->where('(m.cancel IS NULL OR m.cancel = 0)');
+        $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
+
 		
 		switch($viewName)
 		{
     case 'rankingalltime':
     break;
     default:
-    $query .= ' AND m.count_result ';
+    $query->where('m.count_result');
     break;
     }
     
@@ -1427,6 +1481,15 @@ class JSMRanking
  * Ranking team class
  * Support class for ranking helper
  */
+/**
+ * JSMRankingTeam
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class JSMRankingTeam
 {
 
@@ -1503,6 +1566,16 @@ class JSMRankingTeam
 	var $sum_away_for   = 0;
 	var $sum_team1_legs = 0;
 	var $sum_team2_legs = 0;
+    
+    
+    var $sum_team1_matchpoint = 0;
+	var $sum_team2_matchpoint = 0;
+    var $sum_team1_sets = 0;
+	var $sum_team2_sets = 0;
+    var $sum_team1_games = 0;
+	var $sum_team2_games = 0;
+    
+    
 	var $diff_team_results = 0;
 	var $diff_team_legs = 0;
 	var $round          = 0;

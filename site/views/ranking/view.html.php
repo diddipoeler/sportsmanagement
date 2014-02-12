@@ -173,6 +173,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
        }
         
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )

@@ -391,7 +391,74 @@ foreach( $current as $ptid => $team )
 				echo '</td>';
 				echo "\n";
 				break;
-					
+
+// ######################################################################################                
+// ausgabe z.b. für tennis                
+            case 'MATCHPOINTS':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_matchpoint, $team->sum_team2_matchpoint ) );
+				echo '</td>';
+				echo "\n";
+				break; 
+            case 'MATCHPOINTS_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_matchpoint );
+				echo '</td>';
+				echo "\n";
+				break;
+                   
+			case 'MATCHSETS':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_sets, $team->sum_team2_sets ) );
+				echo '</td>';
+				echo "\n";
+				break;
+            case 'MATCHSETS_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_sets );
+				echo '</td>';
+				echo "\n";
+				break;
+                    
+            case 'MATCHGAMES':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_games, $team->sum_team2_games ) );
+				echo '</td>';
+				echo "\n";
+				break;
+           case 'MATCHGAMES_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_games );
+				echo '</td>';
+				echo "\n";
+				break;     
+// ######################################################################################
+                
+                    		
 			case 'SCOREFOR':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
