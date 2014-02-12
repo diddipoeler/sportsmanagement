@@ -282,6 +282,14 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `pressebericht` TEXT NULL ,
   `team_lost` INT(11) NOT NULL DEFAULT '0' ,
   `import_match_id` INT(11) NOT NULL DEFAULT '0' ,
+  
+  `team1_single_matchpoint` DOUBLE NULL DEFAULT NULL ,
+  `team2_single_matchpoint` DOUBLE NULL DEFAULT NULL ,
+  `team1_single_sets` DOUBLE NULL DEFAULT NULL ,
+  `team2_single_sets` DOUBLE NULL DEFAULT NULL ,
+  `team1_single_games` DOUBLE NULL DEFAULT NULL ,
+  `team2_single_games` DOUBLE NULL DEFAULT NULL ,
+  
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),

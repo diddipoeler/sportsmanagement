@@ -956,12 +956,22 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	private function _getRoundName($round_id)
 	{
-		$query='SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round WHERE id='.(int)$round_id;
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getAffectedRows())
+	   $mainframe = JFactory::getApplication();
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $query->select('name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
+        $query->where('id = '.(int)$round_id);
+        		
+        $db->setQuery($query);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		$db->query();
+		if ($db->getAffectedRows())
 		{
-			$result=$this->_db->loadResult();
+			$result = $db->loadResult();
 			return $result;
 		}
 		return null;
@@ -969,13 +979,25 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	private function _getProjectPositionName($project_position_id)
 	{
-		$query  = ' SELECT pos.name'
-			. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos'
-			. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id'
-			. ' WHERE ppos.id='.(int)$project_position_id;
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($object=$this->_db->loadResult()){return $object;}
+	   $mainframe = JFactory::getApplication();
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $query->select('name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+        $query->where('ppos.id = '.(int)$project_position_id);
+        
+		$db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		$db->query();
+		if ($object = $db->loadResult())
+        {
+            return $object;
+        }
+        
 		return null;
 	}
 
@@ -1607,6 +1629,13 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	private function _importParentPositions()
 	{
+	   $mainframe = JFactory::getApplication();
+       
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newparentpositionsid<br><pre>'.print_r($this->_newparentpositionsid,true).'</pre>'),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbparentpositionsid<br><pre>'.print_r($this->_dbparentpositionsid,true).'</pre>'),'');
+       
+       //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
+       
 //$this->dump_header("function _importParentPositions");
 		$my_text='';
 		if (!isset($this->_datas['parentposition']) || count($this->_datas['parentposition'])==0){return true;}
@@ -1637,8 +1666,8 @@ class sportsmanagementModelJLXMLImport extends JModel
                 
 				$import_position=$this->_datas['parentposition'][$key];
 //$this->dump_variable("import_position", $import_position);
-				$oldID=$this->_getDataFromObject($import_position,'id');
-				$alias=$this->_getDataFromObject($import_position,'alias');
+				$oldID = $this->_getDataFromObject($import_position,'id');
+				$alias = $this->_getDataFromObject($import_position,'alias');
 				$p_position->set('name',trim($this->_newparentpositionsname[$key]));
 				$p_position->set('parent_id',0);
 				$p_position->set('persontype',$this->_getDataFromObject($import_position,'persontype'));
@@ -1693,6 +1722,15 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	private function _importPositions()
 	{
+	   $mainframe = JFactory::getApplication();
+       
+       
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newpositionsid<br><pre>'.print_r($this->_newpositionsid,true).'</pre>'),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbpositionsid<br><pre>'.print_r($this->_dbpositionsid,true).'</pre>'),'');
+       
+       //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'),'');
+       
+       
 //$this->dump_header("function _importPositions");
 		$my_text='';
 		if (!isset($this->_datas['position']) || count($this->_datas['position'])==0){return true;}
@@ -1704,8 +1742,8 @@ class sportsmanagementModelJLXMLImport extends JModel
 		{
 			foreach ($this->_dbpositionsid AS $key => $id)
 			{
-				$oldID=$this->_getDataFromObject($this->_datas['position'][$key],'id');
-				$this->_convertPositionID[$oldID]=$id;
+				$oldID = $this->_getDataFromObject($this->_datas['position'][$key],'id');
+				$this->_convertPositionID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 				$my_text .= JText::sprintf(	'Using existing position data: %1$s',
 											'</span><strong>'.JText::_($this->_getObjectName('position',$id)).'</strong>');
@@ -1722,7 +1760,7 @@ class sportsmanagementModelJLXMLImport extends JModel
                 $mdl = JModel::getInstance("position", "sportsmanagementModel");
                 $p_position = $mdl->getTable();
                 
-				$import_position=$this->_datas['position'][$key];
+				$import_position = $this->_datas['position'][$key];
 //$this->dump_variable("import_position", $import_position);
 				$oldID=$this->_getDataFromObject($import_position,'id');
 				$alias=$this->_getDataFromObject($import_position,'alias');
@@ -1774,8 +1812,8 @@ class sportsmanagementModelJLXMLImport extends JModel
 					}
 					else
 					{
-						$insertID=$this->_db->insertid();
-						$this->_convertPositionID[$oldID]=$insertID;
+						$insertID = $this->_db->insertid();
+						$this->_convertPositionID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 						$my_text .= JText::sprintf('Created new position data: %1$s','</span><strong>'.JText::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
@@ -2531,6 +2569,11 @@ $this->dump_variable("import_team", $import_team);
 
 	private function _importPersons()
 	{
+	   $mainframe = JFactory::getApplication();
+       
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertPositionID<br><pre>'.print_r($this->_convertPositionID,true).'</pre>'),'');
+       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertParentPositionID<br><pre>'.print_r($this->_convertParentPositionID,true).'</pre>'),'');
+       
 		if (!isset($this->_datas['person']) || count($this->_datas['person'])==0){return true;}
 		if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) &&
 			(!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)){return true;}
@@ -2541,7 +2584,7 @@ $this->dump_variable("import_team", $import_team);
 			foreach ($this->_dbpersonsid AS $key => $id)
 			{
 				$oldID = $this->_getDataFromObject($this->_datas['person'][$key],'id');
-				$this->_convertPersonID[$oldID]=$id;
+				$this->_convertPersonID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 				$my_text .= JText::sprintf(	'Using existing person data: %1$s',
 											'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
@@ -2644,9 +2687,9 @@ $this->dump_variable("import_team", $import_team);
 						}
 					}
 				}
-				$alias=$this->_getDataFromObject($import_person,'alias');
-				$aliasparts=array(trim($p_person->firstname),trim($p_person->lastname));
-				$p_alias=JFilterOutput::stringURLSafe(implode(' ',$aliasparts));
+				$alias = $this->_getDataFromObject($import_person,'alias');
+				$aliasparts = array(trim($p_person->firstname),trim($p_person->lastname));
+				$p_alias = JFilterOutput::stringURLSafe(implode(' ',$aliasparts));
 				if ((isset($alias)) && (trim($alias)!=''))
 				{
 					$p_person->set('alias',JFilterOutput::stringURLSafe($alias));
@@ -2655,12 +2698,16 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$p_person->set('alias',$p_alias);
 				}
+                
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' person<br><pre>'.print_r($p_person,true).'</pre>'),'');
+                
 				$query="	SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
 							WHERE	firstname='".addslashes(stripslashes($p_person->firstname))."' AND
 									lastname='".addslashes(stripslashes($p_person->lastname))."' AND
 									nickname='".addslashes(stripslashes($p_person->nickname))."' AND
 									birthday='$p_person->birthday'";
-				$this->_db->setQuery($query); $this->_db->query();
+				$this->_db->setQuery($query); 
+                $this->_db->query();
 				if ($object=$this->_db->loadObject())
 				{
 					$this->_convertPersonID[$oldID]=$object->id;
@@ -2689,8 +2736,8 @@ $this->dump_variable("import_team", $import_team);
 					}
 					else
 					{
-						$insertID=$this->_db->insertid();
-						$this->_convertPersonID[$oldID]=$insertID;
+						$insertID = $this->_db->insertid();
+						$this->_convertPersonID[$oldID] = $insertID;
 						$dNameStr=((!empty($p_person->lastname)) ?
 									$p_person->lastname :
 									'<span style="color:orange">'.JText::_('Has no lastname').'</span>');
@@ -2699,9 +2746,10 @@ $this->dump_variable("import_team", $import_team);
 									'<span style="color:orange">'.JText::_('Has no firstname').' - </span>');
 						$dNameStr .= ((!empty($p_person->nickname)) ? "'".$p_person->nickname."' - " : '');
 						$dNameStr .= $p_person->birthday;
+                        $dNameStr .= '<span style="color:blue"> PositionId old/new->'.$import_person->position_id.' - '.$p_person->position_id.' - </span>';
 
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new person data: %1$s',"</span><strong>$dNameStr</strong>");
+						$my_text .= JText::sprintf('Created new person data: %1$s',"</span><strong>$dNameStr</strong>" );
 						$my_text .= '<br />';
 					}
 				}
@@ -3312,6 +3360,7 @@ $this->dump_variable("import_team", $import_team);
 
 	private function _importTeamPlayer()
 	{
+	   $mainframe = JFactory::getApplication();
 //$this->dump_header("function _importTeamPlayer");
 		$my_text='';
 		if (!isset($this->_datas['teamplayer']) || count($this->_datas['teamplayer'])==0){return true;}

@@ -15,12 +15,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.modellist' );
 
 
+
 /**
- * Sportsmanagement Component Persons Model
- *
- * @author	diddipoeler
- * @package	Sportsmanagement
- * @since	1.5
+ * sportsmanagementModelPersons
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelPersons extends JModelList
 {

@@ -58,6 +58,11 @@ class sportsmanagementModelClubs extends JModelList
 	var $_identifier = "clubs";
 	
 	
+    /**
+     * sportsmanagementModelClubs::getListQuery()
+     * 
+     * @return
+     */
     protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -78,6 +83,8 @@ class sportsmanagementModelClubs extends JModelList
         }
 		$query->order(self::_buildContentOrderBy());
         
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 
         //$mainframe->enqueueMessage(JText::_('clubs query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
@@ -85,6 +92,11 @@ class sportsmanagementModelClubs extends JModelList
 
 
 
+	/**
+	 * sportsmanagementModelClubs::_buildContentOrderBy()
+	 * 
+	 * @return
+	 */
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
@@ -102,6 +114,11 @@ class sportsmanagementModelClubs extends JModelList
 		return $orderby;
 	}
 
+	/**
+	 * sportsmanagementModelClubs::_buildContentWhere()
+	 * 
+	 * @return
+	 */
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
@@ -144,6 +161,11 @@ class sportsmanagementModelClubs extends JModelList
 		return $where;
 	}
     
+    /**
+     * sportsmanagementModelClubs::getClubListSelect()
+     * 
+     * @return
+     */
     public function getClubListSelect()
 	{
 		$query='SELECT id,name,id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
