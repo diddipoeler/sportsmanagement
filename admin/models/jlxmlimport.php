@@ -672,10 +672,37 @@ class sportsmanagementModelJLXMLImport extends JModel
             }
             }
             
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' person<br><pre>'.print_r($this->_datas['person'],true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
+            
+            // jetzt werden die positionen in den personen überprüft.
+            foreach ( $this->_datas['person'] as $person )
+            {
+                $pos_error = true;
+                foreach ( $this->_datas['position'] as $position )
+                {
+                    if ( $person->position_id == $position->id )
+                    {
+                        $pos_error = false;
+                    }
+                }    
+                foreach ( $this->_datas['parentposition'] as $parentposition )
+                {
+                    if ( $person->position_id == $parentposition->id )
+                    {
+                        $pos_error = false;
+                    }
+                }
+                
+                if ( $pos_error )
+                {
+                    $mainframe->enqueueMessage(JText::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
+                } 
+                        
+            }
             
             
-            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'   ),'');
-            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport match<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');
             
             // länder bei den spielorten vervollständigen
             // bilderpfad ändern

@@ -229,8 +229,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 
 			if(!$tblMatch->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				$result = false;
 			}
             else
