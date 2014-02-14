@@ -66,7 +66,11 @@ if($close == 1) {
 						<?php echo JText::_('JAPPLY');?></button>
 					<button type="button" onclick="$('close').value=1; Joomla.submitform('jlextindividualsportes.saveshort', this.form);">
 						<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			
+            <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
+						<?php echo JText::_('JACTION_DELETE');?></button>
+            
+            <button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		
         

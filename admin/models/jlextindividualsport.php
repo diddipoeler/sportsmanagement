@@ -313,6 +313,21 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 		//return parent::save($data);
         
     }
+    
+    
+    /**
+	 * Method to remove
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function delete($pk=array())
+	{
+	$mainframe = JFactory::getApplication();
+    return parent::delete($pk);
+    return true; 
+    }
 
 	
 

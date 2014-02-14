@@ -1025,7 +1025,7 @@ class sportsmanagementModelJLXMLImport extends JModel
         
 		$db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$db->query();
 		if ($object = $db->loadResult())

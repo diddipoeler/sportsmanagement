@@ -105,6 +105,25 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
         
     } 
     
+    function delete()
+	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $pks = JRequest::getVar('cid', array(), 'post', 'array');
+        $post = JRequest::get('post');
+		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+        
+       $model = $this->getModel();
+       $model->delete($pks);
+       
+       $msg = JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',count($pks));
+       $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
+		$this->setRedirect($link,$msg);
+        
+    } 
+    
+    
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
