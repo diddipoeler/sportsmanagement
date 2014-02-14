@@ -93,6 +93,13 @@ div.cpanel-right {
 	float: right;
 }
 
+/** Style for JSM admin/views - added by stony **/
+fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelform span.faux-label {
+		max-width: 255px;
+		min-width: 255px;
+		padding: 0 5px 0 0;
+	}
+
 /** header icons component**/
 .icon-48-agegroups {
 	background-image: url(../icons/altersklassen.png);
