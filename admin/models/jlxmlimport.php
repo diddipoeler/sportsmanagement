@@ -940,12 +940,20 @@ class sportsmanagementModelJLXMLImport extends JModel
 
 	private function _getTeamName($team_id)
 	{
-		$query='	SELECT t.name
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.id='.(int)$team_id.' WHERE t.id=pt.team_id';
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($object=$this->_db->loadObject())
+	   // Create a new query object.		
+		$db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('t.name');
+		// From the seasons table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');  
+        $query->where('pt.id = '.(int)$team_id);    
+		
+        $db->setQuery($query);
+		$db->query();
+		if ($object = $db->loadObject())
 		{
 			return $object->name;
 		}
@@ -3461,7 +3469,7 @@ $this->dump_variable("import_team", $import_team);
 			}
 			else
 			{
-				$dPerson=$this->_getPersonName($p_teamplayer->person_id);
+				$dPerson = $this->_getPersonName($p_teamplayer->person_id);
 				$project_position_id = $p_teamplayer->project_position_id;
 				if($project_position_id>0) {
 					$query ='SELECT *
@@ -3469,9 +3477,9 @@ $this->dump_variable("import_team", $import_team);
 								WHERE	id='.$project_position_id;
 					$this->_db->setQuery($query);
 					$this->_db->query();
-					$object=$this->_db->loadObject();
+					$object = $this->_db->loadObject();
 					$position_id = $object->position_id;
-					$dPosName=JText::_($this->_getObjectName('position',$position_id));
+					$dPosName = JText::_($this->_getObjectName('position',$position_id));
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 					$my_text .= JText::sprintf(	'Created new teamplayer data. Team: %1$s - Person: %2$s,%3$s - Position: %4$s',
 									'</span><strong>'.$this->_getTeamName($p_teamplayer->projectteam_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -3488,7 +3496,7 @@ $this->dump_variable("import_team", $import_team);
 					$my_text .= '<br />';
 				}
 			}
-			$insertID=$p_teamplayer->id;//$this->_db->insertid();
+			$insertID = $p_teamplayer->id;//$this->_db->insertid();
 			$this->_convertTeamPlayerID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertTeamPlayerID", $this->_convertTeamPlayerID);
@@ -3515,9 +3523,9 @@ $this->dump_variable("import_team", $import_team);
             
 			$import_teamstaff=$this->_datas['teamstaff'][$key];
 //$this->dump_variable("import_teamstaff", $import_teamstaff);
-			$oldID=$this->_getDataFromObject($import_teamstaff,'id');
-			$oldProjectTeamID=$this->_getDataFromObject($import_teamstaff,'projectteam_id');
-			$oldPersonID=$this->_getDataFromObject($import_teamstaff,'person_id');
+			$oldID = $this->_getDataFromObject($import_teamstaff,'id');
+			$oldProjectTeamID = $this->_getDataFromObject($import_teamstaff,'projectteam_id');
+			$oldPersonID = $this->_getDataFromObject($import_teamstaff,'person_id');
 			if (!isset($this->_convertProjectTeamID[$oldProjectTeamID]) ||
 				!isset($this->_convertPersonID[$oldPersonID]))
 			{
