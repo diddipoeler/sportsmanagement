@@ -77,11 +77,11 @@ class sportsmanagementViewprojectteams extends JView
         $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
         if ( $this->project_art_id == 3 )
         {
-            $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
+            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
         } 
         else
         {
-            $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
         }
         
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
@@ -252,10 +252,7 @@ class sportsmanagementViewprojectteams extends JView
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
     JToolBarHelper::preferences(JRequest::getCmd('option'));
-    
-        
 
-		//JToolBarHelper::onlinehelp();
 	}
 }
 ?>

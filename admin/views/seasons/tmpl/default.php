@@ -44,6 +44,9 @@ $ordering=($this->lists['order'] == 's.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
+JHtml::_('behavior.mootools');
+$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -94,8 +97,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id='.$row->id);
-					$checked=JHtml::_('grid.checkedout',$row,$i);
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id='.$row->id);
+                    
+                    $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id='.$row->id);
+                    $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id='.$row->id);
+                    
+					$checked = JHtml::_('grid.checkedout',$row,$i);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -110,7 +117,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						{
 							$inputappend='';
 							?>
-							<td class="center">
+							<td class="center" nowrap="nowrap">
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_EDIT_DETAILS');
@@ -118,6 +125,39 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
+                                
+                                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="<?php echo $assignteams; ?>"
+									 class="modal"
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'); ?>">
+									 <?php
+									 
+								 	$image = 'teams.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+                                
+                                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="<?php echo $assignpersons; ?>"
+									 class="modal"
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'); ?>">
+									 <?php
+									 
+								 	$image = 'players.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+                                
 							</td>
 							<?php
 						}

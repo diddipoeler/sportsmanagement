@@ -42,12 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewSeasons
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewSeasons extends JView
 {
@@ -57,6 +60,7 @@ class sportsmanagementViewSeasons extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $season_id = JRequest::getVar('id');
 
 		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','s.ordering','cmd');
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
@@ -68,17 +72,20 @@ class sportsmanagementViewSeasons extends JView
 		$pagination = $this->get('Pagination');
 
 		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order'] = $filter_order;
 
 		// search filter
-		$lists['search']=$search;
+		$lists['search'] = $search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
+        
+        $this->assignRef('season_id',$season_id);
+        
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -111,20 +118,14 @@ class sportsmanagementViewSeasons extends JView
 		{
 			JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');
 		}
+        
+        //sportsmanagementHelper::ToolbarButton('assignteams','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'));
+        //sportsmanagementHelper::ToolbarButton('assignpersons','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'));
+        
 		JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
-        //$this->ToolbarButtonOnlineHelp();
         
-		/*
-		JToolBarHelper::addNew('season.add');
-		JToolBarHelper::editList('season.edit');
-		JToolBarHelper::custom('season.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('season.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'season.remove');
-		JToolBarHelper::divider();
-		//JToolBarHelper::onlinehelp();
-		*/
 		
 	}
 }

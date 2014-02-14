@@ -43,12 +43,75 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
+
 /**
- * SportsManagements Controller
+ * sportsmanagementControllerseasons
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllerseasons extends JControllerAdmin
 {
-	
+	function applypersons()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $model = $this->getModel();
+       $model->saveshortpersons();
+       
+       $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id='.$post['season_id'],$msg);
+        
+    }
+    
+    function savepersons()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $model = $this->getModel();
+       $model->saveshortpersons();
+        
+        $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+        
+    }
+    
+    function applyteams()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $model = $this->getModel();
+       $model->saveshortteams();
+       
+       $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id='.$post['season_id'],$msg);
+        
+    }
+    
+    function saveteams()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        $model = $this->getModel();
+       $model->saveshortteams();
+        
+        $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+        
+    }
+  
+  
+  
+  
+  
+  
   /**
 	 * Save the manual order inputs from the categories list page.
 	 *
