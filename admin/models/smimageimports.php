@@ -13,7 +13,29 @@ function getimagesxml()
     $mainframe = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
         // sind neue bilder pakete vorhanden ?
-		$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
+		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
+		
+		$datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
+if (function_exists('curl_version'))
+{
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $datei);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $content = curl_exec($curl);
+    curl_close($curl);
+}
+else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
+{
+    $content = file_get_contents($datei);
+}
+else
+{
+    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+}
+		
+		
+		
 		//Parsen
 		$doc = DOMDocument::loadXML($content);
         
