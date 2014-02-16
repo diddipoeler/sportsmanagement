@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <structur>
 
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="schleswig-flensburg.zip">Wappen Schleswig-Flensburg</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="dithmarschen.zip">Wappen Dithmarschen</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="kiel.zip">Wappen Kiel</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="lauenburg.zip">Wappen Lauenburg</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="luebeck.zip">Wappen Lübeck</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="neumuenster.zip">Wappen Neumünster</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="nordfriesland.zip">Wappen Nordfriesland</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="ostholstein.zip">Wappen Ostholstein</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="ploen.zip">Wappen Plön</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="rendsburg-eckernfoerde.zip">Wappen Rendsburg-Eckernförde</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="segeberg.zip">Wappen Segeberg</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="steinburg.zip">Wappen Steinburg</picture></pictures>
-<pictures><picture folder="Vereinswappen/Deutschland/Schleswig-Holstein" directory="clubs" file="stormarn.zip">Wappen Stormarn</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="schleswig-flensburg.zip">Wappen Schleswig-Flensburg</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="dithmarschen.zip">Wappen Dithmarschen</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="kiel.zip">Wappen Kiel</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="lauenburg.zip">Wappen Lauenburg</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="luebeck.zip">Wappen Lübeck</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="neumuenster.zip">Wappen Neumünster</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="nordfriesland.zip">Wappen Nordfriesland</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="ostholstein.zip">Wappen Ostholstein</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="ploen.zip">Wappen Plön</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="rendsburg-eckernfoerde.zip">Wappen Rendsburg-Eckernförde</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="segeberg.zip">Wappen Segeberg</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="steinburg.zip">Wappen Steinburg</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="stormarn.zip">Wappen Stormarn</picture></pictures>
 
 
 <pictures><picture folder="Flaggen" directory="flags" file="flags.zip">Flaggen</picture></pictures>
