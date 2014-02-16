@@ -800,23 +800,75 @@ JFile::write($file, $xmlfile);
 		if (file_exists($datei)) 
         {
 			$LetzteAenderung = filemtime($datei);
-			if ( (time() - $LetzteAenderung) > 1800) {
-				if(file_get_contents($linkresults)) {
+			if ( (time() - $LetzteAenderung) > 1800) 
+            {
+				//if(file_get_contents($linkresults)) 
+                //{
 			 		//Laden
-					$content = file_get_contents($linkresults);
+					//$content = file_get_contents($linkresults);
+                    if (function_exists('curl_version'))
+{
+    $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
+    curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
+    
+    
+    $content = curl_exec($curl);
+    curl_close($curl);
+}
+else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
+{
+    $content = file_get_contents($linkresults);
+}
+else
+{
+    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+}
 					//Parsen
 					$doc = DOMDocument::loadXML($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
 					$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
-				}
+				//}
 			}
 		} 
         else 
         {
 			//Laden
-			$content = file_get_contents($linkresults);
+            if (function_exists('curl_version'))
+{
+    $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
+    curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
+    $content = curl_exec($curl);
+    curl_close($curl);
+}
+else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
+{
+    $content = file_get_contents($linkresults);
+}
+else
+{
+    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+}
+			//$content = file_get_contents($linkresults);
             //$mainframe->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
