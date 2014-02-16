@@ -84,6 +84,8 @@ function import()
             $directory = $post['directory'][$value];
             $file = $post['file'][$value];
             
+            $folder = str_replace('', '%20', $folder);
+            
             $servercopy = $server.$folder.'/'.$file;
             
 //            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'Notice');
@@ -112,7 +114,7 @@ function import()
             }
             else
             {
-                
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
 						  
                           
                           

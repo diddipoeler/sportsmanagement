@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementModelsmimageimports
@@ -113,6 +113,12 @@ else
 		
 		if ( $content )
         {
+            //--Löschen einer einzelnen Datei
+            if( JFile::delete(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml') )
+            {
+            //echo 'Die Datei wurde gelöscht.';
+            }
+
 		//Parsen
 		$doc = DOMDocument::loadXML($content);
         
