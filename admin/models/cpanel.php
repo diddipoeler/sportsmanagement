@@ -140,23 +140,47 @@ $paramsdata = JComponentHelper::getParams($option);
         
         $temp = explode(".",$version);  
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
-        
-        
-        
+     
               
         //Laden
         $datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
 if (function_exists('curl_version'))
 {
-    $curl = curl_init();
+   $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $datei);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    $content = curl_exec($curl);
-    curl_close($curl);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
+    
+    
+    if (curl_errno($curl)) 
+    {
+        // moving to display page to display curl errors
+          //echo curl_errno($curl) ;
+          //echo curl_error($curl);
+          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
+          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+          
+          
+    }
+    else
+    {
+        $content = curl_exec($curl);
+        //print_r($content);
+        curl_close($curl);
+    } 
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 {
     $content = file_get_contents($datei);
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else
 {
@@ -165,9 +189,13 @@ else
 }
 		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
 		//Parsen
+        
+        if ( $content )
+        {
 		$doc = DOMDocument::loadXML($content);
         $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        }
         
         $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
@@ -245,7 +273,6 @@ else
 		$ch = curl_init($req);
 
 		// Set options
-        
 		curl_setopt($ch, CURLOPT_HEADER, false);
         $t_vers = curl_version();
         curl_setopt($ch, CURLOPT_USERAGENT, 'curl/' . $t_vers['version'] );
