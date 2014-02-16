@@ -53,6 +53,11 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModelsmimageimports extends JModel
 {
 
+/**
+ * sportsmanagementModelsmimageimports::getimagesxml()
+ * 
+ * @return
+ */
 function getimagesxml()
 {
     $mainframe = JFactory::getApplication(); 
@@ -117,6 +122,11 @@ else
         }
     
 }
+/**
+ * sportsmanagementModelsmimageimports::getXMLFiles()
+ * 
+ * @return
+ */
 function getXMLFiles()
     {
         $mainframe = JFactory::getApplication();

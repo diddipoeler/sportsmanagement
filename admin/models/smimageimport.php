@@ -59,6 +59,11 @@ class sportsmanagementModelsmimageimport extends JModel
 {
 
 
+/**
+ * sportsmanagementModelsmimageimport::import()
+ * 
+ * @return
+ */
 function import()
     {
         $mainframe = JFactory::getApplication();
@@ -103,6 +108,7 @@ function import()
             
             if ( !copy($servercopy,$filepath) )
             {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'Error');
             }
             else
             {
