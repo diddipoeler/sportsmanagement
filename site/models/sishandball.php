@@ -88,8 +88,15 @@ class sportsmanagementModelsishandball extends JModel
 					if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -117,8 +124,15 @@ else
 			if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -162,8 +176,15 @@ else
                     if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -191,8 +212,15 @@ else
             if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -237,8 +265,15 @@ else
                     if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -265,8 +300,15 @@ else
             if (function_exists('curl_version'))
 {
     $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
     curl_close($curl);
 }
