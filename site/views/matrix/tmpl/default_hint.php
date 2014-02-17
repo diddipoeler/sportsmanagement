@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -37,14 +37,13 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-
-<?php if (!empty($this->rounds)): ?>
-<table class="not-playing" width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="text-align:left; ">
-			<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
-		</td>
-	</tr>
-</table>
-<?php endif; ?>
+defined('_JEXEC') or die('Restricted access');
+?>
+<div>
+	<table class="matrix">
+		<tr>
+			<td align="left"><br /> <?php echo JText :: _('COM_SPORTSMANAGEMENT_MATRIX_HINT');?>
+			</td>
+		</tr>
+	</table>
+</div>

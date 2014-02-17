@@ -54,7 +54,7 @@ function example_alertBox( boxText )
 <?php
 $nbcols			= 7;
 $nbcols_header	= 0;
-$dates			= $this->sortByDate();
+$dates			= sportsmanagementViewResults::sortByDate();
 
 if($this->config['show_division']){$nbcols++;}
 if($this->config['show_match_number']){$nbcols++;}
@@ -316,7 +316,7 @@ $link = "javascript:void(0);";
 		?>
 			<!-- show team-icons and/or -names -->
 			<td width='<?PHP echo $width;?>'>
-				<?php echo $this->getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
 			<td>
 				<?php
@@ -325,7 +325,7 @@ $link = "javascript:void(0);";
 				?>
 			</td>
 			<td width='<?PHP echo $width;?>'>
-				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
 			<td>
 				<?php
@@ -335,7 +335,7 @@ $link = "javascript:void(0);";
 			</td>
 			<!-- show match score -->
 			<td width='10' class='score'>
-				<?php echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link); ?>
+				<?php echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link); ?>
 			</td>
 				<?php
 		}
@@ -419,7 +419,7 @@ $link = "javascript:void(0);";
 
 		<!-- show hammer if there is a alternative decision of the score -->
 		<td width="5" class="ko">
-		<?php $this->showReportDecisionIcons($game); ?>
+		<?php sportsmanagementViewResults::showReportDecisionIcons($game); ?>
 		</td>
 
 		<?php

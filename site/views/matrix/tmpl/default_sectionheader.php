@@ -39,12 +39,23 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-<?php if (!empty($this->rounds)): ?>
-<table class="not-playing" width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="text-align:left; ">
-			<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
-		</td>
-	</tr>
-</table>
-<?php endif; ?>
+<!-- START: sectionheader -->
+	<table width="100%" class="contentpaneopen" border="0">
+		<tr>
+			<td class="contentheading">
+				<?php
+				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATRIX' );
+				if ( $this->divisionid )
+				{
+					echo " " . $this->division->name;
+				}
+				if ( $this->roundid )
+				{
+					echo " - " . $this->round->name;
+				}
+				?>
+			</td>
+		</tr>
+	</table>
+<br />
+<!-- END: sectionheader -->

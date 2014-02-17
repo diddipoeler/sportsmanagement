@@ -281,8 +281,12 @@ JHtml::_('behavior.tooltip');
         <div style="font-weight:700;">          
           <?php echo JText::_('COM_SPORTSMANAGEMENT_GREAT_COMPONENT_MSG');?>        
         </div>
+        
         <?php echo $this->pane->endPanel(); echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_STATISTICS') , 'cbe' );?>
-        <?php echo JText::_( 'COM_SPORTSMANAGEMENT_TOTAL_USERS' ).': '; ?><strong>
+        <?php
+        if ( isset($this->cbe) ) 
+        {
+        echo JText::_( 'COM_SPORTSMANAGEMENT_TOTAL_USERS' ).': '; ?><strong>
           <?php echo $this->cbe->total; ?></strong>        
         <?php echo JText::_( 'COM_SPORTSMANAGEMENT_TOTAL_BLOCKED_USERS' ).': '; ?>        <strong>
           <?php echo $this->cbe->blocked; ?></strong>        
@@ -309,8 +313,16 @@ JHtml::_('behavior.tooltip');
         <?php echo JText::_( 'COM_SPORTSMANAGEMENT_VIDEOS_TOTAL' ).': '; ?>        <strong>
           <?php echo $this->cbe->videos; ?></strong>        
         <?php echo JText::_( 'COM_SPORTSMANAGEMENT_GROUPS_T0TAL_DISCUSSIONS' ).': '; ?>        <strong>
-          <?php echo $this->cbe->groupDiscussion; ?></strong>        
-        <?php echo $this->pane->endPanel(); echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_GROUPS_STATISTICS'), 'groups' );?>        
+          <?php echo $this->cbe->groupDiscussion; ?>
+          </strong>        
+        <?php 
+        }
+        
+        echo $this->pane->endPanel(); echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_GROUPS_STATISTICS'), 'groups' );
+        
+        if ( isset($this->groups) ) 
+        {
+        ?>        
         <table class="adminlist">          
           <tr>            
             <?php echo JText::_( 'COM_SPORTSMANAGEMENT_GROUPS_PUBLISHED' ).': '; ?>            
@@ -328,6 +340,9 @@ JHtml::_('behavior.tooltip');
                 <?php echo $this->groups->categories; ?></strong>            </td>          
           </tr>        
         </table>
+        <?PHP
+        }
+        ?>
         <?php echo $this->pane->endPanel(); echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_GITHUB_REQUESTS') , 'GITHUBREQUESTS' );?>        
         <table class="adminlist">          
           <tr>            <td>              

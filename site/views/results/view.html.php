@@ -815,12 +815,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		if($this->config['show_link_matchreport'] == 1 || ($this->config['show_link_matchreport'] == 2 && $fav))
 		{
 			$output = JHtml::_(	'link', $reportLink,
-					'<span class="score0">'.$this->showMatchState($game,$this->config).'</span>',
+					'<span class="score0">'.sportsmanagementViewResults::showMatchState($game,$this->config).'</span>',
 			array("title" => JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
 		}
 		else
 		{
-			$output = $this->showMatchState($game,$this->config);
+			$output = sportsmanagementViewResults::showMatchState($game,$this->config);
 		}
 
 		return $output;

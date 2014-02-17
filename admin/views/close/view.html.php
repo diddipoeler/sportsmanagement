@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
+
 /**
  * This view is displayed after successfull saving of config data.
  * Use it to show a message informing about success or simply close a modal window.

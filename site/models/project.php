@@ -723,7 +723,7 @@ class sportsmanagementModelProject extends JModel
 		}
 		else
 		{
-			$teams=self::_getTeams();
+			$teams = self::_getTeams();
 		}
 
 		return $teams;

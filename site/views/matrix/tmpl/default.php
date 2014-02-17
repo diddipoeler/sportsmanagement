@@ -37,14 +37,62 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-<?php if (!empty($this->rounds)): ?>
-<table class="not-playing" width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="text-align:left; ">
-			<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
-		</td>
-	</tr>
-</table>
-<?php endif; ?>
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Make sure that in case extensions are written for mentioned (common) views,
+// that they are loaded i.s.o. of the template of this view
+$templatesToLoad = array('globalviews');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+?>
+<div class="joomleague">
+	<?php 
+	echo $this->loadTemplate('projectheading');
+
+	if (($this->config['show_matrix'])==1)
+	{
+	
+  if (($this->config['show_sectionheader'])==1)
+	{ 
+		echo $this->loadTemplate('sectionheader');
+	}
+  
+  if(isset($this->divisions) && count($this->divisions) > 1) 
+  {
+  echo $this->loadTemplate('matrix_division').'<br />';
+  }
+  else 
+  {
+ 			echo $this->loadTemplate('matrix');
+	}
+	
+//     if(isset($this->divisions) && count($this->divisions) > 1) {
+// 			foreach ($this->divisions as $division) {
+// 				$this->teams 		= $this->model->getTeamsIndexedByPtid($division->id);
+// 				$this->division 	= $division;
+// 				$this->divisionid 	= $division->id;
+// 				if (($this->config['show_sectionheader'])==1)
+// 				{
+// 					echo $this->loadTemplate('sectionheader');
+// 				}
+// 				//echo $this->loadTemplate('matrix').'<br />';
+// 				echo $this->loadTemplate('matrix_division').'<br />';
+// 			}
+// 		} else {
+// 			echo $this->loadTemplate('matrix');
+// 		}
+		
+	}
+
+	if ($this->config['show_help']==1)
+	{
+		echo $this->loadTemplate('hint');
+	}
+
+	echo "<div>";
+	echo $this->loadTemplate('backbutton');
+	echo $this->loadTemplate('footer');
+	echo "</div>";
+	?>
+</div>

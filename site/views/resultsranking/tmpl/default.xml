@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+			<field	name="p" type="project"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required="true">
+			</field>
+			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR">
+			</field>
+			<field	name="r" type="dependsql" depends="p" task="roundsoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_DESCR">
+			</field>
+
+		</fieldset>
+	</fields>
+
+    <fields name="params">
+        <fieldset	name="advanced"
+        			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL">
+
+			<field	name="what_to_show_first" type="radio" default="0"
+			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"
+			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_DESCR">
+			    <option value="0">Results</option>
+			    <option value="1">Ranking</option>
+			</field>
+
+        </fieldset>
+    </fields>
+</metadata>
