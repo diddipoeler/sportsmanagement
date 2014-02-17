@@ -95,24 +95,9 @@ if($close == 1) {
 						
 						
 
-						<?php 
-							if($this->projectws->project_type=='DIVISIONS_LEAGUE') {
-								$colspan++;
-						?>
-						<th >
-							<?php 
-								echo JHTML::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->lists['order_Dir'],$this->lists['order']);
-								echo '<br>'.JHTML::_(	'select.genericlist',
-													$this->lists['divisions'],
-													'division',
-													'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
-													'value','text', $this->division);
-								
-							?>
-						</th>
-						<?php 
-							}
-						?>
+					
+						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH_TYPE'); ?></th>
+                        
 						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM_PLAYER'); ?></th>
 						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM_PLAYER'); ?></th>
 						<th style="  "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
@@ -132,7 +117,9 @@ if($close == 1) {
 						</th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+				
+                <tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+                
 				<tbody>
 					<?php
 					$k=0;
@@ -165,23 +152,22 @@ if($close == 1) {
 								echo $checked;
 								?>
 							</td>
-							
-							
-							
-							
-							
-							<?php 
-								if($this->projectws->project_type=='DIVISIONS_LEAGUE') {
-							?>
 							<td style="text-align:center; ">
-								<?php echo $row->divhome; ?>
+								<?php
+								echo JTEXT::_('COM_SPORTSMANAGEMENT_'.$row->match_type);
+								?>
 							</td>
-							<?php 
-								} 
-							?>
-							<td style="text-align: right; " nowrap="nowrap">
+							
+							
+							
+							
+							
+							<td style="" nowrap="">
 								
 								<?php
+                                
+                                if ( $row->match_type == 'SINGLE')
+                                {
 								$append='';
 								if ($row->teamplayer1_id == 0)
 								{
@@ -190,10 +176,37 @@ if($close == 1) {
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'teamplayer1_id'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->teamplayer1_id);
+                                } 
+                                elseif ( $row->match_type == 'DOUBLE')
+                                {
+								$append='';
+								if ($row->double_team1_player1 == 0)
+								{
+									$append=' style="background-color:#bbffff"';
+								}
+								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player1'.$row->id,
+												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team1_player1);
+                                echo '<br />';   
+                                
+                                $append='';
+								if ($row->double_team1_player2 == 0)
+								{
+									$append=' style="background-color:#bbffff"';
+								}
+								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player2'.$row->id,
+												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team1_player2);
+                                             
+                                } 
+                                               
+                                                
 								?>
 							</td>
-							<td style="text-align: left; " nowrap="nowrap">
+							<td style="" nowrap="">
 								<?php
+                                if ( $row->match_type == 'SINGLE')
+                                {
 								$append='';
 								if ($row->teamplayer2_id == 0)
 								{
@@ -202,7 +215,33 @@ if($close == 1) {
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'teamplayer2_id'.$row->id,
 												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->teamplayer2_id);
-								?>
+								}
+                                elseif ( $row->match_type == 'DOUBLE')
+                                {
+								$append='';
+								if ($row->double_team2_player1 == 0)
+								{
+									$append=' style="background-color:#bbffff"';
+								}
+								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player1'.$row->id,
+												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team2_player1);
+                                echo '<br />';   
+                                
+                                $append='';
+								if ($row->double_team2_player2 == 0)
+								{
+									$append=' style="background-color:#bbffff"';
+								}
+								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player2'.$row->id,
+												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team2_player2);
+                                             
+                                } 
+                                
+                                
+                                
+                                ?>
 								
 							</td>
 							<td nowrap="nowrap" style="text-align: right; ">
@@ -210,32 +249,46 @@ if($close == 1) {
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="4" class="inputbox" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="4" class="inputbox" />
-								<a	href="javascript:void(0)"
-									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHTML::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
-															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
-															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
-									?>
-								</a>&nbsp;
-								<span id="part<?php echo $row->id; ?>" style="display: none">
+								
+                                
+                                <br />
+                                
+								<span id="part<?php echo $row->id; ?>" style="">
 									<br />
+                                    <table>
+                                    <tr>
 									<?php
 									$partresults1=explode(";",$row->team1_result_split);
 									$partresults2=explode(";",$row->team2_result_split);
 									for ($x=0; $x < ($this->projectws->game_parts); $x++)
 									{
-										echo ($x+1).".: "; ?>
+										?>
+                                        
+                                        <td>
+                                        <?PHP
+                                        echo ($x+1).".: "; 
+                                        ?>
+                                        </td>
+                                        <td>
 
 										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team1_result_split<?php echo $row->id;?>[]"
 												value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
-												size="3" tabindex="1" class="inputbox" /> :&nbsp;
-										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
+												size="3" tabindex="1" class="inputbox" />
+										</td>
+                                        <td>
+                                        <input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team2_result_split<?php echo $row->id; ?>[]"
 												value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
-												size="3" tabindex="1" class="inputbox" /><br />
-										<?php
+												size="3" tabindex="1" class="inputbox" />
+										</td>
+                                        
+                                        <?php
 									}
+                                    ?>
+                                    </tr>
+                                    </table>
+                                    <?PHP
 									if ($this->projectws->allow_add_time == 1)
 									{
 										echo 'OT:'; ?>

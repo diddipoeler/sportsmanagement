@@ -346,7 +346,38 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-			
+		
+		<field 
+			name="use_tie_break" 
+			type="radio" 
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+    <field
+			name="tennis_single_matches"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
+			class="inputbox validate-numeric"
+			size="4" 
+      maxlength="6"
+			default="4"/>
+      
+    <field
+			name="tennis_double_matches"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
+			class="inputbox validate-numeric"
+			size="4" 
+      maxlength="6"
+			default="2"/>
+        
+      	
 		<field 
 			name="allow_add_time" 
 			type="radio" 

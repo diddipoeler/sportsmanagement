@@ -178,7 +178,88 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
 	}
 */
 
-	function _buildContentOrderBy()
+	function checkGames($project,$match_id,$rid,$projectteam1_id,$projectteam2_id)
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe	= JFactory::getApplication();
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project, true).'</pre><br>','');
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' match_id<br><pre>'.print_r($match_id, true).'</pre><br>','');
+        
+        // Select some fields
+		$query->select('COUNT(mc.id)');
+		// From the hello table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+        $query->where('mc.match_id = '.$match_id);
+        $query->where('mc.match_type = "SINGLE" ');
+        $db->setQuery($query);
+        $singleresult = $db->loadResult();
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' singleresult<br><pre>'.print_r($singleresult, true).'</pre><br>','');
+        
+        if ( $singleresult < $project->tennis_single_matches )
+        {
+            $insertmatch = $project->tennis_single_matches - $singleresult;
+            
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
+            
+            for ($i=0; $i < $insertmatch; $i++)
+		    {
+		      // Create and populate an object.
+              $temp = new stdClass();
+              $temp->round_id = $rid;
+              $temp->projectteam1_id = $projectteam1_id;
+              $temp->projectteam2_id = $projectteam2_id;
+              $temp->match_id = $match_id;
+              $temp->match_type = 'SINGLE';
+              $temp->published = 1;
+              // Insert the object
+              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+		    }  
+        }
+        
+        $query = $db->getQuery(true);
+        $query->clear();
+        
+        // Select some fields
+		$query->select('COUNT(mc.id)');
+		// From the hello table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+        $query->where('mc.match_id = '.$match_id);
+        $query->where('mc.match_type = "DOUBLE" ');
+        $db->setQuery($query);
+        $doubleresult = $db->loadResult();
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' doubleresult<br><pre>'.print_r($doubleresult, true).'</pre><br>','');
+        
+        if ( $doubleresult < $project->tennis_double_matches )
+        {
+            $insertmatch = $project->tennis_double_matches - $doubleresult;
+            
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
+            
+            for ($i=0; $i < $insertmatch; $i++)
+		    {
+		      // Create and populate an object.
+              $temp = new stdClass();
+              $temp->round_id = $rid;
+              $temp->projectteam1_id = $projectteam1_id;
+              $temp->projectteam2_id = $projectteam2_id;
+              $temp->match_id = $match_id;
+              $temp->match_type = 'DOUBLE';
+              $temp->published = 1;
+              // Insert the object
+              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+		    } 
+            
+        }
+        
+    }
+    
+    function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
 

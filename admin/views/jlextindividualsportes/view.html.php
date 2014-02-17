@@ -90,16 +90,22 @@ class sportsmanagementViewjlextindividualsportes extends JView
 		$projectteam1_id		= JRequest::getvar('team1', 0);
 		$projectteam2_id		= JRequest::getvar('team2', 0);
         
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $projectws = $mdlProject->getProject($project_id);
+        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$roundws = $mdlRound->getRound($rid);
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');
+        
+        $model->checkGames($projectws,$match_id,$rid,$projectteam1_id,$projectteam2_id);
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
         
         $matches = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $projectws = $mdlProject->getProject($project_id);
-        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
-		$roundws = $mdlRound->getRound($rid);
+        
         
         $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
         if ($projectteams = $model->getPlayer($projectteam1_id,$project_id))

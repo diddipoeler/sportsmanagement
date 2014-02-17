@@ -149,16 +149,31 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $query->clear();
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         $match_id = $post['match_id'];
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
+        // select some fields
+		$query->select('use_tie_break,game_parts');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        // where
+        $query->where('id = '.(int) $post['project_id']);
+        $db->setQuery($query);
+        $use_tie_break = $db->loadObject();
         
-        $result=true;
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' use_tie_break<br><pre>'.print_r($use_tie_break, true).'</pre><br>','');
+        
+        $result_tie_break = $use_tie_break->game_parts - 1;
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' result_tie_break<br><pre>'.print_r($result_tie_break, true).'</pre><br>','');
+        
+        $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			// änderungen im datum oder der uhrzeit
@@ -191,6 +206,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             $tblMatch->division_id	= $post['division_id'.$pks[$x]];
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
+            
+            $tblMatch->teamplayer1_id = $post['teamplayer1_id'.$pks[$x]];
+            $tblMatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]];
+            
+            $tblMatch->double_team1_player1 = $post['double_team1_player1'.$pks[$x]];
+            $tblMatch->double_team1_player2 = $post['double_team1_player2'.$pks[$x]];
+            $tblMatch->double_team2_player1 = $post['double_team2_player1'.$pks[$x]];
+            $tblMatch->double_team2_player2 = $post['double_team2_player2'.$pks[$x]];
             
 
                  $tblMatch->team1_result	= NULL;
@@ -240,6 +263,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         
         // alles ok
         // jetzt die einzelergebnisse zum hauptspiel addieren 
+        $query = $db->getQuery(true);
+        $query->clear();
         // Select some fields
 		$query->select('mc.*');
 		// From the hello table
@@ -272,18 +297,61 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             $temp->team1_single_sets	+= $row->team1_result;
             $temp->team2_single_sets	+= $row->team2_result;  
             
+            //$temp->team1_single_games = 0;
+            //$temp->team2_single_games = 0;
+            
             $team1_result_split	= explode(";",$row->team1_result_split);
             $team2_result_split	= explode(";",$row->team2_result_split);  
             
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_result_split<br><pre>'.print_r($team1_result_split, true).'</pre><br>','');
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_result_split<br><pre>'.print_r($team2_result_split, true).'</pre><br>','');
+            
             foreach ( $team1_result_split as $key => $value )
             {
+                if ( $use_tie_break )
+                {
+                    if ( $key < $result_tie_break )
+                    {
+                        $temp->team1_single_games	+= $value;
+                    }
+                }
+                else
+                {
                 $temp->team1_single_games	+= $value;
+                }
             }
             foreach ( $team2_result_split as $key => $value )
             {
+                if ( $use_tie_break )
+                {
+                    if ( $key < $result_tie_break )
+                    {
+                        $temp->team2_single_games	+= $value;
+                    }
+                }
+                else
+                {
                 $temp->team2_single_games	+= $value;
+                }
             }
             
+            if ( $use_tie_break )
+            {
+                if ( $team1_result_split[$result_tie_break] > $team2_result_split[$result_tie_break] )
+                        {
+                            $temp->team1_single_games	+= 1;
+                            $temp->team2_single_games	+= 0; 
+                        }
+                        if ( $team1_result_split[$result_tie_break] < $team2_result_split[$result_tie_break] )
+                        {
+                            $temp->team1_single_games	+= 0;
+                            $temp->team2_single_games	+= 1; 
+                        }
+                        
+            }
+            
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_single_games<br><pre>'.print_r($temp->team1_single_games, true).'</pre><br>','');
+            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_single_games<br><pre>'.print_r($temp->team2_single_games, true).'</pre><br>','');
             
         }
         
@@ -328,6 +396,17 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     return parent::delete($pk);
     return true; 
     }
+    
+//    function publish($pks, $value)
+//    {
+//	$mainframe = JFactory::getApplication();
+//    
+//    $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+//    $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' value<br><pre>'.print_r($value, true).'</pre><br>','');
+//    
+//    return parent::publish($pks, $value);
+//    return true; 
+//    }
 
 	
 
