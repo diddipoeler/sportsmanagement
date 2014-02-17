@@ -159,22 +159,53 @@ class sportsmanagementModelteamperson extends JModelAdmin
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        $mainframe->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
-        $result=true;
+        $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblPerson = & $this->getTable();
-			$tblPerson->id = $pks[$x];
+			$tblPerson->id = $post['person_id'.$pks[$x]];
 			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
 			$tblPerson->jerseynumber = $post['jerseynumber'.$pks[$x]];
 			$tblPerson->market_value = $post['market_value'.$pks[$x]];
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' id<br><pre>'.print_r($pks[$x], true).'</pre><br>','');
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>','');
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>','');
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>','');
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' position_id<br><pre>'.print_r($post['position_id'.$pks[$x]], true).'</pre><br>','');
+            $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>','');
+            }
 
-			if(!$tblPerson->store()) {
+			if(!$tblPerson->store()) 
+            {
+                $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
+            else
+            {
+                $tblprojectposition = JTable::getInstance("projectposition", "sportsmanagementTable");
+                $tblprojectposition->load((int) $post['project_position_id'.$pks[$x]]);
+                
+                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+                {
+                $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' position_id<br><pre>'.print_r($tblprojectposition->position_id, true).'</pre><br>','Notice');
+                }
+                
+                $tblperson = JTable::getInstance("person", "sportsmanagementTable");
+                $tblperson->load((int) $pks[$x]);
+                $tblperson->position_id = $tblprojectposition->position_id;
+                
+                if (!$tblperson->store())
+	            {
+		        $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
+	            }
+            }
 		}
 		return $result;
 	}
