@@ -270,7 +270,7 @@ class sportsmanagementControllerAjax extends JController
         {
                 $req = JRequest::getVar('required', false);
                 $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) JoomleagueHelper::getRoundsOptions(JRequest::getInt( 'p' ),'ASC', $required));
+                echo json_encode((array) sportsmanagementHelper::getRoundsOptions(JRequest::getInt( 'p' ),'ASC', $required));
                 JFactory::getApplication()->close();
         }
 
