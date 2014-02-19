@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <structur>
 
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremerhaven.zip ">Wappen Bremerhaven</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_stadt.zip ">Wappen Bremen Stadt</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_nord.zip  ">Wappen Bremen Nord</picture></pictures>
+
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="schleswig-flensburg.zip">Wappen Schleswig-Flensburg</picture></pictures>
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="dithmarschen.zip">Wappen Dithmarschen</picture></pictures>
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="kiel.zip">Wappen Kiel</picture></pictures>
@@ -16,13 +20,13 @@
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="stormarn.zip">Wappen Stormarn</picture></pictures>
 
 
-<pictures><picture folder="Flaggen" directory="flags" file="flags.zip">Flaggen</picture></pictures>
+<pictures><picture folder="Flaggen - Flags" directory="flags" file="flags.zip">Flaggen</picture></pictures>
 
-<pictures><picture folder="Sonstiges" directory="associations" file="associations.zip">Logos Landesverbände</picture></pictures>
-<pictures><picture folder="Sonstiges" directory="agegroups" file="agegroups.zip">Altersgruppen</picture></pictures>
+<pictures><picture folder="Sonstiges - Others" directory="associations" file="associations.zip">Logos Landesverbände</picture></pictures>
+<pictures><picture folder="Sonstiges - Others" directory="agegroups" file="agegroups.zip">Altersgruppen</picture></pictures>
 
-<pictures><picture folder="Sonstiges" directory="events" file="soccer.zip">Ereignisse Fußball</picture></pictures>
-<pictures><picture folder="Sonstiges" directory="events" file="handball.zip">Ereignisse Handball</picture></pictures>
-<pictures><picture folder="Sonstiges" directory="events" file="hockey.zip">Ereignisse Hockey</picture></pictures>
+<pictures><picture folder="Sonstiges - Others" directory="events" file="soccer.zip">Ereignisse Fußball</picture></pictures>
+<pictures><picture folder="Sonstiges - Others" directory="events" file="handball.zip">Ereignisse Handball</picture></pictures>
+<pictures><picture folder="Sonstiges - Others" directory="events" file="hockey.zip">Ereignisse Hockey</picture></pictures>
 
 </structur>
