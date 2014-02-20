@@ -161,7 +161,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         // select some fields
-		$query->select('use_tie_break,game_parts');
+		$query->select('use_tie_break,game_parts,sports_type_id');
 		// from table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         // where
@@ -174,12 +174,25 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         {
             $result_tie_break = $result_tie_break - 1;
         }
-        
-        
-        
-        
+
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' use_tie_break<br><pre>'.print_r($use_tie_break, true).'</pre><br>','');
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' result_tie_break<br><pre>'.print_r($result_tie_break, true).'</pre><br>','');
+        
+        $query = $db->getQuery(true);
+        $query->clear();
+        // select some fields
+		$query->select('name,id');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype');
+        // where
+        $query->where('sports_type_id = '.(int) $use_tie_break->sports_type_id);
+        $db->setQuery($query);
+        $event_list = $db->loadObjectList('name');
+        
+        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' event_list<br><pre>'.print_r($event_list, true).'</pre><br>','');
+        
+        
+        
         
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
@@ -255,6 +268,9 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 }
 
             
+            
+            
+            
             $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
@@ -267,7 +283,154 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             {
                 //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($tblMatch,true).'</pre>'),'');
             }
-		}
+            
+            // ereignisse speichern heim
+            if ( $tblMatch->teamplayer1_id )
+            {
+                
+                
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->teamplayer1_id,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam1_id'],$tblMatch->teamplayer1_id,$event_id);
+ 
+            }
+            
+            // ereignisse speichern heim
+            if ( $tblMatch->double_team1_player1 )
+            {
+                
+                
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->double_team1_player1,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam1_id'],$tblMatch->double_team1_player1,$event_id);
+ 
+            }
+            
+            // ereignisse speichern heim
+            if ( $tblMatch->double_team1_player2 )
+            {
+                
+                
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->double_team1_player2,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam1_id'],$tblMatch->double_team1_player2,$event_id);
+ 
+            }
+            
+            
+            // ereignisse speichern gast
+            if ( $tblMatch->teamplayer2_id )
+            {
+                
+                
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->teamplayer2_id,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam2_id'],$tblMatch->teamplayer2_id,$event_id);
+ 
+            }
+            
+            // ereignisse speichern gast
+            if ( $tblMatch->double_team2_player1 )
+            {
+                
+                
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->double_team2_player1,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam2_id'],$tblMatch->double_team2_player1,$event_id);
+ 
+            }
+            
+            // ereignisse speichern gast
+            if ( $tblMatch->double_team2_player2 )
+            {
+                
+                
+                if ( $tblMatch->team1_result < $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                if ( $tblMatch->team1_result > $tblMatch->team2_result )
+                {
+                    // ereignis_id
+                    $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                 
+                }
+                self::deleteevents($post['match_id'],$tblMatch->double_team2_player2,$event_id);
+                self::insertevents($post['match_id'],$post['projectteam2_id'],$tblMatch->double_team2_player2,$event_id);
+ 
+            }
+            
+		
+        }
         
         // alles ok
         // jetzt die einzelergebnisse zum hauptspiel addieren 
@@ -395,13 +558,55 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             {
             }    
             
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
         
         // Proceed with the save
 		//return parent::save($data);
         
     }
     
+    function deleteevents($match_id,$teamplayer1_id,$event_id)
+	{
+	$mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+    // alte ereignisse löschen
+                $query = $db->getQuery(true);
+                $query->clear();
+                $query->delete()->from('#__sportsmanagement_match_event')->where('match_id = '.$match_id.' AND teamplayer_id = '.$teamplayer1_id.' AND event_type_id = '.$event_id  );
+                $db->setQuery($query);
+                $resultdel = $db->query();
+                if(!$resultdel) 
+                {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+    		     }
+    
+    
+    }
+    
+    function insertevents($match_id,$projectteam1_id,$teamplayer1_id,$event_id)
+	{
+	$mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+    // Create and populate an object.
+                $event = new stdClass();
+                $event->match_id = $match_id;
+                $event->projectteam_id = $projectteam1_id;
+                $event->teamplayer_id = $teamplayer1_id;
+                $event->event_type_id = $event_id;
+                $event->event_sum = 1;
+                // Insert the object into the user profile table.
+                $resultins = JFactory::getDbo()->insertObject('#__sportsmanagement_match_event', $event);
+                if(!$resultins) 
+                {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+    		     }
+    
+    
+    }
     
     /**
 	 * Method to remove

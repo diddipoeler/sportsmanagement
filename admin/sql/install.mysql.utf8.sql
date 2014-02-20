@@ -704,7 +704,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `import_project_id` INT(11) NOT NULL DEFAULT '0' ,
   `project_art_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   `project_live_update` TINYINT(1) NOT NULL DEFAULT '0' ,
-  `use_tie_break` TINYINT(1)  NULL DEFAULT NULL ,
+  `use_tie_break` TINYINT(1)  NULL DEFAULT '0' ,
   
   `tennis_single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `tennis_double_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,

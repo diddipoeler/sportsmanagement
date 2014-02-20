@@ -234,13 +234,13 @@ class SMStatistic extends JObject
 	 */
 	function getParam($name, $default = '')
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		return $params->get($name, $default);
 	}
 	
 	function getPrecision()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		return $params->get('precision', 2);
 	}
 	
@@ -271,7 +271,7 @@ class SMStatistic extends JObject
 	 */
 	function showInMatchReport()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
@@ -293,7 +293,7 @@ class SMStatistic extends JObject
 	 */
 	function showInRoster()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		$statistic_views = explode(',', $params->get('statistic_views'));
 		if (!count($statistic_views)) {
 			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
@@ -314,7 +314,7 @@ class SMStatistic extends JObject
 	 */
 	function showInPlayer()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
