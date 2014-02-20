@@ -84,7 +84,7 @@ class sportsmanagementModelPerson extends JModel
 
 
 
-	function getPerson()
+	function getPerson($personid=0)
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');

@@ -91,7 +91,7 @@ if($close == 1) {
 							<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 						</th>
 
-						
+						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
 						
 						
 
@@ -151,6 +151,10 @@ if($close == 1) {
 								<?php
 								echo $checked;
 								?>
+							</td>
+                            <td class="center">
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
+										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox" />
 							</td>
 							<td style="text-align:center; ">
 								<?php

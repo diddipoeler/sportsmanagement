@@ -51,7 +51,7 @@ $config   = &$this->tableconfig;
 //echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';
 //}
 
-
+//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
 
 $counter = 1;
 $k = 0;
@@ -236,7 +236,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->id);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->projectteamid);
 					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -255,7 +255,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2,$team->team->projectteamid);
 					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -274,7 +274,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3,$team->team->projectteamid);
 					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else

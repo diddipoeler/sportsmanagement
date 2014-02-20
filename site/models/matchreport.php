@@ -352,7 +352,11 @@ class sportsmanagementModelMatchReport extends JModel
         $result = $db->loadObjectList();
         if ( !$result )
 	    {
+	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        }
+        
 	    }
         
 		return $result;
@@ -410,7 +414,11 @@ class sportsmanagementModelMatchReport extends JModel
 		$result = $db->loadObjectList();
         if ( !$result )
 	    {
+	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        }
+        
 	    }
         
         return $result;

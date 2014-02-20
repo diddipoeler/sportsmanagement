@@ -226,6 +226,14 @@ class sportsmanagementModelMatch extends JModelAdmin
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             
+            $tblMatch->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
+            $tblMatch->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
+            $tblMatch->team1_single_sets = $post['team1_single_sets'.$pks[$x]];
+            $tblMatch->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
+            $tblMatch->team1_single_games = $post['team1_single_games'.$pks[$x]];
+            $tblMatch->team2_single_games = $post['team2_single_games'.$pks[$x]];
+            
+            
             if ( $post['use_legs'] )
             {
                 $tblMatch->team1_result	= '';
@@ -257,6 +265,9 @@ class sportsmanagementModelMatch extends JModelAdmin
             
             if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
             {    
+                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post['team1_result'.$pks[$x]], true).'</pre><br>','Notice');
+                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post['team2_result'.$pks[$x]], true).'</pre><br>','Notice');
+                
             $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
             $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
             }
@@ -360,7 +371,27 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return parent::save($data);   
     }
       
-    
+    function getMatchSingleData($match_id)
+	{
+		$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('m.*');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS m');
+        
+        // Where
+        $query->where('m.match_id = '.(int) $match_id );
+        
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        
+        return $result;    
+    }
+        
      /**
 	 * Method to load content matchday data
 	 *

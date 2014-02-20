@@ -74,9 +74,9 @@ class sportsmanagementModelPlayer extends JModel
 	function __construct()
 	{
 		parent::__construct();
-		$this->projectid=JRequest::getInt('p',0);
-		$this->personid=JRequest::getInt('pid',0);
-		$this->teamplayerid=JRequest::getInt('pt',0);
+		$this->projectid = JRequest::getInt('p',0);
+		$this->personid = JRequest::getInt('pid',0);
+		$this->teamplayerid = JRequest::getInt('pt',0);
 	}
 
 
@@ -142,7 +142,7 @@ class sportsmanagementModelPlayer extends JModel
 	 * 
 	 * @return
 	 */
-	function getTeamPlayer()
+	function getTeamPlayer($projectid=0,$personid=0,$teamplayerid=0)
 	{
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -150,19 +150,47 @@ class sportsmanagementModelPlayer extends JModel
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        
+       if ( $projectid )
+       {
+        $this->projectid = $projectid;
+       }
+       if ( $personid )
+       {
+        $this->personid = $personid;
+       }
+       if ( $teamplayerid )
+       {
+        $this->teamplayerid = $teamplayerid;
+       }
+       
        // Select some fields
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes');
         $query->select('pos.name AS position_name');
         $query->select('ppos.position_id');
+        
+        $query->select('ps.firstname, ps.lastname');
+        
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');      
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ps ON ps.id = tp.person_id');
+              
        $query->where('pt.project_id='.$db->Quote($this->projectid));
+       if ( $this->personid )
+       {
         $query->where('tp.person_id='.$db->Quote($this->personid));
+        }
+        
+        if ( $this->teamplayerid )
+       {
+        $query->where('tp.id='.$db->Quote($this->teamplayerid));
+        }
+        
         $query->where('p.published = 1');
        $query->where('tp.persontype = 1');
        

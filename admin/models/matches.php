@@ -59,6 +59,11 @@ class sportsmanagementModelMatches extends JModelList
     var $_rid = 0;
     var $_season_id = 0;
 
+	/**
+	 * sportsmanagementModelMatches::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -232,6 +237,11 @@ class sportsmanagementModelMatches extends JModelList
         
 	}
 
+	/**
+	 * sportsmanagementModelMatches::_buildContentOrderBy()
+	 * 
+	 * @return
+	 */
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
@@ -255,6 +265,11 @@ class sportsmanagementModelMatches extends JModelList
 		return $orderby;
 	}
 
+	/**
+	 * sportsmanagementModelMatches::_buildContentWhere()
+	 * 
+	 * @return
+	 */
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
@@ -274,6 +289,12 @@ class sportsmanagementModelMatches extends JModelList
 		return $where;
 	}
 
+  /**
+   * sportsmanagementModelMatches::checkMatchPicturePath()
+   * 
+   * @param mixed $match_id
+   * @return
+   */
   function checkMatchPicturePath($match_id)
   {
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
@@ -292,6 +313,12 @@ class sportsmanagementModelMatches extends JModelList
 
 	
 
+	/**
+	 * sportsmanagementModelMatches::getMatchesByRound()
+	 * 
+	 * @param mixed $roundId
+	 * @return
+	 */
 	function getMatchesByRound($roundId)
 	{
 		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;

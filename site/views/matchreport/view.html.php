@@ -44,6 +44,7 @@ jimport('joomla.html.pane');
 
 //require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'match.php');
 //require_once(JPATH_COMPONENT.DS.'models'.DS.'results.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
 /**
  * sportsmanagementViewMatchReport
@@ -86,11 +87,20 @@ class sportsmanagementViewMatchReport extends JView
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		$match = sportsmanagementModelMatch::getMatchData(JRequest::getInt( "mid", 0 ));
+        $matchsingle = sportsmanagementModelMatch::getMatchSingleData(JRequest::getInt( "mid", 0 ));
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
+        }
 
 		$this->assignRef('project',$project);
 		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
 		$this->assignRef('config',$config);
 		$this->assignRef('match',$match);
+        
+        $this->assignRef('matchsingle',$matchsingle);
+        
 		$ret = $model->getMatchText($match->new_match_id);
 		$this->assignRef('newmatchtext',$ret->text);
 		$ret=$model->getMatchText($match->old_match_id);
