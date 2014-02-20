@@ -155,6 +155,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $post = JRequest::get('post');
         $match_id = $post['match_id'];
         
+        $result_tie_break = 0;
+        
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
@@ -166,11 +168,17 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $query->where('id = '.(int) $post['project_id']);
         $db->setQuery($query);
         $use_tie_break = $db->loadObject();
+        $result_tie_break = $use_tie_break->game_parts;
+        
+        if ( $use_tie_break->use_tie_break  )
+        {
+            $result_tie_break = $result_tie_break - 1;
+        }
+        
+        
+        
         
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' use_tie_break<br><pre>'.print_r($use_tie_break, true).'</pre><br>','');
-        
-        $result_tie_break = $use_tie_break->game_parts - 1;
-        
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' result_tie_break<br><pre>'.print_r($result_tie_break, true).'</pre><br>','');
         
         $result = true;
@@ -308,7 +316,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             
             foreach ( $team1_result_split as $key => $value )
             {
-                if ( $use_tie_break )
+                if ( $use_tie_break->use_tie_break )
                 {
                     if ( $key < $result_tie_break )
                     {
@@ -322,7 +330,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             }
             foreach ( $team2_result_split as $key => $value )
             {
-                if ( $use_tie_break )
+                if ( $use_tie_break->use_tie_break )
                 {
                     if ( $key < $result_tie_break )
                     {
@@ -335,7 +343,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 }
             }
             
-            if ( $use_tie_break )
+            if ( $use_tie_break->use_tie_break )
             {
                 if ( $team1_result_split[$result_tie_break] > $team2_result_split[$result_tie_break] )
                         {
@@ -349,7 +357,19 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                         }
                         
             }
-            
+            else
+            {
+                 if ( $team1_result_split[$result_tie_break] > $team2_result_split[$result_tie_break] )
+                        {
+                            $temp->team1_single_games	+= $team1_result_split[$result_tie_break];
+                            $temp->team2_single_games	+= $team2_result_split[$result_tie_break]; 
+                        }
+                        if ( $team1_result_split[$result_tie_break] < $team2_result_split[$result_tie_break] )
+                        {
+                            $temp->team1_single_games	+= $team1_result_split[$result_tie_break];
+                            $temp->team2_single_games	+= $team2_result_split[$result_tie_break]; 
+                        }
+            }
             //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_single_games<br><pre>'.print_r($temp->team1_single_games, true).'</pre><br>','');
             //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_single_games<br><pre>'.print_r($temp->team2_single_games, true).'</pre><br>','');
             
@@ -375,7 +395,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             {
             }    
             
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
         
         // Proceed with the save
 		//return parent::save($data);
