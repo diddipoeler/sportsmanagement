@@ -135,7 +135,7 @@ class sportsmanagementViewEventtypes extends JView
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd($option));
+        JToolBarHelper::preferences($option);
 	}
 }
 ?>

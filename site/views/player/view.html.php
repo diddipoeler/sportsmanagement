@@ -53,6 +53,12 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewPlayer extends JView
 {
 
+	/**
+	 * sportsmanagementViewPlayer::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -116,6 +122,11 @@ class sportsmanagementViewPlayer extends JView
 		$this->assign('AllEvents',$model->getAllEvents($sportstype));
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		$this->assign('stats',sportsmanagementModelProject::getProjectStats());
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
+        }
 
 		// Get events and stats for current project
 		if ($config['show_gameshistory'])
@@ -125,6 +136,11 @@ class sportsmanagementViewPlayer extends JView
 			$this->assign('gamesevents',$model->getGamesEvents());
 			$this->assign('gamesstats',$model->getPlayerStatsByGame());
 		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
+        }
 
 		// Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
 		if ($config['show_career_stats'])
@@ -135,15 +151,30 @@ class sportsmanagementViewPlayer extends JView
 
 		$extended = sportsmanagementHelper::getExtended($person->extended, 'person');
 		$this->assignRef( 'extended', $extended );
+        unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
-        // nebenposition vorhanden ?
-        if ( $form_value )
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $this->assignRef ('person_parent_positions', explode(",",$form_value) );
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         
+        // nebenposition vorhanden ?
+        $this->assignRef ('person_parent_positions', $form_value );
+//        if ( $form_value )
+//        {
+//            $this->assignRef ('person_parent_positions', explode(",",$form_value) );
+//        }
         
+        unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
+        }
+        
         if ( $form_value )
         {
         $this->assignRef ('person_position', $form_value );

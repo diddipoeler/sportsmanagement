@@ -43,8 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
+
 /**
- * SportsManagement View
+ * sportsmanagementViewstatistic
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewstatistic extends JView
 {
@@ -70,6 +77,14 @@ class sportsmanagementViewstatistic extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        
+        $isNew = $this->item->id == 0;
+        
+        if ( $isNew )
+        {
+        $item->class = 'basic';    
+        }
         
         /*
         $templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
@@ -97,7 +112,7 @@ class sportsmanagementViewstatistic extends JView
         
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 // 		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -116,6 +131,7 @@ class sportsmanagementViewstatistic extends JView
 	{
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
+        $option = JRequest::getCmd('option');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -157,6 +173,10 @@ class sportsmanagementViewstatistic extends JView
 			}
 			JToolBarHelper::cancel('statistic.cancel', 'JTOOLBAR_CLOSE');
 		}
+        
+        JToolBarHelper::divider();
+        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences($option);
 	}
 	/**
 	 * Method to set up the document properties

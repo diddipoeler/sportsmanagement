@@ -119,7 +119,7 @@ class sportsmanagementViewrosterpositions extends JView
 		JToolBarHelper::deleteList('', 'rosterpositions.delete');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd($option));
+        JToolBarHelper::preferences($option);
        
        
        

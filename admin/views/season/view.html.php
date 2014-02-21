@@ -138,7 +138,7 @@ class sportsmanagementViewSeason extends JView
 		}
         JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd($option));
+		JToolBarHelper::preferences($option);
 	}
     
 	/**

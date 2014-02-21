@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'GAMES_HISTORY gamesstats<br /><pre>~' . print_r($this->gamesstats,true) . '~</pre><br />';
 echo 'GAMES_HISTORY config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';

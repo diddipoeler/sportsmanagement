@@ -51,8 +51,9 @@
 		<field
 			name="class"
 			type="statstypelist"
+			default="basic"
 			class="inputbox"
-			size="1"
+			size="10"
 			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_TYPE_DESC"
 			required="true">

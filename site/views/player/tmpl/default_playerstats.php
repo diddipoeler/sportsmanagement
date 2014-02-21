@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true) . '~</pre><br />';
 }
@@ -143,7 +143,10 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			$career['out'] = 0;
 			$player = JModel::getInstance("Person","sportsmanagementModel");
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
             echo ' games<br><pre>'.print_r($this->historyPlayer,true).'</pre><br>';
+            }
 
 			if (count($this->historyPlayer) > 0)
 			{

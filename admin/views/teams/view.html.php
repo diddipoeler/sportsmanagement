@@ -117,7 +117,7 @@ class sportsmanagementViewTeams extends JView
 		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd($option));
+        JToolBarHelper::preferences($option);
 	}
 }
 ?>

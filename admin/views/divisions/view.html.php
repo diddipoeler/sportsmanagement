@@ -146,7 +146,7 @@ class sportsmanagementViewDivisions extends JView
         JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd($option));
+		JToolBarHelper::preferences($option);
 	}
 }
 ?>

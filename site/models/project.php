@@ -1168,7 +1168,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 			{
 				if (!$statid || $statid == $row->id || (is_array($statid) && in_array($row->id, $statid)))
 				{
-					$stat=&SMStatistic::getInstance($row->class);
+					$stat = SMStatistic::getInstance($row->class);
 					$stat->bind($row);
 					$stat->set('position_id',$row->position_id);
 					$stats[$row->position_id][$row->id]=$stat;

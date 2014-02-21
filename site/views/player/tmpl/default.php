@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'player view games<pre>',print_r($this->games,true),'</pre><br>'; 
 echo 'player view teams<pre>',print_r($this->teams,true),'</pre><br>';  
@@ -69,7 +69,7 @@ if (isset($this->person))
     
 	$output = array();
 
-    if ( $this->use_joomlaworks == 0 )
+    if ( !JPluginHelper::isEnabled('content', 'jw_ts') )
     {
     // diddipoeler
     // joomlaworks nicht anwenden und die playerinfo in´s array    
@@ -129,48 +129,7 @@ if (isset($this->person))
 	{
 		$output[intval($this->config['show_order_stcareer'])] = 'playerstaffcareer';
 	}
-/*    
-    if ( $this->use_joomlaworks == 0 )
-    {
-	// diddipoeler
-    // joomlaworks nicht anwenden
-    if($this->config['show_players_layout'] == "player_tabbed") {
-		//$document = JFactory::getDocument();
-		//$css = 'components/com_sportsmanagement/assets/css/tabs.css';
-		//$document->addStyleSheet($css);
-		$idxTab = 1;
-		echo JHtml::_('tabs.start','playertabs', array('useCookie'=>1));
-		foreach ($output as $templ) {
-			echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
-			echo $this->loadTemplate($templ);
-		}
-		echo JHtml::_('tabs.end');
-	}
-    else if($this->config['show_players_layout'] == "player_slider") {
-		//$document = JFactory::getDocument();
-		//$css = 'components/com_sportsmanagement/assets/css/tabs.css';
-		//$document->addStyleSheet($css);
-		$idxTab = 1;
-        echo JHtml::_('sliders.start','playerslider', array('useCookie'=>1, 'show'=>-1, 'display'=>-1, 'startOffset'=>-1));
-		
-		foreach ($output as $templ) {
-			echo JHtml::_('sliders.panel', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'panel'.($idxTab++));
-			echo $this->loadTemplate($templ);
-		}
-		echo JHtml::_('sliders.end');
-	}  
-    
-    else {
-		foreach ($output as $templ)
-		{
-			echo $this->loadTemplate($templ);
-		}
-	}
-    
-    }
-    else
-    {
-*/        
+
     // diddipoeler
     // anzeige als tabs oder slider von joomlaworks
     // und die spielerinfo immer als erstes

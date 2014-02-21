@@ -143,7 +143,7 @@ class sportsmanagementVieweventtype extends JView
 		}
         		JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd($option));
+		JToolBarHelper::preferences($option);
 	}
 	/**
 	 * Method to set up the document properties

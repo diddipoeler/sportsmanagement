@@ -94,7 +94,23 @@ if(count($this->extended->getFieldsets()) > 0)
 						?>
 						<tr>
 							<td class="label"><?php echo $field->label; ?></td>
-							<td class="data"><?php echo $field->value;?></td>
+							<td class="data">
+                            <?php
+                            if ( is_array($field->value) )
+                            {
+                            
+                            foreach( $field->value as $key => $value)  
+                            {
+                            echo JText::_( $value ).'<br>';      
+                            }
+                              
+                            }
+                            else
+                            { 
+                            echo JText::_( $field->value );
+                            }
+                            ?>
+                            </td>
 						<tr>
 						<?php
 					}

@@ -144,9 +144,10 @@
 		<field
 			name="position_id"
 			type="positionlist"
+			targettable="person"
 			class="inputbox"
 			default="0"
-			size="1"
+			size="10"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION_DESC"
 			>

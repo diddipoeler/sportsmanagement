@@ -259,7 +259,7 @@ if ($this->config['show_player_numbers'])
 		{
 			// Events of JL_substitutions are shown
 			$model =& $this->getModel();
-			$this->assignRef('InOutStat',$model->getInOutStats($this->row->pid));
+			$this->assignRef('InOutStat',sportsmanagementModelPlayer::getInOutStats($this->row->pid));
 			$cnt=0;
 				if ($this->config['show_games_played'] AND isset($this->InOutStat->played) )
 				{

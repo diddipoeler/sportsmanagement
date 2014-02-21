@@ -43,11 +43,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // import Joomla table library
 jimport('joomla.database.table');
 
+
 /**
- * Joomleague Person Table class
- *
- * @package		Joomleague
- * @since 1.50a
+ * sportsmanagementTablePerson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementTablePerson extends JTable
 {
@@ -104,15 +108,19 @@ class sportsmanagementTablePerson extends JTable
 	   $mainframe = JFactory::getApplication();
       $option = JRequest::getCmd('option');
 		
-    if (isset($array['extended']) && is_array($array['extended'])) 
-		{
-			// Convert the params field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($array['extended']);
-			$array['extended'] = (string)$parameter;
-		}
+//    if (isset($array['extended']) && is_array($array['extended'])) 
+//		{
+//			// Convert the params field to a string.
+//			$parameter = new JRegistry;
+//			//$parameter->loadArray($array['extended']);
+//			//$array['extended'] = (string)$parameter;
+//            
+//            $parameter->loadJSON($array['extended']);
+//			$array['extended'] = $parameter->toArray($array['extended']);;
+//		}
         
-    if (isset($array['season_ids']) && is_array($array['season_ids'])) {
+    if (isset($array['season_ids']) && is_array($array['season_ids'])) 
+    {
          $array['season_ids'] = implode(',', $array['season_ids']);
       }
           
@@ -128,24 +136,24 @@ class sportsmanagementTablePerson extends JTable
 	 * @return      boolean
 	 * @see JTable:load
 	 */
-	public function load($pk = null, $reset = true) 
-	{
-		if (parent::load($pk, $reset)) 
-		{
-			// Convert the params field to a registry.
-			$params = new JRegistry;
-			$params->loadJSON($this->extended);
-			//$params->toArray($this->extended);
-            $this->extended = $params->toArray($this->extended);
-            
-			return true;
-			
-		}
-		else
-		{
-			return false;
-		}
-	}
+//	public function load($pk = null, $reset = true) 
+//	{
+//		if (parent::load($pk, $reset)) 
+//		{
+//			// Convert the params field to a registry.
+//			$params = new JRegistry;
+//			$params->loadJSON($this->extended);
+//			//$params->toArray($this->extended);
+//            $this->extended = $params->toArray($this->extended);
+//            
+//			return true;
+//			
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
 	
 	
 

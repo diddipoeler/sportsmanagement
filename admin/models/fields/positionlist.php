@@ -72,14 +72,18 @@ class JFormFieldpositionlist extends JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-    
+    $vartable = (string) $this->element['targettable'];
+		$select_id = JRequest::getVar('id');
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position as pos');
-			$query->join('inner', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id=pos.sports_type_id');
-			$query->where('pos.published=1');
+			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id = pos.sports_type_id');
+            $query->join('INNER','#__sportsmanagement_'.$vartable.' AS t on t.sports_type_id = pos.sports_type_id');
+            
+			$query->where('pos.published = 1');
+            $query->where('t.id = '.$select_id);
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
