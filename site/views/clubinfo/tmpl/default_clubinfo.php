@@ -124,8 +124,6 @@ else
 				?></span>
 			<span class="clubinfo_listing_value"><?php echo $addressString; ?>
 			</span>
-			<span class="clubinfo_listing_item">
-			</span>
 			<span class="clubinfo_listing_value">
 			<?php echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); ?>
       <br />
