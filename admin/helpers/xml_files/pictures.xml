@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <structur>
 
-<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremerhaven.zip ">Wappen Bremerhaven</picture></pictures>
-<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_stadt.zip ">Wappen Bremen Stadt</picture></pictures>
-<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_nord.zip  ">Wappen Bremen Nord</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremerhaven.zip">Wappen Bremerhaven</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_stadt.zip">Wappen Bremen Stadt</picture></pictures>
+<pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Bremen" directory="clubs" file="bremen_nord.zip">Wappen Bremen Nord</picture></pictures>
 
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="schleswig-flensburg.zip">Wappen Schleswig-Flensburg</picture></pictures>
 <pictures><picture folder="Vereinswappen - clublogos/Deutschland - Germany/Schleswig-Holstein" directory="clubs" file="dithmarschen.zip">Wappen Dithmarschen</picture></pictures>
