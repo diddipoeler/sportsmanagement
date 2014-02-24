@@ -303,7 +303,8 @@ else
 	 */
 	static function processData($obj, $params)
 	{
-		// Initialize
+		$mainframe = JFactory::getApplication();
+        // Initialize
 		$github = array();
 		$i = 0;
 
@@ -313,6 +314,11 @@ else
 		//$uname		= $params->get('cfg_github_username', '');
 		//$repo		= $params->get('cfg_github_repository', '');
 		$count		= 15;
+        
+//        if ($i <= $count)
+//			{
+//			$github[]	= new stdClass; 
+//            } 
 
 		// Convert the list name to a useable string for the JSON
 		if ($repo)
@@ -325,31 +331,35 @@ else
 		{
 			if ($i <= $count)
 			{
-				// Initialize a new object
-                //$github[$i]->commit	= '';
-				$github[$i]->commit	= new stdClass;
+				
+                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' github<br><pre>'.print_r($github, true).'</pre><br>','Notice');
+                
+                // Initialize a new object
+                //$github[] = '';
+                $temp = new stdClass();
+				$temp->commit	= new stdClass;
 
 				// The commit message linked to the commit
-				$github[$i]->commit->message = '<a href="https://github.com/'.$uname.'/'.$frepo.'/commit/'.$o['sha'].'" target="_blank" rel="nofollow">'.substr($o['sha'], 0, 7).'</a> - ';
-				$github[$i]->commit->message .= preg_replace("/#(\w+)/", '#<a href="https://github.com/'.$uname.'/'.$frepo.'/issues/\\1" target="_blank" rel="nofollow">\\1</a>', htmlspecialchars($o['commit']['message']));
+				$temp->commit->message = '<a href="https://github.com/'.$uname.'/'.$frepo.'/commit/'.$o['sha'].'" target="_blank" rel="nofollow">'.substr($o['sha'], 0, 7).'</a> - ';
+				$temp->commit->message .= preg_replace("/#(\w+)/", '#<a href="https://github.com/'.$uname.'/'.$frepo.'/issues/\\1" target="_blank" rel="nofollow">\\1</a>', htmlspecialchars($o['commit']['message']));
 
 				// Check if the committer information
 				if ($o['author']['id'] != $o['committer']['id'])
 				{
 					// The committer name formatted with link
-					$github[$i]->commit->committer	= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
+					$temp->commit->committer	= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
 
 					// The author wasn't the committer
-					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
+					$temp->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
 				}
 				else
 				{
 					// The author is also the committer
-					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
+					$temp->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
 				}
 
 				// The author name formatted with link
-				$github[$i]->commit->author .= '<a href="https://github.com/'.$o['author']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['author']['name'].'</a>';
+				$temp->commit->author .= '<a href="https://github.com/'.$o['author']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['author']['name'].'</a>';
 
 				// The time of commit
 				$date = date_create($o['commit']['committer']['date']);
@@ -361,16 +371,20 @@ else
 					// Load the JavaScript; first ensure we have MooTools Core
 					JHtml::_('behavior.framework');
 					JHtml::script(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/js/prettydate.js', false, false);
-					$github[$i]->commit->time = ' <span class="commit-time" title="'.$ISOtime.'">'.JHtml::date($date, 'D M d H:i:s O Y').'</span>';
+					$temp->commit->time = ' <span class="commit-time" title="'.$ISOtime.'">'.JHtml::date($date, 'D M d H:i:s O Y').'</span>';
 				}
 				else
 				{
-					$github[$i]->commit->time = ' '.JHtml::date($date);
+					$temp->commit->time = ' '.JHtml::date($date);
 				}
+                
+                $github[] = $temp;
 
 				$i++;
 			}
 		}
+        
+        
 		return $github;
 	}
     
