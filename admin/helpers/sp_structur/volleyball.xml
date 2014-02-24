@@ -96,7 +96,7 @@
 <parentpositions>
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTANT_SCORER</parentname>
 </parentpositions>
-<parentposition>
+<parentpositions>
 <parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
 </parentpositions>
 <parentpositions>
