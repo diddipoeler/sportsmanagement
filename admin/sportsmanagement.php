@@ -58,6 +58,15 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'m
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' ); 
 $show_debug_info = $params->get( 'show_debug_info' );  
+
+$cfg_help_server = $params->get( 'cfg_help_server' );
+$modal_popup_width = $params->get( 'modal_popup_width' );
+$modal_popup_height = $params->get( 'modal_popup_height' );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$cfg_help_server );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$modal_popup_width );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
+
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
@@ -70,6 +79,8 @@ else
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
+
+
 
 /*
 $document = JFactory::getDocument();

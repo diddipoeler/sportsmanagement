@@ -37,9 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-$cfg_help_server = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
+//$cfg_help_server = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_help_server','') ;
+//$modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
+//$modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
 
 
 // No direct access
@@ -50,6 +50,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 jimport('joomla.html.pane');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.modal');
 $params = $this->form->getFieldsets('params');
 
 $options = array(
@@ -124,8 +125,8 @@ $fieldsets = $this->form->getFieldsets();
                     break;
                     default:
                 ?>
-                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $cfg_help_server.'SM-Backend-Felder:'.$var_onlinehelp; ?>"
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
