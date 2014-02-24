@@ -46,6 +46,8 @@ $ordering = ( $this->lists['order'] == 'ppl.ordering' );
 //$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
 JHtml::_('behavior.mootools');
+JHtml::_('behavior.modal');
+
 ?>
 <style>
 .search-item {
@@ -292,12 +294,24 @@ JHtml::_('behavior.mootools');
 														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
-								}
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+</a>
+<?PHP   								
+                                }
 								elseif ( $row->picture == !'')
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-								}
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
+</a>
+<?PHP 								
+                                
+                                
+                                }
 								?>
 							</td>
               <td class="center">

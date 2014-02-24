@@ -161,5 +161,30 @@
 				class="inputbox"
 				preview="show"
 				directory=""/>	  					
+	</fieldset>	
+
+<fieldset name="description" 
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
 	</fieldset>		
+    
+<fieldset name="training"
+  label="COM_SPORTSMANAGEMENT_TABS_TRAINING"
+  description="COM_SPORTSMANAGEMENT_TABS_TRAINING_DESC">
+  
+  </fieldset>	  
+
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
+      	
 </form>

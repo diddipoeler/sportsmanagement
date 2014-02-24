@@ -37,11 +37,13 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */ 
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 
 ?>
 <!-- import the functions to move the events between selection lists	-->
@@ -51,27 +53,87 @@ $params = $this->form->getFieldsets('params');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
 
-	<div class="col50">
-<?php
-echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
-echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
-echo $this->loadTemplate('details');
+<div class="width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
+			<ul class="adminformlist">
+			<?php foreach($this->form->getFieldset('details') as $field) :?>
+				<li><?php echo $field->label; ?>
+				<?php echo $field->input; 
+                
+                if ( $field->name == 'jform[country]' || $field->name == 'jform[address_country]' )
+                {
+                echo JSMCountries::getCountryFlag($field->value);    
+                }
+                
+                if ( $field->name == 'jform[website]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                if ( $field->name == 'jform[twitter]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                if ( $field->name == 'jform[facebook]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                
+                $suchmuster = array ("jform[","]");
+                $ersetzen = array ('', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                
+                switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    case 'project_id':
+                    case 'team_id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                break;
+                }
+                
+                ?></li>
+			<?php endforeach; ?>
+			</ul>
+		</fieldset>
+	</div>
 
-echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
-echo $this->loadTemplate('picture');
+<div class="width-40 fltrt">
+		<?php
+		echo JHtml::_('sliders.start');
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'details') :
+				continue;
+			endif;
+			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+		if (isset($fieldset->description) && !empty($fieldset->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+			endif;
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
+		endforeach; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
 
-echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DESCRIPTION'), 'panel3');
-echo $this->loadTemplate('description');
-
-echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_TRAINING'), 'panel4');
-echo $this->loadTemplate('training');
-
-echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel5');
-echo $this->loadTemplate('extended');
-
-echo JHtml::_('tabs.end');
-?>
+	
+	</div>
+    	
 		<div class="clr"></div>
+        
+<div>        
 		<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
         <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
         

@@ -314,7 +314,7 @@ $mainframe = JFactory::getApplication();
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30" />
 </a>
 <?PHP                                                     
 								} else {
