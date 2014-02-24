@@ -69,9 +69,9 @@ class sportsmanagementViewprojectteams extends JView
         $division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_division','division','','string');
 		$search				= JString::strtolower($search);
 
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+//		$items = $this->get('Items');
+//		$total = $this->get('Total');
+//		$pagination = $this->get('Pagination');
         
         $this->project_id = JRequest::getVar('pid');
         if ( !$this->project_id )
@@ -87,6 +87,10 @@ class sportsmanagementViewprojectteams extends JView
         $mainframe->setUserState( "$option.season_id", $project->season_id );
         $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
         $mainframe->setUserState( "$option.sports_type_id", $project->sports_type_id );
+        
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
         if ( $this->project_art_id == 3 )
         {
