@@ -85,7 +85,31 @@ $i    = 1;
 					<?php if (!$field->hidden) : ?>
 					<?php echo $field->label; ?>
 					<?php endif; ?>
-					<?php echo $field->input; ?>
+					<?php echo $field->input; 
+                    $suchmuster = array ("params[","]");
+                $ersetzen = array ('', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                
+                switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Templateparameter:'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                break;
+                }
+                ?>
 					</li>
 				<?php endforeach; ?>
 				</ul>

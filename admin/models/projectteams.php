@@ -68,7 +68,12 @@ class sportsmanagementModelProjectteams extends JModelList
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        
+        $this->_project_id = JRequest::getVar('pid');
+        if ( !$this->_project_id )
+        {
         $this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
+        }
         $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
         

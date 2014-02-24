@@ -141,6 +141,9 @@ $fieldsets = $this->form->getFieldsets();
                 ?>
                 </li>
 			<?php 
+            
+            //echo $field->type;
+            
             endforeach; 
             ?>
 			</ul>

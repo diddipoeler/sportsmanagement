@@ -73,8 +73,21 @@ class sportsmanagementViewprojectteams extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
+        $this->project_id = JRequest::getVar('pid');
+        if ( !$this->project_id )
+        {
+        $this->project_id = $mainframe->getUserState( "$option.pid", '0' );
+        }
+       
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id);
+        
+        $this->project_art_id = $project->project_art_id;
+        $mainframe->setUserState( "$option.pid", $project->id );
+        $mainframe->setUserState( "$option.season_id", $project->season_id );
+        $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
+        $mainframe->setUserState( "$option.sports_type_id", $project->sports_type_id );
+        
         if ( $this->project_art_id == 3 )
         {
             $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
@@ -84,8 +97,8 @@ class sportsmanagementViewprojectteams extends JView
             $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
         }
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+        
+        
         $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
