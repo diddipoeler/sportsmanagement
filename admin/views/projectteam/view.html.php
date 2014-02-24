@@ -79,8 +79,8 @@ class sportsmanagementViewProjectteam extends JView
         $this->assignRef('project',$project);
         $team_id	= $this->item->team_id;;
         $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
-	    $project_team = $mdlTeam->getTeam($team_id);
-        $trainingdata = $mdlTeam->getTrainigData($team_id);
+	    $project_team = $mdlTeam->getTeam(0,$team_id);
+        $trainingdata = $mdlTeam->getTrainigData(0,$team_id);
         
         $daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
 			1 => JText::_('MONDAY'),
@@ -172,17 +172,12 @@ class sportsmanagementViewProjectteam extends JView
 			}
 			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CLOSE');
 		}
+    
+    JToolBarHelper::divider();
     sportsmanagementHelper::ToolbarButtonOnlineHelp();    
+    JToolBarHelper::preferences(JRequest::getCmd('option'));
         
-        /*
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE'));
-		
-		JToolBarHelper::save('projectteam.save');
-		JToolBarHelper::apply('projectteam.apply');
-		JToolBarHelper::cancel('projectteam.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		JToolBarHelper::divider();
-		//JLToolBarHelper::onlinehelp();
-        */
+
 	}
     
     /**

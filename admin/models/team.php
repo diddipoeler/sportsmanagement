@@ -217,16 +217,7 @@ class sportsmanagementModelteam extends JModelAdmin
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON c.id = t.club_id');
         $query->where('t.id = '.$team_id);
         
-/**
- *         $query = "
- *             SELECT c.logo_small,
- *                    c.country
- *             FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team t
- *             LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club c ON c.id = t.club_id
- *             WHERE t.id = ".$team_id."
- *         ";
- */
-        
+
         $db->setQuery( $query );
         $result = $db->loadObjectList();
 
@@ -239,7 +230,7 @@ class sportsmanagementModelteam extends JModelAdmin
 	 * @param int team_id
 	 * @return int
 	 */
-	function getTeam($team_id)
+	function getTeam($team_id=0,$pro_team_id=0)
 	{
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -249,13 +240,18 @@ class sportsmanagementModelteam extends JModelAdmin
 		$query->select('t.*');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
-        $query->where('t.id = '.$team_id);
         
-/**
- * 		$query='SELECT *
- * 				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
- * 				  WHERE id='.$team_id;
- */
+        if ( $team_id)
+        {
+        $query->where('t.id = '.$team_id);
+        }
+        else
+        {
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');   
+        $query->where('st.id = '.$pro_team_id); 
+        }
+
 		$db->setQuery($query);
 		return $db->loadObject();
 	}
@@ -424,17 +420,29 @@ if (!$db->query())
 	* @return	array
 	* @since	0.1
 	*/
-	function getTrainigData($team_id)
+	function getTrainigData($team_id=0,$pro_team_id=0)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
         $db		= $this->getDbo();
 		$query	= $db->getQuery(true);
         // Select some fields
-		$query->select('*');
+		$query->select('tt.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata');
-        $query->where('team_id = '.$team_id);
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata as tt');
+        
+        if ( $team_id)
+        {
+        $query->where('tt.team_id = '.$team_id);
+        }
+        else
+        {
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tt.team_id');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');   
+        $query->where('st.id = '.$pro_team_id); 
+        }
+        
+        
         $query->order('dayofweek ASC');
         $db->setQuery($query);
 		

@@ -2969,6 +2969,7 @@ $this->dump_variable("import_team", $import_team);
 
 	private function _importTemplate()
 	{
+	   $mainframe = JFactory::getApplication();
 		$my_text='';
 		if ($this->_template_id > 0) // Uses a master template
 		{
@@ -3037,6 +3038,11 @@ $this->dump_variable("import_team", $import_team);
 			$ini = $parameter->toArray($ini);
 			$t_params = json_encode( $ini );		
 					$p_template->set('params',$t_params);
+                    
+//$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' p_template -> '.'<pre>'.print_r($p_template,true).'</pre>'),'');                    
+$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
+$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
+                    
 					if	((strtolower(substr($template,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) &&
 						($template!='do_tipsl') &&
 						($template!='frontpage') &&
@@ -3055,9 +3061,9 @@ $this->dump_variable("import_team", $import_team);
 						}
 						else
 						{
-							$dTitle=(!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
+							$dTitle = (!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
 							$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-							$my_text .= JText::sprintf('Created new template data from Import-Project: %1$ [%2$]',"</span><strong>$dTitle</strong>","<strong>$t_params</strong>");
+							$my_text .= JText::sprintf('Created new template data from Import-Project: %1$ [%2$]',"</span><strong>".$p_template->template."</strong>","<strong>".$p_template->params."</strong>");
 							$my_text .= '<br />';
 						}
 					}

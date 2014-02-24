@@ -298,15 +298,38 @@ $mainframe = JFactory::getApplication();
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 									echo JHtml::image('administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
-								}
+								
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+</a>
+<?PHP                                 
+                                
+                                }
 								else
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
-									$imageParams=array();
-									$imageParams['title']=$imageTitle ;
-									$imageParams['height']=30;
-									//$imageParams['width'] =40;
-									echo JHtml::image($row->picture,$imageTitle,$imageParams);
+								    if (JFile::exists(JPATH_SITE.DS.$row->picture)) {
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                     
+								} else {
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+/**
+ * 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
+ * 									$imageParams=array();
+ * 									$imageParams['title']=$imageTitle ;
+ * 									$imageParams['height']=30;
+ * 									//$imageParams['width'] =40;
+ * 									echo JHtml::image($row->picture,$imageTitle,$imageParams);
+ */
 								}
 								?>
 							</td>

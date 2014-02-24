@@ -36,6 +36,12 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
+$cfg_help_server = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
+
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
@@ -68,7 +74,11 @@ $fieldsets = $this->form->getFieldsets();
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
-			<?php foreach($this->form->getFieldset('details') as $field) :?>
+			<?php 
+            foreach($this->form->getFieldset('details') as $field) :
+            
+            //echo '<pre>'.print_r($field,true).'</pre>';
+            ?>
 				<li><?php echo $field->label; ?>
 				<?php echo $field->input; 
                 
@@ -104,8 +114,34 @@ $fieldsets = $this->form->getFieldsets();
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
                 
-                ?></li>
-			<?php endforeach; ?>
+                $suchmuster = array ("jform[","]");
+                $ersetzen = array ('', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                
+                switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="<?php echo $cfg_help_server.'SM-Backend-Felder:'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                break;
+                }
+                ?>
+                </li>
+			<?php 
+            endforeach; 
+            ?>
 			</ul>
 		</fieldset>
 	</div>
