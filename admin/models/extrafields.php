@@ -57,11 +57,59 @@ class sportsmanagementModelextrafields extends JModelList
 {
 	var $_identifier = "extrafields";
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'objcountry.name',
+                        'objcountry.id',
+                        'objcountry.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('objcountry.name', 'asc');
+	}
+    
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $this->getState('filter.search');
+
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -75,46 +123,20 @@ class sportsmanagementModelextrafields extends JModelList
 		
         if ($search)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(objcountry.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
         }
-		$query->order(self::_buildContentOrderBy());
+		
+        $query->order($db->escape($this->getState('list.ordering', 'objcountry.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order','filter_order','objcountry.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order_Dir','filter_order_Dir','','word');
-		if ($filter_order == 'objcountry.ordering')
-		{
-			$orderby=' objcountry.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',objcountry.ordering ';
-		}
-		return $orderby;
-	}
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order',		'filter_order',		'objcountry.ordering',	'cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.co_search','search','','string');
-		$search=JString::strtolower($search);
-		$where=array();
-		if ($search)
-		{
-			$where[]='LOWER(objcountry.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
-		return $where;
-	}
+
+
 
 	
 }

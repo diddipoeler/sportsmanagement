@@ -67,16 +67,16 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.template',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
 							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -121,7 +121,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="filter_order_Dir" value="" />
-			<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+			<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 			<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" />
 			<?php echo JHtml::_('form.token')."\n"; ?>
 		</form>

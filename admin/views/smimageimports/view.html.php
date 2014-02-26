@@ -42,8 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-
-
+/**
+ * sportsmanagementViewsmimageimports
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewsmimageimports extends JView
 {
 	function display($tpl=null)
@@ -55,10 +62,41 @@ class sportsmanagementViewsmimageimports extends JView
         
         $checkimages = $model->getimagesxml();
         $this->assign('files',$model->getXMLFiles());
+        $this->state = $this->get('State'); 
+        
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+        //$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+        // state filter
+		//$lists['state'] = JHtml::_('grid.state',$filter_state);
+        
+        //build the html select list
+		$folders[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
+        $allfolders = $model->getXMLFolder();
+		$folders = array_merge($folders,$allfolders);
+		$lists['folders']=JHtml::_( 'select.genericList',
+										$folders,
+										'filter_image_folder',
+										'class="inputbox" onChange="this.form.submit();" style="width:220px"',
+										'id',
+										'name',
+										$this->state->get('filter.image_folder'));
+                                       
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
+        
+             
        
        
-       $this->assign('request_url',$uri->toString());
         $this->assignRef('option',$option);
+        
+        $this->assignRef('lists',$lists);
+		$this->assignRef('items',$items);
+		$this->assignRef('pagination',$pagination);
+		$this->assign('request_url',$uri->toString());
+        
         $this->addToolbar();
 		parent::display($tpl);
 	}

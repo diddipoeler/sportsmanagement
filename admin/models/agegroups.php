@@ -57,15 +57,66 @@ class sportsmanagementModelagegroups extends JModelList
 {
 	var $_identifier = "agegroups";
 	
-	
+	public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'obj.name',
+                        'obj.id',
+                        'obj.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+		$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
+        
+
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('obj.name', 'asc');
+	}
 	
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
+        $search	= $this->getState('filter.search');
+        $filter_sports_type	= $this->getState('filter.sports_type');
+        $search_nation	= $this->getState('filter.search_nation');
+        
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+//        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -81,87 +132,30 @@ class sportsmanagementModelagegroups extends JModelList
         
         
         
-        if ($search || $search_nation || $filter_sports_type)
+        if ($search )
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
         }
-		$query->order(self::_buildContentOrderBy());
+        if ($search_nation)
+		{
+        $query->where("obj.country = '".$search_nation."'");
+        }
+        if ($filter_sports_type)
+		{
+        $query->where('obj.sportstype_id = '.$this->_db->Quote($filter_sports_type));
+        }
         
-        //$mainframe->enqueueMessage(JText::_('agegroups query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+		//$query->order(self::_buildContentOrderBy());
+        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		return $query;
         
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		
-        if ($filter_order == 'obj.ordering')
-		{
-			$orderby=' obj.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',obj.ordering ';
-		}
-		return $orderby;
-	}
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
-		//$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-		$search=JString::strtolower($search);
-		$where=array();
-        
-		if ($filter_sports_type> 0)
-		{
-			$where[]='obj.sportstype_id='.$this->_db->Quote($filter_sports_type);
-		}
-		
-        if ($search)
-		{
-			if ($search_mode)
-			{
-				$where[]='LOWER(obj.name) LIKE '.$this->_db->Quote($search.'%');
-			}
-			else
-			{
-				$where[]='LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-			}
-		}
-        
-        if ( $search_nation )
-		{
-		  $where[] = "obj.country = '".$search_nation."'";
-        }
-        
-		/*
-        if ($filter_state)
-		{
-			if ($filter_state == 'P')
-			{
-				$where[]='po.published=1';
-			}
-			elseif ($filter_state == 'U')
-			{
-				$where[]='po.published=0';
-			}
-		}
-        */
-		$where=(count($where) ? '  '.implode(' AND ',$where) : '');
-		return $where;
-	}
 
 	
 

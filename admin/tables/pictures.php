@@ -37,15 +37,18 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
+// Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// import Joomla table library
+jimport('joomla.database.table');
+
+// Include library dependencies
+jimport( 'joomla.filter.input' );
+
 
 /**
- * sportsmanagementControllersmimageimports
+ * sportsmanagementTablepictures
  * 
  * @package   
  * @author 
@@ -53,27 +56,23 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllersmimageimports extends JControllerAdmin
+class sportsmanagementTablepictures extends JTable
 {
-  
-  function import()
-    {
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->import();
-        
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-
-}
-
 	/**
-	 * Proxy for getModel.
-	 * @since	1.6
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 * @since 1.0
 	 */
-	public function getModel($name = 'smimageimport', $prefix = 'sportsmanagementModel') 
+	function __construct(& $db)
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
+		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', 'id', $db );
 	}
+
+	
+    
+    
+    
+
 }
+?>

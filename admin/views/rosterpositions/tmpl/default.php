@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 $user = JFactory::getUser();
 
 //Ordering allowed ?
-$ordering=($this->lists['order'] == 'obj.ordering');
+$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
@@ -75,29 +75,29 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					<th width="20" style="vertical-align: top; ">&nbsp;</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.name',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>					
 					<th width="10%" class="title" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY','obj.country',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY','obj.country',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
 						echo '<br />';
 						//echo JHtml::_('grid.order',$this->items);
 						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'rosterpositions.saveorder');
 						?>
 					</th>
 					<th width="20" style="vertical-align: top; ">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -162,7 +162,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

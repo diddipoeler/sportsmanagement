@@ -42,7 +42,7 @@ $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 //Ordering allowed ?
-$ordering=($this->lists['order'] == 'dv.ordering');
+$ordering=($this->sortColumn == 'dv.ordering');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -60,15 +60,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				<td align="left" width="100%">
 					<?php
 					echo JText::_( 'JSEARCH_FILTER_LABEL' );
-					?>:&nbsp;<input	type="text" name="search" id="search"
-									value="<?php echo $this->lists['search']; ?>"
-									class="text_area" onchange="$('adminForm').submit(); " />
+					?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
 					<button onclick="this.form.submit(); ">
 						<?php
 						echo JText::_( 'JSEARCH_FILTER_SUBMIT' );
 						?>
 					</button>
-					<button onclick="document.getElementById('search').value='';this.form.submit(); ">
+					<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 						<?php
 						echo JText::_( 'JSEARCH_FILTER_CLEAR' );
 						?>
@@ -100,27 +101,27 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_NAME', 'dv.name', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_NAME', 'dv.name', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_S_NAME', 'dv.shortname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_S_NAME', 'dv.shortname', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th class="title" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
 					<?php
-						echo JHtml::_('grid.sort','JSTATUS','dv.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','dv.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                         <th width="85" style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'dv.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'dv.ordering', $this->sortDirection, $this->sortColumn );
 							echo '<br />';
 							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'divisions.saveorder');
 							?>
@@ -128,7 +129,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         
 						<th style="vertical-align: top; ">
 							<?php
-							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'dv.id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'dv.id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 					</tr>
@@ -236,7 +237,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
-	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

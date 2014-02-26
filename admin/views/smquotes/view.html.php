@@ -60,15 +60,19 @@ class sportsmanagementViewsmquotes extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		//$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
 //        $this->filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
 //        $this->filter_catid		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_catid','filter_catid','','word');
         
 		//$search=JString::strtolower($search);
-        $this->state = $this->get('State');
+//        $this->state = $this->get('State');
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -82,9 +86,9 @@ class sportsmanagementViewsmquotes extends JView
         
         
   
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+//		// table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
 
 		// search filter
 		//$lists['search']=$search;

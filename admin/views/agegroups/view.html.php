@@ -42,12 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	1.5.0a
+ * sportsmanagementViewagegroups
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewagegroups extends JView
 {
@@ -58,13 +61,17 @@ class sportsmanagementViewagegroups extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $mdlSportsType = JModel::getInstance('SportsType', 'sportsmanagementModel');
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search=JString::strtolower($search);
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
+//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+//		$search=JString::strtolower($search);
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -81,7 +88,7 @@ class sportsmanagementViewagegroups extends JView
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 										'id',
 										'name',
-										$filter_sports_type);
+										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
         
         //build the html options for nation
@@ -90,11 +97,11 @@ class sportsmanagementViewagegroups extends JView
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'search_nation',
+																'filter_search_nation',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$search_nation);
+																$this->state->get('filter.search_nation'));
 
 		//$mainframe->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
         
@@ -111,12 +118,12 @@ class sportsmanagementViewagegroups extends JView
         $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
         }
         
-        // table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
+//        // table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
+//
+//		// search filter
+//		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

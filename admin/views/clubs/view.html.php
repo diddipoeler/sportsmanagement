@@ -62,14 +62,18 @@ class sportsmanagementViewClubs extends JView
 		$mainframe = JFactory::getApplication();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order','filter_order','a.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir','filter_order_Dir','','word');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode','search_mode','','string');
-		$search				= JString::strtolower($search);
+//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state','filter_state','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order','filter_order','a.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir','filter_order_Dir','','word');
+//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search','search','','string');
+//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode','search_mode','','string');
+//		$search				= JString::strtolower($search);
 
 		$items		= $this->get('Items');
 		$total		= $this->get('Total');
@@ -84,19 +88,19 @@ class sportsmanagementViewClubs extends JView
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'search_nation',
+																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$search_nation);
+																$this->state->get('filter.search_nation'));
 
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		$lists['search_mode'] = $search_mode;
+//		// table ordering
+//		$lists['order_Dir'] = $filter_order_Dir;
+//		$lists['order'] = $filter_order;
+//
+//		// search filter
+//		$lists['search'] = $search;
+//		$lists['search_mode'] = $search_mode;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());

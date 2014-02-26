@@ -61,22 +61,26 @@ class sportsmanagementViewSeasons extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $season_id = JRequest::getVar('id');
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','s.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search				= JString::strtolower($search);
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','s.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+//		$search				= JString::strtolower($search);
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
+//		// table ordering
+//		$lists['order_Dir'] = $filter_order_Dir;
+//		$lists['order'] = $filter_order;
+//
+//		// search filter
+//		$lists['search'] = $search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

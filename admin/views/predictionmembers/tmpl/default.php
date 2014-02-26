@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering = ( $this->lists['order'] == 'pre.ordering' );
+$ordering = ( $this->sortColumn == 'pre.ordering' );
 
 JHtml::_( 'behavior.tooltip' );
 ?>
@@ -49,15 +49,17 @@ JHtml::_( 'behavior.tooltip' );
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_( 'JSEARCH_FILTER_LABEL' ); ?>: <input   type="text" name="search" id="search"
-														value="<?php echo $this->lists['search'];?>" class="text_area"
-														onchange="document.adminForm.submit();" />
+					echo JText::_('JSEARCH_FILTER_LABEL');
+				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
 				<button onclick="this.form.submit();">
 					<?php
 					echo JText::_( 'JSEARCH_FILTER_SUBMIT' );
 					?>
 				</button>
-				<button onclick="document.getElementById('search').value='';this.form.submit();">
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit();">
 					<?php
 					echo JText::_( 'JSEARCH_FILTER_CLEAR' );
 					?>
@@ -68,11 +70,12 @@ JHtml::_( 'behavior.tooltip' );
 				echo $this->lists['predictions'] . '&nbsp;&nbsp;';
 				?>
 			</td>
-			<td nowrap='nowrap'>
-				<?php
-				echo $this->lists['state'];
-				?>
-			</td>
+			<td class="nowrap" align="right"><select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php 
+                echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                ?>
+			</select></td>
 		</tr>
 	</table>
 	<div id="editcell">
@@ -90,47 +93,47 @@ JHtml::_( 'behavior.tooltip' );
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME' ), 'u.username', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME' ), 'u.username', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REAL_NAME' ), 'u.name', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REAL_NAME' ), 'u.name', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PRED_NAME' ), 'p.name', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PRED_NAME' ), 'p.name', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_DATE_LAST_TIP' ), 'tmb.last_tipp', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_DATE_LAST_TIP' ), 'tmb.last_tipp', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), 'tmb.reminder', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), 'tmb.reminder', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT' ), 'tmb.receipt', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT' ), 'tmb.receipt', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE' ), 'tmb.show_profile', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE' ), 'tmb.show_profile', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP' ), 'tmb.admintipp', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP' ), 'tmb.admintipp', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th width="1%">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED' ), 'tmb.approved', $this->lists['order_Dir'], $this->lists['order'] );
+						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED' ), 'tmb.approved', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 				</tr>
@@ -282,7 +285,7 @@ JHtml::_( 'behavior.tooltip' );
 	
   
 	<input type="hidden" name="boxchecked"			value="0" />
-	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

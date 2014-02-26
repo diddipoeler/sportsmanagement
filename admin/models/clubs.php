@@ -57,7 +57,54 @@ class sportsmanagementModelClubs extends JModelList
 {
 	var $_identifier = "clubs";
 	
-	
+	public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'a.name',
+                        'a.id',
+                        'a.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
+
+
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('a.name', 'asc');
+	}
+    
     /**
      * sportsmanagementModelClubs::getListQuery()
      * 
@@ -67,8 +114,8 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+        $search	= $this->getState('filter.search');
+        $search_nation	= $this->getState('filter.search_nation');
         //$mainframe->enqueueMessage(JText::_('clubs getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -77,90 +124,27 @@ class sportsmanagementModelClubs extends JModelList
 		$query->select('a.*');
 		// From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
-        if ($search || $search_nation)
+        
+        if ($search)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
-		$query->order(self::_buildContentOrderBy());
+        if ($search_nation)
+		{
+        $query->where("a.country = '".$search_nation."'");
+        }
+        
+        
+        $query->order($db->escape($this->getState('list.ordering', 'a.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
         
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 
-        //$mainframe->enqueueMessage(JText::_('clubs query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
 	}
 
-
-
-	/**
-	 * sportsmanagementModelClubs::_buildContentOrderBy()
-	 * 
-	 * @return
-	 */
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','a.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		if ($filter_order == 'a.ordering')
-		{
-			$orderby=' a.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',a.ordering ';
-		}
-		return $orderby;
-	}
-
-	/**
-	 * sportsmanagementModelClubs::_buildContentWhere()
-	 * 
-	 * @return
-	 */
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','a.ordering','cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
-		$search				= JString::strtolower($search);
-		$where=array();
-		if ($search)
-		{
-			if($search_mode)
-			{
-				$where[]='LOWER(a.name) LIKE '.$this->_db->Quote($search.'%');
-			}
-			else
-			{
-				$where[]='LOWER(a.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-			}
-		}
-        if ( $search_nation )
-		{
-		  $where[] = "a.country = '".$search_nation."'";
-        }
-		if ($filter_state)
-		{
-			if ($filter_state == 'P')
-			{
-				$where[]='a.published=1';
-			}
-			elseif ($filter_state == 'U')
-			{
-				$where[]='a.published=0';
-			}
-		}
-		$where=(count($where) ? ' '. implode(' AND ',$where) : ' ');
-		return $where;
-	}
-    
+   
     /**
      * sportsmanagementModelClubs::getClubListSelect()
      * 

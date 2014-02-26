@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->lists['order'] == 'obj.ordering');
+$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -55,7 +55,7 @@ JHtml::_('behavior.modal');
 								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
 				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<?php
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
@@ -66,7 +66,6 @@ JHtml::_('behavior.modal');
 				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
 				<?php 
                 echo JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
-                //echo JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->filter_catid);
                 ?>
 			</select>
                 
@@ -74,7 +73,6 @@ JHtml::_('behavior.modal');
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
                 echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
-                //echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->filter_state, true);
                 ?>
 			</select>
             
@@ -93,32 +91,32 @@ JHtml::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','JCATEGORY','obj.catid',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JCATEGORY','obj.catid',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
 						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'smquotes.saveorder');
 						?>
 					</th>
                     <th>
 					<?php
-						echo JHtml::_('grid.sort','JSTATUS','pl.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','pl.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="20">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -185,7 +183,7 @@ JHtml::_('behavior.modal');
 	</div>
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

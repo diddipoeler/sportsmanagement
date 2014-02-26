@@ -53,6 +53,15 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
+/**
+ * sportsmanagementModelseason
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelseason extends JModelAdmin
 {
 	
@@ -72,6 +81,7 @@ class sportsmanagementModelseason extends JModelAdmin
 		// Check specific edit permission then general edit permission.
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
+    
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
@@ -85,6 +95,7 @@ class sportsmanagementModelseason extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+    
 	/**
 	 * Method to get the record form.
 	 *
@@ -103,6 +114,7 @@ class sportsmanagementModelseason extends JModelAdmin
 		}
 		return $form;
 	}
+    
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
@@ -112,6 +124,7 @@ class sportsmanagementModelseason extends JModelAdmin
 	{
 		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
 	}
+    
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *

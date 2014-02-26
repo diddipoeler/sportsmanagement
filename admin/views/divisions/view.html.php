@@ -59,55 +59,22 @@ class sportsmanagementViewDivisions extends JView
 		$db		= JFactory::getDBO();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.dv_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.dv_filter_order','filter_order','dv.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.dv_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.dv_search','search','','string');
-		$search				= JString::strtolower( $search );
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
-/*
-		$items		=& $this->get( 'Data' );
-		$total		=& $this->get( 'Total' );
-		$pagination =& $this->get( 'Pagination' );
 
-		$projectws	=& $this->get( 'Data', 'projectws' );
-
-		// state filter
-		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search']	= $search;
-
-		$this->assignRef( 'user',			JFactory::getUser() );
-		$this->assignRef( 'lists',			$lists );
-		$this->assignRef( 'items',			$items );
-		$this->assignRef( 'projectws',		$projectws );
-		$this->assignRef( 'pagination',		$pagination );
-		$this->assignRef( 'request_url',	$uri->toString() );
-		$this->addToolbar();
-		parent::display( $tpl );
-        */
         $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-        // state filter
-		$lists['state']	= JHtml::_('grid.state', $filter_state );
 
-		// search filter
-		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
         $this->assignRef('projectws',$project);

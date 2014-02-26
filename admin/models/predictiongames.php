@@ -8,97 +8,104 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.modellist' );
 
 
+/**
+ * sportsmanagementModelPredictionGames
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelPredictionGames extends JModelList
 {
 	var $_identifier = "predgames";
 	
+    
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'pre.name',
+                        'pre.id',
+                        'pre.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('pre.name', 'asc');
+	}
+    
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        // Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
         
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
+        $prediction_id = $mainframe->getUserState( "$option.prediction_id", '0' );
+        $search	= $this->getState('filter.search');
+        $search_state	= $this->getState('filter.state');
+        
+        
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
         $query->select(array('pre.*', 'u.name AS editor'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS pre')
         ->join('LEFT', '#__users AS u ON u.id = pre.checked_out');
 
-        if ($where)
-        {
-            $query->where($where);
-        }
-        if ($orderby)
-        {
-            $query->order($orderby);
+        if ( $prediction_id > 0 )
+		{
+			$query->where('pre.id = ' . $prediction_id);
+		}
+        if ( $search )
+		{
+			$query->where("LOWER(pre.name) LIKE " . $db->Quote('%'.$search.'%'));
+		}
+        if (is_numeric($search_state))
+		{
+        $query->where('pre.published = '.$search_state);
         }
 
 		
 		return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
 
-		if ( $filter_order == 'pre.name' )
-		{
-			$orderby 	= 'pre.name ' . $filter_order_Dir;
-		}
-		else
-		{
-			$orderby 	= '' . $filter_order . ' ' . $filter_order_Dir . ' , pre.name ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'pre_search_mode','search_mode','','string');
-		$search				= JString::strtolower( $search );
-
-		$where = array();
-		$prediction_id = $mainframe->getUserState( "$option.prediction_id", '0' );
-		if ( $prediction_id > 0 )
-		{
-			$where[] = 'pre.id = ' . $prediction_id;
-		}
-
-		if ( $search )
-		{
-			$where[] = "LOWER(pre.name) LIKE " . $this->_db->Quote( $search . '%' );
-		}
-
-		if ( $filter_state )
-		{
-			if ( $filter_state == 'P' )
-			{
-				$where[] = 'pre.published = 1';
-			}
-			elseif ($filter_state == 'U' )
-				{
-					$where[] = 'pre.published = 0';
-				}
-		}
-
-		$where 	= ( count( $where ) ? ''. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
+	
 
 	function getChilds( $pred_id, $all = false )
 	{

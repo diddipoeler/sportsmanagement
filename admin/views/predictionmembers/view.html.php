@@ -44,6 +44,15 @@ jimport( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewPredictionMembers
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPredictionMembers extends JView
 {
 
@@ -77,6 +86,11 @@ class sportsmanagementViewPredictionMembers extends JView
 		// Get a refrence of the page instance in joomla
 		$document	=& JFactory::getDocument();
     $option = JRequest::getCmd('option');
+    
+     $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
     $this->assignRef( 'optiontext',			$optiontext );
     
@@ -138,25 +152,29 @@ $mainframe = JFactory::getApplication();
     $model	= $this->getModel();
     	$uri = JFactory::getURI();
         
-	$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_state',		'filter_state',		'',				'word' );
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order',		'filter_order',		'u.username',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_search',				'search',			'',				'string' );
-		$search				= JString::strtolower( $search );	
+         $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+//	$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_state',		'filter_state',		'',				'word' );
+//		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order',		'filter_order',		'u.username',	'cmd' );
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+//		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_search',				'search',			'',				'string' );
+//		$search				= JString::strtolower( $search );	
     
     $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        // state filter
-		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search; 
+//        // state filter
+//		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
+//
+//		// table ordering
+//		$lists['order_Dir']	= $filter_order_Dir;
+//		$lists['order']		= $filter_order;
+//
+//		// search filter
+//		$lists['search'] = $search; 
         
         //build the html select list for prediction games
         $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");

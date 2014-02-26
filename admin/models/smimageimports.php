@@ -40,6 +40,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
+jimport('joomla.application.component.modellist');
+
 
 /**
  * sportsmanagementModelsmimageimports
@@ -50,10 +52,131 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmimageimports extends JModel
+class sportsmanagementModelsmimageimports extends JModelList
 {
+    var $_identifier = "pictures";
+	
+    
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'name',
+                        'file',
+                        'folder',
+                        'directory'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('obj.name', 'asc');
+	}
+    
+    
+    
+	protected function getListQuery()
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search	= $this->getState('filter.search');
+        $filter_state = $this->getState('filter.state');
+        $filter_image_folder = $this->getState('filter.image_folder');
+        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('obj.*');
+		// From the hello table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures as obj');
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+        
+        if (is_numeric($filter_state) )
+		{
+		$query->where('obj.published = '.$filter_state);	
+		}
+        if ( $search )
+		{
+		$query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%'));	
+		}
+        if ( $filter_image_folder )
+		{
+		$query->where("obj.folder LIKE '".$filter_image_folder."'");	
+		}
+        
+        $query->order($db->escape($this->getState('list.ordering', 'name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+                
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+ 
+		
+        return $query;
+	}
+    
+function getXMLFolder()
+{
+    $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+// Get a db connection.
+        $db = JFactory::getDBO();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select(array('folder as id', 'folder as name'))
+        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures')
+        ->order('folder ASC')
+        ->group('folder ASC');
+
+        $db->setQuery($query);
+        if (!$result = $db->loadObjectList())
+        {
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+            return array();
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        return $result;    
+}
+
 
 /**
+ * 
  * sportsmanagementModelsmimageimports::getimagesxml()
  * 
  * @return
@@ -162,6 +285,20 @@ function getXMLFiles()
    $export[] = $temp;
    $files = array_merge($export);
    $i++;
+   
+   // Create and populate an object.
+              $temp = new stdClass();
+              $temp->name = $picturedescription;
+              $temp->file = $file;
+              $temp->directory = $directory;
+              $temp->folder = $folder;
+              $temp->published = 0;
+              // Insert the object
+              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $temp);
+   
+   
+   
+   
    }
        
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   

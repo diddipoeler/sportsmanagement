@@ -58,6 +58,56 @@ class sportsmanagementModelMatches extends JModelList
 	var $_identifier = "matches";
     var $_rid = 0;
     var $_season_id = 0;
+    
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'mc.match_number',
+                        'mc.match_date',
+                        'mc.id',
+                        'mc.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.division', 'filter_division', '');
+		$this->setState('filter.division', $temp_user_request);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('mc.match_number', 'asc');
+	}
 
 	/**
 	 * sportsmanagementModelMatches::getListQuery()
@@ -69,7 +119,7 @@ class sportsmanagementModelMatches extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        $search_division	= $this->getState('filter.division');
         
         $this->_rid = JRequest::getvar('rid', 0);
         
@@ -218,76 +268,26 @@ class sportsmanagementModelMatches extends JModelList
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divaway ON divaway.id = ptaway.division_id');
         $query->select('divhome.id as divhomeid'); 
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divhome ON divhome.id = pthome.division_id');
-                    
-        if (self::_buildContentWhere())
+        
+        $query->where(' mc.round_id = ' . $this->_rid);
+        
+        if ($search_division)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where(' divhome.id = '.$this->_db->Quote($division));
         }
-		$query->order(self::_buildContentOrderBy());
+		
+        
+        $query->order($db->escape($this->getState('list.ordering', 'mc.match_number')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
  
  
          
-        
-        if ( $show_debug_info )
-        {
-        $mainframe->enqueueMessage(JText::_('matches query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        $mainframe->enqueueMessage(JText::_('round_id project<br><pre>'.print_r($this->_rid,true).'</pre>'   ),'');
-        }
+
 		return $query;
         
 	}
 
-	/**
-	 * sportsmanagementModelMatches::_buildContentOrderBy()
-	 * 
-	 * @return
-	 */
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order','filter_order','mc.match_date','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
 
-		if ($filter_order == 'mc.match_number')
-		{
-			$orderby    = ' mc.match_number +0 '. $filter_order_Dir .', divhome.id, divaway.id ' ;
-		}
-		elseif ($filter_order == 'mc.match_date')
-		{
-			$orderby 	= ' mc.match_date '. $filter_order_Dir .', divhome.id, divaway.id ';
-		}
-		else
-		{
-			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , mc.match_date, divhome.id, divaway.id';
-		}
-
-		return $orderby;
-	}
-
-	/**
-	 * sportsmanagementModelMatches::_buildContentWhere()
-	 * 
-	 * @return
-	 */
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$where=array();
-		$mainframe	= JFactory::getApplication();
-		// $project_id = $mainframe->getUserState($option . 'project');
-		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_division', 'division', 0);
-		//$round_id = $mainframe->getUserState($option . 'round_id');
-
-		$where[] = ' mc.round_id = ' . $this->_rid ;
-		if ($division>0)
-		{
-			$where[]=' divhome.id = '.$this->_db->Quote($division);
-		}
-		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
-		
-		return $where;
-	}
 
   /**
    * sportsmanagementModelMatches::checkMatchPicturePath()

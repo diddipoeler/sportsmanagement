@@ -29,12 +29,59 @@ class sportsmanagementModelTeams extends JModelList
 {
 	var $_identifier = "teams";
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        't.name',
+                        't.id',
+                        't.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('t.name', 'asc');
+	}
+    
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$mainframe->enqueueMessage(JText::_('teams getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
+        $search	= $this->getState('filter.search');
+
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -54,12 +101,20 @@ class sportsmanagementModelTeams extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
         
         
-        if (self::_buildContentWhere())
+        if ($search)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(t.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
         }
+        if ($cid = JRequest::getvar('club_id', 0, 'GET', 'INT')) 
+                {
+                    $mainframe->setUserState( "$option.club_id", $cid); 
+                    $query->where('club_id ='. $cid);
+                }
         
-		$query->order(self::_buildContentOrderBy());
+
+        
+        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
         
         //$mainframe->enqueueMessage(JText::_('teams query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
@@ -68,53 +123,9 @@ class sportsmanagementModelTeams extends JModelList
         
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order','filter_order','t.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-
-		if ($filter_order == 't.ordering'){
-			$orderby 	= '  t.ordering '.$filter_order_Dir;
-		} else {
-			$orderby 	= '  '.$filter_order.' '.$filter_order_Dir.' , t.ordering ';
-		}
-
-		return $orderby;
-	}
 	
-    function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
 
-		$filter_state		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order','filter_order','t.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search			= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest( $option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
-		$search			= JString::strtolower( $search );
-
-		$where = array();
-
-		if ($search) {
-			if($search_mode)
-				$where[] = 'LOWER(t.name) LIKE '.$this->_db->Quote($search.'%');
-			else
-				$where[] = 'LOWER(t.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-
-                if ($cid    =   JRequest::getvar('club_id', 0, 'GET', 'INT')) 
-                {
-                    $mainframe->setUserState( "$option.club_id", $cid); 
-                    $where[] = 'club_id ='. $cid;
-                }
-
-                $where 		= ( count( $where ) ? '  '. implode( ' AND ', $where ) : '' );
-		return $where;
-	}
     
     public function getTeamListSelect()
 	{

@@ -77,28 +77,28 @@
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
 						<th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_N_NAME','pl.nickname',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						
             <th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_INFO','pl.info',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_INFO','pl.info',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						
 						<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?></th>
 						<th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY','pl.birthday',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" class="nowrap">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="1%" class="nowrap">
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','pl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 
             					
@@ -165,7 +165,7 @@
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="type"				value="<?php echo $this->type; ?>" />
 	<input type="hidden" name="project_team_id"		value="<?php echo $this->project_team_id; ?>" />
-	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

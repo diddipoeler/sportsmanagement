@@ -62,15 +62,19 @@ class sportsmanagementViewMatches extends JView
         $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order','filter_order','mc.match_number','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search_mode','search_mode','','string');
-		$division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_division','division','','string');
-		
-		$search				= JString::strtolower($search);
+//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_state','filter_state','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order','filter_order','mc.match_number','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search','search','','string');
+//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_search_mode','search_mode','','string');
+//		$division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier. '.mc_division','division','','string');
+//		
+//		$search				= JString::strtolower($search);
         
         $items = $this->get('Items');
 		$total = $this->get('Total');
@@ -322,16 +326,16 @@ class sportsmanagementViewMatches extends JView
 		unset($divisions);
         
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
-        // state filter
-		$lists['state']=JHtml::_('grid.state',$filter_state);
-
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
+//        // state filter
+//		$lists['state']=JHtml::_('grid.state',$filter_state);
+//
+//		// table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
+//
+//		// search filter
+//		$lists['search']=$search;
+//		$lists['search_mode']=$search_mode;
         
 		//$this->assignRef('division',$division);
 

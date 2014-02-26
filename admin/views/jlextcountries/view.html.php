@@ -42,12 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	1.5.0a
+ * sportsmanagementViewjlextcountries
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewjlextcountries extends JView
 {
@@ -57,22 +60,14 @@ class sportsmanagementViewjlextcountries extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
-
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','objcountry.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search=JString::strtolower($search);
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
@@ -91,7 +86,7 @@ class sportsmanagementViewjlextcountries extends JView
 	protected function addToolbar()
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);

@@ -62,15 +62,18 @@ class sportsmanagementViewPersons extends JView
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $user	= JFactory::getUser();
-		
 		$model	= $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
+//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -78,16 +81,16 @@ class sportsmanagementViewPersons extends JView
 
 		$mainframe->setUserState($option.'task','');
 
-		// state filter
-		$lists['state']=JHtml::_('grid.state',$filter_state);
-
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
+//		// state filter
+//		$lists['state']=JHtml::_('grid.state',$filter_state);
+//
+//		// table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
+//
+//		// search filter
+//		$lists['search']=$search;
+//		$lists['search_mode']=$search_mode;
 
 		//build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
@@ -102,11 +105,11 @@ class sportsmanagementViewPersons extends JView
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'filter_search_nation',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$search_nation);
+																$this->state->get('filter.search_nation'));
         /*$lists['nation2']=JHtml::_( 'select.genericList',
 										$nation,
 										'filter_nation',

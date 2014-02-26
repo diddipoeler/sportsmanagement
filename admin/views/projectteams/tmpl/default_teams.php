@@ -92,7 +92,7 @@ $mainframe = JFactory::getApplication();
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -124,7 +124,7 @@ $mainframe = JFactory::getApplication();
 						</th>
 						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -158,7 +158,7 @@ $mainframe = JFactory::getApplication();
 						{
 							$cell_count++;
 							?><th>
-								<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->lists['order_Dir'],$this->lists['order']);
+								<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->sortDirection,$this->sortColumn);
 									echo '<br>'.JHtml::_(	'select.genericlist',
 														$this->lists['divisions'],
 														'division',
@@ -170,7 +170,7 @@ $mainframe = JFactory::getApplication();
 						}
 						?>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
@@ -189,10 +189,10 @@ $mainframe = JFactory::getApplication();
                         
                         
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','TID','team_id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','TID','team_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -441,7 +441,7 @@ $mainframe = JFactory::getApplication();
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

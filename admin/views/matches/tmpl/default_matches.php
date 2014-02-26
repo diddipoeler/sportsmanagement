@@ -80,10 +80,10 @@ fieldset button {
             }
             ?>
 						<th width="20" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
@@ -93,12 +93,12 @@ fieldset button {
 						?>
 						<th >
 							<?php 
-								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->lists['order_Dir'],$this->lists['order']);
+								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->sortDirection,$this->sortColumn);
 								echo '<br>'.JHtml::_(	'select.genericlist',
 													$this->lists['divisions'],
-													'division',
+													'filter_division',
 													'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
-													'value','text', $this->division);
+													'value','text', $this->state->get('filter.division'));
 								
 							?>
 						</th>
@@ -122,7 +122,7 @@ fieldset button {
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
 						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -564,7 +564,7 @@ fieldset button {
             <input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>' />
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
-			<input type='hidden' name='filter_order' value='<?php echo $this->lists['order']; ?>' />
+			<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>' />
 			<input type='hidden' name='filter_order_Dir' value='' />
 			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />

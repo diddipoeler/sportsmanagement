@@ -40,8 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //Ordering allowed ?
-//$ordering = ( $this->lists['order'] == 'ppl.ordering' );
-$ordering = ( $this->lists['order'] == 'ppl.ordering' );
+//$ordering = ( $this->sortColumn == 'ppl.ordering' );
+$ordering = ( $this->sortColumn == 'ppl.ordering' );
 
 //$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
@@ -159,12 +159,12 @@ JHtml::_('behavior.modal');
 						</th>
 						<th>
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
 							<?php
-							echo JHtml::_( 'grid.sort', 'PID', 'ppl.person_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'PID', 'ppl.person_id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
@@ -184,7 +184,7 @@ JHtml::_('behavior.modal');
 						</th>
 						<th width="20">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
@@ -194,18 +194,18 @@ JHtml::_('behavior.modal');
 						</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','ppl.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','ppl.published',$this->sortDirection,$this->sortColumn);
 						?></th>
 						<th width="10%">
 							<?php
-							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
-                            echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->lists['order_Dir'], $this->lists['order'] );
+							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
+                            echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
 							echo JHtml::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
 							?>
 						</th>
 						<th width="5%">
 							<?php
-							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'ppl.id', $this->lists['order_Dir'], $this->lists['order'] );
+							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'ppl.id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 					</tr>
@@ -427,7 +427,7 @@ JHtml::_('behavior.modal');
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
-	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

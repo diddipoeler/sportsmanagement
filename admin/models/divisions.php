@@ -56,11 +56,59 @@ class sportsmanagementModelDivisions extends JModelList
 	var $_identifier = "divisions";
     var $_project_id = 0;
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'dv.name',
+                        'dv.id',
+                        'dv.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('dv.name', 'asc');
+	}
+    
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $search	= $this->getState('filter.search');
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
@@ -74,62 +122,24 @@ class sportsmanagementModelDivisions extends JModelList
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id')
         ->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
-        //if ($where)
-        //{
-            $query->where($where);
-        //}
-        if ($orderby)
-        {
-            $query->order($orderby);
+        $query->where(' dv.project_id = ' . $this->_project_id);
+        
+        if ($search )
+		{
+        $query->where('LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $search . '%' ));
         }
+        
+        $query->order($db->escape($this->getState('list.ordering', 'dv.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
-
-		if ( $filter_order == 'dv.ordering' )
-		{
-			$orderby 	= 'dv.ordering ' . $filter_order_Dir;
-		}
-		else
-		{
-			$orderby 	= '' . $filter_order . ' '.$filter_order_Dir . ' , dv.ordering ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
- 		$mainframe	= JFactory::getApplication();
-		//$project_id = $mainframe->getUserState( $option . 'project' );
-		$where = array();
-
-		$where[]	= ' dv.project_id = ' . $this->_project_id;
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_search','search','','string');
-		$search				= JString::strtolower( $search );
-
-		if ( $search )
-		{
-			$where[] = 'LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $search . '%' );
-		}
 
 
-		$where = ( count( $where ) ? '' . implode( ' AND ', $where ) : '' );
 
-		return $where;
-	}
 	
 	/**
 	* Method to return a divisions array (id, name)

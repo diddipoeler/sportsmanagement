@@ -60,15 +60,19 @@ class sportsmanagementViewProjects extends JView
 		$mainframe	= JFactory::getApplication();
 		$uri		= JFactory::getUri();
         $model	= $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_league','filter_league','','int');
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_season','filter_season','','int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','p.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search=JString::strtolower($search);
+//		$filter_league		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_league','filter_league','','int');
+//		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
+//		$filter_season		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_season','filter_season','','int');
+//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','p.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
+//		$search=JString::strtolower($search);
 		
 		// Get data from the model
 		$items		= $this->get('Items');
@@ -76,15 +80,15 @@ class sportsmanagementViewProjects extends JView
 		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
 
-		// state filter
-		$lists['state'] = JHtml::_('grid.state',$filter_state);
-
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
+//		// state filter
+//		$lists['state'] = JHtml::_('grid.state',$filter_state);
+//
+//		// table ordering
+//		$lists['order_Dir'] = $filter_order_Dir;
+//		$lists['order'] = $filter_order;
+//
+//		// search filter
+//		$lists['search'] = $search;
 
 		//build the html select list for leagues
 		$leagues[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
@@ -97,22 +101,22 @@ class sportsmanagementViewProjects extends JView
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 									'id',
 									'name',
-									$filter_league);
+									$this->state->get('filter.league'));
 		unset($leagues);
 		
 		
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes=array_merge($sportstypes,$allSportstypes);
+		$sportstypes = array_merge($sportstypes,$allSportstypes);
 		$lists['sportstypes']=JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 										'id',
 										'name',
-										$filter_sports_type);
+										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 		
 		
@@ -128,7 +132,7 @@ class sportsmanagementViewProjects extends JView
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 									'id',
 									'name',
-									$filter_season);
+									$this->state->get('filter.season'));
 
 		unset($seasons);
         

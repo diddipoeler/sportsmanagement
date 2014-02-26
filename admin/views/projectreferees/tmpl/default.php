@@ -153,7 +153,7 @@ $uri=JURI::root();
 						</th>
 						<th>
 							<?php
-							echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 						<th width="20">
@@ -168,23 +168,23 @@ $uri=JURI::root();
 						</th>
 						<th>
 							<?php
-							echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','pref.published',$this->lists['order_Dir'],$this->lists['order']);
+						echo JHtml::_('grid.sort','JSTATUS','pref.published',$this->sortDirection,$this->sortColumn);
 						?>
 						</th>
 						<th width="10%">
 							<?php
-							echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->sortDirection,$this->sortColumn);
 							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
 							?>
 						</th>
 						<th width="5%">
 							<?php
-							echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->lists['order_Dir'],$this->lists['order']);
+							echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 					</tr>
@@ -340,7 +340,7 @@ $uri=JURI::root();
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
-	<input type="hidden" name="filter_order"		value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

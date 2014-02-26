@@ -47,14 +47,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ( $this->project_art_id != 3 )
 {
 //Ordering allowed ?
-$ordering=($this->lists['order'] == 't.name');
+$ordering=($this->sortColumn == 't.name');
 echo $this->loadTemplate('teams');    
 
 }
 else
 {
 //Ordering allowed ?
-$ordering=($this->lists['order'] == 't.lastname');    
+$ordering=($this->sortColumn == 't.lastname');    
 echo $this->loadTemplate('persons');    
 }
 

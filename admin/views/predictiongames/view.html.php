@@ -44,6 +44,15 @@ jimport( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewPredictionGames
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPredictionGames extends JView
 {
 	function display( $tpl = null )
@@ -54,6 +63,10 @@ class sportsmanagementViewPredictionGames extends JView
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $uri = JFactory::getURI();
+    
+    $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
     
 		//$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
         //$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
@@ -69,11 +82,11 @@ class sportsmanagementViewPredictionGames extends JView
 		
 		
         
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_search','search','','string');
-		$search				= JString::strtolower( $search );
+//		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_state','filter_state','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_search','search','','string');
+//		$search				= JString::strtolower( $search );
         
         $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
@@ -87,15 +100,15 @@ $items = $this->get('Items');
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');    
         }
         
-		// state filter
-		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
+//		// state filter
+//		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
+//
+//		// table ordering
+//		$lists['order_Dir']	= $filter_order_Dir;
+//		$lists['order']		= $filter_order;
+//
+//		// search filter
+//		$lists['search'] = $search;
 
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );
@@ -179,7 +192,7 @@ $items = $this->get('Items');
 	{ 
 		
         // Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);

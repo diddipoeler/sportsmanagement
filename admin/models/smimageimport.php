@@ -55,8 +55,86 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
+/**
+ * sportsmanagementModelsmimageimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelsmimageimport extends JModel
 {
+
+
+/**
+	 * Method override to check if you can edit an existing record.
+	 *
+	 * @param	array	$data	An array of input data.
+	 * @param	string	$key	The name of the key for the primary key.
+	 *
+	 * @return	boolean
+	 * @since	1.6
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		// Check specific edit permission then general edit permission.
+		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+	}
+    
+	/**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	JTable	A database object
+	 * @since	1.6
+	 */
+	public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array()) 
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+    
+    
+    /**
+	 * Method to get the record form.
+	 *
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @return	mixed	A JForm object on success, false on failure
+	 * @since	1.6
+	 */
+	public function getForm($data = array(), $loadData = true) 
+	{
+		// Get the form.
+		$form = $this->loadForm('com_sportsmanagement.smimageimport', 'smimageimport', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form)) 
+		{
+			return false;
+		}
+		return $form;
+	}
+    
+    /**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return	mixed	The data for the form.
+	 * @since	1.6
+	 */
+	protected function loadFormData() 
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
+		if (empty($data)) 
+		{
+			$data = $this->getItem();
+		}
+		return $data;
+	}
+
+
 
 
 /**
@@ -74,8 +152,8 @@ function import()
         
         $cid = $post['cid'];
         
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
         
         foreach ( $cid as $key => $value )
         {
@@ -134,6 +212,11 @@ function import()
                             else
                             {
                                 JError::raiseNotice(0,JText::sprintf('Bilderdatei : %1$s endpackt.',$name) ) ;
+                                // Must be a valid primary key value.
+                                $object->id = $value;
+                                $object->published = 1;
+                                // Update their details in the users table using id as the primary key.
+                                $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $object, 'id'); 
                             }
                 }
                 else

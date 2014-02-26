@@ -58,26 +58,18 @@ class sportsmanagementViewEventtypes extends JView
 		$mainframe	= JFactory::getApplication();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search				= JString::strtolower($search);
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+
 
 		$items		= $this->get('Items');
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		// state filter
-		$lists['state']	= JHtml::_('grid.state', $filter_state);
 
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search']	= $search;
 
 		//build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
@@ -92,7 +84,7 @@ class sportsmanagementViewEventtypes extends JView
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 										'id',
 										'name',
-										$filter_sports_type	);
+										$this->state->get('filter.sports_type')	);
 		unset($sportstypes);
 
 		$this->assign('user',JFactory::getUser());

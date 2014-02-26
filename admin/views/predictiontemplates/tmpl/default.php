@@ -93,18 +93,18 @@ JHtml::_( 'behavior.tooltip' );
 							</th>
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>							
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
 
 							<th class='title' width='20' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->lists['order_Dir'], $this->lists['order'] );
+								echo JHtml::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
 						</tr>
@@ -180,7 +180,7 @@ JHtml::_( 'behavior.tooltip' );
 	<input type='hidden' name='task'				value='' />
 	<input type='hidden' name='boxchecked'			value='0' />
 	<input type='hidden' name='filter_order_Dir'	value='' />
-	<input type='hidden' name='filter_order'		value='<?php echo $this->lists['order']; ?>' />
+	<input type='hidden' name='filter_order'		value='<?php echo $this->sortColumn; ?>' />
 	
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

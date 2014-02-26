@@ -57,11 +57,58 @@ class sportsmanagementModelSeasons extends JModelList
 {
 	var $_identifier = "seasons";
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        's.name',
+                        's.id',
+                        's.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('s.name', 'asc');
+	}
+    
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $this->getState('filter.search');
         $layout = JRequest::getVar('layout');
         $season_id = JRequest::getVar('id');
         
@@ -106,12 +153,14 @@ class sportsmanagementModelSeasons extends JModelList
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
             if ($search)
 		    {
-            $query->where(self::_buildContentWhere());
+            $query->where(' LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
             }
-		    $query->order(self::_buildContentOrderBy());
+		    //$query->order(self::_buildContentOrderBy());
             break;
         }
 		
+        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
  
 //		$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
         return $query;
@@ -119,40 +168,9 @@ class sportsmanagementModelSeasons extends JModelList
 	
   
   
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','s.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 
-		if ($filter_order=='s.ordering')
-		{
-			$orderby=' s.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',s.ordering ';
-		}
-		return $orderby;
-	}
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-		$search=JString::strtolower($search);
-		$where=array();
-		if ($search)
-		{
-			$where[]=' LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-		$where=(count($where) ? '  '.implode(' AND ',$where) : ' ');
-		return $where;
-	}
+
 	
 	/**
      * Method to return a seasons array (id,name)

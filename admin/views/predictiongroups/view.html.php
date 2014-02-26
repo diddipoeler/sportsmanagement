@@ -43,6 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewpredictiongroups
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewpredictiongroups extends JView
 {
 	function display($tpl=null)
@@ -51,11 +60,15 @@ class sportsmanagementViewpredictiongroups extends JView
 		$mainframe = JFactory::getApplication();
         $model	= $this->getModel();
 		$uri = JFactory::getURI();
+        
+         $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_filter_order','filter_order','s.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_search','search','','string');
-		$search				= JString::strtolower($search);
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_filter_order','filter_order','s.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_filter_order_Dir','filter_order_Dir','','word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'s_search','search','','string');
+//		$search				= JString::strtolower($search);
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -66,12 +79,12 @@ class sportsmanagementViewpredictiongroups extends JView
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
         }
 
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
+//		// table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
+//
+//		// search filter
+//		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

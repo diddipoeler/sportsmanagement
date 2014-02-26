@@ -57,11 +57,62 @@ class sportsmanagementModelStatistics extends JModelList
 {
 	var $_identifier = "statistics";
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'obj.name',
+                        'obj.id',
+                        'obj.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+
+
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('obj.name', 'asc');
+	}
+    
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $this->getState('filter.search');
+        $search_sports_type	= $this->getState('filter.sports_type');
+        $search_state	= $this->getState('filter.state');
+
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -79,12 +130,19 @@ class sportsmanagementModelStatistics extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
         
-        if (self::_buildContentWhere())
+        if ($search)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $search . '%'));
         }
-        
-		$query->order(self::_buildContentOrderBy());
+        if ($search_sports_type)
+		{
+        $query->where('obj.sports_type_id='.$db->Quote($search_sports_type));
+        }
+        if (is_numeric($search_state))
+		{
+        $query->where('obj.published = '.$search_state);
+        }
+
         
         //$mainframe->enqueueMessage(JText::_('statistics query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
@@ -94,23 +152,7 @@ class sportsmanagementModelStatistics extends JModelList
         
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		
-		if ( $filter_order == 'obj.ordering')
-		{
-			$orderby 	= ' obj.ordering ' . $filter_order_Dir;
-		} else
-		{
-			$orderby 	= '  ' . $filter_order . ' ' . $filter_order_Dir . ' , obj.ordering ';
-		}
-
-		return $orderby;
-	}
+	
 
 	function _buildContentWhere()
 	{

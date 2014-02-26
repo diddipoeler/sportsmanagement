@@ -42,12 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewRounds
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewRounds extends JView
 {
@@ -93,6 +96,12 @@ class sportsmanagementViewRounds extends JView
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+        
 		$matchday = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -107,14 +116,14 @@ class sportsmanagementViewRounds extends JView
 		//$projectws =& $this->get('Data','projectws');
 
 		//$state = $this->get('state');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','r.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','r.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 		//$filter_order	    = $state->get('filter_order');
 		//$filter_order_Dir = $state->get('filter_order_Dir');
 
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order']	    = $filter_order;
+//		// table ordering
+//		$lists['order_Dir'] = $filter_order_Dir;
+//		$lists['order']	    = $filter_order;
                 
 		//$massadd=JRequest::getVar('massadd');				
 				

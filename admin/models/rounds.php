@@ -58,12 +58,58 @@ class sportsmanagementModelRounds extends JModelList
 	var $_identifier = "rounds";
     var $_project_id = 0;
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'r.name',
+                        'r.id',
+                        'r.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('r.name', 'asc');
+	}
+    
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        $search	= $this->getState('filter.search');
         
         //$this->_project_id	= JRequest::getVar('pid');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -97,58 +143,26 @@ class sportsmanagementModelRounds extends JModelList
         $query->select('('.$subQuery3.') AS countMatches');
         
         
-       
+       $query->where(' r.project_id = '.$this->_project_id);
         
+       if ($search)
+		{
+        $query->where(' LOWER(r.name) LIKE '.$db->Quote('%'.$search.'%'));
+		}
        
-        $query->where(self::_buildContentWhere());
-		$query->order(self::_buildContentOrderBy());
-        
-        if ( $show_debug_info )
-        {
- 		$mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        $mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds project<br><pre>'.print_r($this->_project_id,true).'</pre>'   ),'');
-        }
+        $query->order($db->escape($this->getState('list.ordering', 'r.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         return $query;
 	}
 	
   
   
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','r.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
 
-		if ( $filter_order == 'r.ordering' )
-		{
-			$orderby = ' r.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby = ' '.$filter_order.' '.$filter_order_Dir.',r.ordering ';
-		}
-		return $orderby;
-	}
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'r.ordering',	'cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-		$search=JString::strtolower($search);
-		$where=array();
-        $where[]=' r.project_id = '.$this->_project_id;
-		if ($search)
-		{
-			$where[]=' LOWER(r.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-		$where=(count($where) ? '  '.implode(' AND ',$where) : ' ');
-		return $where;
-	}
+
 	
 	/**
 	 * return count of  project rounds
