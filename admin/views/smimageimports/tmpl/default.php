@@ -52,10 +52,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <table>
 		<tr>
-			<td align="left" width="100%">
+			<td class="nowrap" align="left" width="100%">
 				<?php
 				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
+				?>
+				<input	type="text" name="filter_search" id="filter_search"
 								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
                                 
