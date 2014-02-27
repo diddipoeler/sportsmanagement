@@ -21,7 +21,7 @@
 					required="false">
 			</field>
 			<field	name="r" type="dependsql" depends="p" task="roundsoptions" 
-					label="COM_SPORTSMANAGEMENTXML_MATRIX_SELECT_ROUND_LABEL"
+					label="COM_SPORTSMANAGEMENT_XML_MATRIX_SELECT_ROUND_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_MATRIX_SELECT_ROUND_DESCR"
 					required="false">
 			</field>

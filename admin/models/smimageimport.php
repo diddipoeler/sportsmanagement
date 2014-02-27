@@ -211,7 +211,7 @@ function import()
 							}
                             else
                             {
-                                JError::raiseNotice(0,JText::sprintf('Bilderdatei : %1$s endpackt.',$name) ) ;
+                                JError::raiseNotice(0,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE',$name) ) ;
                                 // Must be a valid primary key value.
                                 $object->id = $value;
                                 $object->published = 1;
