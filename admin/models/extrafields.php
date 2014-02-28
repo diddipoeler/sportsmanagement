@@ -61,6 +61,9 @@ class sportsmanagementModelextrafields extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'objcountry.name',
+                        'objcountry.template_backend',
+                        'objcountry.template_frontend',
+                        'objcountry.published',
                         'objcountry.id',
                         'objcountry.ordering'
                         );

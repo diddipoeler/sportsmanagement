@@ -153,16 +153,17 @@ class sportsmanagementModelSeasons extends JModelList
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
             if ($search)
 		    {
-            $query->where(' LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+            $query->where(' LOWER(s.name) LIKE '.$db->Quote('%'.$search.'%'));
             }
-		    //$query->order(self::_buildContentOrderBy());
+		    
             break;
         }
 		
         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-//		$mainframe->enqueueMessage(JText::_('seasons query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
         return $query;
 	}
 	

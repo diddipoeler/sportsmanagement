@@ -133,8 +133,7 @@ class sportsmanagementModeljlextfederations extends JModelList
 		{
         $query->where("objassoc.country = '".$search_nation."'");
         }
-        
-		//$query->order(self::_buildContentOrderBy());
+
         
         $query->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));

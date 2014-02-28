@@ -119,52 +119,20 @@ class sportsmanagementModelSportsTypes extends JModelList
         $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
         if ($search)
 		{
-        $query->where('LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(s.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
         
         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-		//$query->order(self::_buildContentOrderBy());
+		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
-        //$mainframe->enqueueMessage(JText::_('sportstypes query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 		return $query;
         
 	}
 
-//	function _buildContentOrderBy()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','s.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//		if ($filter_order == 's.ordering')
-//		{
-//			$orderby='  s.ordering '.$filter_order_Dir;
-//		}
-//		else
-//		{
-//			$orderby='  '.$filter_order.' '.$filter_order_Dir.',s.ordering ';
-//		}
-//		return $orderby;
-//	}
 
-//	function _buildContentWhere()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		's.ordering',	'cmd');
-//		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-//		$search=JString::strtolower($search);
-//		$where=array();
-//		if ($search)
-//		{
-//			$where[]='LOWER(s.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-//		}
-//		$where=(count($where) ? ' WHERE '.implode(' AND ',$where) : '');
-//		return $where;
-//	}
+
 
 	/**
 	 * Method to return a sportsTypes array (id,name)

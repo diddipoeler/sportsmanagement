@@ -61,6 +61,12 @@ class sportsmanagementModelagegroups extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'obj.name',
+                        'obj.alias',
+                        'obj.age_from',
+                        'obj.age_to',
+                        'obj.deadline_day',
+                        'obj.country',
+                        'obj.sportstype_id',
                         'obj.id',
                         'obj.ordering'
                         );
@@ -146,7 +152,7 @@ class sportsmanagementModelagegroups extends JModelList
         }
         
 		//$query->order(self::_buildContentOrderBy());
-        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+        $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');

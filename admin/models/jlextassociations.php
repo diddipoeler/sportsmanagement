@@ -65,6 +65,7 @@ class sportsmanagementModeljlextassociations extends JModelList
                 $config['filter_fields'] = array(
                         'objassoc.name',
                         'objassoc.short_name',
+                        'objassoc.country',
                         'objassoc.id',
                         'objassoc.ordering'
                         );
@@ -130,7 +131,7 @@ class sportsmanagementModeljlextassociations extends JModelList
 
         if ($search )
 		{
-        $query->where('LOWER(objassoc.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(objassoc.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
         if ( $search_nation )
 		{

@@ -61,6 +61,9 @@ class sportsmanagementModelPositions extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'po.name',
+                        'po.parent_id',
+                        'po.sports_type_id',
+                        'po.persontype',
                         'po.id',
                         'po.ordering'
                         );
@@ -123,8 +126,8 @@ class sportsmanagementModelPositions extends JModelList
 
         // Select some fields
 		$query->select('po.*,pop.name AS parent_name,st.name AS sportstype,u.name AS editor');
-        $query->select('(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype WHERE position_id=po.id) countEvents');
-        $query->select('(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic WHERE position_id=po.id) countStats');
+        $query->select('(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype WHERE position_id = po.id) countEvents');
+        $query->select('(select count(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic WHERE position_id = po.id) countStats');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS po');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = po.sports_type_id');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pop ON pop.id = po.parent_id');

@@ -61,6 +61,11 @@ class sportsmanagementModelClubs extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'a.name',
+                        'a.website',
+                        'a.logo_big',
+                        'a.logo_middle',
+                        'a.logo_small',
+                        'a.country',
                         'a.id',
                         'a.ordering'
                         );
@@ -116,7 +121,7 @@ class sportsmanagementModelClubs extends JModelList
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
-        //$mainframe->enqueueMessage(JText::_('clubs getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
+
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

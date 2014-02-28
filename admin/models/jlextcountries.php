@@ -62,6 +62,14 @@ class sportsmanagementModeljlextcountries extends JModelList
                 $config['filter_fields'] = array(
                         'objcountry.name',
                         'objcountry.id',
+                        'objcountry.alpha2',
+                        'objcountry.alpha3',
+                        'objcountry.itu',
+                        'objcountry.fips',
+                        'objcountry.ioc',
+                        'objcountry.fifa',
+                        'objcountry.ds',
+                        'objcountry.wmo',
                         'objcountry.ordering'
                         );
                 parent::__construct($config);

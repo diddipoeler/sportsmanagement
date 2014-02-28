@@ -61,6 +61,10 @@ class sportsmanagementModelStatistics extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'obj.name',
+                        'obj.short',
+                        'obj.icon',
+                        'obj.sports_type_id',
+                        'obj.published',
                         'obj.id',
                         'obj.ordering'
                         );
@@ -143,8 +147,11 @@ class sportsmanagementModelStatistics extends JModelList
         $query->where('obj.published = '.$search_state);
         }
 
+        $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
         
-        //$mainframe->enqueueMessage(JText::_('statistics query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		return $query;
         
         
@@ -154,42 +161,7 @@ class sportsmanagementModelStatistics extends JModelList
 
 	
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_state','filter_state','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_mode','search_mode','','string');
-		$search=JString::strtolower($search);
-		
-		$where = array();
-		if ($filter_sports_type > 0)
-		{
-			$where[]='obj.sports_type_id='.$this->_db->Quote($filter_sports_type);
-		}
-		
-		if ( $search )
-		{
-			$where[] = 'LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $search . '%');
-		}
-		if ( $filter_state )
-		{
-			if ( $filter_state == 'P' )
-			{
-				$where[] = 'obj.published = 1';
-			}
-			elseif ( $filter_state == 'U' )
-			{
-				$where[] = 'obj.published = 0';
-			}
-		}
 
-		$where	= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
     
     /**
 	* Method to return the position stats array (value,text)

@@ -61,6 +61,11 @@ class sportsmanagementModelPersons extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'pl.lastname',
+                        'pl.firstname',
+                        'pl.nickname',
+                        'pl.birthday',
+                        'pl.country',
+                        'pl.position_id',
                         'pl.id',
                         'pl.ordering'
                         );
@@ -215,13 +220,12 @@ class sportsmanagementModelPersons extends JModelList
         }
         
         
-        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+        $query->order($db->escape($this->getState('list.ordering', 'pl.lastname')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
+        
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }        
+                
         
 		return $query;
         

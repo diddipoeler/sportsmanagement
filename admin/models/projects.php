@@ -61,6 +61,11 @@ class sportsmanagementModelProjects extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'p.name',
+                        'l.name',
+                        's.name',
+                        'st.name',
+                        'p.project_type',
+                        'p.published',
                         'p.id',
                         'p.ordering'
                         );
@@ -158,6 +163,8 @@ if ($search)
      
      $query->order($db->escape($this->getState('list.ordering', 'p.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
+                
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
                 
 		return $query;
         

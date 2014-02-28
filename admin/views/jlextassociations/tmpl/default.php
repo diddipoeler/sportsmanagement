@@ -84,7 +84,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.ahort_name',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.short_name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>					
 					<th width="10%" class="title" style="vertical-align: top; ">

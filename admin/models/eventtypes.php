@@ -57,6 +57,9 @@ class sportsmanagementModelEventtypes extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'obj.name',
+                        'obj.icon',
+                        'obj.sports_type_id',
+                        'obj.published',
                         'obj.id',
                         'obj.ordering'
                         );

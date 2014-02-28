@@ -83,7 +83,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_SHORT_NAME','obj.name',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_SHORT_NAME','obj.short_name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">

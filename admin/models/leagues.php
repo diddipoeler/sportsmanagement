@@ -61,6 +61,9 @@ class sportsmanagementModelLeagues extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'obj.name',
+                        'obj.short_name',
+                        'obj.country',
+                        'st.name',
                         'obj.id',
                         'obj.ordering'
                         );
@@ -135,9 +138,8 @@ class sportsmanagementModelLeagues extends JModelList
         $query->where("obj.country = '".$search_nation."'");
         }
         
-		//$query->order(self::_buildContentOrderBy());
-        
-        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
+
+        $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
