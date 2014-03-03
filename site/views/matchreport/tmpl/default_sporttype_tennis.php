@@ -104,12 +104,22 @@ if ( $this->project->use_tie_break )
                 $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->teamplayer1_id); 
                 //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
                 foreach( $playerinfo as $player)
-                {  
+                {
+                $picture = $player->picture;
+                if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				{
+                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+                }    
                 echo '<td>';
                 echo JText::_($player->position_name);
                 echo '</td>';  
                 echo '<td>';
-                echo $player->firstname.', '.$player->lastname;
+                echo $player->firstname.' '.$player->lastname;
+                ?>
+                <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
                 echo '</td>';
                 }
                   
@@ -129,11 +139,21 @@ if ( $this->project->use_tie_break )
                 //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
                 foreach( $playerinfo as $player)
                 {  
+                $picture = $player->picture; 
+                if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+				{
+                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+                } 
                 echo '<td>';
                 echo JText::_($player->position_name);
                 echo '</td>';  
                 echo '<td>';
-                echo $player->firstname.', '.$player->lastname;
+                echo $player->firstname.' '.$player->lastname;
+                ?>
+                <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
                 echo '</td>';
                 }
                   
@@ -259,22 +279,45 @@ if ( $this->project->use_tie_break )
                 $playerinfo1 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team1_player1);
                 $playerinfo2 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team1_player2);  
                 //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
+
                 foreach( $playerinfo1 as $player)
-                {  
+                {
+                $picture1 = $player->picture;  
+                if ( !JFile::exists(JPATH_SITE.DS.$picture1) )
+				{
+                    $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
+                }   
                 $matchposition =  JText::_($player->position_name).'<br>';  
-                $matchplayer = $player->firstname.', '.$player->lastname.' / <br>'; 
+                $matchplayer1 = $player->firstname.' '.$player->lastname; 
                 }
                 foreach( $playerinfo2 as $player)
                 {  
+                $picture2 = $player->picture;     
+                if ( !JFile::exists(JPATH_SITE.DS.$picture2) )
+				{
+                    $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
+                }
                 $matchposition .=  JText::_($player->position_name);  
-                $matchplayer .= $player->firstname.', '.$player->lastname; 
+                $matchplayer2 = $player->firstname.' '.$player->lastname; 
                 }
                 
                 echo '<td>';
                 echo $matchposition;
                 echo '</td>';  
                 echo '<td>';
-                echo $matchplayer;
+                echo $matchplayer1;
+                ?>
+                <a href="<?php echo JURI::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
+                echo ' / <br>';
+                echo $matchplayer2;
+                ?>
+                <a href="<?php echo JURI::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
                 echo '</td>';
                   
                 }
@@ -294,20 +337,42 @@ if ( $this->project->use_tie_break )
                 //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
                 foreach( $playerinfo1 as $player)
                 {  
+                $picture1 = $player->picture; 
+                if ( !JFile::exists(JPATH_SITE.DS.$picture1) )
+				{
+                    $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
+                }
                 $matchposition =  JText::_($player->position_name).'<br>';  
-                $matchplayer = $player->firstname.', '.$player->lastname.' / <br>'; 
+                $matchplayer1 = $player->firstname.' '.$player->lastname; 
                 }
                 foreach( $playerinfo2 as $player)
                 {  
+                $picture2 = $player->picture;
+                if ( !JFile::exists(JPATH_SITE.DS.$picture2) )
+				{
+                    $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
+                }     
                 $matchposition .=  JText::_($player->position_name);  
-                $matchplayer .= $player->firstname.', '.$player->lastname; 
+                $matchplayer2 = $player->firstname.' '.$player->lastname; 
                 }
                 
                 echo '<td>';
                 echo $matchposition;
                 echo '</td>';  
                 echo '<td>';
-                echo $matchplayer;
+                echo $matchplayer1;
+                ?>
+                <a href="<?php echo JURI::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
+                echo ' / <br>';
+                echo $matchplayer2;
+                ?>
+                <a href="<?php echo JURI::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
+                <img src="<?php echo JURI::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                </a>
+                <?PHP
                 echo '</td>';
                   
                 }
@@ -393,14 +458,20 @@ if ( $this->project->use_tie_break )
 <h3><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS'); ?></h3>
 <table class="matchreport">
 <tr style="">
-				<th></th>
-				<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_POINTS'); ?></th>
-				<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_SETS'); ?></th>
-				<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_GAMES'); ?></th>
-				
-			</tr>
+<th></th>
+<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_POINTS'); ?></th>
+<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_SETS'); ?></th>
+<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_GAMES'); ?></th>
+</tr>
             
 <?PHP
+$all_over_points_1 = 0;
+$all_over_points_2 = 0;
+$all_over_sets_1 = 0;
+$all_over_sets_2 = 0;
+$all_over_games_1 = 0;
+$all_over_games_2 = 0;
+
 foreach ( $complete_results as $key => $value )
 {
 echo '<tr>'; 
@@ -416,9 +487,45 @@ echo '</td>';
 echo '<td>';
 echo $value['GAMES1'].':'.$value['GAMES2'];
 echo '</td>';  
-echo '</tr>';     
+echo '</tr>'; 
+
+$all_over_points_1 += $value['POINTS1'];
+$all_over_points_2 += $value['POINTS2'];
+$all_over_sets_1 += $value['SETS1'];
+$all_over_sets_2 += $value['SETS2'];
+$all_over_games_1 += $value['GAMES1'];
+$all_over_games_2 += $value['GAMES2'];    
 }
 
+echo '<tr>'; 
+echo '<td>';
+echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AGO');
+echo '</td>';
+echo '<td>';
+echo $all_over_points_1.':'.$all_over_points_2;
+echo '</td>'; 
+echo '<td>';
+echo $all_over_sets_1.':'.$all_over_sets_2;
+echo '</td>';
+echo '<td>';
+echo $all_over_games_1.':'.$all_over_games_2;
+echo '</td>';  
+echo '</tr>';
+
+echo '<tr>'; 
+echo '<td>';
+echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AFTER');
+echo '</td>';
+echo '<td>';
+echo $all_over_points_1.':'.$all_over_points_2;
+echo '</td>'; 
+echo '<td>';
+echo $all_over_sets_1.':'.$all_over_sets_2;
+echo '</td>';
+echo '<td>';
+echo $all_over_games_1.':'.$all_over_games_2;
+echo '</td>';  
+echo '</tr>';
 
 ?>
             

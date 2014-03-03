@@ -373,7 +373,41 @@ multiple="true"
           		
 	</fieldset>
   
-  		
+	<fieldset
+		name="googleapi"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DESC"
+	>
+
+<field name="google_api_clienid" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID_DESC" />	
+	
+<field name="google_api_clientsecret" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTSECRET" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTSECRET_DESC" />	
+	
+<field name="google_api_redirecturi" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_REDIRECTURI" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_REDIRECTURI_DESC" />	
+	
+<field name="google_api_developerkey" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />	
+	</fieldset>
+          		
 <!-- register ende -->		
 	<fieldset
 		name="permissions"

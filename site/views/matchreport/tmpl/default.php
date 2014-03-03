@@ -50,6 +50,10 @@ switch ( $this->project->sport_type_name )
     case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
     echo $this->loadTemplate('projectheading');
     echo $this->loadTemplate('sectionheader');
+    
+    echo $this->loadTemplate('result');
+    echo $this->loadTemplate('details');
+    
     echo $this->loadTemplate('sporttype_tennis');
     break;
     default:

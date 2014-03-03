@@ -75,14 +75,18 @@ class sportsmanagementViewjlextindividualsportes extends JView
         $model = $this->getModel();
 		$uri = JFactory::getURI();
 
+$this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
     $cid = JRequest::getVar('cid', null, 'request', 'array');
     
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_state',	'filter_state', 	'', 'word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_order',	'filter_order', 	'mc.match_number', 'cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_order_Dir','filter_order_Dir', '', 'word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_search', 'search',					'', 'string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_search_mode',		'search_mode',		'', 'string');
-		$division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_division',		'division',			'',	'string');
+//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_state',	'filter_state', 	'', 'word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_order',	'filter_order', 	'mc.match_number', 'cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_filter_order_Dir','filter_order_Dir', '', 'word');
+//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_search', 'search',					'', 'string');
+//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_search_mode',		'search_mode',		'', 'string');
+//		$division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'mc_division',		'division',			'',	'string');
 		
         $project_id			= $mainframe->getUserState( "$option.pid", '0' );
 		$match_id		= JRequest::getvar('id', 0);
@@ -172,10 +176,11 @@ class sportsmanagementViewjlextindividualsportes extends JView
             $this->assign('getAwayPlayer',$exportplayer);
         }
         
-        // table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-        
+//        // table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
+//        
+
         $this->assignRef('lists',$lists);
 
 
