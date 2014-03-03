@@ -189,7 +189,7 @@ $mainframe = JFactory::getApplication();
                         
                         
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','TID','team_id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo JHtml::_('grid.sort','TID','st.team_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="1%">
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>

@@ -70,7 +70,7 @@ class sportsmanagementModelProjectteams extends JModelList
                         'tl.admin',
                         'd.name',
                         'tl.picture',
-                        'team_id',
+                        'st.team_id',
                         'tl.id',
                         't.ordering'
                         );
@@ -202,6 +202,8 @@ class sportsmanagementModelProjectteams extends JModelList
         // Join over the users for the checked out user.
 		$query->select('u.name AS editor,u.email AS email');
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
+        
+        $query->where('tl.project_id = ' . $this->_project_id);
         
 //        if (self::_buildContentWhere())
 //		{
