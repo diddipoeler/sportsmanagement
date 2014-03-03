@@ -66,10 +66,7 @@ class sportsmanagementViewSportsTypes extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','s.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-//		$search=JString::strtolower($search);
+
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -79,12 +76,7 @@ class sportsmanagementViewSportsTypes extends JView
 		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
 		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
-//		// table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-//
-//		// search filter
-//		$lists['search']=$search;
+
         
         // sportart filter
 		$lists['sportart']=$myoptions;

@@ -79,14 +79,7 @@ class sportsmanagementViewPredictionGames extends JView
     
     
 		$lists				= array();
-		
-		
-        
-//		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_state','filter_state','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_search','search','','string');
-//		$search				= JString::strtolower( $search );
+
         
         $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
@@ -100,15 +93,7 @@ $items = $this->get('Items');
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');    
         }
         
-//		// state filter
-//		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-//
-//		// table ordering
-//		$lists['order_Dir']	= $filter_order_Dir;
-//		$lists['order']		= $filter_order;
-//
-//		// search filter
-//		$lists['search'] = $search;
+
 
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );

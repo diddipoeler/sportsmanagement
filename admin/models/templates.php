@@ -58,71 +58,85 @@ class sportsmanagementModelTemplates extends JModelList
 	var $_identifier = "templates";
 	var $_project_id = 0;
 
-	
+	public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'tmpl.template',
+                        'tmpl.title',
+                        'tmpl.id',
+                        'tmpl.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('tmpl.template', 'asc');
+	}    
 	
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
+        
         $query->select(array('tmpl.*', 'u.name AS editor','(0) AS isMaster'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
-
-        if ($where)
-        {
-            $query->where($where);
-        }
-        if ($orderby)
-        {
-            $query->order($orderby);
-        }
-
-		return $query;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		//$project_id=$mainframe->getUserState($option.'project');
-
-		$where=array();
-		$where[]=' tmpl.project_id='.(int) $this->_project_id;
-
-		$oldTemplates="frontpage'";
+        
+        $query->where('tmpl.project_id = '.(int) $this->_project_id);
+        
+        $oldTemplates="frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
 		$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
 		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
+        
+        $query->where("tmpl.template NOT IN ('".$oldTemplates."')");
 
-		$where[]=" tmpl.template NOT IN ('".$oldTemplates."')";
-		$query="".implode(' AND ',$where);
+
+
+$query->order($db->escape($this->getState('list.ordering', 'tmpl.template')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
-	}
-
-	function _buildContentOrderBy()
-	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order','filter_order','tmpl.template','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order_Dir','filter_order_Dir','','word');
-
-		if ($filter_order=='tmpl.template')
-		{
-			$orderby='tmpl.template '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=''.$filter_order.' '.$filter_order_Dir.',tmpl.template ';
-		}
-		return $orderby;
 	}
 
 	/**

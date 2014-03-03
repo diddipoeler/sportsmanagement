@@ -42,12 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewPersons
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewPersons extends JView
 {
@@ -68,12 +71,7 @@ class sportsmanagementViewPersons extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
+
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -81,16 +79,7 @@ class sportsmanagementViewPersons extends JView
 
 		$mainframe->setUserState($option.'task','');
 
-//		// state filter
-//		$lists['state']=JHtml::_('grid.state',$filter_state);
-//
-//		// table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-//
-//		// search filter
-//		$lists['search']=$search;
-//		$lists['search_mode']=$search_mode;
+
 
 		//build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
@@ -136,6 +125,11 @@ class sportsmanagementViewPersons extends JView
 		$mainframe = JFactory::getApplication();
         $user	= JFactory::getUser();
 		$model = $this->getModel();
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
 		//$project_id = $mainframe->getUserState($option.'project');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
 		$mdlProject = JModel::getInstance("project", "sportsmanagementModel");
@@ -149,12 +143,6 @@ class sportsmanagementViewPersons extends JView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','pl.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
 
 		//save icon should be replaced by the apply
 		JToolBarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
@@ -203,15 +191,7 @@ class sportsmanagementViewPersons extends JView
 		//$pagination = new JPagination($mdlQuickAdd->_total,JRequest::getVar('limitstart',0,'','int'),$limit);
 		//$mdlQuickAdd->_pagination=$pagination;
 
-		// state filter
-		$lists['state']=JHtml::_('grid.state',$filter_state);
-        // table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
 
-		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
 
 		$this->assignRef('prjid',$this->project_id);
 		$this->assignRef('prj_name',$project_name);

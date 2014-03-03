@@ -64,27 +64,13 @@ class sportsmanagementViewTeams extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','t.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_mode','search_mode','','string');
-//		$search				= JString::strtolower($search);
+
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-//		// state filter
-//		$lists['state']=JHtml::_('grid.state',$filter_state);
-//
-//		// table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-//
-//		// search filter
-//		$lists['search']=$search;
-//		$lists['search_mode']=$search_mode;
+
 
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());

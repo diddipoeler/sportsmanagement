@@ -67,13 +67,7 @@ class sportsmanagementViewClubs extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_state','filter_state','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order','filter_order','a.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_filter_order_Dir','filter_order_Dir','','word');
-//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search','search','','string');
-//		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.a_search_mode','search_mode','','string');
-//		$search				= JString::strtolower($search);
+
 
 		$items		= $this->get('Items');
 		$total		= $this->get('Total');
@@ -94,13 +88,7 @@ class sportsmanagementViewClubs extends JView
 																'text',
 																$this->state->get('filter.search_nation'));
 
-//		// table ordering
-//		$lists['order_Dir'] = $filter_order_Dir;
-//		$lists['order'] = $filter_order;
-//
-//		// search filter
-//		$lists['search'] = $search;
-//		$lists['search_mode'] = $search_mode;
+
 
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());

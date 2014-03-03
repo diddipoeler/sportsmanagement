@@ -80,7 +80,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.name',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME','obj.alias',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>					
 					<th width="10%" class="title" style="vertical-align: top; ">

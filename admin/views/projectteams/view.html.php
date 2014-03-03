@@ -62,16 +62,10 @@ class sportsmanagementViewprojectteams extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
-		
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search_mode','search_mode','','string');
-        $division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_division','division','','string');
-		$search				= JString::strtolower($search);
-
-//		$items = $this->get('Items');
-//		$total = $this->get('Total');
-//		$pagination = $this->get('Pagination');
+		$this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
         
         $this->project_id = JRequest::getVar('pid');
         if ( !$this->project_id )
@@ -206,13 +200,6 @@ class sportsmanagementViewprojectteams extends JView
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		$lists['search_mode'] = $search_mode;
         
         $myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );

@@ -63,27 +63,15 @@ class sportsmanagementViewrosterpositions extends JView
     $option = JRequest::getCmd('option');
     $model = $this->getModel();
     	
-    
-
-		
-
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'l_filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'l_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'l_search','search','','string');
-		$search=JString::strtolower($search);
+    $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
         
-
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

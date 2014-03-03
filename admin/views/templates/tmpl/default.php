@@ -70,7 +70,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.title',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
 							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>

@@ -66,12 +66,7 @@ class sportsmanagementViewagegroups extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search_nation','search_nation','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-//		$search=JString::strtolower($search);
+
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
@@ -118,12 +113,7 @@ class sportsmanagementViewagegroups extends JView
         $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
         }
         
-//        // table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-//
-//		// search filter
-//		$lists['search']=$search;
+
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

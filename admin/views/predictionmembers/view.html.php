@@ -156,25 +156,13 @@ $mainframe = JFactory::getApplication();
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-//	$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_state',		'filter_state',		'',				'word' );
-//		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order',		'filter_order',		'u.username',	'cmd' );
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-//		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmb_search',				'search',			'',				'string' );
-//		$search				= JString::strtolower( $search );	
+
     
     $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-//        // state filter
-//		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-//
-//		// table ordering
-//		$lists['order_Dir']	= $filter_order_Dir;
-//		$lists['order']		= $filter_order;
-//
-//		// search filter
-//		$lists['search'] = $search; 
+
         
         //build the html select list for prediction games
         $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
@@ -192,90 +180,8 @@ $mainframe = JFactory::getApplication();
 											$prediction_id
 										);
 		unset( $res );
-        
-        
-        
-        
-           
-    
-    /*
-		$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-//echo '#' . $prediction_id . '#<br />';
-		$lists				= array();
-		$db					=& JFactory::getDBO();
-		$uri				=& JFactory::getURI();
-		$items				=& $this->get( 'Data' );
-		$total				=& $this->get( 'Total' );
-		$pagination			=& $this->get( 'Pagination' );
-		//$model				=& $this->getModel();
-		
+       
 
-    $baseurl    = JURI::root();
-		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.js');
-		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.Request.js');
-		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Observer.js');
-		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/quickaddteam.js');
-		$document->addStyleSheet($baseurl.'administrator/components/com_joomleague/assets/css/Autocompleter.css');
-		
-		// state filter
-		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-
-		//build the html select list for prediction games
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
-		if ( $res =& $this->getModel()->getPredictionGames() ) { $predictions = array_merge( $predictions, $res ); }
-		$lists['predictions'] = JHtml::_(	'select.genericlist',
-											$predictions,
-											'prediction_id',
-											'class="inputbox" onChange="this.form.submit();" ',
-											'value',
-											'text',
-											$prediction_id
-										);
-		unset( $res );
-
-		// Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_joomleague/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'pred-cpanel' );
-
-		JToolBarHelper::custom( 'predictionmember.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
-		JToolBarHelper::divider();
-		
-		if ( $prediction_id )
-		{
-		  JLToolBarHelper::editList('predictionmember.edit');
-    JToolBarHelper::custom('predictionmember.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
- 		JToolBarHelper::divider();
- 		}
-		JToolBarHelper::publishList( 'predictionmember.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
-		JToolBarHelper::unpublishList( 'predictionmember.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
-		JToolBarHelper::divider();
-
-		//JToolBarHelper::addNewX();
-		//JToolBarHelper::divider();
-
-		//JToolBarHelper::editListX();
-		JToolBarHelper::deleteList( '', 'predictionmember.remove' );
-		JToolBarHelper::divider();
-
-		JLToolBarHelper::onlinehelp();
-
-		$this->assignRef( 'user',			JFactory::getUser() );
-		$this->assignRef( 'lists',			$lists );
-		
-		if ( $prediction_id )
-		{
-		$this->assignRef( 'items',			$items );
-		}
-		*/
-		
         
         $this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

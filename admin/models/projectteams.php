@@ -62,6 +62,57 @@ class sportsmanagementModelProjectteams extends JModelList
     var $project_art_id  = 0;
     var $sports_type_id= 0;
     
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        't.name',
+                        't.lastname',
+                        'tl.admin',
+                        'd.name',
+                        'tl.picture',
+                        'team_id',
+                        'tl.id',
+                        't.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('t.name', 'asc');
+	}
 
 	protected function getListQuery()
 	{
@@ -152,25 +203,17 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->select('u.name AS editor,u.email AS email');
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
-        if (self::_buildContentWhere())
-		{
-        $query->where(self::_buildContentWhere());
-        }
-		$query->order(self::_buildContentOrderBy());
-/*
-select
-tl.id AS projectteamid,tl.*,
-concat(t.lastname,' - ',t.firstname,'' ) AS name,
-u.name AS editor,u.email AS email        
-from jos_sportsmanagement_project_team AS tl
-left join jos_sportsmanagement_season_person_id AS st on tl.team_id = st.id
-left join jos_sportsmanagement_person AS t on st.person_id = t.id
-left join jos_users AS u on tl.admin = u.id
-where tl.project_id = 2
+//        if (self::_buildContentWhere())
+//		{
+//        $query->where(self::_buildContentWhere());
+//        }
+//		$query->order(self::_buildContentOrderBy());
 
-*/        
-        
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query , true).'</pre><br>','Notice');
+        $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 
 		return $query;
 	}

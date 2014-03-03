@@ -62,10 +62,10 @@ class sportsmanagementViewTemplates extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         
-        
-		//$templates =& $this->get('Data');
-//		$total =& $this->get('Total');
-//		$pagination =& $this->get('Pagination');
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+
         
         $templates = $this->get('Items');
 		$total = $this->get('Total');
@@ -95,23 +95,8 @@ class sportsmanagementViewTemplates extends JView
             
 		}
 
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'tmpl_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'tmpl_filter_order','filter_order','tmpl.template','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'tmpl_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'tmpl_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'tmpl_search_mode','search_mode','','string');
-		$search				= JString::strtolower($search);
 
-		// state filter
-		$lists['state']=JHtml::_('grid.state',$filter_state);
 
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
-
-		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

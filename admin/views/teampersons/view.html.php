@@ -76,11 +76,7 @@ class sportsmanagementViewteampersons extends JView
 		$document->addStyleSheet($baseurl.'administrator/components/com_sportsmanagement/assets/css/Autocompleter.css');			
 */
 
-//		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ppl_filter_state','filter_state','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ppl_filter_order','filter_order','ppl.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ppl_filter_order_Dir',	'filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ppl1_search','search','','string');
-//		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier.'.ppl_search_mode','search_mode','','string');
+
         
         $items = $this->get('Items');
 		$total = $this->get('Total');
@@ -140,13 +136,7 @@ class sportsmanagementViewteampersons extends JView
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
-//		// table ordering
-//		$lists['order_Dir'] = $filter_order_Dir;
-//		$lists['order'] = $filter_order;
-//
-//		// search filter
-//		$lists['search'] = $search;
-//		$lists['search_mode'] = $search_mode;
+
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

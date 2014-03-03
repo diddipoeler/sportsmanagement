@@ -62,26 +62,13 @@ class sportsmanagementViewPositions extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 		
-//		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-//		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','po.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-//		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-//		$search=JString::strtolower($search);
+
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-//		// state filter
-//		$lists['state']=JHtml::_('grid.state', $filter_state);
-//
-//		// table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-//
-//		// search filter
-//		$lists['search']=$search;
+
 
 		//build the html options for parent position
 		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
