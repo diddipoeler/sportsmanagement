@@ -125,7 +125,7 @@ JHtml::_( 'behavior.tooltip' );
 						{
 							$row =& $this->items[$i];
 
-							$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id );
+							$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id.'&predid='.$this->prediction_id );
 							$checked = JHtml::_( 'grid.checkedout', $row, $i );
 							?>
 							<tr class='<?php echo "row$k"; ?>'>

@@ -115,15 +115,7 @@ class sportsmanagementViewRounds extends JView
         
 		//$projectws =& $this->get('Data','projectws');
 
-		//$state = $this->get('state');
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','r.ordering','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		//$filter_order	    = $state->get('filter_order');
-		//$filter_order_Dir = $state->get('filter_order_Dir');
 
-//		// table ordering
-//		$lists['order_Dir'] = $filter_order_Dir;
-//		$lists['order']	    = $filter_order;
                 
 		//$massadd=JRequest::getVar('massadd');				
 				

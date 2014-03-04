@@ -57,9 +57,13 @@ class sportsmanagementViewPredictionTemplate extends JView
 {
 	function display( $tpl = null )
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model = $this->getModel();
+        
+        $this->prediction_id		= $mainframe->getUserState( "$option.predid", '0' );
+        $predictionGame = $model->getPredictionGame( $this->prediction_id );
 
-		
         
         	// get the Data
 		//$form = $this->get('Form');
@@ -92,6 +96,7 @@ class sportsmanagementViewPredictionTemplate extends JView
 		$this->item = $item;
 		$this->script = $script;
         $this->assign('user',JFactory::getUser() );
+        $this->assignRef( 'predictionGame',		$predictionGame );
 $this->addToolbar();
 		parent::display( $tpl );
 	}

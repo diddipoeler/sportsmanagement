@@ -9,6 +9,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
 
 
+/**
+ * sportsmanagementModelpredictionmember
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelpredictionmember extends JModelAdmin
 {
 	

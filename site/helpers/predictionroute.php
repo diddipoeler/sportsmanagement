@@ -1,12 +1,40 @@
 <?php
-/**
-* @copyright	Copyright (C) 2007-2012 JoomLeague.net. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
 */
 
 // no direct access
@@ -15,12 +43,30 @@ defined('_JEXEC') or die('Restricted access');
 // Component Helper
 jimport('joomla.application.component.helper');
 
+
 /**
- *
+ * PredictionHelperRoute
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class PredictionHelperRoute extends sportsmanagementHelperRoute 
 {
 
+/**
+ * PredictionHelperRoute::getPredictionResultsRoute()
+ * 
+ * @param mixed $predictionID
+ * @param mixed $roundID
+ * @param mixed $projectID
+ * @param mixed $userID
+ * @param string $anchor
+ * @param mixed $groupID
+ * @return
+ */
 public static function getPredictionResultsRoute($predictionID,$roundID=null,$projectID=null,$userID=null,$anchor='',$groupID=null)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
@@ -40,6 +86,17 @@ public static function getPredictionResultsRoute($predictionID,$roundID=null,$pr
 		return $link;
 	}
 
+/**
+ * PredictionHelperRoute::getPredictionRankingRoute()
+ * 
+ * @param mixed $predictionID
+ * @param mixed $projectID
+ * @param mixed $roundID
+ * @param string $anchor
+ * @param mixed $groupID
+ * @param integer $groupRank
+ * @return
+ */
 public static function getPredictionRankingRoute($predictionID,$projectID=null,$roundID=null,$anchor='',$groupID=null,$groupRank=0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
@@ -60,6 +117,12 @@ public static function getPredictionRankingRoute($predictionID,$projectID=null,$
 		return $link;
 	}
 
+/**
+ * PredictionHelperRoute::getPredictionRulesRoute()
+ * 
+ * @param mixed $predictionID
+ * @return
+ */
 public static function getPredictionRulesRoute($predictionID)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
@@ -72,6 +135,16 @@ public static function getPredictionRulesRoute($predictionID)
 		return $link;
 	}
       	
+/**
+ * PredictionHelperRoute::getPredictionTippEntryRoute()
+ * 
+ * @param mixed $predictionID
+ * @param mixed $userID
+ * @param mixed $roundID
+ * @param mixed $projectID
+ * @param string $anchor
+ * @return
+ */
 public static function getPredictionTippEntryRoute($predictionID,$userID=null,$roundID=null,$projectID=null,$anchor='')
 	{
 		$params = array('option' => 'com_sportsmanagement', 
@@ -89,6 +162,15 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
 		return $link;
 	}
 
+/**
+ * PredictionHelperRoute::getPredictionMemberRoute()
+ * 
+ * @param mixed $predictionID
+ * @param mixed $userID
+ * @param mixed $task
+ * @param mixed $projectID
+ * @return
+ */
 public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null)
 	{
 	
@@ -119,9 +201,15 @@ public static function getPredictionMemberRoute($predictionID,$userID=null,$task
 		return $link;
 	}
     		
+/**
+ * PredictionHelperRoute::buildQuery()
+ * 
+ * @param mixed $parts
+ * @return
+ */
 public static function buildQuery($parts)
 	{
-		if ($item = JoomleagueHelperRoute::_findItem($parts))
+		if ($item = sportsmanagementHelperRoute::_findItem($parts))
 		{
 			$parts['Itemid'] = $item->id;
 		}

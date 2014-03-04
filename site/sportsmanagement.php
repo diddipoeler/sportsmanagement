@@ -44,6 +44,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'html.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'ranking.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'predictionroute.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
 

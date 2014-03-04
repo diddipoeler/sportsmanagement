@@ -82,14 +82,14 @@ class sportsmanagementViewResultsranking extends JView
         /*
         // add the css files
 		$version = urlencode(JoomleagueHelper::getVersion());
-		$css		= 'components/com_joomleague/assets/css/tabs.css?v='.$version;
+		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 		$document->addStyleSheet($css);
         */
         
         /*
 		// add some javascript
 		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_joomleague/assets/js/results.js?v='.$version);
+		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version);
         */
         
 		// add the ranking model
@@ -158,8 +158,8 @@ class sportsmanagementViewResultsranking extends JView
 		}
 		$this->assign('colors', sportsmanagementModelProject::getColors($this->config['colors']));
         
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
-        //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_joomleague')->get('use_joomlaworks',0) );
+        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+        //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
 
 		// Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
@@ -178,7 +178,7 @@ class sportsmanagementViewResultsranking extends JView
         
 		/*
 		//build feed links
-		$feed = 'index.php?option=com_joomleague&view=results&p='.$this->project->id.'&format=feed';
+		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
 		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
 		// add the links

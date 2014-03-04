@@ -26,6 +26,7 @@ class sportsmanagementModelPredictionGames extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'pre.name',
+                        'pre.published',
                         'pre.id',
                         'pre.ordering'
                         );
@@ -98,6 +99,11 @@ class sportsmanagementModelPredictionGames extends JModelList
 		{
         $query->where('pre.published = '.$search_state);
         }
+        
+        $query->order($db->escape($this->getState('list.ordering', 'pre.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		
 		return $query;

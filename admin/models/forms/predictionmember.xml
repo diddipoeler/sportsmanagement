@@ -11,14 +11,14 @@
 	<field
 			name="group_id"
 			type="sql"
-			class="inputbox validate-select-required"
+			class=""
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_PREDICTION_MEMBER_GROUP"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_PREDICTION_MEMBER_GROUP_DESC"
-			required="true"
-			query="SELECT id AS value, name AS group_id FROM #__joomleague_prediction_groups ORDER BY name ASC"
-			validate="superiorzero">
+			required=""
+			query="SELECT id AS value, name AS group_id FROM #__sportsmanagement_prediction_groups ORDER BY name ASC"
+			>
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP</option>

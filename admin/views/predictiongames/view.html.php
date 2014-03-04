@@ -113,42 +113,7 @@ $items = $this->get('Items');
 										);
 		unset( $res );
 
-/*
-		// Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_joomleague/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
-    */
-		
-        /*
-        if ($prediction_id==0)
-		{
-			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE'),'pred-cpanel');
 
-			JToolBarHelper::publishList('predictiongame.publish');
-			JToolBarHelper::unpublishList('predictiongame.unpublish');
-			JToolBarHelper::divider();
-
-			JToolBarHelper::addNew('predictiongame.add');
-			JToolBarHelper::editList('predictiongame.edit');
-			//JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', JText::_( 'Copy'), true );
-			JToolBarHelper::divider();
-			//JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'));
-            JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'), 'predictiongame.remove');
-			JToolBarHelper::divider();
-			JToolBarHelper::customX('rebuild','restore.png','restore_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_REBUILDS'),true);
-		}
-		else
-		{
-			
-            
-            JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJLIST_TITLE' ), 'pred-cpanel' );
-
-			
-		}
-
-		JToolBarHelper::divider();
-		JLToolBarHelper::onlinehelp();
-*/
 		$this->assign( 'user',			JFactory::getUser() );
 		$this->assignRef( 'lists',			$lists );
         $this->assignRef( 'option',			$option );
@@ -158,7 +123,7 @@ $items = $this->get('Items');
 		
 		if ( $this->prediction_id > 0 )
 		{
-			$this->assignRef( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
+			$this->assign( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
 			//$this->assignRef( 'predictionAdmins',	$this->getModel()->getAdmins( $prediction_id ) );
 		}
 

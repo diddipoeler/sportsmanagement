@@ -173,11 +173,11 @@ $mainframe = JFactory::getApplication();
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
-											'prediction_id',
+											'filter_prediction_id',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
-											$prediction_id
+											$this->state->get('filter.prediction_id')
 										);
 		unset( $res );
        

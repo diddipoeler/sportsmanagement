@@ -63,21 +63,30 @@ class sportsmanagementViewPredictionTemplates extends JView
     $option = JRequest::getCmd('option');
     $model = $this->getModel();
     
+    $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
 		//$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
         
-        $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id_select', '0' );
+        $this->prediction_id = $this->state->get('filter.prediction_id_select');
+        if ( isset($this->prediction_id) )
+        {
+        }
+        else
+        {
+            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+        }   
+         
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+
         
-        //$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-		$lists				= array();
+		$lists = array();
+		$uri = JFactory::getURI();
+        
+        
 		
-		$uri				= JFactory::getURI();
-        
-        
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
 		
         //$this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         $mdlPredictionGame = JModel::getInstance("PredictionGame", "sportsmanagementModel");
@@ -86,24 +95,24 @@ class sportsmanagementViewPredictionTemplates extends JView
         
         
         
-        if ( isset($this->prediction_id->prediction_id_select) )
+        if ( isset($this->prediction_id) )
         {
-        $checkTemplates  = $mdlPredictionTemplates->checklist($this->prediction_id->prediction_id_select);    
-        $predictiongame		= $mdlPredictionGame->getPredictionGame( $this->prediction_id->prediction_id_select );
+        $checkTemplates = $mdlPredictionTemplates->checklist($this->prediction_id);    
+        $predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
         }
         else
         {
-            $this->prediction_id->prediction_id_select = 0;
+            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
         }
         
-//echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
+//echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
+     
 
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
+
 
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
@@ -116,49 +125,16 @@ class sportsmanagementViewPredictionTemplates extends JView
           
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
-											'prediction_id_select',
+											'filter_prediction_id_select',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
-											$this->prediction_id->prediction_id_select
+											$this->state->get('filter.prediction_id_select')
 										);
 
                                         
 		unset( $res );
-/*
-		// Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/COM_SPORTSMANAGEMENT/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE' ), 'pred-cpanel' );
-        
-		if ( $prediction_id > 0 )
-		{
-			JToolBarHelper::editListX('predictiontemplate.edit');
-			//JToolBarHelper::save();  // TO BE FIXED: Marked out. Better an import Button should be added here if it is not master-template
-			JToolBarHelper::divider();
-			if ( ( $prediction_id > 0 ) && ( $predictiongame->master_template ) )
-			{
-				JToolBarHelper::deleteList();
-				//JToolBarHelper::deleteList( JText::_( 'Warning: all prediction-user-data and tipps of selected member will COMPLETELY be deleted!!! This is NOT reversible!!!' ) );
-			}
-			else
-			{
-				JToolBarHelper::custom( 'predictiontemplate.reset', 'restore', 'restore', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' ), true );
-			}
-			JToolBarHelper::divider();
-		}
-		JLToolBarHelper::onlinehelp();
 
-		$this->assignRef( 'user',			JFactory::getUser() );
-		$this->assignRef( 'pred_id',		$prediction_id );
-		$this->assignRef( 'lists',			$lists );
-		$this->assignRef( 'items',			$items );
-		$this->assignRef( 'pagination',		$pagination );
-		$this->assignRef( 'predictiongame',	$predictiongame );
-		$url=$uri->toString();
-		$this->assignRef('request_url',$url);
-		parent::display( $tpl );
-        */
         
         $this->assign( 'user',			JFactory::getUser() );
 		$this->assignRef( 'pred_id',		$this->prediction_id );
@@ -183,6 +159,8 @@ class sportsmanagementViewPredictionTemplates extends JView
 	   // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES'),'templates');
         
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

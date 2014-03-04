@@ -98,9 +98,12 @@ $i    = 1;
     <div class="clr"></div>
     <?php endforeach; ?>
     <?php echo JHtml::_('tabs.end'); ?>
+    
+</fieldset>    
 	<div>		
 		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
+        <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
 		<input type="hidden" name="task" value="predictiontemplate.edit"/>
 		<?php echo JHtml::_('form.token'); ?>
 	</div>

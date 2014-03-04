@@ -131,7 +131,7 @@ class sportsmanagementViewMatrix extends JView
 			$this->assign('favteams', sportsmanagementModelProject::getFavTeams() );
 		}
     
-    //$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) );
+    //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 		
     // Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );

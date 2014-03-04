@@ -169,11 +169,11 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
 
 		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
+		$records = $this->_db->loadResultArray();
 		if (empty($records)) { $records=array(); }
 		
 		// add default folder
-		$xmldirs[]=$defaultpath.DS.'default';
+		$xmldirs[] = $defaultpath.DS.'default';
 		
 		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($extensions as $e => $extension) {
@@ -230,13 +230,22 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 							$jRegistry = new JRegistry();
 							$form = JForm::getInstance($file, $xmldir.DS.$file);
 							$fieldsets = $form->getFieldsets();
-							foreach ($fieldsets as $fieldset) {
-								foreach($form->getFieldset($fieldset->name) as $field) {
+							foreach ($fieldsets as $fieldset) 
+                            {
+								foreach($form->getFieldset($fieldset->name) as $field) 
+                                {
 									$jRegistry->set($field->name, $field->value);
 								}				
 							}
 							$defaultvalues = $jRegistry->toString('ini');
 							
+                            $parameter = new JRegistry;
+			                $ini = $parameter->loadINI($defaultvalues);
+			                $ini = $parameter->toArray($ini);
+			                $defaultvalues = json_encode( $ini );
+                            	
+                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            
 							$tblTemplate_Config = JTable::getInstance('template', 'sportsmanagementtable');
 							$tblTemplate_Config->template = $template;
                             if ( $attributetitle )

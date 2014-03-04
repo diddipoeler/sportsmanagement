@@ -8,17 +8,86 @@ jimport( 'joomla.application.component.modellist' );
 
 
 
+/**
+ * sportsmanagementModelPredictionMembers
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelPredictionMembers extends JModelList
 {
 	var $_identifier = "predmembers";
 	
+     public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'u.username',
+                        'u.name',
+                        'p.name',
+                        'tmb.last_tipp',
+                        'tmb.reminder',
+                        'tmb.receipt',
+                        'tmb.show_profile',
+                        'tmb.admintipp',
+                        'tmb.approved'
+                        );
+                parent::__construct($config);
+        }
+    
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
+        $this->setState('filter.prediction_id', $temp_user_request);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('u.username', 'asc');
+	}
+        
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        // Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        $search	= $this->getState('filter.search');
+        $search_state	= $this->getState('filter.state');
+        $prediction_id = $this->getState('filter.prediction_id');
         
         // Create a new query object.
         $query = $this->_db->getQuery(true);
@@ -27,79 +96,32 @@ class sportsmanagementModelPredictionMembers extends JModelList
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = tmb.prediction_id')
         ->join('LEFT', '#__users AS u ON u.id = tmb.user_id');
 
-        if ($where)
+        if (is_numeric($prediction_id))
         {
-            $query->where($where);
+            $query->where('tmb.prediction_id = ' . $prediction_id);
         }
-        if ($orderby)
+        if (is_numeric($search_state))
         {
-            $query->order($orderby);
+            $query->where('tmb.approved = ' . $search_state);
+        }
+        
+        if ($search)
+		{
+        $query->where('(LOWER(u.username) LIKE ' . $db->Quote( '%' . $search . '%' ) );
         }
 
-		
+
+
+		 $query->order($db->escape($this->getState('list.ordering', 'u.username')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 		return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_filter_order',		'filter_order',		'u.username',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_filter_order_Dir',	'filter_order_Dir',	'',			'word' );
 
-		if ( $filter_order == 'u.username' )
-		{
-			$orderby 	= 'u.username ' . $filter_order_Dir;
-		}
-		else
-		{
-			$orderby 	= '' . $filter_order . ' ' . $filter_order_Dir . ' , u.username ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_filter_state',		'filter_state',		'',				'word' );
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_filter_order',		'filter_order',		'u.username',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_search',				'search',			'',				'string' );
-		$search_mode		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmb_search_mode',			'search_mode',		'',				'string' );
-		$search				= JString::strtolower( $search );
-
-		$where = array();
-		$prediction_id = (int) $mainframe->getUserState( 'com_joomleague' . 'prediction_id' );
-		if ( $prediction_id > 0 )
-		{
-			$where[] = 'tmb.prediction_id = ' . $prediction_id;
-		}
-
-		if ( $search )
-		{
-			$where[] = "LOWER(u.username) LIKE " . $this->_db->Quote( $search . '%' );
-		}
-
-		if ( $filter_state )
-		{
-			if ( $filter_state == 'P' )
-			{
-				$where[] = 'tmb.approved = 1';
-			}
-			elseif ($filter_state == 'U' )
-				{
-					$where[] = 'tmb.approved = 0';
-				}
-		}
-
-		$where 	= ( count( $where ) ? ''. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
 
 	
 	

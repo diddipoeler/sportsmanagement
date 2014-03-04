@@ -156,9 +156,9 @@ JHtml::_( 'behavior.tooltip' );
 			{
 				$row =& $this->items[$i];
 
-				$link	= JRoute::_( 'index.php?option=com_joomleague&task=prediction.edit&cid[]=' . $row->id );
+				$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
 				//$link2	= JRoute::_( 'index.php?option=com_users&view=user&layout=edit&cid[]=' . $row->user_id );
-                $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&cid[]=' . $row->id );
+                $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
 
 				$checked = JHtml::_( 'grid.checkedout', $row, $i );
 				?>
@@ -226,7 +226,7 @@ JHtml::_( 'behavior.tooltip' );
 						{
 							list( $date, $time ) = explode( " ", $row->last_tipp );
 							$time = strftime( "%H:%M", strtotime( $time ) );
-							echo JoomleagueHelper::convertDate( $date );
+							echo sportsmanagementHelper::convertDate( $date );
 							echo ' / ';
 							echo $time;
 						}
@@ -239,35 +239,35 @@ JHtml::_( 'behavior.tooltip' );
 					<td style='text-align: center; '>
 						<?php
 						if ($row->reminder){$imgfile='ok.png';$imgtitle=JText::_('Active');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/' . $imgfile,
+						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
 						if ($row->receipt){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/' . $imgfile,
+						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
 						if ($row->show_profile){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ALLOWED');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_ALLOWED');}
-						echo JHtml::image(	'administrator/components/com_joomleague/assets/images/' . $imgfile,
+						echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 											$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
 						if ($row->admintipp){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/' . $imgfile,
+						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
 						if ($row->approved){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_APPROVED');}
-						echo JHtml::_(	'image', 'administrator/components/com_joomleague/assets/images/' . $imgfile,
+						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
