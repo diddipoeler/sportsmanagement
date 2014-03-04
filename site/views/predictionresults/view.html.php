@@ -69,15 +69,15 @@ class sportsmanagementViewPredictionResults extends JView
     
 		$mainframe = JFactory::getApplication();
 
-		$this->assignRef('predictionGame',$model->getPredictionGame());
+		$this->assignRef('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
 		if (isset($this->predictionGame))
 		{
-			$config			= $model->getPredictionTemplateConfig($this->getName());
-			$configavatar			= $model->getPredictionTemplateConfig('predictionusers');
-			$configentry			= $model->getPredictionTemplateConfig('predictionentry');
+			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$configentry			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
 			$config = array_merge($configentry,$config);
-			$overallConfig	= $model->getPredictionOverallConfig();
+			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
@@ -88,15 +88,15 @@ class sportsmanagementViewPredictionResults extends JView
 			$this->assignRef('configavatar',				$configavatar );
             $model->configavatar = $this->configavatar;
 
-			$this->assignRef('predictionMember',	$model->getPredictionMember($configavatar));
+			$this->assignRef('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
-			$this->assignRef('predictionProjectS',	$model->getPredictionProjectS());
+			$this->assignRef('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
 			$this->assignRef('actJoomlaUser',		JFactory::getUser());
 			//$this->assignRef('rounds',				$model->getRounds());
 			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
       $predictionRounds[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
-      if ( $res = &$model->getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}
+      if ( $res = sportsmanagementModelPrediction::getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}
 			$lists['predictionRounds']=JHTML::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->roundID);
 			unset($res);
 			unset($predictionRounds);

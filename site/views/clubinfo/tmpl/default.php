@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'club config<pre>',print_r($this->config,true),'</pre><br>';    
 echo 'club address_string<pre>',print_r($this->address_string,true),'</pre><br>';

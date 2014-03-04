@@ -1,13 +1,5 @@
 <?php 
-/**
-* @copyright	Copyright (C) 2007-2012 JoomLeague.net. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -18,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->config['show_full_name']){$outputUserName=$this->predictionMember->name;}else{$outputUserName=$this->predictionMember->username;}
 if ($this->model->pjID > 0){$showProjectID=$this->model->pjID;}else{$showProjectID=null;}
 
-$memberPredictionPoints = $this->model->getPredictionMembersResultsList($showProjectID,1,null,$this->predictionMember->user_id);
+$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,1,null,$this->predictionMember->user_id);
 
 $predictionsCount=0;
 $totalPoints=0;
@@ -51,7 +43,7 @@ if (!empty($memberPredictionPoints))
 		<td class='picture'>
     <?php
     // das userbild
-    JoomleagueModelPredictionUsers::showMemberPicture($outputUserName,$this->predictionMember->user_id); 
+    sportsmanagementModelPredictionUsers::showMemberPicture($outputUserName,$this->predictionMember->user_id); 
     ?>
     </td>
 		<td class='info'>
@@ -144,7 +136,7 @@ if (!empty($memberPredictionPoints))
 							{
 								if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
 								{
-									if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+									if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 									{
 										if ($res=&$this->model->getPredictionProjectTeams($predictionProject->project_id))
 										{
@@ -194,7 +186,7 @@ if (!empty($memberPredictionPoints))
 						{
 							if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
 							{
-								if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
 									//$predictionProjectSettings->start_date='2010-08-08';
 									//$time=time();
@@ -204,13 +196,13 @@ if (!empty($memberPredictionPoints))
 									$time += 86400; // Ein Tag in Sekunden
 									$showDate=date("Y-m-d",$time);
 									//echo $showDate;
-									$thisTimeDate = JoomleagueHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+									$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
 									//$competitionStartTimeDate = JoomleagueHelper::getTimestamp($predictionProjectSettings->start_date,1,$predictionProjectSettings->serveroffset);
-									$competitionStartTimeDate = JoomleagueHelper::getTimestamp($showDate,1,$predictionProjectSettings->serveroffset);
+									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->serveroffset);
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
 									//if (($showChamp) || ($this->showediticon))
 									
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />predictionuser info -> time <pre>~' . print_r($time,true) . '~</pre><br />';
 echo '<br />predictionuser info -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
@@ -278,7 +270,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								
 								<?php echo JHTML::_('form.token'); ?>
 
-								<?php echo $this->model->createProjectSelector(	$this->model->_predictionProjectS,
+								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
 																				$this->model->pjID,
 																				1); ?>
 							</form>

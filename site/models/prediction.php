@@ -142,6 +142,12 @@ class sportsmanagementModelPrediction extends JModel
   
   function getChampionPoints($champ_tipp)
   {
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
   $ChampPoints = 0;
   
   $resultchamp = 0;
@@ -186,7 +192,7 @@ class sportsmanagementModelPrediction extends JModel
   }
   
   
-  if ( $this->show_debug_info )
+  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
 	echo '<br />getChampionPoints predictionGameID <pre>~' . print_r($this->predictionGameID,true) . '~</pre><br />';
 	echo '<br />getChampionPoints pjID <pre>~' . print_r($this->pjID,true) . '~</pre><br />';
@@ -404,23 +410,23 @@ class sportsmanagementModelPrediction extends JModel
 								WHERE	pm.prediction_id=".$db->Quote(self::$predictionGameID)." AND
 										pm.user_id=".$db->Quote($user->id);
 					$db->setQuery($query,0,1);
-					self::$_predictionMember=$db->loadObject();
+					self::$_predictionMember = $db->loadObject();
 					if (isset(self::$_predictionMember->pmID))
 					{
-						self::$predictionMemberID=self::$_predictionMember->pmID;
+						self::$predictionMemberID = self::$_predictionMember->pmID;
 					}
 					else
 					{
-						self::$_predictionMember->id=0;
-						self::$_predictionMember->pmID=0;
-						self::$predictionMemberID=0;
+						self::$_predictionMember->id = 0;
+						self::$_predictionMember->pmID = 0;
+						self::$predictionMemberID = 0;
 					}
 				}
 				else
 				{
-					self::$_predictionMember->id=0;
-					self::$_predictionMember->pmID=0;
-					self::$predictionMemberID=0;
+					self::$_predictionMember->id = 0;
+					self::$_predictionMember->pmID = 0;
+					self::$predictionMemberID = 0;
 				}
 			}
 		}
@@ -527,15 +533,23 @@ class sportsmanagementModelPrediction extends JModel
 			}
 		}
 
-		$params=explode("\n",trim($result));
+//		$params=explode("\n",trim($result));
+//
+//		foreach($params AS $param)
+//		{
+//			list($name,$value)=explode('=',$param);
+//			$configvalues[$name]=$value;
+//		}
 
-		foreach($params AS $param)
-		{
-			list($name,$value)=explode('=',$param);
-			$configvalues[$name]=$value;
-		}
 
-		// check some defaults and init data for quicker access
+		$jRegistry = new JRegistry;
+		//$jRegistry->loadString($result, 'ini');
+        $jRegistry->loadJSON($result);
+        $configvalues = $jRegistry->toArray(); 
+        
+        echo '<pre>'.print_r($configvalues,true).'</pre>';
+        
+        // check some defaults and init data for quicker access
 		switch ($template)
 		{
 			case	'predictionoverall':	{
@@ -584,6 +598,12 @@ class sportsmanagementModelPrediction extends JModel
 
 	function getPredictionProject($project_id=0)
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		if ($project_id > 0)
 		{
 			$query='SELECT * FROM #__sportsmanagement_project WHERE id='.$project_id;
@@ -605,37 +625,40 @@ class sportsmanagementModelPrediction extends JModel
 	//function getMatchTeam($teamID=0)
 	//function getMatchTeam($teamID)
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 	//$teamName='name';
-		if ($teamID==0){return '#Error1 teamID==0 in _getTeamName#';}
-    /*
-		switch ($teamName)
-    {
-    case 'name':
-    $query =	"SELECT t.name as name ";
-    break;
-    case 'middle_name':
-    $query =	"SELECT t.middle_name as name ";
-    break;
-    case 'short_name':
-    $query =	"SELECT t.short_name as name ";
-    break;    
-    default:
-    $query =	"SELECT t.name as name ";
-    break;
-    } 
-    */
-    $query =	"SELECT t.$teamName as name ";
+		if ($teamID==0)
+        {
+            return '#Error1 teamID==0 in '.__METHOD__;
+        }
     
-    $query .=	"FROM #__sportsmanagement_team AS t
-					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
-					WHERE t.id=pt.team_id";
+    // Select some fields
+        $query->select('t.'.$teamName.' as name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->where('pt.id = '.$teamID);
+        
+//    $query =	"SELECT t.$teamName as name ";
+//    
+//    $query .=	"FROM #__sportsmanagement_team AS t
+//					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
+//					WHERE t.id=pt.team_id";
+
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 		$db->setQuery($query);
 		$db->query();
-		if ($object=$db->loadObject())
+		if ($object = $db->loadObject())
 		{
 			return $object->name;
 		}
-		return '#Error2 teamname not found in _getTeamName#';
+		return '#Error2 teamname not found in '.__METHOD__;
 
 	}
 
@@ -647,21 +670,32 @@ class sportsmanagementModelPrediction extends JModel
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-		if ($teamID == 0) { return '#Error1 in _getTeamNameClubLogo#'; }
+		if ($teamID == 0) 
+        { 
+            return '#Error1 in '.__METHOD__; 
+        }
+         // Select some fields
+        $query->select('c.logo_small');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on t.club_id = c.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->where('pt.id = '.$teamID);
 
-		$query =	"
-					SELECT c.logo_small
-					FROM #__sportsmanagement_club AS c
-					INNER JOIN #__sportsmanagement_team AS t on t.club_id=c.id
-					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
-					WHERE t.id=pt.team_id";
+//		$query =	"
+//					SELECT c.logo_small
+//					FROM #__sportsmanagement_club AS c
+//					INNER JOIN #__sportsmanagement_team AS t on t.club_id=c.id
+//					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
+//					WHERE t.id=pt.team_id";
+                    
 		$db->setQuery($query);
 		$db->query();
 		if ($object=$db->loadObject())
 		{
 			return $object->logo_small;
 		}
-		return '#Error2 in _getTeamNameClubLogo#';
+		return '#Error2 in '.__METHOD__;
 
 	}
   
@@ -673,21 +707,33 @@ class sportsmanagementModelPrediction extends JModel
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-		if ($teamID == 0) { return '#Error1 in _getTeamNameClubFlag#'; }
+		if ($teamID == 0) 
+        { 
+            return '#Error1 in '.__METHOD__; 
+        }
+        
+         // Select some fields
+        $query->select('c.country');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on t.club_id = c.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->where('pt.id = '.$teamID);
 
-		$query =	"
-					SELECT c.country
-					FROM #__sportsmanagement_club AS c
-					INNER JOIN #__sportsmanagement_team AS t on t.club_id=c.id
-					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
-					WHERE t.id=pt.team_id";
+//		$query =	"
+//					SELECT c.country
+//					FROM #__sportsmanagement_club AS c
+//					INNER JOIN #__sportsmanagement_team AS t on t.club_id=c.id
+//					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
+//					WHERE t.id=pt.team_id";
+                    
 		$db->setQuery($query);
 		$db->query();
 		if ($object=$db->loadObject())
 		{
 			return $object->country;
 		}
-		return '#Error2 in _getTeamNameClubFlag#';
+		return '#Error2 in '.__METHOD__;
 
 	}
   
@@ -746,7 +792,10 @@ class sportsmanagementModelPrediction extends JModel
 							user_id='.$db->Quote(JFactory::getUser()->id).' AND
 							approved=1';
 		$db->setQuery($query,0,1);
-		if (!$db->loadResult()){return false;}
+		if (!$db->loadResult())
+        {
+            return false;
+        }
 		return true;
 	}
 
@@ -1277,6 +1326,12 @@ $body .= $this->createHelptText($predictionProject->mode);
 
   function getPredictionGroupList()
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 	$query="SELECT id AS value, name AS text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC";
 	$db->setQuery($query);
 		$results=$db->loadObjectList();
@@ -1285,6 +1340,12 @@ $body .= $this->createHelptText($predictionProject->mode);
 	
 	function getPredictionMemberList(&$config,$actUserId=null)
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		if ($config['show_full_name']==0){$nameType='username';}else{$nameType='name';}
 		$query="	SELECT	pm.id AS value,
 							u.".$nameType." AS text,
@@ -1309,9 +1370,21 @@ $body .= $this->createHelptText($predictionProject->mode);
 
 	function getMemberPredictionTotalCount($user_id)
 	{
-		$query=	"	SELECT	count(*)
-						FROM #__sportsmanagement_prediction_result AS pr
-						WHERE prediction_id=self::$predictionGameID AND user_id=$user_id";
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('count(*)');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr');
+        $query->where('prediction_id = '.$db->Quote(self::$predictionGameID));
+        $query->where('user_id = '.$user_id);
+        
+//		$query=	"	SELECT	count(*)
+//						FROM #__sportsmanagement_prediction_result AS pr
+//						WHERE prediction_id=self::$predictionGameID AND user_id=$user_id";
 
 		$db->setQuery($query);
 		$results=$db->loadResult();
@@ -1320,14 +1393,28 @@ $body .= $this->createHelptText($predictionProject->mode);
 
 	function getMemberPredictionJokerCount($user_id,$project_id=0)
 	{
-		$query=	"	SELECT	count(id)
-						FROM #__sportsmanagement_prediction_result
-						WHERE	prediction_id=self::$predictionGameID AND
-								user_id=$user_id AND
-								joker=1";
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('count(id)');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+        $query->where('prediction_id = '.$db->Quote(self::$predictionGameID));
+        $query->where('user_id = '.$user_id);
+        $query->where('joker = 1');
+        
+//		$query=	"	SELECT	count(id)
+//						FROM #__sportsmanagement_prediction_result
+//						WHERE	prediction_id=self::$predictionGameID AND
+//								user_id=$user_id AND
+//								joker=1";
 		if ($project_id>0)
 		{
-			$query .= 	" AND project_id=$project_id";
+			//$query .= 	" AND project_id=$project_id";
+            $query->where('project_id = '.$project_id);
 		}
 
 		$db->setQuery($query);
@@ -1486,65 +1573,99 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 	function getPredictionMembersResultsList($project_id,$round1ID,$round2ID=0,$user_id=0,$type=0)
 	{
-		if ($round1ID==0){$round1ID=1;}
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+		if ($round1ID==0)
+        {
+            $round1ID=1;
+        }
+        
+        // Select some fields
+    $query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
+    $query->select('pr.id AS prID,pr.user_id AS prUserID,pr.tipp AS prTipp,pr.tipp_home AS prHomeTipp,pr.tipp_away AS prAwayTipp,pr.joker AS prJoker,pr.points AS prPoints,pr.top AS prTop,pr.diff AS prDiff,pr.tend AS prTend');
+    $query->select('pm.id AS pmID');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+    $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
+    
 
-		$query=	"	SELECT	m.id AS matchID,
-								m.match_date,
-								m.team1_result AS homeResult,
-								m.team2_result AS awayResult,
-								m.team1_result_decision AS homeDecision,
-								m.team2_result_decision AS awayDecision,
-
-								pr.id AS prID,
-								pr.user_id AS prUserID,
-								pr.tipp AS prTipp,
-								pr.tipp_home AS prHomeTipp,
-								pr.tipp_away AS prAwayTipp,
-								pr.joker AS prJoker,
-								pr.points AS prPoints,
-								pr.top AS prTop,
-								pr.diff AS prDiff,
-								pr.tend AS prTend,
-
-								pm.id AS pmID
-
-						FROM #__sportsmanagement_match AS m
-
-							INNER JOIN #__sportsmanagement_round AS r ON		r.id=m.round_id
-					";
+//		$query=	"	SELECT	m.id AS matchID,
+//								m.match_date,
+//								m.team1_result AS homeResult,
+//								m.team2_result AS awayResult,
+//								m.team1_result_decision AS homeDecision,
+//								m.team2_result_decision AS awayDecision,
+//
+//								pr.id AS prID,
+//								pr.user_id AS prUserID,
+//								pr.tipp AS prTipp,
+//								pr.tipp_home AS prHomeTipp,
+//								pr.tipp_away AS prAwayTipp,
+//								pr.joker AS prJoker,
+//								pr.points AS prPoints,
+//								pr.top AS prTop,
+//								pr.diff AS prDiff,
+//								pr.tend AS prTend,
+//
+//								pm.id AS pmID
+//
+//						FROM #__sportsmanagement_match AS m
+//
+//							INNER JOIN #__sportsmanagement_round AS r ON		r.id=m.round_id
+//					";
 
 		if ((isset($project_id)) && ($project_id > 0))
 		{
-			$query .= 	"											AND	r.project_id=$project_id
-						";
-		}
+			//$query .= 	"											AND	r.project_id=$project_id
+//						";
+		$query->where('r.project_id = '.$project_id);
+        }
 
-		$query .= 	"												AND	r.id>=$round1ID
-					";
+	//	$query .= 	"												AND	r.id>=$round1ID
+//					";
 
-		if ((isset($round2ID)) && ($round2ID > 0))
+		$query->where('r.id >= '.$round1ID);
+        
+        if ((isset($round2ID)) && ($round2ID > 0))
 		{
-			$query .= 	"											AND	r.id<=$round2ID
-						";
+//			$query .= 	"											AND	r.id<=$round2ID
+//						";
+                        $query->where('r.id <= '.$round2ID);
 		}
 
-		$query .= 	"		LEFT JOIN #__sportsmanagement_prediction_result AS pr ON		pr.match_id=m.id
-					";
+//		$query .= 	"		LEFT JOIN #__sportsmanagement_prediction_result AS pr ON		pr.match_id=m.id
+//					";
 
-		if ((isset($user_id)) && ($user_id > 0))
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr ON pr.match_id = m.id');
+        
+        if ((isset($user_id)) && ($user_id > 0))
 		{
-			$query .= 	"														AND	pr.user_id=$user_id
-						";
+			//$query .= 	"														AND	pr.user_id=$user_id
+//						";
+                        $query->where('pr.user_id = '.$user_id);
 		}
 
-		$query .= 	"		INNER JOIN #__sportsmanagement_prediction_member AS pm ON	pm.user_id=pr.user_id AND
-																				pm.prediction_id=self::$predictionGameID
-						WHERE pr.prediction_id=self::$predictionGameID
-						AND (m.cancel IS NULL OR m.cancel = 0)
-						ORDER BY pm.id,m.match_date,m.id ASC";
+		$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ON	pm.user_id = pr.user_id');
+        
+        //$query .= 	"		INNER JOIN #__sportsmanagement_prediction_member AS pm ON	pm.user_id=pr.user_id AND
+//																				pm.prediction_id=self::$predictionGameID
+//						WHERE pr.prediction_id=self::$predictionGameID
+//						AND (m.cancel IS NULL OR m.cancel = 0)
+//						ORDER BY pm.id,m.match_date,m.id ASC";
 
-		$db->setQuery($query);
-		$results=$db->loadObjectList();
+		$query->where('pm.prediction_id = '.self::$predictionGameID);
+        $query->where('pr.prediction_id = '.self::$predictionGameID);
+        $query->where('(m.cancel IS NULL OR m.cancel = 0)');
+        
+        $query->order('pm.id,m.match_date,m.id ASC');
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        $db->setQuery($query);
+		$results = $db->loadObjectList();
 		return $results;
 	}
 
@@ -1810,9 +1931,15 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 	function getRoundNames($project_id,$ordering='ASC')
 	{
-	$option = JRequest::getCmd('option');
-  $document	=& JFactory::getDocument();
-  $mainframe	=& JFactory::getApplication();
+
+  $document	= JFactory::getDocument();
+  
+  
+  $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
   
   //$mainframe->enqueueMessage(JText::_('project_id -> <pre> '.print_r($project_id,true).'</pre><br>' ),'Notice');
     
@@ -1879,10 +2006,15 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 	function computeMembersRanking($membersResultsArray,$config)
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
 		$this->table_config = $config;
 		$dummy = $membersResultsArray;
 
 		uasort($dummy,array($this,'compare'));
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dummy<br><pre>'.print_r($dummy,true).'</pre>'),'');
 
 		$i = 1;
 		$lfdnumber = 1;
@@ -1921,61 +2053,88 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 	function getPredictionMembersList(&$config = NULL, &$configavatar = NULL, $total = false, $limit = NULL)
 	{
-/*		
-        if ( $total )
-        {
-            $config['show_full_name'] = 0;
-            $configavatar['show_image_from'] = 'prediction';
-        }
-*/        
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+  
+
         
-        if ($config['show_full_name']==0){$nameType='username';}else{$nameType='name';}
+        if ( $config['show_full_name'] == 0 )
+        {
+            $nameType='username';
+            }
+            else
+            {
+                $nameType='name';
+            }
 		
         
         
 		switch ( $configavatar['show_image_from'] )
 		{
     case 'com_cbe':
-    $query = "SELECT	pm.id AS pmID,
-			pm.user_id AS user_id,
-			pm.picture AS avatar,
-			pm.show_profile AS show_profile,
-			pm.champ_tipp AS champ_tipp,
-            pm.aliasName as aliasName,
-            cbeu.latitude,
-            cbeu.longitude,
-			u.".$nameType." AS name,
-            pg.id as pg_group_id,
-            pg.name as pg_group_name
-			FROM #__sportsmanagement_prediction_member AS pm
-			INNER JOIN #__users AS u 
-            ON u.id = pm.user_id
-            INNER JOIN #__cbe_users AS cbeu
-            ON cbeu.userid = u.id
-            left join #__sportsmanagement_prediction_groups as pg
-            on pg.id = pm.group_id  
-			WHERE pm.prediction_id=self::$predictionGameID
-			";
+    // Select some fields
+    $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
+    $query->select('u.'.$nameType.' AS name');
+    $query->select('cbeu.latitude,cbeu.longitude');
+    $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+    $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
+    $query->join('INNER', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg on pg.id = pm.group_id');
+    $query->where('pm.prediction_id = '.self::$predictionGameID);
+        
+//    $query = "SELECT	pm.id AS pmID,
+//			pm.user_id AS user_id,
+//			pm.picture AS avatar,
+//			pm.show_profile AS show_profile,
+//			pm.champ_tipp AS champ_tipp,
+//            pm.aliasName as aliasName,
+//            cbeu.latitude,
+//            cbeu.longitude,
+//			u.".$nameType." AS name,
+//            pg.id as pg_group_id,
+//            pg.name as pg_group_name
+//			FROM #__sportsmanagement_prediction_member AS pm
+//			INNER JOIN #__users AS u 
+//            ON u.id = pm.user_id
+//            INNER JOIN #__cbe_users AS cbeu
+//            ON cbeu.userid = u.id
+//            left join #__sportsmanagement_prediction_groups as pg
+//            on pg.id = pm.group_id  
+//			WHERE pm.prediction_id=self::$predictionGameID
+//			";
     break;
     case 'com_users':
     case 'prediction':
-    $query =	"SELECT	pm.id AS pmID,
-			pm.user_id AS user_id,
-			pm.picture AS avatar,
-            pm.picture AS picture,
-			pm.show_profile AS show_profile,
-			pm.champ_tipp AS champ_tipp,
-            pm.aliasName as aliasName,
-			u.".$nameType." AS name,
-            pg.id as pg_group_id,
-            pg.name as pg_group_name
-			FROM #__sportsmanagement_prediction_member AS pm
-			INNER JOIN #__users AS u 
-            ON u.id = pm.user_id
-            left join #__sportsmanagement_prediction_groups as pg
-            on pg.id = pm.group_id
-			WHERE pm.prediction_id=self::$predictionGameID
-			";
+    // Select some fields
+    $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
+    $query->select('u.'.$nameType.' AS name');
+    $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+    $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg on pg.id = pm.group_id');
+    $query->where('pm.prediction_id = '.self::$predictionGameID);
+    
+//    $query =	"SELECT	pm.id AS pmID,
+//			pm.user_id AS user_id,
+//			pm.picture AS avatar,
+//            pm.picture AS picture,
+//			pm.show_profile AS show_profile,
+//			pm.champ_tipp AS champ_tipp,
+//            pm.aliasName as aliasName,
+//			u.".$nameType." AS name,
+//            pg.id as pg_group_id,
+//            pg.name as pg_group_name
+//			FROM #__sportsmanagement_prediction_member AS pm
+//			INNER JOIN #__users AS u 
+//            ON u.id = pm.user_id
+//            left join #__sportsmanagement_prediction_groups as pg
+//            on pg.id = pm.group_id
+//			WHERE pm.prediction_id=self::$predictionGameID
+//			";
     break;
     
     case 'com_comprofiler':
@@ -2025,12 +2184,17 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
     break;
     }
 		
-if ( $this->pggroup )
+if ( self::$pggroup )
 {
-$query .= " AND pm.group_id = ".$this->pggroup;    
+//$query .= " AND pm.group_id = ".$this->pggroup;  
+$query->where('pm.group_id = '.self::$pggroup);  
 }
-		$query .= " ORDER BY pm.id ASC";
+		//$query .= " ORDER BY pm.id ASC";
+        $query->order('pm.id ASC');
         $db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$results = $db->loadObjectList();
 		
         if ( $total )
@@ -2044,7 +2208,7 @@ $query .= " AND pm.group_id = ".$this->pggroup;
         
 		foreach ( $results as $row )
 		{
-    $picture = $this->getPredictionMemberAvatar($row->user_id, $configavatar['show_image_from']  );
+    $picture = self::getPredictionMemberAvatar($row->user_id, $configavatar['show_image_from']  );
     if ( $picture )
     {
     $row->avatar = $picture;
@@ -2055,11 +2219,11 @@ $query .= " AND pm.group_id = ".$this->pggroup;
 		
 	}
 
-function checkStartExtension()
-{
-$application = JFactory::getApplication();
-//echo "<script type=\"text/javascript\">registerhome('".JURI::base()."','Prediction Game Extension','".$application->getCfg('sitename')."','0');</script>";
-}
+//function checkStartExtension()
+//{
+//$application = JFactory::getApplication();
+////echo "<script type=\"text/javascript\">registerhome('".JURI::base()."','Prediction Game Extension','".$application->getCfg('sitename')."','0');</script>";
+//}
 
 }
 ?>

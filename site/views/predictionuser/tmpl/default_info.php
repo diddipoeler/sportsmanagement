@@ -211,7 +211,7 @@ if (!empty($memberPredictionPoints))
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
 									//if (($showChamp) || ($this->showediticon))
 									
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />predictionuser info -> time <pre>~' . print_r($time,true) . '~</pre><br />';
 echo '<br />predictionuser info -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
@@ -279,7 +279,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								
 								<?php echo JHTML::_('form.token'); ?>
 
-								<?php echo $this->model->createProjectSelector(	$this->model->_predictionProjectS,
+								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
 																				$this->model->pjID,
 																				1); ?>
 							</form>

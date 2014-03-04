@@ -45,7 +45,7 @@ $previous = &$this->previousRanking[$this->division];
 
 $config   = &$this->tableconfig;
 
-//if ( $this->show_debug_info )
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 //{
 //echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
 //echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';

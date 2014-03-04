@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
-//require_once('prediction.php');
+
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 /**
@@ -233,7 +233,7 @@ public $_predictionGame		= null;
 
 	function getTippCountHome($predictionProjectID,$matchID)
 	{
-		$query = 'SELECT count(tipp) FROM #__joomleague_prediction_result
+		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
 					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
 							project_id = ' . intval( $predictionProjectID ) . ' AND
 							match_id = ' . intval( $matchID ) . ' AND
@@ -245,7 +245,7 @@ public $_predictionGame		= null;
 
 	function getTippCountDraw($predictionProjectID,$matchID)
 	{
-		$query = 'SELECT count(tipp) FROM #__joomleague_prediction_result
+		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
 					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
 							project_id = ' . intval( $predictionProjectID ) . ' AND
 							match_id = ' . intval( $matchID ) . ' AND
@@ -257,7 +257,7 @@ public $_predictionGame		= null;
 
 	function getTippCountAway($predictionProjectID,$matchID)
 	{
-		$query = 'SELECT count(tipp) FROM #__joomleague_prediction_result
+		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
 					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
 							project_id = ' . intval( $predictionProjectID ) . ' AND
 							match_id = ' . intval( $matchID ) . ' AND
@@ -269,7 +269,7 @@ public $_predictionGame		= null;
 
 	function getTippCountTotal($predictionProjectID,$matchID)
 	{
-		$query = 'SELECT count(tipp) FROM #__joomleague_prediction_result
+		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
 					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
 							project_id = ' . intval( $predictionProjectID ) . ' AND
 							match_id = ' . intval( $matchID );
@@ -297,14 +297,14 @@ public $_predictionGame		= null;
 								pr.joker,
 								pr.id AS prid
 
-						FROM #__joomleague_match AS m
-						INNER JOIN #__joomleague_round AS r ON	r.id=m.round_id AND
+						FROM #__sportsmanagement_match AS m
+						INNER JOIN #__sportsmanagement_round AS r ON	r.id=m.round_id AND
 																r.project_id=$predictionProjectID AND
 																r.id=$projectRoundID
 
-						LEFT JOIN #__joomleague_prediction_game AS pg ON pg.id=$predictionGameID
+						LEFT JOIN #__sportsmanagement_prediction_game AS pg ON pg.id=$predictionGameID
 
-						LEFT JOIN #__joomleague_prediction_result AS pr ON	pr.prediction_id=$predictionGameID AND
+						LEFT JOIN #__sportsmanagement_prediction_result AS pr ON	pr.prediction_id=$predictionGameID AND
 																			pr.user_id=$userID AND
 																			pr.project_id=$predictionProjectID AND
 																			pr.match_id=m.id
@@ -330,21 +330,21 @@ public $_predictionGame		= null;
 
 	function savePredictions($allowedAdmin=false)
 	{
-		global $mainframe, $option;
-    $document	=& JFactory::getDocument();
-    $mainframe	=& JFactory::getApplication();
+//		global $mainframe, $option;
+    $document	= JFactory::getDocument();
+    $mainframe	= JFactory::getApplication();
 
     $result	= true;
 		
-		$show_debug = $this->getDebugInfo();
+	//	$show_debug = $this->getDebugInfo();
 		
 
 		$post	= JRequest::get('post');
 		
-		if ( $show_debug )
-		{
-    echo '<br />savePredictions post<pre>~' . print_r($post,true) . '~</pre><br />';
-    }
+	//	if ( $show_debug )
+//		{
+//    echo '<br />savePredictions post<pre>~' . print_r($post,true) . '~</pre><br />';
+//    }
     
     //$mainframe->enqueueMessage(JText::_('post -> <pre> '.print_r($post,true).'</pre><br>' ),'Notice');
 
@@ -374,8 +374,9 @@ public $_predictionGame		= null;
     
     
     // _predictionMember
-    $configavatar			= JoomleagueModelPrediction::getPredictionTemplateConfig('predictionusers');
-    $predictionMemberInfo = $this->getPredictionMember($configavatar);
+    $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+    $predictionMemberInfo = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+    
     //$mainframe->enqueueMessage(JText::_('predictionMemberInfo -> <pre> '.print_r($predictionMemberInfo,true).'</pre><br>' ),'Notice');
     
     //$mainframe->enqueueMessage(JText::_('predictionMember reminder -> '.$predictionMemberInfo->reminder),'');
@@ -437,7 +438,7 @@ public $_predictionGame		= null;
 
 					if (!empty($dprID))
 					{
-						$query =	"	UPDATE #__joomleague_prediction_result
+						$query =	"	UPDATE #__sportsmanagement_prediction_result
 										SET
 											tipp=$dTipp,
 											tipp_home=$dHome,
@@ -448,7 +449,7 @@ public $_predictionGame		= null;
 					}
 					else
 					{
-						$query = "INSERT IGNORE INTO #__joomleague_prediction_result
+						$query = "INSERT IGNORE INTO #__sportsmanagement_prediction_result
 									(
 										prediction_id,
 										user_id,
@@ -484,7 +485,7 @@ public $_predictionGame		= null;
 				}
 				else
 				{
-					$query = 'DELETE FROM #__joomleague_prediction_result WHERE prediction_id=' . $predictionGameID;
+					$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE prediction_id=' . $predictionGameID;
 					$query .= ' AND user_id=' . $joomlaUserID;
 					$query .= ' AND project_id=' . $pids[$x];
 					$query .= ' AND match_id=' . $cids[$pids[$x]][$y];
@@ -502,7 +503,7 @@ public $_predictionGame		= null;
 			}
 		}
 
-		$query = "UPDATE #__joomleague_prediction_member SET last_tipp='" . date('Y-m-d H:i:s') . "' WHERE id=$mID";
+		$query = "UPDATE #__sportsmanagement_prediction_member SET last_tipp='" . date('Y-m-d H:i:s') . "' WHERE id=$mID";
 		//echo $query . '<br />';
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

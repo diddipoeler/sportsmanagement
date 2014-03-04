@@ -228,8 +228,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 		$set_r				= JRequest::getVar('set_r',			'','post','int');
 		$set_pj				= JRequest::getVar('set_pj',		'','post','int');
 
-		$model		= $this->getModel('predictionentry');
-		$user		=& JFactory::getUser();
+		$model		= $this->getModel('Prediction');
+		$user		= JFactory::getUser();
 		$isMember	= $model->checkPredictionMembership();
 		$allowedAdmin = $model->getAllowed();
 
@@ -255,7 +255,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 										'pj' => $set_pj
 									);
 
-					$query = JoomleagueHelperRoute::buildQuery($params);
+					$query = sportsmanagementHelperRoute::buildQuery($params);
 					$link = JRoute::_('index.php?' . $query,false);
 					$this->setRedirect($link);
 				}
@@ -274,7 +274,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 					$this->setRedirect($link);
 				}
 
-				if ( !$model->savePredictions($allowedAdmin) )
+				$model = $this->getModel('PredictionEntry');
+                if ( !$model->savePredictions($allowedAdmin) )
 				{
 					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3');
 					$link = JFactory::getURI()->toString();

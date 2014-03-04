@@ -12,7 +12,7 @@
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHTML::_('behavior.tooltip');
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'allowedAdmin<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
 echo 'predictionMember <br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';

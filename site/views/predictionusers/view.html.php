@@ -59,29 +59,29 @@ class sportsmanagementViewPredictionUsers extends JView
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-    $this->assignRef( 'optiontext',			$optiontext );
-    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+//    $this->assignRef( 'optiontext',			$optiontext );
+//    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		$mainframe = JFactory::getApplication();
 		
 		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
 		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
-		$model		=& $this->getModel();
+		$model		= $this->getModel();
 
-		$this->assignRef('predictionGame',$model->getPredictionGame());
+		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
 		if (isset($this->predictionGame))
 		{
-			$config				= $model->getPredictionTemplateConfig($this->getName());
-			$overallConfig		= $model->getPredictionOverallConfig();
-			$tipprankingconfig	= $model->getPredictionTemplateConfig('predictionranking');
-			$flashconfig 		= $model->getPredictionTemplateConfig( "predictionflash" );
+			$config				= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$overallConfig		= sportsmanagementModelPrediction::getPredictionOverallConfig();
+			$tipprankingconfig	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
+			$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 			
-			$configavatar			= $model->getPredictionTemplateConfig('predictionusers');
+			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 						
 			//$rankingconfig	= $model->getPredictionTemplateConfig('ranking');
 
@@ -89,24 +89,25 @@ class sportsmanagementViewPredictionUsers extends JView
       
 			$this->assignRef('model',				$model);
 			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assignRef('config',				array_merge($overallConfig,$tipprankingconfig,$config));
+			$this->assign('config',				array_merge($overallConfig,$tipprankingconfig,$config));
 			$this->assignRef('configavatar',				$configavatar );
 			
-			$this->assignRef('predictionMember',	$model->getPredictionMember($configavatar));
+			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			if (!isset($this->predictionMember->id))
 			{
 				$this->predictionMember->id=0;
 				$this->predictionMember->pmID=0;
 			}
-			$this->assignRef('predictionProjectS',	$model->getPredictionProjectS());
+			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
 
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
-			$this->assignRef('isPredictionMember',	$model->checkPredictionMembership());
-			$this->assignRef('memberData',			$model->memberPredictionData());
-			$this->assignRef('allowedAdmin',		$model->getAllowed());
+			$this->assign('actJoomlaUser',		JFactory::getUser());
+			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
+			$this->assign('memberData',			$model->memberPredictionData());
+			$this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
 			
-			if (!empty($this->predictionMember->user_id)) {
-				$this->assignRef('showediticon',$model->getAllowed($this->predictionMember->user_id));
+			if (!empty($this->predictionMember->user_id)) 
+            {
+				$this->assign('showediticon',sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id));
 			}
 			
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
@@ -119,7 +120,7 @@ class sportsmanagementViewPredictionUsers extends JView
 			if (!$this->allowedAdmin){$userID=$this->actJoomlaUser->id;}else{$userID=null;}
 			$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
 
-			if ($res=&$model->getPredictionMemberList($this->config,$userID)){$predictionMembers=array_merge($predictionMembers,$res);}
+			if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID)){$predictionMembers=array_merge($predictionMembers,$res);}
 			$lists['predictionMembers']=JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 			unset($res);
 			unset($predictionMembers);
@@ -150,7 +151,7 @@ class sportsmanagementViewPredictionUsers extends JView
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
 					
-          if ( $this->show_debug_info )
+          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
           {
           echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
           }
@@ -190,7 +191,7 @@ class sportsmanagementViewPredictionUsers extends JView
 					if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; }
           }
           
-          if ( $this->show_debug_info )
+          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />predictionuser view.html edit -> time <pre>~' . print_r($time,true) . '~</pre><br />';
 echo '<br />predictionuser view.html edit -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
@@ -245,7 +246,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 
 	function _setPointsChartdata($config)
 	{
-		require_once( JLG_PATH_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
 
 		$data = $this->get('PointsChartData');
 
@@ -300,7 +301,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 
 	function _setRankingChartdata($config)
 	{
-		require_once( JLG_PATH_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
 
 		//$data = $this->get('RankChartData');		
 		//some example data....fixme!!!

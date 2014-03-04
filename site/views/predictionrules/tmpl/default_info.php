@@ -1,13 +1,5 @@
 <?php 
-/**
-* @copyright	Copyright (C) 2007-2012 JoomLeague.net. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+
 
 
 
@@ -60,9 +52,9 @@ if ($this->config['show_points'])
 	?>
 	<p><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_INFO_05_02'); ?></p>
 	<?php
-	foreach ($this->model->_predictionProjectS AS $predictionProject)
+	foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 	{
-		if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+		if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 		{
 			?>
 			<table class='blog' cellpadding='0' cellspacing='0' border='1'>
@@ -96,16 +88,16 @@ if ($this->config['show_points'])
 					<td class='info'><?php echo '2:1'; ?></td>
 					<td class='info'><?php echo '2:1'; ?></td>
 					<td class='info'><?php
-						$result = $this->model->createResultsObject(2,1,1,2,1,0);
-						echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+						$result = sportsmanagementModelPrediction::createResultsObject(2,1,1,2,1,0);
+						echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 						?></td>
 					<?php
 					if (($predictionProject->joker) && ($predictionProject->mode==0))
 					{
 						?>
 						<td class='info'><?php
-							$result = $this->model->createResultsObject(2,1,1,2,1,1);
-							echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$result = sportsmanagementModelPrediction::createResultsObject(2,1,1,2,1,1);
+							echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							?></td><?php
 					}
 					?>
@@ -114,16 +106,16 @@ if ($this->config['show_points'])
 					<td class='info'><?php echo '2:1'; ?></td>
 					<td class='info'><?php echo '3:2'; ?></td>
 					<td class='info'><?php
-						$result = $this->model->createResultsObject(2,1,1,3,2,0);
-						echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+						$result = sportsmanagementModelPrediction::createResultsObject(2,1,1,3,2,0);
+						echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 						?></td>
 					<?php
 					if (($predictionProject->joker) && ($predictionProject->mode==0))
 					{
 						?>
 						<td class='info'><?php
-							$result = $this->model->createResultsObject(2,1,1,3,2,1);
-							echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$result = sportsmanagementModelPrediction::createResultsObject(2,1,1,3,2,1);
+							echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							?></td><?php
 					}
 					?>
@@ -132,16 +124,16 @@ if ($this->config['show_points'])
 					<td class='info'><?php echo '1:1'; ?></td>
 					<td class='info'><?php echo '2:2'; ?></td>
 					<td class='info'><?php
-						$result = $this->model->createResultsObject(1,1,0,2,2,0);
-						echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+						$result = sportsmanagementModelPrediction::createResultsObject(1,1,0,2,2,0);
+						echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 						?></td>
 					<?php
 					if (($predictionProject->joker) && ($predictionProject->mode==0))
 					{
 						?>
 						<td class='info'><?php
-							$result = $this->model->createResultsObject(1,1,0,2,2,1);
-							echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$result = sportsmanagementModelPrediction::createResultsObject(1,1,0,2,2,1);
+							echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							?></td><?php
 					}
 					?>
@@ -150,16 +142,16 @@ if ($this->config['show_points'])
 					<td class='info'><?php echo '1:2'; ?></td>
 					<td class='info'><?php echo '1:3'; ?></td>
 					<td class='info'><?php
-						$result = $this->model->createResultsObject(1,2,1,1,3,0);
-						echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+						$result = sportsmanagementModelPrediction::createResultsObject(1,2,1,1,3,0);
+						echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 						?></td>
 					<?php
 					if (($predictionProject->joker) && ($predictionProject->mode==0))
 					{
 						?>
 						<td class='info'><?php
-							$result = $this->model->createResultsObject(1,2,1,1,3,1);
-							echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$result = sportsmanagementModelPrediction::createResultsObject(1,2,1,1,3,1);
+							echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							?></td><?php
 					}
 					?>
@@ -168,16 +160,16 @@ if ($this->config['show_points'])
 					<td class='info'><?php echo '2:1'; ?></td>
 					<td class='info'><?php echo '0:1'; ?></td>
 					<td class='info'><?php
-						$result = $this->model->createResultsObject(2,1,2,0,1,0);
-						echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+						$result = sportsmanagementModelPrediction::createResultsObject(2,1,2,0,1,0);
+						echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 						?></td>
 					<?php
 					if (($predictionProject->joker) && ($predictionProject->mode==0))
 					{
 						?>
 						<td class='info'><?php
-							$result = $this->model->createResultsObject(2,1,2,0,1,1);
-							echo $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$result = sportsmanagementModelPrediction::createResultsObject(2,1,2,0,1,1);
+							echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							?></td><?php
 					}
 					?>
@@ -192,9 +184,9 @@ if ($this->config['show_points'])
 <p><?php
 	echo JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_INFO_06_01');
 	?></p><ul><?php
-	foreach ($this->model->_predictionProjectS AS $predictionProject)
+	foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 	{
-		if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+		if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 		{
 			if ($predictionProject->champ > 0)
 			{

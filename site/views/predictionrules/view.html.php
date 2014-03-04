@@ -57,30 +57,30 @@ class sportsmanagementViewPredictionRules extends JView
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
-		$model		=& $this->getModel();
+		$document	= JFactory::getDocument();
+		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-    $this->assignRef( 'optiontext',			$optiontext );
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+//    $this->assignRef( 'optiontext',			$optiontext );
     
 		$mainframe = JFactory::getApplication();
 
-		$this->assignRef('predictionGame',$model->getPredictionGame());
+		$this->assignRef('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
 		if (isset($this->predictionGame))
 		{
-			$config			= $model->getPredictionTemplateConfig($this->getName());
-			$overallConfig	= $model->getPredictionOverallConfig();
+			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 
 			$this->assignRef('model',				$model);
-			$this->assignRef('config',				array_merge($overallConfig,$config));
-      $configavatar			= $model->getPredictionTemplateConfig('predictionusers');
+			$this->assign('config',				array_merge($overallConfig,$config));
+      $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       $this->assignRef('configavatar',				$configavatar );
-			$this->assignRef('predictionMember',	$model->getPredictionMember($configavatar));
-			$this->assignRef('predictionProjectS',	$model->getPredictionProjectS());
+			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assignRef('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
 			$this->assignRef('actJoomlaUser',		JFactory::getUser());
 			//echo '<br /><pre>~'.print_r($this,true).'~</pre><br />';
-      $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+      //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 

@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->matchimages<br /><pre>~' . print_r($this->matchimages,true) . '~</pre><br />';
 }

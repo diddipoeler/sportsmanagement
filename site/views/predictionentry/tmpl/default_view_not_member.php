@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';
 }

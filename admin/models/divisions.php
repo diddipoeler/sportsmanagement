@@ -112,9 +112,7 @@ class sportsmanagementModelDivisions extends JModelList
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
-        // Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+       
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select(array('dv.*', 'dvp.name AS parent_name','u.name AS editor'))

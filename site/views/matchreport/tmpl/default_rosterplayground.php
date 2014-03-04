@@ -66,7 +66,7 @@ else
     $div_display ="";
 }
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->formation1<br /><pre>~' . print_r($this->formation1,true) . '~</pre><br />';
 echo 'this->formation2<br /><pre>~' . print_r($this->formation2,true) . '~</pre><br />';
@@ -242,7 +242,7 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->heim personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
 }
@@ -267,7 +267,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 }
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->heim person_id<br /> ~' . $player->person_id . ' ~<br />';
 echo 'this->heim lastname<br /> ~' . $player->lastname . ' ~<br />';
@@ -312,7 +312,7 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->gast personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
 }

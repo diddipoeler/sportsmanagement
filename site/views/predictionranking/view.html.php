@@ -61,20 +61,20 @@ class sportsmanagementViewPredictionRanking extends JView
 	{
 		// Get a refrence of the page instance in joomla
     $mainframe = JFactory::getApplication();
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$uri = JFactory :: getURI();
 //		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
-		$model		=& $this->getModel();
+		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-    $this->assignRef( 'optiontext',			$optiontext );
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+//    $this->assignRef( 'optiontext',			$optiontext );
 
-		$this->assignRef('predictionGame',$model->getPredictionGame());
+		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
     // Get data from the model
- 	$items =& $this->get('Data');	
- 	$pagination =& $this->get('Pagination');
+ 	$items = $this->get('Data');	
+ 	$pagination = $this->get('Pagination');
  
 	// push data into the template
 	$this->assignRef('items', $items);	
@@ -97,21 +97,21 @@ class sportsmanagementViewPredictionRanking extends JView
 		
 		if (isset($this->predictionGame))
 		{
-			$config			= $model->getPredictionTemplateConfig($this->getName());
-			$overallConfig	= $model->getPredictionOverallConfig();
-      $configavatar			= $model->getPredictionTemplateConfig('predictionusers');
+			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
+      $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       
-      $this->assignRef('debuginfo',	$model->getDebugInfo());
+      //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
 			$this->assignRef('model',				$model);
 			$this->assignRef('roundID',				$this->model->roundID);
 			//$this->assignRef('config',				array_merge($overallConfig,$config));
       $this->assignRef('configavatar',				$configavatar );
-      $this->assignRef('config',				array_merge($overallConfig,$config));
+      $this->assign('config',				array_merge($overallConfig,$config));
       
-			$this->assignRef('predictionMember',	$model->getPredictionMember($configavatar));
-			$this->assignRef('predictionProjectS',	$model->getPredictionProjectS());
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
+			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('actJoomlaUser',		JFactory::getUser());
 			
 			//echo '<br /><pre>~' . print_r( $this->config, true ) . '~</pre><br />';
 
@@ -127,7 +127,7 @@ class sportsmanagementViewPredictionRanking extends JView
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
-			$mdlProject = JModel::getInstance("Project", "JoomleagueModel");
+			$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 			foreach ( $this->predictionProjectS as $project )
 			{
       $mdlProject->setProjectId($project->project_id);
@@ -136,8 +136,9 @@ class sportsmanagementViewPredictionRanking extends JView
       $map_config		= $mdlProject->getMapConfig();
 		  $this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 			
-      $this->assignRef('PredictionMembersList',	$model->getPredictionMembersList($this->config,$this->configavatar) );
-      $this->geo = new simpleGMapGeocoder();
+      $this->assign('PredictionMembersList',	sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar) );
+      
+      $this->geo = new JSMsimpleGMapGeocoder();
 	    $this->geo->genkml3prediction($this->predictionGame->id,$this->PredictionMembersList);
 	  
 			$document->setTitle($pageTitle);

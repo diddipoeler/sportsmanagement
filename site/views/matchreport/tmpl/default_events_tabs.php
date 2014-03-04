@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <?php 
 echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
 echo '<br />eventtypes<pre>~' . print_r($this->eventtypes,true) . '~</pre><br />';

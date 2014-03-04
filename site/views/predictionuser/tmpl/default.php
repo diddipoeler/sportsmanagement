@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->predictionMember<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 }

@@ -52,7 +52,7 @@ jimport('joomla.event.dispatcher');
 */
 
 //require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
-require_once('prediction.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 
 /**
@@ -69,6 +69,45 @@ class sportsmanagementModelPredictionUsers extends JModel
 
 	function __construct()
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
+    $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
+		$this->predictionMemberID	= JRequest::getInt('uid',	0);
+		$this->joomlaUserID			= JRequest::getInt('juid',	0);
+		$this->roundID				= JRequest::getInt('r',		0);
+        $this->pggroup				= JRequest::getInt('pggroup',		0);
+        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+		$this->pjID					= JRequest::getInt('p',		0);
+		$this->isNewMember			= JRequest::getInt('s',		0);
+		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+
+		$this->from  				= JRequest::getInt('from',	$this->roundID);
+		$this->to	 				= JRequest::getInt('to',	$this->roundID);
+		$this->type  				= JRequest::getInt('type',	0);
+
+		$this->page  				= JRequest::getInt('page',	1);
+        
+        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        $prediction = new sportsmanagementModelPrediction();  
+        //$prediction->predictionGameID = $this->predictionGameID	;
+        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
+        
+        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
+        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
+        sportsmanagementModelPrediction::$roundID = $this->roundID;
+        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
+        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
+        sportsmanagementModelPrediction::$pjID = $this->pjID;
+        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
+        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
+        sportsmanagementModelPrediction::$from = $this->from;
+        sportsmanagementModelPrediction::$to = $this->to;
+        sportsmanagementModelPrediction::$type = $this->type;
+        sportsmanagementModelPrediction::$page = $this->page;
+        
+	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+       
 		parent::__construct();
 	}
 
@@ -131,8 +170,8 @@ class sportsmanagementModelPredictionUsers extends JModel
 	function showMemberPicture($outputUserName, $user_id = 0)
 	{
 	//global $mainframe, $option;
-	$mainframe	=& JFactory::getApplication();
-	$db =& JFactory::getDBO();
+	$mainframe	= JFactory::getApplication();
+	$db = JFactory::getDBO();
 	$playerName = $outputUserName;
 	$picture = '';
 	
@@ -230,11 +269,11 @@ class sportsmanagementModelPredictionUsers extends JModel
 	if ( !file_exists($picture) )
 	{
 		//$mainframe->enqueueMessage(JText::_('user bild ->'.$picture.' ist nicht vorhanden'),'Error');
-        $picture = JoomleagueHelper::getDefaultPlaceholder("player");
+        $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
         //$mainframe->enqueueMessage(JText::_('nehme standard ->'.$picture),'Notice');
 	}
 	//echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
-	echo JoomleagueHelper::getPictureThumb($picture, $playerName,0,0);
+	echo sportsmanagementHelper::getPictureThumb($picture, $playerName,0,0);
 	}
 	else
 	{

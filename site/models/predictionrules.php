@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once('prediction.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 
 /**
@@ -58,6 +58,44 @@ class sportsmanagementModelPredictionRules extends JModel
 {
 	function __construct()
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
+    $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
+		$this->predictionMemberID	= JRequest::getInt('uid',	0);
+		$this->joomlaUserID			= JRequest::getInt('juid',	0);
+		$this->roundID				= JRequest::getInt('r',		0);
+        $this->pggroup				= JRequest::getInt('pggroup',		0);
+        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+		$this->pjID					= JRequest::getInt('p',		0);
+		$this->isNewMember			= JRequest::getInt('s',		0);
+		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+
+		$this->from  				= JRequest::getInt('from',	$this->roundID);
+		$this->to	 				= JRequest::getInt('to',	$this->roundID);
+		$this->type  				= JRequest::getInt('type',	0);
+
+		$this->page  				= JRequest::getInt('page',	1);
+        
+        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        $prediction = new sportsmanagementModelPrediction();  
+        //$prediction->predictionGameID = $this->predictionGameID	;
+        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
+        
+        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
+        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
+        sportsmanagementModelPrediction::$roundID = $this->roundID;
+        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
+        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
+        sportsmanagementModelPrediction::$pjID = $this->pjID;
+        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
+        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
+        sportsmanagementModelPrediction::$from = $this->from;
+        sportsmanagementModelPrediction::$to = $this->to;
+        sportsmanagementModelPrediction::$type = $this->type;
+        sportsmanagementModelPrediction::$page = $this->page;
+        
+	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
 		parent::__construct();
 	}
 

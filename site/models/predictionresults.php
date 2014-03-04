@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
-require_once('prediction.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 
 /**
@@ -76,9 +76,48 @@ class sportsmanagementModelPredictionResults extends JModel
   
 	function __construct()
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
+    $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
+		$this->predictionMemberID	= JRequest::getInt('uid',	0);
+		$this->joomlaUserID			= JRequest::getInt('juid',	0);
+		$this->roundID				= JRequest::getInt('r',		0);
+        $this->pggroup				= JRequest::getInt('pggroup',		0);
+        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+		$this->pjID					= JRequest::getInt('p',		0);
+		$this->isNewMember			= JRequest::getInt('s',		0);
+		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+
+		$this->from  				= JRequest::getInt('from',	$this->roundID);
+		$this->to	 				= JRequest::getInt('to',	$this->roundID);
+		$this->type  				= JRequest::getInt('type',	0);
+
+		$this->page  				= JRequest::getInt('page',	1);
+        
+        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        $prediction = new sportsmanagementModelPrediction();  
+        //$prediction->predictionGameID = $this->predictionGameID	;
+        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
+        
+        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
+        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
+        sportsmanagementModelPrediction::$roundID = $this->roundID;
+        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
+        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
+        sportsmanagementModelPrediction::$pjID = $this->pjID;
+        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
+        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
+        sportsmanagementModelPrediction::$from = $this->from;
+        sportsmanagementModelPrediction::$to = $this->to;
+        sportsmanagementModelPrediction::$type = $this->type;
+        sportsmanagementModelPrediction::$page = $this->page;
+        
+	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+       
 		parent::__construct();
 		
-        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+        //$this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
 		$option = JRequest::getCmd('option');    
     $mainframe = JFactory::getApplication();
     $this->predictionGameID	= JRequest::getInt('prediction_id',0);
@@ -118,7 +157,7 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
  	if (empty($this->_total)) 
      {
  	    //$query = $this->_buildQuery();
-        $query = $this->getPredictionMembersList($this->config,$this->configavatar,true);
+        $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar,true);
  	    $this->_total = $this->_getListCount($query);	
  	}
  	return $this->_total;
@@ -130,7 +169,7 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
  	if (empty($this->_data)) 
      {
  	    //$query = $this->_buildQuery();
-        $query = $this->getPredictionMembersList($this->config,$this->configavatar,true);
+        $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar,true);
  	    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));	
  	}
  	return $this->_data;
@@ -142,57 +181,88 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
 
 
   
-  function getDebugInfo()
-  {
-  $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
-  if ( $show_debug_info )
-  {
-  return true;
-  }
-  else
-  {
-  return false;
-  }
-  
-  }
+//  function getDebugInfo()
+//  {
+//  $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
+//  if ( $show_debug_info )
+//  {
+//  return true;
+//  }
+//  else
+//  {
+//  return false;
+//  }
+//  
+//  }
   
 	function getMatches($roundID,$project_id,$match_ids)
 	{
-	  global $mainframe, $option;
-    $document	=& JFactory::getDocument();
-    $mainframe	=& JFactory::getApplication();
+	  //global $mainframe, $option;
+      $option = JRequest::getCmd('option'); 
+    $document	= JFactory::getDocument();
+    $mainframe	= JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
     
-		if ($roundID==0){
+		if ($roundID==0)
+        {
 			$roundID=1;
 		}
-		$query = 	"	SELECT	m.id AS mID,
-								m.match_date,
-								m.team1_result AS homeResult,
-								m.team2_result AS awayResult,
-								m.team1_result_decision AS homeDecision,
-								m.team2_result_decision AS awayDecision,
-								t1.name AS homeName,
-								t2.name AS awayName,
-                                t1.short_name AS homeShortName,
-                                t2.short_name AS awayShortName,
-								c1.logo_small AS homeLogo,
-								c2.logo_small AS awayLogo,
-								c1.country AS homeCountry,
-								c2.country AS awayCountry
-
-						FROM #__joomleague_match AS m
-
-						INNER JOIN #__joomleague_round AS r ON	r.id=m.round_id AND
-																r.project_id=$project_id AND
-																r.id=$roundID
-						LEFT JOIN #__joomleague_project_team AS pt1 ON pt1.id=m.projectteam1_id
-						LEFT JOIN #__joomleague_project_team AS pt2 ON pt2.id=m.projectteam2_id
-						LEFT JOIN #__joomleague_team AS t1 ON t1.id=pt1.team_id
-						LEFT JOIN #__joomleague_team AS t2 ON t2.id=pt2.team_id
-						LEFT JOIN #__joomleague_club AS c1 ON c1.id=t1.club_id
-						LEFT JOIN #__joomleague_club AS c2 ON c2.id=t2.club_id
-						WHERE (m.cancel IS NULL OR m.cancel = 0)
-						AND m.published=1 ";
+        $query->select('m.id AS mID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
+        $query->select('t1.name AS homeName,t1.short_name AS homeShortName');
+        $query->select('t2.name AS awayName,t2.short_name AS awayShortName');
+        $query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
+        $query->select('c2.logo_small AS awayLogo,c2.country AS awayCountry');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
+        
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 on st1.id = pt1.team_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 on st2.id = pt2.team_id');
+        
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
+        
+        
+        $query->where('r.project_id = '.$project_id);
+        $query->where('r.id = '.$roundID);
+        
+        $query->where('(m.cancel IS NULL OR m.cancel = 0)');
+        $query->where('m.published = 1');
+        
+//		$query = 	"	SELECT	m.id AS mID,
+//								m.match_date,
+//								m.team1_result AS homeResult,
+//								m.team2_result AS awayResult,
+//								m.team1_result_decision AS homeDecision,
+//								m.team2_result_decision AS awayDecision,
+//								t1.name AS homeName,
+//								t2.name AS awayName,
+//                                t1.short_name AS homeShortName,
+//                                t2.short_name AS awayShortName,
+//								c1.logo_small AS homeLogo,
+//								c2.logo_small AS awayLogo,
+//								c1.country AS homeCountry,
+//								c2.country AS awayCountry
+//
+//						FROM #__sportsmanagement_match AS m
+//
+//						INNER JOIN #__sportsmanagement_round AS r ON	r.id=m.round_id AND
+//																r.project_id=$project_id AND
+//																r.id=$roundID
+//						LEFT JOIN #__sportsmanagement_project_team AS pt1 ON pt1.id=m.projectteam1_id
+//						LEFT JOIN #__sportsmanagement_project_team AS pt2 ON pt2.id=m.projectteam2_id
+//						LEFT JOIN #__sportsmanagement_team AS t1 ON t1.id=pt1.team_id
+//						LEFT JOIN #__sportsmanagement_team AS t2 ON t2.id=pt2.team_id
+//						LEFT JOIN #__sportsmanagement_club AS c1 ON c1.id=t1.club_id
+//						LEFT JOIN #__sportsmanagement_club AS c2 ON c2.id=t2.club_id
+//						WHERE (m.cancel IS NULL OR m.cancel = 0)
+//						AND m.published=1 ";
 						
     
     if ( $match_ids )
@@ -201,15 +271,17 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
       '|' => ','
         );
     $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
-    $query .= "AND m.id IN (" . $match_ids . ")";    
+    //$query .= "AND m.id IN (" . $match_ids . ")";
+    $query->where("AND m.id IN (" . $match_ids . ")");    
     }
     
-    $query .= " ORDER BY m.match_date, m.id ASC";
+    //$query .= " ORDER BY m.match_date, m.id ASC";
+    $query->order('m.match_date, m.id ASC');
     
     //$mainframe->enqueueMessage(JText::_('query -> <pre> '.print_r($query,true).'</pre><br>' ),'Notice');
     						
-		$this->_db->setQuery( $query );
-		$results = $this->_db->loadObjectList();
+		$db->setQuery( $query );
+		$results = $db->loadObjectList();
 		return $results;
 	}
 

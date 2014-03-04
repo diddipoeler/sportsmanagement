@@ -37,15 +37,6 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-/*
-geaendert nach thread im forum
-http://forum.joomleague.net/viewtopic.php?f=108&t=15320
-
-http://forum.joomleague.net/viewtopic.php?f=108&t=15325
-
-http://forum.joomleague.net/viewtopic.php?f=108&t=15281
-
-*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -58,10 +49,9 @@ jimport('joomla.utilities.arrayhelper') ;
 jimport( 'joomla.utilities.utility' );
 
 
-require_once('project.php');
-//require_once('predictionusers.php');
-require_once('prediction.php');
 
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'project.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionRanking
@@ -93,7 +83,47 @@ class sportsmanagementModelPredictionRanking extends JModel
   
 	function __construct()
 	{
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
 		parent::__construct();
+        
+        $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
+		$this->predictionMemberID	= JRequest::getInt('uid',	0);
+		$this->joomlaUserID			= JRequest::getInt('juid',	0);
+		$this->roundID				= JRequest::getInt('r',		0);
+        $this->pggroup				= JRequest::getInt('pggroup',		0);
+        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+		$this->pjID					= JRequest::getInt('p',		0);
+		$this->isNewMember			= JRequest::getInt('s',		0);
+		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+
+		$this->from  				= JRequest::getInt('from',	$this->roundID);
+		$this->to	 				= JRequest::getInt('to',	$this->roundID);
+		$this->type  				= JRequest::getInt('type',	0);
+
+		$this->page  				= JRequest::getInt('page',	1);
+        
+        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        $prediction = new sportsmanagementModelPrediction();  
+        //$prediction->predictionGameID = $this->predictionGameID	;
+        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
+        
+        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
+        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
+        sportsmanagementModelPrediction::$roundID = $this->roundID;
+        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
+        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
+        sportsmanagementModelPrediction::$pjID = $this->pjID;
+        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
+        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
+        sportsmanagementModelPrediction::$from = $this->from;
+        sportsmanagementModelPrediction::$to = $this->to;
+        sportsmanagementModelPrediction::$type = $this->type;
+        sportsmanagementModelPrediction::$page = $this->page;
+        
+	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+       
         $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
   
     $option = JRequest::getCmd('option');    
@@ -120,29 +150,47 @@ if ( JRequest::getVar( "view") == 'predictionranking' )
 
 function _buildQuery()
 {
-	$query=	"	SELECT	pm.id AS pmID,
-				pm.user_id AS user_id,
-				pm.picture AS avatar,
-                pm.group_id,
-				pm.show_profile AS show_profile,
-				pm.champ_tipp AS champ_tipp,
-        pm.aliasName as aliasName,
-				u.name AS name,
-                pg.id as pg_group_id,
-                pg.name as pg_group_name
-				FROM #__joomleague_prediction_member AS pm
-				INNER JOIN #__users AS u ON u.id = pm.user_id
-                left join #__joomleague_prediction_groups as pg
-                on pg.id = pm.group_id
-				WHERE pm.prediction_id = $this->predictionGameID";
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+    
+    // Select some fields
+    $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.group_id,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
+    $query->select('u.name AS name');
+    $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+    $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg on pg.id = pm.group_id');
+    $query->where('pm.prediction_id = '.$this->predictionGameID);
+            
+//	$query=	"	SELECT	pm.id AS pmID,
+//				pm.user_id AS user_id,
+//				pm.picture AS avatar,
+//                pm.group_id,
+//				pm.show_profile AS show_profile,
+//				pm.champ_tipp AS champ_tipp,
+//        pm.aliasName as aliasName,
+//				u.name AS name,
+//                pg.id as pg_group_id,
+//                pg.name as pg_group_name
+//				FROM #__sportsmanagement_prediction_member AS pm
+//				INNER JOIN #__users AS u ON u.id = pm.user_id
+//                left join #__sportsmanagement_prediction_groups as pg
+//                on pg.id = pm.group_id
+//				WHERE pm.prediction_id = $this->predictionGameID";
     if ( $this->pggrouprank )
     {
-    $query .= " GROUP BY pm.group_id ";    
-    $query .= " ORDER BY pm.group_id ASC";    
+   // $query .= " GROUP BY pm.group_id ";    
+//    $query .= " ORDER BY pm.group_id ASC";  
+    $query->group('pm.group_id');
+    $query->order('pm.group_id ASC');  
     }   
     else
     {
-    $query .=	" ORDER BY pm.id ASC";    
+    //$query .=	" ORDER BY pm.id ASC";
+    $query->order('pm.id ASC');     
     }         
 	
                 
@@ -256,7 +304,7 @@ function getPagination()
 	{
 		$from_matchday=array();
 		$from_matchday[]= JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
-		$from_matchday=array_merge($from_matchday,$this->getRoundNames($project_id));
+		$from_matchday=array_merge($from_matchday,sportsmanagementModelPrediction::getRoundNames($project_id));
 		return $from_matchday;
 	}
 
@@ -264,7 +312,7 @@ function getPagination()
 	{
 		$to_matchday=array();
 		$to_matchday[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
-		$to_matchday=array_merge($to_matchday,$this->getRoundNames($project_id));
+		$to_matchday=array_merge($to_matchday,sportsmanagementModelPrediction::getRoundNames($project_id));
 		return $to_matchday;
 	}
 	

@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'player view teams<pre>',print_r($this->teams,true),'</pre><br>';    
 }

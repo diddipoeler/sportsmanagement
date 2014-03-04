@@ -4,7 +4,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
 echo '<br />config<pre>~' . print_r($this->config,true) . '~</pre><br />';
@@ -24,7 +24,7 @@ if (((JFactory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPre
 	{
 		echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SELECT_EXISTING_MEMBER');
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {		
 echo '<br />allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
 echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
@@ -35,21 +35,21 @@ echo '<br />getUser<pre>~' . print_r(JFactory::getUser()->id,true) . '~</pre><br
 }
 else
 {
-	foreach ($this->model->_predictionProjectS AS $predictionProject)
+	foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 	{
 		//$predictionProject->joker=0;
-		$gotSettings = $predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id);
+		$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
 		if ((($this->model->pjID==$predictionProject->project_id) && ($gotSettings)) || ($this->model->pjID==0))
 		{
 			$this->model->pjID = $predictionProject->project_id;
       $this->model->predictionProject = $predictionProject;
-			$actualProjectCurrentRound = $this->model->getProjectSettings($predictionProject->project_id);
+			$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 			if (!isset($this->model->roundID) || ($this->model->roundID < 1)){$this->model->roundID=$actualProjectCurrentRound;}
 			if ($this->model->roundID < 1){$this->model->roundID=1;}
 
-			if ($this->model->roundID > $this->model->getProjectRounds($predictionProject->project_id)){$this->model->roundID=$this->model->_projectRoundsCount;}
+			if ($this->model->roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id)){$this->model->roundID=$this->model->_projectRoundsCount;}
 
-			$memberProjectJokersCount = $this->model->getMemberPredictionJokerCount($this->predictionMember->user_id,
+			$memberProjectJokersCount = sportsmanagementModelPrediction::getMemberPredictionJokerCount($this->predictionMember->user_id,
 																					$predictionProject->project_id);
 
       $match_ids = '';
@@ -65,7 +65,7 @@ else
 																			$this->predictionMember->user_id,$match_ids);
 
 			//$roundResults = null;
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {		
 echo '<br />predictionGameID<pre>~' . print_r($this->model->predictionGameID,true) . '~</pre><br />';
 echo '<br />project_id<pre>~' . print_r($predictionProject->project_id,true) . '~</pre><br />';
@@ -97,12 +97,12 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 						<td class='sectiontableheader'><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
 						<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
 							<?php
-							$rounds = JoomleagueHelper::getRoundsOptions($predictionProject->project_id);
+							$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id);
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
 							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',$this->model->roundID);
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
 													$htmlRoundsOptions,
-													$this->model->createProjectSelector($this->model->_predictionProjectS,$predictionProject->project_id));
+													sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id));
 							?>
 						</td>
 					</tr>
@@ -129,7 +129,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<?php echo JHTML::_('form.token'); ?>
                 
 <?php
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {		
 echo '<br />predictionDoTipp<br />';
 echo '<br />prediction_id<pre>~' . print_r($this->model->predictionGameID,true) . '~</pre><br />';
@@ -210,12 +210,12 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 						if (isset($result->team2_result_decision)){$resultAway=$result->team2_result_decision;}
 						
 						$closingtime = $this->config['closing_time'] ;//3600=1 hour
-						$matchTimeDate = JoomleagueHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->serveroffset);
-						$thisTimeDate = JoomleagueHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+						$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->serveroffset);
+						$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
 						
 
             // änderungen erlaubt ?   $this->config['show_help']
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />this->closingtime<pre>~' . print_r($closingtime,true) . '~</pre><br />';
 echo '<br />this->matchTimeDate<pre>~' . print_r($matchTimeDate,true) . '~</pre><br />';
@@ -234,7 +234,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 						//$tippAllowed = true;
 						if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; $showSaveButton=true;}
 						
-						if ( $this->show_debug_info )
+						if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
             echo '<br />this->matchTimeDate nach berechnung<pre>~' . print_r($matchTimeDate,true) . '~</pre><br />';
             echo '<br />this->thisTimeDate<pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
@@ -258,8 +258,8 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 								?>
 							</td>
 								<?php
-								$homeName = $this->model->getMatchTeam($result->projectteam1_id,$this->config['prediction_team_name']);
-								$awayName = $this->model->getMatchTeam($result->projectteam2_id,$this->config['prediction_team_name']);
+								$homeName = sportsmanagementModelPrediction::getMatchTeam($result->projectteam1_id,$this->config['prediction_team_name']);
+								$awayName = sportsmanagementModelPrediction::getMatchTeam($result->projectteam2_id,$this->config['prediction_team_name']);
 //								$homeName = $this->model->getMatchTeam($result->projectteam1_id);
 //								$awayName = $this->model->getMatchTeam($result->projectteam2_id);								
 								?>
@@ -283,7 +283,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 // clublogo oder vereinsflagge
 								if ( $this->config['show_logo_small'] == 1 )
 								{
-									$logo_home = $this->model->getMatchTeamClubLogo($result->projectteam1_id);
+									$logo_home = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam1_id);
 									if	(($logo_home == '') || (!file_exists($logo_home)))
 									{
 										$logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -294,7 +294,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 								}
                 if ( $this->config['show_logo_small'] == 2 )
 								{
-                $country_home = $this->model->getMatchTeamClubFlag($result->projectteam1_id);
+                $country_home = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam1_id);
                 echo Countries::getCountryFlag($country_home);
                 }
 								?>
@@ -309,7 +309,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 // clublogo oder vereinsflagge
 								if ( $this->config['show_logo_small'] == 1 )
 								{
-									$logo_away = $this->model->getMatchTeamClubLogo($result->projectteam2_id);
+									$logo_away = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam2_id);
 									if (($logo_away=='') || (!file_exists($logo_away)))
 									{
 										$logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -320,7 +320,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 								}
                 if ( $this->config['show_logo_small'] == 2 )
 								{
-                $country_away = $this->model->getMatchTeamClubFlag($result->projectteam2_id);
+                $country_away = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam2_id);
                 echo Countries::getCountryFlag($country_away);
                 }
 								?>
@@ -404,7 +404,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 							<td class="td_c"><?php
 								if ((!$tippAllowed) || (($this->allowedAdmin)&&($this->predictionMember->admintipp)))
 								{
-									$points = $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+									$points = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 									$totalPoints = $totalPoints+$points;
 									echo $points;
 								}

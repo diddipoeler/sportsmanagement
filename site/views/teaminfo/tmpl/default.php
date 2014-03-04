@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->teaminfo config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
 echo 'this->teaminfo team<br /><pre>~' . print_r($this->team,true) . '~</pre><br />';

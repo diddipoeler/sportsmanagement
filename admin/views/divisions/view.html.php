@@ -42,12 +42,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @static
- * @package	Joomleague
- * @since	0.1
+ * sportsmanagementViewDivisions
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewDivisions extends JView
 {

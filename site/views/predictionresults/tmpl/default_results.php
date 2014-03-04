@@ -12,7 +12,7 @@
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHTML::_('behavior.tooltip');
 
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
 echo 'this->items<br /><pre>~' . print_r($this->items,true) . '~</pre><br />';
@@ -37,17 +37,17 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 
 <a name='jl_top' id='jl_top'></a>
 <?php
-foreach ($this->model->_predictionProjectS AS $predictionProject)
+foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
-	$gotSettings = $predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id);
+	$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
 	if ((($this->model->pjID==$predictionProject->project_id) && ($gotSettings)) || ($this->model->pjID==0))
 	{
 		$this->model->pjID = $predictionProject->project_id;
 		$this->model->predictionProject = $predictionProject;
-		$actualProjectCurrentRound = $this->model->getProjectSettings($predictionProject->project_id);
+		$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 		if (!isset($this->roundID) || ($this->roundID < 1)){$this->roundID=$actualProjectCurrentRound;}
 		if ($this->roundID < 1){$this->roundID=1;}
-		if ($this->roundID > $this->model->getProjectRounds($predictionProject->project_id)){$this->roundID=$this->model->_projectRoundsCount;}
+		if ($this->roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id)){$this->roundID=$this->model->_projectRoundsCount;}
 		?>
 		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
@@ -73,8 +73,8 @@ foreach ($this->model->_predictionProjectS AS $predictionProject)
 						?>
 					</td>
 					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' ><?php
-						$rounds = JoomleagueHelper::getRoundsOptions($predictionProject->project_id);
-                        $groups = $this->model->getPredictionGroupList();
+						$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id);
+                        $groups = sportsmanagementModelPrediction::getPredictionGroupList();
 						//$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->roundID);
 						$htmlRoundsOptions = JHTML::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->roundID);
                         
@@ -83,12 +83,12 @@ foreach ($this->model->_predictionProjectS AS $predictionProject)
                         $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->pggroup);
             echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
 						$htmlRoundsOptions,
-						$this->model->createProjectSelector($this->model->_predictionProjectS,$predictionProject->project_id),
+						sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id),
                         $htmlGroupOptions);
 						
             echo '&nbsp;&nbsp;';
             
-						$link = JoomleagueHelperRoute::getResultsRoute($predictionProject->project_id,$this->roundID);
+						$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$this->roundID);
 						$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 						echo JHTML::link($link,$desc,array('target' => ''));
@@ -144,7 +144,7 @@ echo $this->pagination->getListFooter();
           // clublogo oder vereinsflagge
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo JoomleagueModelPredictionResults::showClubLogo($match->homeLogo,$match->homeName).'<br />';
+                            echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogo,$match->homeName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeShortName.'<br />';
@@ -166,7 +166,7 @@ echo $this->pagination->getListFooter();
 						?><span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span><?php
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo '<br />'.JoomleagueModelPredictionResults::showClubLogo($match->awayLogo,$match->awayName).'<br />';
+                            echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogo,$match->awayName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayShortName.'<br />';
@@ -201,7 +201,7 @@ echo $this->pagination->getListFooter();
 			</tr>
 			<?php
 			
-			if ( $this->show_debug_info )
+			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
       {
 			echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 			echo '<br />predictionProject<pre>~' . print_r($predictionProject,true) . '~</pre><br />';
@@ -219,7 +219,7 @@ echo $this->pagination->getListFooter();
 			$membersDataArray = array();
 			$membersMatchesArray = array();
 
-      if ( $this->show_debug_info )
+      if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
 				echo '<br />memberList<pre>~' . print_r($this->memberList,true) . '~</pre><br />';
 				}
@@ -227,16 +227,16 @@ echo $this->pagination->getListFooter();
 			foreach ($this->memberList AS $member)
 			{
 			
-			  if ( $this->show_debug_info )
+			  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
 				echo '<br />member<pre>~' . print_r($member,true) . '~</pre><br />';
 				}
 				
-				$memberPredictionPoints = $this->model->getPredictionMembersResultsList(	$predictionProject->project_id,
+				$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$predictionProject->project_id,
 																							$this->roundID,
 																							$this->roundID,
 																							$member->user_id);
-        if ( $this->show_debug_info )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {																							
 				echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
 				}
@@ -260,7 +260,7 @@ echo $this->pagination->getListFooter();
 							(!is_null($memberPredictionPoint->awayDecision)))
 						{
 						
-						if ( $this->show_debug_info )
+						if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 				    echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
 				    }
@@ -294,14 +294,14 @@ echo $this->pagination->getListFooter();
 							if (!is_null($memberPredictionPoint->prTend)){$totalTend=$totalTend+$memberPredictionPoint->prTend;}
 						}
 
-            if ( $this->show_debug_info )
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
             echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
             }
 						
 						$memberPredictionOutput = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
-						$matchTimeDate = JoomleagueHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->serveroffset);
-						$thisTimeDate = JoomleagueHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+						$matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->serveroffset);
+						$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
 						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
 										(!is_null($memberPredictionPoint->homeResult)) ||
 										(!is_null($memberPredictionPoint->awayResult)) ||
@@ -354,15 +354,15 @@ echo $this->pagination->getListFooter();
 					}
 				}
 
-				$membersResultsArray[$member->pmID]['rank']				= 0;
-                $membersResultsArray[$member->pmID]['pg_group_name']				= $member->pg_group_name;
-                $membersResultsArray[$member->pmID]['pg_group_id']				= $member->pg_group_id;
+				$membersResultsArray[$member->pmID]['rank']	= 0;
+                $membersResultsArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
+                $membersResultsArray[$member->pmID]['pg_group_id'] = $member->pg_group_id;
 				$membersResultsArray[$member->pmID]['predictionsCount']	= $predictionsCount;
-				$membersResultsArray[$member->pmID]['totalPoints']		= $totalPoints;
-				$membersResultsArray[$member->pmID]['totalTop']			= $totalTop;
-				$membersResultsArray[$member->pmID]['totalDiff']		= $totalDiff;
-				$membersResultsArray[$member->pmID]['totalTend']		= $totalTend;
-				$membersResultsArray[$member->pmID]['totalJoker']		= $totalJoker;
+				$membersResultsArray[$member->pmID]['totalPoints'] = $totalPoints;
+				$membersResultsArray[$member->pmID]['totalTop'] = $totalTop;
+				$membersResultsArray[$member->pmID]['totalDiff'] = $totalDiff;
+				$membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
+				$membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
 
 				// check all needed output for later
 				{
@@ -374,21 +374,21 @@ echo $this->pagination->getListFooter();
           }
           
 					$playerName = $member->name;
-					$membersDataArray[$member->pmID]['pg_group_name']				= $member->pg_group_name;
-                    $membersDataArray[$member->pmID]['pg_group_id']				= $member->pg_group_id;
+					$membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
+                    $membersDataArray[$member->pmID]['pg_group_id']	= $member->pg_group_id;
                     
 					if (((!isset($member->avatar)) ||
 						($member->avatar=='') ||
 						(!file_exists($member->avatar)) ||
 						((!$member->show_profile) && ($this->predictionMember->pmID!=$member->pmID))))
 					{
-						$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
 				//tobe removed
 				//$imgTitle = JText::sprintf('JL_PRED_AVATAR_OF',$member->name);
 				//$output = JHTML::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
 				
-					$output = JoomleagueHelper::getPictureThumb($picture, $playerName,0,25);
+					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
 				
 					if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
@@ -404,16 +404,16 @@ echo $this->pagination->getListFooter();
 				}
 			}
 
-      if ( $this->show_debug_info )
+      if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
       {
 			echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
 			echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
 			}
 			
-			$computedMembersRanking = $this->model->computeMembersRanking($membersResultsArray,$this->config);
+			$computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
 			$recordCount = count($computedMembersRanking);
 			
-			if ( $this->show_debug_info )
+			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
       {
 			echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
       echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~</pre><br />';

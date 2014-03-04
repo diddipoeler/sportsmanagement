@@ -159,7 +159,7 @@ class sportsmanagementViewPredictionUser extends JView
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
 					
-          if ( $this->show_debug_info )
+          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
           {
           echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
           }
@@ -207,7 +207,7 @@ class sportsmanagementViewPredictionUser extends JView
           
           
           
-          if ( $this->show_debug_info )
+          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />predictionuser view.html edit -> time <pre>~' . print_r($time,true) . '~</pre><br />';
 echo '<br />predictionuser view.html edit -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
