@@ -122,13 +122,13 @@ class sportsmanagementModelPredictionRanking extends JModel
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
         
-	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
        
-        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+        //$this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
   
-    $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
-    $this->predictionGameID	= JRequest::getInt('prediction_id',0);
+//    $option = JRequest::getCmd('option');    
+//    $mainframe = JFactory::getApplication();
+//    $this->predictionGameID	= JRequest::getInt('prediction_id',0);
 
 if ( JRequest::getVar( "view") == 'predictionranking' )
 {

@@ -56,6 +56,12 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewPredictionUsers extends JView
 {
 
+	/**
+	 * sportsmanagementViewPredictionUsers::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -244,6 +250,12 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 
 	}
 
+	/**
+	 * sportsmanagementViewPredictionUsers::_setPointsChartdata()
+	 * 
+	 * @param mixed $config
+	 * @return
+	 */
 	function _setPointsChartdata($config)
 	{
 		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
@@ -299,6 +311,12 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 		$this->assignRef( 'pointschartdata',  $chart);
 	}
 
+	/**
+	 * sportsmanagementViewPredictionUsers::_setRankingChartdata()
+	 * 
+	 * @param mixed $config
+	 * @return
+	 */
 	function _setRankingChartdata($config)
 	{
 		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );

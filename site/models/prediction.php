@@ -126,7 +126,7 @@ class sportsmanagementModelPrediction extends JModel
 	$this->limitstart = $limitstart;
 */
 
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$predictionGameID,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$predictionGameID,true).'</pre>'),'');
 
 		parent::__construct();
 	}
@@ -222,7 +222,7 @@ class sportsmanagementModelPrediction extends JModel
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$predictionGameID,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$predictionGameID,true).'</pre>'),'');
     
 		if (!self::$_predictionGame)
 		{
@@ -236,7 +236,7 @@ class sportsmanagementModelPrediction extends JModel
         $query->where('id = '.$db->Quote(self::$predictionGameID));
         $query->where('published = 1');
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 				$db->setQuery($query,0,1);
 				self::$_predictionGame = $db->loadObject();
@@ -249,7 +249,7 @@ class sportsmanagementModelPrediction extends JModel
 			}
 		}
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$_predictionGame,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$_predictionGame,true).'</pre>'),'');
         
 		return self::$_predictionGame;
 	}
@@ -547,7 +547,7 @@ class sportsmanagementModelPrediction extends JModel
         $jRegistry->loadJSON($result);
         $configvalues = $jRegistry->toArray(); 
         
-        echo '<pre>'.print_r($configvalues,true).'</pre>';
+        //echo '<pre>'.print_r($configvalues,true).'</pre>';
         
         // check some defaults and init data for quicker access
 		switch ($template)
@@ -650,7 +650,7 @@ class sportsmanagementModelPrediction extends JModel
 //					INNER JOIN #__sportsmanagement_project_team AS pt on pt.id='$teamID'
 //					WHERE t.id=pt.team_id";
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		$db->setQuery($query);
 		$db->query();
@@ -1067,7 +1067,7 @@ $body .= "</td>";
 $body .= "<td nowrap='nowrap' class='td_c'>";
 if ( $configprediction['show_logo_small'] == 1 )
 {
-$logo_home = $this->getMatchTeamClubLogo($result->projectteam1_id);
+$logo_home = self::getMatchTeamClubLogo($result->projectteam1_id);
 if	(($logo_home == '') || (!file_exists($logo_home)))
 {
 $logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -1078,7 +1078,7 @@ $body .=  ' ';
 }
 if ( $configprediction['show_logo_small'] == 2 )
 {
-$country_home = $this->getMatchTeamClubFlag($result->projectteam1_id);
+$country_home = self::getMatchTeamClubFlag($result->projectteam1_id);
 $body .=  Countries::getCountryFlag($country_home);
 }
 $body .= "</td>";	
@@ -1091,7 +1091,7 @@ $body .= "</td>";
 $body .= "<td nowrap='nowrap' class='td_c'>";
 if ( $configprediction['show_logo_small'] == 1 )
 {
-$logo_away = $this->getMatchTeamClubLogo($result->projectteam2_id);
+$logo_away = self::getMatchTeamClubLogo($result->projectteam2_id);
 if (($logo_away=='') || (!file_exists($logo_away)))
 {
 $logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -1102,7 +1102,7 @@ $body .=  JHTML::image(JURI::root().$logo_away,$imgTitle,array(' title' => $imgT
 }
 if ( $configprediction['show_logo_small'] == 2 )
 {
-$country_away = $this->getMatchTeamClubFlag($result->projectteam2_id);
+$country_away = self::getMatchTeamClubFlag($result->projectteam2_id);
 $body .=  Countries::getCountryFlag($country_away);
 }
 $body .= "</td>";				
@@ -1131,7 +1131,7 @@ $body .= "</td>";
 
 // punkte
 $body .= "<td class='td_c'>";
-$points = $this->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+$points = self::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 $totalPoints = $totalPoints+$points;
 $body .=  $points;
 $body .= "</td>";
@@ -1147,10 +1147,18 @@ $body .= "&nbsp;";
 $body .= "</td>";
 
 $body .= "<td class='td_l' colspan='8'>";
-$totalCount = $this->getTippCountTotal($predictionGameID, $result->id);
-$homeCount = $this->getTippCountHome($predictionGameID, $result->id);
-$awayCount = $this->getTippCountAway($predictionGameID, $result->id);
-$drawCount = $this->getTippCountDraw($predictionGameID, $result->id);
+
+
+$totalCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 3);
+$homeCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 1);
+$awayCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 2);
+$drawCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 0);
+
+//$totalCount = $this->getTippCountTotal($predictionGameID, $result->id);
+//$homeCount = $this->getTippCountHome($predictionGameID, $result->id);
+//$awayCount = $this->getTippCountAway($predictionGameID, $result->id);
+//$drawCount = $this->getTippCountDraw($predictionGameID, $result->id);
+
 if ($totalCount > 0)
 {
 $percentageH = round(( $homeCount * 100 / $totalCount ),2);
@@ -1662,7 +1670,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         
         $query->order('pm.id,m.match_date,m.id ASC');
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         $db->setQuery($query);
 		$results = $db->loadObjectList();
@@ -2014,7 +2022,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 		uasort($dummy,array($this,'compare'));
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dummy<br><pre>'.print_r($dummy,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dummy<br><pre>'.print_r($dummy,true).'</pre>'),'');
 
 		$i = 1;
 		$lfdnumber = 1;
@@ -2193,7 +2201,7 @@ $query->where('pm.group_id = '.self::$pggroup);
         $query->order('pm.id ASC');
         $db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$results = $db->loadObjectList();
 		

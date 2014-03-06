@@ -52,9 +52,15 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewPredictionHeading extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionHeading::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
-		$document = & JFactory::getDocument();
+		$document =  JFactory::getDocument();
         $mainframe = JFactory::getApplication();		
 //	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	

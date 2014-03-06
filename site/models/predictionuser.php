@@ -75,6 +75,12 @@ class sportsmanagementModelPredictionUser extends JModelForm
 
 	function savememberdata()
 	{
+	     $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$result	= true;
 		//$post	= JRequest::get('post');
 		//echo '<br /><pre>~'.print_r($post,true).'~</pre><br />';
@@ -117,10 +123,10 @@ class sportsmanagementModelPredictionUser extends JModelForm
 								picture='$picture'
 						WHERE	id=$predictionMemberID";
 		//echo $query . '<br />';
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+		$db->setQuery($query);
+		if (!$db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($db->getErrorMsg());
 			$result = false;
 			//echo '<br />ERROR~' . $query . '~<br />';
 		}
@@ -130,9 +136,11 @@ class sportsmanagementModelPredictionUser extends JModelForm
 
 	function showMemberPicture($outputUserName, $user_id = 0)
 	{
-	global $mainframe, $option;
-	$mainframe	=& JFactory::getApplication();
-	$db =& JFactory::getDBO();
+	  $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 	$playerName = $outputUserName;
 	$picture = '';
 	
@@ -263,6 +271,12 @@ class sportsmanagementModelPredictionUser extends JModelForm
 
 	function getPredictionProjectTeams($project_id)
 	{
+	     $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$query = '	SELECT	pt.id AS value,
 							t.name AS text
 
@@ -273,8 +287,8 @@ class sportsmanagementModelPredictionUser extends JModelForm
 					ORDER by text';
 
 		//echo "<br />$query</br />";
-		$this->_db->setQuery( $query );
-		$results = $this->_db->loadObjectList();
+		$db->setQuery( $query );
+		$results = $db->loadObjectList();
 		//echo '<br /><pre>~' . print_r($results,true) . '~</pre><br />';
 		return $results;
 	}
@@ -285,8 +299,14 @@ class sportsmanagementModelPredictionUser extends JModelForm
      */
 		function getPointsChartData( )
 		{
-			$pgid	= $this->_db->Quote($this->predictionGameID);
-			$uid	= $this->_db->Quote($this->predictionMemberID);
+		    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+			$pgid	= $db->Quote($this->predictionGameID);
+			$uid	= $db->Quote($this->predictionMemberID);
 
 
 
@@ -303,8 +323,8 @@ class sportsmanagementModelPredictionUser extends JModelForm
            . '  AND prmem.id = '.$uid			   
 			     . ' GROUP BY rounds.roundcode'
 			       ;
-    		$this->_db->setQuery( $query );
-    		$this->result = $this->_db->loadObjectList();
+    		$db->setQuery( $query );
+    		$this->result = $db->loadObjectList();
     		return $this->result;
 		}	
 

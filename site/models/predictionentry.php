@@ -121,7 +121,8 @@ public $_predictionGame		= null;
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
         
-	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+       
 		parent::__construct();
 	}
 
@@ -230,57 +231,124 @@ public $_predictionGame		= null;
 
 		return $helpText;
 	}
-
-	function getTippCountHome($predictionProjectID,$matchID)
+    
+    function getTippCount($predictionProjectID,$matchID,$total=3)
 	{
-		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
-					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
-							project_id = ' . intval( $predictionProjectID ) . ' AND
-							match_id = ' . intval( $matchID ) . ' AND
-							tipp = 1';
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadResult();
+	   $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        // Select some fields
+        $query->select('count(tipp)');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+		$query->where('prediction_id = ' . intval( $this->predictionGameID ));
+        $query->where('project_id = ' . intval( $predictionProjectID ));
+        $query->where('match_id = ' . intval( $matchID ));
+        
+        switch ($total)
+        {
+            case 0:
+            case 1:
+            case 2:
+            $query->where('tipp = ' . $total);
+            break;
+            case 3:
+            break;
+        }
+
+		$db->setQuery( $query );
+		$result = $db->loadResult();
 		return $result;
 	}
 
-	function getTippCountDraw($predictionProjectID,$matchID)
-	{
-		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
-					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
-							project_id = ' . intval( $predictionProjectID ) . ' AND
-							match_id = ' . intval( $matchID ) . ' AND
-							tipp = 0';
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadResult();
-		return $result;
-	}
+//	function getTippCountHome($predictionProjectID,$matchID)
+//	{
+//	   $option = JRequest::getCmd('option');    
+//    $mainframe = JFactory::getApplication();
+//    // Create a new query object.		
+//		$db = JFactory::getDBO();
+//		$query = $db->getQuery(true);
+//        // Select some fields
+//        $query->select('count(tipp)');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+//		$query->where('prediction_id = ' . intval( $this->predictionGameID ));
+//        $query->where('project_id = ' . intval( $predictionProjectID ));
+//        $query->where('match_id = ' . intval( $matchID ));
+//        $query->where('tipp = 1');
+//        
+//        
+////        $query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
+////					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
+////							project_id = ' . intval( $predictionProjectID ) . ' AND
+////							match_id = ' . intval( $matchID ) . ' AND
+////							tipp = 1';
+//		$db->setQuery( $query );
+//		$result = $db->loadResult();
+//		return $result;
+//	}
 
-	function getTippCountAway($predictionProjectID,$matchID)
-	{
-		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
-					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
-							project_id = ' . intval( $predictionProjectID ) . ' AND
-							match_id = ' . intval( $matchID ) . ' AND
-							tipp = 2';
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadResult();
-		return $result;
-	}
+//	function getTippCountDraw($predictionProjectID,$matchID)
+//	{
+//	   $option = JRequest::getCmd('option');    
+//    $mainframe = JFactory::getApplication();
+//    // Create a new query object.		
+//		$db = JFactory::getDBO();
+//		$query = $db->getQuery(true);
+//        
+//		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
+//					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
+//							project_id = ' . intval( $predictionProjectID ) . ' AND
+//							match_id = ' . intval( $matchID ) . ' AND
+//							tipp = 0';
+//		$this->_db->setQuery( $query );
+//		$result = $this->_db->loadResult();
+//		return $result;
+//	}
 
-	function getTippCountTotal($predictionProjectID,$matchID)
-	{
-		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
-					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
-							project_id = ' . intval( $predictionProjectID ) . ' AND
-							match_id = ' . intval( $matchID );
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadResult();
-		return $result;
-	}
+//	function getTippCountAway($predictionProjectID,$matchID)
+//	{
+//	   $option = JRequest::getCmd('option');    
+//    $mainframe = JFactory::getApplication();
+//    // Create a new query object.		
+//		$db = JFactory::getDBO();
+//		$query = $db->getQuery(true);
+//        
+//		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
+//					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
+//							project_id = ' . intval( $predictionProjectID ) . ' AND
+//							match_id = ' . intval( $matchID ) . ' AND
+//							tipp = 2';
+//		$this->_db->setQuery( $query );
+//		$result = $this->_db->loadResult();
+//		return $result;
+//	}
+
+//	function getTippCountTotal($predictionProjectID,$matchID)
+//	{
+//	   $option = JRequest::getCmd('option');    
+//    $mainframe = JFactory::getApplication();
+//    // Create a new query object.		
+//		$db = JFactory::getDBO();
+//		$query = $db->getQuery(true);
+//        
+//		$query = 'SELECT count(tipp) FROM #__sportsmanagement_prediction_result
+//					WHERE	prediction_id = ' . intval( $this->predictionGameID ) . ' AND
+//							project_id = ' . intval( $predictionProjectID ) . ' AND
+//							match_id = ' . intval( $matchID );
+//		$this->_db->setQuery( $query );
+//		$result = $this->_db->loadResult();
+//		return $result;
+//	}
 
 	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids)
 	{
-		    
+		    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
     $query = 	"	SELECT	m.id,
 								m.round_id,
 								m.match_date,
@@ -332,7 +400,11 @@ public $_predictionGame		= null;
 	{
 //		global $mainframe, $option;
     $document	= JFactory::getDocument();
-    $mainframe	= JFactory::getApplication();
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 
     $result	= true;
 		
@@ -516,7 +588,7 @@ public $_predictionGame		= null;
     // email mit tippergebnissen senden
     if ( $predictionMemberInfo->reminder )
     {
-    $this->sendMemberTipResults($mID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID);
+    sportsmanagementModelPrediction::sendMemberTipResults($mID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID);
     }
     
 		return $result;

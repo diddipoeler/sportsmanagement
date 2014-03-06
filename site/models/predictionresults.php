@@ -113,7 +113,7 @@ class sportsmanagementModelPredictionResults extends JModel
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
         
-	   $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
        
 		parent::__construct();
 		

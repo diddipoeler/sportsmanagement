@@ -57,6 +57,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewPredictionRanking extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionRanking::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla

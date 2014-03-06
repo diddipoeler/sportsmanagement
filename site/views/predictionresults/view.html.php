@@ -58,6 +58,12 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
  */
 class sportsmanagementViewPredictionResults extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionResults::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla

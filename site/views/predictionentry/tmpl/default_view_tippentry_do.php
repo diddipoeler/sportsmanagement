@@ -1,5 +1,41 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -185,15 +221,36 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 					$disabled = '';
 					$totalPoints=0;
 
-					if (empty($this->model->_predictionMember->fav_team)){$this->model->_predictionMember->fav_team='0,0';}
-					$sFavTeamsList=explode(';',$this->model->_predictionMember->fav_team);
-					foreach ($sFavTeamsList AS $key => $value){$dFavTeamsList[]=explode(',',$value);}
-					foreach ($dFavTeamsList AS $key => $value){$favTeamsList[$value[0]]=$value[1];}
+					if (empty(sportsmanagementModelPrediction::$_predictionMember->fav_team))
+                    {
+                        sportsmanagementModelPrediction::$_predictionMember->fav_team = '0,0';
+                        }
+                        
+					$sFavTeamsList = explode(';',sportsmanagementModelPrediction::$_predictionMember->fav_team);
+					foreach ($sFavTeamsList AS $key => $value)
+                    {
+                        $dFavTeamsList[]=explode(',',$value);
+                        }
+                        
+					foreach ($dFavTeamsList AS $key => $value)
+                    {
+                        $favTeamsList[$value[0]]=$value[1];
+                        }
 
-					if (empty($this->model->_predictionMember->champ_tipp)){$this->model->_predictionMember->champ_tipp='0,0';}
-					$sChampTeamsList=explode(';',$this->model->_predictionMember->champ_tipp);
-					foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[]=explode(',',$value);}
-					foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]]=$value[1];}
+					if (empty(sportsmanagementModelPrediction::$_predictionMember->champ_tipp))
+                    {
+                        sportsmanagementModelPrediction::$_predictionMember->champ_tipp = '0,0';
+                        }
+                        
+					$sChampTeamsList = explode(';',sportsmanagementModelPrediction::$_predictionMember->champ_tipp);
+					foreach ($sChampTeamsList AS $key => $value)
+                    {
+                        $dChampTeamsList[]=explode(',',$value);
+                        }
+					foreach ($dChampTeamsList AS $key => $value)
+                    {
+                        $champTeamsList[$value[0]] = $value[1];
+                        }
 
 					$showSaveButton=false;
 					if (count($roundResults) > 0)
@@ -356,14 +413,22 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 // welcher tippmodus
 								if ($predictionProject->mode=='0')	// Tipp in normal mode
 								{
-									echo $this->createStandardTippSelect(	$result->tipp_home,$result->tipp_away,$result->tipp,
-																					$predictionProject->project_id,$result->id,
-																					$this->config['seperator'],$tippAllowed);
+									echo $this->createStandardTippSelect(	$result->tipp_home,
+                                    $result->tipp_away,
+                                    $result->tipp,
+																					$predictionProject->project_id,
+                                                                                    $result->id,
+																					$this->config['seperator'],
+                                                                                    $tippAllowed);
 								}
 								else	// Tipp in toto mode
 								{
-									echo $this->createTotoTippSelect(	$result->tipp_home,$result->tipp_away,$result->tipp,
-																				$predictionProject->project_id,$result->id,$tippAllowed);
+									echo $this->createTotoTippSelect(	$result->tipp_home,
+                                    $result->tipp_away,
+                                    $result->tipp,
+																				$predictionProject->project_id,
+                                                                                $result->id,
+                                                                                $tippAllowed);
 								}
 								
 								?>
@@ -425,10 +490,10 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 									echo '&nbsp;'; ?></td>
 								<td class="td_l">
 									<?php
-									$totalCount = $this->model->getTippCountTotal($predictionProject->project_id, $result->id);
-									$homeCount = $this->model->getTippCountHome($predictionProject->project_id, $result->id);
-									$awayCount = $this->model->getTippCountAway($predictionProject->project_id, $result->id);
-									$drawCount = $this->model->getTippCountDraw($predictionProject->project_id, $result->id);
+									$totalCount = $this->model->getTippCount($predictionProject->project_id, $result->id, 3);
+									$homeCount = $this->model->getTippCount($predictionProject->project_id, $result->id, 1);
+									$awayCount = $this->model->getTippCount($predictionProject->project_id, $result->id, 2);
+									$drawCount = $this->model->getTippCount($predictionProject->project_id, $result->id, 0);
 									if ($totalCount > 0)
 									{
 										$percentageH = round(( $homeCount * 100 / $totalCount ),2);

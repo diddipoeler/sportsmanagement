@@ -57,6 +57,12 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewPredictionEntry extends JView
 {
 
+	/**
+	 * sportsmanagementViewPredictionEntry::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -68,7 +74,7 @@ class sportsmanagementViewPredictionEntry extends JView
     
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
         
 		if (isset($this->predictionGame))
 		{
@@ -100,9 +106,21 @@ class sportsmanagementViewPredictionEntry extends JView
 			if ($this->allowedAdmin)
 			{
 				$lists = array();
-				if ($this->predictionMember->pmID > 0){$dMemberID=$this->predictionMember->pmID;}else{$dMemberID=0;}
+				if ($this->predictionMember->pmID > 0)
+                {
+                    $dMemberID = $this->predictionMember->pmID;
+                    }
+                    else
+                    {
+                        $dMemberID = 0;
+                        }
+                        
 				$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
-				if ($res=&$model->getPredictionMemberList($this->config)){$predictionMembers=array_merge($predictionMembers,$res);}
+				if ($res=&$model->getPredictionMemberList($this->config))
+                {
+                    $predictionMembers = array_merge($predictionMembers,$res);
+                    }
+                    
 				$lists['predictionMembers']=JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 				unset($res);
 				unset($predictionMembers);
@@ -123,6 +141,18 @@ class sportsmanagementViewPredictionEntry extends JView
 		}
 	}
 	
+	/**
+	 * sportsmanagementViewPredictionEntry::createStandardTippSelect()
+	 * 
+	 * @param mixed $tipp_home
+	 * @param mixed $tipp_away
+	 * @param mixed $tipp
+	 * @param string $pid
+	 * @param string $mid
+	 * @param mixed $seperator
+	 * @param mixed $allow
+	 * @return
+	 */
 	function createStandardTippSelect($tipp_home=NULL,$tipp_away=NULL,$tipp=NULL,$pid='0',$mid='0',$seperator,$allow)
 	{
 		if (!$allow){
@@ -145,6 +175,17 @@ class sportsmanagementViewPredictionEntry extends JView
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementViewPredictionEntry::createTotoTippSelect()
+	 * 
+	 * @param mixed $tipp_home
+	 * @param mixed $tipp_away
+	 * @param mixed $tipp
+	 * @param string $pid
+	 * @param string $mid
+	 * @param mixed $allow
+	 * @return
+	 */
 	function createTotoTippSelect($tipp_home=NULL,$tipp_away=NULL,$tipp=NULL,$pid='0',$mid='0',$allow)
 	{
 		

@@ -1,12 +1,40 @@
 <?php 
-/**
-* @copyright	Copyright (C) 2007-2012 JoomLeague.net. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
 */
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
@@ -44,13 +72,13 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 	<table class='plinfo' cellpadding='4' cellspacing='1'>
 		<tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NAME','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_NAME');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NAME','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_NAME');
 			?>
 			<td colspan='2'><?php echo ($this->config['show_full_name']) ? $this->predictionMember->name : $this->predictionMember->username; ?></td>
 		</tr>
 		<tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REGDATE');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REGDATE');
 			?>
 			<td colspan='2'><?php
 				$regDate = substr($this->predictionMember->pmRegisterDate,0,10);
@@ -58,12 +86,12 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 				if ($this->allowedAdmin)
 				{
 					echo JText::sprintf(	'%1$s - %2$s',
-											JHTML::calendar(JoomleagueHelper::convertDate($regDate),'registerDate','date','%d-%m-%Y','size="10"'),
+											JHTML::calendar(sportsmanagementHelper::convertDate($regDate),'registerDate','date','%d-%m-%Y','size="10"'),
 											'<input class="inputbox" type="text" name="registerTime" size="4" maxlength="5" value="'.$regTime.'" />');
 				}
 				else
 				{
-					echo '<input type="hidden" name="registerDate" value="'.JoomleagueHelper::convertDate($regDate).'" />';
+					echo '<input type="hidden" name="registerDate" value="'.sportsmanagementHelper::convertDate($regDate).'" />';
 					echo '<input type="hidden" name="registerTime" value="'.$regTime.'" />';
 					echo	$this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
 							JHTML::date($this->predictionMember->pmRegisterDate,JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
@@ -73,14 +101,14 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 		</tr>
 		<tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
 			?>
 			<td colspan='2'><?php echo $this->lists['approvedForGame']; ?></td>
 		</tr>
         
         <tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP');
 			?>
 			<td colspan='2'>
             <?php 
@@ -101,7 +129,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<tr>
 				<?php
-				echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALIAS','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALIAS');
+				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALIAS','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALIAS');
 				?>
 				<td colspan='2'>
 					<input	class='inputbox' type='text' name='aliasName' size='<?php echo $this->config['input_alias_length']; ?>' maxlength='255'
@@ -117,7 +145,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<tr>
 				<?php
-				echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SLOGAN','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SLOGAN');
+				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SLOGAN','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SLOGAN');
 				?>
 				<td colspan='2'>
 					<input	class='inputbox' type='text' name='slogan' size='<?php echo $this->config['input_slogan_length']; ?>' maxlength='255'
@@ -129,7 +157,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 		?>
 		<tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SHOW_PROFILE','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SHOW_PROFILE');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SHOW_PROFILE','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SHOW_PROFILE');
 			?>
 			<td colspan='2'><?php echo $this->lists['show_profile']; ?></td>
 		</tr>
@@ -139,7 +167,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<tr>
 				<?php
-				echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REMINDER','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REMINDER');
+				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REMINDER','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REMINDER');
 				?>
 				<td colspan='2'><?php echo $this->lists['reminder']; ?></td>
 			</tr>
@@ -152,7 +180,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<tr>
 				<?php
-				echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_RECEIPT','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_RECEIPT');
+				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_RECEIPT','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_RECEIPT');
 				?>
 				<td colspan='2'><?php echo $this->lists['receipt']; ?></td>
 			</tr>
@@ -161,7 +189,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 		?>
 		<tr>
 			<?php
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALLOW_ADMIN','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALLOW_ADMIN');
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALLOW_ADMIN','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALLOW_ADMIN');
 			?>
 			<td colspan='2'><?php echo $this->lists['admintipp']; ?></td>
 		</tr>
@@ -172,7 +200,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<tr>
 				<?php
-				echo $this->model->echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_FAVTEAM','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_FAVTEAM',$rowspan);
+				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_FAVTEAM','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_FAVTEAM',$rowspan);
 
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
@@ -205,7 +233,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			$rowspan = count($this->predictionProjectS);
 
 			
-			echo JoomleagueModelPredictionUsers::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_CHAMPION','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_CHAMPION',$rowspan);
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_CHAMPION','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_CHAMPION',$rowspan);
 
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
