@@ -61,6 +61,6 @@
 		</table>
 	</fieldset>
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="option"				value="com_sportsmanagement" />
+	<input type="hidden" name="option"				value="com_joomleague" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

@@ -56,6 +56,11 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerPredictionUsers extends JController
 {
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::display()
+	 * 
+	 * @return
+	 */
 	function display()
 	{
 		$this->showprojectheading();
@@ -63,11 +68,21 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$this->showfooter();
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::cancel()
+	 * 
+	 * @return
+	 */
 	function cancel()
 	{
 		JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',JFactory::getURI()->toString()));
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::select()
+	 * 
+	 * @return
+	 */
 	function select()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
@@ -79,6 +94,11 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$this->setRedirect($link);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::savememberdata()
+	 * 
+	 * @return
+	 */
 	function savememberdata()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_USERS_INVALID_TOKEN_MEMBER_NOT_SAVED'));
@@ -95,8 +115,10 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$predictionGameID	= JRequest::getVar('prediction_id',	'','post','int');
 		$joomlaUserID		= JRequest::getVar('user_id',		'','post','int');
 
-		$model			= $this->getModel('predictionusers');
-		$user			=& JFactory::getUser();
+		//$model			= $this->getModel('predictionusers');
+        $modelusers = JModel::getInstance("predictionusers", "sportsmanagementModel");
+        $model = JModel::getInstance("prediction", "sportsmanagementModel");
+		$user			= JFactory::getUser();
 		$isMember		= $model->checkPredictionMembership();
 		$allowedAdmin	= $model->getAllowed();
 
@@ -114,7 +136,7 @@ class sportsmanagementControllerPredictionUsers extends JController
 			}
 			else
 			{
-				if (!$model->savememberdata())
+				if (!$modelusers->savememberdata())
 				{
 					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
 					$link = JFactory::getURI()->toString();
@@ -133,6 +155,11 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$this->setRedirect($link,$msg);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::selectprojectround()
+	 * 
+	 * @return
+	 */
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));

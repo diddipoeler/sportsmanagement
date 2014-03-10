@@ -52,7 +52,7 @@ if (!$this->showediticon)
 {
 	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',JFactory::getURI()->toString()),JText::_('ALERTNOTAUTH'));
 }
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 
 $script =	'
 				function submitbutton(pressbutton)

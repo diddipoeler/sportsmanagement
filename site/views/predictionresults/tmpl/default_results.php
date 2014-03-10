@@ -294,7 +294,7 @@ echo $this->pagination->getListFooter();
 				    }
 				    
 							$predictionsCount++;
-							$result = $this->model->createResultsObject(	$memberPredictionPoint->homeResult,
+							$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
 																			$memberPredictionPoint->awayResult,
 																			$memberPredictionPoint->prTipp,
 																			$memberPredictionPoint->prHomeTipp,
@@ -302,14 +302,14 @@ echo $this->pagination->getListFooter();
 																			$memberPredictionPoint->prJoker,
 																			$memberPredictionPoint->homeDecision,
 																			$memberPredictionPoint->awayDecision);
-							$newPoints = $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+							$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							//if (!is_null($memberPredictionPoint->prPoints))
 							{
 								$points=$memberPredictionPoint->prPoints;
 								if ($newPoints!=$points)
 								{
 									// this check also should be done if the result is not displayed
-									$memberPredictionPoint=$this->model->savePredictionPoints(	$memberPredictionPoint,
+									$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(	$memberPredictionPoint,
 																								$predictionProject,
 																								true);
 									//$points=$newPoints;

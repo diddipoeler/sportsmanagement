@@ -55,6 +55,12 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewprojectteams extends JView
 {
 
+	/**
+	 * sportsmanagementViewprojectteams::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');

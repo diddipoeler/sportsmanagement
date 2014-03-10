@@ -42,16 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-/*
-// Include dependancy of the main model form
-jimport('joomla.application.component.modelform');
-// import Joomla modelitem library
-jimport('joomla.application.component.modelitem');
-// Include dependancy of the dispatcher
-jimport('joomla.event.dispatcher');
-*/
-
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 
@@ -67,6 +57,11 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 class sportsmanagementModelPredictionUsers extends JModel
 {
 
+	/**
+	 * sportsmanagementModelPredictionUsers::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
@@ -111,9 +106,21 @@ class sportsmanagementModelPredictionUsers extends JModel
 		parent::__construct();
 	}
 
+	/**
+	 * sportsmanagementModelPredictionUsers::savememberdata()
+	 * 
+	 * @return
+	 */
 	function savememberdata()
 	{
-		$result	= true;
+		$document	= JFactory::getDocument();
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        $result	= true;
 		//$post	= JRequest::get('post');
 		//echo '<br /><pre>~'.print_r($post,true).'~</pre><br />';
 
@@ -133,33 +140,34 @@ class sportsmanagementModelPredictionUsers extends JModel
 
 		$pRegisterDate		= JRequest::getVar('registerDate',	'',	'post',	'date',JREQUEST_ALLOWRAW);
 		$pRegisterTime		= JRequest::getVar('registerTime',	'',	'post',	'time',JREQUEST_ALLOWRAW);
-		//echo '<br /><pre>~'.print_r($pRegisterDate,true).'~</pre><br />';
-		//echo '<br /><pre>~'.print_r($pRegisterTime,true).'~</pre><br />';
 
 		$dFavTeams='';foreach($fav_teams AS $key => $value){$dFavTeams.=$key.','.$value.';';}$dFavTeams=trim($dFavTeams,';');
 		$dChampTeams='';foreach($champ_teams AS $key => $value){$dChampTeams.=$key.','.$value.';';}$dChampTeams=trim($dChampTeams,';');
 
-		$registerDate = JoomleagueHelper::convertDate($pRegisterDate,0) . ' ' . $pRegisterTime . ':00';
-		//echo '<br /><pre>~'.print_r($registerDate,true).'~</pre><br />';
+		$registerDate = sportsmanagementHelper::convertDate($pRegisterDate,0) . ' ' . $pRegisterTime . ':00';
+	
+        // Must be a valid primary key value.
+        $object = new stdClass();
+        $object->id = $predictionMemberID;
+        $object->registerDate = $registerDate;
+		$object->show_profile = $show_profile;
+        $object->group_id = $group_id;
+		$object->fav_team = $dFavTeams;
+		$object->champ_tipp = $dChampTeams;
+		$object->slogan = $slogan;
+		$object->aliasName = $aliasName;
+		$object->reminder = $reminder;
+		$object->receipt = $receipt;
+		$object->admintipp = $admintipp;
+		$object->picture = $picture;
 
-		$query =	"	UPDATE	#__joomleague_prediction_member
-							SET	registerDate='$registerDate',
-								show_profile=$show_profile,
-                                group_id=$group_id,
-								fav_team='$dFavTeams',
-								champ_tipp='$dChampTeams',
-								slogan='$slogan',
-								aliasName='$aliasName',
-								reminder=$reminder,
-								receipt=$receipt,
-								admintipp=$admintipp,
-								picture='$picture'
-						WHERE	id=$predictionMemberID";
-		//echo $query . '<br />';
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+        // Update their details in the table using id as the primary key.
+        $resultquery = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member', $object, 'id');
+        
+		if (!$resultquery)
 		{
-			$this->setError($this->_db->getErrorMsg());
+			//$this->setError($this->_db->getErrorMsg());
+            $mainframe->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 			//echo '<br />ERROR~' . $query . '~<br />';
 		}
@@ -167,9 +175,16 @@ class sportsmanagementModelPredictionUsers extends JModel
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelPredictionUsers::showMemberPicture()
+	 * 
+	 * @param mixed $outputUserName
+	 * @param integer $user_id
+	 * @return void
+	 */
 	function showMemberPicture($outputUserName, $user_id = 0)
 	{
-	//global $mainframe, $option;
+
 	$mainframe	= JFactory::getApplication();
 	$db = JFactory::getDBO();
 	$playerName = $outputUserName;
@@ -183,88 +198,80 @@ class sportsmanagementModelPredictionUsers extends JModel
 	{
 	// von welcher komponente soll das bild kommen
 	// und ist die komponente installiert
-	$query = "SELECT element
-				FROM #__extensions
-				WHERE element LIKE '" . $this->config['show_image_from'] . "'" ;
+    
+    // Select some fields
+    $query->select('element');
+    $query->from('#__extensions');
+    $query->where("element LIKE '" . $this->config['show_image_from'] . "' pt.project_id = " . (int)$project_id );
+
 	$db->setQuery($query);
 	$results = $db->loadResult();
 	if ( !$results )
 	{
-    //$mainframe->enqueueMessage(JText::_('die komponente '.$this->config['show_image_from'].' ist f&uuml;r das profilbild nicht installiert'),'Error');
+    $mainframe->enqueueMessage(JText::_('Die Komponente '.$this->config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
     }
-	//$mainframe->enqueueMessage(JText::_('komponente ->'.$this->config['show_image_from']),'Notice');
-
+    
+    // Select some fields
+    $query->select('avatar');
+    $query->where('userid = ' . (int)$user_id );
 
 	switch ( $this->config['show_image_from'] )
 	{
     case 'com_sportsmanagement':
     case 'prediction':
     $picture = $this->predictionMember->picture;
-		
     break;
     
     case 'com_cbe':
     $picture = 'components/com_cbe/assets/user.png';
-    $query = 'SELECT avatar
-			FROM #__cbe_users
-			WHERE userid = ' . (int)$user_id ;
-	$db->setQuery($query);
-	$results = $db->loadResult();
-	if ( $results )
-    {
-    $picture = $results;
-    }
+    $query->from('#__cbe_users');
     break;
     
     case 'com_comprofiler':
-    $query = 'SELECT avatar
-			FROM #__comprofiler
-			WHERE user_id = ' . (int)$user_id ;
-	$db->setQuery($query);
-	$results = $db->loadResult();
-    // diddipoeler
-    //$mainframe->enqueueMessage(JText::_('avatar com_comprofiler ->'.$results),'Notice');
-    if ( $results )
-    {
-    $picture = 'images/comprofiler/'.$results;
-    }
+    $query->clear('where');
+    $query->from('#__comprofiler');
+    $query->where('user_id = ' . (int)$user_id );
     break;
     
     case 'com_kunena':
+    $query->from('#__kunena_users');
     $picture = 'media/kunena/avatars/resized/size200/nophoto.jpg';
-    $query = 'SELECT avatar
-			FROM #__kunena_users
-			WHERE userid = ' . (int)$user_id ;
-	$db->setQuery($query);
-	$results = $db->loadResult();
-    // diddipoeler
-    //$mainframe->enqueueMessage(JText::_('avatar com_kunena ->'.$results),'Notice');
-    if ( $results )
-    {
-    $picture = 'media/kunena/avatars/'.$results;
-    }
-    
-    
     break;
     
     case 'com_community':
-    $query = 'SELECT avatar
-			FROM #__community_users
-			WHERE userid = ' . (int)$user_id ;
-	$db->setQuery($query);
-	$results = $db->loadResult();
-    // diddipoeler
-    //$mainframe->enqueueMessage(JText::_('avatar com_community ->'.$results),'Notice');
-    if ( $results )
-    {
-    $picture = $results;
-    }
-    
+    $query->from('#__community_users');
     break;
     
     }
-			//$imgTitle = JText::sprintf('JL_PRED_USERS_AVATAR_OF', $outputUserName, '');
-			
+    
+    switch ( $this->config['show_image_from'] )
+	{
+	   case 'com_community':
+       case 'com_cbe':
+       $db->setQuery($query);
+	   $results = $db->loadResult();
+       if ( $results )
+       {
+       $picture = $results;
+       }
+       break;
+       case 'com_kunena':
+       $db->setQuery($query);
+	   $results = $db->loadResult();
+       if ( $results )
+       {
+       $picture = 'media/kunena/avatars/'.$results;
+       }
+       break;
+       case 'com_comprofiler':
+       $db->setQuery($query);
+	   $results = $db->loadResult();
+       if ( $results )
+       {
+       $picture = 'images/comprofiler/'.$results;
+       }
+	   break;
+    }   
 			
 	if ( !file_exists($picture) )
 	{
@@ -320,6 +327,11 @@ class sportsmanagementModelPredictionUsers extends JModel
 		return $data;
 	}
 	
+	/**
+	 * sportsmanagementModelPredictionUsers::memberPredictionData()
+	 * 
+	 * @return
+	 */
 	function memberPredictionData()
 	{
 		$dataObject = new stdClass();
@@ -329,6 +341,11 @@ class sportsmanagementModelPredictionUsers extends JModel
 		return $dataObject;
 	}
 
+	/**
+	 * sportsmanagementModelPredictionUsers::getChampTippAllowed()
+	 * 
+	 * @return
+	 */
 	function getChampTippAllowed()
 	{
 		$allowed = false;
@@ -347,72 +364,75 @@ class sportsmanagementModelPredictionUsers extends JModel
 		return $allowed;
 	}
 
+	/**
+	 * sportsmanagementModelPredictionUsers::getPredictionProjectTeams()
+	 * 
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPredictionProjectTeams($project_id)
 	{
-		$query = '	SELECT	pt.id AS value,
-							t.name AS text
+	   $document	= JFactory::getDocument();
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        // Select some fields
+        $query->select('pt.id AS value,t.name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id');
+        $query->where('pt.project_id = ' . (int)$project_id );
+        $query->order('text');
 
-					FROM #__joomleague_project_team AS pt
-						LEFT JOIN #__joomleague_team AS t ON t.id=pt.team_id
+		$db->setQuery( $query );
+		$results = $db->loadObjectList();
 
-					WHERE pt.project_id=' . (int)$project_id . '
-					ORDER by text';
-
-		//echo "<br />$query</br />";
-		$this->_db->setQuery( $query );
-		$results = $this->_db->loadObjectList();
-		//echo '<br /><pre>~' . print_r($results,true) . '~</pre><br />';
 		return $results;
 	}
 	
-    /**
-     * get data for pointschart
-     * @return  
-     */
+    
+		/**
+		 * sportsmanagementModelPredictionUsers::getPointsChartData()
+		 * 
+		 * @return
+		 */
 		function getPointsChartData( )
 		{
-			$pgid	= $this->_db->Quote($this->predictionGameID);
-			$uid	= $this->_db->Quote($this->predictionMemberID);
+		  $document	= JFactory::getDocument();
+    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
+			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
 
-/*
+// Select some fields
+        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name');
+        $query->select('SUM(pr.points) AS points');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ON rounds.id = matches.round_id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr ON pr.match_id = matches.id');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS prmem ON prmem.user_id = pr.user_id');
+        
+        $query->where('pr.prediction_id = '.$pgid);
+        $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
+        $query->where('prmem.id = '.$uid);
+        $query->group('rounds.roundcode');
 
-SELECT rounds.id, 
-rounds.id AS roundcode, 
-rounds.name, 
-SUM(pr.points) AS points 
-FROM jos_joomleague_round AS rounds 
-INNER JOIN jos_joomleague_match AS matches 
-ON rounds.id = matches.round_id 
-LEFT JOIN jos_joomleague_prediction_result AS pr 
-ON pr.match_id = matches.id 				   
-WHERE rounds.project_id = 1
-AND (matches.cancel IS NULL OR matches.cancel = 0)
-GROUP BY rounds.roundcode
-
-*/
-
-			$query = ' SELECT rounds.id, '
-			     . ' rounds.roundcode AS roundcode, '
-				   . ' rounds.name, '
-				   . ' SUM(pr.points) AS points '
-			     . ' FROM #__joomleague_round AS rounds '
-			     . ' INNER JOIN #__joomleague_match AS matches ON rounds.id = matches.round_id '
-			     . ' LEFT JOIN #__joomleague_prediction_result AS pr ON pr.match_id = matches.id '
-           . ' LEFT JOIN #__joomleague_prediction_member AS prmem ON prmem.user_id = pr.user_id '
-			     . ' WHERE pr.prediction_id = '.$pgid
-				   . '  AND (matches.cancel IS NULL OR matches.cancel = 0)'
-           . '  AND prmem.id = '.$uid			   
-			     . ' GROUP BY rounds.roundcode'
-			       ;
-    		$this->_db->setQuery( $query );
-    		$this->result = $this->_db->loadObjectList();
+    		$db->setQuery( $query );
+    		$this->result = $db->loadObjectList();
     		return $this->result;
 		}	
 
-    /**
-     * get data for rankschart
-     * @return  
-     */
+    
+		/**
+		 * sportsmanagementModelPredictionUsers::getRanksChartData()
+		 * 
+		 * @return void
+		 */
 		function getRanksChartData( )
 		{
 

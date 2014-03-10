@@ -235,7 +235,7 @@ JHtml::_('behavior.modal');
 						//echo '<br />#<pre>'; print_r( $pred_project ); echo '</pre>#<br />';
 						$link = JRoute::_(	'index.php?option=com_sportsmanagement&' .
 											'' .
-											'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'] );
+											'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'].'&project_id='.$pred_project['project_id'] );
                                             
                                             
 						?>

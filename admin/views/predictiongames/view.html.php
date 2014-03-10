@@ -55,6 +55,12 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewPredictionGames extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionGames::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe = JFactory::getApplication();
@@ -124,7 +130,6 @@ $items = $this->get('Items');
 		if ( $this->prediction_id > 0 )
 		{
 			$this->assign( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
-			//$this->assignRef( 'predictionAdmins',	$this->getModel()->getAdmins( $prediction_id ) );
 		}
 
     

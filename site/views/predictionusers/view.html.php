@@ -163,7 +163,7 @@ class sportsmanagementViewPredictionUsers extends JView
           }
           
 					$projectteams[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
-					if ($res=&$model->getPredictionProjectTeams($predictionProject->project_id))
+					if ($res = $model->getPredictionProjectTeams($predictionProject->project_id))
 					{
 						$projectteams = array_merge($projectteams,$res);
 					}
@@ -260,7 +260,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 	{
 		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
 
-		$data = $this->get('PointsChartData');
+		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
     //echo 'data -> <pre> '.print_r($data,true).'</pre><br>';
     

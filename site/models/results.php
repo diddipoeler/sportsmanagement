@@ -429,7 +429,7 @@ class sportsmanagementModelResults extends JModel
 		$user = JFactory::getUser();
 		if ($user->id != 0)
 		{
-			$project =& $this->getProject();
+			$project = sportsmanagementModelProject::getProject();
 			$hasACLPermssion = $user->authorise('results.saveshort', 'com_sportsmanagement');
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;

@@ -45,7 +45,7 @@ JFormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldprojectlist
+ * JFormFieldprojectteamlist
  * 
  * @package   
  * @author 
@@ -53,13 +53,13 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldprojectlist extends JFormFieldList
+class JFormFieldprojectteamlist extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'projectlist';
+	public $type = 'projectteamlist';
 
 	/**
 	 * Method to get the field options.
@@ -70,18 +70,31 @@ class JFormFieldprojectlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        // Initialize variables.
 		$options = array();
+        
+    $project_id = $mainframe->getUserState( "$option.pid", '0' );
     
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+    
+    if ($project_id)
+		{
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
-			
-			$query->select('l.id AS value, l.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as l');
-			$query->order('l.name');
+			$query->select('pt.team_id AS value, t.name AS text');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+			$query->where('pt.project_id = '.$project_id);
+			$query->order('t.name');
 			$db->setQuery($query);
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 			$options = $db->loadObjectList();
-    
+    }
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;

@@ -56,6 +56,11 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
  */
 class sportsmanagementModelPredictionRules extends JModel
 {
+	/**
+	 * sportsmanagementModelPredictionRules::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
@@ -77,9 +82,8 @@ class sportsmanagementModelPredictionRules extends JModel
 
 		$this->page  				= JRequest::getInt('page',	1);
         
-        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
         $prediction = new sportsmanagementModelPrediction();  
-        //$prediction->predictionGameID = $this->predictionGameID	;
+
         sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
         
         sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
@@ -94,8 +98,6 @@ class sportsmanagementModelPredictionRules extends JModel
         sportsmanagementModelPrediction::$to = $this->to;
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
-        
-	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
        
 		parent::__construct();
 	}

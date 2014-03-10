@@ -94,6 +94,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					</td>
 					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
           <?php
+          
+          echo JHTML::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',$this->model->pggrouprank);
+          
           $groups = sportsmanagementModelPrediction::getPredictionGroupList();
           $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
@@ -282,13 +285,13 @@ echo $this->pagination->getListFooter();
 					
 					
 					
-					$predictionsCount=0;
-					$totalPoints=0;
-					$ChampPoints=0;
-					$totalTop=0;
-					$totalDiff=0;
-					$totalTend=0;
-					$totalJoker=0;
+					$predictionsCount = 0;
+					$totalPoints = 0;
+					$ChampPoints = 0;
+					$totalTop = 0;
+					$totalDiff = 0;
+					$totalTend = 0;
+					$totalJoker = 0;
 					if (!empty($memberPredictionPoints))
 					{
 						foreach ($memberPredictionPoints AS $memberPredictionPoint)
@@ -299,7 +302,7 @@ echo $this->pagination->getListFooter();
 								(!is_null($memberPredictionPoint->awayDecision)))
 							{
 								$predictionsCount++;
-								$result = $this->model->createResultsObject(	$memberPredictionPoint->homeResult,
+								$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
 																				$memberPredictionPoint->awayResult,
 																				$memberPredictionPoint->prTipp,
 																				$memberPredictionPoint->prHomeTipp,
@@ -307,14 +310,14 @@ echo $this->pagination->getListFooter();
 																				$memberPredictionPoint->prJoker,
 																				$memberPredictionPoint->homeDecision,
 																				$memberPredictionPoint->awayDecision);
-								$newPoints = $this->model->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+								$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 								//if (!is_null($memberPredictionPoint->prPoints))
 								{
 									$points=$memberPredictionPoint->prPoints;
 									if ($newPoints!=$points)
 									{
 										// this check also should be done if the result is not displayed
-										$memberPredictionPoint=$this->model->savePredictionPoints(	$memberPredictionPoint,
+										$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(	$memberPredictionPoint,
 																									$predictionProject,
 																									true);
 										$points=$newPoints;

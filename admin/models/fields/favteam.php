@@ -77,12 +77,7 @@ class JFormFieldFavteam extends JFormFieldList
 
 		$varname = (string) $this->element['varname'];
         $project_id = $mainframe->getUserState( "$option.pid", '0' );;
-        /*
-		$project_id = JRequest::getVar($varname);
-		if (is_array($project_id)) {
-			$project_id = $project_id[0];
-		}
-		*/
+
 		if ($project_id)
 		{		
 			$db = JFactory::getDbo();
@@ -90,7 +85,8 @@ class JFormFieldFavteam extends JFormFieldList
 			
 			$query->select('pt.team_id AS value, t.name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-			$query->join('inner', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id');
+            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
 			$query->where('pt.project_id = '.$project_id);
 			$query->order('t.name');
 			$db->setQuery($query);

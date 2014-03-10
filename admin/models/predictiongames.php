@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 
 // Check to ensure this file is included in Joomla!
@@ -22,6 +58,12 @@ class sportsmanagementModelPredictionGames extends JModelList
 	var $_identifier = "predgames";
 	
     
+    /**
+     * sportsmanagementModelPredictionGames::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -70,6 +112,11 @@ class sportsmanagementModelPredictionGames extends JModelList
 		parent::populateState('pre.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelPredictionGames::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -110,51 +157,79 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 	}
 
 
-
-	
-
+	/**
+	 * sportsmanagementModelPredictionGames::getChilds()
+	 * 
+	 * @param mixed $pred_id
+	 * @param bool $all
+	 * @return
+	 */
 	function getChilds( $pred_id, $all = false )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$what = 'pro.*';
 		if ( $all )
 		{
 			$what = 'pro.project_id';
 		}
-		//$query = "SELECT " . $what . " FROM #__joomleague_predictiongame_project WHERE prediction_id = '" . $this->id . "'";
-		$query = "	SELECT	" . $what . ",
-							joo.name AS project_name
-
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_project AS pro
-					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS joo ON joo.id=pro.project_id
-
-					WHERE pro.prediction_id = '" . $pred_id . "'";
-
-		$this->_db->setQuery( $query );
+        
+        // Select some fields
+        $query->select($what);
+        $query->select('joo.name as project_name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pro ');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS joo ON joo.id = pro.project_id');
+        $query->where('pro.prediction_id = ' . $pred_id);
+        
+		$db->setQuery( $query );
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		if ( $all )
 		{
-			return $this->_db->loadResultArray();
+			return $db->loadResultArray();
 		}
-		return $this->_db->loadAssocList( 'id' );
+		return $db->loadAssocList( 'id' );
 	}
 
+	/**
+	 * sportsmanagementModelPredictionGames::getAdmins()
+	 * 
+	 * @param mixed $pred_id
+	 * @param bool $list
+	 * @return
+	 */
 	function getAdmins( $pred_id, $list = false )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$as_what = '';
 		if ( $list )
 		{
 			$as_what = ' AS value';
 		}
-		#$query = "SELECT user_id" . $as_what . " FROM #__joomleague_predictiongame_admins WHERE prediction_id = " . $this->id;
-		$query = "SELECT user_id" . $as_what . " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin WHERE prediction_id = " . $pred_id;
+        
+        // Select some fields
+        $query->select('user_id' . $as_what);
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin ');
+        $query->where('prediction_id = ' . $pred_id);
 
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
 		if ( $list )
 		{
-			return $this->_db->loadObjectList();
+			return $db->loadObjectList();
 		}
 		else
 		{
-			return $this->_db->loadResultArray();
+			return $db->loadResultArray();
 		}
 	}
 
@@ -167,16 +242,22 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 	*/
 	function getPredictionGames()
 	{
-		$query = "	SELECT	id AS value,
-							name AS text
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_game
-					ORDER by name";
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('id AS value, name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game ');
+        $query->order('name');
 
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
 
-		if ( !$result = $this->_db->loadObjectList() )
+		if ( !$result = $db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError( $db->getErrorMsg() );
 			return false;
 		}
 		else

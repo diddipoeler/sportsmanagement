@@ -74,6 +74,11 @@ class sportsmanagementModelPredictionResults extends JModel
   var $configavatar = array();
 
   
+	/**
+	 * sportsmanagementModelPredictionResults::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
@@ -95,9 +100,8 @@ class sportsmanagementModelPredictionResults extends JModel
 
 		$this->page  				= JRequest::getInt('page',	1);
         
-        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
         $prediction = new sportsmanagementModelPrediction();  
-        //$prediction->predictionGameID = $this->predictionGameID	;
+
         sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
         
         sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
@@ -112,8 +116,6 @@ class sportsmanagementModelPredictionResults extends JModel
         sportsmanagementModelPrediction::$to = $this->to;
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
-        
-	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
        
 		parent::__construct();
 		
@@ -134,11 +136,15 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
 	$this->setState('limit', $limit);
 	$this->setState('limitstart', $limitstart);
 }
-//$mainframe->enqueueMessage(JText::_('PredictionResults __construct limit -> '.'<pre>'.print_r($limit ,true).'</pre>' ),'');
-//$mainframe->enqueueMessage(JText::_('PredictionResults __construct view-> '.'<pre>'.print_r(JRequest::getVar( "view"),true).'</pre>' ),''); 
+
     
 	}
 
+  /**
+   * sportsmanagementModelPredictionResults::getPagination()
+   * 
+   * @return
+   */
   function getPagination()
   {
  	// Load the content if it doesn't already exist
@@ -151,6 +157,11 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
   }    
   
   
+  /**
+   * sportsmanagementModelPredictionResults::getTotal()
+   * 
+   * @return
+   */
   function getTotal()
   {
  	// Load the content if it doesn't already exist
@@ -163,6 +174,11 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
  	return $this->_total;
   }
   
+  /**
+   * sportsmanagementModelPredictionResults::getData()
+   * 
+   * @return
+   */
   function getData() 
   {
  	// if data hasn't already been obtained, load it
@@ -175,26 +191,15 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
  	return $this->_data;
   }
 
-
   
-  
-
-
-  
-//  function getDebugInfo()
-//  {
-//  $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
-//  if ( $show_debug_info )
-//  {
-//  return true;
-//  }
-//  else
-//  {
-//  return false;
-//  }
-//  
-//  }
-  
+	/**
+	 * sportsmanagementModelPredictionResults::getMatches()
+	 * 
+	 * @param mixed $roundID
+	 * @param mixed $project_id
+	 * @param mixed $match_ids
+	 * @return
+	 */
 	function getMatches($roundID,$project_id,$match_ids)
 	{
 	  //global $mainframe, $option;
@@ -234,36 +239,6 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
         
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
         $query->where('m.published = 1');
-        
-//		$query = 	"	SELECT	m.id AS mID,
-//								m.match_date,
-//								m.team1_result AS homeResult,
-//								m.team2_result AS awayResult,
-//								m.team1_result_decision AS homeDecision,
-//								m.team2_result_decision AS awayDecision,
-//								t1.name AS homeName,
-//								t2.name AS awayName,
-//                                t1.short_name AS homeShortName,
-//                                t2.short_name AS awayShortName,
-//								c1.logo_small AS homeLogo,
-//								c2.logo_small AS awayLogo,
-//								c1.country AS homeCountry,
-//								c2.country AS awayCountry
-//
-//						FROM #__sportsmanagement_match AS m
-//
-//						INNER JOIN #__sportsmanagement_round AS r ON	r.id=m.round_id AND
-//																r.project_id=$project_id AND
-//																r.id=$roundID
-//						LEFT JOIN #__sportsmanagement_project_team AS pt1 ON pt1.id=m.projectteam1_id
-//						LEFT JOIN #__sportsmanagement_project_team AS pt2 ON pt2.id=m.projectteam2_id
-//						LEFT JOIN #__sportsmanagement_team AS t1 ON t1.id=pt1.team_id
-//						LEFT JOIN #__sportsmanagement_team AS t2 ON t2.id=pt2.team_id
-//						LEFT JOIN #__sportsmanagement_club AS c1 ON c1.id=t1.club_id
-//						LEFT JOIN #__sportsmanagement_club AS c2 ON c2.id=t2.club_id
-//						WHERE (m.cancel IS NULL OR m.cancel = 0)
-//						AND m.published=1 ";
-						
     
     if ( $match_ids )
     {
@@ -271,27 +246,29 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
       '|' => ','
         );
     $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
-    //$query .= "AND m.id IN (" . $match_ids . ")";
     $query->where("AND m.id IN (" . $match_ids . ")");    
     }
     
-    //$query .= " ORDER BY m.match_date, m.id ASC";
     $query->order('m.match_date, m.id ASC');
-    
-    //$mainframe->enqueueMessage(JText::_('query -> <pre> '.print_r($query,true).'</pre><br>' ),'Notice');
-    						
+						
 		$db->setQuery( $query );
 		$results = $db->loadObjectList();
 		return $results;
 	}
 
+	/**
+	 * sportsmanagementModelPredictionResults::showClubLogo()
+	 * 
+	 * @param mixed $clubLogo
+	 * @param mixed $teamName
+	 * @return
+	 */
 	function showClubLogo($clubLogo,$teamName)
 	{
 	  $mainframe = JFactory::getApplication();
 		$document	=& JFactory::getDocument();
 		$uri = JFactory :: getURI();
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
     
 		$output = '';
 		if ((!isset($clubLogo)) || ($clubLogo=='') || (!file_exists($clubLogo)))

@@ -55,11 +55,11 @@ if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
             }
             else
             {
-                //JError::raiseNotice(100,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'));
+                JError::raiseNotice(100,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'));
                 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
                 $paramsPlugin = new JRegistry($plugin->params);
 
-//echo 'club.kml<br><pre>'.print_r($kmlpath,true).'</pre>';
+//echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
                 
 $arrPluginParams = array();
@@ -129,11 +129,12 @@ width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height'
 $params  = '{mosmap ';
 		$params .= implode('|', $arrPluginParams);
 		$params .= "}";
-        echo JHtml::_('content.prepare', $params); 
+        echo JHtml::_('content.prepare', $params);
+ 
 //		$content = JHtml::_('content.prepare', $params);
 //        echo $content;
         
-//    $params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$kmlpath."'|kmlrenderer='GeoXML'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
+//    $params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$this->kmlpath."'|kmlrenderer='GeoXML'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
 //		echo JHtml::_('content.prepare', $params);        
             }
 ?>

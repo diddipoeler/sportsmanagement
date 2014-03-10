@@ -120,16 +120,22 @@ class sportsmanagementViewPredictionRanking extends JView
 			$this->assign('actJoomlaUser',		JFactory::getUser());
 			
 			//echo '<br /><pre>~' . print_r( $this->config, true ) . '~</pre><br />';
+            
+            $ranking_array = array();
+			$ranking_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
+			$ranking_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
+			$lists['ranking_array'] = $ranking_array;
+			unset($ranking_array);
 
 			$type_array = array();
-			$type_array[]=JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
-			$type_array[]=JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
-			$type_array[]=JHTML ::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
-			$lists['type']=$type_array;
+			$type_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
+			$type_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
+			$type_array[] = JHTML ::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
+			$lists['type'] = $type_array;
 			unset($type_array);
 
 			$this->assignRef('lists',$lists);
-      $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+      //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			

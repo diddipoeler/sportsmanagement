@@ -174,7 +174,7 @@ if (!empty($memberPredictionPoints))
 								{
 									if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 									{
-										if ($res=&$this->model->getPredictionProjectTeams($predictionProject->project_id))
+										if ($res = $this->model->getPredictionProjectTeams($predictionProject->project_id))
 										{
 											foreach ($res AS $team)
 											{
@@ -249,7 +249,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
             									
 									if (($showChamp))
 									{
-										if ($res=&$this->model->getPredictionProjectTeams($predictionProject->project_id))
+										if ($res = $this->model->getPredictionProjectTeams($predictionProject->project_id))
 										{
 											foreach ($res AS $team)
 											{

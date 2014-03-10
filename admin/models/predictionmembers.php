@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -21,6 +57,12 @@ class sportsmanagementModelPredictionMembers extends JModelList
 {
 	var $_identifier = "predmembers";
 	
+     /**
+      * sportsmanagementModelPredictionMembers::__construct()
+      * 
+      * @param mixed $config
+      * @return void
+      */
      public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -77,6 +119,11 @@ class sportsmanagementModelPredictionMembers extends JModelList
 		parent::populateState('u.username', 'asc');
 	}
         
+	/**
+	 * sportsmanagementModelPredictionMembers::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -125,18 +172,28 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 
 	
 	
+	/**
+	 * sportsmanagementModelPredictionMembers::getPredictionProjectName()
+	 * 
+	 * @param mixed $predictionID
+	 * @return
+	 */
 	function getPredictionProjectName($predictionID)
 	{
-	$mainframe			=& JFactory::getApplication();
-	$option				= 'com_joomleague';
+	$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 	
-		$query="SELECT	ppj.name AS pjName
-				  FROM #__joomleague_prediction_game AS ppj 
-          where ppj.id = " . $predictionID;
-				  
+    // Select some fields
+        $query->select('ppj.name AS pjName');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS ppj ');
+        $query->where('ppj.id = ' . $predictionID);
+        
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadResult();
+		$db->setQuery($query);
+		$result = $db->loadResult();
 	  
     //$mainframe->enqueueMessage(JText::_('<br />predictionID<pre>~' . print_r($predictionID,true) . '~</pre><br />'),'Notice');
     //$mainframe->enqueueMessage(JText::_('<br />result<pre>~' . print_r($result,true) . '~</pre><br />'),'Notice');
@@ -144,42 +201,74 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		return $result;
 	}
 	
+	/**
+	 * sportsmanagementModelPredictionMembers::getPredictionMembers()
+	 * 
+	 * @param mixed $prediction_id
+	 * @return
+	 */
 	function getPredictionMembers($prediction_id)
 	{
-	$query="	SELECT	pm.user_id AS value,
-							u.name AS text
-					FROM #__joomleague_prediction_member AS pm
-					LEFT JOIN #__users AS u ON	u.id = pm.user_id
-					WHERE	prediction_id = " . (int) $prediction_id;
-	
-    $this->_db->setQuery($query);
-	$results = $this->_db->loadObjectList();
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        // Select some fields
+        $query->select('pm.user_id AS value, u.name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ');
+        $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
+        $query->where('prediction_id = ' . (int) $prediction_id);
+       
+
+    $db->setQuery($query);
+	$results = $db->loadObjectList();
     return $results;				
 	}
 	
+	/**
+	 * sportsmanagementModelPredictionMembers::getJLUsers()
+	 * 
+	 * @param mixed $prediction_id
+	 * @return
+	 */
 	function getJLUsers($prediction_id)
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 	//$not_in = array();
-	$query="	SELECT	pm.user_id AS value
-					FROM #__joomleague_prediction_member AS pm
-					LEFT JOIN #__users AS u ON	u.id = pm.user_id
-					WHERE	prediction_id = " . (int) $prediction_id;
-	$this->_db->setQuery($query);
+     // Select some fields
+        $query->select('pm.user_id AS value');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ');
+        $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
+        $query->where('prediction_id = ' . (int) $prediction_id);
+        
+	$db->setQuery($query);
     
-    if ( $predresult = $this->_db->loadResultArray() )
+    if ( $predresult = $db->loadResultArray() )
     {
-    $query = "	SELECT	id AS value,
-							name AS text
-					FROM #__users
-          where id not in (" . implode(",", $this->_db->loadResultArray() ) .")
-					ORDER by name";
+        // Select some fields
+        $query->clear();
+        $query->select('id AS value, name AS text');
+        $query->from('#__users ');
+        $query->where('id not in (' . implode(",", $this->_db->loadResultArray() ) .')');
+        $query->order('name');
+        
+
     }
     else
     {
-    $query = "	SELECT	id AS value,
-							name AS text
-					FROM #__users
-					ORDER by name";
+        // Select some fields
+        $query->clear();
+        $query->select('id AS value, name AS text');
+        $query->from('#__users ');
+        $query->order('name');
+
     }   
 		
 
@@ -196,10 +285,18 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		}
 	}
 	
+	/**
+	 * sportsmanagementModelPredictionMembers::save_memberlist()
+	 * 
+	 * @return void
+	 */
 	function save_memberlist()
 	{
-	$mainframe			=& JFactory::getApplication();
-	$option				= 'com_joomleague';
+	$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 	
   $post	= JRequest::get('post');
 	$cid	= JRequest::getVar('cid', array(0), 'post', 'array');
@@ -215,7 +312,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
   //$mainframe->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
   //$table = 'predictionmember';
   $table = 'predictionentry';
-  $rowproject =& JTable::getInstance( $table, 'Table' );
+  $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
   //$rowproject->load( $value );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;

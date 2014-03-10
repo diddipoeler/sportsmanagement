@@ -55,6 +55,12 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewRounds extends JView
 {
 
+	/**
+	 * sportsmanagementViewRounds::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$mainframe = JFactory::getApplication();
@@ -76,6 +82,12 @@ class sportsmanagementViewRounds extends JView
 		parent::display($tpl);
 	}
     
+    /**
+     * sportsmanagementViewRounds::_displayMassadd()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function _displayMassadd($tpl)
 	{
 		$option = JRequest::getCmd('option');
@@ -90,6 +102,12 @@ class sportsmanagementViewRounds extends JView
         parent::display($tpl);
     }    
 
+	/**
+	 * sportsmanagementViewRounds::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefault($tpl)
 	{
 		$option = JRequest::getCmd('option');
@@ -130,6 +148,12 @@ class sportsmanagementViewRounds extends JView
 		parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewRounds::_displayPopulate()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayPopulate($tpl)
 	{
 		$app      = JFactory::getApplication();

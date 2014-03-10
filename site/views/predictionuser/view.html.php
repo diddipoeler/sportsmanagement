@@ -66,7 +66,7 @@ class sportsmanagementViewPredictionUser extends JView
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
 //    $optiontext = strtoupper(JRequest::getCmd('option').'_');
 //    $this->assignRef( 'optiontext',			$optiontext );
@@ -80,7 +80,7 @@ class sportsmanagementViewPredictionUser extends JView
 		$model		= $this->getModel();
     $mdlPredUsers = JModel::getInstance("predictionusers", "sportsmanagementModel");
     
-		$this->assignRef('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
 		if (isset($this->predictionGame))
 		{
@@ -97,10 +97,10 @@ class sportsmanagementViewPredictionUser extends JView
       
 			$this->assignRef('model',				$mdlPredUsers);
 			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assignRef('config',				array_merge($overallConfig,$tipprankingconfig,$config));
+			$this->assign('config',				array_merge($overallConfig,$tipprankingconfig,$config));
 			$this->assignRef('configavatar',				$configavatar );
 			
-			$this->assignRef('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			
       if (!isset($this->predictionMember->id))
 			{
@@ -108,15 +108,15 @@ class sportsmanagementViewPredictionUser extends JView
 				$this->predictionMember->pmID=0;
 			}
 			
-			$this->assignRef('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
 
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
-			$this->assignRef('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
-			$this->assignRef('memberData',			$model->memberPredictionData());
-			$this->assignRef('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
+			$this->assign('actJoomlaUser',		JFactory::getUser());
+			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
+			$this->assign('memberData',			sportsmanagementModelPredictionUsers::memberPredictionData());
+			$this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
 			
 			if (!empty($this->predictionMember->user_id)) {
-				$this->assignRef('showediticon',sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id));
+				$this->assign('showediticon',sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id));
 			}
 			
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
@@ -175,7 +175,7 @@ class sportsmanagementViewPredictionUser extends JView
           }
           
 					$projectteams[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
-					if ($res=&$model->getPredictionProjectTeams($predictionProject->project_id))
+					if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 					{
 						$projectteams = array_merge($projectteams,$res);
 					}
@@ -248,7 +248,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 					unset($projectteams);
 				}
         
-				$this->assignRef('form'	, $this->get('form'));
+				$this->assign('form'	, $this->get('form'));
                 $this->form->setValue('picture', null,$this->predictionMember->picture);	
 			}
 			else
@@ -286,7 +286,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 	{
 		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
 
-		$data = sportsmanagementModelPredictionUser::getPointsChartData();
+		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
     //echo 'data -> <pre> '.print_r($data,true).'</pre><br>';
     
