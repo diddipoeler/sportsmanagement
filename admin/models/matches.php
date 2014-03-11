@@ -59,6 +59,12 @@ class sportsmanagementModelMatches extends JModelList
     var $_rid = 0;
     var $_season_id = 0;
     
+    /**
+     * sportsmanagementModelMatches::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
