@@ -44,8 +44,23 @@ jimport ( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewjlextdbbimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewjlextdbbimport extends JView 
 {
+	/**
+	 * sportsmanagementViewjlextdbbimport::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl = null) 
     {
 		//global $mainframe;
@@ -97,6 +112,12 @@ class sportsmanagementViewjlextdbbimport extends JView
 	
    
     
+	/**
+	 * sportsmanagementViewjlextdbbimport::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function _displayDefault($tpl) 
     {
 		//global $option;
@@ -127,6 +148,12 @@ class sportsmanagementViewjlextdbbimport extends JView
 	}
     
     
+	/**
+	 * sportsmanagementViewjlextdbbimport::_displayDefaultUpdate()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $mainframe, $option;
@@ -160,6 +187,11 @@ class sportsmanagementViewjlextdbbimport extends JView
     
    
     
+	/**
+	 * sportsmanagementViewjlextdbbimport::addToolbar()
+	 * 
+	 * @return
+	 */
 	protected function addToolbar() 
     {
         // Get a refrence of the page instance in joomla

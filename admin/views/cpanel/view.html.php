@@ -325,6 +325,18 @@ class sportsmanagementViewcpanel extends JView
 		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
 	}
 	
+	/**
+	 * sportsmanagementViewcpanel::addIcon()
+	 * 
+	 * @param mixed $image
+	 * @param mixed $url
+	 * @param mixed $text
+	 * @param bool $newWindow
+	 * @param integer $width
+	 * @param integer $height
+	 * @param string $maxwidth
+	 * @return void
+	 */
 	public function addIcon( $image , $url , $text , $newWindow = false , $width = 0, $height = 0, $maxwidth = '100%')
 	{
 		$lang		= JFactory::getLanguage();

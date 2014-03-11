@@ -61,6 +61,11 @@ var $_success_text = '';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
 
+/**
+ * sportsmanagementModelcpanel::getVersion()
+ * 
+ * @return
+ */
 public function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();
@@ -71,6 +76,11 @@ public function getVersion()
        return $manifest_cache['version'];	
 	}
 
+/**
+ * sportsmanagementModelcpanel::getGithubRequests()
+ * 
+ * @return
+ */
 public function getGithubRequests()
 {
 $mainframe = JFactory::getApplication(); 
@@ -113,6 +123,12 @@ $paramsdata = JComponentHelper::getParams($option);
     }
     
     
+    /**
+     * sportsmanagementModelcpanel::getInstalledPlugin()
+     * 
+     * @param mixed $plugin
+     * @return
+     */
     function getInstalledPlugin($plugin)
     {
     $mainframe = JFactory::getApplication();
@@ -129,6 +145,11 @@ $paramsdata = JComponentHelper::getParams($option);
   return $db->loadResult();    
     }
     
+    /**
+     * sportsmanagementModelcpanel::checkUpdateVersion()
+     * 
+     * @return
+     */
     function checkUpdateVersion()
     {
         $mainframe = JFactory::getApplication(); 
@@ -239,14 +260,28 @@ else
                     
     }
     
+    /**
+     * sportsmanagementModelcpanel::checkcountry()
+     * 
+     * @return
+     */
     function checkcountry()
     {
+        $mainframe = JFactory::getApplication();
+        //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
         $query='SELECT count(*) AS count
 		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
     }
     
+    /**
+     * sportsmanagementModelcpanel::checksporttype()
+     * 
+     * @param mixed $type
+     * @return
+     */
     function checksporttype($type)
     {
         $type = strtoupper($type);

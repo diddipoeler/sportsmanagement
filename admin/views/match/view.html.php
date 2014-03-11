@@ -58,9 +58,12 @@ JHtml::_('behavior.mootools');
 class sportsmanagementViewMatch extends JView
 {
 
+
 	/**
-	 * display method of Hello view
-	 * @return void
+	 * sportsmanagementViewMatch::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -70,6 +73,8 @@ class sportsmanagementViewMatch extends JView
 		$model = $this->getModel();
         $document = JFactory::getDocument();
         $browser = JBrowser::getInstance();
+        $config = JComponentHelper::getParams ( 'com_media' );
+        $this->assignRef ( 'config', $config );
 
         $project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->assignRef('project_id',$project_id);
@@ -129,7 +134,59 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('match',$match);
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
+        // layout pressebericht
+        if ( $this->getLayout() == 'pressebericht' )
+		{
+		  $csv_file = $model->getPressebericht(); 
+$this->assignRef('csv',$csv_file); 
+$matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
+$this->assignRef('matchnumber',$matchnumber);
+if ( $matchnumber )
+{
+$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
+$this->assignRef('csvplayers',$model->csv_player);   
+$this->assignRef('csvinout',$model->csv_in_out);
+$this->assignRef('csvcards',$model->csv_cards);
+$this->assignRef('csvstaff',$model->csv_staff);
+}
+
+//build the html options for position
+		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
+		if ( $res = $model->getProjectPositionsOptions(0,1) )
+		{
+			$position_id = array_merge( $position_id, $res );
+		}
+		$lists['project_position_id'] = $position_id;
+        $lists['inout_position_id'] = $position_id;
+		unset( $position_id );
         
+        $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
+		if ( $res = $model->getProjectPositionsOptions(0,2) )
+		{
+			$position_id = array_merge( $position_id, $res );
+		}
+		$lists['project_staff_position_id'] = $position_id;
+		unset( $position_id );
+        
+        // events
+		$events = $model->getEventsOptions($project_id);
+		if (!$events)
+		{
+			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
+			return;
+		}
+		$eventlist=array();
+        $eventlist[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT' ) );
+		$eventlist=array_merge($eventlist,$events);
+		
+        $lists['events'] = $eventlist;
+        unset( $eventlist );
+        
+        $this->assignRef( 'lists', $lists );
+		  
+        }  
+        
+        // layout editreferees
         if ( $this->getLayout() == 'editreferees' )
 		{
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
@@ -219,6 +276,7 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('positions',$projectpositions);
         }
         
+        // layout editevents
         if ( $this->getLayout() == 'editevents' )
 		{
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
@@ -283,7 +341,7 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('rosters',$rosters);
         }
         
-        
+        // layout editstats
         if ( $this->getLayout() == 'editstats' )
 		{
 		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
@@ -331,6 +389,7 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('teams',$teams);
         }
         
+        // layout editlineup
         if ( $this->getLayout() == 'editlineup' )
 		{
 		$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
@@ -518,71 +577,20 @@ class sportsmanagementViewMatch extends JView
 	}
  
  
-/*
-	function display($tpl=null)
-	{
-		$mainframe = JFactory::getApplication();
 
-		if ($this->getLayout() == 'form')
-		{
-			$this->_displayForm($tpl);
-			return;
-		}
-		elseif ($this->getLayout() == 'editevents')
-		{
-			$this->_displayEditevents($tpl);
-			return;
-		}
-		elseif ($this->getLayout() == 'editeventsbb')
-		{
-			$this->_displayEditeventsbb($tpl);
-			return;
-		}
-		elseif ($this->getLayout() == 'editstats')
-		{
-			$this->_displayEditstats($tpl);
-			return;
-		}
-		elseif ($this->getLayout() == 'editlineup')
-		{
-			$this->_displayEditlineup($tpl);
-			return;
-		}
-		elseif ($this->getLayout() == 'editreferees')
-		{
-			$this->_displayEditReferees($tpl);
-			return;
-		}
-        elseif ($this->getLayout() == 'readpressebericht')
-		{
-			$this->_displayPressebericht($tpl);
-			return;
-		}
-        elseif ($this->getLayout() == 'savepressebericht')
-		{
-			$this->_displaySavePressebericht($tpl);
-			return;
-		}
-        
-        $config =& JComponentHelper::getParams('com_media');
-		$post=JRequest::get('post');
-		$files=JRequest::get('files');
-        $uri = JFactory::getURI();
-		$this->assignRef('request_url',$uri->toString());
-		$this->assignRef('config',$config);
-        $cid = JRequest::getVar('cid',array(0),'','array');
-        $match_id = $cid[0];
-        $this->assignRef('match_id',$match_id);
-
-		parent::display($tpl);
-	}
-*/
     
+    /**
+     * sportsmanagementViewMatch::_displaySavePressebericht()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function _displaySavePressebericht($tpl)
     {
     $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
-    $project_id = $mainframe->getUserState('com_joomleagueproject');
+    $project_id = $mainframe->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
     $csv_file_save = $model->savePressebericht();
     
@@ -591,11 +599,21 @@ class sportsmanagementViewMatch extends JView
     parent::display($tpl);    
     }
     
+    /**
+     * sportsmanagementViewMatch::_displayPressebericht()
+     * 
+     * @param mixed $tpl
+     * @return
+     */
     function _displayPressebericht($tpl)
     {
         $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
 		$document = JFactory::getDocument();
-        $project_id=$mainframe->getUserState('com_joomleagueproject');
+        $project_id = $mainframe->getUserState( "$option.pid", '0' );;
+        $config = JComponentHelper::getParams ( 'com_media' );
+        $this->assignRef ( 'config', $config );
+        
 //$mainframe->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
@@ -632,7 +650,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		unset( $position_id );
         
         // events
-		$events=$model->getEventsOptions($project_id);
+		$events = $model->getEventsOptions($project_id);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
@@ -645,11 +663,17 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->assignRef( 'lists',			$lists );
+        $this->assignRef( 'lists', $lists );
  
         parent::display($tpl);
     }
 
+	/**
+	 * sportsmanagementViewMatch::_displayEditReferees()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayEditReferees($tpl)
 	{
 		$mainframe = JFactory::getApplication();
@@ -1130,128 +1154,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		parent::display($tpl);
 	}
 
-/*
-	function _displayForm($tpl)
-	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-		$lists=array();
-		
-		$cid = JRequest::getVar('cid',array(0),'','array');
-		$match_id = $cid[0];
-		$dest = 'matchreport/'.$match_id;
-    JRequest::setVar( 'folder', $dest );
-    
-		//get the match
-		$match =& $this->get('data');
-		$isNew = ($match->id < 1);
 
-		if ((!$match->projectteam1_id) AND (!$match->projectteam2_id))
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_TEAMS').'<br /><br />');
-			return;
-		}
-
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_THE_MATCH'),$match->name);
-			$mainframe->redirect('index.php?option=com_joomleague',$msg);
-		}
-
-		// Edit or Create?
-		if (!$isNew)
-		{
-			$model->checkout($user->get('id'));
-		}
-
-		// build the html select booleanlist for published
-		$lists['published']=JHtml::_('select.booleanlist','published','class="inputbox"',$match->published);
-
-		//build the html select list for playgrounds
-		$playgrounds[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
-		if ($res =& $model->getPlaygrounds())
-		{
-			$playgrounds=array_merge($playgrounds,$res);
-		}
-		$lists['playgrounds']=JHtml::_(	'select.genericlist',$playgrounds,'playground_id','class="inputbox" size="1"','value',
-										'text',$match->playground_id);
-
-		// build the html select booleanlist for cancel
-		$lists['cancel']=JHtml::_('select.booleanlist','cancel','class="inputbox"',$match->cancel);
-
-		// build the html select booleanlist for show_report
-		$lists['show_report']=JHtml::_('select.booleanlist','show_report','class="inputbox"',$match->show_report);
-
-		// build the html select booleanlist for count match result
-		$lists['count_result']=JHtml::_('select.booleanlist','count_result','class="inputbox"',$match->count_result);
-
-		// build the html select booleanlist which team got the won
-		$myoptions=array();
-		$myoptions[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
-		$myoptions[]=JHtml::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
-		$myoptions[]=JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
-		$myoptions[]=JHtml::_('select.option','3',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
-		$myoptions[]=JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
-		$lists['team_won']=JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$match->team_won);
-
-		$projectws =& $this->get('Data','projectws');
-		$model = $this->getModel('projectws');
-
-		$overall_config=$model->getTemplateConfig('overall');
-		$table_config=$model->getTemplateConfig('ranking');
-
-		$extended = $this->getExtended($match->extended, 'match');
-
-		//match relation tab
-		$mdlMatch=JModel::getInstance('match','JoomleagueModel');
-		$oldmatches[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
-		$res=array();
-		$new_match_id=($match->new_match_id) ? $match->new_match_id : 0;
-		if ($res =& $mdlMatch->getMatchRelationsOptions($mainframe->getUserState($option.'project',0),$match->id.",".$new_match_id))
-		{
-			$oldmatches=array_merge($oldmatches,$res);
-		}
-		$lists['old_match']=JHtml::_(	'select.genericlist',
-										$oldmatches,
-										'old_match_id',
-										'class="inputbox" size="1"',
-										'value',
-										'text',$match->old_match_id);
-
-		$newmatches[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH'));
-		$res=array();
-		$old_match_id=($match->old_match_id) ? $match->old_match_id : 0;
-		if ($res =& $mdlMatch->getMatchRelationsOptions($mainframe->getUserState($option.'project',0),$match->id.",".$old_match_id))
-		{
-			$newmatches=array_merge($newmatches,$res);
-		}
-		$lists['new_match']=JHtml::_(	'select.genericlist',
-										$newmatches,
-										'new_match_id',
-										'class="inputbox" size="1"',
-										'value',
-										'text',$match->new_match_id);
-    // diddipoeler
-		$mdlImages = JModel::getInstance("Imagehandler", "JoomleagueModel");
-		$images 	= $mdlImages->get('Images');
-		$this->assignRef('images', 	$images);
-		
-		$this->assignRef('overall_config',$overall_config);
-		$this->assignRef('table_config',$table_config);
-		$this->assignRef('projectws',$projectws);
-		$this->assignRef('lists',$lists);
-		$this->assignRef('match',$match);
-		$this->assignRef('extended',$extended);
-		$this->assignRef('folder',$dest);
-		
-		$this->assignRef('form',  $this->get('form'));		
-
-		parent::display($tpl);
-	}
-*/
 
 /**
 	 * Method to set up the document properties

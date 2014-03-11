@@ -43,9 +43,6 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-
-
-
 /**
  * sportsmanagementModelMatch
  * 
@@ -1659,6 +1656,487 @@ else
         
         
         
+    }
+    
+    
+    
+    /**
+     * sportsmanagementModelMatch::getPressebericht()
+     * 
+     * @return
+     */
+    function getPressebericht()
+    {
+    $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication(); 
+    //$post = JRequest::get('post');
+    //$cid = JRequest::getVar('cid',array(0),'','array');
+    //$match_id = $cid[0];
+    $match_id = JRequest::getVar('match_id');
+    $this->_id = $match_id;
+    //$mainframe->enqueueMessage(JText::_('getPressebericht match_id<br><pre>'.print_r($match_id,true).'</pre>'   ),'');
+    $file = JPATH_SITE.DS.'media'.DS.'com_joomleague'.DS.'pressebericht'.DS.$match_id.'.jlg';   
+    //$file = JPATH_SITE.DS.'tmp'.DS.'pressebericht.jlg';
+    $mainframe->enqueueMessage(JText::_('datei = '.$file),'');
+    // Where the cache will be stored
+    $dcsv['file']		= $file;
+//$dcsv['cachefile']	= dirname(__FILE__).'/tmp/'.md5($dcsv['file']);
+$dcsv['cachefile']	= JPATH_SITE.DS.'/tmp/'.md5($dcsv['file']);
+
+// If there is no chache saved or is older than the cache time create a new cache
+	// open the cache file for writing
+	$fp = fopen($dcsv['cachefile'], 'w');
+	// save the contents of output buffer to the file
+	fwrite($fp, file_get_contents($dcsv['file']));
+	// close the file
+	fclose($fp);
+
+// New ParseCSV object.
+$csv = new parseCSV();
+//$csv->encoding('UTF-8', 'UTF-8');
+// Parse CSV with auto delimiter detection
+$csv->auto($dcsv['cachefile']);
+
+//$mainframe->enqueueMessage(JText::_('getPressebericht csv<br><pre>'.print_r($csv,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('getPressebericht csv->data<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+    
+    /*
+    # tab delimited, and encoding conversion
+	$csv = new parseCSV();
+	//$csv->encoding('UTF-16', 'UTF-8');
+	//$csv->delimiter = ";";
+    $csv->auto($file);
+    //$csv->parse($file);
+    $mainframe->enqueueMessage(JText::_('getPressebericht csv<br><pre>'.print_r($csv,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_('getPressebericht csv->data<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+    */
+
+   return $csv;
+    }
+    
+    function getPresseberichtMatchnumber($csv_file)
+    {
+    $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();  
+    $match_id = JRequest::getVar('match_id');  
+    $tblmatch = JTable::getInstance("match", "Table");
+    $tblmatch->load($match_id);
+    $match_number = $tblmatch->match_number;
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtMatchnumber match number<br><pre>'.print_r($match_number,true).'</pre>'   ),'');
+    $csv_match_number = $csv_file->data[0][Spielberichtsnummer];
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtMatchnumber csv match number<br><pre>'.print_r($csv_match_number,true).'</pre>'   ),'');
+    $teile = explode(".",$csv_match_number);
+    
+    if ( $match_number != $teile[0] )
+    {
+        $mainframe->enqueueMessage(JText::_('Spielnummer der Datei passt nicht zur Spielnummer im Projekt.'),'Error');
+        return false;
+    }
+    else
+    {
+        $mainframe->enqueueMessage(JText::_('Spielnummern sind identisch. Datei wird verarbeitet'),'Notice');
+        return true;
+    }
+    
+    
+    
+    }
+    
+    function getPresseberichtReadPlayers($csv_file)
+    {
+    $csv_player_count = 40;    
+    $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication(); 
+    $project_id = $mainframe->getUserState($option.'project'); 
+    $match_id = JRequest::getVar('match_id');    
+    $tblmatch = JTable::getInstance("match", "Table");
+    $tblmatch->load($match_id);
+    $tblproject = JTable::getInstance("project", "Table");
+    $tblproject->load($project_id);
+    $favteam = $tblproject->fav_team;
+    $tblteam = JTable::getInstance("team", "Table");
+    $tblteam->load($favteam);
+    $query="SELECT id
+			FROM #__joomleague_project_team
+			WHERE project_id=$project_id AND team_id=$favteam";
+			$this->_db->setQuery($query);
+			$projectteamid = $this->_db->loadResult();
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers projectteamid<br><pre>'.print_r($projectteamid,true).'</pre>'   ),'');    
+    
+    /*
+    // bereinigen des csv files
+    foreach ( $csv_file->data[0] as $key )
+    {
+        $key = ereg_replace(" ", "-", $key);
+    }
+    */
+    
+    if ( $projectteamid )
+    {
+    $mainframe->enqueueMessage(JText::_('Spieldetails von '.$tblteam->name.' werden verarbeitet.'),'Notice');
+    if ( $projectteamid == $tblmatch->projectteam1_id )
+    {
+        $mainframe->enqueueMessage(JText::_('Heimteam '.$tblteam->name.' wird verarbeitet.'),'Notice');
+        $find_csv = 'H';
+    }
+    elseif ( $projectteamid == $tblmatch->projectteam2_id )
+    {
+        $mainframe->enqueueMessage(JText::_('Auswärtsteam '.$tblteam->name.' wird verarbeitet.'),'Notice');
+        $find_csv = 'G';
+    }        
+    
+    // spieler aufbereiten startelf
+    for($a=1; $a <= $csv_player_count; $a++ )
+    {
+        if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Nr']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Nr'])  )
+        {
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-S'.$a.'-Nr'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->name = $csv_file->data[0][$find_csv.'-S'.$a.'-Spieler'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->hinweis = $csv_file->data[0][$find_csv.'-S'.$a.'-Hinweis'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->status = $csv_file->data[0][$find_csv.'-S'.$a.'-Status'];
+        
+        $teile = explode(",",$csv_file->data[0][$find_csv.'-S'.$a.'-Spieler']);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->lastname = trim($teile[0]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->firstname = trim($teile[1]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = 0;
+        
+        // gibt es den spieler
+        $query="SELECT id
+				FROM #__joomleague_person 
+                WHERE firstname like '".trim($teile[1])."' 
+                AND lastname like '".trim($teile[0])."' ";
+		$this->_db->setQuery($query);
+		$person_id = $this->_db->loadResult();
+        
+        if ( $person_id )
+        {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_player
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
+        }
+        
+        }
+    }
+    // spieler aufbereiten ersatzbank
+    for($a=1; $a <= $csv_player_count; $a++ )
+    {
+        if ( isset($csv_file->data[0][$find_csv.'-A'.$a.'-Nr']) && !empty($csv_file->data[0][$find_csv.'-A'.$a.'-Nr'])  )
+        {
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-A'.$a.'-Nr'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->name = $csv_file->data[0][$find_csv.'-A'.$a.'-Spieler'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->hinweis = $csv_file->data[0][$find_csv.'-A'.$a.'-Hinweis'];
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->status = $csv_file->data[0][$find_csv.'-A'.$a.'-Status'];
+        
+        $teile = explode(",",$csv_file->data[0][$find_csv.'-A'.$a.'-Spieler']);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->lastname = trim($teile[0]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->firstname = trim($teile[1]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = 0;
+        
+        // gibt es den spieler ?
+        $query="SELECT id
+				FROM #__joomleague_person 
+                WHERE firstname like '".trim($teile[1])."' 
+                AND lastname like '".trim($teile[0])."' ";
+		$this->_db->setQuery($query);
+		$person_id = $this->_db->loadResult();
+        
+        if ( $person_id )
+        {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_player
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
+        }
+        
+        }
+    }
+    
+    // jetzt kommen die wechsel
+    for($a=1; $a <= $csv_player_count; $a++ )
+    {
+        if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit'])  )
+        {
+            $this->csv_in_out[$a]->in_out_time = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit'];
+            $this->csv_in_out[$a]->came_in = 1;
+            $this->csv_in_out[$a]->in = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Nr'];
+            $this->csv_in_out[$a]->out = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-FuerNr'];
+            $this->csv_in_out[$a]->spieler = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Spieler'];
+            $this->csv_in_out[$a]->spielerout = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-fuer-Spieler'];
+        }
+    }
+    
+    // jetzt kommen die gelben karten
+    for($a=1; $a <= $csv_player_count; $a++ )
+    {
+
+        if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit'])  )
+        {
+            $this->csv_cards[$a]->event_time = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit'];
+            $this->csv_cards[$a]->event_name = 'Gelbe-Karte';
+            $this->csv_cards[$a]->event_sum = 1;
+            $this->csv_cards[$a]->spielernummer = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Nr'];
+            $this->csv_cards[$a]->spieler = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Spieler'];
+            $this->csv_cards[$a]->notice = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Grund'];
+            $this->csv_cards[$start]->event_type_id = 0;
+        }
+
+    }
+    
+    // jetzt kommen die gelb-roten karten
+    $start = sizeof($this->csv_cards) + 1;
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers start gelb rote karten<br><pre>'.print_r($start,true).'</pre>'   ),'');
+    
+    for($b=1; $b <= $csv_player_count; $b++ )
+    {
+
+        if ( isset($csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Zeit']) && !empty($csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Zeit'])  )
+        {
+            $this->csv_cards[$start]->event_time = $csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Zeit'];
+            $this->csv_cards[$start]->event_name = 'Gelbrot-Karte';
+            $this->csv_cards[$start]->event_sum = 1;
+            $this->csv_cards[$start]->spielernummer = $csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Nr'];
+            $this->csv_cards[$start]->spieler = $csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Spieler'];
+            $this->csv_cards[$start]->notice = $csv_file->data[0][$find_csv.'-S'.$b.'-Gelbrot-Grund'];
+            $this->csv_cards[$start]->event_type_id = 0;
+            $start++;
+        }
+
+    }
+    
+    // gibt es die karten schon ?
+    // gibt es das event schon ?
+    foreach ( $this->csv_cards as $key => $value )
+    {
+    $spielernummer = $value->spielernummer;
+    $project_person_id = $this->csv_player[$spielernummer]->project_person_id;
+    if ( $project_person_id )
+    {
+        $query="SELECT event_type_id
+				FROM #__joomleague_match_event
+                WHERE match_id = ".$match_id." 
+                AND projectteam_id = ".$projectteamid." 
+                AND teamplayer_id = ".$project_person_id."
+                ";
+		$this->_db->setQuery($query);
+		$match_event_id = $this->_db->loadResult();
+        $this->csv_cards[$key]->event_type_id = $match_event_id;
+    }    
+    }
+        
+        
+        
+        
+        
+        
+    
+    // mannschaftsverantwortliche
+    $i = 1;
+    $this->csv_staff[$i]->position = 'Trainer';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainer'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+    
+    $i++;
+    $this->csv_staff[$i]->position = 'Trainerassistent';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainerassistent'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+    
+    $i++;
+    $this->csv_staff[$i]->position = 'Arzt';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Arzt'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+    
+    $i++;
+    $this->csv_staff[$i]->position = 'Masseur';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Masseur'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+    
+    $i++;
+    $this->csv_staff[$i]->position = 'Zeugwart';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+    
+    $i++;
+    $this->csv_staff[$i]->position = 'Mannschaftsverantwortlicher';
+    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Mannschaftsverantwortlicher'];
+    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $this->csv_staff[$i]->lastname = trim($teile[1]);
+    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->person_id = 0;
+    $this->csv_staff[$i]->project_person_id = 0;
+    $this->csv_staff[$i]->project_position_id = 0;
+    
+    // gibt es den staff ?
+    $query="SELECT id
+	       	FROM #__joomleague_person 
+            WHERE firstname like '".trim($teile[0])."' 
+            AND lastname like '".trim($teile[1])."' ";
+    $this->_db->setQuery($query);
+	$person_id = $this->_db->loadResult();
+        
+    if ( $person_id )
+    {
+            $this->csv_staff[$i]->person_id = $person_id;
+            $query="SELECT id,project_position_id
+			FROM #__joomleague_team_staff
+			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+			$this->_db->setQuery($query);
+			$projectpersonid = $this->_db->loadObject();
+            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+    }
+
+    
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers player<br><pre>'.print_r($this->csv_player,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers wechsel<br><pre>'.print_r($this->csv_in_out,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers wechsel<br><pre>'.print_r($this->csv_cards,true).'</pre>'   ),'');
+    
+    
+    }
+    
+    $mainframe->setUserState($option.'csv_staff',$this->csv_staff);
+    $mainframe->setUserState($option.'csv_cards',$this->csv_cards);
+    $mainframe->setUserState($option.'csv_in_out',$this->csv_in_out);
+    $mainframe->setUserState($option.'csv_player',$this->csv_player);
+    $mainframe->setUserState($option.'projectteamid',$projectteamid);
+    
     }
          
     
