@@ -44,6 +44,15 @@ jimport( 'joomla.application.component.model');
 //require_once( JPATH_COMPONENT.DS . 'helpers' . DS . 'ranking.php' );
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelNextMatch
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelNextMatch extends JModel
 {
 	var $project = null;
@@ -61,6 +70,11 @@ class sportsmanagementModelNextMatch extends JModel
 	 */
 	var $_match = null;
 
+	/**
+	 * sportsmanagementModelNextMatch::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct( )
 	{
 		parent::__construct( );
@@ -75,6 +89,14 @@ class sportsmanagementModelNextMatch extends JModel
         
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getSpecifiedMatch()
+	 * 
+	 * @param mixed $projectId
+	 * @param mixed $projectTeamId
+	 * @param mixed $matchId
+	 * @return
+	 */
 	function getSpecifiedMatch($projectId, $projectTeamId, $matchId)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -176,6 +198,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return $this->_match;
 	}
 	
+	/**
+	 * sportsmanagementModelNextMatch::getShowPics()
+	 * 
+	 * @return
+	 */
 	function getShowPics( )
 	{
 		return $this->showpics;
@@ -208,6 +235,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return $this->teams;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getMatchCommentary()
+	 * 
+	 * @return
+	 */
 	function getMatchCommentary()
     {
         $mainframe = JFactory::getApplication();
@@ -226,6 +258,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return $db->loadObjectList();
     }
     
+    /**
+     * sportsmanagementModelNextMatch::getReferees()
+     * 
+     * @return
+     */
     function getReferees()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -252,6 +289,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return $db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::_getRanking()
+	 * 
+	 * @return
+	 */
 	function _getRanking()
 	{
 		if (empty($this->ranking))
@@ -265,6 +307,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return $this->ranking;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getHomeRanked()
+	 * 
+	 * @return
+	 */
 	function getHomeRanked()
 	{
 		$match = self::getMatch();
@@ -278,6 +325,11 @@ class sportsmanagementModelNextMatch extends JModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getAwayRanked()
+	 * 
+	 * @return
+	 */
 	function getAwayRanked()
 	{
 		$match = self::getMatch();
@@ -292,6 +344,14 @@ class sportsmanagementModelNextMatch extends JModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::_getHighestMatches()
+	 * 
+	 * @param mixed $teamid
+	 * @param mixed $whichteam
+	 * @param mixed $gameart
+	 * @return
+	 */
 	function _getHighestMatches($teamid,$whichteam,$gameart)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -359,9 +419,14 @@ class sportsmanagementModelNextMatch extends JModel
 	}
     
 
+	/**
+	 * sportsmanagementModelNextMatch::getHomeHighestHomeWin()
+	 * 
+	 * @return
+	 */
 	function getHomeHighestHomeWin( )
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -370,9 +435,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[0]->team_id , 'HOME' , 'WIN');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getAwayHighestHomeWin()
+	 * 
+	 * @return
+	 */
 	function getAwayHighestHomeWin( )
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -381,9 +451,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'WIN');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getHomeHighestHomeDef()
+	 * 
+	 * @return
+	 */
 	function getHomeHighestHomeDef()
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -392,9 +467,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[0]->team_id , 'HOME' , 'LOST');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getAwayHighestHomeDef()
+	 * 
+	 * @return
+	 */
 	function getAwayHighestHomeDef()
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -403,9 +483,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'LOST');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getHomeHighestAwayWin()
+	 * 
+	 * @return
+	 */
 	function getHomeHighestAwayWin( )
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -414,9 +499,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[0]->team_id , 'AWAY' , 'WIN');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getAwayHighestAwayWin()
+	 * 
+	 * @return
+	 */
 	function getAwayHighestAwayWin( )
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -425,9 +515,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[1]->team_id , 'HOME' , 'WIN');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getHomeHighestAwayDef()
+	 * 
+	 * @return
+	 */
 	function getHomeHighestAwayDef()
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -436,9 +531,14 @@ class sportsmanagementModelNextMatch extends JModel
         return self::_getHighestMatches( $teams[0]->team_id , 'AWAY' , 'LOST');
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getAwayHighestAwayDef()
+	 * 
+	 * @return
+	 */
 	function getAwayHighestAwayDef()
 	{
-		$teams = $this->getMatchTeams();
+		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
 		{
 			return null;
@@ -489,6 +589,12 @@ class sportsmanagementModelNextMatch extends JModel
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getTeamsFromMatches()
+	 * 
+	 * @param mixed $games
+	 * @return
+	 */
 	function getTeamsFromMatches( & $games )
 	{
 	   $mainframe = JFactory::getApplication();
@@ -535,6 +641,12 @@ class sportsmanagementModelNextMatch extends JModel
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getPlayground()
+	 * 
+	 * @param mixed $pgid
+	 * @return
+	 */
 	function getPlayground( $pgid )
 	{
 	   $mainframe = JFactory::getApplication();
@@ -558,6 +670,12 @@ class sportsmanagementModelNextMatch extends JModel
 		return $db->loadObject();
 	}
 
+	/**
+	 * sportsmanagementModelNextMatch::getMatchText()
+	 * 
+	 * @param mixed $match_id
+	 * @return
+	 */
 	function getMatchText($match_id)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -597,39 +715,39 @@ class sportsmanagementModelNextMatch extends JModel
 	 */
 	function getChances()
 	{
-		$home=$this->getHomeRanked();
-		$away=$this->getAwayRanked();
+		$home = self::getHomeRanked();
+		$away = self::getAwayRanked();
 
 		if ((($home->cnt_matches)>0) && (($away->cnt_matches)>0))
 		{
-			$won1=$home->cnt_won;		
-			$won2=$away->cnt_won;
-			$loss1=$home->cnt_lost;
-			$loss2=$away->cnt_lost;
-			$matches1=$home->cnt_matches;
-			$matches2=$away->cnt_matches;
-			$goalsfor1=$home->sum_team1_result;
-			$goalsfor2=$away->sum_team1_result;
-			$goalsagainst1=$home->sum_team2_result;
-			$goalsagainst2=$away->sum_team2_result;
+			$won1 = $home->cnt_won;		
+			$won2 = $away->cnt_won;
+			$loss1 = $home->cnt_lost;
+			$loss2 = $away->cnt_lost;
+			$matches1 = $home->cnt_matches;
+			$matches2 = $away->cnt_matches;
+			$goalsfor1 = $home->sum_team1_result;
+			$goalsfor2 = $away->sum_team1_result;
+			$goalsagainst1 = $home->sum_team2_result;
+			$goalsagainst2 = $away->sum_team2_result;
 		
-			$ax=(100*$won1/$matches1)+(100*$loss2/$matches2);
-			$bx=(100*$won2/$matches2)+(100*$loss1/$matches1);
-			$cx=($goalsfor1/$matches1)+($goalsagainst2/$matches2);
-			$dx=($goalsfor2/$matches2)+($goalsagainst1/$matches1);
-			$ex=$ax+$bx;
-			$fx=$cx+$dx;
+			$ax = (100*$won1/$matches1)+(100*$loss2/$matches2);
+			$bx = (100*$won2/$matches2)+(100*$loss1/$matches1);
+			$cx = ($goalsfor1/$matches1)+($goalsagainst2/$matches2);
+			$dx = ($goalsfor2/$matches2)+($goalsagainst1/$matches1);
+			$ex = $ax+$bx;
+			$fx = $cx+$dx;
 		
 			if (isset($ex) && ($ex>0) && isset($fx) &&($fx>0)) 
 			{	 
-				$ax=round(10000*$ax/$ex);
-				$bx=round(10000*$bx/$ex);
-				$cx=round(10000*$cx/$fx);
-				$dx=round(10000*$dx/$fx);
+				$ax = round(10000*$ax/$ex);
+				$bx = round(10000*$bx/$ex);
+				$cx = round(10000*$cx/$fx);
+				$dx = round(10000*$dx/$fx);
 		
-				$chg1=number_format((($ax+$cx)/200),2,",",".");
-				$chg2=number_format((($bx+$dx)/200),2,",",".");
-				$result=array($chg1,$chg2);
+				$chg1 = number_format((($ax+$cx)/200),2,",",".");
+				$chg2 = number_format((($bx+$dx)/200),2,",",".");
+				$result = array($chg1,$chg2);
 
 				return $result;
 			}

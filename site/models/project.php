@@ -107,6 +107,11 @@ class sportsmanagementModelProject extends JModel
 	var $_current_round;
 
 
+	/**
+	 * sportsmanagementModelProject::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		$this->projectid = JRequest::getInt('p',0);
@@ -114,6 +119,11 @@ class sportsmanagementModelProject extends JModel
 	}
 
 
+	/**
+	 * sportsmanagementModelProject::getProject()
+	 * 
+	 * @return
+	 */
 	function getProject()
 	{
 		$option = JRequest::getCmd('option');
@@ -162,6 +172,12 @@ class sportsmanagementModelProject extends JModel
 		return $this->_project;
 	}
 
+	/**
+	 * sportsmanagementModelProject::setProjectID()
+	 * 
+	 * @param integer $id
+	 * @return void
+	 */
 	function setProjectID($id=0)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -178,6 +194,11 @@ class sportsmanagementModelProject extends JModel
         
 	}
 
+	/**
+	 * sportsmanagementModelProject::getSportsType()
+	 * 
+	 * @return
+	 */
 	function getSportsType()
 	{
 		if (!$project = self::getProject())
@@ -237,43 +258,42 @@ class sportsmanagementModelProject extends JModel
 			}
 			
 			$current_date = strftime("%Y-%m-%d %H:%M:%S");
+            $query->clear();
+            $query->select('r.id, r.roundcode');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
+            
 	
 			// determine current round according to project settings
 			switch ($project->current_round_auto)
 			{
 				case 0 :	 // manual mode
-					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
-							 WHERE r.id =".$project->current_round;
+                $query->where('r.id = '.$project->current_round);
 					break;
 	
 				case 1 :	 // get current round from round_date_first
-					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
-							 WHERE r.project_id=".$project->id."
-								AND (r.round_date_first - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')
-							 ORDER BY r.round_date_first DESC LIMIT 1";
+                $query->where('r.project_id = '.$project->id);
+                $query->where("(r.round_date_first - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')");
+                $query->order('r.round_date_first DESC LIMIT 1');
 					break;
 	
 				case 2 : // get current round from round_date_last
-					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
-							  WHERE r.project_id=".$project->id."
-								AND (r.round_date_last + INTERVAL ".($project->auto_time)." MINUTE > '".$current_date."')
-							  ORDER BY r.round_date_first ASC LIMIT 1";
+                $query->where('r.project_id = '.$project->id);
+                $query->where("(r.round_date_last - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')");
+                $query->order('r.round_date_first DESC LIMIT 1');
 					break;
 	
 				case 3 : // get current round from first game of the round
-					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r,#__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
-							WHERE r.project_id=".$project->id."
-								AND m.round_id=r.id
-								AND (m.match_date - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')
-							ORDER BY m.match_date DESC LIMIT 1";
+                $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.round_id = r.id');
+                $query->where('r.project_id = '.$project->id);
+                $query->where("(m.match_date - INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')");
+                $query->order('m.match_date DESC LIMIT 1');
 					break;
 	
 				case 4 : // get current round from last game of the round
-					$query="SELECT r.id, r.roundcode FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r, #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
-							WHERE r.project_id=".$project->id."
-								AND m.round_id=r.id
-								AND (m.match_date + INTERVAL ".($project->auto_time)." MINUTE > '".$current_date."')
-							ORDER BY m.match_date ASC LIMIT 1";
+                $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.round_id = r.id');
+                $query->where('r.project_id = '.$project->id);
+                $query->where("(m.match_date + INTERVAL ".($project->auto_time)." MINUTE < '".$current_date."')");
+                $query->order('m.match_date ASC LIMIT 1');
 					break;
 			}
 			$db->setQuery($query);
@@ -283,28 +303,34 @@ class sportsmanagementModelProject extends JModel
 			// Either way, do not change current value
 			if (!$result)
 			{
-				$query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
-				       . ' WHERE r.project_id = '. $project->current_round
-				       ;
+			$query->clear();
+            $query->select('r.id, r.roundcode');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
+            $query->where('r.id = '.$project->current_round);
+
 				$db->setQuery($query);
 				$result = $db->loadObject();
 				
 				if (!$result)
 				{
-					if ($project->current_round_auto == 2) {
+				    $query->clear();
+                    $query->select('r.id, r.roundcode');
+                    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
+                    $query->where('r.project_id = '. $project->id);
+                        
+					if ($project->current_round_auto == 2) 
+                    {
 					    // the current value is invalid... saison is over, just take the last round
-					    $query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
-						    . ' WHERE r.project_id = '. $project->id
-						    . ' ORDER BY . r.roundcode DESC '
-						    ;
+                        $query->order('r.roundcode DESC');
+
 					    $db->setQuery($query);
 					    $result = $db->loadObject();					
-					} else {
+					} 
+                    else 
+                    {
 					    // the current value is invalid... just take the first round
-					    $query = ' SELECT r.id, r.roundcode FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r '
-						    . ' WHERE r.project_id = '. $project->id
-						    . ' ORDER BY . r.roundcode ASC '
-						    ;
+                        $query->order('r.roundcode ASC');
+
 					    $db->setQuery($query);
 					    $result = $db->loadObject();
 					}
@@ -315,10 +341,13 @@ class sportsmanagementModelProject extends JModel
 			// Update the database if determined current round is different from that in the database
 			if ($result && ($project->current_round <> $result->id))
 			{
-				$query = ' UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_project SET current_round = '.$result->id
-				       . ' WHERE id = ' . $db->Quote($project->id);
-				$db->setQuery($query);
-				if (!$db->query()) {
+			 // Must be a valid primary key value.
+             $object->id = $db->Quote($project->id);
+             $object->current_round = $result->id;
+             // Update their details in the users table using id as the primary key.
+             $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');
+
+				if (!$result) {
 					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));					
 				}
 			}
@@ -340,6 +369,12 @@ class sportsmanagementModelProject extends JModel
 		return $this->_current_round;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getColors()
+	 * 
+	 * @param string $configcolors
+	 * @return
+	 */
 	function getColors($configcolors='')
 	{
 		$s=substr($configcolors,0,-1);
@@ -373,6 +408,12 @@ class sportsmanagementModelProject extends JModel
 		return $colors;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getDivisionsId()
+	 * 
+	 * @param integer $divLevel
+	 * @return
+	 */
 	function getDivisionsId($divLevel=0)
 	{
 		$option = JRequest::getCmd('option');
@@ -426,6 +467,12 @@ class sportsmanagementModelProject extends JModel
 		return $res;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getDivision()
+	 * 
+	 * @param mixed $id
+	 * @return
+	 */
 	function getDivision($id)
 	{
 		$divs = self::getDivisions();
@@ -438,6 +485,12 @@ class sportsmanagementModelProject extends JModel
 		return $div;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getDivisions()
+	 * 
+	 * @param integer $divLevel
+	 * @return
+	 */
 	function getDivisions($divLevel=0)
 	{
 		$option = JRequest::getCmd('option');
@@ -533,22 +586,22 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
-
-        $query="SELECT
-					id as value,
-				    CASE LENGTH(name)
-				    	when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id)
-				    	else name
-				    END as text
-				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
-				  WHERE project_id=".(int)$this->projectid."
-				  ORDER BY roundcode ".$ordering;
+        // Select some fields
+        $query->select("id as value, CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'__round ');
+        $query->where('project_id = '.(int)$this->projectid);
+        $query->order('roundcode '.$ordering);
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelProject::getTeaminfo()
+	 * 
+	 * @param mixed $projectteamid
+	 * @return
+	 */
 	function getTeaminfo($projectteamid)
 	{
 		$option = JRequest::getCmd('option');
@@ -569,24 +622,7 @@ class sportsmanagementModelProject extends JModel
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id = c.id  ');
         // Where
         $query->where('pt.id = '. $db->Quote($projectteamid));
-        
-        
-/**
- *         $query=' SELECT t.*, pt.division_id, t.id as team_id,
- * 				pt.picture AS projectteam_picture,
- * 				t.picture as team_picture,
- * 				c.logo_small,
- * 				c.logo_middle,
- * 				c.logo_big,
- * 				IF((ISNULL(pt.picture) OR (pt.picture="")), 
- * 					(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture,
- * 				t.extended as teamextended 
- * 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt 
- * 				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON pt.team_id=t.id
- * 				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id=c.id 
- * 				WHERE pt.id='. $db->Quote($projectteamid);
- */
-                
+         
 		$db->setQuery($query);
         
         $result = $db->loadObject();
@@ -604,6 +640,11 @@ class sportsmanagementModelProject extends JModel
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelProject::_getTeams()
+	 * 
+	 * @return
+	 */
 	function & _getTeams()
 	{
 	   $option = JRequest::getCmd('option');
@@ -611,76 +652,31 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
 
-        
 		if (empty($this->_teams))
 		{
-			$query='	SELECT	tl.id AS projectteamid,
-								tl.division_id,
-								tl.standard_playground,
-								tl.admin,
-								tl.start_points,
-								tl.points_finally,
-								tl.neg_points_finally,
-								tl.matches_finally,
-								tl.won_finally,
-								tl.draws_finally,
-								tl.lost_finally,
-								tl.homegoals_finally,
-								tl.guestgoals_finally,
-								tl.diffgoals_finally,
-								tl.info,
-								tl.reason,
-								tl.team_id,
-								tl.checked_out,
-								tl.checked_out_time,
-								tl.is_in_score,
-								tl.picture AS projectteam_picture,
-								t.picture as team_picture,
-								IF((ISNULL(tl.picture) OR (tl.picture="")), 
-									(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_small , t.picture)) , t.picture) as picture,
-								tl.project_id,
-
-								t.id,t.name,
-								t.short_name,
-								t.middle_name,
-								t.notes,
-								t.club_id,
-
-								u.username,
-								u.email,
-
-								c.email as club_email,
-								c.logo_small,
-								c.logo_middle,
-								c.logo_big,
-								c.country,
-								c.website,
-
-								d.name AS division_name,
-								d.shortname AS division_shortname,
-								d.parent_id AS parent_division_id,
-
-								plg.name AS playground_name,
-								plg.short_name AS playground_short_name,
-
-								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug,
-								CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,
-								CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\',d.id,d.alias) ELSE d.id END AS division_slug,
-								CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug
-
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tl
-							
-                            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id
-                            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id
-							LEFT JOIN #__users u ON tl.admin=u.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id = tl.standard_playground
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id
-
-						WHERE tl.project_id='.(int)$this->projectid;
+		  // Select some fields
+          $query->select('tl.id AS projectteamid,tl.division_id,tl.standard_playground,tl.admin,tl.start_points,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally');
+          $query->select('tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally,tl.info,tl.reason,tl.team_id,tl.checked_out,tl.checked_out_time,tl.is_in_score,tl.picture AS projectteam_picture');
+          $query->select('IF((ISNULL(tl.picture) OR (tl.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_small , t.picture)) , t.picture) as picture,tl.project_id');
+          $query->select('t.picture as team_picture,t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
+          $query->select('u.username,u.email');
+          $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website');
+          $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
+          $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
+          $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+          $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
+          $query->select('CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\',d.id,d.alias) ELSE d.id END AS division_slug');
+          $query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id ');
+          $query->join('LEFT',' #__users u ON tl.admin=u.id ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id = tl.standard_playground ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id ');
+          $query->where('tl.project_id = '.(int)$this->projectid);
 
 			$db->setQuery($query);
 			$this->_teams = $db->loadObjectList();
@@ -726,46 +722,63 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getTeamIds($division=0)
 	{
-		$teams=array();
-		foreach ((array)$this->_getTeams() as $t)
+		$teams = array();
+		foreach ((array)self::_getTeams() as $t)
 		{
 			if (!$division || $t->division_id == $division) {
-				$teams[]=$t->id;
+				$teams[] = $t->id;
 			}
 		}
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getTeamsIndexedById()
+	 * 
+	 * @param integer $division
+	 * @return
+	 */
 	function getTeamsIndexedById($division=0)
 	{
-		$result=$this->getTeams($division);
-		$teams=array();
+		$result = self::getTeams($division);
+		$teams = array();
 		if (count($result))
 		{
 			foreach($result as $r)
 			{
-				$teams[$r->id]=$r;
+				$teams[$r->id] = $r;
 			}
 		}
 
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getTeamsIndexedByPtid()
+	 * 
+	 * @param integer $division
+	 * @return
+	 */
 	function getTeamsIndexedByPtid($division=0)
 	{
-		$result=self::getTeams($division);
-		$teams=array();
+		$result = self::getTeams($division);
+		$teams = array();
 
 		if (count($result))
 		{
 			foreach($result as $r)
 			{
-				$teams[$r->projectteamid]=$r;
+				$teams[$r->projectteamid] = $r;
 			}
 		}
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getFavTeams()
+	 * 
+	 * @return
+	 */
 	function getFavTeams()
 	{
 		$project = self::getProject();
@@ -802,10 +815,18 @@ class sportsmanagementModelProject extends JModel
 			$query .= " me.event_type_id=".(int)$evid;
 		}
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('etid');
+		$db->setQuery($query);
+		return $db->loadObjectList('etid');
 	}
 
+
+
+	/**
+	 * sportsmanagementModelProject::getprojectteamID()
+	 * 
+	 * @param mixed $teamid
+	 * @return
+	 */
 	function getprojectteamID($teamid)
 	{
 	   $option = JRequest::getCmd('option');
@@ -814,14 +835,12 @@ class sportsmanagementModelProject extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-
-		$query="SELECT id
-				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
-				  WHERE team_id=".(int)$teamid."
-					AND project_id=".(int)$this->projectid;
-
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadResult();
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+        $query->where('team_id = '.(int)$teamid);
+        $query->where('project_id = '.(int)$this->projectid);
+		$db->setQuery($query);
+		$result = $db->loadResult();
 
 		return $result;
 	}
@@ -840,16 +859,14 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
+        $query->select('id AS value,name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+        $query->order('text ASC');
 
-		$query='	SELECT	id AS value,
-							name AS text
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground
-					ORDER BY text ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+		$db->setQuery($query);
+		if (!$result = $db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($db->getErrorMsg());
 			return false;
 		}
 		else
@@ -858,9 +875,12 @@ class sportsmanagementModelProject extends JModel
 		}
 	}
     
-    /**
+    
+	/**
+	 * sportsmanagementModelProject::getProjectGameRegularTime()
 	 * 
-	 * @param $project_id
+	 * @param mixed $project_id
+	 * @return
 	 */
 	function getProjectGameRegularTime($project_id)
 	{
@@ -869,14 +889,13 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
+        $gameprojecttime = 0;
+        $query->select('game_regular_time');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('id = '.$project_id);
 
-		$gameprojecttime = 0;
-        $query = 'SELECT game_regular_time 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project 
-					WHERE id='.$project_id;
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObject();
+		$db->setQuery($query);
+		$result = $db->loadObject();
 		
         $gameprojecttime += $result->game_regular_time;
         if ( $result->allow_add_time )
@@ -887,6 +906,11 @@ class sportsmanagementModelProject extends JModel
         return $gameprojecttime;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getReferees()
+	 * 
+	 * @return
+	 */
 	function getReferees()
 	{
 	   $option = JRequest::getCmd('option');
@@ -895,36 +919,38 @@ class sportsmanagementModelProject extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-		$project=$this->getProject();
+		$project = self::getProject();
 		if ($project->teams_as_referees)
 		{
-			$query='	SELECT	id AS value,
-								name AS text
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
-						ORDER BY name';
+		  $query->select('id AS value,name AS text');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+          $query->order('name');
 
-			$this->_db->setQuery($query);
-			$refs=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$refs = $db->loadObjectList();
 		}
 		else
 		{
-			$query='	SELECT	id AS value,
-								firstname,
-								lastname
+		  $query->select('id AS value,firstname,lastname');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee');
+          $query->order('lastname');
 
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee
-						ORDER BY lastname';
-
-			$this->_db->setQuery($query);
-			$refs=$this->_db->loadObjectList();
+			$db->setQuery($query);
+			$refs = $db->loadObjectList();
 			foreach($refs as $ref)
 			{
-				$ref->text=$ref->lastname.",".$ref->firstname;
+				$ref->text = $ref->lastname.",".$ref->firstname;
 			}
 		}
 		return $refs;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getTemplateConfig()
+	 * 
+	 * @param mixed $template
+	 * @return
+	 */
 	function getTemplateConfig($template)
 	{
 		$option = JRequest::getCmd('option');
@@ -941,41 +967,10 @@ class sportsmanagementModelProject extends JModel
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
-        
-        /*
-		if(file_exists(JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml')) 
-        {
-			$strXmlFile = JPATH_COMPONENT_SITE. DS.'settings'.DS."default".DS.$template.'.xml';
-			$form = JForm::getInstance($template, $strXmlFile);
-			$fieldsets = $form->getFieldsets();
-			foreach ($fieldsets as $fieldset) {
-				foreach($form->getFieldset($fieldset->name) as $field) {
-					$arrStandardSettings[$field->name]=$field->value;
-				}				
-			}
-		}
-        */
-        
-/*
-		//second load the default settings from the default extensions <template>.xml file
-		$extensions=sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
-		foreach ($extensions as $e => $extension) {
-			$JLGPATH_EXTENSION= JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension;
-			$paramsdata="";
-			$strXmlFile=$JLGPATH_EXTENSION. DS.'settings'.DS."default".DS.$template.'.xml';
-			if(file_exists($JLGPATH_EXTENSION. DS.'settings'.DS."default".DS.$template.'.xml')) {
-				$form = JForm::getInstance($template, $strXmlFile);
-				$fieldsets = $form->getFieldsets();
-				foreach ($fieldsets as $fieldset) {
-					foreach($form->getFieldset($fieldset->name) as $field) {
-						$arrStandardSettings[$field->name]=$field->value;
-					}
-				}
-			}
-		}
-*/
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
+       
+
 		if( $this->projectid == 0) return $arrStandardSettings;
 
 $query->select('t.params');
@@ -983,12 +978,6 @@ $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
 $query->where('t.template='.$db->Quote($template));
 $query->where('p.id='.$db->Quote($this->projectid));
-
-//        $query= "SELECT t.params
-//				   FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
-//				   INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
-//				   WHERE t.template=".$db->Quote($template)."
-//				   AND p.id=".$db->Quote($this->projectid);
 
 		$db->setQuery($query);
 		if (! $result = $db->loadResult())
@@ -1001,12 +990,6 @@ $query->where('p.id='.$db->Quote($this->projectid));
                 $query2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
                 $query2->where('t.template='.$db->Quote($template));
                 $query2->where('p.id='.$db->Quote($project->master_template));
-                
-//                $query="SELECT t.params
-//						  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config AS t
-//						  INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=t.project_id
-//						  WHERE t.template=".$db->Quote($template)."
-//						  AND p.id=".$db->Quote($project->master_template);
 
 				$db->setQuery($query2);
 				if (! $result = $db->loadResult())
@@ -1045,11 +1028,21 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		//return $extended;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getOverallConfig()
+	 * 
+	 * @return
+	 */
 	function getOverallConfig()
 	{
 		return self::getTemplateConfig('overall');
 	}
 
+	/**
+	 * sportsmanagementModelProject::getMapConfig()
+	 * 
+	 * @return
+	 */
 	function getMapConfig()
 	{
 		return self::getTemplateConfig('map');
@@ -1068,14 +1061,13 @@ $query->where('p.id='.$db->Quote($this->projectid));
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        $query->select('l.country');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro ON pro.league_id = l.id ');
+        $query->where('pro.id = '. $db->Quote($this->projectid));
 
-		 $query = 'SELECT l.country
-					from #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l
-					inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro
-					on pro.league_id = l.id 
-					WHERE pro.id = '. $this->_db->Quote($this->projectid);
-		  $this->_db->setQuery( $query );
-		  $this->country = $this->_db->loadResult();
+		  $db->setQuery( $query );
+		  $this->country = $db->loadResult();
 		  return $this->country;
   	} 
         
@@ -1092,20 +1084,17 @@ $query->where('p.id='.$db->Quote($this->projectid));
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        $query->select('et.id,et.name,et.icon');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id ');
+        $query->where('ppos.project_id = '. $db->Quote($this->projectid));
 
-        
-		$query=' SELECT	et.id,
-						et.name,
-						et.icon
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pet.position_id
-						WHERE ppos.project_id='.$db->Quote($this->projectid);
 		if ($position_id)
 		{
-			$query=' AND ppos.position_id='. $db->Quote($position_id);
+		  $query->where('ppos.position_id = '. $db->Quote($position_id));
 		}
-		$query .= ' GROUP BY et.id';
+        $query->group('et.id');
 		$db->setQuery($query);
 		$events = $db->loadObjectList('id');
 		return $events;
@@ -1132,24 +1121,17 @@ $query->where('p.id='.$db->Quote($this->projectid));
 			require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
 			$project = self::getProject();
 			$project_id = $project->id;
-			$query='	SELECT	stat.id,
-								stat.name,
-								stat.short,
-								stat.class,
-								stat.icon,
-								stat.calculated,
-								ppos.id as pposid,
-								ppos.position_id AS position_id,
-								stat.params, stat.baseparams
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS stat
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=stat.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=ps.position_id
-						  AND ppos.project_id='.$project_id.' 
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ps.position_id
-						WHERE stat.published=1 
-						  AND pos.published =1 
-						  ';
-			$query .= ' ORDER BY pos.ordering,ps.ordering ';
+            $query->select('ppos.id as pposid,ppos.position_id AS position_id');
+            $query->select('stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,stat.params, stat.baseparams');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS stat');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = stat.id ');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = ps.position_id
+						  AND ppos.project_id='.$project_id);
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ps.position_id');
+            $query->where('stat.published = 1');
+            $query->where('pos.published = 1');
+            $query->order('pos.ordering,ps.ordering');
+
 			$db->setQuery($query);
 			$this->_stats = $db->loadObjectList();
 
@@ -1189,6 +1171,11 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		}
 	}
 
+	/**
+	 * sportsmanagementModelProject::getProjectPositions()
+	 * 
+	 * @return
+	 */
 	function getProjectPositions()
 	{
 	   $option = JRequest::getCmd('option');
@@ -1196,26 +1183,29 @@ $query->where('p.id='.$db->Quote($this->projectid));
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
 
-        
 		if (empty($this->_positions))
 		{
-			$query='	SELECT	pos.id,
-								pos.persontype,
-								pos.name,
-								pos.ordering,
-								pos.published,
-								ppos.id AS pposid
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-						WHERE ppos.project_id='.$db->Quote($this->projectid);
+		  $query->select('pos.id,pos.persontype,pos.name,pos.ordering,pos.published');
+          $query->select('ppos.id AS pposid');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos');
+          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
+          $query->where('ppos.project_id = '.$db->Quote($this->projectid));
+
 			$db->setQuery($query);
 			$this->_positions = $db->loadObjectList('id');
 		}
 		return $this->_positions;
 	}
 
+	/**
+	 * sportsmanagementModelProject::getClubIconHtml()
+	 * 
+	 * @param mixed $team
+	 * @param integer $type
+	 * @param integer $with_space
+	 * @return
+	 */
 	function getClubIconHtml(&$team,$type=1,$with_space=0)
 	{
 		$small_club_icon = $team->logo_small;
@@ -1295,9 +1285,16 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		return $row->id;
 	}
 
+	/**
+	 * sportsmanagementModelProject::isUserProjectAdminOrEditor()
+	 * 
+	 * @param integer $userId
+	 * @param mixed $project
+	 * @return
+	 */
 	public static function isUserProjectAdminOrEditor($userId=0, $project)
 	{
-		$result=false;
+		$result = false;
 		if($userId > 0)
 		{
 			$result= ($userId==$project->admin || $userId==$project->editor);
@@ -1469,6 +1466,12 @@ $query->where('p.id='.$db->Quote($this->projectid));
         return $events;
 	}
 	
+	/**
+	 * sportsmanagementModelProject::hasEditPermission()
+	 * 
+	 * @param mixed $task
+	 * @return
+	 */
 	function hasEditPermission($task=null)
 	{
 		$option = JRequest::getCmd('option');
