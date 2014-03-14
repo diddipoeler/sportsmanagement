@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -60,6 +60,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     var $_sport_types_events = array();
     var $_sport_types_position = array();
     var $_sport_types_position_parent = array();
+    var $_success_text = '';
+    var $my_text = '';
+	var $storeFailedColor = 'red';
+	var $storeSuccessColor = 'green';
+	var $existingInDbColor = 'orange';
     
     /**
 	 * Method to get the record form.
@@ -89,6 +94,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return $form;
 	}
     
+    /**
+     * sportsmanagementModeldatabasetool::getSportsManagementTables()
+     * 
+     * @return
+     */
     function getSportsManagementTables()
     {
         $mainframe = JFactory::getApplication();
@@ -98,6 +108,13 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return $this->_db->loadResultArray();
     }
     
+    /**
+     * sportsmanagementModeldatabasetool::setSportsManagementTableQuery()
+     * 
+     * @param mixed $table
+     * @param mixed $command
+     * @return
+     */
     function setSportsManagementTableQuery($table, $command)
     {
         $mainframe = JFactory::getApplication();
@@ -114,6 +131,12 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return true;
     }
     
+    /**
+     * sportsmanagementModeldatabasetool::checkQuotes()
+     * 
+     * @param mixed $sm_quotes
+     * @return
+     */
     function checkQuotes($sm_quotes)
     {
         $mainframe = JFactory::getApplication();
@@ -141,7 +164,10 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             foreach( $xml->document->version as $version ) 
             {
             $quote_version = $version->data();
-            $mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
+					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             }
             
             foreach( $xml->document->quotes as $quote ) 
@@ -181,12 +207,135 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             }
             
             }
+            else
+            {
+            
+            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            foreach( $xml->document->version as $version ) 
+            {
+            $quote_version = $version->data();
+            }
+            
+            $this->my_text .= '<span style="color:'.$this->existingInDbColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Zitate').'</strong></span><br />';
+					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' ist installiert !').'<br />';    
+            }
         }    
-        
+        return $this->my_text;
     }
 
     
+    /**
+     * sportsmanagementModeldatabasetool::insertAgegroup()
+     * 
+     * @param mixed $search_nation
+     * @param mixed $filter_sports_type
+     * @return
+     */
+    function insertAgegroup($search_nation,$filter_sports_type)
+    {
+    $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option'); 
     
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
+    
+    $mdl = JModel::getInstance("sportstype", "sportsmanagementModel");
+    $p_sportstype = $mdl->getTable();
+    $p_sportstype->load((int) $filter_sports_type);
+    $temp = explode("_",$p_sportstype->name);
+    $sport_type_name = strtolower(array_pop($temp));
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
+    $filename = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
+    
+    if (!JFile::exists($filename)) 
+    {
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+        $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+					$this->my_text .= JText::_('Fehlende Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Datei %1$s ist nicht vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;
+    }  
+    else
+    {
+      $this->my_text = '<span style="color:'.$this->existingInDbColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Datei %1$s ist vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
+                    
+        $xml = JFactory::getXMLParser( 'Simple' );
+       $xml->loadFile($filename); 
+       
+       // schleife altersgruppen anfang
+       foreach( $xml->document->agegroups as $agegroup ) 
+{
+   $name = $agegroup->getElementByPath('agegroup');
+   $attributes = $name->attributes();
+   
+   //$mainframe->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   
+   $agegroup = $name->data();
+   $info = $attributes['info'];
+   $picture = 'images/com_sportsmanagement/database/agegroups/'.$attributes['picture'];
+   
+   $query="SELECT id
+            FROM #__".COM_SPORTSMANAGEMENT_TABLE."_agegroup where name like '".$agegroup."' and country like '".$search_nation."' and sportstype_id = ".$filter_sports_type;
+		    $this->_db->setQuery($query);
+		    // altersgruppe nicht vorhanden ?
+            if ( !$this->_db->loadResult() )
+            {
+   // Get a db connection.
+        $db = JFactory::getDbo();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        // Insert columns.
+        $columns = array('name','picture','info','sportstype_id','country');
+        // Insert values.
+        $values = array('\''.$agegroup.'\'','\''.$picture.'\'' ,'\''.$info.'\'' ,'\''.$filter_sports_type.'\'' ,'\''.$search_nation.'\''  );
+        // Prepare the insert query.
+        $query
+            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        $db->setQuery($query);
+        
+        if (!$db->query())
+		{
+			
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$result = false;
+		}
+        else
+        {
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+					$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
+        }
+        
+   }
+   
+   }
+   // schleife altersgruppen ende    
+       
+       
+       
+    return $this->my_text;   
+    }
+                   
+    
+    
+    }
+    
+    /**
+     * sportsmanagementModeldatabasetool::checkAssociations()
+     * 
+     * @return
+     */
     function checkAssociations()
     {
     $mainframe = JFactory::getApplication();
@@ -196,9 +345,17 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
     
+    if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml')) 
+    {
+        return false;
+    } 
+    
     $params = JComponentHelper::getParams( $option );
     $country_assoc = $params->get( 'cfg_country_associations' );
+    if ( $country_assoc )
+   {
     $country_assoc_del = "'".implode("','",$country_assoc)."'";    
+    }
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
@@ -222,7 +379,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
-   // welche länder möchte denn der user haben ?
+   if ( $country_assoc )
+   {
+   // welche lï¿½nder mï¿½chte denn der user haben ?
    foreach( $country_assoc as $key => $value )
    {
    if ( $value == $country  ) 
@@ -296,7 +455,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	            if (!$db->query())
 			    {
 			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg()); 
+                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
@@ -335,11 +494,18 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
    }
    }
    }
+   }
    
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
     }
     
     
+    /**
+     * sportsmanagementModeldatabasetool::checkSportTypeStructur()
+     * 
+     * @param mixed $type
+     * @return
+     */
     function checkSportTypeStructur($type)
     {
     $mainframe = JFactory::getApplication();
@@ -359,7 +525,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
     
-    // We can now step through each element of the file 
+    // We can now step through each element of the file
+ if ( isset($xml->document->events) )
+    {    
 foreach( $xml->document->events as $event ) 
 {
    $name = $event->getElementByPath('name');
@@ -374,11 +542,13 @@ foreach( $xml->document->events as $event )
     $export[] = $temp;
     $this->_sport_types_events[$type] = array_merge($export);
    }
-    
+    }    
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
    
    unset ($export); 
+ if ( isset($xml->document->mainpositions) )
+    {   
     foreach( $xml->document->mainpositions as $position ) 
 {
    $name = $position->getElementByPath('mainname');
@@ -401,13 +571,15 @@ foreach( $xml->document->events as $event )
         $export[] = $temp;
         $this->_sport_types_position[$type] = array_merge($export);
    }
-   
+    }  
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
     
     
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
     
     unset ($export); 
+    if ( isset($xml->document->parentpositions) )
+    {
     foreach( $xml->document->parentpositions as $parent ) 
 {
    $name = $parent->getElementByPath('parentname');
@@ -447,7 +619,7 @@ foreach( $xml->document->events as $event )
         
    }
     
-    
+    }   
     
     
     
@@ -459,6 +631,11 @@ foreach( $xml->document->events as $event )
     }
     
     
+    /**
+     * sportsmanagementModeldatabasetool::insertCountries()
+     * 
+     * @return
+     */
     function insertCountries()
     {
     $mainframe = JFactory::getApplication();
@@ -470,18 +647,50 @@ foreach( $xml->document->events as $event )
 // $fileContent = JFile::read($db_table);
 // $sql_teil = explode(";",$fileContent);
 
+    $cols = $db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+    if ( $cols )
+    {
     $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
     if ( $result )
     {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error');     
+    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
+    $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
+					
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;    
     }   
     else
     {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');     
-    } 
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
+    $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS').'</strong></span><br />';
+					
+					
+					//$this->_success_text['Altersgruppen:'] = $my_text;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        return $this->my_text;         
     }
     
+    }
+    else
+    {
+    $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_JOOMLEAGUE_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
+        return $this->my_text;     
+    } 
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+    
+    }
+    
+    /**
+     * sportsmanagementModeldatabasetool::insertSportType()
+     * 
+     * @param mixed $type
+     * @return
+     */
     function insertSportType($type)
     {
         $mainframe = JFactory::getApplication();
@@ -493,7 +702,9 @@ foreach( $xml->document->events as $event )
         
         if ( !$available )
         {
-            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
+            $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)).'</strong></span><br />';
             return false;
         }
         
@@ -518,7 +729,7 @@ foreach( $xml->document->events as $event )
         // Insert columns.
         $columns = array('name','icon');
         // Insert values.
-        $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
+        $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'images/com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
         // Prepare the insert query.
         $query
             ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type'))
@@ -535,17 +746,30 @@ foreach( $xml->document->events as $event )
 		}
         else
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)).'</strong></span><br />';
+        
         $sports_type_id = $db->insertid();
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
         self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=0);
         }
         }
         
-        return true;
+        return $sports_type_id;
+        //return $this->my_text;
     }
     
     
+    /**
+     * sportsmanagementModeldatabasetool::addStandardForSportType()
+     * 
+     * @param mixed $name
+     * @param mixed $id
+     * @param mixed $type
+     * @param integer $update
+     * @return void
+     */
     function addStandardForSportType($name, $id, $type,$update=0)
 {
     $mainframe = JFactory::getApplication();
@@ -570,6 +794,8 @@ foreach( $xml->document->events as $event )
 	
     // insert events
     $i = 0;
+    if ( isset($this->_sport_types_events[$type]) )
+    {
     foreach ( $this->_sport_types_events[$type] as $event )
     {
         $query = self::build_SelectQuery('eventtypes',$event->name,$id); 
@@ -597,14 +823,18 @@ foreach( $xml->document->events as $event )
         
         if ( !$update )
         {
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name).'</strong></span><br />';
         }
         $i++;
     }
-    
+}
     // standardpositionen einfï¿½gen
     $i = 0;
     $j = 0;
+    if ( isset($this->_sport_types_position[$type]) )
+    {
     foreach ( $this->_sport_types_position[$type] as $position )
     {
     $query = self::build_SelectQuery('position',$position->name,$id); 
@@ -625,7 +855,9 @@ foreach( $xml->document->events as $event )
     
    if ( !$update )
         {
-    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name).'</strong></span><br />';
     }
     
     // parent position
@@ -660,7 +892,9 @@ foreach( $xml->document->events as $event )
         {
                 if ( $result )
                 {
-                    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
                 }   
                 else
                 {
@@ -674,7 +908,9 @@ foreach( $xml->document->events as $event )
         
         if ( !$update )
         {    
-        $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name).'</strong></span><br />';
          }
             
         }    
@@ -685,16 +921,36 @@ foreach( $xml->document->events as $event )
     
     $i++;
     }
-    
+    }
     
     }
     
+    /**
+     * sportsmanagementModeldatabasetool::build_SelectQuery()
+     * 
+     * @param mixed $tablename
+     * @param mixed $param1
+     * @param integer $st_id
+     * @return
+     */
     function build_SelectQuery($tablename,$param1,$st_id = 0)
 {
 	$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_".$tablename." WHERE name='".$param1."' and sports_type_id = ".$st_id." ";
 	return $query;
 }
 
+/**
+ * sportsmanagementModeldatabasetool::build_InsertQuery_Position()
+ * 
+ * @param mixed $tablename
+ * @param mixed $param1
+ * @param mixed $param2
+ * @param mixed $param3
+ * @param mixed $param4
+ * @param mixed $sports_type_id
+ * @param mixed $order_count
+ * @return
+ */
 function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$sports_type_id,$order_count)
 {
 	$alias=JFilterOutput::stringURLSafe($param1);
@@ -702,6 +958,16 @@ function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$
 	return $query;
 }
 
+/**
+ * sportsmanagementModeldatabasetool::build_InsertQuery_Event()
+ * 
+ * @param mixed $tablename
+ * @param mixed $param1
+ * @param mixed $param2
+ * @param mixed $sports_type_id
+ * @param mixed $order_count
+ * @return
+ */
 function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$order_count)
 {
 	$alias=JFilterOutput::stringURLSafe($param1);
@@ -709,6 +975,13 @@ function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$ord
 	return $query;
 }
 
+/**
+ * sportsmanagementModeldatabasetool::build_InsertQuery_PositionEventType()
+ * 
+ * @param mixed $param1
+ * @param mixed $param2
+ * @return
+ */
 function build_InsertQuery_PositionEventType($param1,$param2)
 {
 	$query="	INSERT INTO	#__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype
@@ -719,6 +992,16 @@ function build_InsertQuery_PositionEventType($param1,$param2)
 }
 
 
+/**
+ * sportsmanagementModeldatabasetool::writeErrorLog()
+ * 
+ * @param mixed $class
+ * @param mixed $function
+ * @param mixed $file
+ * @param mixed $text
+ * @param mixed $line
+ * @return void
+ */
 function writeErrorLog($class, $function, $file, $text, $line)
 {
 $mainframe = JFactory::getApplication();

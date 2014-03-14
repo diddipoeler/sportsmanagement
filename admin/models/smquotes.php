@@ -25,7 +25,17 @@ class sportsmanagementModelsmquotes extends JModelList
 {
 	var $_identifier = "smquotes";
 	
-	/**
+	public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'obj.quote',
+                        'obj.id',
+                        'obj.ordering'
+                        );
+                parent::__construct($config);
+        }
+    
+    /**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
@@ -70,12 +80,7 @@ class sportsmanagementModelsmquotes extends JModelList
         $search	= $this->getState('filter.search');
         $filter_state = $this->getState('filter.state');
         $filter_catid = $this->getState('filter.category_id');
-        
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes getListQuery filter_state<br><pre>'.print_r($filter_state,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes getListQuery filter_catid<br><pre>'.print_r($filter_catid,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes getListQuery search<br><pre>'.print_r($search,true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes _buildContentWhere request<br><pre>'.print_r($_REQUEST,true).'</pre>'   ),'');
-        
+
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -92,85 +97,28 @@ class sportsmanagementModelsmquotes extends JModelList
 		$query->join('LEFT', '#__categories AS c ON c.id = obj.catid');
         
         
-//        $where = self::_buildContentWhere();
-//        if ($where)
-//		{
-//        $query->where($where);
-//        }
-        if ( $search || $filter_state || $filter_catid )
+
+        if ( $search  )
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where('LOWER(obj.author) LIKE '.$this->_db->Quote('%'.$search.'%'));
         }
-		$query->order(self::_buildContentOrderBy());
+        if ( $filter_state )
+		{
+        $query->where('obj.published = '.$filter_state);
+        }
+        if ( $filter_catid )
+		{
+        $query->where('obj.catid = '.$filter_catid);
+        }
+        
+
+        
+        $query->order($db->escape($this->getState('list.ordering', 'obj.quote')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
  
 		//$mainframe->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');
         return $query;
 	}
-
-  
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		if ($filter_order == 'obj.ordering')
-		{
-			$orderby=' obj.ordering '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=' '.$filter_order.' '.$filter_order_Dir.',obj.ordering ';
-		}
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order',		'filter_order',		'obj.ordering',	'cmd');
-		//$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_order_Dir',	'filter_order_Dir',	'',				'word');
-        //$search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-        
-        
-        $filter_state		= $this->getState('filter.state');
-        $filter_catid		= $this->getState('filter.category_id');
-		//$search				= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        $search	= $this->getState('filter.search');
-        
-		$search=JString::strtolower($search);
-        
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes _buildContentWhere filter_state<br><pre>'.print_r($filter_state,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes _buildContentWhere filter_catid<br><pre>'.print_r($filter_catid,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes _buildContentWhere request<br><pre>'.print_r($_REQUEST,true).'</pre>'   ),'');
-        
-		$where=array();
-		if ($search)
-		{
-			$where[]='LOWER(obj.author) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-        if (is_numeric($filter_state) )
-		{
-			
-				$where[] = 'obj.published = '.$filter_state;
-			
-		}
-        if (is_numeric($filter_catid) )
-		{
-			
-				$where[] = 'obj.catid = '.$filter_catid;
-			
-		}
-
-		$where=(count($where) ? ' '.implode(' AND ',$where) : ' ');
-        
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes _buildContentWhere where<br><pre>'.print_r($where,true).'</pre>'   ),'');
-        
-		return $where;
-	}
-    
-    
 
 	
 }

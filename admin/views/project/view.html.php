@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -18,12 +46,15 @@ jimport('joomla.html.parameter.element.timezones');
 require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
 require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewProject
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewProject extends JView
 {
@@ -59,6 +90,16 @@ class sportsmanagementViewProject extends JView
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+        
+        $isNew = $this->item->id == 0;
+        if ( $isNew )
+        {
+            $this->form->setValue('start_date', null, date("Y-m-d"));
+            $this->form->setValue('start_time', null, '18:00');
+            $this->form->setValue('admin', null, $user->id);
+            $this->form->setValue('editor', null, $user->id);
+            $user->id ;
+        }
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -80,15 +121,20 @@ class sportsmanagementViewProject extends JView
 	$user = JFactory::getUser();
            
 	$this->project = $this->get('Item');
+    
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project->project_art_id,true).'</pre>'),'');
        
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->project->id);
-		
+	
+    if ( $this->project->project_art_id != 3 )
+    {	
 	$iProjectPositionsCount = 0;
 	$mdlProjectPositions = JModel::getInstance("Projectpositions", "sportsmanagementModel");
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->project->id);
-		
+	}
+    	
 	$iProjectRefereesCount = 0;
 	$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
 	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->project->id);
@@ -112,7 +158,13 @@ class sportsmanagementViewProject extends JView
     // function syntax is setUserState( $key, $value );
     $mainframe->setUserState( "$option.pid", $this->project->id);
     $mainframe->setUserState( "$option.season_id", $this->project->season_id);  
-       
+    $mainframe->setUserState( "$option.project_art_id", $this->project->project_art_id);
+    $mainframe->setUserState( "$option.sports_type_id", $this->project->sports_type_id);  
+    
+    JToolBarHelper::divider();
+	sportsmanagementHelper::ToolbarButtonOnlineHelp();
+	JToolBarHelper::preferences(JRequest::getCmd('option'));
+           
     parent::display($tpl);   
     }
        
@@ -123,6 +175,11 @@ class sportsmanagementViewProject extends JView
 	*/
 	protected function addToolbar()
 	{
+	// Get a refrence of the page instance in joomla
+        $document = JFactory::getDocument();
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
     
@@ -132,7 +189,7 @@ class sportsmanagementViewProject extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT'), 'helloworld');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT'), 'project');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
@@ -171,6 +228,7 @@ class sportsmanagementViewProject extends JView
         
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
 	}
     
     /**

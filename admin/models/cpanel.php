@@ -56,6 +56,16 @@ jimport('joomla.application.component.model');
 class sportsmanagementModelcpanel extends JModel
 {
 
+var $_success_text = '';
+	var $storeFailedColor = 'red';
+	var $storeSuccessColor = 'green';
+	var $existingInDbColor = 'orange';
+
+/**
+ * sportsmanagementModelcpanel::getVersion()
+ * 
+ * @return
+ */
 public function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();
@@ -66,6 +76,11 @@ public function getVersion()
        return $manifest_cache['version'];	
 	}
 
+/**
+ * sportsmanagementModelcpanel::getGithubRequests()
+ * 
+ * @return
+ */
 public function getGithubRequests()
 {
 $mainframe = JFactory::getApplication(); 
@@ -107,14 +122,166 @@ $paramsdata = JComponentHelper::getParams($option);
     
     }
     
+    
+    /**
+     * sportsmanagementModelcpanel::getInstalledPlugin()
+     * 
+     * @param mixed $plugin
+     * @return
+     */
+    function getInstalledPlugin($plugin)
+    {
+    $mainframe = JFactory::getApplication();
+  $option = JRequest::getCmd('option'); 
+  $db = JFactory::getDBO();    
+        $query = $db->getQuery(true);
+    $query->select('a.extension_id');
+  $query->from('#__extensions AS a');
+  //$type = $db->Quote($type);
+	$query->where("a.type LIKE 'plugin' ");
+    $query->where("a.element LIKE '".$plugin."'");
+	
+  $db->setQuery($query);
+  return $db->loadResult();    
+    }
+    
+    /**
+     * sportsmanagementModelcpanel::checkUpdateVersion()
+     * 
+     * @return
+     */
+    function checkUpdateVersion()
+    {
+        $mainframe = JFactory::getApplication(); 
+        $option = JRequest::getCmd('option');  
+        $xml = JFactory::getXMLParser( 'Simple' );
+        $return = 0;
+        $version = sportsmanagementHelper::getVersion() ;
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
+        
+        $temp = explode(".",$version);  
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
+     
+              
+        //Laden
+        $datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
+if (function_exists('curl_version'))
+{
+   $curl = curl_init();
+    //Define header array for cURL requestes
+    $header = array('Contect-Type:application/xml');
+    curl_setopt($curl, CURLOPT_URL, $datei);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
+    
+    
+    if (curl_errno($curl)) 
+    {
+        // moving to display page to display curl errors
+          //echo curl_errno($curl) ;
+          //echo curl_error($curl);
+          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
+          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+          
+          
+    }
+    else
+    {
+        $content = curl_exec($curl);
+        //print_r($content);
+        curl_close($curl);
+    } 
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+}
+else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
+{
+    $content = file_get_contents($datei);
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
+}
+else
+{
+    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
+    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+}
+		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
+		//Parsen
+        
+        if ( $content )
+        {
+		$doc = DOMDocument::loadXML($content);
+        $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        }
+        
+        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
+        foreach( $xml->document->version as $version ) 
+            {
+            $github_version = $version->data();
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+            }
+                     
+            $temp2 = explode(".",$github_version);  
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
+        
+            if ( $github_version !== $version )
+            {
+                $return =  false;
+            }
+            else
+            {
+                $return =  true;
+            }
+            
+            foreach( $temp as $key => $value )
+            {
+            if ( (int)$temp[$key] !== (int)$temp2[$key] )
+            {
+                $return = $temp[$key];
+                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
+                break;
+            }    
+            }
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            
+            //$anzahl = strcspn($github_version,$version);
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
+            
+            //$return = strcmp (trim($github_version), trim($version));
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            
+            return $return;
+                    
+    }
+    
+    /**
+     * sportsmanagementModelcpanel::checkcountry()
+     * 
+     * @return
+     */
     function checkcountry()
     {
+        $mainframe = JFactory::getApplication();
+        //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
         $query='SELECT count(*) AS count
 		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
     }
     
+    /**
+     * sportsmanagementModelcpanel::checksporttype()
+     * 
+     * @param mixed $type
+     * @return
+     */
     function checksporttype($type)
     {
         $type = strtoupper($type);
@@ -141,7 +308,6 @@ $paramsdata = JComponentHelper::getParams($option);
 		$ch = curl_init($req);
 
 		// Set options
-        
 		curl_setopt($ch, CURLOPT_HEADER, false);
         $t_vers = curl_version();
         curl_setopt($ch, CURLOPT_USERAGENT, 'curl/' . $t_vers['version'] );
@@ -172,7 +338,8 @@ $paramsdata = JComponentHelper::getParams($option);
 	 */
 	static function processData($obj, $params)
 	{
-		// Initialize
+		$mainframe = JFactory::getApplication();
+        // Initialize
 		$github = array();
 		$i = 0;
 
@@ -182,6 +349,11 @@ $paramsdata = JComponentHelper::getParams($option);
 		//$uname		= $params->get('cfg_github_username', '');
 		//$repo		= $params->get('cfg_github_repository', '');
 		$count		= 15;
+        
+//        if ($i <= $count)
+//			{
+//			$github[]	= new stdClass; 
+//            } 
 
 		// Convert the list name to a useable string for the JSON
 		if ($repo)
@@ -194,31 +366,35 @@ $paramsdata = JComponentHelper::getParams($option);
 		{
 			if ($i <= $count)
 			{
-				// Initialize a new object
-                //$github[$i]->commit	= '';
-				$github[$i]->commit	= new stdClass;
+				
+                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' github<br><pre>'.print_r($github, true).'</pre><br>','Notice');
+                
+                // Initialize a new object
+                //$github[] = '';
+                $temp = new stdClass();
+				$temp->commit	= new stdClass;
 
 				// The commit message linked to the commit
-				$github[$i]->commit->message = '<a href="https://github.com/'.$uname.'/'.$frepo.'/commit/'.$o['sha'].'" target="_blank" rel="nofollow">'.substr($o['sha'], 0, 7).'</a> - ';
-				$github[$i]->commit->message .= preg_replace("/#(\w+)/", '#<a href="https://github.com/'.$uname.'/'.$frepo.'/issues/\\1" target="_blank" rel="nofollow">\\1</a>', htmlspecialchars($o['commit']['message']));
+				$temp->commit->message = '<a href="https://github.com/'.$uname.'/'.$frepo.'/commit/'.$o['sha'].'" target="_blank" rel="nofollow">'.substr($o['sha'], 0, 7).'</a> - ';
+				$temp->commit->message .= preg_replace("/#(\w+)/", '#<a href="https://github.com/'.$uname.'/'.$frepo.'/issues/\\1" target="_blank" rel="nofollow">\\1</a>', htmlspecialchars($o['commit']['message']));
 
 				// Check if the committer information
 				if ($o['author']['id'] != $o['committer']['id'])
 				{
 					// The committer name formatted with link
-					$github[$i]->commit->committer	= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
+					$temp->commit->committer	= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY').'<a href="https://github.com/'.$o['committer']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['committer']['name'].'</a>';
 
 					// The author wasn't the committer
-					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
+					$temp->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
 				}
 				else
 				{
 					// The author is also the committer
-					$github[$i]->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
+					$temp->commit->author		= JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
 				}
 
 				// The author name formatted with link
-				$github[$i]->commit->author .= '<a href="https://github.com/'.$o['author']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['author']['name'].'</a>';
+				$temp->commit->author .= '<a href="https://github.com/'.$o['author']['login'].'" target="_blank" rel="nofollow">'.$o['commit']['author']['name'].'</a>';
 
 				// The time of commit
 				$date = date_create($o['commit']['committer']['date']);
@@ -230,16 +406,20 @@ $paramsdata = JComponentHelper::getParams($option);
 					// Load the JavaScript; first ensure we have MooTools Core
 					JHtml::_('behavior.framework');
 					JHtml::script(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/js/prettydate.js', false, false);
-					$github[$i]->commit->time = ' <span class="commit-time" title="'.$ISOtime.'">'.JHtml::date($date, 'D M d H:i:s O Y').'</span>';
+					$temp->commit->time = ' <span class="commit-time" title="'.$ISOtime.'">'.JHtml::date($date, 'D M d H:i:s O Y').'</span>';
 				}
 				else
 				{
-					$github[$i]->commit->time = ' '.JHtml::date($date);
+					$temp->commit->time = ' '.JHtml::date($date);
 				}
+                
+                $github[] = $temp;
 
 				$i++;
 			}
 		}
+        
+        
 		return $github;
 	}
     

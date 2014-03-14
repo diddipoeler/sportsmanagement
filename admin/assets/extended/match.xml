@@ -4,36 +4,38 @@
 		
     <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST" type="textarea"
 			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST"
-			description="Enter the tv broadcast info here.">
+			description="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST_DESC">
 		</field>
 		
     <field name="Weather" type="list" label="COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER"
-			description="Weather">
-			<option value=""></option>
-			<option value="dry">Dry</option>
-			<option value="rainy">Rainy</option>
-			<option value="sunny">Sunny</option>
-			<option value="windy">Windy</option>
-			<option value="snowing">Snowing</option>
+			description="COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DESC">
+			<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+			<option value="foggy">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY</option>
+			<option value="dry">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY</option>
+			<option value="rainy">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY</option>
+			<option value="sunny">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY</option>
+			<option value="windy">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY</option>
+			<option value="snowing">COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING</option>
 		</field>
 		
     <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE" type="text"
-			label="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE" description="Temperature">
+			label="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE" description="COM_SPORTSMANAGEMENT_EXT_MATCH_TEMPERATURE_DESC">
 		</field>
 		
     <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" type="list"
-			label="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" description="Field condition">
-			<option value=""></option>
-			<option value="normal">Normal</option>
-			<option value="dry">Dry</option>
-			<option value="wet">Wet</option>
+			label="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DESC">
+			<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+			<option value="normal">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL</option>
+			<option value="dry">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY</option>
+			<option value="wet">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET</option>
+			<option value="wet">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW</option>
 		</field>
 		
-<field name="formation1" type="sql"  label="Spielsystem-Heim" description="Spielsystem-Heim"
+<field name="formation1" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME_DESC"
 query="SELECT name AS value, name AS formation1 FROM #__sportsmanagement_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
 </field>
 
-<field name="formation2" type="sql"  label="Spielsystem-Gast" description="Spielsystem-Gast"
+<field name="formation2" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY_DESC"
 query="SELECT name AS value, name AS formation2 FROM #__sportsmanagement_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
 </field>
 

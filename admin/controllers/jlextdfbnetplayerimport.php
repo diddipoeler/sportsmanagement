@@ -58,91 +58,7 @@ jimport ( 'joomla.filesystem.archive' );
  */
 class sportsmanagementControllerjlextdfbnetplayerimport extends JController 
 {
-//	function __construct() {
-//	   $option = JRequest::getCmd('option');
-//		// $this->registerTask( 'save' , 'Save' );
-//		$this->registerTask ( 'update', 'display' );
-//		$this->registerTask ( 'cancel', 'display' );
-//		//$this->registerTask ( 'edit', 'display' );
-//		$this->registerTask ( 'insert', 'display' );
-//		$this->registerTask ( 'insertplayer', 'display' );
-//		$this->registerTask ( 'insertmatch', 'display' );
-//		$this->registerTask ( 'selectpage', 'display' );
-//		parent::__construct ();
-//	}
-    
-//	public function display($cachable = false, $urlparams = false) {
-//	   $option = JRequest::getCmd('option');
-//		$this->setMessage ( JText::_ ( 'project selected' ) );
-//		switch ($this->getTask ()) {
-//			case 'save' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'default_edit' );
-//				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			case 'edit' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'default_edit' );
-//				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			case 'cancel' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'default' );
-//				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			
-//			case 'update' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'default_update' );
-//				JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			
-//			case 'insert' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'info' );
-//				JRequest::setVar ( 'view', 'jlxmlimports' );
-//				// JRequest::setVar('view','jlextdfbnetplayerimport');
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			
-//			case 'insertmatch' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'info' );
-//				JRequest::setVar ( 'view', 'jlxmlimports' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//			
-//			case 'insertplayer' :
-//				JRequest::setVar ( 'hidemainmenu', 0 );
-//				JRequest::setVar ( 'layout', 'info' );
-//				JRequest::setVar ( 'view', 'jlxmlimports' );
-//				//JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//				JRequest::setVar ( 'edit', true );
-//				break;
-//		}
-//		
-//		parent::display ( $cachable = false, $urlparams = false );
-//	}
-    
-//	function select() {
-//	   $option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication ();
-//		$selectType = JRequest::getVar ( 'type', 0, 'get', 'int' );
-//		$recordID = JRequest::getVar ( 'id', 0, 'get', 'int' );
-//		$mainframe->setUserState ( $option . 'selectType', $selectType );
-//		$mainframe->setUserState ( $option . 'recordID', $recordID );
-//		
-//		JRequest::setVar ( 'hidemainmenu', 1 );
-//		JRequest::setVar ( 'layout', 'selectpage' );
-//		JRequest::setVar ( 'view', 'jlextdfbnetplayerimport' );
-//		
-//		parent::display ();
-//	}
-    
+
 	function save() {
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication ();
@@ -251,8 +167,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JController
 			}
 		}
 		
-		// cho '<br />Message: '.$msg.'<br />';
-		// cho '<br />Redirect-Link: '.$link.'<br />';
+		
 		
 		$this->setRedirect ( $link, $msg );
 	}

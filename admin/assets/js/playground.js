@@ -10,11 +10,11 @@ Joomla.submitbutton = function(pressbutton) {
 
 	// do field validation
 	if (validator.validate(form.name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_PLAYGROUND_CSJS_NO_NAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CSJS_NO_NAME'));
 		form.name.focus();		
 		res = false;
 	} else if (validator.validate(form.short_name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_PLAYGROUND_CSJS_NO_S_NAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CSJS_NO_S_NAME'));
 		form.short_name.focus();		
 		res = false;
 	} 

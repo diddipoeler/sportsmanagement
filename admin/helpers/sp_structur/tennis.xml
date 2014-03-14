@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+
+<events>
+<name icon="single_won.png">SINGLE_WON</name>
+</events>
+<events>
+<name icon="single_lost.png">SINGLE_LOST</name>
+</events>
+<events>
+<name icon="double_won.png">DOUBLE_WON</name>
+</events>
+<events>
+<name icon="double_lost.png">DOUBLE_LOST</name>
+</events>
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">FIRST_TEAM</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">SECOND_TEAM</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">THIRD_TEAM</mainname>
+</mainpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">101</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">102</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">103</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">104</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">105</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">106</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">107</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">108</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">109</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="FIRST_TEAM">110</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">201</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">202</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">203</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">204</parentname>
+</parentpositions>                                                                          
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">205</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">206</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">207</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">208</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">209</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SECOND_TEAM">210</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">301</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">302</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">303</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">304</parentname>
+</parentpositions>                                                                          
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">305</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">306</parentname>
+</parentpositions>                                                                           
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">307</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">308</parentname>
+</parentpositions>                                                     
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">309</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="THIRD_TEAM">310</parentname>
+</parentpositions>
+
+</structur>

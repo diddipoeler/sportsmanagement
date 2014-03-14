@@ -129,7 +129,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
     //build the html options for projectteams
 		if ( $res =  $model->getProjectteams($this->project_id) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   $lists['projectteams'] = $projectteams;
 		   
@@ -177,7 +177,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
        {
        $procountry = $model->getCountry($this->project_id);
        //JError::raiseWarning( 500, JText::_( '[DFB-Key Tool] Error: No DFB-Key for '.$dfbteams.'  Teams available!' ) );
-       JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , Countries::getCountryFlag($procountry) , $procountry ));
+       JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , JSMCountries::getCountryFlag($procountry) , $procountry ));
        $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
        }
        
@@ -216,7 +216,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   //$lists['projectteams'] = $projectteams;
 		   
@@ -245,6 +245,9 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ),'dfbkey' );
         JToolBarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
+        JToolBarHelper::divider();
+            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			JToolBarHelper::preferences($option);
         
 		
 
@@ -265,7 +268,7 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
-		   $projectteams[] = JHTML::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
+		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
 		   $lists['projectteams'] = $projectteams;
 		   
@@ -294,6 +297,9 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ),'dfbkey' );
         JToolBarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
+        JToolBarHelper::divider();
+            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			JToolBarHelper::preferences($option);
         
 		parent::display( $tpl );
 	}
@@ -324,6 +330,9 @@ class sportsmanagementViewjlextdfbkeyimport extends JView
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ),'dfbkey' );
         JToolBarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
+        JToolBarHelper::divider();
+            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			JToolBarHelper::preferences($option);
         	
   	parent::display( $tpl );
 	}

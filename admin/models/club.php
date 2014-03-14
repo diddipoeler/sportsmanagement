@@ -1,12 +1,56 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelclub
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelclub extends JModelAdmin
 {
@@ -51,6 +95,8 @@ class sportsmanagementModelclub extends JModelAdmin
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $db		= $this->getDbo();
+        $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -80,6 +126,37 @@ class sportsmanagementModelclub extends JModelAdmin
         $form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         
+        $prefix = $mainframe->getCfg('dbprefix');
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$whichtabel = $this->getTable();
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        
+        $query->select('*');
+			$query->from('information_schema.columns');
+            $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_club' ");
+			
+			$db->setQuery($query);
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+			$result = $db->loadObjectList();
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            
+            foreach($result as $field )
+        {
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
         
 		return $form;
 	}
@@ -131,7 +208,7 @@ class sportsmanagementModelclub extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -188,13 +265,15 @@ class sportsmanagementModelclub extends JModelAdmin
 		}
 		if (!empty($data['country']))
 		{
-			$address_parts[] = Countries::getShortCountryName($data['country']);
+			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
+        if ( $coords )
+        {
         foreach( $coords as $key => $value )
 		{
         $post['extended'][$key] = $value;
@@ -202,6 +281,34 @@ class sportsmanagementModelclub extends JModelAdmin
 		
 		$data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
+        }
+        else
+        {
+        $address_parts = array();
+        if (!empty($data['address']))
+		{
+		$address_parts[] = $data['address'];
+		}
+        if (!empty($data['location']))
+		{
+		$address_parts[] = $data['location'];
+		}
+		if (!empty($data['country']))
+		{
+		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
+		}
+        $address = implode(',', $address_parts);
+        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
+		
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        $data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }    
+        }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

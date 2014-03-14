@@ -206,7 +206,7 @@
 	</fieldset>			
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS" 
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field name="show_events" type="radio" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENTS">
@@ -273,13 +273,13 @@
 		</field>
 		
 		<field name="matchreport_image" type="imageselect" 
-				default="media/com_joomleague/jl_images/edit.png"
+				default="media/com_sportsmanagement/jl_images/edit.png"
 				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_MATCHREPORT_IMAGE" 
 				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_MATCHREPORT_IMAGE">
 		</field>
 
 		<field name="matchpreview_image" type="imageselect" 
-				default="media/com_joomleague/jl_images/prediction.png"
+				default="media/com_sportsmanagement/jl_images/prediction.png"
 				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_MATCHPREVIEW_IMAGE" 
 				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_MATCHPREVIEW_IMAGE">
 		</field>

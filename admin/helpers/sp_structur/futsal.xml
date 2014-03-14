@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+<events>
+<name icon="yellow_card.png">YELLOW_CARD</name>
+</events>
+<events>
+<name icon="cumulative_foul.png">CUMULATIVE_FOUL</name>
+</events>
+<events>
+<name icon="red_card.png">RED_CARD</name>
+</events>
+<events>
+<name icon="penalty_goal_6m.png">PENALTY_GOAL_6_METER</name>
+</events>
+<events> 
+<events>
+<name icon="penalty_goal_10m.png">PENALTY_GOAL_10_METER</name>
+</events>
+<events>
+<name icon="injured.png">INJURY</name>
+</events>
+<events>
+<name icon="goal.png">GOAL</name>
+</events>
+<events>
+<name icon="own_goal.png">OWN_GOAL</name>
+</events>
+<events>
+<name icon="foul.png">FOUL</name>
+</events>
+<events>
+<name icon="foul_time.png">FOUL_TIME</name>
+</events>
+<events>
+<name icon="timeout.png">TIMEOUT</name>
+</events>
+
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">TEAM_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">COACHES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="2">MEDICAL_STAFF</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="3">REFEREES</mainname>
+</mainpositions>
+<mainpositions>
+<mainname switch="persontype" parent="0" content="4">CLUB_STAFF</mainname>
+</mainpositions>
+
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">PIVOT</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">GOALKEEPER_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">HEAD_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">PLAYER_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">YOUTH_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">FITNESS_COACH</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FIRST_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">SECOND_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTANT_REFEREE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">TIME_KEEPER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>
+</parentpositions>
+
+</structur>

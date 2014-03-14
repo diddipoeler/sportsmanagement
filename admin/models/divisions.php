@@ -1,40 +1,118 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.modellist');
 
+
 /**
- * Sportsmanagement Component Divisions Model
- *
- * @package		Joomleague
- * @since 0.1
+ * sportsmanagementModelDivisions
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelDivisions extends JModelList
 {
 	var $_identifier = "divisions";
     var $_project_id = 0;
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'dv.name',
+                        'dv.id',
+                        'dv.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('dv.name', 'asc');
+	}
+    
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $search	= $this->getState('filter.search');
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
-        // Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+       
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select(array('dv.*', 'dvp.name AS parent_name','u.name AS editor'))
@@ -42,62 +120,24 @@ class sportsmanagementModelDivisions extends JModelList
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id')
         ->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
-        //if ($where)
-        //{
-            $query->where($where);
-        //}
-        if ($orderby)
-        {
-            $query->order($orderby);
+        $query->where(' dv.project_id = ' . $this->_project_id);
+        
+        if ($search )
+		{
+        $query->where('LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $search . '%' ));
         }
+        
+        $query->order($db->escape($this->getState('list.ordering', 'dv.name')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
-
-		if ( $filter_order == 'dv.ordering' )
-		{
-			$orderby 	= 'dv.ordering ' . $filter_order_Dir;
-		}
-		else
-		{
-			$orderby 	= '' . $filter_order . ' '.$filter_order_Dir . ' , dv.ordering ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
- 		$mainframe	= JFactory::getApplication();
-		//$project_id = $mainframe->getUserState( $option . 'project' );
-		$where = array();
-
-		$where[]	= ' dv.project_id = ' . $this->_project_id;
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order','filter_order','dv.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'dv_search','search','','string');
-		$search				= JString::strtolower( $search );
-
-		if ( $search )
-		{
-			$where[] = 'LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $search . '%' );
-		}
 
 
-		$where = ( count( $where ) ? '' . implode( ' AND ', $where ) : '' );
 
-		return $where;
-	}
 	
 	/**
 	* Method to return a divisions array (id, name)
@@ -118,7 +158,7 @@ class sportsmanagementModelDivisions extends JModelList
 		$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObjectList("value") )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else

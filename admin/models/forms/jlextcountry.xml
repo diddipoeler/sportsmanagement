@@ -76,7 +76,15 @@
 			class="inputbox"
 			/>
 			
-      	
+      <field
+			name="federation"
+			type="federationslist"
+			class="inputbox"
+			size="30"
+			multiple="false"
+			targettable="federations"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
 	</fieldset>			
 
 <fieldset name="picture"

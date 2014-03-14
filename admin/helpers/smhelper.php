@@ -828,7 +828,7 @@ class sportsmanagementHelper
 		}
 		elseif (($type==2) && (isset($team->country)))
 		{
-			echo Countries::getCountryFlag($team->country);
+			echo JSMCountries::getCountryFlag($team->country);
 		}
 	}
 

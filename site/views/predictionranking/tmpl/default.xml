@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_TIPRANKING_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_TIPRANKING_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath ="/administrator/components/com_sportsmanagement/elements">
+		
+    	<field	type="sql" name="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
+          description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
+					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
+		</fieldset>
+	</fields>
+</metadata>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+	<name>System - SportsManagement SIS Cronjob</name>
+	<author>diddipoeler</author>
+	<creationDate>Januar 2014</creationDate>
+	<copyright>(C) 2014 diddipoeler</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>diddipoeler@arcor.det</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<version>1.0</version>
+	<description>PLUGIN_JSM_SIS_CRONJOB</description>
+	
+	<files>
+        <filename plugin="jsm_siscron">jsm_siscron.php</filename>
+        <filename>index.html</filename>
+        <folder>language</folder>
+    </files>
+    
+   <languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_jsm_siscron.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_jsm_siscron.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_jsm_siscron.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_jsm_siscron.sys.ini</language>
+	</languages> 
+</extension>	

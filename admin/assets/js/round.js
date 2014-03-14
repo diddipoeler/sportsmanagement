@@ -11,11 +11,11 @@ Joomla.submitbutton = function(pressbutton) {
 	// do field validation
 
 	if (validator.validate(form.roundcode) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_ROUND_CSJS_NO_ROUNDCODE'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_ROUND_CSJS_NO_ROUNDCODE'));
 		res = false;
 	}
 	else if (validator.validate(form.name) === false) {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_ROUND_CSJS_NO_NAME'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_ROUND_CSJS_NO_NAME'));
 		res = false;
 	}
 	

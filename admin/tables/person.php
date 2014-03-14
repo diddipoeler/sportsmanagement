@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -15,11 +43,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // import Joomla table library
 jimport('joomla.database.table');
 
+
 /**
- * Joomleague Person Table class
- *
- * @package		Joomleague
- * @since 1.50a
+ * sportsmanagementTablePerson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementTablePerson extends JTable
 {
@@ -76,15 +108,19 @@ class sportsmanagementTablePerson extends JTable
 	   $mainframe = JFactory::getApplication();
       $option = JRequest::getCmd('option');
 		
-    if (isset($array['extended']) && is_array($array['extended'])) 
-		{
-			// Convert the params field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($array['extended']);
-			$array['extended'] = (string)$parameter;
-		}
+//    if (isset($array['extended']) && is_array($array['extended'])) 
+//		{
+//			// Convert the params field to a string.
+//			$parameter = new JRegistry;
+//			//$parameter->loadArray($array['extended']);
+//			//$array['extended'] = (string)$parameter;
+//            
+//            $parameter->loadJSON($array['extended']);
+//			$array['extended'] = $parameter->toArray($array['extended']);;
+//		}
         
-    if (isset($array['season_ids']) && is_array($array['season_ids'])) {
+    if (isset($array['season_ids']) && is_array($array['season_ids'])) 
+    {
          $array['season_ids'] = implode(',', $array['season_ids']);
       }
           
@@ -100,24 +136,24 @@ class sportsmanagementTablePerson extends JTable
 	 * @return      boolean
 	 * @see JTable:load
 	 */
-	public function load($pk = null, $reset = true) 
-	{
-		if (parent::load($pk, $reset)) 
-		{
-			// Convert the params field to a registry.
-			$params = new JRegistry;
-			$params->loadJSON($this->extended);
-			//$params->toArray($this->extended);
-            $this->extended = $params->toArray($this->extended);
-            
-			return true;
-			
-		}
-		else
-		{
-			return false;
-		}
-	}
+//	public function load($pk = null, $reset = true) 
+//	{
+//		if (parent::load($pk, $reset)) 
+//		{
+//			// Convert the params field to a registry.
+//			$params = new JRegistry;
+//			$params->loadJSON($this->extended);
+//			//$params->toArray($this->extended);
+//            $this->extended = $params->toArray($this->extended);
+//            
+//			return true;
+//			
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
 	
 	
 

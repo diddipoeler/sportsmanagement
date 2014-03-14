@@ -1,9 +1,17 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+jimport('joomla.installer.installer');
  
+
 /**
- * Script file of com_sportsmanagement component
+ * com_sportsmanagementInstallerScript
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class com_sportsmanagementInstallerScript
 {
@@ -99,8 +107,8 @@ switch ($type)
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
-//    self::installModules();
-//	  self::installPlugins();
+    self::installModules($parent);
+    self::installPlugins($parent);
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -108,8 +116,8 @@ switch ($type)
     break;
     case "update":
 //    self::installComponentLanguages();
-//    self::installModules();
-//    self::installPlugins();
+    self::installModules($parent);
+    self::installPlugins($parent);
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -127,12 +135,46 @@ switch ($type)
     
     public function createImagesFolder()
 	{
-		echo JText::_('Creating new Image Folder structure');
+		$mainframe = JFactory::getApplication();
+  $db = JFactory::getDBO();
+  
+        //echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
-		$folders = array('agegroups','clubs', 'clubs/large', 'clubs/medium', 'clubs/small', 'clubs/trikot_home', 'clubs/trikot_away','events','leagues','divisions','person_playground',
-							'associations','flags_associations','persons', 'placeholders', 'predictionusers','playgrounds', 'projects','projectreferees','projectteams','projectteams/trikot_home', 'projectteams/trikot_away',
-              'associations','rosterground','matchreport','seasons','sport_types', 'teams','flags','teamplayers','teamstaffs','venues', 'statistics');
+		$folders = array('agegroups',
+		'clubs',
+		'clubs/large',
+		'clubs/medium',
+		'clubs/small',
+		'clubs/trikot_home',
+		'clubs/trikot_away',
+		'events',
+		'leagues',
+		'divisions',
+		'person_playground',
+		'associations',
+		'flags_associations',
+		'persons',
+		'placeholders',
+		'predictionusers',
+		'playgrounds',
+		'projects',
+		'projectreferees',
+		'projectteams',
+		'projectteams/trikot_home',
+		'projectteams/trikot_away',
+		'associations',
+		'rosterground',
+		'matchreport',
+		'seasons',
+		'sport_types',
+		'rounds',
+		'teams',
+		'flags',
+		'teamplayers',
+		'teamstaffs',
+		'venues',
+		'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
@@ -142,6 +184,9 @@ switch ($type)
         {
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+            
+            //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
+            
 		}
         
 		foreach ($folders as $folder) {
@@ -156,7 +201,7 @@ switch ($type)
 				}
 			}
 		}
-		echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
 	}
     
     
@@ -204,5 +249,125 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
                                 $db->query();
                 }
                 
-        }      
+        }
+        
+        
+	/**
+	 * method to install the plugins
+	 *
+	 * @return void
+	 */
+	public function installPlugins($parent)
+	{
+  $mainframe = JFactory::getApplication();
+  $src = $parent->getParent()->getPath('source');
+  $manifest = $parent->getParent()->manifest;
+  $db = JFactory::getDBO();
+  
+  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  
+  $plugins = $manifest->xpath('plugins/plugin');
+  foreach ($plugins as $plugin)
+        {
+        $name = (string)$plugin->attributes()->plugin;
+        $group = (string)$plugin->attributes()->group;
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
+        
+        
+        $path = $src.DS.'plugins'.DS.$name;
+        $installer = new JInstaller;
+        $result = $installer->install($path);
+        
+        $query = "UPDATE #__extensions SET enabled=1 WHERE type='plugin' AND element='".$name."' AND folder='".$group."'";
+        $db->setQuery($query);
+        $db->query();
+        
+        
+        }    
+
+    
+    }
+    
+    
+    /**
+	 * method to install the modules
+	 *
+	 * @return void
+	 */
+	public function installModules($parent)
+	{
+  $mainframe = JFactory::getApplication();
+  $src = $parent->getParent()->getPath('source');
+  $manifest = $parent->getParent()->manifest;
+  $db = JFactory::getDBO();
+  
+  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  
+  
+  $modules = $manifest->xpath('modules/module');
+        foreach ($modules as $module)
+        {
+            $name = (string)$module->attributes()->module;
+            $client = (string)$module->attributes()->client;
+            
+            $position = (string)$module->attributes()->position;
+            $published = (string)$module->attributes()->published;
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
+            
+            if (is_null($client))
+            {
+                $client = 'site';
+            }
+            $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$name : $src.DS.'modules'.DS.$name;
+            $installer = new JInstaller;
+            $result = $installer->install($path);
+            
+            if ( $position )
+            {
+                $query = "UPDATE #__modules SET position='".$position."', ordering=99, published=".$published." WHERE module='".$name."' ";
+                $db->setQuery($query);
+                $db->query();
+                if ( $client == 'administrator' )
+                {
+                $query		 = $db->getQuery(true);
+								$query->select('id')->from($db->qn('#__modules'))
+									->where($db->qn('module') . ' = ' . $db->q($name));
+								$db->setQuery($query);
+								$moduleid	 = $db->loadResult();
+
+								$query		 = $db->getQuery(true);
+								$query->select('*')->from($db->qn('#__modules_menu'))
+									->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
+								$db->setQuery($query);
+								$assignments = $db->loadObjectList();
+								$isAssigned	 = !empty($assignments);
+
+								if (!$isAssigned)
+								{
+									$o = (object) array(
+											'moduleid'	 => $moduleid,
+											'menuid'	 => 0
+									);
+									$db->insertObject('#__modules_menu', $o);
+								}
+                
+                
+                }   
+                
+            }
+        }    
+  
+  
+  
+
+    }
+    
+    
+                  
 }

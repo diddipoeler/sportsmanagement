@@ -52,10 +52,23 @@ JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' .
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'JSON.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
 
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' ); 
+$show_debug_info = $params->get( 'show_debug_info' );  
+
+$cfg_help_server = $params->get( 'cfg_help_server' );
+$modal_popup_width = $params->get( 'modal_popup_width' );
+$modal_popup_height = $params->get( 'modal_popup_height' );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$cfg_help_server );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$modal_popup_width );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
 
@@ -67,6 +80,31 @@ else
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
+
+
+
+/*
+$document = JFactory::getDocument();
+$mainframe = JFactory::getApplication();
+$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+
+$task = JRequest::getCmd('task');
+$option = JRequest::getCmd('option');
+if ( $mainframe->isAdmin() )
+{
+if($task == '' && $option == 'com_sportsmanagement') 
+{
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+$document->addScriptDeclaration( $js );
+}
+}
+else
+{
+    
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+$document->addScriptDeclaration( $js );    
+}
+*/
 
 /*
 // fehler in der komponente protokollieren 

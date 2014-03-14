@@ -96,7 +96,7 @@
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS"
-		addfieldpath ="/administrator/components/com_joomleague/elements">
+		addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 
 		<field name="style_class1" type="text" default="sectiontableentry1"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">

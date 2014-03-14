@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content" method="upgrade">
+  <name>Tabs &amp; Sliders [for articles] (by JoomlaWorks)</name>
+  <author>JoomlaWorks</author>
+  <authorEmail>contact@joomlaworks.net</authorEmail>
+  <authorUrl>www.joomlaworks.net</authorUrl>
+  <copyright>Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.</copyright>
+  <creationDate>November 17th, 2012</creationDate>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <version>2.7</version>
+  <description>JW_PLG_TS_XML_DESC</description>
+  <params addpath="/plugins/content/jw_ts/includes/elements">
+		<param name="" type="header" default="JW_PLG_TS_PARAMETERS" label="" description="" />
+		<param name="template" type="template" default="Default" label="JW_PLG_TS_CHOOSE_LAYOUT_TEMPLATE" description="JW_PLG_TS_CHOOSE_LAYOUT_TEMPLATE_DESC" />
+		<param name="tabContentHeight" type="text" default="" size="6" label="JW_PLG_TS_TAB_CONTENT_HEIGHT" description="JW_PLG_TS_TAB_CONTENT_HEIGHT_DESC" />
+  </params>
+  <config>
+    <fields name="params">
+      <fieldset name="basic" addfieldpath="/plugins/content/jw_ts/jw_ts/includes/elements">
+				<field name="" type="header" default="JW_PLG_TS_PARAMETERS" label="" description="" />
+				<field name="template" type="template" default="Default" label="JW_PLG_TS_CHOOSE_LAYOUT_TEMPLATE" description="JW_PLG_TS_CHOOSE_LAYOUT_TEMPLATE_DESC" />
+				<field name="tabContentHeight" type="text" default="" size="6" label="JW_PLG_TS_TAB_CONTENT_HEIGHT" description="JW_PLG_TS_TAB_CONTENT_HEIGHT_DESC" />
+      </fieldset>
+    </fields>
+  </config>
+  <files>
+    <filename plugin="jw_ts">jw_ts.php</filename>
+    <folder>jw_ts</folder>
+  </files>
+  <media folder="media" destination="jw_ts">
+    <filename>TabsAndSlidersForArticles_300x91_8.png</filename>
+  </media>
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.plg_content_jw_ts.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_content_jw_ts.sys.ini</language>
+  </languages>
+</install>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<agegroups><agegroup country="DEU" info="U8" picture="" >U8</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U9" picture="" >U9</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U10" picture="" >U10</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U11" picture="" >U11</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U12" picture="" >U12</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U13" picture="" >U13</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U14" picture="" >U14</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U15 weib." picture="" >w.U15</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U16 weib." picture="" >w.U16</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U17 weib." picture="" >w.U17</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U18 weib." picture="" >w.U18</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U19 weib." picture="" >w.U19</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U20 weib." picture="" >w.U20</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U15 maennl." picture="" >m.U15</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U16 maennl." picture="" >m.U16</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U17 maennl." picture="" >m.U17</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U18 maennl." picture="" >m.U18</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U19 maennl." picture="" >m.U19</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="U20 maennl." picture="" >m.U20</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+45 maennl." picture="" >m. +45</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+45 weibl." picture="" >w. +45</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+50 maennl." picture="" >m. +50</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+50 weibl." picture="" >w. +50</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+55 maennl." picture="" >m. +55</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+60 maennl." picture="" >m.+60</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+65 maennl." picture="" >m. +65</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+70 maennl." picture="" >m. +70</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="+50 mixed" picture="" >+50 mixed</agegroup></agegroups>
+
+</structur>

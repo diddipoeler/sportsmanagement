@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -30,26 +58,18 @@ class sportsmanagementViewEventtypes extends JView
 		$mainframe	= JFactory::getApplication();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
-		$filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_sports_type','filter_sports_type','','int');
-		$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order','filter_order','obj.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.search','search','','string');
-		$search				= JString::strtolower($search);
+        
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+
 
 		$items		= $this->get('Items');
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		// state filter
-		$lists['state']	= JHtml::_('grid.state', $filter_state);
 
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search']	= $search;
 
 		//build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
@@ -64,7 +84,7 @@ class sportsmanagementViewEventtypes extends JView
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 										'id',
 										'name',
-										$filter_sports_type	);
+										$this->state->get('filter.sports_type')	);
 		unset($sportstypes);
 
 		$this->assign('user',JFactory::getUser());
@@ -84,7 +104,8 @@ class sportsmanagementViewEventtypes extends JView
 	*/
 	protected function addToolbar()
 	{
-  		// Get a refrence of the page instance in joomla
+  		$option = JRequest::getCmd('option');
+          // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
@@ -106,6 +127,7 @@ class sportsmanagementViewEventtypes extends JView
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences($option);
 	}
 }
 ?>

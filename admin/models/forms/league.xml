@@ -12,6 +12,7 @@
 		<field
 			name="name"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
@@ -19,12 +20,14 @@
 	<field
 			name="middle_name"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME_DESC"
 			class="inputbox"/>
 	<field
 			name="short_name"
 			type="text"
+			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME_DESC"
 			class="inputbox"
@@ -32,9 +35,19 @@
 	<field
 			name="alias"
 			type="text"
+			size="100"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>	
+			
+			<field
+			name="website"
+			size="100"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
+			class="inputbox"/>	
+			
 	<field
 			name="country"
 			type="country"
@@ -44,6 +57,30 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
+	<field
+			name="federation"
+			type="federationslist"
+			class="inputbox"
+			size="30"
+			multiple="false"
+			targettable="federations"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
+	
+			<field
+			name="sports_type_id"
+			type="sportstypelist"
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
   <field
 			name="associations"
 			type="associationslist" 

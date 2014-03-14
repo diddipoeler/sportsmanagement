@@ -1,11 +1,58 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-require_once( JLG_PATH_SITE . DS . 'helpers' . DS . 'ranking.php' );
-require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
+//require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
 
-class sportsmanagementModelRanking extends JoomleagueModelProject
+/**
+ * sportsmanagementModelRanking
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
+class sportsmanagementModelRanking extends JModel
 {
 	var $projectid = 0;
 	var $round = 0;
@@ -26,6 +73,11 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	var $current_round = 0;
 	var $viewName = '';
 
+	/**
+	 * sportsmanagementModelRanking::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct( )
 	{
 		$this->projectid = JRequest::getInt( "p", 0 );
@@ -43,6 +95,13 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	}
 
 	// limit count word
+	/**
+	 * sportsmanagementModelRanking::limitText()
+	 * 
+	 * @param mixed $text
+	 * @param mixed $wordcount
+	 * @return
+	 */
 	function limitText($text, $wordcount)
 	{
 		if(!$wordcount) {
@@ -62,6 +121,13 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		return $text;
 	}
     
+    /**
+     * sportsmanagementModelRanking::getRssFeeds()
+     * 
+     * @param mixed $rssfeedlink
+     * @param mixed $rssitems
+     * @return
+     */
     function getRssFeeds($rssfeedlink,$rssitems)
     {
     $rssIds	= array();    
@@ -103,19 +169,26 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
     }
     
     
+	
 	/**
-	 * get previous games for each team
+	 * sportsmanagementModelRanking::getPreviousGames()
 	 * 
-	 * @return array games array indexed by project team ids
+	 * @return
 	 */
 	function getPreviousGames()
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		if (!$this->round) {
 			return false;
 		}
 		
 		// current round roundcode
-		$rounds = $this->getRounds();
+		$rounds = sportsmanagementModelProject::getRounds();
 		$current = null;
 		foreach ($rounds as $r)
 		{
@@ -127,27 +200,66 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 			if (!$current) {
 			return false;
 		}
+        
+        $query->select('m.*, r.roundcode');
+		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
+		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id ');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id');        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
+               
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
 
+/*
 		// previous games of each team, until current round
 		$query = ' SELECT m.*, r.roundcode, '
 		       . ' CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug, '
 		       . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug '
-		       . ' FROM #__joomleague_match AS m '
-		       . ' INNER JOIN #__joomleague_round AS r ON r.id = m.round_id '
-		       . ' INNER JOIN #__joomleague_project AS p ON p.id = r.project_id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-		       . ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id = t1.id '
-		       . ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id = t2.id '
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
+               
+               
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON pt1.team_id = t1.id '
+		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON pt2.team_id = t2.id '
 		       . ' WHERE r.project_id = ' . $this->_db->Quote($this->projectid)
 		       . '   AND r.roundcode <= ' . $this->_db->Quote($current->roundcode)
 		       . '   AND m.team1_result IS NOT NULL '
 		       . ' ORDER BY r.roundcode ASC '
 		       ;
-		$this->_db->setQuery($query);
-		$games = $this->_db->loadObjectList();
+*/
+        
+        $query->where('r.project_id = ' . $db->Quote($this->projectid));
+        $query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
+        $query->where('m.team1_result IS NOT NULL');
+        $query->order('r.roundcode ASC ');
+               
+		$db->setQuery($query);
+		$games = $db->loadObjectList();
+        
+        if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        } 
+        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
-		$teams = $this->getTeamsIndexedByPtid();
+
+		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 
 		// get games per team
 		$res = array();
@@ -168,7 +280,7 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 				
 			// get last x games
 			//$nb_games = 5;
-			$config = $this->getTemplateConfig('ranking');
+			$config = sportsmanagementModelProject::getTemplateConfig('ranking');
 			$nb_games = $config['nb_previous'];			
 			$res[$ptid] = array_slice($teamgames, -$nb_games);
 		}
@@ -191,29 +303,36 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
     }
     */
     
-    /**
-	 * computes the ranking
-	 *
+    
+	/**
+	 * sportsmanagementModelRanking::computeRanking()
+	 * 
+	 * @return
 	 */
 	function computeRanking()
 	{
 		$mainframe	= JFactory::getApplication();
-		$project =& $this->getProject();
+        
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+        
+		$project = $mdlProject->getProject();
 		
-		$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
-		$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
-		$mdlRounds->setProjectId($project->id);
+		
+		$mdlRounds->_project_id = $project->id;
 		
 		$firstRound	= $mdlRounds->getFirstRound($project->id);
 		$lastRound	= $mdlRounds->getLastRound($project->id);
 
 		// url if no sef link comes along (ranking form)
-		$url = JoomleagueHelperRoute::getRankingRoute( $this->projectid );
-		$tableconfig= $this->getTemplateConfig( "ranking" );
+		$url = sportsmanagementHelperRoute::getRankingRoute( $this->projectid );
+		$tableconfig= $mdlProject->getTemplateConfig( "ranking" );
 
-		$this->round = ($this->round == 0) ? $this->getCurrentRound() : $this->round;
+		$this->round = ($this->round == 0) ? $mdlProject->getCurrentRound() : $this->round;
 
-		$this->rounds = $this->getRounds();
+		$this->rounds = $mdlProject->getRounds();
+        
 		if ( $this->part == 1 )
 		{
 			$this->from = $firstRound['id'];
@@ -250,11 +369,6 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		$this->divLevel = 0;
 
 
-//echo 'computeRanking this->part -> '.'<pre>'.print_r($this->part,true).'</pre>';
-//echo 'computeRanking this->from -> '.'<pre>'.print_r($this->from,true).'</pre>';
-//echo 'computeRanking this->to-> '.'<pre>'.print_r($this->to,true).'</pre>';
-//echo 'computeRanking this->rounds -> '.'<pre>'.print_r($this->rounds,true).'</pre>';
-
 
 
 //$mainframe->enqueueMessage(JText::_('computeRanking this->part -> '.'<pre>'.print_r($this->part,true).'</pre>' ),'');
@@ -286,7 +400,7 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 				$url .= '&amp;divLevel='.$this->divLevel;
 				if ( $this->divLevel )
 				{
-					$divisions = $this->getDivisionsId( $this->divLevel );
+					$divisions = $mdlProject->getDivisionsId( $this->divLevel );
 				//	print_r( $divisions);
 				}
 				else
@@ -315,7 +429,7 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		* create ranking object	
 		*
 		*/
-		$ranking = JLGRanking::getInstance($project);
+		$ranking = JSMRanking::getInstance($project);
 		$ranking->setProjectId( $this->projectid );
 		
 		foreach ( $divisions as $division )
@@ -367,16 +481,17 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		return ;
 	}
 	
+	
 	/**
-	 * get id of previous round accroding to roundcode
+	 * sportsmanagementModelRanking::_getPreviousRoundId()
 	 * 
-	 * @param int $round_id
-	 * @return int
+	 * @param mixed $round_id
+	 * @return
 	 */
 	function _getPreviousRoundId($round_id)
 	{
 		$query = ' SELECT id ' 
-		       . ' FROM #__joomleague_round ' 
+		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round ' 
 		       . ' WHERE project_id = ' . $this->projectid
 		       . ' ORDER BY roundcode ASC ';
 		$this->_db->setQuery($query);
@@ -398,6 +513,12 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	 * Compare functions for ordering     *
 	 **************************************/
 
+	/**
+	 * sportsmanagementModelRanking::_sortRanking()
+	 * 
+	 * @param mixed $ranking
+	 * @return
+	 */
 	function _sortRanking(&$ranking)
 	{
 		$order     = JRequest::getVar( 'order', '' );
@@ -406,77 +527,77 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		switch ($order)
 		{
 			case 'played':
-			uasort( $ranking, array("JoomleagueModelRanking","playedCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","playedCmp" ));
 			break;				
 			case 'name':
-			uasort( $ranking, array("JoomleagueModelRanking","teamNameCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","teamNameCmp" ));
 			break;
 			case 'rank':
 			break;
 			case 'won':
-			uasort( $ranking, array("JoomleagueModelRanking","wonCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wonCmp" ));
 			break;
 			case 'draw':
-			uasort( $ranking, array("JoomleagueModelRanking","drawCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","drawCmp" ));
 			break;
 			case 'loss':
-			uasort( $ranking, array("JoomleagueModelRanking","lossCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lossCmp" ));
 			break;
 			case 'wot':
-			uasort( $ranking, array("JoomleagueModelRanking","wotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wotCmp" ));
 			break;		
 			case 'wso':
-			uasort( $ranking, array("JoomleagueModelRanking","wsoCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","wsoCmp" ));
 			break;	
 			case 'lot':
-			uasort( $ranking, array("JoomleagueModelRanking","lotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lotCmp" ));
 			break;		
 			case 'lso':
-			uasort( $ranking, array("JoomleagueModelRanking","lsoCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","lsoCmp" ));
 			break;			
 			case 'winpct':
-			uasort( $ranking, array("JoomleagueModelRanking","winpctCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","winpctCmp" ));
 			break;
 			case 'quot':
-			uasort( $ranking, array("JoomleagueModelRanking","quotCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","quotCmp" ));
 			break;
 			case 'goalsp':
-			uasort( $ranking, array("JoomleagueModelRanking","goalspCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalspCmp" ));
 			break;
 			case 'goalsfor':
-			uasort( $ranking, array("JoomleagueModelRanking","goalsforCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalsforCmp" ));
 			break;
 			case 'goalsagainst':
-			uasort( $ranking, array("JoomleagueModelRanking","goalsagainstCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","goalsagainstCmp" ));
 			break;
 			case 'legsdiff':
-			uasort( $ranking, array("JoomleagueModelRanking","legsdiffCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","legsdiffCmp" ));
 			break;
 			case 'legsratio':
-			uasort( $ranking, array("JoomleagueModelRanking","legsratioCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","legsratioCmp" ));
 			break;				
 			case 'diff':
-			uasort( $ranking, array("JoomleagueModelRanking","diffCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","diffCmp" ));
 			break;
 			case 'points':
-			uasort( $ranking, array("JoomleagueModelRanking","pointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","pointsCmp" ));
 			break;
             
             case 'penaltypoints':
-			uasort( $ranking, array("JoomleagueModelRanking","penaltypointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","penaltypointsCmp" ));
 			break;
             
 			case 'start':
-			uasort( $ranking, array("JoomleagueModelRanking","startCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","startCmp" ));
 			break;
 			case 'bonus':
-			uasort( $ranking, array("JoomleagueModelRanking","bonusCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","bonusCmp" ));
 			break;
 			case 'negpoints':
-			uasort( $ranking, array("JoomleagueModelRanking","negpointsCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","negpointsCmp" ));
 			break;
 			case 'pointsratio':
-			uasort( $ranking, array("JoomleagueModelRanking","pointsratioCmp" ));
+			uasort( $ranking, array("sportsmanagementModelRanking","pointsratioCmp" ));
 			break;			
 
 			default:
@@ -492,50 +613,120 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::playedCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function playedCmp( &$a, &$b){
 	  $res = $a->cnt_matches - $b->cnt_matches;
 	  return $res;
 	}	
 	
+	/**
+	 * sportsmanagementModelRanking::teamNameCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function teamNameCmp( &$a, &$b){
 	  return strcasecmp ($a->_name, $b->_name);
 	}
 
+	/**
+	 * sportsmanagementModelRanking::wonCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function wonCmp( &$a, &$b){
 	  $res = $a->cnt_won - $b->cnt_won;
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::drawCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function drawCmp( &$a, &$b){
 	  $res = ($a->cnt_draw - $b->cnt_draw);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::lossCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function lossCmp( &$a, &$b){
 	  $res = ($a->cnt_lost - $b->cnt_lost);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::wotCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function wotCmp( &$a, &$b){
 	  $res = $a->cnt_wot - $b->cnt_wot;
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::wsoCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function wsoCmp( &$a, &$b){
 	  $res = $a->cnt_wso - $b->cnt_wso;
 	  return $res;
 	}		
 	
+	/**
+	 * sportsmanagementModelRanking::lotCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function lotCmp( &$a, &$b){
 	  $res = $a->cnt_lot - $b->cnt_lot;
 	  return $res;
 	}
 	
+	/**
+	 * sportsmanagementModelRanking::lsoCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function lsoCmp( &$a, &$b){
 	  $res = $a->cnt_lso - $b->cnt_lso;
 	  return $res;
 	}	
 	
+	/**
+	 * sportsmanagementModelRanking::winpctCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function winpctCmp( &$a, &$b){
 	  $pct_a = $a->cnt_won/($a->cnt_won+$a->cnt_lost+$a->cnt_draw);
 	  $pct_b = $b->cnt_won/($b->cnt_won+$b->cnt_lost+$b->cnt_draw);
@@ -543,6 +734,13 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::quotCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function quotCmp( &$a, &$b){
 	  $pct_a = $a->cnt_won/($a->cnt_won+$a->cnt_lost+$a->cnt_draw);
 	  $pct_b = $b->cnt_won/($b->cnt_won+$b->cnt_lost+$b->cnt_draw);
@@ -550,61 +748,145 @@ class sportsmanagementModelRanking extends JoomleagueModelProject
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::goalspCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function goalspCmp( &$a, &$b){
 	  $res = ($a->sum_team1_result - $b->sum_team1_result);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::goalsforCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function goalsforCmp( &$a, &$b){
 	  $res = ($a->sum_team1_result - $b->sum_team1_result);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::goalsagainstCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function goalsagainstCmp( &$a, &$b){
 	  $res = ($a->sum_team2_result - $b->sum_team2_result);
 	  return $res;
 	}	
 	
+	/**
+	 * sportsmanagementModelRanking::legsdiffCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function legsdiffCmp( &$a, &$b){
 	  $res = ($a->diff_team_legs - $b->diff_team_legs);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::legsratioCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function legsratioCmp( &$a, &$b){
 	  $res = ($a->legsRatio - $b->legsRatio);
 	  return $res;
 	}
 	
+	/**
+	 * sportsmanagementModelRanking::diffCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function diffCmp( &$a, &$b){
 	  $res = ($a->diff_team_results - $b->diff_team_results);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::pointsCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function pointsCmp( &$a, &$b){
 	  $res = ($a->getPoints() - $b->getPoints());
 	  return $res;
 	}
 		
+	/**
+	 * sportsmanagementModelRanking::startCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function startCmp( &$a, &$b){
 	  $res = ($a->team->start_points * $b->team->start_points);
 	  return $res;
 	}
 	
+	/**
+	 * sportsmanagementModelRanking::bonusCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function bonusCmp( &$a, &$b){
 	  $res = ($a->bonus_points - $b->bonus_points);
 	  return $res;
 	}
     
+    /**
+     * sportsmanagementModelRanking::penaltypointsCmp()
+     * 
+     * @param mixed $a
+     * @param mixed $b
+     * @return
+     */
     function penaltypointsCmp( &$a, &$b){
 	  $res = ($a->penalty_points - $b->penalty_points);
 	  return $res;
 	}
 
+	/**
+	 * sportsmanagementModelRanking::negpointsCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function negpointsCmp( &$a, &$b){
 	  $res = ($a->neg_points - $b->neg_points);
 	  return $res;
 	}	
 
+	/**
+	 * sportsmanagementModelRanking::pointsratioCmp()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function pointsratioCmp( &$a, &$b){
 	  $res = ($a->pointsRatio - $b->pointsRatio);
 	  return $res;

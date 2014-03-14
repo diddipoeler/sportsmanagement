@@ -1,4 +1,5 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 ?>
 <fieldset class="adminform">
 	
@@ -20,7 +21,7 @@
 		
 		<tr>
 			<td class="key"><?php echo $this->form->getLabel('country'); ?></td>
-			<td><?php echo $this->form->getInput('country'); ?>&nbsp;<?php echo Countries::getCountryFlag($this->item->country); ?>&nbsp;(<?php echo $this->item->country; ?>)</td>
+			<td><?php echo $this->form->getInput('country'); ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->item->country); ?>&nbsp;(<?php echo $this->item->country; ?>)</td>
 		</tr>
         <tr>
 			<td class="key"><?php echo $this->form->getLabel('picture'); ?></td>

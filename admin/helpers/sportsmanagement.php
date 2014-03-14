@@ -1,19 +1,237 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
+* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
+* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f�r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 // No direct access to this file
 defined('_JEXEC') or die;
  
+
 /**
- * SportsManagement component helper.
+ * sportsmanagementHelper
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 abstract class sportsmanagementHelper
 {
-	/**
+	
+    /**
+	 * Add data to the xml
+	 *
+	 * @param array $data data what we want to add in the xml
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return void
+	 */
+	 function _addToXml($data)
+	{
+		if (is_array($data) && count($data) > 0)
+		{
+			$object = $data[0]['object'];
+			$output = '';
+			foreach ($data as $name => $value)
+			{
+				$output .= "<record object=\"" . self::stripInvalidXml($object) . "\">\n";
+				foreach ($value as $key => $data)
+				{
+					if (!is_null($data) && !(substr($key, 0, 1) == "_") && $key != "object")
+					{
+						$output .= "  <$key><![CDATA[" . self::stripInvalidXml(trim($data)) . "]]></$key>\n";
+					}
+				}
+				$output .= "</record>\n";
+			}
+			return $output;
+		}
+		return false;
+	}    
+    
+/**
+	 * _setJoomLeagueVersion
+	 *
+	 * set the version data and actual date, time and
+	 * Joomla systemName from the joomleague_version table
+	 *
+	 * @access private
+	 * @since  2010-08-26
+	 *
+	 * @return array
+	 */
+	 function _setJoomLeagueVersion()
+	{
+		$exportRoutine='2010-09-23 15:00:00';
+			$result[0]['exportRoutine']=$exportRoutine;
+			$result[0]['exportDate']=date('Y-m-d');
+			$result[0]['exportTime']=date('H:i:s');
+			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
+			$result[0]['object']='JoomLeagueVersion';
+			return $result;
+	}    
+    
+    
+/**
+	 * _setLeagueData
+	 *
+	 * set the league data from the joomleague_league table
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setLeagueData($league)
+	{
+		
+        if ( $league )
+        {
+            $result[] = JArrayHelper::fromObject($league);
+			$result[0]['object'] = 'League';
+			return $result;
+		}
+		return false;
+        		
+	}    
+
+/**
+	 * _setProjectData
+	 *
+	 * set the project data from the joomleague table
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return array
+	 */
+	 function _setProjectData($project)
+	{
+		if ( $project )
+        {
+            $result[] = JArrayHelper::fromObject($project);
+			$result[0]['object'] = 'JoomLeague20';
+			return $result;
+		}
+		return false;
+	}    
+
+/**
+	 * _setSeasonData
+	 *
+	 * set the season data from the joomleague_season table
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setSeasonData($season)
+	{
+		if ( $season )
+        {
+            $result[] = JArrayHelper::fromObject($season);
+			$result[0]['object'] = 'Season';
+			return $result;
+		}
+		return false;
+	}
+    
+    
+    /**
+	 * _setSportsType
+	 *
+	 * set the SportsType
+	 *
+	 * @access private
+	 * @since  1.5.5241
+	 *
+	 * @return array
+	 */
+	 function _setSportsType($sportstype)
+	{
+
+		if ( $sportstype )
+		{
+			$result[] = JArrayHelper::fromObject($sportstype);
+			$result[0]['object'] = 'SportsType';
+			return $result;
+		}
+		return false;
+
+	}        
+    
+/**
+	 * _setXMLData
+	 *
+	 * 
+	 *
+	 * @access private
+	 * @since  1.5.0a
+	 *
+	 * @return void
+	 */
+	 function _setXMLData($data, $object)
+	{
+	if ( $data )
+        {
+            foreach ( $data as $row )
+            {
+                $result[] = JArrayHelper::fromObject($row);
+            }
+			$result[0]['object'] = $object;
+			return $result;
+		}
+		return false;
+	}
+    
+
+    
+    
+    /**
 	 * Configure the Linkbar.
 	 */
 	public static function addSubmenu($submenu) 
 	{
 	   $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        $document=JFactory::getDocument();
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
         // the specified default value will be returned.
@@ -33,7 +251,7 @@ abstract class sportsmanagementHelper
             $mainframe->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
         }
-        
+        //$mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
 		
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
 		
@@ -41,9 +259,15 @@ abstract class sportsmanagementHelper
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects');
         
-        if ( $project_id )
+        if ( $project_id != 0 )
         {
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$project_id, $submenu == 'project');
+        }
+        else
+        {
+//         $menu = JToolBar::getInstance('submenu');
+//         $menu->appendButton(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), '', false);    
+        //JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=', false );
         }
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');
@@ -789,7 +1013,16 @@ abstract class sportsmanagementHelper
 
 	function showTeamIcons(&$team,&$config)
 	{
-		if(!isset($team->projectteamid)) return "";
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+            }
+            
+        if(!isset($team->projectteamid)) return "";
 		$projectteamid = $team->projectteamid;
 		$teamname      = $team->name;
 		$teamid        = $team->team_id;
@@ -801,8 +1034,8 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_team_link'])
 		{
-			$link =JoomleagueHelperRoute::getPlayersRoute($projectSlug,$teamSlug);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
+			$link = sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug,NULL,$projectteamid);
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
@@ -810,7 +1043,7 @@ abstract class sportsmanagementHelper
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-			$link =JoomleagueHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug);
+			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug,NULL,$projectteamid);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -819,7 +1052,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_curve_link'])
 		{
-			$link =JoomleagueHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
+			$link =sportsmanagementHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -829,8 +1062,8 @@ abstract class sportsmanagementHelper
 		if ($config['show_teaminfo_link'])
 		{
 // 			$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
-			$link =JoomleagueHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug);
-      $title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
+			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid);
+            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
@@ -838,7 +1071,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_club_link'])
 		{
-			$link =JoomleagueHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -847,7 +1080,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_teamstats_link'])
 		{
-			$link =JoomleagueHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
+			$link =sportsmanagementHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -856,7 +1089,7 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_clubplan_link'])
 		{
-			$link =JoomleagueHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -945,9 +1178,13 @@ abstract class sportsmanagementHelper
 		if ($showIcons)
 		{
 			$output .= JHtml::link('javascript:void(0);',$desc,$params);
-			$output .= '<'.$container.' id="'.$containerId.'" style="'.$style_append.';">';
+            //$output .= '<ul id="submenu"><li><a id="'.$containerId.'" >'.$formattedTeamName.'</a></li></ul>';
+			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';" class="rankingteam">';
+            //$output .= '<div id="config-document">';
+            //$output .= '<'.$container.' id="page-'.$containerId.'" >';
 			$output .= self::showTeamIcons ($team,$config);
 			$output .= '</'.$container.'>';
+            //$output .= '</div>';
 		}
 		else
 		{
@@ -980,7 +1217,7 @@ abstract class sportsmanagementHelper
 		}
 		elseif (($type==2) && (isset($team->country)))
 		{
-			echo Countries::getCountryFlag($team->country);
+			echo JSMCountries::getCountryFlag($team->country);
 		}
 	}
 
@@ -1039,17 +1276,18 @@ abstract class sportsmanagementHelper
 		return $ret;
 	}
 
-	public static function getVersion()
+	public function getVersion() 
 	{
-		$database = JFactory::getDBO();
-
-		$query="SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version
-				  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_version 
-				  ORDER BY date DESC LIMIT 1";
-		$database->setQuery($query);
-		$result=$database->loadResult();
-		return $result;
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       $db = JFactory::getDBO();
+	   $db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
+       $manifest_cache = json_decode( $db->loadResult(), true );
+	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
+       return $manifest_cache['version'];	
 	}
+
+
 
 	/**
 	 * returns formatName
@@ -1311,9 +1549,12 @@ abstract class sportsmanagementHelper
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
+	$document = JFactory::getDocument();
     $view = JRequest::getVar( "view") ;
+    $layout= JRequest::getVar( "layout") ;
     $view = ucfirst(strtolower($view));
-    
+    $layout = ucfirst(strtolower($layout));
+    $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
     $window_width = '<script>alert($(window).width()); </script>';
     $window_height = '<script>alert(window.screen.height); </script>';
     
@@ -1335,9 +1576,16 @@ abstract class sportsmanagementHelper
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
     
+    if ( $layout )
+    {
+    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
+         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'-'.$layout   .'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';    
+    }
+    else
+    {
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
-	
+	}
     /*
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';	
@@ -1558,13 +1806,65 @@ if (!$db->query())
 		return $status;
 	}
     
+    /**
+* @function     getOSMGeoCoords
+* @param        $address : string
+* @returns      -
+* @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
+*/
+public function getOSMGeoCoords($address)
+{
+    $mainframe = JFactory::getApplication();
+    $coords = array();
+        
+    //$address = utf8_encode($address);
+    
+    // call OSM geoencoding api
+    // limit to one result (limit=1) without address details (addressdetails=0)
+    // output in JSON
+    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
+                  urlencode($address);
+    
+    $result = json_decode(file_get_contents($geoCodeURL), true);
+    
+    
+//    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
+
+/*
+[COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME] => D�rpum
+[COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME] => Bordelum
+[COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME] => Schleswig-Holstein
+[COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME] => SH
+*/    
+    if ( isset($result[0]) )
+    {        
+    $coords['latitude'] = $result[0]["lat"];
+    $coords['longitude'] = $result[0]["lon"];
+    $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $result[0]["address"]["state"];
+    
+    $coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $result[0]["address"]["city"];
+    $coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $result[0]["address"]["residential"];
+    $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
+    
+    }
+    
+    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+
+    return $coords;
+}
+
     public function resolveLocation($address)
 	{
 		$mainframe = JFactory::getApplication();
     $coords = array();
 		$data = self::getAddressData($address);
-		//$mainframe->enqueueMessage(JText::_('google -> '.'<pre>'.print_r($data,true).'</pre>' ),'');
-		if($data){
+        
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($address,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
+//		$osm = self::getOSMGeoCoords($address);  
+        
+		if($data)
+        {
 			if($data->status == 'OK')
 			{
 				$this->latitude  = $data->results[0]->geometry->location->lat;
@@ -1604,10 +1904,15 @@ if (!$db->query())
         
         }
 				
-				
 				return $coords;
 			}
+//            else
+//            {
+//                $osm = self::getOSMGeoCoords($address);
+//            }
+          
 		}
+        
 	}
     
     // Return content of the given url
@@ -1677,6 +1982,8 @@ if (!$db->query())
     
     static function getPictureClub($id)
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -1684,11 +1991,22 @@ if (!$db->query())
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club')
         ->where('id = '.$id);    
         $db->setQuery($query);
-		return $db->loadResult();
+        $picture = $db->loadResult();
+        if (JFile::exists(JPATH_SITE.DS.$picture))
+        {
+            // alles ok
+        }
+        else
+        {
+            $picture = JComponentHelper::getParams($option)->get('ph_logo_big','');
+        }
+		return $picture;
     }
     
     static function getPicturePlayground($id)
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -1696,7 +2014,16 @@ if (!$db->query())
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground')
         ->where('id = '.$id);    
         $db->setQuery($query);
-		return $db->loadResult();    
+        $picture = $db->loadResult();
+        if (JFile::exists(JPATH_SITE.DS.$picture))
+        {
+            // alles ok
+        }
+        else
+        {
+            $picture = JComponentHelper::getParams($option)->get('ph_team','');
+        }
+		return $picture;    
         
     }
         

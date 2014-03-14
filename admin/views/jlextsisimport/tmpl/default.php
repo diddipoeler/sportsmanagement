@@ -39,9 +39,10 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $option = JRequest::getCmd('option');
-
-JHTML::_( 'behavior.tooltip' );
-JHTML::_( 'behavior.modal' );
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_( 'behavior.tooltip' );
+JHtml::_( 'behavior.modal' );
 
 //$url = JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
 $url = 'administrator'.DS.'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'sislogo.png';
@@ -107,11 +108,11 @@ echo '</pre>';
 				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_FORUM');
-				$forumLink=JHTML::link($link,$linkURL,$linkParams);
+				$forumLink=JHtml::link($link,$linkURL,$linkParams);
 				$linkURL='http://bugtracker.joomleague.net/issues/226';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_BUGTRACKER');
-				$bugtrackerLink=JHTML::link($link,$linkURL,$linkParams);
+				$bugtrackerLink=JHtml::link($link,$linkURL,$linkParams);
 				echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT3').'</p>';
 				echo "<p>$forumLink</p>";
 				echo "<p>$bugtrackerLink</p>";
@@ -141,43 +142,10 @@ echo '</pre>';
       <?php
       }
       ?>
-      <tr>
-      <td>
-      <fieldset>
-      <legend>
-				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_WHICH_FILE');
-				?>
-			</legend>
-      <input type="radio" name="whichfile" value="playerfile" > <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_PLAYERFILE'); ?><br><br>
-      <input type="radio" name="whichfile" value="matchfile"> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_MATCHFILE'); ?><br><br>
-      <input type="radio" name="whichfile" value="icsfile" checked> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_ICSFILE'); ?><br>
-      </fieldset>
-      </td>
-      </tr>
+      
 
       <?php
-      // TODO: Disabled, set delimiter hardcoded to tab in the model (because DFBNet uses only that delimiter since 2013)
-      if ( 0 )
-      {
-      ?>
-      <tr>
-      <td>
-      <fieldset>
-      <legend>
-				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_DELIMITER' );
-				?>
-			</legend>
-			
-      <input type="radio" name="delimiter" value=";" checked> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_DELIMITER_SEMICOLON'); ?><br><br>
-      <input type="radio" name="delimiter" value=","> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_DELIMITER_COMMA'); ?><br><br>
-      <input type="radio" name="delimiter" value="\t"> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_DELIMITER_TABULAR'); ?><br>
-      </fieldset>
-      </td>
-      </tr>
-      <?php
-      }
+      
       ?>
       
       
@@ -190,7 +158,8 @@ echo '</pre>';
 				?>
 			</legend>
 
-				<input class="input_box" id="import_package" name="import_package" type="file" size="57" />
+			
+                <input type="text" name='liganummer' value='' size="100" />
 				<input class="button" type="submit" onclick="return Joomla.submitform('jlextsisimport.save')" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_UPLOAD_BUTTON'); ?>" />
 			</fieldset>
       </td>
@@ -201,6 +170,11 @@ echo '</pre>';
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type="hidden" name="option" value="com_sportsmanagement" /> 
 		<input type="hidden" name='task' value='jlextsisimport.save' />
-		<?php echo JHTML::_('form.token')."\n"; ?>
+		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
 </div>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

@@ -28,7 +28,7 @@ Joomla.submitbutton = function(task)
 		}
 		else
 		{
-			alert(Joomla.JText._('COM_JOOMLEAGUE_FORM_JS_CHECK_ERROR',
+			alert(Joomla.JText._('COM_SPORTSMANAGEMENT_FORM_JS_CHECK_ERROR',
 			                     'Some values are unacceptable'));
 			return false;
 		}

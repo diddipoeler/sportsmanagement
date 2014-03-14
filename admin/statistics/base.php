@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -100,9 +128,9 @@ class SMStatistic extends JObject
 	
 		if (!class_exists($classname))
 		{
-			$file = JPATH_COMPONENT .DS . 'statistics' . DS .$class.'.php';
+			$file = JPATH_COMPONENT_ADMINISTRATOR .DS . 'statistics' . DS .$class.'.php';
 			if (!file_exists($file)) {
-				JError::raiseError(0, $class .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
+				JError::raiseError(0, $classname .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
 			}
 			require_once($file);
 		}
@@ -155,8 +183,8 @@ class SMStatistic extends JObject
 	function getBaseParams()
 	{
 		$paramsdata = $this->baseparams;
-		$paramsdefs = JLG_PATH_ADMIN.DS.'statistics' . DS . 'base.xml';
-		return new JLParameter( $paramsdata, $paramsdefs );
+		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics' . DS . 'base.xml';
+		return new JParameter( $paramsdata, $paramsdefs );
 	}
 	
 	/**
@@ -170,7 +198,7 @@ class SMStatistic extends JObject
 		$currentdir = dirname($rc->getFileName());
 		$paramsdata = $this->params;
 		$paramsdefs = $currentdir. DS . $this->_name .'.xml';
-		return new JLParameter( $paramsdata, $paramsdefs );
+		return new JParameter( $paramsdata, $paramsdefs );
 	}
 	
 	/**
@@ -189,13 +217,19 @@ class SMStatistic extends JObject
 	 * return Statistic params as JParameter objet
 	 * @return object
 	 */
-	function &getParams()
+	function getParams()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		if (empty($this->_params))
 		{
-			$this->_params = $this->getBaseParams();
-			$this->_params->merge($this->getClassParams());
+			$this->_params = self::getBaseParams();
+			$this->_params->merge(self::getClassParams());
 		}
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
+        
 		return $this->_params;
 	}
 	
@@ -207,13 +241,13 @@ class SMStatistic extends JObject
 	 */
 	function getParam($name, $default = '')
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		return $params->get($name, $default);
 	}
 	
 	function getPrecision()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		return $params->get('precision', 2);
 	}
 	
@@ -244,11 +278,11 @@ class SMStatistic extends JObject
 	 */
 	function showInMatchReport()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -266,10 +300,11 @@ class SMStatistic extends JObject
 	 */
 	function showInRoster()
 	{
-		$params = &$this->getParams();
-		$statistic_views = explode(',', $params->get('statistic_views'));
+		$params = self::getParams();
+		//$statistic_views = explode(',', $params->get('statistic_views'));
+        $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -287,11 +322,11 @@ class SMStatistic extends JObject
 	 */
 	function showInPlayer()
 	{
-		$params = &$this->getParams();
+		$params = self::getParams();
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -452,7 +487,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) {
@@ -540,7 +575,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) {
@@ -685,7 +720,17 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
-		$db = &JFactory::getDBO();
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
+        
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) {
@@ -720,6 +765,10 @@ class SMStatistic extends JObject
 
 		$db->setQuery($query);
 		$res = $db->loadResult();
+        
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        
+        
 		if (!isset($res))
 		{
 			$res = 0;
@@ -737,7 +786,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = NULL)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		$quoted_sids = array();
 		foreach ($sids as $sid) {
@@ -891,7 +940,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getRosterStatsForEvents($team_id, $project_id, $position_id, $sids)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) {
@@ -930,7 +979,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getGamesPlayedQuery($project_id, $division_id, $team_id)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// To be robust against partly filled in information for a match (match player, statistic, event)
 		// we determine if a player was contributing to a match, by checking for the following conditions:

@@ -1,4 +1,42 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -20,76 +58,104 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 
 	var $_identifier = "predictiontemplates";
 	
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'tmpl.title',
+                        'tmpl.template',
+                        'tmpl.id',
+                        'tmpl.ordering'
+                        );
+                parent::__construct($config);
+        }
+    
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id_select', 'filter_prediction_id_select', '');
+		
+        
+        if (is_numeric($temp_user_request) )
+		{
+		  $this->setState('filter.prediction_id_select', $temp_user_request);
+		}
+        else
+        {
+            $this->setState('filter.prediction_id_select', $mainframe->getUserState( "$option.predid", '0' ));
+        }  
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('tmpl.title', 'asc');
+	}
 	
 
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        // Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-        
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $search	= $this->getState('filter.search');
+        $prediction_id	= $this->getState('filter.prediction_id_select');
+
         $query->select(array('tmpl.*', 'u.name AS editor'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
+        
+        if (is_numeric($prediction_id) )
+		{
+		$mainframe->setUserState( "$option.predid", $prediction_id );  
+		$query->where('tmpl.prediction_id = ' . $prediction_id);	
+		}
+        else
+        {
+            $prediction_id	= $mainframe->getUserState( "$option.predid", '0' );
+            $query->where('tmpl.prediction_id = ' . $prediction_id);
+        }
 
-        if ($where)
-        {
-            $query->where($where);
-        }
-        if ($orderby)
-        {
-            $query->order($orderby);
-        }
+
+        
+        $query->order($db->escape($this->getState('list.ordering', 'tmpl.title')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		
 		return $query;
 	}
 
-	function _buildContentWhere()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
-
-		$where = array();
-		$prediction_id = (int) $mainframe->getUserState( 'com_joomleague' . 'prediction_id_select' );
-		//$prediction_id = $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier, 'prediction_id_select', '0' );
-        if ( $prediction_id > 0 )
-		{
-			$where[] = 'tmpl.prediction_id = ' . $prediction_id;
-		}
-		$where 	= ( count( $where ) ? ''. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
-
-	function _buildContentOrderBy()
-	{
-		$mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
-
-		if ( $filter_order == 'tmpl.title' )
-		{
-			$orderby 	= 'tmpl.title ' . $filter_order_Dir;
-		}
-		else
-		{
-			$orderby 	= '' . $filter_order . ' ' . $filter_order_Dir . ' , tmpl.title ';
-		}
-
-		return $orderby;
-	}
-
-	
 
 	
 	/**
@@ -110,7 +176,10 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 		$templatePrefix	= 'prediction';
 //    $defaultvalues = array();
     
-		if (!$prediction_id){return;}
+		if (!$prediction_id)
+        {
+            return;
+        }
 
 		// get info from prediction game
 		$query = 'SELECT master_template 
@@ -193,9 +262,16 @@ class sportsmanagementModelPredictionTemplates extends JModelList
                   $defaultvalues[] = $field->name.'='.$field->value;
 								}				
 							}
-							$defaultvalues = $jRegistry->toString('ini');
+							
+                            $defaultvalues = $jRegistry->toString('ini');
                             
-//$mainframe->enqueueMessage(JText::_('defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>' ),'');
+                            $parameter = new JRegistry;
+			                $ini = $parameter->loadINI($defaultvalues);
+			                $ini = $parameter->toArray($ini);
+			                $defaultvalues = json_encode( $ini );
+                            	
+                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+
                             
 							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
                             //$defaultvalues = preg_replace('"', '', $defaultvalues);
@@ -218,14 +294,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 							
 							$tblTemplate_Config->params = $defaultvalues;
 							$tblTemplate_Config->prediction_id = $prediction_id;
-							/*
-							// Make sure the item is valid
-							if (!$tblTemplate_Config->check())
-							{
-								$this->setError($this->_db->getErrorMsg());
-								return false;
-							}
-					    */
+							
 							// Store the item to the database
 							if (!$tblTemplate_Config->store())
 							{
@@ -234,34 +303,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 							}
 							array_push($records,$template);
 							
-							/*
-              //template not present, create a row with default values
-							$params = new JLParameter(null, $xmldir . DS . $file);
-
-							//get the values
-							$defaultvalues = array();
-							foreach ($params->getGroups() as $key => $group)
-							{
-								foreach ($params->getParams('params',$key) as $param)
-								{
-									$defaultvalues[] = $param[5] . '=' . $param[4];
-								}
-							}
-							$defaultvalues = implode('\n', $defaultvalues);
-
-							$title = JText::_($params->name);
-							$query =	"	INSERT INTO #__joomleague_prediction_template (title, prediction_id, template, params)
-											VALUES ( '$title', '$prediction_id', '$template', '$defaultvalues' )";
-
-							$this->_db->setQuery($query);
-							//echo error, allows to check if there is a mistake in the template file
-							if (!$this->_db->query())
-							{
-								$this->setError($this->_db->getErrorMsg());
-								return false;
-							}
-							array_push($records,$template);
-							*/
+							
 						}
 					}
 				}

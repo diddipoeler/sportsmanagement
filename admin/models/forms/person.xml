@@ -2,7 +2,8 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
+	
+  <fieldset name="details"
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
@@ -22,13 +23,94 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
-			required="true"/>		
+			size="90"
+			required=""/>		
 		<field
 			name="nickname"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME_DESC"
-			class="inputbox"/>		
+			class="inputbox"/>	
+      
+<field
+			name="person_art"
+			type="list"
+			class="inputbox"
+			onchange="javascript:EditshowPersons();"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
+		</field>	
+
+<field
+			name="person_id1"
+			type="personlist"
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+<field
+			name="person_id2"
+			type="personlist"
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+
+    <field
+			name="sports_type_id"
+			type="sportstypelist"
+			
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+		
+<!--
+<field
+			name="sports_type_id"
+			type="sportstypelist"
+			class="inputbox validate-select-required"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="superiorzero">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+-->
+              	
 		<field
 			name="published"
 			type="list"
@@ -62,9 +144,10 @@
 		<field
 			name="position_id"
 			type="positionlist"
+			targettable="person"
 			class="inputbox"
 			default="0"
-			size="1"
+			size="10"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION_DESC"
 			>
@@ -79,6 +162,20 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
 			format="%Y-%m-%d"/>
+
+      <!--
+<field	name="agegroup_id" 
+type="dependsql"
+size="10"
+depends="sports_type_id" 
+      task="agegroupsbysportstypesoptions"
+      
+					label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+					description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC" 
+					required="">
+			</field>
+-->
+			
 			
 		<field
 			name="agegroup_id"
@@ -94,7 +191,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-    	
+
 		<field
 			name="deathday"
 			type="calendar"
@@ -231,7 +328,12 @@
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
 			class="inputbox"/>  
-       	
+
+	
+
+
+
+           	
 	</fieldset>
 	
 <fieldset name="maps"
@@ -299,8 +401,8 @@
   <field
 				name="injury_detail"
 				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE_DESC"
 				width="450" 
 				filter="safehtml"/>	
   <field
@@ -334,8 +436,8 @@
   <field
 				name="suspension_detail"
 				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENSION_TYPE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENSION_TYPE_DESC"
 				width="450" 
 				filter="safehtml"/>	
   <field
@@ -454,7 +556,7 @@
 				type="radio"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE">
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE_DESC">
 			<option value="0">JNO</option>	
 			<option value="1">JYES</option>	
 			</field>			

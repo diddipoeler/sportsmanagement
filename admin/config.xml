@@ -11,7 +11,7 @@
 	
   <field name="cfg_help_server" 
   type="text" 
-  default="http://joomleaguewiki.grammatikas-grill.de/index.php/"
+  default="http://smwiki.diddipoeler.de/index.php/"
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
@@ -131,7 +131,6 @@
       description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
 			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
 			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
-			
 			<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
 			<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
 			<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
@@ -140,10 +139,20 @@
 			<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
 			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
 			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
+			<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
 		</field>
-		
+	</fieldset>
+  
+<!-- register 2 -->		
+	<fieldset name="sis-konfiguration"
+	label="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_LABEL"
+		description="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_DESC"
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  
+    
+<!--    	
 		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER" 
           description="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER_DESC" />
+-->
      
      <field name="sis_xmllink" type="list" default="http://www.sis-handball.de" label="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK_DESC">
 				<option value="http://www.sis-handball.at">SIS Österreich</option>
@@ -153,7 +162,7 @@
 			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
-<!-- register 2 -->		
+<!-- register 3 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
@@ -248,17 +257,23 @@
 				default="Hallo Sportsfreunde, das Spiel am [FROMDATE] um [FROMTIME] Uhr wurde auf den [TODATE] auf [TOTIME] Uhr verlegt.Gruß [MAILFROM]"
 				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT"
 				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
-				width="45ß" 
+				width="450" 
 				filter="safehtml"/>
 				
 	</fieldset>
 
-<!-- register 3 -->	
+<!-- register 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
-		addfieldpath="/administrator/components/com_sportsmanagement/elements">
+		
+  	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+<field name="current_season" 
+type="actseason" 
+multiple="true"  
+    default=""
+    size="10"
 
-<field name="current_season" type="actseason" default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_DESC"
       
@@ -358,7 +373,41 @@
           		
 	</fieldset>
   
-  		
+	<fieldset
+		name="googleapi"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DESC"
+	>
+
+<field name="google_api_clienid" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID_DESC" />	
+	
+<field name="google_api_clientsecret" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTSECRET" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTSECRET_DESC" />	
+	
+<field name="google_api_redirecturi" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_REDIRECTURI" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_REDIRECTURI_DESC" />	
+	
+<field name="google_api_developerkey" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />	
+	</fieldset>
+          		
 <!-- register ende -->		
 	<fieldset
 		name="permissions"

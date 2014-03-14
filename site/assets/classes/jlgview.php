@@ -72,7 +72,7 @@ class JLGView extends JView
 		$document	= JFactory::getDocument();
 		$version 	= urlencode(JoomleagueHelper::getVersion());
 		//support for global client side lang res
-		JHTML::_('behavior.formvalidation');
+		JHtml::_('behavior.formvalidation');
 		$lang 		= JFactory::getLanguage();
 		$props 		= $lang->getProperties();
 		$strings 	= &$props['strings'];

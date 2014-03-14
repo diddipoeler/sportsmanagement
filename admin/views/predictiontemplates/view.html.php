@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -8,6 +44,15 @@ jimport( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewPredictionTemplates
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPredictionTemplates extends JView
 {
 	function display( $tpl = null )
@@ -18,20 +63,30 @@ class sportsmanagementViewPredictionTemplates extends JView
     $option = JRequest::getCmd('option');
     $model = $this->getModel();
     
+    $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
 		//$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
         
-        $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id_select', '0' );
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplates prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+        $this->prediction_id = $this->state->get('filter.prediction_id_select');
+        if ( isset($this->prediction_id) )
+        {
+        }
+        else
+        {
+            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+        }   
+         
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
         
-        //$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-		$lists				= array();
+
+        
+		$lists = array();
+		$uri = JFactory::getURI();
+        
+        
 		
-		$uri				= JFactory::getURI();
-        
-        
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
 		
         //$this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         $mdlPredictionGame = JModel::getInstance("PredictionGame", "sportsmanagementModel");
@@ -40,75 +95,46 @@ class sportsmanagementViewPredictionTemplates extends JView
         
         
         
-        if ( $this->prediction_id )
+        if ( isset($this->prediction_id) )
         {
-        $checkTemplates  = $mdlPredictionTemplates->checklist($this->prediction_id);    
-        $predictiongame		= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
+        $checkTemplates = $mdlPredictionTemplates->checklist($this->prediction_id);    
+        $predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
+        }
+        else
+        {
+            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
         }
         
-//echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order','filter_order','tmpl.title','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'tmpl_filter_order_Dir','filter_order_Dir','','word');
+        $items = $this->get('Items');
+		$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
         
+//echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
+     
 
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
+
 
 		//build the html select list for prediction games
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_JOOMLEAGUE_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
             }
             //$this->prediction_id = 0;
 
-            
+          
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
-											'prediction_id_select',
+											'filter_prediction_id_select',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
-											$this->prediction_id
+											$this->state->get('filter.prediction_id_select')
 										);
 
                                         
 		unset( $res );
-/*
-		// Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_joomleague/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
-		JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_PTMPLS_TITLE' ), 'pred-cpanel' );
-        
-		if ( $prediction_id > 0 )
-		{
-			JToolBarHelper::editListX('predictiontemplate.edit');
-			//JToolBarHelper::save();  // TO BE FIXED: Marked out. Better an import Button should be added here if it is not master-template
-			JToolBarHelper::divider();
-			if ( ( $prediction_id > 0 ) && ( $predictiongame->master_template ) )
-			{
-				JToolBarHelper::deleteList();
-				//JToolBarHelper::deleteList( JText::_( 'Warning: all prediction-user-data and tipps of selected member will COMPLETELY be deleted!!! This is NOT reversible!!!' ) );
-			}
-			else
-			{
-				JToolBarHelper::custom( 'predictiontemplate.reset', 'restore', 'restore', JText::_( 'COM_JOOMLEAGUE_GLOBAL_RESET' ), true );
-			}
-			JToolBarHelper::divider();
-		}
-		JLToolBarHelper::onlinehelp();
 
-		$this->assignRef( 'user',			JFactory::getUser() );
-		$this->assignRef( 'pred_id',		$prediction_id );
-		$this->assignRef( 'lists',			$lists );
-		$this->assignRef( 'items',			$items );
-		$this->assignRef( 'pagination',		$pagination );
-		$this->assignRef( 'predictiongame',	$predictiongame );
-		$url=$uri->toString();
-		$this->assignRef('request_url',$url);
-		parent::display( $tpl );
-        */
         
         $this->assign( 'user',			JFactory::getUser() );
 		$this->assignRef( 'pred_id',		$this->prediction_id );
@@ -117,9 +143,30 @@ class sportsmanagementViewPredictionTemplates extends JView
 		$this->assignRef( 'pagination',		$pagination );
 		$this->assignRef( 'predictiongame',	$predictiongame );
 		$this->assign('request_url',$uri->toString());
+        
+        // Set the toolbar
+		$this->addToolBar();
+        
         parent::display( $tpl );
         
 	}
+    
+    /**
+	 * Setting the toolbar
+	 */
+	protected function addToolBar() 
+	{
+	   // Get a refrence of the page instance in joomla
+        $document = JFactory::getDocument();
+        $option = JRequest::getCmd('option');
+        
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES'),'templates');
+        
+        JToolBarHelper::divider();
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        JToolBarHelper::preferences($option);
+       
+    }   
 
 }
 ?>

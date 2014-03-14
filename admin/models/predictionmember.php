@@ -9,6 +9,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
 
 
+/**
+ * sportsmanagementModelpredictionmember
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelpredictionmember extends JModelAdmin
 {
 	
@@ -112,7 +121,7 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 
     $subject = addslashes(
 				sprintf(
-				JText::_( "COM_JOOMLEAGUE_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
+				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				'perdictionname' ) );
 				
     $message = 'Tip-Results';

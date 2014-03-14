@@ -61,7 +61,7 @@ function update_depend(element) {
 
 	var task = combo.getProperty('task');
 	var postStr = '';
-	var url = 'index.php?option=com_joomleague&format=json&task=ajax.' + task 
+	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task 
 			+ required + dependquery;
 	var theAjax = new Request.JSON({
 		url : url,

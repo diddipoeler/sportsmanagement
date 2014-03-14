@@ -14,7 +14,7 @@
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 	
 		<field 	name="count_stats" type="text" default="5"
 				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_COUNT_STATS"

@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.13</version>
+	<version>1.0.26</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -51,8 +51,14 @@
 		<folder>controllers</folder>
 		<folder>language</folder>
 		<folder>sisdata</folder>
+		<folder>data</folder>
+		<folder>lib</folder>
+		
 	</files>
- 
+  <languages folder="site">
+        <language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
+  </languages>
+    
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
 		<filename>index.html</filename>
 		<folder>agegroups</folder>
@@ -63,9 +69,14 @@
     <folder>flags</folder>
 		<folder>flags_associations</folder>
 		<folder>jl_images</folder>
+		<folder>leagues</folder>
 		<folder>person_playground</folder>
+		<folder>persons</folder>
 		<folder>placeholders</folder>
+		<folder>playgrounds</folder>
+		<folder>predictionusers</folder>
 		<folder>rosterground</folder>
+		<folder>sport_types</folder>
 		<folder>teamplayers</folder>
 		<folder>treebracket</folder>
 	</media>
@@ -103,6 +114,7 @@
 			<!-- helpers files section -->
 			<folder>helpers</folder>
 			<folder>sisdata</folder>
+			<folder>modules</folder>
 		</files>
  
 		<languages folder="admin">
@@ -119,5 +131,23 @@
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
 		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.github.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml</server>
 	</updateservers>
- 
+
+
+<modules>
+<module module="mod_sportsmanagement_quickicon" client="administrator" position="icon" published="1"/>
+<module module="mod_sportsmanagement_rquotes" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>			
+</modules>
+
+<plugins>
+<plugin plugin="jqueryeasy" group="system" />	
+<plugin plugin="jw_ts" group="content" />
+<plugin plugin="plugin_googlemap3" group="system" />
+
+<plugin plugin="jsm_siscron" group="system" />	
+<plugin plugin="jsm_search" group="search" />	
+
+</plugins>
+     
 </extension>

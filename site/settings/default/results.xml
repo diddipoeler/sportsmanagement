@@ -206,7 +206,7 @@
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS" 
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 			
 		<field	name="show_events" type="radio" default="0"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EVENTS"

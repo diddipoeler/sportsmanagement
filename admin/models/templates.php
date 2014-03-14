@@ -1,97 +1,142 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
-/**
- * Sportsmanagement Component Templates Model
- *
- * @author	JoomLeague Team
- * @package	Sportsmanagement
- * @since	0.1
- */
 
+
+/**
+ * sportsmanagementModelTemplates
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelTemplates extends JModelList
 {
 	var $_identifier = "templates";
-	var $_project_id=0;
+	var $_project_id = 0;
 
-	
+	public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'tmpl.template',
+                        'tmpl.title',
+                        'tmpl.id',
+                        'tmpl.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('tmpl.template', 'asc');
+	}    
 	
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        // Get the WHERE and ORDER BY clauses for the query
-		$where=$this->_buildContentWhere();
-		$orderby=$this->_buildContentOrderBy();
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
+        
         $query->select(array('tmpl.*', 'u.name AS editor','(0) AS isMaster'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
-
-        if ($where)
-        {
-            $query->where($where);
-        }
-        if ($orderby)
-        {
-            $query->order($orderby);
-        }
-
-		return $query;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		//$project_id=$mainframe->getUserState($option.'project');
-
-		$where=array();
-		$where[]=' tmpl.project_id='.(int) $this->_project_id;
-
-		$oldTemplates="frontpage'";
+        
+        $query->where('tmpl.project_id = '.(int) $this->_project_id);
+        
+        $oldTemplates="frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
 		$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
 		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
+        
+        $query->where("tmpl.template NOT IN ('".$oldTemplates."')");
 
-		$where[]=" tmpl.template NOT IN ('".$oldTemplates."')";
-		$query="".implode(' AND ',$where);
+
+
+$query->order($db->escape($this->getState('list.ordering', 'tmpl.template')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+ 
+$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
-	}
-
-	function _buildContentOrderBy()
-	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order','filter_order','tmpl.template','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'tmpl_filter_order_Dir','filter_order_Dir','','word');
-
-		if ($filter_order=='tmpl.template')
-		{
-			$orderby='tmpl.template '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby=''.$filter_order.' '.$filter_order_Dir.',tmpl.template ';
-		}
-		return $orderby;
 	}
 
 	/**
@@ -100,7 +145,7 @@ class sportsmanagementModelTemplates extends JModelList
 	 */
 	function checklist()
 	{
-	   $mainframe		=& JFactory::getApplication();
+	   $mainframe		= JFactory::getApplication();
       $option = JRequest::getCmd('option');
 		$project_id=$this->_project_id;
 		$defaultpath=JPATH_COMPONENT_SITE.DS.'settings';
@@ -111,7 +156,7 @@ class sportsmanagementModelTemplates extends JModelList
 		if (!$project_id){return;}
 
 		// get info from project
-		$query='SELECT master_template,extension FROM #__joomleague_project WHERE id='.(int)$project_id;
+		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
 
 		$this->_db->setQuery($query);
 		$params=$this->_db->loadObject();
@@ -121,14 +166,14 @@ class sportsmanagementModelTemplates extends JModelList
 
 		// otherwise,compare the records with the files
 		// get records
-		$query='SELECT template FROM #__joomleague_template_config WHERE project_id='.(int) $project_id;
+		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
 
 		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
+		$records = $this->_db->loadResultArray();
 		if (empty($records)) { $records=array(); }
 		
 		// add default folder
-		$xmldirs[]=$defaultpath.DS.'default';
+		$xmldirs[] = $defaultpath.DS.'default';
 		
 		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
 		foreach ($extensions as $e => $extension) {
@@ -185,14 +230,23 @@ class sportsmanagementModelTemplates extends JModelList
 							$jRegistry = new JRegistry();
 							$form = JForm::getInstance($file, $xmldir.DS.$file);
 							$fieldsets = $form->getFieldsets();
-							foreach ($fieldsets as $fieldset) {
-								foreach($form->getFieldset($fieldset->name) as $field) {
+							foreach ($fieldsets as $fieldset) 
+                            {
+								foreach($form->getFieldset($fieldset->name) as $field) 
+                                {
 									$jRegistry->set($field->name, $field->value);
 								}				
 							}
 							$defaultvalues = $jRegistry->toString('ini');
 							
-							$tblTemplate_Config = JTable::getInstance('template', 'table');
+                            $parameter = new JRegistry;
+			                $ini = $parameter->loadINI($defaultvalues);
+			                $ini = $parameter->toArray($ini);
+			                $defaultvalues = json_encode( $ini );
+                            	
+                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            
+							$tblTemplate_Config = JTable::getInstance('template', 'sportsmanagementtable');
 							$tblTemplate_Config->template = $template;
                             if ( $attributetitle )
                             {
@@ -209,14 +263,14 @@ class sportsmanagementModelTemplates extends JModelList
 								// Make sure the item is valid
 							if (!$tblTemplate_Config->check())
 							{
-								$this->setError($this->_db->getErrorMsg());
+								sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 								return false;
 							}
 					
 							// Store the item to the database
 							if (!$tblTemplate_Config->store())
 							{
-								$this->setError($this->_db->getErrorMsg());
+								sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 								return false;
 							}
 							array_push($records,$template);
@@ -231,7 +285,7 @@ class sportsmanagementModelTemplates extends JModelList
 	function getMasterTemplatesList()
 	{
 		// get current project settings
-		$query='SELECT template FROM #__joomleague_template_config WHERE project_id='.(int)$this->_project_id;
+		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$this->_project_id;
 		$this->_db->setQuery($query);
 		$current=$this->_db->loadResultArray();
 
@@ -243,9 +297,9 @@ class sportsmanagementModelTemplates extends JModelList
 		{
 			$query='SELECT t.id as value, t.title as text, t.template as template ';
 		}
-		$query .= '	FROM #__joomleague_template_config as t
-					INNER JOIN #__joomleague_project as pm ON pm.id=t.project_id
-					INNER JOIN #__joomleague_project as p ON p.master_template=pm.id ';
+		$query .= '	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id=t.project_id
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=pm.id ';
 		$where=array();
 		$where[]=' p.id='.(int)$this->_project_id;
 
@@ -270,8 +324,8 @@ class sportsmanagementModelTemplates extends JModelList
 	function getMasterName()
 	{
 		$query='	SELECT master.name
-					FROM #__joomleague_project as master
-					INNER JOIN #__joomleague_project as p ON p.master_template=master.id
+					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master
+					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=master.id
 					WHERE p.id='.(int) $this->_project_id;
 		$this->_db->setQuery($query);
 		return ($this->_db->loadResult());

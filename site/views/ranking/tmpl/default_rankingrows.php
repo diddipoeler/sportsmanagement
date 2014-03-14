@@ -1,18 +1,57 @@
 <?php
-JHTML::_('behavior.tooltip');
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
+JHtml::_('behavior.tooltip');
 
 $current  = &$this->current;
+//$current  = &$this->currentRanking;
 $previous = &$this->previousRanking[$this->division];
 
 $config   = &$this->tableconfig;
 
-if ( $this->show_debug_info )
-{
-echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
-echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';
-}
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
+//echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';
+//}
 
-
+//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
 
 $counter = 1;
 $k = 0;
@@ -99,7 +138,7 @@ foreach( $current as $ptid => $team )
 		echo " style='background-color: " . $color . "'";
 	}
 	echo ">";
-	echo JoomleagueHelperHtml::getLastRankImg($team,$previous,$ptid);
+	echo sportsmanagementHelperHtml::getLastRankImg($team,$previous,$ptid);
 	echo '</td>';
 	echo "\n";
 
@@ -128,20 +167,20 @@ foreach( $current as $ptid => $team )
 
 		if ( $config['show_logo_small_table'] == "country_flag" ) 
         {
-			JoomleagueHelper::showClubIcon($team->team, 2);
+			sportsmanagementHelper::showClubIcon($team->team, 2);
 		}
         elseif ( $config['show_logo_small_table'] == "logo_small_country_flag" ) 
         {
-            echo JoomleagueHelper::getPictureThumb($team->team->logo_small,
+            echo sportsmanagementHelper::getPictureThumb($team->team->logo_small,
 					$team->team->name,
 					$config['team_picture_width'],
 					$config['team_picture_height'],3).' ';
-                    JoomleagueHelper::showClubIcon($team->team, 2);
+                    sportsmanagementHelper::showClubIcon($team->team, 2);
         }
         elseif ( $config['show_logo_small_table'] == "country_flag_logo_small" ) 
         {
-            JoomleagueHelper::showClubIcon($team->team, 2);
-            echo ' '.JoomleagueHelper::getPictureThumb($team->team->logo_small,
+            sportsmanagementHelper::showClubIcon($team->team, 2);
+            echo ' '.sportsmanagementHelper::getPictureThumb($team->team->logo_small,
 					$team->team->name,
 					$config['team_picture_width'],
 					$config['team_picture_height'],3);
@@ -149,7 +188,7 @@ foreach( $current as $ptid => $team )
         else 
         {
 			$pic = $config['show_logo_small_table'];
-			echo JoomleagueHelper::getPictureThumb($team->team->$pic,
+			echo sportsmanagementHelper::getPictureThumb($team->team->$pic,
 					$team->team->name,
 					$config['team_picture_width'],
 					$config['team_picture_height'],3);
@@ -168,7 +207,8 @@ foreach( $current as $ptid => $team )
 	$isFavTeam = in_array( $team->team->id, explode(",",$this->project->fav_team) );
 	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
-	echo JoomleagueHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
+	//echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
+    echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam );
 	echo '</td>';
 	echo "\n";
 
@@ -196,8 +236,8 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = JoomleagueHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1);
-					echo JHTML::link($teamplan_link, $team->cnt_won);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->projectteamid);
+					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
 				{
@@ -215,8 +255,8 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = JoomleagueHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2);
-					echo JHTML::link($teamplan_link, $team->cnt_draw);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2,$team->team->projectteamid);
+					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
 				{
@@ -234,8 +274,8 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = JoomleagueHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3);
-					echo JHTML::link($teamplan_link, $team->cnt_lost);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3,$team->team->projectteamid);
+					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else
 				{
@@ -351,7 +391,74 @@ foreach( $current as $ptid => $team )
 				echo '</td>';
 				echo "\n";
 				break;
-					
+
+// ######################################################################################                
+// ausgabe z.b. für tennis                
+            case 'MATCHPOINTS':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_matchpoint, $team->sum_team2_matchpoint ) );
+				echo '</td>';
+				echo "\n";
+				break; 
+            case 'MATCHPOINTS_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_matchpoint );
+				echo '</td>';
+				echo "\n";
+				break;
+                   
+			case 'MATCHSETS':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_sets, $team->sum_team2_sets ) );
+				echo '</td>';
+				echo "\n";
+				break;
+            case 'MATCHSETS_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_sets );
+				echo '</td>';
+				echo "\n";
+				break;
+                    
+            case 'MATCHGAMES':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, sprintf( "%s:%s", $team->sum_team1_games, $team->sum_team2_games ) );
+				echo '</td>';
+				echo "\n";
+				break;
+           case 'MATCHGAMES_DIFF':
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color']) {
+					echo 'style="background-color:' . $color . '"';
+				}
+				echo '>';
+				printf( $format, $team->diff_team_games );
+				echo '</td>';
+				echo "\n";
+				break;     
+// ######################################################################################
+                
+                    		
 			case 'SCOREFOR':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
@@ -484,7 +591,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if ((($team->team->start_points)!=0) AND (( $config['show_manipulations'])==1))
 				{
-					$toolTipTitle	= JText::_('COM_JOOMLEAGUE_START');
+					$toolTipTitle	= JText::_('COM_SPORTSMANAGEMENT_START');
 					$toolTipText	= $team->team->reason;
 					echo '<span class="hasTip" title="'.$toolTipTitle.' :: '.$toolTipText.'">'. printf( $format, $team->team->start_points ). '</span>';
 				}
@@ -581,10 +688,10 @@ foreach( $current as $ptid => $team )
 				{
 					$txt = $this->teams[$g->projectteam1_id]->name.' [ '. $g->team1_result . ' - '. $g->team2_result . ' ] '.$this->teams[$g->projectteam2_id]->name;
 					$attribs = array('title' => $txt);
-					if (!$img = JoomleagueHelperHtml::getThumbUpDownImg($g, $ptid, $attribs)) {
+					if (!$img = sportsmanagementHelperHtml::getThumbUpDownImg($g, $ptid, $attribs)) {
 						continue;
 					}
-					switch (JoomleagueHelper::getTeamMatchResult($g, $ptid))
+					switch (sportsmanagementHelper::getTeamMatchResult($g, $ptid))
 					{
 						case -1:
 							$attr = array('class' => 'thumblost');
@@ -597,8 +704,8 @@ foreach( $current as $ptid => $team )
 							break;
 					}
 
-					$url = JRoute::_(JoomleagueHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
-					echo JHTML::link($url, $img, $attr);
+					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
+					echo JHtml::link($url, $img, $attr);
 				}
 				echo '</td>';
 				echo "\n";

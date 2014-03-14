@@ -22,11 +22,11 @@ Joomla.submitbutton = function(task) {
     	var msg = new Array();
 		// do field validation
 		if (validator.validate(form.name) === false) {
-			msg.push(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_POSITION_CSJS_NEEDS_NAME'));
+			msg.push(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_POSITION_CSJS_NEEDS_NAME'));
 		}
 		if (validator.validate(form['sports_type_id']) === false
 				&& form['sports_type_id'].disabled != true) {
-			msg.push(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_POSITION_CSJS_NEEDS_SPORTSTYPE'));
+			msg.push(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_POSITION_CSJS_NEEDS_SPORTSTYPE'));
 		}
         alert (msg.join('\n'));
     }

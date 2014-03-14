@@ -1,12 +1,57 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelperson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelperson extends JModelAdmin
 {
@@ -52,8 +97,12 @@ class sportsmanagementModelperson extends JModelAdmin
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $db		= $this->getDbo();
+        $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        
+        
+        
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.person', 'person', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -61,10 +110,56 @@ class sportsmanagementModelperson extends JModelAdmin
 			return false;
 		}
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson form<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
+        
+        switch($form->getValue('person_art'))
+        {
+            case 1:
+//            $form->setFieldAttribute('person_id1', 'type', 'hidden');
+//            $form->setFieldAttribute('person_id2', 'type', 'hidden');            
+            break;
+            case 2:
+//            $form->setFieldAttribute('person_id1', 'type', 'personlist');
+//            $form->setFieldAttribute('person_id2', 'type', 'personlist');
+            break;
+            
+        }
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
+        $prefix = $mainframe->getCfg('dbprefix');
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$whichtabel = $this->getTable();
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        
+        $query->select('*');
+			$query->from('information_schema.columns');
+            $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_person' ");
+			
+			$db->setQuery($query);
+            
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+			$result = $db->loadObjectList();
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            
+            foreach($result as $field )
+        {
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+           
 		return $form;
 	}
     
@@ -160,8 +255,9 @@ class sportsmanagementModelperson extends JModelAdmin
 			$tblPerson->deathday	= $post['deathday'.$pks[$x]];
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
-			if(!$tblPerson->store()) {
-				$this->setError($this->_db->getErrorMsg());
+			if(!$tblPerson->store()) 
+            {
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
 		}
@@ -181,8 +277,9 @@ class sportsmanagementModelperson extends JModelAdmin
     $option = JRequest::getCmd('option');
 	$mainframe	= JFactory::getApplication();  
     $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );;
-    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );;
+    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );
+    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
+    $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
     $cid = $post['cid'];
           
     $mdlPerson = JModel::getInstance("person", "sportsmanagementModel");
@@ -192,18 +289,22 @@ class sportsmanagementModelperson extends JModelAdmin
     switch ($post['type'])
             {
                 case 0:
-                $mdl = JModel::getInstance("teamplayer", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
                 $mdlPersonTable->load($cid[$x]);    
                 $mdlTable = $mdl->getTable();
-                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->team_id = $this->_team_id;
+                $mdlTable->season_id = $this->_season_id;
+                $mdlTable->persontype = 1;
                 $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -212,18 +313,22 @@ class sportsmanagementModelperson extends JModelAdmin
 		        }
                 break;
                 case 1:
-                $mdl = JModel::getInstance("teamstaff", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
                 $mdlPersonTable->load($cid[$x]); 
                 $mdlTable = $mdl->getTable();
-                $mdlTable->projectteam_id = $this->_project_team_id;
+                $mdlTable->team_id = $this->_team_id;
+                $mdlTable->season_id = $this->_season_id;
+                $mdlTable->persontype = 2;
                 $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -231,8 +336,9 @@ class sportsmanagementModelperson extends JModelAdmin
                  
 		        }
                 break;
+                /*
                 case 2:
-                $mdl = JModel::getInstance("projectreferee", "sportsmanagementModel");
+                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -243,6 +349,7 @@ class sportsmanagementModelperson extends JModelAdmin
                 $mdlTable->person_id = $cid[$x];   
                 if ($mdlTable->store()===false)
 				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -250,6 +357,7 @@ class sportsmanagementModelperson extends JModelAdmin
                  
 		        }
                 break;
+                */
                 
             }
     
@@ -278,7 +386,7 @@ class sportsmanagementModelperson extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -299,11 +407,36 @@ class sportsmanagementModelperson extends JModelAdmin
        $option = JRequest::getCmd('option');
        $post = JRequest::get('post');
        $address_parts = array();
+       $person_double = array();
        // Get a db connection.
         $db = JFactory::getDbo();
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       switch($data['person_art'])
+        {
+            case 1:
+            break;
+            case 2:
+            if ( $data['person_id1'] && $data['person_id2'] )
+            {
+            $person_1 = $data['person_id1'];
+            $person_2 = $data['person_id2'];
+            $table = 'person';
+            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
+            $row->load((int) $person_1);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $row->load((int) $person_2);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $data['lastname'] = implode(" - ",$person_double);
+            $data['firstname'] = '';
+            }
+            break;
+            
+        }
+       
+       
        
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
@@ -326,7 +459,7 @@ class sportsmanagementModelperson extends JModelAdmin
 
 		if (!$db->query())
 		{
-    $mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
@@ -354,13 +487,15 @@ class sportsmanagementModelperson extends JModelAdmin
 		}
 		if (!empty($data['country']))
 		{
-			$address_parts[] = Countries::getShortCountryName($data['country']);
+			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
 		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
         
+        if ( $coords )
+        {
         foreach( $coords as $key => $value )
 		{
         $post['extended'][$key] = $value;
@@ -368,6 +503,34 @@ class sportsmanagementModelperson extends JModelAdmin
 		
 		$data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
+        }
+        else
+        {
+        $address_parts = array();
+        if (!empty($data['address']))
+		{
+		$address_parts[] = $data['address'];
+		}
+        if (!empty($data['location']))
+		{
+		$address_parts[] = $data['location'];
+		}
+		if (!empty($data['country']))
+		{
+		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
+		}
+        $address = implode(',', $address_parts);
+        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
+		
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        $data['latitude'] = $coords['latitude'];
+		$data['longitude'] = $coords['longitude'];
+        foreach( $coords as $key => $value )
+		{
+        $post['extended'][$key] = $value;
+        }    
+        }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

@@ -38,6 +38,11 @@
 			<option value="1">JYES</option>
 		</field>
 
+    <field name="playground_picture_width" type="text" default="150"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYGROUND_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
+		</field>
+		
 		<field name="show_maps" type="radio" default="1"
 			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_MAPS"
 			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_MAPS">

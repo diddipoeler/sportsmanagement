@@ -3,7 +3,7 @@
 
 	<fieldset	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
-  addpath="/administrator/components/com_joomleague/elements"
+  addpath="/administrator/components/com_sportsmanagement/elements"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTION">
 
     <field	name="show_debug_modus" type="radio" default="0"
@@ -22,8 +22,8 @@
 
 <!--
 		<param	name="show_matchday_pagenav" type="list" default="1"
-				label="COM_JOOMLEAGUE_Show page navigation?"
-				description="COM_JOOMLEAGUE_With this option you can show a navigation (1 2 3 Next Matchday) at the bottom of the Prediction Ranking Page.">
+				label="COM_SPORTSMANAGEMENT_Show page navigation?"
+				description="COM_SPORTSMANAGEMENT_With this option you can show a navigation (1 2 3 Next Matchday) at the bottom of the Prediction Ranking Page.">
 			<option value="0">No display</option>
 			<option value="1">Bottom of result</option>
 		</param>

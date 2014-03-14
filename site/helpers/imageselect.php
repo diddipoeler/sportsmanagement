@@ -23,7 +23,7 @@ var $_foldertype = '';
     
     $this->_foldertype = $type;
     
-		JHTML::_( 'behavior.modal' );
+		JHtml::_( 'behavior.modal' );
 
 		$baseFolder = JURI::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
@@ -78,7 +78,7 @@ var $_foldertype = '';
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
 		$document->addScriptDeclaration( $js );
 
-		JHTML::_( 'behavior.modal', 'a.modal' );
+		JHtml::_( 'behavior.modal', 'a.modal' );
 
 		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
@@ -288,6 +288,9 @@ var $_foldertype = '';
 				break;
 			case	"venues":
 				return "venues";
+				break;
+                case	"rounds":
+				return "rounds";
 				break;
                 
             case	"agegroups":

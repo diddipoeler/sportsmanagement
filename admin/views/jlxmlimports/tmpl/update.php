@@ -1,7 +1,7 @@
 <div id='editcell'>
 	<a name='page_top'></a>
 	<table class='adminlist'>
-		<thead><tr><th><?php echo JText::_('COM_JOOMLEAGUE_ADMIN_XML_IMPORT_TABLE_TITLE_4'); ?></th></tr></thead>
+		<thead><tr><th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TABLE_TITLE_4'); ?></th></tr></thead>
 		<tbody><tr><td><?php echo '&nbsp;'; ?></td></tr></tbody>
 	</table>
 	<?php

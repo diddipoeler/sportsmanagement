@@ -10,7 +10,7 @@ Joomla.submitbutton = function(pressbutton) {
 		Joomla.submitform(pressbutton);
 		return true;
 	} else {
-		alert(Joomla.JText._('COM_JOOMLEAGUE_ADMIN_TEMPLATE_CSJS_WRONG_VALUES'));
+		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CSJS_WRONG_VALUES'));
 	}
 	return false;
 }

@@ -1,29 +1,66 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewprojectteams
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewprojectteams extends JView
 {
 
+	/**
+	 * sportsmanagementViewprojectteams::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
@@ -31,20 +68,41 @@ class sportsmanagementViewprojectteams extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search','search','','string');
-		$search_mode		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_search_mode','search_mode','','string');
-        $division			= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_division','division','','string');
-		$search				= JString::strtolower($search);
-
-		$items = $this->get('Items');
+		$this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
+        
+        $this->project_id = JRequest::getVar('pid');
+        if ( !$this->project_id )
+        {
+        $this->project_id = $mainframe->getUserState( "$option.pid", '0' );
+        }
+       
+        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id);
+        
+        $this->project_art_id = $project->project_art_id;
+        $mainframe->setUserState( "$option.pid", $project->id );
+        $mainframe->setUserState( "$option.season_id", $project->season_id );
+        $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
+        $mainframe->setUserState( "$option.sports_type_id", $project->sports_type_id );
+        
+        $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+        if ( $this->project_art_id == 3 )
+        {
+            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
+        } 
+        else
+        {
+            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+        }
+        
+        
+        
         $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
@@ -53,15 +111,101 @@ class sportsmanagementViewprojectteams extends JView
         if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
         $lists['divisions'] = $projectdivisions;
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewprojectteams divisions<br><pre>'.print_r($lists['divisions'],true).'</pre>'   ),'');
+        //build the html select list for project assigned teams
+		$ress = array();
+		$res1 = array();
+		$notusedteams = array();
 
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+		if ($ress = $model->getProjectTeams($this->project_id))
+		{
+			$teamslist=array();
+			foreach($ress as $res)
+			{
+				if(empty($res1->info))
+				{
+					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text);
+				}
+				else
+				{
+					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text.' ('.$res->info.')');
+				}
+			}
 
-		// search filter
-		$lists['search']=$search;
-		$lists['search_mode']=$search_mode;
+			$lists['project_teams'] = JHTMLSelect::genericlist($project_teamslist, 'project_teamslist[]',
+																' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($ress)).'"',
+																'value',
+																'text');
+		}
+		else
+		{
+			$lists['project_teams']= '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+
+		if ($ress1 = $model->getTeams())
+		{
+			if ($ress = $model->getProjectTeams($this->project_id))
+			{
+				foreach ($ress1 as $res1)
+				{
+					$used=0;
+					foreach ($ress as $res)
+					{
+						if ($res1->value == $res->value){$used=1;}
+					}
+
+					if ($used == 0 && !empty($res1->info)){
+						$notusedteams[]=JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+					}
+					elseif($used == 0 && empty($res1->info))
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+					}
+				}
+			}
+			else
+			{
+				foreach ($ress1 as $res1)
+				{
+					if(empty($res1->info))
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+					}
+					else
+					{
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+					}
+				}
+			}
+		}
+		else
+		{
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM').'<br /><br />');
+		}
+
+		//build the html select list for teams
+		if (count($notusedteams) > 0)
+		{
+			$lists['teams'] = JHTMLSelect::genericlist( $notusedteams,
+														'teamslist[]',
+														' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($notusedteams)).'"',
+														'value',
+														'text');
+		}
+		else
+		{
+			$lists['teams'] = '<select name="teamslist[]" id="teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+
+		unset($res);
+		unset($res1);
+		unset($notusedteams);
+        
+        
+        
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
+
         
         $myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
@@ -78,6 +222,7 @@ class sportsmanagementViewprojectteams extends JView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
+        $this->assignRef('project_art_id',$this->project_art_id);
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -89,8 +234,22 @@ class sportsmanagementViewprojectteams extends JView
 	 */
 	protected function addToolbar()
 	{
+	// Get a refrence of the page instance in joomla
+        $document = JFactory::getDocument();
+        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        // Set toolbar items for the page
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'));
+        if ( $this->project_art_id != 3 )
+        {
+            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'),'projectteams');
+        }
+        else
+        {
+            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE'),'projectpersons');
+        }
+		
         JToolBarHelper::deleteList('', 'projectteam.remove');
 
 		JToolBarHelper::apply('projectteams.saveshort');
@@ -103,10 +262,7 @@ class sportsmanagementViewprojectteams extends JView
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
     JToolBarHelper::preferences(JRequest::getCmd('option'));
-    
-        
 
-		//JToolBarHelper::onlinehelp();
 	}
 }
 ?>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="search" method="upgrade">
+	<name>Search - SportsManagement Suche</name>
+	<creationDate>2014</creationDate>
+	<author>JSM Developers</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://sportsmanagement.fussballineuropa.de/</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<copyright>(C) 2014 sportsmanagement.fussballineuropa.de. All rights reserved.
+	</copyright>
+	<version>1.0.00</version>
+	<description>PLG_SEARCH_SPORTSMANAGEMENT_XML_DESC</description>
+	<files>
+		<filename plugin="search_sportsmanagement">search_sportsmanagement.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_search_search_sportsmanagement.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_search_search_sportsmanagement.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_search_search_sportsmanagement.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_search_search_sportsmanagement.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="search_clubs" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_players" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_playgrounds" 
+        type="radio" 
+        default="1"
+					label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND" 
+          description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_referees" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_staffs" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_teams" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="search_projects" 
+        type="radio" 
+        default="1" 
+        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS"
+					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

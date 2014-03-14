@@ -1,13 +1,41 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -15,30 +43,93 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 
-/**
- * Sportsmanagement Component Matches Model
- *
- * @author	Marco Vaninetti <martizva@tiscali.it>
- * @package	Sportsmanagement
- * @since	0.1
- */
 
+/**
+ * sportsmanagementModelMatches
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelMatches extends JModelList
 {
 	var $_identifier = "matches";
     var $_rid = 0;
     var $_season_id = 0;
+    
+    /**
+     * sportsmanagementModelMatches::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'mc.match_number',
+                        'mc.match_date',
+                        'mc.id',
+                        'mc.ordering'
+                        );
+                parent::__construct($config);
+        }
+        
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.division', 'filter_division', '');
+		$this->setState('filter.division', $temp_user_request);
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('mc.match_number', 'asc');
+	}
+
+	/**
+	 * sportsmanagementModelMatches::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        $search_division	= $this->getState('filter.division');
         
         $this->_rid = JRequest::getvar('rid', 0);
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {
@@ -67,7 +158,8 @@ class sportsmanagementModelMatches extends JModelList
         // join player home
         $subQueryPlayerHome->select('tp.id');
         $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryPlayerHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryPlayerHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryPlayerHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryPlayerHome->where('pthome.id = mc.projectteam1_id');
         $subQueryPlayerHome->where('tp.season_id = '.$this->_season_id);
         $subQueryPlayerHome->where('tp.persontype = 1'); 
@@ -81,7 +173,8 @@ class sportsmanagementModelMatches extends JModelList
         // join staff home
         $subQueryStaffHome->select('tp.id');
         $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryStaffHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryStaffHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryStaffHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryStaffHome->where('pthome.id = mc.projectteam1_id');
         $subQueryStaffHome->where('tp.season_id = '.$this->_season_id);
         $subQueryStaffHome->where('tp.persontype = 2'); 
@@ -95,7 +188,8 @@ class sportsmanagementModelMatches extends JModelList
         // join player away
         $subQueryPlayerAway->select('tp.id');
         $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryPlayerAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryPlayerAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryPlayerAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryPlayerAway->where('pthome.id = mc.projectteam2_id');
         $subQueryPlayerAway->where('tp.season_id = '.$this->_season_id);
         $subQueryPlayerAway->where('tp.persontype = 1'); 
@@ -109,7 +203,8 @@ class sportsmanagementModelMatches extends JModelList
         // join staff away
         $subQueryStaffAway->select('tp.id');
         $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryStaffAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = tp.team_id');
+        $subQueryStaffAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryStaffAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryStaffAway->where('pthome.id = mc.projectteam2_id');
         $subQueryStaffAway->where('tp.season_id = '.$this->_season_id);
         $subQueryStaffAway->where('tp.persontype = 2'); 
@@ -179,67 +274,33 @@ class sportsmanagementModelMatches extends JModelList
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divaway ON divaway.id = ptaway.division_id');
         $query->select('divhome.id as divhomeid'); 
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS divhome ON divhome.id = pthome.division_id');
-                    
-        if (self::_buildContentWhere())
+        
+        $query->where(' mc.round_id = ' . $this->_rid);
+        
+        if ($search_division)
 		{
-        $query->where(self::_buildContentWhere());
+        $query->where(' divhome.id = '.$this->_db->Quote($division));
         }
-		$query->order(self::_buildContentOrderBy());
+		
+        
+        $query->order($db->escape($this->getState('list.ordering', 'mc.match_number')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
  
  
          
-        
-        if ( $show_debug_info )
-        {
-        $mainframe->enqueueMessage(JText::_('matches query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        $mainframe->enqueueMessage(JText::_('round_id project<br><pre>'.print_r($this->_rid,true).'</pre>'   ),'');
-        }
+
 		return $query;
         
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$filter_order		= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order','filter_order','mc.match_date','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option .'.'.$this->_identifier. '.mc_filter_order_Dir','filter_order_Dir','','word');
 
-		if ($filter_order == 'mc.match_number')
-		{
-			$orderby    = ' mc.match_number +0 '. $filter_order_Dir .', divhome.id, divaway.id ' ;
-		}
-		elseif ($filter_order == 'mc.match_date')
-		{
-			$orderby 	= ' mc.match_date '. $filter_order_Dir .', divhome.id, divaway.id ';
-		}
-		else
-		{
-			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , mc.match_date, divhome.id, divaway.id';
-		}
 
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$where=array();
-		$mainframe	= JFactory::getApplication();
-		// $project_id = $mainframe->getUserState($option . 'project');
-		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier. '.mc_division', 'division', 0);
-		//$round_id = $mainframe->getUserState($option . 'round_id');
-
-		$where[] = ' mc.round_id = ' . $this->_rid ;
-		if ($division>0)
-		{
-			$where[]=' divhome.id = '.$this->_db->Quote($division);
-		}
-		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
-		
-		return $where;
-	}
-
+  /**
+   * sportsmanagementModelMatches::checkMatchPicturePath()
+   * 
+   * @param mixed $match_id
+   * @return
+   */
   function checkMatchPicturePath($match_id)
   {
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
@@ -258,6 +319,12 @@ class sportsmanagementModelMatches extends JModelList
 
 	
 
+	/**
+	 * sportsmanagementModelMatches::getMatchesByRound()
+	 * 
+	 * @param mixed $roundId
+	 * @return
+	 */
 	function getMatchesByRound($roundId)
 	{
 		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;

@@ -49,6 +49,15 @@ $maxImportTime=480;
 
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModeljlextDfbkeyimport extends JModel
 {
 
@@ -199,7 +208,7 @@ $country = $this->_db->loadResult();
 	
 		if ( !$result = $this->_db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 	  else
@@ -223,7 +232,7 @@ $country = $this->_db->loadResult();
 	$this->_db->setQuery( $query );
 		if ( !$result = $this->_db->loadObjectList() )
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 	  else

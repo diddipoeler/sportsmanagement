@@ -1,4 +1,42 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.mootools');
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
@@ -42,10 +80,10 @@ fieldset button {
             }
             ?>
 						<th width="20" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
@@ -55,12 +93,12 @@ fieldset button {
 						?>
 						<th >
 							<?php 
-								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->lists['order_Dir'],$this->lists['order']);
+								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->sortDirection,$this->sortColumn);
 								echo '<br>'.JHtml::_(	'select.genericlist',
 													$this->lists['divisions'],
-													'division',
+													'filter_division',
 													'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
-													'value','text', $this->division);
+													'value','text', $this->state->get('filter.division'));
 								
 							?>
 						</th>
@@ -84,7 +122,7 @@ fieldset button {
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
 						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->lists['order_Dir'],$this->lists['order']); ?>
+							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -140,17 +178,18 @@ fieldset button {
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE').'"');
 									?>
 								</a>
-							</td>
+                                
               <?php
 							// diddipoeler einzelsportart
             
-            if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
+            //if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
+            if ( $this->projectws->project_art_id == 2 )
             {
             
 							?>
-              <td style="text-align:center; ">
+              
 							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&task=jlextindividualsport.jlexteditsinglematches&tmpl=component&cid[]=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>"
+									href="index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>&rid=<?php echo $row->round_id; ?>  "
 									 class="modal"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
 									 <?php
@@ -164,10 +203,14 @@ fieldset button {
 										
 									 									 ?>
 								</a>
-							</td>
+							
               <?php
             }
-            ?>
+            ?>                  
+                                
+                                
+							</td>
+              
 							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
 										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox" />
@@ -310,7 +353,33 @@ fieldset button {
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="inputbox" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="inputbox" />
-								<a	href="javascript:void(0)"
+								
+                                <?PHP
+                                if ( $this->projectws->project_art_id == 2 )
+                                {
+                                ?>
+                                <br />MP
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_matchpoint<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_matchpoint<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" />
+                                
+                                <br />MS
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_sets<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_sets; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_sets<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_sets; ?>" size="2" tabindex="5" class="inputbox" />
+                                
+                                <br />MG
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_games<?php echo $row->id; ?>"
+										value="<?php echo $row->team1_single_games; ?>" size="2" tabindex="5" class="inputbox" /> : 
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_games<?php echo $row->id; ?>"
+										value="<?php echo $row->team2_single_games; ?>" size="2" tabindex="5" class="inputbox" />                
+                                <?PHP
+                                }
+                                ?>
+                                
+                                <a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
 									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
@@ -320,7 +389,30 @@ fieldset button {
 								<span id="part<?php echo $row->id; ?>" style="display: none">
 									<br />
 									<?php
-									$partresults1=explode(";",$row->team1_result_split);
+									
+                                    if ( $this->projectws->use_legs )
+                                    {
+                                    $partresults1=explode(";",$row->team1_result_split);
+									$partresults2=explode(";",$row->team2_result_split);
+									for ($x=0; $x < ($this->projectws->game_parts); $x++)
+									{
+										 ?>
+
+										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
+												name="team1_result_split<?php echo $row->id;?>[]"
+												value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
+												size="2" tabindex="6" class="inputbox" /> : 
+										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
+												name="team2_result_split<?php echo $row->id; ?>[]"
+												value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
+												size="2" tabindex="6" class="inputbox" />
+										<?php
+										echo '&nbsp;&nbsp;'.($x+1).".<br />";
+									}    
+                                    }
+                                    else
+                                    {
+                                    $partresults1=explode(";",$row->team1_result_split);
 									$partresults2=explode(";",$row->team2_result_split);
 									for ($x=0; $x < ($this->projectws->game_parts); $x++)
 									{
@@ -337,6 +429,9 @@ fieldset button {
 										<?php
 										echo '&nbsp;&nbsp;'.($x+1).".<br />";
 									}
+                                    }
+                                    
+                                    
 									if ($this->projectws->allow_add_time == 1)
 									{
 										 ?>
@@ -466,9 +561,10 @@ fieldset button {
 			<?php $dValue=$this->roundws->round_date_first.' '.$this->projectws->start_time; ?>
 			
 			<input type='hidden' name='match_date' value='<?php echo $dValue; ?>' />
+            <input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>' />
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
-			<input type='hidden' name='filter_order' value='<?php echo $this->lists['order']; ?>' />
+			<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>' />
 			<input type='hidden' name='filter_order_Dir' value='' />
 			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />

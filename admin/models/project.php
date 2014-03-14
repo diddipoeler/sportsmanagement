@@ -1,12 +1,57 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/ 
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelProject
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelProject extends JModelAdmin
 {
@@ -55,8 +100,12 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        // Create a new query object.
+        $db = JFactory::getDBO();
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+
+        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.project', 'project', array('control' => 'jform', 'load_data' => $loadData));
@@ -64,6 +113,33 @@ class sportsmanagementModelProject extends JModelAdmin
 		{
 			return false;
 		}
+        
+        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. '<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+        $sports_type_id = $form->getValue('sports_type_id');
+        
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('name');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+        // where
+        $query->where('id = '.(int) $sports_type_id);
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        
+        switch ($result)
+        {
+            case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
+            break;
+            default:
+            $form->setFieldAttribute('use_tie_break', 'type', 'hidden');
+            $form->setFieldAttribute('tennis_single_matches', 'type', 'hidden');
+            $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
+            break;
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. ' sports_type_id<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        
         
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projects');
@@ -119,7 +195,7 @@ class sportsmanagementModelProject extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -158,6 +234,7 @@ class sportsmanagementModelProject extends JModelAdmin
 		$this->_db->setQuery($query);
 		return $this->_db->loadObject();
 	}
+
     
     /**
 	 * Method to return the project teams array (id, name)
@@ -166,6 +243,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 * @return  array
 	 * @since 0.1
 	 */
+/*
 	function getProjectTeams($project_id)
 	{
 		$option = JRequest::getCmd('option');
@@ -186,7 +264,7 @@ class sportsmanagementModelProject extends JModelAdmin
 
 		if (!$result = $this->_db->loadObjectList())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -194,6 +272,7 @@ class sportsmanagementModelProject extends JModelAdmin
 			return $result;
 		}
 	}
+*/
     
     /**
 	 * @param int iDivisionId
@@ -204,23 +283,51 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
+        
 		//$project_id = $mainframe->getUserState($option . 'project');
-
+        
+        if ( $this->project_art_id == 3 )
+        {
+            // Select some fields
+		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text");
+            // From table
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on st.person_id = t.id');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        }
+        else
+        {
+            // Select some fields
+		    $query->select('pt.id AS value');
+            $query->select('CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        }
+/*
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
 		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
 		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
 		. ' WHERE pt.project_id = ' . $project_id;
-		if($iDivisionId>0)  {
-			$query .=' AND pt.division_id = ' .$iDivisionId;
+*/		
+        $query->where('pt.project_id = ' . $project_id);
+        
+        if( $iDivisionId > 0 )  
+        {
+            $query->where('pt.division_id = ' . $iDivisionId);
 		}
-		$query .= ' ORDER BY text ASC ';
+		
+        $query->order('text ASC'); 
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $this->_db->getErrorMsg());
+			JError::raiseError(0, $db->getErrorMsg());
 			return false;
 		}
 		else
@@ -271,8 +378,8 @@ class sportsmanagementModelProject extends JModelAdmin
 		{
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pk);
-            // wir l�schen mit join
-            /*
+            // wir l�schen mit join
+            
             $query = 'DELETE QUICK t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
@@ -316,8 +423,10 @@ class sportsmanagementModelProject extends JModelAdmin
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
             ON t20.treeto_id = t18.id
             WHERE p.id IN ('.$cids.')';
-            */
-            $query = 'DELETE QUICK t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
+            
+            
+            /*
+            $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
             JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
             ON t1.project_id = p.id   
@@ -360,6 +469,7 @@ class sportsmanagementModelProject extends JModelAdmin
             JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
             ON t20.treeto_id = t18.id
             WHERE p.id IN ('.$cids.')';
+            */
             $db->setQuery($query);
             $db->query();
             if (!$db->query()) 

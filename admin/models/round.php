@@ -1,13 +1,56 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelround
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelround extends JModelAdmin
 {
@@ -52,12 +95,20 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
 		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.round', 'round', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/rounds');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
 		return $form;
 	}
     
@@ -108,7 +159,7 @@ class sportsmanagementModelround extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -127,7 +178,9 @@ class sportsmanagementModelround extends JModelAdmin
 	{
 		$mainframe =& JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         if ( !$pks )
@@ -136,10 +189,10 @@ class sportsmanagementModelround extends JModelAdmin
         }
         $post = JRequest::get('post');
         
-        if ( $show_debug_info )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage('sportsmanagementModelround saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('sportsmanagementModelround saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         //$result=true;
@@ -154,8 +207,8 @@ class sportsmanagementModelround extends JModelAdmin
 
 			if(!$tblRound->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-				return $this->_db->getErrorMsg();
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
 			}
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
@@ -167,7 +220,8 @@ class sportsmanagementModelround extends JModelAdmin
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
     
-    $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
+    //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
+    
     $post = JRequest::get('post');
     $project_id	= $mainframe->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
@@ -199,10 +253,10 @@ class sportsmanagementModelround extends JModelAdmin
 		}
         
     
-    if ( $show_debug_info )
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
- 	$mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd runden<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
-    $mainframe->enqueueMessage(JText::_('sportsmanagementModelround massadd project<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+ 	$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
     }
     
     return $msg;
@@ -217,15 +271,65 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
     function getMaxRound($project_id)
 	{
-		$result=0;
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('COUNT(roundcode)');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('project_id = '.(int) $project_id);
+        
+		$result = 0;
 		if ($project_id > 0)
 		{
-			$query='SELECT COUNT(roundcode) 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round 
-					WHERE project_id='.(int) $project_id;
-			$this->_db->setQuery($query);
-			$result=$this->_db->loadResult();
+			$db->setQuery($query);
+			$result = $db->loadResult();
 		}
+		return $result;
+	}
+    
+   
+   
+   function getRoundcode($round_id)
+   {
+    // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('roundcode');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('id = '.$round_id);
+        
+
+		$db->setQuery($query);
+		return $db->loadResult();
+    
+   }
+   
+    /**
+	 * 
+	 * @param $roundcode
+	 * @param $project_id
+	 */
+	function getRoundId($roundcode, $project_id)
+	{
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('id');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('roundcode = '.$roundcode);
+        $query->where('project_id = '.(int) $project_id);
+        
+		$db->setQuery($query);
+		$result = $db->loadResult();
 		return $result;
 	}
     
@@ -237,11 +341,18 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	function getRound($round_id)
 	{
-		$query='SELECT *
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-				  WHERE id='.$round_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // select some fields
+		$query->select('*');
+		// from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        // where
+        $query->where('id = '.$round_id);
+
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
     
     
@@ -289,7 +400,7 @@ class sportsmanagementModelround extends JModelAdmin
             $db->query();
             if (!$db->query()) 
             {
-                $mainframe->enqueueMessage(JText::_('deleteRoundMatches getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
@@ -307,7 +418,12 @@ class sportsmanagementModelround extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$mainframe =& JFactory::getApplication();
-    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+    {
+    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks,true).'</pre>'),'');
+    }
+    
     $success = $this->deleteRoundMatches($pks);  
     
     if ( $success )

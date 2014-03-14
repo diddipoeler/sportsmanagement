@@ -11,6 +11,12 @@
 <name icon="red_card.png">RED_CARD</name>
 </events>
 <events>
+<name icon="green_card.png">GREEN_CARD</name>
+</events>
+<events>
+<name icon="blue_card.png">BLUE_CARD</name>
+</events>
+<events>
 <name icon="penalty_goal.png">PENALTY_GOAL</name>
 </events>
 <events>
@@ -62,8 +68,31 @@
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
+
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">GOALKEEPER_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">HEAD_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">PLAYER_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">YOUTH_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">FITNESS_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">ASSISTANT_COACH</parentname>
 </parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">MAIN_REFEREE</parentname>
@@ -75,6 +104,12 @@
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">LINESMAN</parentname>
 </parentpositions>
 <parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTENT_1</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">ASSISTENT_2</parentname>
+</parentpositions>
+<parentpositions>
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">THIRD_OFFICIAL</parentname>
 </parentpositions>
 <parentpositions>
@@ -84,10 +119,16 @@
 <parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">FIFTH_OFFICIAL</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="3" art="F" events="0" main="REFEREES">VIDEO_UMPIRE</parentname>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
 </parentpositions>
 <parentpositions>
-<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_MANAGER</parentname>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">DIRECTOR_OF_FOOTBALL</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">MANAGER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">ASSISTANT_MANAGER</parentname>
 </parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="4" art="F" events="0" main="CLUB_STAFF">CLUB_YOUTH_MANAGER</parentname>

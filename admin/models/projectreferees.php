@@ -182,7 +182,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 			$this->_db->setQuery($query);
 			if(!$this->_db->query())
 			{
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				continue;
 			}
 			$removed++;

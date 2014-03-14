@@ -116,7 +116,7 @@
   <!-- register 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 		
 		<field 	name="show_substitutions" type="radio" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_SUBS" 
@@ -306,7 +306,7 @@
 type="imagelist" default="spielfeld_578x1050.png" 
 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
 description="COM_SPORTSMANAGEMENT_FES_DESC_PARAM_LABEL_ROSTER_PLAYGROUND_SELECT" 
-directory="images/com_joomleague/database/rosterground" 
+directory="images/com_sportsmanagement/database/rosterground" 
 />
 		
 <!--

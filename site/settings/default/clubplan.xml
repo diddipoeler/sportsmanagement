@@ -17,15 +17,12 @@
 			</option>
 			<option value="2">COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY
 			</option>
-			<option value="3">COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME_AWAY
-			</option>
-			<option value="4">COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_SORTED_BY_DATE
-			</option>
+			
 		</field>
 		<field name="MatchesOrderBy" type="radio" default="ASC"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_LABEL_MATCHESORDERBY" description="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_DESCR_MATCHESORDERBY">
-			<option value="ASC">COM_JOOMLEAGUE_GLOBAL_ASC</option>
-			<option value="DESC">COM_JOOMLEAGUE_GLOBAL_DESC</option>
+			<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+			<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
 		</field>
 	</fieldset>
 
@@ -126,7 +123,7 @@
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2"
-			addfieldpath="/administrator/components/com_joomleague/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 				
 		<field name="which_link2" type="list" default="2"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_LABEL_WHICH_LINK2" description="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_DESCR_WHICH_LINK2">

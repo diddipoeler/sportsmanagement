@@ -161,7 +161,7 @@ function Update_Tables($updates,$tablename)
 				}
 				$queries[]=array($update['action']." `".$tables[0]."` ".$update['job']." `".$update['field']."` " .
 								$update['values']." ".$after,
-								JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_ADDING_FIELD_TO_TABLE','<b>'.$update['field'].'</b>'));
+								JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_ADDING_FIELD_TO_TABLE','<b>'.$update['field'].'</b>'));
 				$fields[ $tables[0] ][$update['field']]="#";
 			}
 		}
@@ -578,20 +578,20 @@ $starttime=$mtime;
 $totalUpdateParts=4;
 setUpdatePart();
 
-$output1=JText::_('COM_JOOMLEAGUE_DB_UPDATE');
+$output1=JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE');
 
 $output2='<span style="color:green; ">';
-$output2 .= JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_TITLE',$lastVersion,$version,$updateFileDate,$updateFileTime);
+$output2 .= JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_TITLE',$lastVersion,$version,$updateFileDate,$updateFileTime);
 $output2 .= '</span>';
 JToolBarHelper::title($output1);
 echo '<p><h2 style="text-align:center; ">'.$output2.'</h2></p>';
 
 echo '<p><h3 style="text-align:center; color:red; ">';
-echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_VERIFY_TEXT');
+echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_VERIFY_TEXT');
 echo '</h3></p>';
 
-echo '<p style="text-align:center; ">'.JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_TOTALSTEPS','<b>'.$totalUpdateParts.'</b>').'</p>';
-echo '<p style="text-align:center; ">'.JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_STEP_OF_STEP','<b>'.getUpdatePart().'</b>','<b>'.$totalUpdateParts.'</b>').'</p>';
+echo '<p style="text-align:center; ">'.JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_TOTALSTEPS','<b>'.$totalUpdateParts.'</b>').'</p>';
+echo '<p style="text-align:center; ">'.JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_STEP_OF_STEP','<b>'.getUpdatePart().'</b>','<b>'.$totalUpdateParts.'</b>').'</p>';
 
 /**/
 if (getUpdatePart() < $totalUpdateParts)
@@ -601,7 +601,7 @@ if (getUpdatePart() < $totalUpdateParts)
 	$outStr='<h3 style="text-align:center; ">';
 	$outStr .= '<a href="javascript:location.reload(true)" >';
 	$outStr .= '<strong>';
-	$outStr .= JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_CLICK_HERE',getUpdatePart()+1,$totalUpdateParts);
+	$outStr .= JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_CLICK_HERE',getUpdatePart()+1,$totalUpdateParts);
 	$outStr .= '</strong>';
 	$outStr .= '</a>';
 	$outStr .= '</h3>';
@@ -618,14 +618,14 @@ if (getUpdatePart() < $totalUpdateParts)
 
 	echo '<p style="text-align:center; ">';
 	echo '<b>';
-	echo JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_REMEMBER_TOTAL_STEPS_COUNT',$totalUpdateParts);
+	echo JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_REMEMBER_TOTAL_STEPS_COUNT',$totalUpdateParts);
 	echo '</b>';
 	echo '<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_SCROLL_DOWN');
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_SCROLL_DOWN');
 	echo '</p>';
 	echo '<p style="text-align:center; ">';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_INFO_UNKNOWN_ETC').'<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_INFO_JUST_INFOTEXT').'<br />';
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_INFO_UNKNOWN_ETC').'<br />';
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_INFO_JUST_INFOTEXT').'<br />';
 	echo '</p>';
 }
 echo '<hr>';
@@ -636,7 +636,7 @@ if (getUpdatePart()==1)
 	echo '<p>';
 	echo '<h3>';
 	echo '<span style="color:orange">';
-	echo JText::sprintf(	'COM_JOOMLEAGUE_DB_UPDATE_DELETE_WARNING',
+	echo JText::sprintf(	'COM_SPORTSMANAGEMENT_DB_UPDATE_DELETE_WARNING',
 											'</span><b><i><a href="index.php?option=com_user&task=logout">',
 											'</i></b></a><span style="color:orange">');
 				echo '</span>';
@@ -646,7 +646,7 @@ if (getUpdatePart()==1)
 				if (($JLTablesVersion!='') && ($JLTablesVersion<'0.93'))
 				{
 					echo '<span style="color:red">';
-					echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_ATTENTION');
+					echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_ATTENTION');
 					echo '<br /><br />';
 					echo JText::_('You are updating from an older release of JoomLeague than 0.93!');
 					echo '<br />';
@@ -658,7 +658,7 @@ if (getUpdatePart()==1)
 					echo JText::sprintf(	'It would be better to update your JoomLeague installation to v0.93 before you update to JoomLeague %1$s!',
 										'<b>'.$version.'</b>');
 			echo '</span><br /><br />';
-			echo '<span style="color:red">'.JText::_('COM_JOOMLEAGUE_DB_UPDATE_DANGER').'</span><br /><br />';
+			echo '<span style="color:red">'.JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_DANGER').'</span><br /><br />';
 			echo '<span style="color:red">'.JText::_('PLEASE use this script ONLY IF you REALLY know what you do!!!').'</span><br />';
 				}
 }
@@ -750,11 +750,11 @@ if (getUpdatePart()==$totalUpdateParts)
 	echo '<hr>';
 
 	echo '<p><h1 style="text-align:center; color:green; ">';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_CONGRATULATIONS');
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_CONGRATULATIONS');
 	echo '<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_ALL_STEPS_FINISHED');
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_ALL_STEPS_FINISHED');
 	echo '<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_USE_NOW');
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_USE_NOW');
 	echo '</h1></p>';
 
 	setUpdatePart(0);
@@ -764,18 +764,18 @@ else
 	echo '<h3 style="text-align:center; ">';
 	echo '<a href="javascript:location.reload(true)">';
 	echo '<strong>';
-	echo JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_CLICK_HERE',getUpdatePart()+1,$totalUpdateParts).'<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_MAY_NEED_TIME').'<br />';
+	echo JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_CLICK_HERE',getUpdatePart()+1,$totalUpdateParts).'<br />';
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_MAY_NEED_TIME').'<br />';
 	echo '</strong>';
 	echo '</a>';
 	echo '</h3>';
 	echo '<p style="text-align:center; ">';
-	echo JText::sprintf('COM_JOOMLEAGUE_DB_UPDATE_TIME_MEMORY_SET',$maxImportTime,$maxImportMemory).'<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_INFO_TIMEOUT_ERROR').'<br />';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_INFO_LOCAL_UPDATE').'<br />';
+	echo JText::sprintf('COM_SPORTSMANAGEMENT_DB_UPDATE_TIME_MEMORY_SET',$maxImportTime,$maxImportMemory).'<br />';
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_INFO_TIMEOUT_ERROR').'<br />';
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_INFO_LOCAL_UPDATE').'<br />';
 	echo '</p>';
 	echo '<h2 style="text-align:center; color:orange; ">';
-	echo JText::_('COM_JOOMLEAGUE_DB_UPDATE_BE_PATIENT');
+	echo JText::_('COM_SPORTSMANAGEMENT_DB_UPDATE_BE_PATIENT');
 	echo '</h2>';
 }
 if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0))

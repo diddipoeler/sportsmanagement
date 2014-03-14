@@ -1,4 +1,42 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -6,8 +44,23 @@ jimport( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewPredictionGames
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPredictionGames extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionGames::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe = JFactory::getApplication();
@@ -16,6 +69,10 @@ class sportsmanagementViewPredictionGames extends JView
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $uri = JFactory::getURI();
+    
+    $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
     
 		//$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
         //$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
@@ -28,14 +85,7 @@ class sportsmanagementViewPredictionGames extends JView
     
     
 		$lists				= array();
-		
-		
-        
-		$filter_state		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_state','filter_state','','word');
-		$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order','filter_order','pre.name','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_filter_order_Dir','filter_order_Dir','','word');
-		$search				= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier. 'pre_search','search','','string');
-		$search				= JString::strtolower( $search );
+
         
         $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
@@ -49,15 +99,7 @@ $items = $this->get('Items');
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');    
         }
         
-		// state filter
-		$lists['state']		= JHtml::_( 'grid.state',  $filter_state );
 
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
 
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );
@@ -77,42 +119,7 @@ $items = $this->get('Items');
 										);
 		unset( $res );
 
-/*
-		// Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_joomleague/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-    $document->addCustomTag($stylelink);
-    */
-		
-        /*
-        if ($prediction_id==0)
-		{
-			JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_TITLE'),'pred-cpanel');
 
-			JToolBarHelper::publishList('predictiongame.publish');
-			JToolBarHelper::unpublishList('predictiongame.unpublish');
-			JToolBarHelper::divider();
-
-			JToolBarHelper::addNew('predictiongame.add');
-			JToolBarHelper::editList('predictiongame.edit');
-			//JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', JText::_( 'Copy'), true );
-			JToolBarHelper::divider();
-			//JToolBarHelper::deleteList( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_DELETE'));
-            JToolBarHelper::deleteList( JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_DELETE'), 'predictiongame.remove');
-			JToolBarHelper::divider();
-			JToolBarHelper::customX('rebuild','restore.png','restore_f2.png',JText::_('COM_JOOMLEAGUE_ADMIN_PGAMES_REBUILDS'),true);
-		}
-		else
-		{
-			
-            
-            JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_PGAMES_PROJLIST_TITLE' ), 'pred-cpanel' );
-
-			
-		}
-
-		JToolBarHelper::divider();
-		JLToolBarHelper::onlinehelp();
-*/
 		$this->assign( 'user',			JFactory::getUser() );
 		$this->assignRef( 'lists',			$lists );
         $this->assignRef( 'option',			$option );
@@ -122,8 +129,7 @@ $items = $this->get('Items');
 		
 		if ( $this->prediction_id > 0 )
 		{
-			$this->assignRef( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
-			//$this->assignRef( 'predictionAdmins',	$this->getModel()->getAdmins( $prediction_id ) );
+			$this->assign( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
 		}
 
     
@@ -141,7 +147,7 @@ $items = $this->get('Items');
 	{ 
 		
         // Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);

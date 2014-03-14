@@ -117,7 +117,7 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -150,7 +150,7 @@ class sportsmanagementModelprojectreferee extends JModelAdmin
 			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
 
 			if(!$tblPerson->store()) {
-				$this->setError($this->_db->getErrorMsg());
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
 		}
