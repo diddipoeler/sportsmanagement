@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_LIVETICKER</name>
+	<author>diddipoeler</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>www.fussballineuropa.de</authorUrl>
+	<copiright>kein</copiright>
+	<creationDate>Februar 2013</creationDate>
+	<copyright>(C) 2013 </copyright>
+	<license>kein</license>
+	<version>1.00</version>
+	<description>
+  SportsManagement Liveticker von diddipoeler
+	</description>
+	<files>
+		<filename module="mod_sportsmanagement_liveticker">mod_sportsmanagement_liveticker.php</filename>
+		<filename>mod_sportsmanagement_liveticker.xml</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>readme.txt</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>js/jquery-1.2.3.pack.js</filename>
+		<filename>js/turtushout.js</filename>
+		<filename>js/index.html</filename>
+		<filename>css/simple.css</filename>
+		<filename>css/index.html</filename>
+	</files>
+
+<config>
+		<fields name="params">	
+		
+	<fieldset name="basic">
+		<field name="use_local_jquery" type="radio" default="1" label="Use local jQuery JS" description="" >
+			<option value="0">No, I have already included jQuery JS file</option>
+			<option value="1">Yes, use local</option>
+		</field>
+		<field name="use_css" type="list" default="simple.css" label="Use default CSS" description="" >
+			<option value="">None</option>
+			<option value="simple.css">Simple</option>
+		</field>
+		<field name="allow_unregistered" type="radio" default="1" label="Allow unregistered user shout" description="" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+
+<field name="display_liganame" type="radio" default="0" label="Liganame" >
+			<option value="0">JYES</option>
+			<option value="1">JNO</option>
+					</field>
+					
+<field name="display_commentary" type="radio" default="1" label="Kommentare" >
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+					</field>
+          					
+<field name="display_ligaflagge" type="radio" default="0" label="Ligaflagge" >
+			<option value="0">JYES</option>
+			<option value="1">JNO</option>
+					</field>
+                    		
+<field name="display_teamname" type="radio" default="0" label="Mannschaftsname" >
+			<option value="0">lang</option>
+			<option value="1">mittel</option>
+			<option value="2">kurz</option>
+			<option value="3">kein</option>
+		</field>		
+		
+<field name="display_teamwappen" type="radio" default="0" label="Mannschaftswappen" >
+			<option value="0">JYES</option>
+			<option value="1">JNO</option>
+					</field>				
+		<field name="display_anstoss" type="radio" default="0" label="Anstosszeit" >
+			<option value="0">JYES</option>
+			<option value="1">JNO</option>
+					</field>				
+					<field name="display_abpfiff" type="radio" default="0" label="Abpfiff" >
+			<option value="0">JYES</option>
+			<option value="1">JNO</option>
+					</field>				
+		
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="display_username" type="radio" default="1" label="Display Username" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="display_title" type="radio" default="1" label="Display Title" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="display_guests" type="radio" default="1" label="Display 'Guest' mark on not logged users messages" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="display_welcome" type="radio" default="1" label="Display welcome message for logged in users" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="display_num" type="text" default="5" label="Display Num" description="Number of Shouts to display" />
+		<field name="size" type="text" default="25" label="Input Size" description="" />
+		<field name="cols" type="text" default="17" label="Textarea Cols" description="" />
+		<field name="rows" type="text" default="5"  label="Textarea Rows" description="" />
+		<field name="moduleclass_sfx"  type="text"  default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+	</fieldset>
+	
+	<fieldset name="advanced">
+		<field name="use_secret_salt" type="list" default="0" label="JS token protection" description="">
+			<option value="1">Turn on</option>
+			<option value="0">Turn off</option>
+		</field>
+		<field name="secret_salt" type="text" default="tGbd8mfTb4p3f1_aAQpn84Qds" label="Secret Salt" description="Secret word to protect your site from spambots" />
+		<field name="add_timeout" type="text" default="10" label="Add Timeout" description="The time before user could add new message (in seconds)" />
+		<field name="update_timeout" type="text" default="10" label="Update Timeout" description="The time before the module will reload messages list (in seconds)" />
+	</fieldset>
+
+</fields>
+	</config>		
+		
+</extension>
