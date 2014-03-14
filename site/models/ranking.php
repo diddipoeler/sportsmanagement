@@ -217,26 +217,6 @@ class sportsmanagementModelRanking extends JModel
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
 
-/*
-		// previous games of each team, until current round
-		$query = ' SELECT m.*, r.roundcode, '
-		       . ' CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug, '
-		       . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug '
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-               
-               
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON pt1.team_id = t1.id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON pt2.team_id = t2.id '
-		       . ' WHERE r.project_id = ' . $this->_db->Quote($this->projectid)
-		       . '   AND r.roundcode <= ' . $this->_db->Quote($current->roundcode)
-		       . '   AND m.team1_result IS NOT NULL '
-		       . ' ORDER BY r.roundcode ASC '
-		       ;
-*/
         
         $query->where('r.project_id = ' . $db->Quote($this->projectid));
         $query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
@@ -490,12 +470,19 @@ class sportsmanagementModelRanking extends JModel
 	 */
 	function _getPreviousRoundId($round_id)
 	{
-		$query = ' SELECT id ' 
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round ' 
-		       . ' WHERE project_id = ' . $this->projectid
-		       . ' ORDER BY roundcode ASC ';
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        // Select some fields
+		$query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->where('project_id = ' . $this->projectid);
+        $query->order('roundcode ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadResultArray();
 		
 		if (!$res) {
 			return $round_id;

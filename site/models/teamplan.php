@@ -459,37 +459,55 @@ if (!$matches )
 	 */
 	function _getRefereesByMatch($matches,$joomleague)
 	{
-		for ($index=0; $index < count($matches); $index++) {
+	   	$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+		for ($index=0; $index < count($matches); $index++) 
+        {
 			$referees=array();
 			if ($joomleague->teams_as_referees)
 			{
-				$query="SELECT ref.name AS referee_name
-							  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ref
-							  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee link ON link.project_referee_id=ref.id
-								  WHERE link.match_id=".$matches[$index]->id."
-								  ORDER BY link.ordering";
+			 // Select some fields
+             $query->select('ref.name AS referee_name');
+             // From 
+             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS ref');
+             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS link ON link.project_referee_id=ref.id ');
+             // Where
+             $query->where('link.match_id = '.$matches[$index]->id);
+             // Order
+             $query->order('link.ordering');
+
 			}
 			else
 			{
-				$query="SELECT	ref.firstname AS referee_firstname,
-											ref.lastname AS referee_lastname,
-											ref.id as referee_id,
-											ppos.position_id,
-											pos.name AS referee_position_name
-								FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person ref
-								LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_referee AS pref ON pref.person_id=ref.id
-								LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee link ON link.project_referee_id=pref.id
-								INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.id=link.project_position_id
-								INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos ON pos.id=ppos.position_id	
-								WHERE link.match_id=".$matches[$index]->id."
-								  AND ref.published = 1
-								  ORDER BY link.ordering";
+			 // Select some fields
+             $query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id');
+             $query->select('ppos.position_id');
+             $query->select('pos.name AS referee_position_name');
+             // From 
+             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ref');
+             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = ref.id ');
+             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON pref.person_id = sp.id ');
+             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS link ON link.project_referee_id = pref.id ');
+             
+             $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = link.project_position_id');
+             $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+
+             // Where
+             $query->where('link.match_id = '.$matches[$index]->id);
+             $query->where('ref.published = 1');
+             // Order
+             $query->order('link.ordering');
+
 			}
 
-			$this->_db->setQuery($query);
-			if (! $referees=$this->_db->loadObjectList())
+			$db->setQuery($query);
+			if (! $referees = $db->loadObjectList())
 			{
-				echo $this->_db->getErrorMsg();
+				echo $db->getErrorMsg();
 			}
 			$matches[$index]->referees=$referees;
 		}

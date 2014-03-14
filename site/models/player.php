@@ -253,73 +253,62 @@ class sportsmanagementModelPlayer extends JModel
 		return $this->_inproject;
 	}
 
-	/**
-	 * sportsmanagementModelPlayer::getPositionEventTypes()
-	 * 
-	 * @param integer $positionId
-	 * @return
-	 */
-	function getPositionEventTypes($positionId=0)
-	{
-	   $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-       
-		$result=array();
-        $query->select('pet.*');
-        $query->select('pj.id AS ppID');
-        $query->select('et.name,et.icon');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id=pet.eventtype_id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id');
-        $query->where('me.project_id = '.$this->projectid);
-        
-		// TODO: pj.id is not known in the query. Is this function called anywhere? If not, just remove it...
-/*
-		$query='	SELECT	pet.*,
-							pj.id AS ppID,
-							et.name,
-							et.icon
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id=pet.eventtype_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id
-					WHERE me.project_id='.$this->projectid;
-*/                    
-		if ($positionId > 0)
-		{
-		  $query->where('pet.position_id = '.(int)$positionId);
-		}
-        $query->order('pet.ordering');
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
-		if ($result)
-		{
-			if ($positionId) {
-				return $result;
-			} else {
-				$posEvents=array();
-				foreach ($result as $r)
-				{
-					//$posEvents[$r->position_id][]=$r;
-					$posEvents[$r->ppID][]=$r;
-				}
-				return ($posEvents);
-			}
-		}
-        
-        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
-		return array();
-	}
+//	/**
+//	 * sportsmanagementModelPlayer::getPositionEventTypes()
+//	 * 
+//	 * @param integer $positionId
+//	 * @return
+//	 */
+//	function getPositionEventTypes($positionId=0)
+//	{
+//	   $mainframe = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//       
+//		$result=array();
+//        $query->select('pet.*');
+//        $query->select('pj.id AS ppID');
+//        $query->select('et.name,et.icon');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id=pet.eventtype_id');
+//		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id');
+//        $query->where('me.project_id = '.$this->projectid);
+//  
+//		if ($positionId > 0)
+//		{
+//		  $query->where('pet.position_id = '.(int)$positionId);
+//		}
+//        $query->order('pet.ordering');
+//		$db->setQuery($query);
+//		$result = $db->loadObjectList();
+//		if ($result)
+//		{
+//			if ($positionId) {
+//				return $result;
+//			} else {
+//				$posEvents=array();
+//				foreach ($result as $r)
+//				{
+//					//$posEvents[$r->position_id][]=$r;
+//					$posEvents[$r->ppID][]=$r;
+//				}
+//				return ($posEvents);
+//			}
+//		}
+//        
+//        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//        {
+//            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//        }
+//        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//        {
+//            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        }
+//        
+//		return array();
+//	}
 
 	
 	/**
@@ -447,37 +436,37 @@ class sportsmanagementModelPlayer extends JModel
 		return $this->_playerhistorystaff;
 	}
 
-	/**
-	 * sportsmanagementModelPlayer::getContactID()
-	 * 
-	 * @param mixed $catid
-	 * @return
-	 */
-	function getContactID($catid)
-	{
-	   $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-              
-		$person = sportsmanagementModelPerson::getPerson();
-        
-        $query->select('id');
-        $query->from('#__contact_details'); 
-        $query->where('user_id = '.$person->jl_user_id);
-        $query->where('catid = '.$catid);
-//		$query='	SELECT	id
-//					FROM #__contact_details
-//					WHERE user_id='.$person->jl_user_id.'
-//					AND catid='.$catid;
-                    
-		$db->setQuery($query);
-        
-        
-		$contact_id = $db->loadResult();
-		return $contact_id;
-	}
+//	/**
+//	 * sportsmanagementModelPlayer::getContactID()
+//	 * 
+//	 * @param mixed $catid
+//	 * @return
+//	 */
+//	function getContactID($catid)
+//	{
+//	   $mainframe = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//              
+//		$person = sportsmanagementModelPerson::getPerson();
+//        
+//        $query->select('id');
+//        $query->from('#__contact_details'); 
+//        $query->where('user_id = '.$person->jl_user_id);
+//        $query->where('catid = '.$catid);
+////		$query='	SELECT	id
+////					FROM #__contact_details
+////					WHERE user_id='.$person->jl_user_id.'
+////					AND catid='.$catid;
+//                    
+//		$db->setQuery($query);
+//        
+//        
+//		$contact_id = $db->loadResult();
+//		return $contact_id;
+//	}
 
 	/**
 	 * sportsmanagementModelPlayer::getRounds()
@@ -503,13 +492,6 @@ class sportsmanagementModelPlayer extends JModel
         $query->where('roundcode >='.(int)$roundcodestart);
         $query->where('roundcode <='.(int)$roundcodeend);
         $query->order('round_date_first');
-        
-//		$query="	SELECT	id
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round
-//					WHERE project_id='".(int)$projectid."'
-//					AND roundcode>='".(int)$roundcodestart."'
-//					AND roundcode<='".(int)$roundcodeend."'
-//					ORDER BY round_date_first";
                     
 		$db->setQuery($query);
 		$rows = $db->loadResultArray();
@@ -535,29 +517,36 @@ class sportsmanagementModelPlayer extends JModel
 	 */
 	function getAllEvents($sportstype=0)
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$history = self::getPlayerHistory($sportstype);
 		$positionhistory = array();
 		foreach($history as $h)
 		{
 			if (!in_array($h->posID,$positionhistory) && $h->posID!=null)
 			{
-				$positionhistory[]=$h->posID;
+				$positionhistory[] = $h->posID;
 			}
 		}
 		if (!count($positionhistory))
 		{
 			return array();
 		}
-		$query='	SELECT DISTINCT	et.*
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pet.position_id
-					WHERE published=1 
-					  AND pet.position_id IN ('. implode(',',$positionhistory) .') 
-					ORDER BY pet.ordering ';
+        
+        $query->select('DISTINCT et.*');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id');
+        $query->where('pet.position_id IN ('. implode(',',$positionhistory) .')');
+        $query->where('published = 1');
+        $query->order('pet.ordering ');
                     
-		$this->_db->setQuery($query);
-		$info=$this->_db->loadObjectList();
+		$db->setQuery($query);
+		$info = $db->loadObjectList();
 		return $info;
 	}
     
@@ -1096,14 +1085,14 @@ class sportsmanagementModelPlayer extends JModel
 			{
 				$quoted_tpids[]=$this->_db->Quote($teamplayer->id);
 			}
-			$query='SELECT	SUM(me.event_sum) as value,
-					me.*,
-					me.match_id
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me
-				WHERE me.teamplayer_id IN ('. implode(',', $quoted_tpids) .')
-				GROUP BY me.match_id, me.event_type_id';
-			$this->_db->setQuery($query);
-			$events = $this->_db->loadObjectList();
+            
+            $query->select('SUM(me.event_sum) as value,me.*');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ');
+            $query->where('me.teamplayer_id IN ('. implode(',', $quoted_tpids) .')');
+            $query->group('me.match_id, me.event_type_id');
+
+			$db->setQuery($query);
+			$events = $db->loadObjectList();
             
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
             
@@ -1111,11 +1100,11 @@ class sportsmanagementModelPlayer extends JModel
 			{
 				if (isset($gameevents[$ev->match_id]))
 				{
-					$gameevents[$ev->match_id][$ev->event_type_id]=$ev->value;
+					$gameevents[$ev->match_id][$ev->event_type_id] = $ev->value;
 				}
 				else
 				{
-					$gameevents[$ev->match_id]=array($ev->event_type_id => $ev->value);
+					$gameevents[$ev->match_id] = array($ev->event_type_id => $ev->value);
 				}
 			}
 		}

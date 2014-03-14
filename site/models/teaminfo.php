@@ -62,6 +62,11 @@ class sportsmanagementModelTeamInfo extends JModel
 	var $team = null;
 	var $club = null;
 
+	/**
+	 * sportsmanagementModelTeamInfo::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct( )
 	{
 		$this->projectid = JRequest::getInt( "p", 0 );
@@ -77,14 +82,24 @@ class sportsmanagementModelTeamInfo extends JModel
 	*/
 	function getTrainigData( $projectid )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		$trainingData = array();
 		if($this->projectteamid <= 0) {
 			$projectTeamID  = sportsmanagementModelProject::getprojectteamID($this->teamid);
 		}
-		$query = "SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team_trainingdata WHERE project_id=$projectid "
-				."AND project_team_id=$projectTeamID ORDER BY dayofweek ASC";
-		$this->_db->setQuery($query);
-		$trainingData = $this->_db->loadObjectList();
+        $query->select('*');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'); 
+        $query->where('project_id = '. $projectid);  
+        $query->where('project_team_id = '. $projectTeamID);
+        $query->order('dayofweek ASC');
+		
+        $db->setQuery($query);
+		$trainingData = $db->loadObjectList();
 		return $trainingData;
 	}
     
@@ -110,31 +125,15 @@ class sportsmanagementModelTeamInfo extends JModel
 	      $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id '); 
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = st.id ');
-          
-          
-          
-
-
-
-/*
-			$query = ' SELECT t.*,t.name AS tname, t.website AS team_website, pt.*, pt.notes AS notes, pt.info AS info, 
-						t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture, c.*,
-						CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS slug 
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t 
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id=c.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = t.id 
-						WHERE pt.project_id = '. $this->_db->Quote($this->projectid); 
-*/                        
+                
             $query->where('pt.project_id = '. $db->Quote($this->projectid));            
                         
 			if($this->projectteamid > 0) 
             {
-				//$query .= ' AND pt.id = '. $db->Quote($this->projectteamid);
                 $query->where('pt.id = '. $db->Quote($this->projectteamid));
 			} 
             else 
             {
-				//$query .= ' AND t.id = '. $db->Quote($this->teamid);
                 $query->where('t.id = '. $db->Quote($this->teamid));
 			}		
 			
@@ -163,16 +162,24 @@ class sportsmanagementModelTeamInfo extends JModel
 	 */
 	function getClub()
 	{
+	    $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
 		if ( is_null( $this->club ) )
 		{
 			$team = self::getTeamByProject();
 			if ( $team->club_id > 0 )
 			{
-				$query = ' SELECT *, '
-				       . ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
-				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club WHERE id = '. $this->_db->Quote($team->club_id);
-				$this->_db->setQuery($query);
-				$this->club  = $this->_db->loadObject();
+			 $query->select('*');
+             $query->select('CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug');
+             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
+             $query->where('id = '. $db->Quote($team->club_id));  
+
+				$db->setQuery($query);
+				$this->club  = $db->loadObject();
 			}
 		}
 		return $this->club;
@@ -221,43 +228,15 @@ class sportsmanagementModelTeamInfo extends JModel
                         
         if($this->projectteamid > 0) 
         {
-					//$query .= ' where pt.id = '. $this->_db->Quote($this->projectteamid);
                     $query->where('pt.id = '. $db->Quote($this->projectteamid));
 				} 
                 else 
                 {
-					//$query .= ' where t.id = '. $this->_db->Quote($this->teamid);
                     $query->where('t.id = '. $db->Quote($this->teamid));
 				}
 
 $query->order('s.ordering '.$season_ordering);
 
-                
-/*
-	    // now get all Leagues and Seasons which joined the team so far
-	    $query = ' SELECT pt.id as ptid, pt.team_id, pt.picture, pt.info, pt.project_id AS projectid, '
-				. ' p.name as projectname, pt.division_id, '
-				. ' s.name as season, '
-				. ' l.name as league, t.extended as teamextended, '
-				. ' CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS project_slug, '
-				. ' CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug, '
-				. ' CASE WHEN CHAR_LENGTH( d.alias ) THEN CONCAT_WS( \':\', d.id, d.alias ) ELSE d.id END AS division_slug, '
-				. ' d.name AS division_name, '
-				. ' d.shortname AS division_short_name '
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
-				. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d ON d.id = pt.division_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id ';
-				if($this->projectteamid > 0) {
-					$query .= ' where pt.id = '. $this->_db->Quote($this->projectteamid);
-				} else {
-					$query .= ' where t.id = '. $this->_db->Quote($this->teamid);
-				}
-				$query .=  ' AND p.published = 1 '
-				. ' ORDER BY s.ordering '.$season_ordering;
-*/
 	    $db->setQuery( $query );
 	    $seasons = $db->loadObjectList();
         
@@ -303,19 +282,35 @@ $query->order('s.ordering '.$season_ordering);
 
 	
     
+    /**
+     * sportsmanagementModelTeamInfo::getPlayerMarketValue()
+     * 
+     * @param mixed $projectid
+     * @param mixed $projectteamid
+     * @param mixed $season_id
+     * @return
+     */
     function getPlayerMarketValue($projectid, $projectteamid, $season_id)
     {
+        $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+        // Create a new query object.		
+	   $db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+       
     $player = array();
-		$query = " SELECT SUM(tp.market_value) AS market_value "
-		       . " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS ps "
-		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS tp ON tp.person_id = ps.id "
-		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt ON tp.projectteam_id = pt.id "
-		       . " WHERE pt.project_id=" . $projectid
-		       . " AND pt.id=" . $projectteamid
-		       . " AND tp.published = 1 " 
-		       . " AND ps.published = 1 ";
-		       $this->_db->setQuery($query);
-		$player = $this->_db->loadResult();
+    $query->select('SUM(tp.market_value) AS market_value');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp'); 
+    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');
+    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+    
+    $query->where('pt.project_id = ' . $projectid);
+    $query->where('pt.id = ' . $projectteamid);
+    $query->where('tp.published = 1');
+    $query->where('ps.published = 1');
+		       
+               $db->setQuery($query);
+		$player = $db->loadResult();
 		return $player;    
         
     }
@@ -382,6 +377,12 @@ $query->order('s.ordering '.$season_ordering);
 	}
 
 
+  /**
+   * sportsmanagementModelTeamInfo::getMergeClubs()
+   * 
+   * @param mixed $merge_clubs
+   * @return
+   */
   function getMergeClubs( $merge_clubs )
   {
     $mainframe = JFactory::getApplication();
@@ -392,10 +393,6 @@ $query->order('s.ordering '.$season_ordering);
        $query->select('*, CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
     $query->where('id IN ( '. $merge_clubs .' )');
-  
-//  $query = ' SELECT *, '
-//				       . ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
-//				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club WHERE id IN ('. $merge_clubs .')';
 				
                 $db->setQuery($query);
 				$result  = $db->loadObjectList();
@@ -450,6 +447,12 @@ $query->order('s.ordering '.$season_ordering);
 		return $league;
 	}
     
+    /**
+     * sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail()
+     * 
+     * @param mixed $seasonsranking
+     * @return
+     */
     function getLeagueRankOverviewDetail( $seasonsranking )
 	{
   $leaguesoverviewdetail = array();
@@ -483,6 +486,12 @@ $query->order('s.ordering '.$season_ordering);
   
   }
   
+  /**
+   * sportsmanagementModelTeamInfo::getLeagueRankOverview()
+   * 
+   * @param mixed $seasonsranking
+   * @return
+   */
   function getLeagueRankOverview( $seasonsranking )
 	{
 	    $mainframe = JFactory::getApplication();
@@ -543,16 +552,6 @@ $query->order('s.ordering '.$season_ordering);
     $query->where('pt.id =' . $projectteamid);
     $query->where('tp.published = 1');
     $query->where('ps.published = 1');
-    
-//		$query = " SELECT ps.*"
-//		       . " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS ps "
-//		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS tp ON tp.person_id = ps.id "
-//		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt ON tp.projectteam_id = pt.id "
-//		       . " WHERE pt.project_id=" . $projectid
-//		       . " AND pt.id=" . $projectteamid
-//		       . " AND tp.published = 1 " 
-//		       . " AND ps.published = 1 ";
-               
                
                
 		       $db->setQuery($query);
@@ -616,16 +615,7 @@ $query->order('s.ordering '.$season_ordering);
         //$query->where('tp.published = 1');
         $query->where('ps.published = 1');
     
-/*        
-		$query = " SELECT COUNT(*) AS playercnt "
-		       . " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS ps "
-		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS tp ON tp.person_id = ps.id "
-		       . " INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt ON tp.projectteam_id = pt.id "
-		       . " WHERE pt.project_id=" . $projectid
-		       . " AND pt.id=" . $projectteamid
-		       . " AND tp.published = 1 " 
-		       . " AND ps.published = 1 ";
-*/		
+	
         $db->setQuery($query);
 		$player = $db->loadResult();
         
@@ -643,6 +633,12 @@ $query->order('s.ordering '.$season_ordering);
 		return $player;
 	}
 	
+	/**
+	 * sportsmanagementModelTeamInfo::hasEditPermission()
+	 * 
+	 * @param mixed $task
+	 * @return
+	 */
 	function hasEditPermission($task=null)
 	{
 		//check for ACL permsission and project admin/editor
@@ -651,7 +647,7 @@ $query->order('s.ordering '.$season_ordering);
 		if($user->id > 0 && !$allowed)
 		{
 			// Check if user is the projectteam admin
-			$team = $this->getTeamByProject();
+			$team = self::getTeamByProject();
 			if ( $user->id == $team->admin )
 			{
 				$allowed = true;

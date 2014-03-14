@@ -65,6 +65,11 @@ class sportsmanagementModelClubPlan extends JModel
     var $teamprojects = 0;
     var $teamseasons = 0;
     
+	/**
+	 * sportsmanagementModelClubPlan::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -75,6 +80,11 @@ class sportsmanagementModelClubPlan extends JModel
 	}
     
     
+    /**
+     * sportsmanagementModelClubPlan::getTeamsArt()
+     * 
+     * @return
+     */
     function getTeamsArt()
     {
         $option = JRequest::getCmd('option');
@@ -108,6 +118,11 @@ class sportsmanagementModelClubPlan extends JModel
         return $teamsart;
     }
     
+    /**
+     * sportsmanagementModelClubPlan::getTeamsProjects()
+     * 
+     * @return
+     */
     function getTeamsProjects()
     {
         $option = JRequest::getCmd('option');
@@ -148,6 +163,11 @@ class sportsmanagementModelClubPlan extends JModel
         
     }
     
+    /**
+     * sportsmanagementModelClubPlan::getTeamsSeasons()
+     * 
+     * @return
+     */
     function getTeamsSeasons()
     {
         $option = JRequest::getCmd('option');
@@ -188,6 +208,11 @@ class sportsmanagementModelClubPlan extends JModel
 
 
 
+	/**
+	 * sportsmanagementModelClubPlan::getTeams()
+	 * 
+	 * @return
+	 */
 	function getTeams()
 	{
 		$option = JRequest::getCmd('option');
@@ -224,6 +249,11 @@ class sportsmanagementModelClubPlan extends JModel
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::getStartDate()
+	 * 
+	 * @return
+	 */
 	function getStartDate()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -254,6 +284,11 @@ class sportsmanagementModelClubPlan extends JModel
 		return $this->startdate;
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::getEndDate()
+	 * 
+	 * @return
+	 */
 	function getEndDate()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -280,6 +315,12 @@ class sportsmanagementModelClubPlan extends JModel
 		return $this->enddate;
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::setStartDate()
+	 * 
+	 * @param mixed $date
+	 * @return void
+	 */
 	function setStartDate($date)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -292,6 +333,12 @@ class sportsmanagementModelClubPlan extends JModel
 		}
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::setEndDate()
+	 * 
+	 * @param mixed $date
+	 * @return void
+	 */
 	function setEndDate($date)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -304,6 +351,13 @@ class sportsmanagementModelClubPlan extends JModel
 		}
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::getAllMatches()
+	 * 
+	 * @param string $orderBy
+	 * @param integer $type
+	 * @return
+	 */
 	function getAllMatches($orderBy = 'ASC',$type = 0)
 	{
 		$option = JRequest::getCmd('option');
@@ -430,6 +484,12 @@ class sportsmanagementModelClubPlan extends JModel
 
 
 
+	/**
+	 * sportsmanagementModelClubPlan::getMatchReferees()
+	 * 
+	 * @param mixed $matchID
+	 * @return
+	 */
 	function getMatchReferees($matchID)
 	{
 	   $option = JRequest::getCmd('option');
@@ -465,18 +525,27 @@ class sportsmanagementModelClubPlan extends JModel
        
 	}
 
+	/**
+	 * sportsmanagementModelClubPlan::getClubIconHtmlSimple()
+	 * 
+	 * @param mixed $logo_small
+	 * @param mixed $country
+	 * @param integer $type
+	 * @param integer $with_space
+	 * @return
+	 */
 	function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
 	{
 		if ($type==1)
 		{
-			$params=array();
-			$params["align"]="top";
-			$params["border"]=0;
-			if ($with_space==1)
+			$params = array();
+			$params["align"] = "top";
+			$params["border"] = 0;
+			if ($with_space == 1)
 			{
-				$params["style"]="padding:1px;";
+				$params["style"] = "padding:1px;";
 			}
-			if ($logo_small=="")
+			if ($logo_small == "")
 			{
 				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
