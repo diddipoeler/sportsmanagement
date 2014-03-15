@@ -40,31 +40,33 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'html.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'ranking.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'predictionroute.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'project.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'person.php');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'predictionroute.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'pagination.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'divisions.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'rounds.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'round.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'teams.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'team.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'club.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'playground.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projectteams.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projectteam.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'match.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'sportsmanagement.php');    
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'divisions.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'round.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'teams.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'team.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'club.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'playground.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'projectteams.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'projectteam.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'match.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');    
 
 // sprachdatei aus dem backend laden
 $langtag = JFactory::getLanguage();
