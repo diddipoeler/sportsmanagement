@@ -41,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.framework');
+JHtml::_('behavior.modal');
 
 //$listOrder	= $this->escape($this->state->get('list.ordering'));
 //$listDirn	= $this->escape($this->state->get('list.direction'));
