@@ -1,16 +1,16 @@
 <?php
 	if ($use_local_jquery) {
 	?>
-		<script type="text/javascript" src="/modules/mod_joomleague_liveticker/js/jquery-1.2.3.pack.js"></script>
+		<script type="text/javascript" src="/modules/mod_sportsmanagement_liveticker/js/jquery-1.2.3.pack.js"></script>
 	<?php
 	}
 	if ($use_css) {
 	?>
-		<link rel="stylesheet" href="/modules/mod_joomleague_liveticker/css/<?php echo $use_css; ?>" type="text/css" />
+		<link rel="stylesheet" href="/modules/mod_sportsmanagement_liveticker/css/<?php echo $use_css; ?>" type="text/css" />
 	<?php
 	}
 ?>
-<script type="text/javascript" src="/modules/mod_joomleague_liveticker/js/turtushout.js"></script>
+<script type="text/javascript" src="/modules/mod_sportsmanagement_liveticker/js/turtushout.js"></script>
 <div id="turtushout-warning"><?php echo JText::_( '!Warning! JavaScript must be enabled for proper operation.' ); ?></div>
 <?php
 

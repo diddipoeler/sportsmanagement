@@ -44,7 +44,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 /*
 // No conflict
 $document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/administrator/components/com_joomleague/assets/js/jl2.noconflict.js');
+$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
 $jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
