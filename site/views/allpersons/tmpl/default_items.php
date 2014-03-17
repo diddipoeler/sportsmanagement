@@ -48,7 +48,10 @@ defined('_JEXEC') or die('Restricted access');
 <thead>
 <tr>
 <th class="" id="">
-<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PLAYGROUNDS', 'v.name', $this->sortDirection, $this->sortColumn) ; ?>
+<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_PERSON_LAST_NAME', 'v.lastname', $this->sortDirection, $this->sortColumn) ; ?>
+</th>
+<th class="" id="">
+<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_PERSON_FIRST_NAME', 'v.firstname', $this->sortDirection, $this->sortColumn) ; ?>
 </th>
 <th class="" id="">
 <?php echo JHtml::_('grid.sort', 'Bild', 'v.picture', $this->sortDirection, $this->sortColumn); ?>
@@ -63,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'v.zipcode', $this->sortDirection, $this->sortColumn); ?>
 </th> 
 <th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.city', $this->sortDirection, $this->sortColumn); ?>
+<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.location', $this->sortDirection, $this->sortColumn); ?>
 </th>                 
 <th class="" id="">
 <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
@@ -81,18 +84,21 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if ( $item->projectslug )
 {
-$link = sportsmanagementHelperRoute::getPlaygroundRoute( $item->projectslug, $item->slug );
-echo JHtml::link( $link, $item->name );
+$link = sportsmanagementHelperRoute::getPlayerRoute( $item->projectslug, $item->teamslug, $item->slug );
+echo JHtml::link( $link, $item->lastname );
 }
 else
 {
-echo $item->name;    
+echo $item->lastname;    
 }
 ?>
 </td>
 <td>
-<a href="<?php echo $item->picture;?>" title="<?php echo $item->name;?>" class="modal">
-<img src="<?php echo $item->picture;?>" alt="<?php echo $item->name;?>" width="20" />
+<?php echo $item->firstname; ?>
+</td>
+<td>
+<a href="<?php echo $item->picture;?>" title="<?php echo $item->lastname;?>" class="modal">
+<img src="<?php echo $item->picture;?>" alt="<?php echo $item->lastname;?>" width="20" />
 </a>  
 
 </td>
@@ -106,7 +112,7 @@ echo $item->name;
 <?php echo $item->zipcode; ?>
 </td>
 <td>
-<?php echo $item->city; ?>
+<?php echo $item->location; ?>
 </td>
 <td>
 <?php echo JSMCountries::getCountryFlag($item->country); ?>
