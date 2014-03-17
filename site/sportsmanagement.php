@@ -56,6 +56,8 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'divisions.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'leagues.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'seasons.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'round.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'teams.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'team.php');
