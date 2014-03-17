@@ -42,7 +42,7 @@ class modJSMStatistikRekordHelper
 
     //$language=& JFactory::getLanguage(); //get the current language
     //echo 'Current language is: ' . $language->getName() . '<br>';
-    //$language->load( 'mod_joomleague_statistik' );
+    //$language->load( 'mod_sportsmanagement_statistik' );
     
 
 if ( $params->get('jsm_stat_spielpaarungen'))

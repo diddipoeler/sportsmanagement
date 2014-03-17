@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="module"  method="upgrade" client="site">
+	<name>JL - Club Icons</name>
+	<author>Carsten Kühn</author>
+	<authorUrl>http://www.yourlife.de</authorUrl> 
+	<version>1.5b.2</version>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<description>This Module shows club icons of a selected project in one or more rows</description>
+	<files>
+		<filename>mod_sportsmanagement_clubicons.xml</filename>
+		<filename module="mod_sportsmanagement_clubicons">mod_sportsmanagement_clubicons.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+    <folder>css</folder>
+    <folder>js</folder>
+    <folder>elements</folder>
+	</files>
+	<languages>
+	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_clubicons.ini</language>
+	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_clubicons.ini</language>
+</languages>
+<config>
+		<fields name="params" addpath="/modules/mod_sportsmanagement_clubicons/elements/">
+			<fieldset name="advanced">
+	<field name="template" type="list" default="default" label="which template?" description="you can add a template by creating a new folder">
+	  <option value="default">default</option>
+	</field>
+	<field name="max_width" type="text" default="0" label="max width for logo bar (integer)" description="as default logo bar uses 100% of available width, you can limit maximum width here" />
+	<field name="logotype" type="list" default="logo_big" label="logo type" description="which logo do you want to use?">
+		<option value="logo_big">big</option>
+		<option value="logo_middle">middle</option>
+		<option value="logo_small">small</option>
+	</field>
+	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="global max width for the logos (integer)" description="as default logos use 100% of available width and might get too big if you do not have many teams, you can limit maximum width here" />
+	<field name="logo_widthdif" type="text" default="12" label="width difference for regular / hovered logo (integer)" description="12 should do fine here, but you can try different value" />
+	<field name="iconsperrow" type="text" default="20" label="max icons per row (integer)" description="after max icons per row we make a new row... LOL" />
+	<field name="iconpos" type="list" default="middle" label="Align for hovered icons" description="top: hover only to bottom, middle: hover to top and bottom, bottom: hover to top">
+		<option value="top">top</option>
+		<option value="middle">middle</option>
+		<option value="bottom">bottom</option>
+	</field>
+	<field name="teamlink" type="list" default="1" label="do you want to link icons?" description="">
+		<option value="0">no link</option>
+		<option value="1">link to joomleague teaminfo page</option>
+		<option value="2">link to joomleague roster page</option>
+		<option value="3">link to joomleague teamplan page</option>
+		<option value="4">link to joomleague club page</option>
+		<option value="5">club's website</option>
+	</field>
+	<field name="newwindow" type="list" default="0" label="do you want to open new window for website link?" description="only has effect if you link to club's website">
+		<option value="0">no</option>
+		<option value="1">yes</option>
+	</field>
+  <field name="project_ids" type="projectsmultiple" default="" label="project id" description="you should use only one by now... maybe later on we can use more with favteams..." />
+  <field name="usepfromcomponent" type="list" default="1" label="do you want to use current project if available?" description="projectid selected above can be overwritten if you show module on a joomleague page">
+		<option value="0">no</option>
+		<option value="1">yes</option>
+	</field>
+	</fieldset>
+	<fieldset name="basic">
+    <field name="@spacer" type="spacer" default="" label="" description="-" />
+		<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+		</fieldset>
+ </fields>
+ </config>
+ </extension>
