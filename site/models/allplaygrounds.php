@@ -109,7 +109,16 @@ var $_identifier = "playgrounds";
 		$this->setState('filter.search_nation', $temp_user_request);
 
         $filter_order = JRequest::getCmd('filter_order');
+        if (!in_array($filter_order, $this->filter_fields)) 
+        {
+			$filter_order = 'v.name';
+		}
+        
         $filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
+        {
+			$filter_order_Dir = 'ASC';
+		}
 
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
