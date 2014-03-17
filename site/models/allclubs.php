@@ -91,7 +91,8 @@ var $_identifier = "clubs";
 		$app = JFactory::getApplication('site');
         
         // List state information
-		$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+        $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
 		$value = JRequest::getUInt('limitstart', 0);
