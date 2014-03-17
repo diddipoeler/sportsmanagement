@@ -43,7 +43,7 @@ jimport('joomla.application.component.modellist');
 
 
 /**
- * sportsmanagementModelallplaygrounds
+ * sportsmanagementModelallpersons
  * 
  * @package   
  * @author 
@@ -51,13 +51,13 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallplaygrounds extends JModelList
+class sportsmanagementModelallpersons extends JModelList
 {
 
-var $_identifier = "playgrounds";
+var $_identifier = "persons";
 	
 	/**
-	 * sportsmanagementModelallplaygrounds::__construct()
+	 * sportsmanagementModelallpersons::__construct()
 	 * 
 	 * @param mixed $config
 	 * @return void
@@ -112,7 +112,7 @@ var $_identifier = "playgrounds";
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
-			$filter_order = 'v.name';
+			$filter_order = 'v.lastname';
 		}
         
         //$filter_order_Dir = JRequest::getCmd('filter_order_Dir');
@@ -162,15 +162,17 @@ var $_identifier = "playgrounds";
 		$query->select('v.*');
         $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
         $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
+        $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS teamslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as v');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as v');
         // Join over the clubs
-		$query->select('c.name As club');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
+//		$query->select('c.name As club');
+//		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = v.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = stp.team_id');
         
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
@@ -179,14 +181,14 @@ var $_identifier = "playgrounds";
         
         if ($search)
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.lastname) LIKE '.$db->Quote('%'.$search.'%'));
         }
         if ($search_nation)
 		{
         $query->where("v.country = '".$search_nation."'");
         }
 
-        $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
+        $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');

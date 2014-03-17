@@ -43,7 +43,7 @@ jimport('joomla.application.component.modellist');
 
 
 /**
- * sportsmanagementModelallplaygrounds
+ * sportsmanagementModelallclubs
  * 
  * @package   
  * @author 
@@ -51,13 +51,13 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallplaygrounds extends JModelList
+class sportsmanagementModelallclubs extends JModelList
 {
 
-var $_identifier = "playgrounds";
+var $_identifier = "clubs";
 	
 	/**
-	 * sportsmanagementModelallplaygrounds::__construct()
+	 * sportsmanagementModelallclubs::__construct()
 	 * 
 	 * @param mixed $config
 	 * @return void
@@ -70,7 +70,7 @@ var $_identifier = "playgrounds";
                         'v.website',
                         'v.address',
                         'v.zipcode',
-                        'v.city',
+                        'v.location',
                         'v.country'
                         );
                 parent::__construct($config);
@@ -163,11 +163,8 @@ var $_identifier = "playgrounds";
         $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
         $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as v');
-        // Join over the clubs
-		$query->select('c.name As club');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS v');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = v.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');

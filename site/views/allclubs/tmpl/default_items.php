@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 <thead>
 <tr>
 <th class="" id="">
-<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PLAYGROUNDS', 'v.name', $this->sortDirection, $this->sortColumn) ; ?>
+<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_CLUBS', 'v.name', $this->sortDirection, $this->sortColumn) ; ?>
 </th>
 <th class="" id="">
 <?php echo JHtml::_('grid.sort', 'Bild', 'v.picture', $this->sortDirection, $this->sortColumn); ?>
@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'v.zipcode', $this->sortDirection, $this->sortColumn); ?>
 </th> 
 <th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.city', $this->sortDirection, $this->sortColumn); ?>
+<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.location', $this->sortDirection, $this->sortColumn); ?>
 </th>                 
 <th class="" id="">
 <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if ( $item->projectslug )
 {
-$link = sportsmanagementHelperRoute::getPlaygroundRoute( $item->projectslug, $item->slug );
+$link = sportsmanagementHelperRoute::getClubInfoRoute( $item->projectslug, $item->slug );
 echo JHtml::link( $link, $item->name );
 }
 else
@@ -106,7 +106,7 @@ echo $item->name;
 <?php echo $item->zipcode; ?>
 </td>
 <td>
-<?php echo $item->city; ?>
+<?php echo $item->location; ?>
 </td>
 <td>
 <?php echo JSMCountries::getCountryFlag($item->country); ?>

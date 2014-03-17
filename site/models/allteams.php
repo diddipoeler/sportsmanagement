@@ -43,7 +43,7 @@ jimport('joomla.application.component.modellist');
 
 
 /**
- * sportsmanagementModelallplaygrounds
+ * sportsmanagementModelallteams
  * 
  * @package   
  * @author 
@@ -51,13 +51,13 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallplaygrounds extends JModelList
+class sportsmanagementModelallteams extends JModelList
 {
 
-var $_identifier = "playgrounds";
+var $_identifier = "teams";
 	
 	/**
-	 * sportsmanagementModelallplaygrounds::__construct()
+	 * sportsmanagementModelallteams::__construct()
 	 * 
 	 * @param mixed $config
 	 * @return void
@@ -68,10 +68,10 @@ var $_identifier = "playgrounds";
                         'v.name',
                         'v.picture',
                         'v.website',
-                        'v.address',
-                        'v.zipcode',
-                        'v.city',
-                        'v.country'
+                        'c.address',
+                        'c.zipcode',
+                        'c.location',
+                        'c.country'
                         );
                 parent::__construct($config);
         }
@@ -163,12 +163,12 @@ var $_identifier = "playgrounds";
         $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
         $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as v');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as v');
         // Join over the clubs
-		$query->select('c.name As club');
+		$query->select('c.name As club,c.address,c.zipcode,c.country,c.location');
 		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
+//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = v.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
         
@@ -183,7 +183,7 @@ var $_identifier = "playgrounds";
         }
         if ($search_nation)
 		{
-        $query->where("v.country = '".$search_nation."'");
+        $query->where("c.country = '".$search_nation."'");
         }
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
