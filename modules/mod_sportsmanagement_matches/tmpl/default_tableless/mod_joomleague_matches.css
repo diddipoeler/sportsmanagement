@@ -1,0 +1,76 @@
+.jlmhaslinks {
+	text-decoration: underline;
+}
+
+span.jlmlteamcol {
+	width: 40%;
+	display: block;
+}
+
+span.jlmlleft {
+	float: left;
+}
+
+span.jlmlright {
+	float: right;
+}
+
+.jlmlmatchholder,*.jlmlmatchholder {
+	text-align: center;
+}
+
+.jlmlmatchholder>div.contentheading {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.jlmlmatchholder>span .*,div .*>img {
+	vertical-align: middle;
+	margin: 0 3px;
+}
+
+.jlml_livescore {
+	color: #ff0000;
+}
+
+.jlmlusedteam {
+	font-weight: bold;
+}
+
+span.jlmlResults {
+	font-weight: bold;
+	font-size: 160%;
+	text-align: center;
+}
+
+span.jlmlMatchLinks {
+	float: none;
+	margin: auto;
+	display: block;
+	width: 10%;
+	text-align: center;
+	font-weight: normal;
+	font-size: 80%;
+	white-space: nowrap;
+}
+
+span.jlmlTeamLinks {
+	font-weight: normal;
+	font-size: 80%;
+}
+/*
+.hr {
+	width: 100%;
+	display: block;
+	clear: both;
+	margin-top: 10px;
+}
+*/
+
+.hr {
+	width: 100%;
+	display: block;
+	clear: both;
+	margin-top: 10px;
+	border: 1px dashed;
+}
