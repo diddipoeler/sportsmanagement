@@ -85,13 +85,13 @@ class sportsmanagementModelProject extends JModel
 	 * data project stats
 	 * @var array
 	 */
-	var $_stats = null;
+	static $_stats = null;
 
 	/**
 	 * data project positions
 	 * @var array
 	 */
-	var $_positions = null;
+	static $_positions = null;
 
 	/**
 	 * cache for project divisions
@@ -104,7 +104,7 @@ class sportsmanagementModelProject extends JModel
 	 * caching for current round
 	 * @var object
 	 */
-	var $_current_round;
+	static $_current_round;
 
 
 	/**
@@ -183,9 +183,9 @@ class sportsmanagementModelProject extends JModel
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-		$this->projectid = $id;
-		$this->_project = null;
-        $this->_current_round = 0;
+		self::$projectid = $id;
+		self::$_project = null;
+        self::$_current_round = 0;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -1124,12 +1124,10 @@ $query->where('p.id='.$db->Quote($this->projectid));
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
 
-        
-		if (empty($this->_stats))
+		if (empty(self::$_stats))
 		{
-			require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
+			require_once (JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'statistics'.DS.'base.php');
 			$project = self::getProject();
 			$project_id = $project->id;
             $query->select('ppos.id as pposid,ppos.position_id AS position_id');
@@ -1144,7 +1142,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
             $query->order('pos.ordering,ps.ordering');
 
 			$db->setQuery($query);
-			$this->_stats = $db->loadObjectList();
+			self::$_stats = $db->loadObjectList();
 
 		}
 		// sort into positions
@@ -1155,7 +1153,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		{
 			$stats[$pos->id]=array();
 		}
-		if (count($this->_stats) > 0)
+		if (count(self::$_stats) > 0)
 		{
 			foreach ($this->_stats as $k => $row)
 			{
@@ -1195,18 +1193,18 @@ $query->where('p.id='.$db->Quote($this->projectid));
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-		if (empty($this->_positions))
+		if (empty(self::$_positions))
 		{
 		  $query->select('pos.id,pos.persontype,pos.name,pos.ordering,pos.published');
           $query->select('ppos.id AS pposid');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
-          $query->where('ppos.project_id = '.$db->Quote($this->projectid));
+          $query->where('ppos.project_id = '.$db->Quote(self::$projectid));
 
 			$db->setQuery($query);
-			$this->_positions = $db->loadObjectList('id');
+			self::$_positions = $db->loadObjectList('id');
 		}
-		return $this->_positions;
+		return self::$_positions;
 	}
 
 	/**

@@ -92,11 +92,12 @@ $base_dir = JPATH_SITE;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 */
 
-JRequest::setVar('prediction_id', $pg_id);
+//JRequest::setVar('prediction_id', $pg_id);
 
 // das model laden
 $modelpg = JModel::getInstance('PredictionRanking', 'sportsmanagementModel');
 
+sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 // jetzt nach das overall template nachladen
 // dadurch erhalten wir die sortierung aus dem backend
 $overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
