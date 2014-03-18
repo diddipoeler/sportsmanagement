@@ -1,0 +1,104 @@
+#marqueecontainer
+{
+	position:relative;
+	height:100px;
+	overflow:hidden;
+}
+
+table.birthday
+{
+	border:none;
+	width:100%;
+	padding:0px;
+}
+
+table.birthday td.birthday
+{
+	text-align:center;
+}
+
+div.textdiv {
+	display: none;
+}
+
+refresh {
+	background-image: url(icon_refresh.gif);
+	background-repeat: no-repeat;
+}
+
+a.refresh {
+	margin-left: 20px;
+	font-weight: bold;
+}
+
+div.tckdate p {
+	font-weight: bold;
+	text-align: center;
+}
+
+div.tckproject p {
+	text-align: center;
+}
+
+div.tckrow {
+	vertical-align: middle;
+}
+
+div.tckrow span.tckteamleft {
+	text-align: center;
+	width: 35%;
+	display: inline-block;
+}
+
+div.tckrow span.tckresult {
+	text-align: center;
+	font-weight: bold;
+	width: 10%;
+	display: inline-block;
+}
+
+div.tckrow span.tckteamright {
+	text-align: center;
+	width: 35%;
+	display: inline-block;
+}
+
+.ticker {
+	overflow: hidden;
+	width: 200px;
+}
+
+div.tckrow span.tckteamleft2 {
+	width: 44%;
+	font-weight: bold;
+	display: inline-block;
+}
+
+div.tckrow span.tckteamright2 {
+	width: 44%;
+	font-weight: bold;
+	display: inline-block;
+}
+
+div.tckrow span.tckresult2 {
+	text-align: center;
+	font-weight: bold;
+	width: 6%;
+	display: inline-block;
+}
+
+.vmarquee {
+	position: absolute;
+	width: 98%;
+}
+
+.hide {
+	visibility: hidden;
+	position: absolute;
+	top: -400px;
+}
+
+.qslide {
+	font-size: 10pt;
+	padding: 3px;
+}
