@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+
+
+.modjlgteamplayers
+{
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 100%;
+vertical-align: middle;
+text-align:center;
+}
+
+div.modjlteamplayers .projectname {
+	font-weight:bold;
+text-align:center;
+}
+
+div.modjlgteamplayers .playerlink {
+text-align:center;
+vertical-align: middle;
+}
+div.modjlgteamplayers .teamname {
+text-align:center;
+vertical-align: middle;
+}
+div.modjlgteamplayers table {
+}
+
+div.modjlgteamplayers td {
+}
+
+ul.modjlgplayer{
+display:block;
+list-style:none;
+}
+
+ul.modjlgposition{
+list-style:none;
+display:block;
+}
