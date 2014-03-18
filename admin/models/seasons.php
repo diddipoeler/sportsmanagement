@@ -57,6 +57,12 @@ class sportsmanagementModelSeasons extends JModelList
 {
 	var $_identifier = "seasons";
 	
+    /**
+     * sportsmanagementModelSeasons::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -104,6 +110,11 @@ class sportsmanagementModelSeasons extends JModelList
 		parent::populateState('s.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelSeasons::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();

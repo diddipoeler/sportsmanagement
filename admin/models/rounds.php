@@ -56,7 +56,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
-    var $_project_id = 0;
+    static $_project_id = 0;
 	
     public function __construct($config = array())
         {   

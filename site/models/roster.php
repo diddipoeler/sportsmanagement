@@ -108,8 +108,9 @@ class sportsmanagementModelRoster extends JModel
 			{
 			 $query = $db->getQuery(true);
              $query->clear();
-				$query->select('pt.*');
+				$query->select('pt.*,st.team_id as season_team_id');
 	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt'); 
+               $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
                 $query->where('pt.id = '.$db->Quote($this->projectteamid));
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -134,9 +135,11 @@ class sportsmanagementModelRoster extends JModel
                 
                 $query = $db->getQuery(true);
                 $query->clear();
-                $query->select('pt.*');
+                $query->select('pt.*,st.team_id as season_team_id');
 	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt'); 
-                $query->where('pt.team_id = '.$db->Quote($this->teamid));
+               $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');   
+               
+                $query->where('st.team_id = '.$db->Quote($this->teamid));
                 $query->where('pt.project_id = '.$db->Quote($this->projectid));
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -147,10 +150,15 @@ class sportsmanagementModelRoster extends JModel
 			}
 			$db->setQuery($query);
 			$this->projectteam = $db->loadObject();
-			if ($this->projectteam)
+			
+//            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->projectteam,true).'</pre>'),'');
+            
+            if ($this->projectteam)
 			{
 				$this->projectid = $this->projectteam->project_id; // if only ttid was set
-				$this->teamid = $this->projectteam->team_id; // if only ttid was set
+				//$this->teamid = $this->projectteam->team_id; // if only ttid was set
+                $this->teamid = $this->projectteam->season_team_id;
 			}
 		}
 		return $this->projectteam;
@@ -456,7 +464,10 @@ class sportsmanagementModelRoster extends JModel
                       
 		$db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$rows = $db->loadObjectList();
 		return $rows;

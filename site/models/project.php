@@ -218,9 +218,13 @@ class sportsmanagementModelProject extends JModel
 	 * 
 	 * @return int
 	 */
-	function getCurrentRound()
+	function getCurrentRound($view=NULL)
 	{
+	   $mainframe = JFactory::getApplication();
 		$round = self::increaseRound();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view: '.$view.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        
 		return ($round ? $round->id : 0);
 	}
 
@@ -231,7 +235,11 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function getCurrentRoundNumber()
 	{
+	   $mainframe = JFactory::getApplication();
 		$round = self::increaseRound();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        
 		return ($round ? $round->roundcode : 0);
 	}
 
@@ -246,9 +254,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
 
-        
         if (!$this->_current_round)
 		{
 			if (!$project = self::getProject()) 
@@ -303,6 +309,10 @@ class sportsmanagementModelProject extends JModel
 			// Either way, do not change current value
 			if (!$result)
 			{
+			 
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+             
 			$query->clear();
             $query->select('r.id, r.roundcode');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
@@ -342,6 +352,7 @@ class sportsmanagementModelProject extends JModel
 			if ($result && ($project->current_round <> $result->id))
 			{
 			 // Must be a valid primary key value.
+             $object = new stdClass();
              $object->id = $db->Quote($project->id);
              $object->current_round = $result->id;
              // Update their details in the users table using id as the primary key.
@@ -354,16 +365,16 @@ class sportsmanagementModelProject extends JModel
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
         }
        
             
 			$this->_current_round = $result;
 		}
         
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project->id<br><pre>'.print_r($project->id,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->id<br><pre>'.print_r($project->id,true).'</pre>'),'');
         
         
 		return $this->_current_round;

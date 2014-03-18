@@ -46,6 +46,11 @@ JHtml::_('behavior.modal');
 //$listOrder	= $this->escape($this->state->get('list.ordering'));
 //$listDirn	= $this->escape($this->state->get('list.direction'));
 
+// Make sure that in case extensions are written for mentioned (common) views,
+// that they are loaded i.s.o. of the template of this view
+$templatesToLoad = array('globalviews');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
 <script language="javascript" type="text/javascript">
 function tableOrdering( order, dir, task )
@@ -90,7 +95,12 @@ function tableOrdering( order, dir, task )
         
 	</fieldset>
 
-	<?php echo $this->loadTemplate('items'); ?>
+	<?php echo $this->loadTemplate('items'); 
+    echo "<div>";
+		echo $this->loadTemplate('backbutton');
+		echo $this->loadTemplate('footer');
+	echo "</div>";
+    ?>
 </form>
 
 
