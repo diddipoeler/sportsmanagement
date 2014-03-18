@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN</name>
+	<creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_XML_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_playgroundplan">mod_sportsmanagement_playgroundplan.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>css</folder>
+		<folder>js</folder>
+		<folder>tmpl</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_playgroundplan.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_playgroundplan.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+
+			<fieldset name="basic"
+				addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+				<field name="projects" type="projects" default="" required="true"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLANPROJECT_ID_LABEL_DESC" />
+				<field name="playground" type="playgrounds" default=""
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL_DESC" />
+				<field name="show_project_name" type="list" default="0"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_league_name" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_playground_name" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_playground_link" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="teamformat" type="list" default="middle_name"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TEAM_FORMAT"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TEAM_NAME_DESC">
+					<option value="name">LONG NAME</option>
+					<option value="middle_name">MIDDLE NAME</option>
+					<option value="short_name">SHORT NAME</option>
+				</field>
+				<field name="show_club_logo" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="maxmatches" type="text" default="7"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER_DESC" />
+				<field name="dateformat" type="text" default="l, d. F Y"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT_DESC" />
+				<field name="timeformat" type="text" default="H:i"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT_DESC" />
+				<field name="mode" type="list" default="0"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE_DESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TICKER</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LIST</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHING_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHING_DESCR">
+					<option value="1">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHING_USE_GLOBAL</option>
+					<option value="0">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHING_NO_CACHING</option>
+				</field>
+				<field name="cache_time" type="text" default="900"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHE_TIME_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CACHE_TIME_DESCR">
+				</field>
+				<field name="moduleclass_sfx" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MODULE_CLASS_SUFFIX_LABEL"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MODULE_CLASS_SUFFIX_DESCR">
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
