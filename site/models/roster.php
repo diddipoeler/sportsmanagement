@@ -255,20 +255,20 @@ class sportsmanagementModelRoster extends JModel
         $query->where('tp.persontype = '.$persontype);
         $query->where('tp.season_id = '.$this->seasonid);  
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
-            
-
-            
+           
             $db->setQuery($query);
             $this->_players = $db->loadObjectList();
             
             if ( !$this->_players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');    
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');    
             }
             elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 		//}
         switch ( $persontype )

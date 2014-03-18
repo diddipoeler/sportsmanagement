@@ -55,8 +55,8 @@ jimport( 'joomla.utilities.arrayhelper' );
  */
 class sportsmanagementModelProject extends JModel
 {
-	var $_project = null;
-	var $projectid = 0;
+	static $_project = null;
+	static $projectid = 0;
 
 	/**
 	 * project league country
@@ -140,7 +140,7 @@ class sportsmanagementModelProject extends JModel
     $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
     }
     
-        if (is_null($this->_project) && $this->projectid > 0)
+        if (is_null(self::$_project) && self::$projectid > 0)
 		{
 			//fs_sport_type_name = sport_type folder name
             $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
@@ -150,7 +150,7 @@ class sportsmanagementModelProject extends JModel
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id ');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id ');
-            $query->where('p.id ='. $db->Quote($this->projectid));
+            $query->where('p.id ='. $db->Quote(self::$projectid));
             
 
 			$db->setQuery($query,0,1);
@@ -160,16 +160,16 @@ class sportsmanagementModelProject extends JModel
     $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     }
     
-			$this->_project = $db->loadObject();
+			self::$_project = $db->loadObject();
             
-            if ( !$this->_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            if ( !self::$_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             
             
 		}
-		return $this->_project;
+		return self::$_project;
 	}
 
 	/**
