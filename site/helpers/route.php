@@ -87,7 +87,7 @@ class sportsmanagementHelperRoute
 				"view" => "teaminfo",
 				"p" => $projectid,
 				"tid" => $teamid,
-					"ptid" => 0 );
+					"ptid" => $projectteamid );
 	
 		$query = self::buildQuery( $params );
 		$link = JRoute::_( 'index.php?' . $query, false );

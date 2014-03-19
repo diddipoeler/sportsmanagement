@@ -65,7 +65,7 @@ class modSportsmanagementTeamStatHelper
 		$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         
-        $mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
 //		if (!class_exists('JoomleagueModelProject')) {
 //			require_once(JLG_PATH_SITE. DS . 'models' . DS . 'project.php');

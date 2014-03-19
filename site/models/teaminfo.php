@@ -41,9 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JPATH_COMPONENT.DS . 'helpers' . DS . 'ranking.php' );
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelTeamInfo
  * 
@@ -72,6 +69,8 @@ class sportsmanagementModelTeamInfo extends JModel
 		$this->projectid = JRequest::getInt( "p", 0 );
 		$this->projectteamid = JRequest::getInt( "ptid", 0 );
 		$this->teamid = JRequest::getInt( "tid", 0 );
+        
+        sportsmanagementModelProject::$projectid = $this->projectid; 
 		parent::__construct( );
 	}
 

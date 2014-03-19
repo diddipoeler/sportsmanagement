@@ -92,6 +92,8 @@ class sportsmanagementModelRanking extends JModel
     
 		$this->selDivision = JRequest::getInt( 'division', 0 );
         
+        sportsmanagementModelProject::$projectid = $this->projectid; 
+        
 //        if ( empty($this->round) )
 //        {
 //            $this->round = sportsmanagementModelProject::getCurrentRoundNumber();

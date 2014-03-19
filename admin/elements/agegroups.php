@@ -53,6 +53,11 @@ class JFormFieldagegroups extends JFormField
 
 	protected $type = 'agegroups';
 
+	/**
+	 * JFormFieldagegroups::getInput()
+	 * 
+	 * @return
+	 */
 	function getInput()
 	{
 		$result = array();

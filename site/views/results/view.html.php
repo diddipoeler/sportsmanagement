@@ -44,9 +44,24 @@ jimport( 'joomla.filesystem.file' );
 
 //require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
+/**
+ * sportsmanagementViewResults
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewResults extends JView
 {
 
+	/**
+	 * sportsmanagementViewResults::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	public function display($tpl = null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -226,6 +241,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementViewResults::addPlayingTeams()
+	 * 
+	 * @param mixed $playing_teams
+	 * @param mixed $hometeam
+	 * @param mixed $awayteam
+	 * @param bool $published
+	 * @return void
+	 */
 	public function addPlayingTeams(&$playing_teams,$hometeam,$awayteam,$published=false)
 	{
 		if ($hometeam>0 && !in_array($hometeam,$playing_teams) && $published){$playing_teams[]=$hometeam;}
@@ -545,6 +569,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		return $output;
 	}
     
+    /**
+     * sportsmanagementViewResults::showMatchSummaryAsSqueezeBox()
+     * 
+     * @param mixed $game
+     * @return
+     */
     function showMatchSummaryAsSqueezeBox(&$game)
 	{
 	/*
@@ -558,6 +588,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     return $game->summary;
     }   
 
+	/**
+	 * sportsmanagementViewResults::showMatchRefereesAsTooltip()
+	 * 
+	 * @param mixed $game
+	 * @return void
+	 */
 	function showMatchRefereesAsTooltip(&$game)
 	{
 		if ($this->config['show_referee'])
@@ -604,6 +640,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 	}
 	
+	/**
+	 * sportsmanagementViewResults::showReportDecisionIcons()
+	 * 
+	 * @param mixed $game
+	 * @return
+	 */
 	function showReportDecisionIcons(&$game)
 	{
 		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
@@ -800,6 +842,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		return $output;
 	}
 	
+	/**
+	 * sportsmanagementViewResults::formatResult()
+	 * 
+	 * @param mixed $team1
+	 * @param mixed $team2
+	 * @param mixed $game
+	 * @param mixed $reportLink
+	 * @return
+	 */
 	function formatResult(&$team1,&$team2,&$game,&$reportLink)
 	{
 		$output			= '';
@@ -827,6 +878,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 	}
 	
+	/**
+	 * sportsmanagementViewResults::_formatEventContainerInResults()
+	 * 
+	 * @param mixed $matchevent
+	 * @param mixed $event
+	 * @param mixed $projectteamId
+	 * @param mixed $showEventInfo
+	 * @return
+	 */
 	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
 	{
 		// Meaning of $showEventInfo:
@@ -894,6 +954,16 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementViewResults::_formatSubstitutionContainerInResults()
+	 * 
+	 * @param mixed $subs
+	 * @param mixed $projectteamId
+	 * @param mixed $imgTime
+	 * @param mixed $imgOut
+	 * @param mixed $imgIn
+	 * @return
+	 */
 	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn)
 	{
 		$output='';

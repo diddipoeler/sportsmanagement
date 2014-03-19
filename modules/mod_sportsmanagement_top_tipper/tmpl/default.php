@@ -39,20 +39,28 @@
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHTML::_('behavior.tooltip');
+
+$mainframe = JFactory::getApplication();
+
 //echo '<br /><pre>~' . print_r($config,true) . '~</pre><br />';
 //echo '<br /><pre>~' . print_r($config['limit'],true) . '~</pre><br />';
 ?>
 <a name='jl_top' id='jl_top'></a>
 <?php
-foreach ($modelpg->_predictionProjectS AS $predictionProject)
+foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
+//foreach ($predictionProjectS AS $predictionProject)
 {
-	$gotSettings = $predictionProjectSettings = $modelpg->getPredictionProject($predictionProject->project_id);
+	$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
+    
+    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' gotSettings<br><pre>'.print_r($gotSettings,true).'</pre>'),'');
+    
 	if ((($modelpg->pjID == $predictionProject->project_id) && ($gotSettings)) || ($modelpg->pjID==0))
 	{
-		$showProjectID = (count($modelpg->_predictionProjectS) > 1) ? $modelpg->pjID : $predictionProject->project_id;
+		//$showProjectID = (count($modelpg->_predictionProjectS) > 1) ? $modelpg->pjID : $predictionProject->project_id;
+        $showProjectID = (count($predictionProjectS) > 1) ? $modelpg->pjID : $predictionProject->project_id;
 		$modelpg->pjID = $predictionProject->project_id;
 		$modelpg->predictionProject = $predictionProject;
-		$actualProjectCurrentRound = $modelpg->getProjectSettings($predictionProject->project_id);
+		$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 		/*
 		if (!isset($this->roundID) || ($this->roundID < 1)){
 			$this->roundID=$actualProjectCurrentRound;
@@ -226,7 +234,7 @@ if ( $config['show_tip_link_ranking_round'] )
         }
         
 				$k = 0;
-				$memberList = $modelpg->getPredictionMembersList($config,$configavatar);
+				$memberList = sportsmanagementModelPrediction::getPredictionMembersList($config,$configavatar);
 				// echo '<br /><pre>~' . print_r($memberList,true) . '~</pre><br />';
 				
 				$membersResultsArray = array();
@@ -236,7 +244,7 @@ if ( $config['show_tip_link_ranking_round'] )
 				{
 
 					//echo '<br /><pre>~' . print_r($modelpg->page,true) . '~</pre><br />';
-					$memberPredictionPoints = $modelpg->getPredictionMembersResultsList(	$showProjectID,
+					$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$showProjectID,
 																								$modelpg->from,
 																								$modelpg->to,
 																								$member->user_id,
@@ -258,7 +266,7 @@ if ( $config['show_tip_link_ranking_round'] )
 								(!is_null($memberPredictionPoint->awayDecision)))
 							{
 								$predictionsCount++;
-								$result = $modelpg->createResultsObject(	$memberPredictionPoint->homeResult,
+								$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
 																				$memberPredictionPoint->awayResult,
 																				$memberPredictionPoint->prTipp,
 																				$memberPredictionPoint->prHomeTipp,
@@ -266,7 +274,7 @@ if ( $config['show_tip_link_ranking_round'] )
 																				$memberPredictionPoint->prJoker,
 																				$memberPredictionPoint->homeDecision,
 																				$memberPredictionPoint->awayDecision);
-								$newPoints = $modelpg->getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+								$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 								//if (!is_null($memberPredictionPoint->prPoints))
 								{
 									$points=$memberPredictionPoint->prPoints;
@@ -361,8 +369,8 @@ if ( $config['show_tip_link_ranking_round'] )
 													$membersResultsArray6
 													);
 				*/
-				$computedMembersRanking=$modelpg->computeMembersRanking($membersResultsArray,$config);
-				$recordCount=count($computedMembersRanking);
+				$computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$config);
+				$recordCount = count($computedMembersRanking);
 				//echo '<br /><pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
 
 				$i=1;

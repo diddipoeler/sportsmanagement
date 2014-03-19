@@ -77,7 +77,7 @@ $class	            = $params->get( 'moduleclass_sfx', '' );
 
 
 
-$user		     =& JFactory::getUser();
+$user		     = JFactory::getUser();
 $userId		     = (int) $user->get('id');
 $name		     = $user->get('name');
 $display_add_box = ($userId || $allow_unregistered);

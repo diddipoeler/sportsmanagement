@@ -48,7 +48,7 @@ jimport('joomla.utilities.utility' );
 jimport('joomla.user.authorization' );
 jimport('joomla.access.access' );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'rounds.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
 
 /**
  * sportsmanagementModelPrediction
@@ -87,6 +87,7 @@ class sportsmanagementModelPrediction extends JModel
     static $type		= 0;
     static $page		= 0;
     
+    static $table_config = '';
     
 
 	/**
@@ -401,6 +402,7 @@ class sportsmanagementModelPrediction extends JModel
 				}
 				else
 				{
+				    self::$_predictionMember = new stdclass();
 					self::$_predictionMember->id = 0;
 					self::$_predictionMember->pmID = 0;
 					self::$predictionMemberID = 0;
@@ -594,6 +596,8 @@ class sportsmanagementModelPrediction extends JModel
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
         
 		if ($project_id > 0)
 		{
@@ -2178,7 +2182,8 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	   $option = JRequest::getCmd('option');    
     $mainframe = JFactory::getApplication();
     
-		$this->table_config = $config;
+		//$this->table_config = $config;
+        self::$table_config = $config;
 		$dummy = $membersResultsArray;
 
 		//uasort($dummy,array($this,'compare'));

@@ -43,8 +43,6 @@ jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 JHtml::_('behavior.tooltip');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelResults
  * 
@@ -78,8 +76,12 @@ class sportsmanagementModelResults extends JModel
 		$this->divisionid = JRequest::getInt('division',0);
 		$this->mode = JRequest::getInt('mode',0);
 		$this->order = JRequest::getInt('order',0);
+        $this->projectid = JRequest::getInt('p',0);
 		$round = JRequest::getInt('r', 0);
 		$roundid = $round;
+        
+        sportsmanagementModelProject::$projectid = $this->projectid;
+        
 		if($round) 
         {
 			$roundid = $round;
@@ -119,7 +121,6 @@ class sportsmanagementModelResults extends JModel
 		return $division;
 	}
     
-    // limit count word
 	/**
 	 * sportsmanagementModelResults::limitText()
 	 * 
@@ -295,8 +296,8 @@ class sportsmanagementModelResults extends JModel
 		
         if ( !$result )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	    }
         
 		return $result;

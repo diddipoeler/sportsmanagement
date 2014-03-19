@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+
 require_once (dirname(__FILE__).DS.'helper.php');
 
 $data = new modJSMClubiconsHelper ($params);
@@ -47,7 +49,7 @@ $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
 
 JHTML::_('behavior.mootools');
-$doc =& JFactory::getDocument();
+$doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::base() . 'modules/mod_sportsmanagement_clubicons/css/style.css');
 $css = 'img.smstarticon { width:25px;}';
 if ($params->get('max_width', 800) > 0 AND $cnt <= 20) $css .= 'table.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}

@@ -43,6 +43,7 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS
 require_once(dirname(__FILE__).DS.'helper.php');
 
 $document = JFactory::getDocument();
+$mainframe = JFactory::getApplication();
 $config = array();
 
 //add css file
@@ -74,6 +75,8 @@ $config['show_count_difftips'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_P
 $config['show_count_tendtipps'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS');
 
 $config['show_debug_modus'] = $params->get('show_debug_modus');
+
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
 
 //echo 'prediction game id -> '.$pg_id.'<br>';
 
@@ -108,6 +111,9 @@ $predictionMember[] = sportsmanagementModelPrediction::getPredictionMember($conf
 $predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS();
 $actJoomlaUser[] = JFactory::getUser();
 $roundID = $modelpg->roundID;
+
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' predictionGame<br><pre>'.print_r($predictionGame,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' predictionProjectS<br><pre>'.print_r($predictionProjectS,true).'</pre>'),'');
 
 $type_array = array();
 $type_array[]=JHTML ::_('select.option','0',JText::_('JL_PRED_RANK_FULL_RANKING'));

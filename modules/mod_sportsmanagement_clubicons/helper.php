@@ -109,9 +109,11 @@ class modJSMClubiconsHelper
 			$teams = $model->getTeams($divisionid);
 		}
 		
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
+        
 		$this->buildData($teams);
 		unset($teams);
-		unset($model);
+		//unset($model);
         }
 
 	}
@@ -147,8 +149,8 @@ class modJSMClubiconsHelper
 		$logourl = (!empty($item->$imgtype) AND file_exists(JPATH_ROOT.DS.str_replace('/', DS, $item->$imgtype)))
 			? $item->$imgtype : $this->placeholders[$imgtype];
 		//echo $logourl.'<br />';
-		$imgtitle = JText::_('View ') . $item->team_name;
-		return JHTML::image($logourl, $item->team_name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
+		$imgtitle = JText::_('View ') . $item->name;
+		return JHTML::image($logourl, $item->name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
 	}
 	/**
 	 * modJSMClubiconsHelper::getLink()

@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 jimport( 'joomla.utilities.arrayhelper' );
 
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
-
 /**
  * sportsmanagementModelProject
  * 
@@ -114,7 +112,7 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function __construct()
 	{
-		$this->projectid = JRequest::getInt('p',0);
+		self::$projectid = JRequest::getInt('p',0);
 		parent::__construct();
 	}
 
@@ -687,7 +685,7 @@ class sportsmanagementModelProject extends JModel
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id = tl.standard_playground ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id ');
-          $query->where('tl.project_id = '.(int)$this->projectid);
+          $query->where('tl.project_id = '.(int)self::$projectid);
 
 			$db->setQuery($query);
 			$this->_teams = $db->loadObjectList();
@@ -1155,7 +1153,7 @@ $query->where('p.id='.$db->Quote($this->projectid));
 		}
 		if (count(self::$_stats) > 0)
 		{
-			foreach ($this->_stats as $k => $row)
+			foreach (self::$_stats as $k => $row)
 			{
 				if (!$statid || $statid == $row->id || (is_array($statid) && in_array($row->id, $statid)))
 				{

@@ -187,6 +187,7 @@ class sportsmanagementModelPredictionUsers extends JModel
 
 	$mainframe	= JFactory::getApplication();
 	$db = JFactory::getDBO();
+    $query = $db->getQuery(true);
 	$playerName = $outputUserName;
 	$picture = '';
 	
