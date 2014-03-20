@@ -187,7 +187,7 @@ var $_identifier = "playgrounds";
         $query->where("v.country = '".$search_nation."'");
         }
         
-        $query->group('v.name');
+        $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         

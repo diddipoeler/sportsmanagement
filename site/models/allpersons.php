@@ -188,6 +188,8 @@ var $_identifier = "persons";
 		{
         $query->where("v.country = '".$search_nation."'");
         }
+        
+        $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         

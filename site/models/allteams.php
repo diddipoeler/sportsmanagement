@@ -186,6 +186,8 @@ var $_identifier = "teams";
 		{
         $query->where("c.country = '".$search_nation."'");
         }
+        
+        $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         

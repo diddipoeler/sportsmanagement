@@ -207,6 +207,8 @@ var $_identifier = "clubs";
         $query->where('v.season_id = ' . $search_seasons);
         }
         
+        $query->group('v.id');
+        
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         
