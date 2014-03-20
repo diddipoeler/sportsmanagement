@@ -53,11 +53,16 @@ class JFormFieldTeams extends JFormField
 
 	protected $type = 'teams';
 
+	/**
+	 * JFormFieldTeams::getInput()
+	 * 
+	 * @return
+	 */
 	protected function getInput() {
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
-        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "com_sportsmanagement";
