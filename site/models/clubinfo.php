@@ -58,6 +58,11 @@ class sportsmanagementModelClubInfo extends JModel
 	var $clubid = 0;
 	var $club = null;
 
+	/**
+	 * sportsmanagementModelClubInfo::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct( )
 	{
 		
@@ -68,6 +73,13 @@ class sportsmanagementModelClubInfo extends JModel
 	}
 
 	// limit count word
+	/**
+	 * sportsmanagementModelClubInfo::limitText()
+	 * 
+	 * @param mixed $text
+	 * @param mixed $wordcount
+	 * @return
+	 */
 	function limitText($text, $wordcount)
 	{
 		if(!$wordcount) {
@@ -87,6 +99,13 @@ class sportsmanagementModelClubInfo extends JModel
 		return $text;
 	}
     
+    /**
+     * sportsmanagementModelClubInfo::getRssFeeds()
+     * 
+     * @param mixed $rssfeedlink
+     * @param mixed $rssitems
+     * @return
+     */
     function getRssFeeds($rssfeedlink,$rssitems)
     {
     $rssIds	= array();    
@@ -127,35 +146,58 @@ class sportsmanagementModelClubInfo extends JModel
     return $lists;         
     }
     
+    /**
+     * sportsmanagementModelClubInfo::getClubAssociation()
+     * 
+     * @param mixed $associations
+     * @return
+     */
     function getClubAssociation($associations)
 	{
-	$query = ' SELECT asoc.*'
-				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS asoc '
-				       //. ' inner join #__joomleague_club AS c on asoc.id = c.associations '
-				       . ' WHERE asoc.id = '. $this->_db->Quote($associations)
-				            ;
-				$this->_db->setQuery($query);
-				$result = $this->_db->loadObject();
+	   $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+             $query->select('asoc.*');
+             // From 
+		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS asoc');
+             // Where
+             $query->where('asoc.id = '. $db->Quote($associations) );
+
+				$db->setQuery($query);
+				$result = $db->loadObject();
 	
 		return $result;
 	}
 	
+    /**
+     * sportsmanagementModelClubInfo::getClub()
+     * 
+     * @return
+     */
     function getClub( )
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
         $this->projectid = JRequest::getInt( "p", 0 );
 		$this->clubid = JRequest::getInt( "cid", 0 );
         if ( is_null( $this->club ) )
 		{
 			if ( $this->clubid > 0 )
 			{
-				$query = ' SELECT c.*'
-				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c '
-				       . ' WHERE c.id = '. $db->Quote($this->clubid)
-				            ;
+			 // Select some fields
+             $query->select('c.*');
+             // From 
+		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+             // Where
+             $query->where('c.id = '. $db->Quote($this->clubid) );
+
 				$db->setQuery($query);
 				$this->club = $db->loadObject();
 			}
@@ -163,51 +205,85 @@ class sportsmanagementModelClubInfo extends JModel
 		return $this->club;
 	}
 
+	/**
+	 * sportsmanagementModelClubInfo::getTeamsByClubId()
+	 * 
+	 * @return
+	 */
 	function getTeamsByClubId()
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $subquery1 = $db->getQuery(true);
+        $subquery2 = $db->getQuery(true);
+        
         $teams = array( 0 );
 		if ( $this->clubid > 0 )
 		{
-
-			// diddipoeler
-			// query erweitert um die projektteamid
-			$query = ' SELECT t.id,prot.trikot_home,prot.trikot_away, '
-				     	. ' CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug, '
-				       . ' t.name as team_name, '
-				       . ' t.short_name as team_shortcut, '
-				       . ' t.info as team_description, '
-				       . ' (SELECT CONCAT_WS( \':\', MAX(project_id) , p.alias )         
-				       		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team 
-				       		RIGHT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p on project_id = p.id 
-				       		WHERE team_id = t.id and p.published = 1) as pid,'
-                       . '(SELECT pt.id 
-				       		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt 
-				       		RIGHT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p on pt.project_id = p.id 
-				       		WHERE team_id = t.id and p.published = 1 and pt.project_id = pid ) as ptid'     
-				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t 
-               left join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as prot
-on prot.team_id = t.id'
-				       . ' WHERE club_id = '.(int) $this->clubid. ' group by t.id';
+		  // Select some fields
+          $query->select('t.id,prot.trikot_home,prot.trikot_away');
+          $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
+          $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ');
+          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
+          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as prot ON prot.team_id = st.id ');
+          
+          // Select some fields
+          $subquery1->select('CONCAT_WS( \':\', MAX(pt.project_id) , p.alias )');
+          // From 
+          $subquery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+          $subquery1->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON pt.project_id = p.id ');
+          $subquery1->where('pt.team_id = st.id');
+          $subquery1->where('p.published = 1');
+          
+          // Select some fields
+          $subquery2->select('pt.id');
+          // From 
+          $subquery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+          $subquery2->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON pt.project_id = p.id ');
+          $subquery2->where('pt.team_id = st.id');
+          $subquery2->where('p.published = 1');
+          $subquery2->where('pt.project_id = pid');
+          
+          $query->select('('.$subquery1.' ) as pid');
+          $query->select('('.$subquery2.' ) as ptid');
+          
+          $query->where('t.club_id = '.(int) $this->clubid);
+          
+          $query->group('t.id');
 
 			$db->setQuery( $query );
 			$teams = $db->loadObjectList();
+            
+            if ( !$teams )
+            {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+            }
+
 		}
 		return $teams;
 	}
 
+	/**
+	 * sportsmanagementModelClubInfo::getStadiums()
+	 * 
+	 * @return
+	 */
 	function getStadiums()
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
         $stadiums = array();
 
-		$club = $this->getClub();
+		$club = self::getClub();
 		if ( !isset( $club ) )
 		{
 			return null;
@@ -216,19 +292,26 @@ on prot.team_id = t.id'
 		{
 			$stadiums[] = $club->standard_playground;
 		}
-		$teams = $this->getTeamsByClubId();
+		$teams = self::getTeamsByClubId();
 
 		if ( count( $teams > 0 ) )
 		{
 			foreach ($teams AS $team )
 			{
-				$query = ' SELECT distinct(standard_playground) '
-				       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team '
-				       . ' WHERE team_id = '.(int)$team->id
-				       . ' AND standard_playground > 0';
+			 $query->clear();
+             // Select some fields
+             $query->select('distinct(pt.standard_playground)');
+             // From 
+		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
+                // Where
+                $query->where('st.team_id = '.(int)$team->id );
+                $query->where('pt.standard_playground > 0');
+                           
 				if ( $club->standard_playground > 0 )
 				{
-					$query .= ' AND standard_playground <> '.$club->standard_playground;
+				    // Where
+                    $query->where('standard_playground <> '. $club->standard_playground );
 				}
 				$db->setQuery($query);
 				if ( $res = $db->loadResult() )
@@ -240,15 +323,22 @@ on prot.team_id = t.id'
 		return $stadiums;
 	}
 
+	/**
+	 * sportsmanagementModelClubInfo::getPlaygrounds()
+	 * 
+	 * @return
+	 */
 	function getPlaygrounds( )
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
         $playgrounds = array();
 
-		$stadiums = $this->getStadiums();
+		$stadiums = self::getStadiums();
 		if ( !isset ( $stadiums ) )
 		{
 			return null;
@@ -256,11 +346,14 @@ on prot.team_id = t.id'
 
 		foreach ( $stadiums AS $stadium )
 		{
-			$query = '	SELECT id AS value, name AS text, pl.*, '
-    			     . ' CASE WHEN CHAR_LENGTH( pl.alias ) THEN CONCAT_WS( \':\', pl.id, pl.alias ) ELSE pl.id END AS slug '
-				     . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl '
-				     . ' WHERE id = '. $db->Quote($stadium)
-			            ;
+		  // Select some fields
+          $query->select('id AS value, name AS text, pl.*');
+          $query->select('CASE WHEN CHAR_LENGTH( pl.alias ) THEN CONCAT_WS( \':\', pl.id, pl.alias ) ELSE pl.id END AS slug');
+          // From 
+		  $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl');
+          // Where
+          $query->where('id = '. $db->Quote($stadium) );
+
 			$db->setQuery($query, 0, 1);
 			$playgrounds[] = $db->loadObject();
 		}
@@ -315,9 +408,14 @@ on prot.team_id = t.id'
  */
 
 
+	/**
+	 * sportsmanagementModelClubInfo::getAddressString()
+	 * 
+	 * @return
+	 */
 	function getAddressString( )
 	{
-		$club = $this->getClub();
+		$club = self::getClub();
 		if ( !isset ( $club ) ) { return null; }
  		$address_parts = array();
 		if (!empty($club->address))
@@ -348,6 +446,12 @@ on prot.team_id = t.id'
 	}
 
 	
+	/**
+	 * sportsmanagementModelClubInfo::hasEditPermission()
+	 * 
+	 * @param mixed $task
+	 * @return
+	 */
 	function hasEditPermission($task=null)
 	{
 		//check for ACL permsission and project admin/editor

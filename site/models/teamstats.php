@@ -223,31 +223,45 @@ class sportsmanagementModelTeamStats extends JModel
      */
     function getNoGoalsAgainst( )
     {
+        $option = JRequest::getCmd('option');
+	    $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
     	if ( (!isset( $this->nogoals_against )) || is_null( $this->nogoals_against ) )
     	{
-    		$query = ' SELECT '
-			       . ' COUNT( round_id ) AS totalzero, '
-			       . ' SUM( t1.id = '.$this->team->id.' AND team2_result=0 ) AS homezero, '
-			       . ' SUM( t2.id = '.$this->team->id.' AND team1_result=0 ) AS awayzero '
-			       . ' FROM #__joomleague_match as matches '
-			       . ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-			       . ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-			       . ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-			       . ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-			       . ' WHERE pt1.project_id = '.$this->projectid.' '
-			       . ' AND published=1 '
-			       . ' AND alt_decision=0 '
-			       . ' AND ((t1.id = '.$this->team->id.' AND team2_result=0 ) '
-			       . ' OR  (t2.id = '.$this->team->id.' AND team1_result=0 ))'
-				   . ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
-			       ;
-    		$this->_db->setQuery($query);
-    		$this->nogoals_against = $this->_db->loadObject( );
+           $query->select('COUNT( round_id ) AS totalzero ');
+	       $query->select('SUM( t1.id = '.$this->team->id.' AND team2_result=0 ) AS homezero ');
+           $query->select('SUM( t2.id = '.$this->team->id.' AND team1_result=0 ) AS awayzero ');
+           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+           
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = matches.projectteam2_id ');
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
+           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+        
+           $query->where('pt1.project_id = '.$this->projectid);
+           $query->where('published=1 ');
+           $query->where('alt_decision=0');
+           $query->where('( (t1.id = '.$this->team->id.' AND team2_result=0 ) OR (t2.id = '.$this->team->id.' AND team1_result=0 ) ) ');
+           $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
+                   
+    		$db->setQuery($query);
+    		$this->nogoals_against = $db->loadObject( );
     	}
     	return $this->nogoals_against;
     }
     
     
+    /**
+     * sportsmanagementModelTeamStats::getSeasonTotals()
+     * 
+     * @param mixed $which
+     * @return
+     */
     function getSeasonTotals($which)
     {
         $option = JRequest::getCmd('option');
@@ -255,9 +269,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
-        
-        
+
         $query->select('COUNT(matches.id) AS totalmatches ');
         $query->select('COUNT(team1_result) AS playedmatches ');
 //	    $query->select('IFNULL(SUM(team1_result),0) AS goalsfor,IFNULL(SUM(team2_result),0) AS goalsagainst,IFNULL(SUM(team1_result + team2_result),0) AS totalgoals,IFNULL(SUM(IF(team1_result=team2_result,1,0)),0) AS totaldraw,IFNULL(SUM(IF(team1_result<team2_result,1,0)),0) AS totalloss,IFNULL(SUM(IF(team1_result>team2_result,1,0)),0) AS totalwin  ');
@@ -319,13 +331,6 @@ class sportsmanagementModelTeamStats extends JModel
     	
         
     }
-    
-
-    
-    
-    
-
-
     
 		/**
 		 * sportsmanagementModelTeamStats::getChartData()
@@ -592,14 +597,18 @@ class sportsmanagementModelTeamStats extends JModel
 	 */
 	function getLogo( )
 	{
-		$database = JFactory::getDBO();
-	    $query = "SELECT logo_big
-				FROM #__joomleague_club clubs
-				LEFT JOIN #__joomleague_team teams ON clubs.id = teams.club_id
-				WHERE teams.id = ".$this->teamid;
-
-    	$database->setQuery( $query );
-    	$logo = JURI::root().$database->loadResult();
+	   $option = JRequest::getCmd('option');
+	    $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+		$query->select('logo_big');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS clubs ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS teams ON clubs.id = teams.club_id ');
+        $query->where('teams.id = '.$this->teamid);
+    	$db->setQuery( $query );
+    	$logo = JURI::root().$db->loadResult();
 
 		return $logo;
 	}

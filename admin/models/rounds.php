@@ -56,12 +56,15 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelRounds extends JModelList
 {
 	var $_identifier = "rounds";
-    var $_project_id = 0;
+    static $_project_id = 0;
 	
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
                         'r.name',
+                        'r.roundcode',
+                        'r.round_date_first',
+                        'r.round_date_last',
                         'r.id',
                         'r.ordering'
                         );
@@ -150,7 +153,7 @@ class sportsmanagementModelRounds extends JModelList
         $query->where(' LOWER(r.name) LIKE '.$db->Quote('%'.$search.'%'));
 		}
        
-        $query->order($db->escape($this->getState('list.ordering', 'r.name')).' '.
+        $query->order($db->escape($this->getState('list.ordering', 'r.roundcode')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
 
 $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');

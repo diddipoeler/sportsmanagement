@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_TEAMPLAYERS</name>
+	<creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_TEAMPLAYERS_XML_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_teamplayers">mod_sportsmanagement_teamplayers.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>css</folder>
+		<folder>tmpl</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_teamplayers.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_teamplayers.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic"
+				addfieldpath="/administrator/components/com_sportsmanagement/elements">
+				<field type="project" name="p" label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL"
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL_DESC" />
+				<field name="team" type="dependsql" default="0" depends="p"
+					task="projectteamsoptions" 
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL_DESC" />
+				<field name="show_project_name" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_team_name" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_TEAM_NAME" 
+					description="SHOW TEAM NAME DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_player_link" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_player_flag" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="name_format" type="nameformat"
+					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT" 
+					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="1"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHING_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHING_DESCR">
+					<option value="1">MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHING_USE_GLOBAL</option>
+					<option value="0">MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHING_NO_CACHING</option>
+				</field>
+				<field name="cache_time" type="text" default="900"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHE_TIME_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_CACHE_TIME_DESCR">
+				</field>
+				<field name="moduleclass_sfx" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MODULE_CLASS_SUFFIX_LABEL"
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MODULE_CLASS_SUFFIX_DESCR">
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

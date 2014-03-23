@@ -1011,15 +1011,23 @@ abstract class sportsmanagementHelper
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementHelper::showTeamIcons()
+	 * 
+	 * @param mixed $team
+	 * @param mixed $config
+	 * @return
+	 */
 	function showTeamIcons(&$team,&$config)
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
             }
             
         if(!isset($team->projectteamid)) return "";
@@ -1061,8 +1069,9 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_teaminfo_link'])
 		{
-// 			$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
+//    		$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
 			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid);
+//            $link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$projectteamid);
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1099,6 +1108,16 @@ abstract class sportsmanagementHelper
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementHelper::formatTeamName()
+	 * 
+	 * @param mixed $team
+	 * @param mixed $containerprefix
+	 * @param mixed $config
+	 * @param integer $isfav
+	 * @param mixed $link
+	 * @return
+	 */
 	function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null)
 	{
 		$output			= '';
@@ -1199,6 +1218,14 @@ abstract class sportsmanagementHelper
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementHelper::showClubIcon()
+	 * 
+	 * @param mixed $team
+	 * @param integer $type
+	 * @param integer $with_space
+	 * @return void
+	 */
 	function showClubIcon(&$team,$type=1,$with_space=0)
 	{
 		if (($type==1) && (isset($team->country)))
@@ -1221,6 +1248,12 @@ abstract class sportsmanagementHelper
 		}
 	}
 
+	/**
+	 * sportsmanagementHelper::showColorsLegend()
+	 * 
+	 * @param mixed $colors
+	 * @return void
+	 */
 	function showColorsLegend($colors)
 	{
 		$favshow=JRequest::getVar('func','');

@@ -57,6 +57,12 @@ class sportsmanagementModelLeagues extends JModelList
 {
 	var $_identifier = "leagues";
 	
+    /**
+     * sportsmanagementModelLeagues::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -109,6 +115,11 @@ class sportsmanagementModelLeagues extends JModelList
 		parent::populateState('obj.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelLeagues::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();

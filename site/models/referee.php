@@ -63,34 +63,34 @@ class sportsmanagementModelReferee extends JModel
 		$this->personid=JRequest::getInt('pid',0);
 	}
 
-	function &getReferee()
-	{
-	   $mainframe = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-       
-		if (is_null($this->_data))
-		{
-			$query='	SELECT	p.*,
-								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS slug,
-								pr.id,
-								pr.notes AS prnotes,
-								pos.name AS position_name,
-								pr.picture
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id=pr.person_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=pr.project_position_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id						
-						WHERE pr.project_id='.$this->_db->Quote($this->projectid).' 
-						  AND p.published = 1 
-						  AND pr.person_id='.$this->_db->Quote($this->personid);
-			$this->_db->setQuery($query);
-			$this->_data=$this->_db->loadObject();
-		}
-		return $this->_data;
-	}
+//	function &getReferee()
+//	{
+//	   $mainframe = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//       // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//       
+//		if (is_null($this->_data))
+//		{
+//			$query='	SELECT	p.*,
+//								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS slug,
+//								pr.id,
+//								pr.notes AS prnotes,
+//								pos.name AS position_name,
+//								pr.picture
+//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
+//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id=pr.person_id
+//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=pr.project_position_id
+//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id						
+//						WHERE pr.project_id='.$this->_db->Quote($this->projectid).' 
+//						  AND p.published = 1 
+//						  AND pr.person_id='.$this->_db->Quote($this->personid);
+//			$this->_db->setQuery($query);
+//			$this->_data=$this->_db->loadObject();
+//		}
+//		return $this->_data;
+//	}
 
 	/**
 	 * get person history across all projects,with team,season,position,... info

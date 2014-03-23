@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY</name>
+	<creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_XML_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_club_birthday">mod_sportsmanagement_club_birthday.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>mod_sportsmanagement_club_birthday.xml</filename>
+		<folder>tmpl</folder>
+		<folder>css</folder>
+		<folder>js</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_club_birthday.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_club_birthday.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_club_birthday.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_club_birthday.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+
+			<fieldset	name="basic"
+						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
+			
+				<field 	name="limit" type="text" default="1"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
+				
+				<field 	name="sort_order" type="list" default="-"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SORT_ORDER_SAME_DAY_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SORT_ORDER_SAME_DAY_DESCR">
+					<option value="-1">MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SAME_DAY_SORTING_OLDEST_FIRST</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SAME_DAY_SORTING_YOUNGEST_FIRST</option>
+				</field>
+				
+				<field 	name="maxdays" type="text" default=""
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_DESCR" />
+				
+				<field 	name="Itemid" type="text" default=""
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
+						
+				<field 	name="@spacer" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
+						description="" />
+						
+				<field 	name="show_club_flag" type="radio" default="1"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field 	name="heading_style" type="text" default="sectiontableheader"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_DESCR" />
+						
+				<field 	name="show_picture" type="radio" default="0"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>	
+				
+				<field 	name="picture_width" type="text" default="120"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_DESCR" />
+						
+				<field 	name="@spacer" type="spacer" default=""
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
+				
+				<field 	name="dayformat" type="text" default="%d. %B %Y"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_FORMAT_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_FORMAT_DESCR" />
+				
+				<field 	name="birthdayformat" type="text" default="%d.%m.%Y"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_OF_BIRTH_FORMAT_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_OF_BIRTH_FORMAT_DESCR" />
+				
+				<field 	name="futuremessage" type="text" default="in %DAYS_TO% Tagen"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_FUTURE_MESSAGE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_FUTURE_MESSAGE_DESCR" />
+				
+				<field 	name="todaymessage" type="text" 
+        default="Heute"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TODAY_MESSAGE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TODAY_MESSAGE_DESCR" />
+					
+				<field 	name="tomorrowmessage" type="text" 
+        default="morgen"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TOMORROW_MESSAGE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TOMORROW_MESSAGE_DESCR" />
+					
+				<field 	name="birthdaytext" type="textarea" 
+						default="... wird %AGE% Jahre alt%BR% %WHEN% am %DATE% %BR% (* %DATE_OF_BIRTH%)"
+						cols="25" rows="5"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_DESCR" /> 
+						
+				<field 	name="birthdaytextyear" type="textarea" 
+						default="... wird %AGE% Jahre alt%BR%"
+						cols="25" rows="5"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_YEAR_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_YEAR_DESCR" />		
+					
+				<field 	name="not_found_text" type="textarea" 
+						default="kein Jubiläum in den nächsten %DAYS% Tagen"
+						cols="25" rows="5"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_DESCR" />
+				
+				<field name="mode" type="list" default="" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_MODE"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MODE">
+					<option value="T">TICKER</option>
+					<option value="L">LIST</option>
+					<option value="V">VERTICAL SCROLL</option>
+					<option value="H">HORIZONTAL SCROLL</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label=""
+					description="" />
+				   <!--
+        	<field name="refresh" type="radio" default="0" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_REFRESH"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_REFRESH">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				-->
+				<field name="minute" type="text" default="3" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_MINUT_NUMBER"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MINUT_NUMBER" />
+				<field name="tickerpause" type="text" default="3"
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_PAUSE_TIME" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_PAUSE_TIME" />
+				<field name="@spacer" type="spacer" default="" label=""
+					description="" />
+				<field name="scrollspeed" type="text" default="2"
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLSPEED" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLSPEED" />
+				<field name="scrollpause" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLPAUSE" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLPAUSE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="height" type="text" default="50" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_TICKER_HEIGHT"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_TICKER_HEIGHT">
+				</field>
+				<field name="width" type="text" default="200" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_TICKER_WIDTH"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_TICKER_WIDTH">
+				</field>
+				
+				
+			</fieldset>
+			
+			<fieldset name="advanced">
+				
+					<field 	name="moduleclass_sfx" type="text" default=""
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MODULE_CLASS_SUFFIX_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MODULE_CLASS_SUFFIX_DESCR" />
+					
+				<field 	name="sectiontableentry1" type="text" default="sectiontableentry1"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PERSON_STYLE_ODD_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PERSON_STYLE_ODD_DESCR" />
+					
+				<field 	name="sectiontableentry2" type="text" default="sectiontableentry2"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PERSON_STYLE_EVEN_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PERSON_STYLE_EVEN_DESCR" />
+							
+			</fieldset>
+		</fields>
+	</config>				
+</extension>

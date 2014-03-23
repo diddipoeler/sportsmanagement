@@ -136,7 +136,8 @@
 <modules>
 <module module="mod_sportsmanagement_quickicon" client="administrator" position="icon" published="1"/>
 <module module="mod_sportsmanagement_rquotes" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>				
+<module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>			
 </modules>
 
 <plugins>

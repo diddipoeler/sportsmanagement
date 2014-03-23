@@ -53,6 +53,11 @@ class JFormFieldactseason extends JFormField
 
 	protected $type = 'actseason';
 
+	/**
+	 * JFormFieldactseason::getInput()
+	 * 
+	 * @return
+	 */
 	protected function getInput() 
     {
 		$db = JFactory::getDBO();

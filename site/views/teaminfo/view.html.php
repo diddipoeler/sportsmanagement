@@ -71,6 +71,9 @@ class sportsmanagementViewTeamInfo extends JView
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
 //        $mainframe->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		$this->assignRef( 'project', $project );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
+        
 		$isEditor = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
 
 		if ( isset($this->project->id) )

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+    <name>MOD_SPORTSMANAGEMENT_TOP_TIPPER</name>
+    <creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+    <description>MOD_SPORTSMANAGEMENT_TOP_TIPPER_XML_DESC</description>
+     
+     <files>
+        <filename module="mod_sportsmanagement_top_tipper">mod_sportsmanagement_top_tipper.php</filename>
+        <filename>index.html</filename>
+		    <filename>helper.php</filename>
+		    <folder>tmpl</folder>
+		    <folder>css</folder>
+     </files>
+     
+  <languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
+		
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.sys.ini</language>
+		
+	</languages>
+
+<config>  
+		<fields name="params">
+
+			<fieldset name="basic" addfieldpath="/administrator/components/com_sportsmanagement/elements">	
+     
+      
+     			<field	 name="pg" type="predictiongame" 
+					label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_SELECT_PREDICTION_GAME_LABEL"
+					description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_SELECT_PREDICTION_GAME_DESCR">
+					</field>
+						
+      
+      
+      <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_DESC">      
+       <option value="0">JNO</option>
+		   <option value="1">JYES</option>
+		 </field>
+		 
+		 <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_DESC">      
+       <option value="0">JNO</option>
+		   <option value="1">JYES</option>
+		 </field>
+           
+      <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT" type="text" default="5" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_DESC" />
+
+    <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_RANKING_NAV_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+         		 
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_DESC_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+    <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
+    <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_DESC">
+			<option value="0">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_ALL</option>
+			<option value="1">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_CURRENT</option>
+		</field>
+		
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID" 
+    type="radio" 
+    default="0" 
+    label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_LABEL" 
+    description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_LABEL" description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+     
+      <field	name="show_debug_modus" type="radio" default="0"
+				label="JL_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
+				description="JL_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_DEBUG_RANKINGNAV">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
+</fieldset>
+    
+      <fieldset
+					name="advanced">
+      <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (normally just \'table.moduletable\'), this allows individual module styling" />        
+      </fieldset>
+      
+     </fields>
+     	</config>
+</extension>

@@ -50,8 +50,8 @@ jimport( 'joomla.utilities.utility' );
 
 
 
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'project.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionRanking

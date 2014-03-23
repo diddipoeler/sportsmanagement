@@ -80,6 +80,7 @@ class sportsmanagementModelRanking extends JModel
 	 */
 	function __construct( )
 	{
+	   $mainframe = JFactory::getApplication();
 		$this->projectid = JRequest::getInt( "p", 0 );
 		$this->round = JRequest::getInt( "r", $this->current_round);
 		$this->part  = JRequest::getInt( "part", 0);
@@ -90,11 +91,20 @@ class sportsmanagementModelRanking extends JModel
     $this->viewName = JRequest::getVar( "view");
     
 		$this->selDivision = JRequest::getInt( 'division', 0 );
+        
+        sportsmanagementModelProject::$projectid = $this->projectid; 
+        
+//        if ( empty($this->round) )
+//        {
+//            $this->round = sportsmanagementModelProject::getCurrentRoundNumber();
+//        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
 
 		parent::__construct( );
 	}
 
-	// limit count word
+	
 	/**
 	 * sportsmanagementModelRanking::limitText()
 	 * 
@@ -183,7 +193,18 @@ class sportsmanagementModelRanking extends JModel
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        
-		if (!$this->round) {
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+       
+       if ( !$this->round )
+        {
+            $this->round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName);
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+        }
+        
+       
+       
+		if (!$this->round) 
+        {
 			return false;
 		}
 		
@@ -192,12 +213,14 @@ class sportsmanagementModelRanking extends JModel
 		$current = null;
 		foreach ($rounds as $r)
 		{
-			if ($r->id == $this->round) {
+			if ($r->id == $this->round) 
+            {
 			$current = $r;
 				break;
 			}
 		}
-			if (!$current) {
+			if (!$current) 
+            {
 			return false;
 		}
         
@@ -208,8 +231,8 @@ class sportsmanagementModelRanking extends JModel
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
         
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id');        
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
@@ -217,26 +240,6 @@ class sportsmanagementModelRanking extends JModel
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
 
-/*
-		// previous games of each team, until current round
-		$query = ' SELECT m.*, r.roundcode, '
-		       . ' CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug, '
-		       . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug '
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-               
-               
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON pt1.team_id = t1.id '
-		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON pt2.team_id = t2.id '
-		       . ' WHERE r.project_id = ' . $this->_db->Quote($this->projectid)
-		       . '   AND r.roundcode <= ' . $this->_db->Quote($current->roundcode)
-		       . '   AND m.team1_result IS NOT NULL '
-		       . ' ORDER BY r.roundcode ASC '
-		       ;
-*/
         
         $query->where('r.project_id = ' . $db->Quote($this->projectid));
         $query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
@@ -248,15 +251,15 @@ class sportsmanagementModelRanking extends JModel
         
         if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
@@ -313,25 +316,29 @@ class sportsmanagementModelRanking extends JModel
 	{
 		$mainframe	= JFactory::getApplication();
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
-		$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        //$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		//$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
         
-		$project = $mdlProject->getProject();
+		$project = sportsmanagementModelProject::getProject();
+
+		sportsmanagementModelRounds::$_project_id = $project->id;
 		
-		
-		$mdlRounds->_project_id = $project->id;
-		
-		$firstRound	= $mdlRounds->getFirstRound($project->id);
-		$lastRound	= $mdlRounds->getLastRound($project->id);
+		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id);
+		$lastRound	= sportsmanagementModelRounds::getLastRound($project->id);
 
 		// url if no sef link comes along (ranking form)
 		$url = sportsmanagementHelperRoute::getRankingRoute( $this->projectid );
-		$tableconfig= $mdlProject->getTemplateConfig( "ranking" );
+		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" );
 
-		$this->round = ($this->round == 0) ? $mdlProject->getCurrentRound() : $this->round;
+		$this->round = ($this->round == 0 || $this->round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName) : $this->round;
 
-		$this->rounds = $mdlProject->getRounds();
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstRound<br><pre>'.print_r($firstRound,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastRound<br><pre>'.print_r($lastRound,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+
+
+		$this->rounds = sportsmanagementModelProject::getRounds();
         
 		if ( $this->part == 1 )
 		{
@@ -400,7 +407,7 @@ class sportsmanagementModelRanking extends JModel
 				$url .= '&amp;divLevel='.$this->divLevel;
 				if ( $this->divLevel )
 				{
-					$divisions = $mdlProject->getDivisionsId( $this->divLevel );
+					$divisions = sportsmanagementModelProject::getDivisionsId( $this->divLevel );
 				//	print_r( $divisions);
 				}
 				else
@@ -490,12 +497,19 @@ class sportsmanagementModelRanking extends JModel
 	 */
 	function _getPreviousRoundId($round_id)
 	{
-		$query = ' SELECT id ' 
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round ' 
-		       . ' WHERE project_id = ' . $this->projectid
-		       . ' ORDER BY roundcode ASC ';
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        // Select some fields
+		$query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->where('project_id = ' . $this->projectid);
+        $query->order('roundcode ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadResultArray();
 		
 		if (!$res) {
 			return $round_id;

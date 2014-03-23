@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+
+.hide {
+	visibility: hidden;
+	position: absolute;
+	top: -400px;
+}
+#modjlplaygroundplan0 {
+	width: 100%;
+	height: 120px;
+}
+.qslidejl {
+	font-size: 10pt;
+	padding: 3px;
+}
+#modjlplaygroundplan1 {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+.jlplaygroundplan {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+}
+#jlplaygroundplanis0 {
+	background: #445566;
+	height: 120px;
+}
+#jlplaygroundplanis1 {
+	background: #556677;
+	height: 120px;
+}
+.jlplplaneplname {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+	padding: 5px 0px 0px 0px;
+}
+div.jlplaygroundplantextdivticker { /*visibility: hidden; */
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+div.jlplaygroundplantextdivlist {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+div.jlplplanetname {
+	font-weight: bold;
+	float: left;
+	width: 45%;
+	text-align: center;
+	vertical-align: middle;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+div.jlplplanetnamesep {
+	float: left;
+	width: 10%;
+	text-align: center;
+	vertical-align: middle;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+div.jlplplanedate {
+	clear: both;
+	text-align: center;
+	vertical-align: middle;
+	padding: 5px 0px 5px 0px;
+}
+.jlplplaneleaguename {
+	color: #fff;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+	padding-top: 5px;
+}

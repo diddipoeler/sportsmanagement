@@ -39,21 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
-
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-
-
-//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'ranking.php' );
-//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'route.php' );
-//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-//require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'divisions.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'teams.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
 
 /**
  * sportsmanagementViewRanking
@@ -67,6 +54,12 @@ jimport('joomla.filesystem.file');
 class sportsmanagementViewRanking extends JView 
 {
 	
+	/**
+	 * sportsmanagementViewRanking::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl = null) 
 	{
 		// Get a refrence of the page instance in joomla
@@ -81,26 +74,26 @@ class sportsmanagementViewRanking extends JView
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
         $mdlDivisions = JModel::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
         $mdlTeams = JModel::getInstance("Teams", "sportsmanagementModel");
         
-		$config = $mdlProject->getTemplateConfig($this->getName());
-		$project = $mdlProject->getProject();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$project = sportsmanagementModelProject::getProject();
 		
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
-		$mdlProject->setProjectId($project->id);
+		sportsmanagementModelProject::setProjectId($project->id);
 		
 		//$map_config		= $model->getMapConfig();
 		//$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
-		$this->assignRef('model',			$model);
+		$this->assignRef('model',$model);
 		$this->assignRef('project', $project);
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->assignRef( 'extended', $extended );
         
-		$this->assign('overallconfig', $mdlProject->getOverallConfig());
+		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig());
 		$this->assignRef('tableconfig', $config);
 		$this->assignRef('config', $config);
         
@@ -132,14 +125,14 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking();
-       $this->assignRef('firstRank',      $model->currentRanking  );
+       $this->assignRef('firstRank',$model->currentRanking  );
        $model->part = 2;
        $model->from = 0;
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking();
-       $this->assignRef('secondRank',      $model->currentRanking );
+       $this->assignRef('secondRank',$model->currentRanking );
        $model->part = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
@@ -147,33 +140,34 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
 		$model->computeRanking();
 
-		$this->assignRef('round',     $model->round);
-		$this->assignRef('part',      $model->part);
-		$this->assignRef('rounds',    $rounds);
-		$this->assign('divisions', $mdlDivisions->getDivisions($project->id));
-		$this->assignRef('type',      $model->type);
-		$this->assignRef('from',      $model->from);
-		$this->assignRef('to',        $model->to);
-		$this->assignRef('divLevel',  $model->divLevel);
-		$this->assignRef('currentRanking',  $model->currentRanking);
-		$this->assignRef('previousRanking', $model->previousRanking);
-		$this->assignRef('homeRank',      $model->homeRank);
-		$this->assignRef('awayRank',      $model->awayRank);
+		$this->assignRef('round',$model->round);
+		$this->assignRef('part',$model->part);
+		$this->assignRef('rounds',$rounds);
+		$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
+		$this->assignRef('type',$model->type);
+		$this->assignRef('from',$model->from);
+		$this->assignRef('to',$model->to);
+		$this->assignRef('divLevel',$model->divLevel);
+		$this->assignRef('currentRanking',$model->currentRanking);
+		$this->assignRef('previousRanking',$model->previousRanking);
+		$this->assignRef('homeRank',$model->homeRank);
+		$this->assignRef('awayRank',$model->awayRank);
         
         
        
-		$this->assignRef('current_round', $model->current_round);
+		//$this->assignRef('current_round', $model->current_round);
+        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view")));
         
         // mannschaften holen
-		$this->assign('teams',$mdlProject->getTeamsIndexedByPtid());
+		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
+       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
+       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
        }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
@@ -234,7 +228,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$config['colors'] = "";
 		}
 
-		$this->assign('colors', $mdlProject->getColors($config['colors']));
+		$this->assign('colors', sportsmanagementModelProject::getColors($config['colors']));
 		//$this->assignRef('result', $model->getTeamInfo());
 		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
 		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );

@@ -58,7 +58,7 @@ class sportsmanagementViewReferee extends JView
 		$this->assignRef('config',$config);
 		$this->assignRef('person',$person);
 
-		$ref=&$model->getReferee();
+		$ref = sportsmanagementModelPerson::getReferee();
 		if ($ref)
 		{
 			$titleStr=JText::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));

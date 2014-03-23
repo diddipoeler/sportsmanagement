@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="module"  method="upgrade" client="site">
+	<name>MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_NAME</name>
+	<author>Carsten Kühn</author>
+	<authorUrl>http://www.yourlife.de</authorUrl> 
+	<version>1.5b.2</version>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<description>MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_NAME_DESC</description>
+	<files>
+		<filename>mod_sportsmanagement_clubicons.xml</filename>
+		<filename module="mod_sportsmanagement_clubicons">mod_sportsmanagement_clubicons.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+    <folder>css</folder>
+    <folder>js</folder>
+    <folder>elements</folder>
+	</files>
+	<languages>
+	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_clubicons.ini</language>
+	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_clubicons.sys.ini</language>
+	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_clubicons.ini</language>
+	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_clubicons.sys.ini</language>
+</languages>
+<config>
+		<fields name="params" addpath="/modules/mod_sportsmanagement_clubicons/elements/">
+			<fieldset name="advanced">
+	<field name="template" type="list" default="default" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE_DESC">
+	  <option value="default">default</option>
+	</field>
+	<field name="max_width" type="text" default="0" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
+	<field name="logotype" type="list" default="logo_big" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE_DESC">
+		<option value="logo_big">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_BIG</option>
+		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
+		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
+	</field>
+	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
+	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTHDIF" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTHDIFF_DESC" />
+	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
+	<field name="iconpos" type="list" default="middle" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_DESC">
+		<option value="top">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_TOP</option>
+		<option value="middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_MIDDLE</option>
+		<option value="bottom">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_BOTTOM</option>
+	</field>
+	<field name="teamlink" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK" description="">
+		<option value="0">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION0</option>
+		<option value="1">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION1</option>
+		<option value="2">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION2</option>
+		<option value="3">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION3</option>
+		<option value="4">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION4</option>
+		<option value="5">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION5</option>
+	</field>
+	<field name="newwindow" type="list" default="0" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+	</field>
+  <field name="project_ids" type="projectsmultiple" default="" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
+  <field name="usepfromcomponent" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+	</field>
+	</fieldset>
+	<fieldset name="basic">
+    <field name="@spacer" type="spacer" default="" label="" description="-" />
+		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+		</fieldset>
+ </fields>
+ </config>
+ </extension>
