@@ -41,11 +41,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+/**
+ * sportsmanagementViewPlayground
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewPlayground extends JView
 {
+	/**
+	 * sportsmanagementViewPlayground::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display( $tpl = null )
 	{
-		// Get a refrence of the page instance in joomla
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
 
 		// Set page title
@@ -62,12 +79,16 @@ class sportsmanagementViewPlayground extends JView
 		$games = $model->getNextGames();
 		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
 		$this->assign( 'playground',  $model->getPlayground() );
+        $this->assignRef( 'address_string', $model->getAddressString() );
 		$this->assign( 'teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
 		$this->assignRef( 'games', $games );
 		$this->assignRef( 'gamesteams', $gamesteams );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 
 		//$this->assignRef( 'mapconfig', $model->getMapConfig() );
-		//$this->assignRef( 'address_string', $model->getAddressString() );
+		
 
 		//$this->assignRef( 'gmap', $model->getGoogleMap( $this->mapconfig, $this->address_string ) );
         
@@ -75,8 +96,8 @@ class sportsmanagementViewPlayground extends JView
 		// $this->assignRef('gm', $gm->getGoogleMap( $model->getMapConfig(), $model->getAddressString() ) );
         
         // diddipoeler
-        //$this->geo = new simpleGMapGeocoder();
-        //$this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name);
+        $this->geo = new JSMsimpleGMapGeocoder();
+        $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
 
 		$extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
 		$this->assignRef( 'extended', $extended );

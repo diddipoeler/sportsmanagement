@@ -61,7 +61,8 @@ if ( $this->games )
 						// $teams = $this->project->getTeamsFromMatches( $this->games );
 
 						$colspan = 5;
-						if ($this->config['show_logo'] == 1) {
+						if ($this->config['show_logo'] == 1) 
+                        {
 							$colspan = 7;
 						}
 

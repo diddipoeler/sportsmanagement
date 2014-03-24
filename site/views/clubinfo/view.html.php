@@ -94,6 +94,8 @@ class sportsmanagementViewClubInfo extends JView
     $lng ='';
 		
 		$this->assignRef( 'project',		$project );
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
+        
 		$this->assignRef( 'overallconfig',	$overallconfig );
 		$this->assignRef( 'config',			$config );
 

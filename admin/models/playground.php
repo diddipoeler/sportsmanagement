@@ -45,7 +45,7 @@ jimport('joomla.application.component.modeladmin');
  
 
 /**
- * sportsmanagementModelplayground
+ * sportsmanagementModelPlayground
  * 
  * @package   
  * @author 
@@ -53,7 +53,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelplayground extends JModelAdmin
+class sportsmanagementModelPlayground extends JModelAdmin
 {
 	
     
@@ -298,39 +298,100 @@ class sportsmanagementModelplayground extends JModelAdmin
 		return parent::save($data);   
     }
     
+    /**
+     * sportsmanagementModelplayground::getAddressString()
+     * 
+     * @return
+     */
+    function getAddressString()
+	{
+		$playground = self::getPlayground();
+		if ( !isset ( $playground ) ) { return null; }
+ 		$address_parts = array();
+		if (!empty($playground->address))
+		{
+			$address_parts[] = $playground->address;
+		}
+		if (!empty($playground->state))
+		{
+			$address_parts[] = $playground->state;
+		}
+		if (!empty($playground->location))
+		{
+			if (!empty($playground->zipcode))
+ 			{
+				$address_parts[] = $playground->zipcode. ' ' .$playground->location;
+			}
+			else
+			{
+				$address_parts[] = $playground->location;
+			}
+		}
+		if (!empty($playground->country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($playground->country);
+		}
+		$address = implode(', ', $address_parts);
+		return $address;
+	}
     
+    
+    /**
+     * sportsmanagementModelPlayground::getNextGames()
+     * 
+     * @param integer $project
+     * @return
+     */
     function getNextGames( $project = 0 )
     {
+        $option = JRequest::getCmd('option');
+	    $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
         $result = array();
 
         $playground = self::getPlayground();
         if ( $playground->id > 0 )
         {
-            $query = "SELECT m.*, DATE_FORMAT(m.time_present, '%H:%i') time_present,
-                             p.name AS project_name, tj.team_id team1, tj2.team_id team2
-                      FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
-                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team tj ON tj.id = m.projectteam1_id 
-                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team tj2 ON tj2.id = m.projectteam2_id 
-                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project AS p ON p.id=tj.project_id
-                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team t ON t.id = tj.team_id
-                      INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club c ON c.id = t.club_id
-                      WHERE (m.playground_id= " . (int)$playground->id . "
-                          OR (tj.standard_playground = " . (int)$playground->id . " AND m.playground_id IS NULL)
-                          OR (c.standard_playground = " . (int)$playground->id . " AND m.playground_id IS NULL))
-                      AND m.match_date > NOW()
-                      AND m.published = 1
-                      AND p.published = 1";
+            $query->select('m.*, DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
+            $query->select('p.name AS project_name');
+            $query->select('st1.team_id AS team1');
+            $query->select('st2.team_id AS team2');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj ON tj.id = m.projectteam1_id  ');
+            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj2 ON tj2.id = m.projectteam2_id  ');
+            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj.project_id ');
+            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj.team_id ');
+            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
+            //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
+            //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id ');
+            
+            $query->where('m.playground_id = '. (int)$playground->id);
+            $query->where('m.match_date > NOW()');
+            $query->where('m.published = 1');
+            $query->where('p.published = 1');
+
             if ( $project )
             {
-                $query .= " AND project_id= " . (int)$project;
+                $query->where('p.id = '. (int)$project);
             }
-            $query .= " GROUP BY m.id ORDER BY match_date ASC";
-            $this->_db->setQuery( $query );
-            $result = $this->_db->loadObjectList();
+            
+            $query->group('m.id');
+            $query->order('match_date ASC');
+            
+            $db->setQuery( $query );
+            $result = $db->loadObjectList();
         }
         return $result;
     }
     
+    /**
+     * sportsmanagementModelplayground::getPlayground()
+     * 
+     * @return
+     */
     function getPlayground( )
     {
         if ( is_null( $this->playground ) )
@@ -345,28 +406,7 @@ class sportsmanagementModelplayground extends JModelAdmin
         return $this->playground;
     }
     
-    	/**
-	 * Method to get a single record.
-	 *
-	 * @param	integer	$pk	The id of the primary key.
-	 *
-	 * @return	mixed	Object on success, false on failure.
-	 * @since	1.6
-	 */
-     /*
-	public function getItem($pk = null)
-	{
-		if ($item = parent::getItem($pk)) {
-			// Convert the params field to an array.
-			$registry = new JRegistry;
-			//$registry->loadString($item->extended);
-            $registry->loadJSON($item->extended);
-			$item->extended = $registry->toArray();
-		}
-
-		return $item;
-	}
-    */   
+    
     
     
 }

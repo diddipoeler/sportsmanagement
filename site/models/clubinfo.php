@@ -69,6 +69,9 @@ class sportsmanagementModelClubInfo extends JModel
 
 		$this->projectid = JRequest::getInt( "p", 0 );
 		$this->clubid = JRequest::getInt( "cid", 0 );
+        
+        sportsmanagementModelProject::$projectid = $this->projectid;
+        
         parent::__construct( );
 	}
 

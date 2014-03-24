@@ -57,6 +57,12 @@ class sportsmanagementModelTeams extends JModelList
 {
 	var $_identifier = "teams";
 	
+    /**
+     * sportsmanagementModelTeams::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -111,6 +117,11 @@ class sportsmanagementModelTeams extends JModelList
 		parent::populateState('t.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelTeams::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -163,6 +174,11 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 	
 
     
+    /**
+     * sportsmanagementModelTeams::getTeamListSelect()
+     * 
+     * @return
+     */
     public function getTeamListSelect()
 	{
 		$query="SELECT id,id AS value,name,club_id,short_name, middle_name,info FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
@@ -179,6 +195,12 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 	}
     
     
+    /**
+     * sportsmanagementModelTeams::getTeams()
+     * 
+     * @param mixed $playground_id
+     * @return
+     */
     function getTeams($playground_id)
     {
         $mainframe = JFactory::getApplication();
@@ -243,6 +265,12 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
     }
     
     
+    /**
+     * sportsmanagementModelTeams::getTeamsFromMatches()
+     * 
+     * @param mixed $games
+     * @return
+     */
     public function getTeamsFromMatches( & $games )
     {
         $mainframe = JFactory::getApplication();
