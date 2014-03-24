@@ -88,6 +88,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
+  KEY `standard_playground` (`standard_playground`),
+  KEY `country` (`country`),
   UNIQUE INDEX `name` (`name` ASC)
   )
 ENGINE = MyISAM
@@ -225,6 +227,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `federation` int(11) NOT NULL DEFAULT '0',
   `website` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
+  KEY `country` (`country`),
+  KEY `sports_type_id` (`sports_type_id`),
   UNIQUE INDEX `name` (`name` ASC)
   )
 ENGINE = MyISAM
@@ -372,6 +376,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_player` (
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `teamplayer_id` (`teamplayer_id`),
+  KEY `in_for` (`in_for`),
   KEY `project_position_id` (`project_position_id`)
   )
 ENGINE = MyISAM
@@ -542,6 +547,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
+  KEY `country` (`country`),
   KEY `position_id` (`position_id`)
   )
 ENGINE = MyISAM
@@ -578,6 +584,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
+  KEY `country` (`country`),
   UNIQUE INDEX `name` (`name` ASC)
   )
 ENGINE = MyISAM
@@ -806,6 +813,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
   KEY `division_id` (`division_id`),
+  KEY `standard_playground` (`standard_playground`),
   UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC)
   )
 ENGINE = MyISAM

@@ -59,7 +59,7 @@ if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
                 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
                 $paramsPlugin = new JRegistry($plugin->params);
 
-echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
+//echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
                 
 $arrPluginParams = array();

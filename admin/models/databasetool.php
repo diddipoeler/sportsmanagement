@@ -95,6 +95,20 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	}
     
     /**
+     * sportsmanagementModeldatabasetool::getQueryTime()
+     * 
+     * @param mixed $starttime
+     * @param mixed $endtime
+     * @return
+     */
+    function getQueryTime($starttime,$endtime) 
+    {
+  $starttime=explode(" ",$starttime);
+  $endtime=explode(" ",$endtime);
+  return round($endtime[0]-$starttime[0]+$endtime[1]-$starttime[1],3);
+}
+    
+    /**
      * sportsmanagementModeldatabasetool::getSportsManagementTables()
      * 
      * @return

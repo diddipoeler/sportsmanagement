@@ -959,7 +959,7 @@ class sportsmanagementModelPlayer extends JModel
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
-       $subquery1 = $db->getQuery(true);
+       //$subquery1 = $db->getQuery(true);
        
 		$teamplayers = self::getTeamPlayers();
 		$games = array();
@@ -1025,28 +1025,12 @@ class sportsmanagementModelPlayer extends JModel
         
         foreach ($games as $game)
 			{
-//			$game->startRoster = 0;
-//			$game->in = 0;
-//			$game->out = 0;
-//            $game->playedtime = 0;
             
             $inoutstats = self::getInOutStats($game->project_id, $game->projectteam1_id, $game->teamplayer_id, 0, $game->id );
-            //foreach ($inoutstats as $inoutstat)
-			//{
 			$game->started += $inoutstats->started;
 			$game->sub_in += $inoutstats->sub_in ;
 			$game->sub_out += $inoutstats->sub_out;
             $game->playedtime += 0; 
-            //}
-            
-//            $inoutstats = self::getInOutStats($game->project_id, $game->projectteam2_id, $game->teamplayer_id);
-//            foreach ($inoutstats as $inoutstat)
-//			{
-//			$game->startRoster += $inoutstat->started;
-//			$game->in += $inoutstat->sub_in ;
-//			$game->out += $inoutstat->sub_out;
-//            $game->playedtime += 0; 
-//            }
              
             } 
         

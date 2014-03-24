@@ -351,6 +351,7 @@ class sportsmanagementModelPlayground extends JModelAdmin
         $query = $db->getQuery(true);
         
         $result = array();
+        $starttime = microtime(); 
 
         $playground = self::getPlayground();
         if ( $playground->id > 0 )
@@ -384,6 +385,10 @@ class sportsmanagementModelPlayground extends JModelAdmin
             $db->setQuery( $query );
             $result = $db->loadObjectList();
         }
+        
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        
         return $result;
     }
     
