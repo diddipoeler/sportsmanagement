@@ -85,6 +85,7 @@ class sportsmanagementModelRoster extends JModel
 		$this->projectid = JRequest::getInt('p',0);
 		$this->teamid = JRequest::getInt('tid',0);
 		$this->projectteamid = JRequest::getInt('ttid',0);
+		sportsmanagementModelProject::$projectid = $this->projectid;
 		self::getProjectTeam();
 	}
 
