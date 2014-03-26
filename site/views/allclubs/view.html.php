@@ -67,6 +67,8 @@ class sportsmanagementViewallclubs extends JView
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
         
         $app = JFactory::getApplication();
 		$user		= JFactory::getUser();

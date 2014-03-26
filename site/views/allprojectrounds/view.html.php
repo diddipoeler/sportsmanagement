@@ -62,7 +62,8 @@ class sportsmanagementViewallprojectrounds extends JView
 	 */
 	function display( $tpl = null )
 	{
-		
+		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
     // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();	
