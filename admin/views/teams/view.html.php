@@ -65,8 +65,12 @@ class sportsmanagementViewTeams extends JView
         $this->sortColumn = $this->state->get('list.ordering');
 
 
-
+$starttime = microtime(); 
 		$items = $this->get('Items');
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 

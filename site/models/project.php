@@ -253,7 +253,7 @@ class sportsmanagementModelProject extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        if (!$this->_current_round)
+        if (!self::$_current_round)
 		{
 			if (!$project = self::getProject()) 
             {
@@ -626,9 +626,9 @@ class sportsmanagementModelProject extends JModel
         $query->select('IF((ISNULL(pt.picture) OR (pt.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id = c.id  ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id = c.id  ');
         // Where
         $query->where('pt.id = '. $db->Quote($projectteamid));
          
@@ -637,11 +637,11 @@ class sportsmanagementModelProject extends JModel
         $result = $db->loadObject();
             if ( !$result )
 		    {
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		    }
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
         

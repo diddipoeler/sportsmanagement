@@ -127,7 +127,7 @@ class sportsmanagementViewallprojects extends JView
         unset($temp);
         
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE'));
+		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $pagination->getLimitBox();

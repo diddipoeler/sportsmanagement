@@ -137,7 +137,18 @@
 <module module="mod_sportsmanagement_quickicon" client="administrator" position="icon" published="1"/>
 <module module="mod_sportsmanagement_rquotes" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>			
+<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>	
+
+<module module="mod_sportsmanagement_birthday" client="site"  position="" published=""/>	
+<module module="mod_sportsmanagement_club_birthday" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_teamplayers" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_teamstats_ranking" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_top_tipper" client="site"  position="" published=""/>
+		
 </modules>
 
 <plugins>

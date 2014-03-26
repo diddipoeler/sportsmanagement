@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * sportsmanagementViewallclubs
+ * sportsmanagementViewallleagues
  * 
  * @package   
  * @author 
@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallclubs extends JView
+class sportsmanagementViewallleagues extends JView
 {
     protected $state = null;
 	protected $item = null;
@@ -58,7 +58,7 @@ class sportsmanagementViewallclubs extends JView
 	protected $pagination = null;
     
 	/**
-	 * sportsmanagementViewallclubs::display()
+	 * sportsmanagementViewallleagues::display()
 	 * 
 	 * @param mixed $tpl
 	 * @return void
@@ -90,7 +90,7 @@ class sportsmanagementViewallclubs extends JView
 																$state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE'));
+		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLLEAGUES_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $pagination->getLimitBox();

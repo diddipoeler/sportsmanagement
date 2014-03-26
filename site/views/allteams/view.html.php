@@ -90,7 +90,7 @@ class sportsmanagementViewallteams extends JView
 																$state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE'));
+		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $pagination->getLimitBox();
