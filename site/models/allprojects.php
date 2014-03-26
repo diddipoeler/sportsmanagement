@@ -185,8 +185,8 @@ var $_identifier = "clubs";
         $query->select('CASE WHEN CHAR_LENGTH( l.alias ) THEN CONCAT_WS( \':\', l.id, l.alias ) ELSE l.id END AS leagueslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS v');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = v.league_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = v.season_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = v.league_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = v.season_id');
 //        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
 //        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
         
