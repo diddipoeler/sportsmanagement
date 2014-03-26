@@ -11,7 +11,7 @@
 	<description>MOD_SPORTSMANAGEMENT_RANDOMPLAYER_XML_DESC</description>
 
 	<files>
-		<filename module="mod_joomleague_randomplayer">mod_joomleague_randomplayer.php</filename>
+		<filename module="mod_sportsmanagement_randomplayer">mod_sportsmanagement_randomplayer.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<folder>css</folder>
@@ -19,9 +19,9 @@
 	</files>
 
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_joomleague_randomplayer.ini
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.ini
 		</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_joomleague_randomplayer.sys.ini
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.sys.ini
 		</language>
 	</languages>
 
