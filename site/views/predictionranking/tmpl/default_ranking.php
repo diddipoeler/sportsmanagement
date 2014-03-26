@@ -391,7 +391,7 @@ echo $this->pagination->getListFooter();
           
 					if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
-						$link = PredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$member->pmID);
+						$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$member->pmID);
 						$output = JHTML::link($link,$member->name);
 					}
 					else
@@ -401,8 +401,8 @@ echo $this->pagination->getListFooter();
 					$membersDataArray[$member->pmID]['name'] = $output;
 					
 					$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
-					$imgFile=JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link=PredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
+					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
+					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
 					if (($member->show_profile)||($this->predictionMember->pmID==$member->pmID))
 					{
 						$output = JHTML::link( $link, $imgFile);
@@ -418,8 +418,8 @@ echo $this->pagination->getListFooter();
                     if ( $this->model->pggrouprank )
                     {
                     $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->pg_group_name);
-					$imgFile=JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link=PredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID,'',$member->pg_group_id);
+					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
+					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID,'',$member->pg_group_id);
                     $output = JHTML::link( $link, $imgFile);
                     $groupmembersDataArray[$member->pg_group_id]['show_tip_details']	= $output;    
                     }    

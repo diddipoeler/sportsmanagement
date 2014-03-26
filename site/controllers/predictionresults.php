@@ -74,7 +74,7 @@ class sportsmanagementControllerPredictionResults extends JController
 		$pjID	= JRequest::getVar('p',	null,	'post',	'int');
 		
         $rID	= JRequest::getVar('r',				null,	'post',	'int');
-		$link = PredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup);
+		$link = JSMPredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup);
 		$this->setRedirect($link);
 	}
 

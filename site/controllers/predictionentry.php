@@ -173,7 +173,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
 		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
-		$link = PredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID);
+		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
@@ -190,7 +190,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
         
 		$rID	= JRequest::getVar('r',				null,	'post',	'int');
 		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
-		$link = PredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID,$rID,$pjID);
+		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID,$rID,$pjID);
 		$this->setRedirect($link);
 	}
 

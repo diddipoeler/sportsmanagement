@@ -53,7 +53,7 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
 				if ((isset($this->showediticon)) && ($this->showediticon) && ($this->predictionMember->pmID > 0))
 				{
 					echo '&nbsp;&nbsp;';
-					$link = PredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$this->predictionMember->pmID,'edit');
+					$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$this->predictionMember->pmID,'edit');
 					$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_EDIT_IMAGE_TITLE');
 					$desc = JHTML::image('media/com_sportsmanagement/jl_images/edit.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 					echo JHTML::link($link,$desc);
@@ -63,7 +63,7 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
                 echo '&nbsp;&nbsp;';
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_ENTRY_IMAGE_TITLE');
 				$desc = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_entry.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionTippEntryRoute($this->predictionGame->id,$this->predictionMember->pmID);
+				$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($this->predictionGame->id,$this->predictionMember->pmID);
                 echo JHTML::link($link,$desc);
 					
 					
@@ -114,26 +114,26 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
 				
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_ENTRY_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_entry.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionTippEntryRoute($this->predictionGame->id);
+				$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($this->predictionGame->id);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
 				
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_MEMBER_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_member.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				if ($this->predictionMember->pmID > 0){$pmVar=$this->predictionMember->pmID;}else{$pmVar=null;}
-				$link = PredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$pmVar);
+				$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$pmVar);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
 				
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RESULTS_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_results.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id);
+				$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
                 
 				$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,0);
+				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,0);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
                 
@@ -141,14 +141,14 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
                 {
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_GROUP_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/teaminfo_icon.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,1);
+				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,1);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
                 }
                 
 				$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RULES_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_rules.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = PredictionHelperRoute::getPredictionRulesRoute($this->predictionGame->id);
+				$link = JSMPredictionHelperRoute::getPredictionRulesRoute($this->predictionGame->id);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 
 				echo $output;

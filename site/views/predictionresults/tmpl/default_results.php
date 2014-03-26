@@ -421,7 +421,7 @@ echo $this->pagination->getListFooter();
 				
 					if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
-						$link = PredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$member->pmID);
+						$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$member->pmID);
 						$output = JHTML::link($link,$member->name);
 					}
 					else

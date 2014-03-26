@@ -125,11 +125,11 @@ if ( $config['show_tip_link_ranking_round'] )
             
             if ( !$config['show_tip_ranking_round'] )
 		        {
-            $link = PredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id , $modelpg->pjID , '' );
+            $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id , $modelpg->pjID , '' );
             }
             else
             {
-            $link = PredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id , $modelpg->pjID , $actualProjectCurrentRound );
+            $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id , $modelpg->pjID , $actualProjectCurrentRound );
             }
             
 		        
@@ -324,7 +324,7 @@ if ( $config['show_tip_link_ranking_round'] )
 
 					if (($config['show_user_link'])&&(($member->show_profile)||($predictionMember[0]->pmID == $member->pmID)))
 					{
-						$link = PredictionHelperRoute::getPredictionMemberRoute($predictionGame[0]->id,$member->pmID);
+						$link = JSMPredictionHelperRoute::getPredictionMemberRoute($predictionGame[0]->id,$member->pmID);
 						$output = JHTML::link($link,$member->name);
 					}
 					else
@@ -335,7 +335,7 @@ if ( $config['show_tip_link_ranking_round'] )
 					
 					$imgTitle = JText::sprintf('JL_PRED_RANK_SHOW_DETAILS_OF',$member->name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link = PredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id ,$actualProjectCurrentRound ,$modelpg->pjID);
+					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id ,$actualProjectCurrentRound ,$modelpg->pjID);
 					if (($member->show_profile)||($predictionMember[0]->pmID == $member->pmID))
 					{
 						$output = JHTML::link( $link, $imgFile);

@@ -89,7 +89,7 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
 		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
-		$link = PredictionHelperRoute::getPredictionMemberRoute($pID,$uID);
+		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
@@ -176,7 +176,7 @@ class sportsmanagementControllerPredictionUsers extends JController
 		if (empty($pjID)){$pjID=null;}
 		if (empty($uID)){$uID=null;}
 		//$link = JoomleagueHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,'#jl_top');
-		$link = PredictionHelperRoute::getPredictionMemberRoute($pID,$uID,null,$pjID);
+		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID,null,$pjID);
 		echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}

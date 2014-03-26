@@ -53,7 +53,7 @@ jimport('joomla.application.component.helper');
  * @version 2014
  * @access public
  */
-class PredictionHelperRoute extends sportsmanagementHelperRoute 
+class JSMPredictionHelperRoute extends sportsmanagementHelperRoute 
 {
 
 /**

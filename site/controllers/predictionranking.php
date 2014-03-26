@@ -105,7 +105,7 @@ class sportsmanagementControllerPredictionRanking extends JController
 		$set_pj	= JRequest::getVar('set_pj',		'',	'post',	'int');
 		$set_r	= JRequest::getVar('set_r',			'',	'post',	'int');
 
-		$link = PredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank);
+		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank);
         
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
