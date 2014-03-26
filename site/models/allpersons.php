@@ -175,9 +175,9 @@ var $_identifier = "persons";
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = stp.team_id');
         
-        // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
+//        // Join over the users for the checked out user.
+//		$query->select('uc.name AS editor');
+//		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
         if ($search)
