@@ -45,7 +45,7 @@ jimport('joomla.application.component.helper');
 
 
 /**
- * PredictionHelperRoute
+ * JSMPredictionHelperRoute
  * 
  * @package   
  * @author 
@@ -57,7 +57,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 {
 
 /**
- * PredictionHelperRoute::getPredictionResultsRoute()
+ * JSMPredictionHelperRoute::getPredictionResultsRoute()
  * 
  * @param mixed $predictionID
  * @param mixed $roundID
@@ -79,7 +79,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=null,$pr
 		if (!is_null($projectID)){$params['pj']=$projectID;}
 		if (!is_null($roundID)){$params['r']=$roundID;}
 		if (!is_null($userID)){$params['uid']=$userID;}
-		$query = PredictionHelperRoute::buildQuery($params);
+		$query = JSMPredictionHelperRoute::buildQuery($params);
 		//echo $query; die();
 		$link = JRoute::_('index.php?' . $query . $anchor, false);
 
@@ -87,7 +87,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=null,$pr
 	}
 
 /**
- * PredictionHelperRoute::getPredictionRankingRoute()
+ * JSMPredictionHelperRoute::getPredictionRankingRoute()
  * 
  * @param mixed $predictionID
  * @param mixed $projectID
@@ -111,14 +111,14 @@ public static function getPredictionRankingRoute($predictionID,$projectID=null,$
         //if (!is_null($groupRank)){$params['pggrouprank']=$groupRank;}
         $params['pggrouprank']=$groupRank;
 
-		$query = PredictionHelperRoute::buildQuery($params);
+		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
 
 		return $link;
 	}
 
 /**
- * PredictionHelperRoute::getPredictionRulesRoute()
+ * JSMPredictionHelperRoute::getPredictionRulesRoute()
  * 
  * @param mixed $predictionID
  * @return
@@ -129,14 +129,14 @@ public static function getPredictionRulesRoute($predictionID)
 						'view' => 'predictionrules', 
 						'prediction_id' => $predictionID);
 
-		$query = PredictionHelperRoute::buildQuery($params);
+		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
 
 		return $link;
 	}
       	
 /**
- * PredictionHelperRoute::getPredictionTippEntryRoute()
+ * JSMPredictionHelperRoute::getPredictionTippEntryRoute()
  * 
  * @param mixed $predictionID
  * @param mixed $userID
@@ -157,13 +157,13 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
 		if (!is_null($projectID)){$params['pj']=$projectID;}
 		if (!is_null($roundID)){$params['r']=$roundID;}
 		if (!is_null($userID)){$params['uid']=$userID;}
-		$query = PredictionHelperRoute::buildQuery($params);
+		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
 		return $link;
 	}
 
 /**
- * PredictionHelperRoute::getPredictionMemberRoute()
+ * JSMPredictionHelperRoute::getPredictionMemberRoute()
  * 
  * @param mixed $predictionID
  * @param mixed $userID
@@ -195,14 +195,14 @@ public static function getPredictionMemberRoute($predictionID,$userID=null,$task
 		if (!is_null($projectID)){$params['pj']=$projectID;}
 		if (!is_null($task)){$params['layout']=$task;}
 
-		$query = PredictionHelperRoute::buildQuery($params);
+		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
 
 		return $link;
 	}
     		
 /**
- * PredictionHelperRoute::buildQuery()
+ * JSMPredictionHelperRoute::buildQuery()
  * 
  * @param mixed $parts
  * @return

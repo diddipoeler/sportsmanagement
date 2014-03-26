@@ -113,6 +113,12 @@ var $_identifier = "clubs";
 		$this->setState('filter.search_nation', $temp_user_request);
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_leagues', 'filter_search_leagues', '');
+        if ( !$temp_user_request )
+        {
+//            $temp_user_request = JRequest::getInt( "l", 0 );
+//            JRequest::setVar( "l", 0 );
+        }
+        
 		$this->setState('filter.search_leagues', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_seasons', 'filter_search_seasons', '');
 		$this->setState('filter.search_seasons', $temp_user_request);

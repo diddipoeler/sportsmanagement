@@ -110,5 +110,8 @@ echo $item->name;
 	<p class="counter">
 		<?php echo $this->pagination->getPagesCounter(); ?>
 	</p>
+    <p class="counter">
+    <?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
 	<?php echo $this->pagination->getPagesLinks(); ?>
 </div>
