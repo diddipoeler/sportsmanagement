@@ -192,8 +192,10 @@ var $_identifier = "persons";
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
-        
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
         
