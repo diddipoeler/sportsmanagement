@@ -70,9 +70,16 @@ class sportsmanagementViewallteams extends JView
         
         $app = JFactory::getApplication();
 		$user		= JFactory::getUser();
+        $starttime = microtime(); 
 
 		$state 		= $this->get('State');
 		$items 		= $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$pagination	= $this->get('Pagination');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
