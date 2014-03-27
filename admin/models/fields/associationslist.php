@@ -132,6 +132,13 @@ foreach ( $list as $item )
 		return $options;
 	}
 	
+/**
+ * JFormFieldAssociationsList::JJ_categoryArray()
+ * 
+ * @param integer $admin
+ * @param mixed $country
+ * @return
+ */
 function JJ_categoryArray($admin=0,$country) 
   {
 $db = JFactory::getDBO(); 
@@ -168,6 +175,18 @@ $db = JFactory::getDBO();
     return $array;
     }    	
 	
+/**
+ * JFormFieldAssociationsList::fbTreeRecurse()
+ * 
+ * @param mixed $id
+ * @param mixed $indent
+ * @param mixed $list
+ * @param mixed $children
+ * @param integer $maxlevel
+ * @param integer $level
+ * @param integer $type
+ * @return
+ */
 function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 ) 
     {
 
@@ -199,6 +218,14 @@ function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=
     return $list;
 }    
 	
+/**
+ * JFormFieldAssociationsList::sm_htmlspecialchars()
+ * 
+ * @param mixed $string
+ * @param mixed $quote_style
+ * @param string $charset
+ * @return
+ */
 function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
   {
 	return htmlspecialchars($string, $quote_style, $charset);

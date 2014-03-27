@@ -94,7 +94,7 @@ echo JHtml::_('sliders.panel', JText::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATIO
 
 // tabs anzeigen
 $idxTab = 100;
-echo JHtml::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>false, 'startOffset' => $startoffset ));
+echo JHtml::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>1, 'startOffset' => $startoffset ));
 
 foreach ( $tab_points as $key => $value  )
 {

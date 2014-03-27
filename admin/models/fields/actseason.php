@@ -56,6 +56,11 @@ class JFormFieldactseason extends JFormFieldList
 
 	protected $type = 'actseason';
     
+    /**
+     * JFormFieldactseason::getOptions()
+     * 
+     * @return
+     */
     protected function getOptions()
 	{
 		// Initialize variables.
