@@ -57,6 +57,12 @@ class sportsmanagementModelClubs extends JModelList
 {
 	var $_identifier = "clubs";
 	
+	/**
+	 * sportsmanagementModelClubs::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -66,6 +72,11 @@ class sportsmanagementModelClubs extends JModelList
                         'a.logo_middle',
                         'a.logo_small',
                         'a.country',
+                        
+                        'a.location',
+                        'a.latitude',
+                        'a.longitude',
+                        
                         'a.id',
                         'a.ordering'
                         );

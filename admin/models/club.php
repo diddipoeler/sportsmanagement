@@ -128,9 +128,9 @@ class sportsmanagementModelclub extends JModelAdmin
         
         $prefix = $mainframe->getCfg('dbprefix');
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
         $query->select('*');
 			$query->from('information_schema.columns');
@@ -138,24 +138,31 @@ class sportsmanagementModelclub extends JModelAdmin
 			
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$result = $db->loadObjectList();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             
             foreach($result as $field )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
+            switch ($field->COLUMN_NAME)
+            {
+                case 'country':
+                case 'merge_teams':
+                break;
+                default:
             switch ($field->DATA_TYPE)
             {
                 case 'varchar':
                 $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                 break;
             }
-            
+                break;
+            }
            } 
         
 		return $form;
@@ -233,8 +240,19 @@ class sportsmanagementModelclub extends JModelAdmin
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // wurden jahre mitgegeben ?
+       if ( $data['founded'] != '0000-00-00' )
+        {
         $founded_year = date('Y',strtotime($data['founded']));
+        }
+        
+        if ( $data['dissolved'] != '0000-00-00' )
+        {
         $dissolved_year = date('Y',strtotime($data['dissolved']));
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' founded_year<br><pre>'.print_r($founded_year,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dissolved_year<br><pre>'.print_r($dissolved_year,true).'</pre>'),'');
+        
         if ( $founded_year != '0000' )
         {
             $data['founded_year'] = $founded_year;
@@ -243,6 +261,8 @@ class sportsmanagementModelclub extends JModelAdmin
         {
             $data['dissolved_year'] = $dissolved_year;
         }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         
         if (!empty($data['address']))
 		{

@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `country` (`country`),
+  KEY `parent_id` (`parent_id`),
   UNIQUE KEY `name` (`name`,`country`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
@@ -227,8 +229,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `website` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
-  KEY `sports_type_id` (`sports_type_id`),
-  UNIQUE INDEX `name` (`name` ASC)
+  KEY `sports_type_id` (`sports_type_id`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;

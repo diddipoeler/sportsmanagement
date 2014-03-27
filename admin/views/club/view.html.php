@@ -55,9 +55,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewClub extends JView
 {
+	
 	/**
-	 * display method 
-	 * @return void
+	 * sportsmanagementViewClub::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -66,12 +69,19 @@ class sportsmanagementViewClub extends JView
         $document = JFactory::getDocument();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
+        $starttime = microtime(); 
         
         $this->option = $option;
         
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.

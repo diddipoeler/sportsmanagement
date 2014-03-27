@@ -114,9 +114,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO','a.logo_small',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 					
-                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CITY'); ?></th>
-                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE'); ?></th>
-                    <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LONGITUDE'); ?></th>
+                    <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CITY','a.location',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE','a.latitude',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LONGITUDE','a.longitude',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    
+                    
+                    
                     
                     <th width="20">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','a.country',$this->sortDirection,$this->sortColumn); ?>
