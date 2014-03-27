@@ -94,13 +94,13 @@ echo JHtml::_('sliders.panel', JText::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATIO
 
 // tabs anzeigen
 $idxTab = 100;
-echo JHTML::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>false, 'startOffset' => $startoffset ));
+echo JHtml::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>false, 'startOffset' => $startoffset ));
 
 foreach ( $tab_points as $key => $value  )
 {
 $fed_array = strtoupper($value);
 
-echo JHTML::_('tabs.panel', JText::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
+echo JHtml::_('tabs.panel', JText::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
 ?>
 
 <div id="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>">
@@ -315,11 +315,11 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
     
     if ( $user_name == 'diddipoeler' )
         {
-        $params_new = array(	"option" => "com_joomleague",
+        $params_new = array(	"option" => "com_sportsmanagement",
 				"view" => "jlusernewseason",
 				"p" => $project_id);
 	
-		$query = JoomleagueHelperRoute::buildQuery( $params_new );
+		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
 		$link = JRoute::_( 'index.php?' . $query, false );
 		    ?>		
 <li class="nav-item"><?php echo JHTML::link(JRoute::_($link), 'neue Saison' ); ?></li>		
@@ -332,11 +332,11 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
     
     if ( $user_name != '' )
     {
-        $params_new = array(	"option" => "com_joomleague",
+        $params_new = array(	"option" => "com_sportsmanagement",
 				"view" => "jlxmlexports",
 				"p" => $project_id);
 	
-		$query = JoomleagueHelperRoute::buildQuery( $params_new );
+		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
 		$link = JRoute::_( 'index.php?' . $query, false );
 		    ?>		
 <li class="nav-item"><?php echo JHTML::link(JRoute::_($link), 'XML Export' ); ?></li>		
@@ -399,9 +399,9 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 <?PHP
 }
 
-echo JHTML::_('tabs.end');
+echo JHtml::_('tabs.end');
 
-echo JHTML::_('sliders.end');
+echo JHtml::_('sliders.end');
 ?>
 
 <?php
