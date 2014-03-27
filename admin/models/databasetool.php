@@ -122,6 +122,64 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return $this->_db->loadResultArray();
     }
     
+    
+    /**
+     * sportsmanagementModeldatabasetool::checkImportTablesJlJsm()
+     * 
+     * @param mixed $tables
+     * @return void
+     */
+    function checkImportTablesJlJsm($tables)
+    {
+        $mainframe = JFactory::getApplication();
+        $db = JFactory::getDbo();  
+        $exporttable = array();
+        $convert = array (
+'joomleague' => 'sportsmanagement'
+  );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
+        
+        $count = 1;
+        foreach ( $tables as $key => $value )
+        {
+            $jsmtable = str_replace(array_keys($convert), array_values($convert), $value  );
+            $query = "SHOW TABLES LIKE '%".$jsmtable."%'";
+		    $db->setQuery($query);
+            $result = $db->loadResultArray();
+            
+            if ( $result )
+            {
+            $temptable = new stdClass();
+            $temptable->id = $count;
+            $temptable->jl = $value;
+            $temptable->jsm = $jsmtable;
+            $exporttable[] = $temptable;
+            $count++;
+            }
+            
+        }
+        
+        return $exporttable;    
+        
+    }
+    
+    
+    /**
+     * sportsmanagementModeldatabasetool::getJoomleagueTables()
+     * 
+     * @return
+     */
+    function getJoomleagueTables()
+    {
+        $mainframe = JFactory::getApplication();
+        $db = JFactory::getDbo();  
+        $option = JRequest::getCmd('option');
+        $query="SHOW TABLES LIKE '%_joomleague%'";
+		$db->setQuery($query);
+		return $db->loadResultArray();
+    }
+    
     /**
      * sportsmanagementModeldatabasetool::setSportsManagementTableQuery()
      * 

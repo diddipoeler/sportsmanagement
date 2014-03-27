@@ -89,8 +89,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
-  KEY `country` (`country`),
-  UNIQUE INDEX `name` (`name` ASC)
+  KEY `country` (`country`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
@@ -584,8 +583,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
-  KEY `country` (`country`),
-  UNIQUE INDEX `name` (`name` ASC)
+  KEY `country` (`country`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;

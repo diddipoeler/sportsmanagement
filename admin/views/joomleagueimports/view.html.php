@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * sportsmanagementViewsmimageimports
+ * sportsmanagementViewjoomleagueimports
  * 
  * @package   
  * @author 
@@ -51,10 +51,10 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewsmimageimports extends JView
+class sportsmanagementViewjoomleagueimports extends JView
 {
 	/**
-	 * sportsmanagementViewsmimageimports::display()
+	 * sportsmanagementViewjoomleagueimports::display()
 	 * 
 	 * @param mixed $tpl
 	 * @return void
@@ -65,40 +65,15 @@ class sportsmanagementViewsmimageimports extends JView
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
+        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        $this->assign('jl_tables',$databasetool->getJoomleagueTables() );
         
-        $checkimages = $model->getimagesxml();
-        $this->assign('files',$model->getXMLFiles());
-        $this->state = $this->get('State'); 
+        $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
         
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-        
-        //$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-        // state filter
-		//$lists['state'] = JHtml::_('grid.state',$filter_state);
-        
-        //build the html select list
-		$folders[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
-        $allfolders = $model->getXMLFolder();
-		$folders = array_merge($folders,$allfolders);
-		$lists['folders']=JHtml::_( 'select.genericList',
-										$folders,
-										'filter_image_folder',
-										'class="inputbox" onChange="this.form.submit();" style="width:220px"',
-										'id',
-										'name',
-										$this->state->get('filter.image_folder'));
-                                       
-        $items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
-
-        $this->assignRef('option',$option);
-        
-        $this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+        $this->assign('request_url',$uri->toString());
+        $this->assign('items',$checktables);
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jl_tables,true).'</pre>'),'');
         
         $this->addToolbar();
 		parent::display($tpl);
@@ -117,8 +92,8 @@ class sportsmanagementViewsmimageimports extends JView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT'),'images-import');
-        JToolBarHelper::custom('smimageimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'),'joomleague-import');
+        JToolBarHelper::custom('joomleagueimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));

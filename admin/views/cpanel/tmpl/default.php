@@ -175,6 +175,12 @@ JHtml::_('behavior.tooltip');
               <?php echo $this->addIcon('imageimport.png','index.php?option=com_sportsmanagement&view=smimageimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_IMAGE_IMPORT'));?>            
             </div>          
           </div>
+          
+          <div class="icon-wrapper">            
+            <div id="icon">              
+              <?php echo $this->addIcon('joomleague.png','index.php?option=com_sportsmanagement&view=joomleagueimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT'));?>            
+            </div>          
+          </div>
                  
         </div>
         <br>        

@@ -93,19 +93,23 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo JHTML::_( 'grid.sort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'), 'name', $this->sortDirection, $this->sortColumn);
                     
                     ?>
+                    </th>
                     <th><?php 
                     //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'); 
                     echo JHTML::_( 'grid.sort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'), 'folder', $this->sortDirection, $this->sortColumn);
                     ?>
+                    </th>
                     <th><?php 
                     //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'); 
                     echo JHTML::_( 'grid.sort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'), 'directory', $this->sortDirection, $this->sortColumn);
                     ?>
+                    </th>
                     <th><?php 
                     //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'); 
                     echo JHTML::_( 'grid.sort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'), 'file', $this->sortDirection, $this->sortColumn);
                     ?>
-<th><?php echo JText::_('JSTATUS'); ?>
+                    </th>
+<th><?php echo JText::_('JSTATUS'); ?></th>
 </tr>
 </thead>
 
