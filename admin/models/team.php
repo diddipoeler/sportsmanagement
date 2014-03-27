@@ -135,13 +135,20 @@ class sportsmanagementModelteam extends JModelAdmin
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
+            switch ($field->COLUMN_NAME)
+            {
+                case 'country':
+                case 'merge_clubs':
+                break;
+                default:
             switch ($field->DATA_TYPE)
             {
                 case 'varchar':
                 $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                 break;
             }
-            
+            break;
+            }
            } 
            
 		return $form;
