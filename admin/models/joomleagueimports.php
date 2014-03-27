@@ -80,6 +80,7 @@ function newstructur()
             if (preg_match("/project_team/i", $jsm_table)) 
             {
             // Select some fields
+            $query = $db->getQuery(true);
 		    $query->select('pt.id,pt.project_id,pt.team_id');
             $query->select('p.season_id');
             // From table
@@ -103,6 +104,7 @@ function newstructur()
                 else
                 {
                     // Select some fields
+                    $query = $db->getQuery(true);
                     $query->clear();
 		            $query->select('id');
                     // From table
