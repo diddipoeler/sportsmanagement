@@ -199,7 +199,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
         $query = $db->getQuery(true);
         $query->select(array('id', 'name'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season')
-        ->order('name ASC');
+        ->order('name DESC');
 
         $db->setQuery($query);
         if (!$result = $db->loadObjectList())

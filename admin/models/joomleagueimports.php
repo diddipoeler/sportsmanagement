@@ -90,6 +90,16 @@ function import()
             $db->setQuery($query);
             $totals = $db->loadResult();
             
+            // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
+            // Berücksichtigung von Groß- und Kleinschreibung
+            if (preg_match("/project_team/i", $jsm_table)) 
+            {
+            $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jsm_table.' ) noch in die neue Struktur umsetzen!'),'');
+            } 
+            else 
+            {
+            }
+
             if ( $totals )
             {
             $mainframe->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl[$value].' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm[$value].' ) nicht leer!'),'Error');     
@@ -138,9 +148,7 @@ function import()
         
         
         }
-        
-        
-        
+     
         }
             
 }    

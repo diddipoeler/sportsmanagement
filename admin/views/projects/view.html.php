@@ -54,6 +54,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewProjects extends JView
 {
+	/**
+	 * sportsmanagementViewProjects::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option 	= JRequest::getCmd('option');
@@ -83,8 +89,8 @@ class sportsmanagementViewProjects extends JView
 		$leagues[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
 		$mdlLeagues = JModel::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
-		$leagues=array_merge($leagues,$allLeagues);
-		$lists['leagues']=JHtml::_( 'select.genericList',
+		$leagues = array_merge($leagues,$allLeagues);
+		$lists['leagues'] = JHtml::_( 'select.genericList',
 									$leagues,
 									'filter_league',
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -99,7 +105,7 @@ class sportsmanagementViewProjects extends JView
 		$mdlSportsTypes = JModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes,$allSportstypes);
-		$lists['sportstypes']=JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -112,10 +118,10 @@ class sportsmanagementViewProjects extends JView
 		//build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
         $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
-		$allSeasons= $mdlSeasons->getSeasons();
-		$seasons=array_merge($seasons,$allSeasons);
+		$allSeasons = $mdlSeasons->getSeasons();
+		$seasons = array_merge($seasons,$allSeasons);
         
-		$lists['seasons']=JHtml::_( 'select.genericList',
+		$lists['seasons'] = JHtml::_( 'select.genericList',
 									$seasons,
 									'filter_season',
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
