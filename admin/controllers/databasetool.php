@@ -43,6 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 
+/**
+ * sportsmanagementControllerDatabaseTool
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllerDatabaseTool extends JController
 {
 

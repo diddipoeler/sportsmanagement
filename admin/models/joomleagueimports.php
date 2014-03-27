@@ -79,13 +79,26 @@ function newstructur()
             // Berücksichtigung von Groß- und Kleinschreibung
             if (preg_match("/project_team/i", $jsm_table)) 
             {
+            
+            $query = $db->getQuery(true);
+            $query->clear();
+            $query->select('COUNT(id) AS total');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+            $db->setQuery($query);
+            $total = $db->loadResult();
+            
+            for($a=0;$a <= $total; $a++ )   
+            { 
             // Select some fields
             $query = $db->getQuery(true);
+            $query->clear();
 		    $query->select('pt.id,pt.project_id,pt.team_id');
             $query->select('p.season_id');
             // From table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+            $query->setLimit($a,1);
+            
             $db->setQuery($query);
             $result = $db->loadObjectList();
             
@@ -124,6 +137,12 @@ function newstructur()
                 
                 
             }
+            
+            }
+            // danach die alten datensätze löschen
+            //$db->truncateTable($jsm_table);
+ 
+            
             
             } 
             else 

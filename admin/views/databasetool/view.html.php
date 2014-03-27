@@ -43,8 +43,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view' );
 
 
+/**
+ * sportsmanagementViewDatabaseTool
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewDatabaseTool extends JView
 {
+	/**
+	 * sportsmanagementViewDatabaseTool::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		$db		= JFactory::getDBO();
