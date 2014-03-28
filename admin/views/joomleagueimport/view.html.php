@@ -66,7 +66,7 @@ class sportsmanagementViewjoomleagueimport extends JView
         $document = JFactory::getDocument();
         $model = $this->getModel();
         $uri = JFactory::getURI();
-        
+        $count = 5;
         $this->step = $mainframe->getUserState( "$option.step", '0' );
         $this->totals = $mainframe->getUserState( "$option.totals", '0' );
         
@@ -80,7 +80,7 @@ class sportsmanagementViewjoomleagueimport extends JView
         
         if ( $this->step <= $this->totals )
             {
-            $successTable = $model->newstructur(0);    
+            $successTable = $model->newstructur(0,$count);    
             //$this->work_table = $this->sm_tables[$this->step];
             $this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
             }
@@ -128,7 +128,7 @@ $javascript .= '     setTimeout( progress, 3000 );' . "\n";
 $javascript .= '  });' . "\n"; 
 $document->addScriptDeclaration( $javascript );            
             
-            $this->step++;
+            $this->step = $this->step + $count;
             $mainframe->setUserState( "$option.step", $this->step);    
         
         

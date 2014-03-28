@@ -58,6 +58,12 @@ class sportsmanagementModelRounds extends JModelList
 	var $_identifier = "rounds";
     static $_project_id = 0;
 	
+    /**
+     * sportsmanagementModelRounds::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(

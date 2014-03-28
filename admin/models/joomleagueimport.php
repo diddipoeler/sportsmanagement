@@ -123,17 +123,20 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 
 
 
+
 /**
  * sportsmanagementModeljoomleagueimport::newstructur()
  * 
  * @param mixed $step
+ * @param integer $count
  * @return void
  */
-function newstructur($step)
+function newstructur($step,$count=5)
 {
     $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
+        $starttime = microtime(); 
 //        $post = JRequest::get('post');
 //        $exportfields = array();
 //        $cid = $post['cid'];
@@ -152,7 +155,13 @@ function newstructur($step)
             $query->where('pt.import = 0');
             //$query->setLimit($a,1);
             
-            $db->setQuery($query,$step,1);
+            $db->setQuery($query,$step,$count);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
             $result = $db->loadObjectList();
             
             foreach ( $result as $row )
