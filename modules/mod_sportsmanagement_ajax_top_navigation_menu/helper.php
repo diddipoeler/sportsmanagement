@@ -1147,7 +1147,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 //				return false;
 //			}
 
-			$query->select('p.id, p.name');
+			$query->select('t.id AS value, t.name AS text');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
