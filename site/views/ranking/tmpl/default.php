@@ -77,19 +77,33 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
     $params = '';
     $startoutput = '{tab=';
     $endoutput = '{/tabs}';
+    if ($this->config['show_table_1']==1)
+	{
     $params .= $startoutput.JText::_($this->config['table_text_1']).'}';
     $params .= $this->loadTemplate('ranking');
+    }
+    if ($this->config['show_table_2']==1)
+	{
     $params .= $startoutput.JText::_($this->config['table_text_2']).'}';
-    $params .= $this->loadTemplate('ranking_home'); 
+    $params .= $this->loadTemplate('ranking_home');
+    }
+    if ($this->config['show_table_3']==1)
+	{ 
     $params .= $startoutput.JText::_($this->config['table_text_3']).'}';
     $params .= $this->loadTemplate('ranking_away');  
-    
+    }
     if ($this->config['show_half_of_season']==1)
 	{
+	if ($this->config['show_table_4']==1)
+	{   
 	$params .= $startoutput.JText::_($this->config['table_text_4']).'}';
-    $params .= $this->loadTemplate('ranking_first'); 
+    $params .= $this->loadTemplate('ranking_first');
+    }
+    if ($this->config['show_table_5']==1)
+	{ 
     $params .= $startoutput.JText::_($this->config['table_text_5']).'}';
-    $params .= $this->loadTemplate('ranking_second'); 
+    $params .= $this->loadTemplate('ranking_second');
+    } 
     }
     
     $params .= $endoutput;
@@ -99,19 +113,33 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
     {
     $idxTab = 1;
   echo JHtml::_('tabs.start','tabs_ranking', array('useCookie'=>1));
+  if ($this->config['show_table_1']==1)
+	{
   echo JHtml::_('tabs.panel', JText::_($this->config['table_text_1']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking');
+        }
+        if ($this->config['show_table_2']==1)
+	{
         echo JHtml::_('tabs.panel', JText::_($this->config['table_text_2']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking_home');
+        }
+        if ($this->config['show_table_3']==1)
+	{
         echo JHtml::_('tabs.panel', JText::_($this->config['table_text_3']), 'panel'.($idxTab++));
 		echo $this->loadTemplate('ranking_away');
-    
+    }
     if ($this->config['show_half_of_season']==1)
 	{
+	if ($this->config['show_table_4']==1)
+	{   
 	echo JHtml::_('tabs.panel', JText::_($this->config['table_text_4']), 'panel'.($idxTab++));
 	echo $this->loadTemplate('ranking_first');
+    }
+    if ($this->config['show_table_5']==1)
+	{
     echo JHtml::_('tabs.panel', JText::_($this->config['table_text_5']), 'panel'.($idxTab++));
 	echo $this->loadTemplate('ranking_second');
+    }
     }   
         
 echo JHtml::_('tabs.end');    

@@ -329,25 +329,59 @@
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT1" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT1">
 		</field>
+		<field name="show_table_1" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TABLE_1" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TABLE_1">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="table_text_2" type="text" 
     default="Heim" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT2" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT2">
 		</field>
+		<field name="show_table_2" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TABLE_2" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TABLE_2">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="table_text_3" type="text" 
     default="Ausw" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT3" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT3">
 		</field>
+		<field name="show_table_3" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TABLE_3" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TABLE_3">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="table_text_4" type="text" 
     default="Hin" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT4" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT4">
 		</field>
+		<field name="show_table_4" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TABLE_4" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TABLE_4">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="table_text_5" type="text" 
     default="Rück" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT5" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_TEXT5">
+		</field>
+		<field name="show_table_5" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TABLE_5" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TABLE_5">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		
 		

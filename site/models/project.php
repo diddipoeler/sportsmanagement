@@ -103,6 +103,8 @@ class sportsmanagementModelProject extends JModel
 	 * @var object
 	 */
 	static $_current_round;
+    
+    static $seasonid = 0;
 
 
 	/**
@@ -129,7 +131,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
+        $starttime = microtime(); 
 
       // $this->projectid = JRequest::getInt('p',0);
     
@@ -153,12 +155,18 @@ class sportsmanagementModelProject extends JModel
 
 			$db->setQuery($query,0,1);
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
     $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     }
     
 			self::$_project = $db->loadObject();
+            self::$seasonid = self::$_project->season_id;
             
             if ( !self::$_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -618,6 +626,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         // Select some fields
         $query->select('t.*,t.id as team_id,t.picture as team_picture,t.extended as teamextended ');
@@ -634,11 +643,18 @@ class sportsmanagementModelProject extends JModel
          
 		$db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         $result = $db->loadObject();
+        
             if ( !$result )
 		    {
 			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		    }
+            
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
@@ -661,6 +677,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
 
 		if (empty($this->_teams))
 		{
@@ -688,6 +705,12 @@ class sportsmanagementModelProject extends JModel
           $query->where('tl.project_id = '.(int)self::$projectid);
 
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+            
 			$this->_teams = $db->loadObjectList();
             
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');

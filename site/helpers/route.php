@@ -156,12 +156,15 @@ class sportsmanagementHelperRoute
 	 */
 	public static function getClubInfoRoute( $projectid, $clubid, $task=null )
 	{
+	   $mainframe = JFactory::getApplication();
+       
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "clubinfo",
 					"p" => $projectid,
 					"cid" => $clubid );
 
-		if ( ! is_null( $task ) ) { 
+		if ( ! is_null( $task ) ) 
+        { 
 			if($task=='club.edit') {
 				$params["layout"] = 'form'; 
 				$params["view"] = 'club'; 
@@ -171,10 +174,16 @@ class sportsmanagementHelperRoute
             // nicht im backend, sondern im frontend
 			$link = JRoute::_( "administrator/index.php?" . $query, false );
             //$link = JRoute::_( "index.php?" . $query, false );
-		} else {
+		} 
+        else 
+        {
 			$query = self::buildQuery( $params );
 			$link = JRoute::_( "index.php?" . $query, false );
 		}
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
+        
 		return $link;
 	}
 

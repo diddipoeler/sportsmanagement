@@ -114,6 +114,7 @@ class sportsmanagementModelTeamPlan extends JModel
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         $division = null;
 		if ( $this->divisionid > 0 )
@@ -127,11 +128,17 @@ class sportsmanagementModelTeamPlan extends JModel
         $query->where('d.id = '.$db->Quote($this->divisionid));
 			
             $db->setQuery($query,0,1);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$division = $db->loadObject();
             
             if (!$division )
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
         
 		}
@@ -150,6 +157,8 @@ class sportsmanagementModelTeamPlan extends JModel
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
         // Select some fields
         $query->select('pt.id');
         // From 
@@ -162,18 +171,23 @@ class sportsmanagementModelTeamPlan extends JModel
                  
 		$db->setQuery($query,0,1);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		if ( !$result = $db->loadResult())
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
             $this->pro_teamid = 0;
             return 0;
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
 		$this->pro_teamid = $result;
@@ -265,6 +279,7 @@ class sportsmanagementModelTeamPlan extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query2 = $db->getQuery(true);
+        $starttime = microtime(); 
         
         // $this->projectteamid
         
@@ -350,6 +365,12 @@ class sportsmanagementModelTeamPlan extends JModel
 
 		
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$matches = $db->loadObjectList();
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -361,9 +382,8 @@ class sportsmanagementModelTeamPlan extends JModel
 
 if (!$matches )
 		{
-			//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($query,true).'</pre>' ),'Error');
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 		}
 		
 		return $matches;
@@ -387,11 +407,12 @@ if (!$matches )
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime();
         
-		$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+		//$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 
-		$joomleague = $mdlProject->getProject();
+		$joomleague = sportsmanagementModelProject::getProject();
         
         // Select some fields
         $query->select('matches.*');
@@ -432,6 +453,12 @@ if (!$matches )
 		}
 
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         $matches = $db->loadObjectList();
 		
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -444,7 +471,7 @@ if (!$matches )
 if (!$matches )
 		{
 
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		}
 
 		return $matches;

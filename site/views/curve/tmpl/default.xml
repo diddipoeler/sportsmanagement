@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT__XML_CURVE_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT__XML_CURVE_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<!-- Basic options. -->
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT__XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+			<field	name="p" type="project"
+					label="COM_SPORTSMANAGEMENT__XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT__XML_SELECT_PROJECT_DESCR"
+					required="false">
+			</field>
+			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
+					label="COM_SPORTSMANAGEMENT__XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT__XML_SELECT_DIVISION_DESCR"
+					required="false">
+			</field>
+			<field	name="tid1" type="dependsql" depends="p,division" task="projectteamsbydivisionoptions"
+					label="COM_SPORTSMANAGEMENT__XML_CURVE_SELECT_TEAM1_LABEL"
+					description="COM_SPORTSMANAGEMENT__XML_CURVE_SELECT_TEAM1_DESCR"
+					required="false">
+			</field>
+			<field	name="tid2" type="dependsql" depends="p,division" task="projectteamsbydivisionoptions" 
+					label="COM_SPORTSMANAGEMENT__XML_CURVE_SELECT_TEAM2_LABEL"
+					description="COM_SPORTSMANAGEMENT__XML_CURVE_SELECT_TEAM2_DESCR"
+					required="false">
+			</field>
+			<field	name="both" type="radio" default="1" 
+					label="COM_SPORTSMANAGEMENT__XML_CURVE_BOTH_LABEL"
+					description="COM_SPORTSMANAGEMENT__XML_CURVE_BOTH_DESCR">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>

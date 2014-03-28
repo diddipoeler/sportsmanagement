@@ -119,13 +119,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
        if ($this->config['show_half_of_season']==1)
 	{
-	   $model->part = 1;
+	   if ($this->config['show_table_4']==1)
+	{
+       $model->part = 1;
        $model->from = 0;
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking();
        $this->assignRef('firstRank',$model->currentRanking  );
+     }
+     
+     if ($this->config['show_table_5']==1)
+	{  
        $model->part = 2;
        $model->from = 0;
        $model->to = 0;
@@ -133,6 +139,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	   unset ($model->previousRanking);
        $model->computeRanking();
        $this->assignRef('secondRank',$model->currentRanking );
+     }  
+       
        $model->part = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
@@ -148,10 +156,23 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('from',$model->from);
 		$this->assignRef('to',$model->to);
 		$this->assignRef('divLevel',$model->divLevel);
+        
+        if ($this->config['show_table_1']==1)
+	{
 		$this->assignRef('currentRanking',$model->currentRanking);
+        }
+        
 		$this->assignRef('previousRanking',$model->previousRanking);
+        
+        if ($this->config['show_table_2']==1)
+	{
 		$this->assignRef('homeRank',$model->homeRank);
+        }
+        
+        if ($this->config['show_table_3']==1)
+	{
 		$this->assignRef('awayRank',$model->awayRank);
+        }
         
         
        

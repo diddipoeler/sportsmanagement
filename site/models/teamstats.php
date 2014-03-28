@@ -125,7 +125,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        
+        $starttime = microtime(); 
 		
 			$query->select('matches.id AS matchid, t1.name AS hometeam');
             $query->select('t2.name AS guestteam');
@@ -198,6 +198,11 @@ class sportsmanagementModelTeamStats extends JModel
 
             $db->setQuery($query, 0, 1);
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.$homeaway.' '.$which.   ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -229,6 +234,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
     	if ( (!isset( $this->nogoals_against )) || is_null( $this->nogoals_against ) )
     	{
@@ -251,6 +257,12 @@ class sportsmanagementModelTeamStats extends JModel
            $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
                    
     		$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
     		$this->nogoals_against = $db->loadObject( );
     	}
     	return $this->nogoals_against;
@@ -270,6 +282,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
 
         $query->select('COUNT(matches.id) AS totalmatches ');
         $query->select('COUNT(team1_result) AS playedmatches ');
@@ -299,6 +312,12 @@ class sportsmanagementModelTeamStats extends JModel
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
         
         $db->setQuery($query, 0, 1);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
     	//$this->totalshome = $db->loadObject();
     	
         if ( !$db->loadObject() )
@@ -460,6 +479,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         if ( is_null( $this->totalrounds ) )
         {
@@ -472,6 +492,12 @@ class sportsmanagementModelTeamStats extends JModel
 //                     WHERE project_id= ".$this->projectid;
                      
             $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
             $this->totalrounds = $db->loadResult();
         }
         
@@ -501,6 +527,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
     	if ( is_null( $this->attendanceranking ) )
     	{
@@ -518,18 +545,25 @@ class sportsmanagementModelTeamStats extends JModel
 
                        
     		$db->setQuery( $query );
+        
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
     		$this->attendanceranking = $db->loadResultArray();
     	}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
             
     	         
         if ( !$this->attendanceranking )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
     	return $this->attendanceranking;
@@ -626,6 +660,7 @@ class sportsmanagementModelTeamStats extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         $query->select('m.id, m.projectteam1_id, m.projectteam2_id, pt1.team_id AS team1_id, pt2.team_id AS team2_id');
         $query->select('m.team1_result, m.team2_result');
@@ -651,6 +686,12 @@ class sportsmanagementModelTeamStats extends JModel
 
 
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         $matches = $db->loadObjectList();
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
