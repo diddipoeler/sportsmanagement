@@ -234,20 +234,28 @@ class sportsmanagementModelclub extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $address_parts = array();
-       $post=JRequest::get('post');
+       $post = JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
        
        // wurden jahre mitgegeben ?
        if ( $data['founded'] != '0000-00-00' )
         {
         $founded_year = date('Y',strtotime($data['founded']));
         }
+        else
+        {
+            $founded_year = NULL;
+        }
         
         if ( $data['dissolved'] != '0000-00-00' )
         {
         $dissolved_year = date('Y',strtotime($data['dissolved']));
+        }
+        else
+        {
+            $dissolved_year = NULL;
         }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' founded_year<br><pre>'.print_r($founded_year,true).'</pre>'),'');
@@ -256,10 +264,12 @@ class sportsmanagementModelclub extends JModelAdmin
         if ( $founded_year != '0000' )
         {
             $data['founded_year'] = $founded_year;
+            $post['founded_year'] = $founded_year;
         }
         if ( $dissolved_year != '0000' )
         {
             $data['dissolved_year'] = $dissolved_year;
+            $post['dissolved_year'] = $dissolved_year;
         }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');

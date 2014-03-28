@@ -42,6 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
 
+$maxImportTime = 1920;
+if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
 /**
  * sportsmanagementModeljoomleagueimports
@@ -55,14 +57,16 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModeljoomleagueimports extends JModelList
 {
 
+
+
 /**
- * sportsmanagementModeljoomleagueimports::newstructur()
+ * sportsmanagementModeljoomleagueimports::checkimport()
  * 
  * @return void
  */
-function newstructur()
+function checkimport()
 {
-    $mainframe = JFactory::getApplication();
+$mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
         $post = JRequest::get('post');
@@ -70,90 +74,138 @@ function newstructur()
         $cid = $post['cid'];
         $jl = $post['jl'];
         $jsm = $post['jsm'];
-    
-    foreach ( $cid as $key => $value )
+        
+        //JRequest::setVar('cid', $cid, 'post');
+        //JRequest::setVar('jl', $jl, 'post');
+        //JRequest::setVar('jsm', $jsm, 'post');
+        
+  foreach ( $cid as $key => $value )
         {
         $jsm_table = $jsm[$value];
+        $jl_table = $jl[$value];
         
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
             if (preg_match("/project_team/i", $jsm_table)) 
             {
-            
-            $query = $db->getQuery(true);
-            $query->clear();
-            $query->select('COUNT(id) AS total');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
-            $db->setQuery($query);
-            $total = $db->loadResult();
-            
-            for($a=0;$a <= $total; $a++ )   
-            { 
-            // Select some fields
-            $query = $db->getQuery(true);
-            $query->clear();
-		    $query->select('pt.id,pt.project_id,pt.team_id');
-            $query->select('p.season_id');
-            // From table
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-            $query->setLimit($a,1);
-            
-            $db->setQuery($query);
-            $result = $db->loadObjectList();
-            
-            foreach ( $result as $row )
-            {
-                // Create and populate an object.
-                $temp = new stdClass();
-                $temp->season_id = $row->season_id;
-                $temp->team_id = $row->team_id;
-                // Insert the object into the user profile table.
-                $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id', $temp);
-                if ( $result )
-                {
-                    $new_id = $db->insertid();
-                }
-                else
-                {
-                    // Select some fields
-                    $query = $db->getQuery(true);
-                    $query->clear();
-		            $query->select('id');
-                    // From table
-                    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
-                    $query->where('season_id = '.$row->season_id);
-                    $query->where('team_id = '.$row->team_id);
-                    $new_id = $db->loadResult();
-                }
-                
-                // Create an object for the record we are going to update.
-                $object = new stdClass();
-                // Must be a valid primary key value.
-                $object->id = $row->id;
-                $object->team_id = $new_id;
-                // Update their details in the users table using id as the primary key.
-                $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team', $object, 'id'); 
-                
-                
+                // store the variable that we would like to keep for next time
+                // function syntax is setUserState( $key, $value );
+                $mainframe->setUserState( "$option.jsm_table", $jsm_table );
+                $mainframe->setUserState( "$option.jl_table", $jl_table );
+                //JRequest::setVar('jsm_table', $jsm_table);
+            return true;    
             }
-            
-            }
-            // danach die alten datensätze löschen
-            //$db->truncateTable($jsm_table);
- 
-            
-            
-            } 
-            else 
-            {
-                $mainframe->enqueueMessage(JText::_('Die Daten aus der Tabelle: ( '.$jsm_table.' ) werden nicht in die neue Struktur umgesetzt!'),'Error');
-            }
-            
-        }    
-    
+            else
+            return false;
+        }        
     
 }
+
+
+///**
+// * sportsmanagementModeljoomleagueimports::newstructur()
+// * 
+// * @return void
+// */
+//function newstructur()
+//{
+//    $mainframe = JFactory::getApplication();
+//        $db = JFactory::getDbo(); 
+//        $option = JRequest::getCmd('option');
+//        $post = JRequest::get('post');
+//        $exportfields = array();
+//        $cid = $post['cid'];
+//        $jl = $post['jl'];
+//        $jsm = $post['jsm'];
+//    
+//    foreach ( $cid as $key => $value )
+//        {
+//        $jsm_table = $jsm[$value];
+//        
+//        // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
+//            // Berücksichtigung von Groß- und Kleinschreibung
+//            if (preg_match("/project_team/i", $jsm_table)) 
+//            {
+//            
+//            $query = $db->getQuery(true);
+//            $query->clear();
+//            $query->select('COUNT(id) AS total');
+//            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+//            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            
+//            $db->setQuery($query);
+//            $total = $db->loadResult();
+//            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
+//            
+//            for($a=0;$a <= $total; $a++ )   
+//            { 
+//            // Select some fields
+//            $query = $db->getQuery(true);
+//            $query->clear();
+//		    $query->select('pt.id,pt.project_id,pt.team_id');
+//            $query->select('p.season_id');
+//            // From table
+//		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+//            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+//            //$query->setLimit($a,1);
+//            
+//            $db->setQuery($query,$a,1);
+//            $result = $db->loadObjectList();
+//            
+//            foreach ( $result as $row )
+//            {
+//                // Create and populate an object.
+//                $temp = new stdClass();
+//                $temp->season_id = $row->season_id;
+//                $temp->team_id = $row->team_id;
+//                // Insert the object into the user profile table.
+//                $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id', $temp);
+//                if ( $result )
+//                {
+//                    $new_id = $db->insertid();
+//                }
+//                else
+//                {
+//                    // Select some fields
+//                    $query = $db->getQuery(true);
+//                    $query->clear();
+//		            $query->select('id');
+//                    // From table
+//                    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
+//                    $query->where('season_id = '.$row->season_id);
+//                    $query->where('team_id = '.$row->team_id);
+//                    $new_id = $db->loadResult();
+//                }
+//                
+//                // Create an object for the record we are going to update.
+//                $object = new stdClass();
+//                // Must be a valid primary key value.
+//                $object->id = $row->id;
+//                $object->team_id = $new_id;
+//                // Update their details in the users table using id as the primary key.
+//                $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team', $object, 'id'); 
+//                
+//                
+//            }
+//            
+//            }
+//            // danach die alten datensätze löschen
+//            //$db->truncateTable($jsm_table);
+// 
+//            
+//            
+//            } 
+//            else 
+//            {
+//                $mainframe->enqueueMessage(JText::_('Die Daten aus der Tabelle: ( '.$jsm_table.' ) werden nicht in die neue Struktur umgesetzt!'),'Error');
+//            }
+//            
+//        }    
+//    
+//    
+//}
 
 /**
  * sportsmanagementModeljoomleagueimports::import()
@@ -187,7 +239,12 @@ function import()
             $query->select('COUNT(id) AS total');
             $query->from($jsm_table);
             $db->setQuery($query);
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
             $totals = $db->loadResult();
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'totals<br><pre>'.print_r($totals,true).'</pre>'),'');
             
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung

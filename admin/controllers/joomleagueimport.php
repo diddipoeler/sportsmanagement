@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
 
 /**
- * sportsmanagementControllerjoomleagueimports
+ * sportsmanagementControllerjoomleagueimport
  * 
  * @package   
  * @author 
@@ -52,52 +52,15 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
+class sportsmanagementControllerjoomleagueimport extends JControllerAdmin
 {
   
   
-  /**
-   * sportsmanagementControllerjoomleagueimports::checkimport()
-   * 
-   * @return void
-   */
-  function checkimport()
-    {
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        //$post = JRequest::get('post');
-        //JRequest::setVar('post', $post,'post');
-        
-        if ( $model->checkimport() )
-        {
-            $mainframe->setUserState( "$option.step", 0); 
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&task=joomleagueimport.newstructur&tmpl=component'  , false));    
-        }
-        else
-        {
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
-        }
-        
-    }    
-  /**
-   * sportsmanagementControllerjoomleagueimports::import()
-   * 
-   * @return void
-   */
-  function import()
-    {
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->import();
-        
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 
-}
+
 
 /**
- * sportsmanagementControllerjoomleagueimports::newstructur()
+ * sportsmanagementControllerjoomleagueimport::newstructur()
  * 
  * @return void
  */
@@ -116,7 +79,7 @@ function newstructur()
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'joomleagueimports', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel') 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
