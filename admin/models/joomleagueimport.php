@@ -58,67 +58,67 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 {
 
 
-function gettotals()
-{
-    $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
-        $option = JRequest::getCmd('option');
-        //$post = JRequest::get('post');
-        //$exportfields = array();
-        //$cid = $post['cid'];
-        //$jl = $post['jl'];
-        //$jsm = $post['jsm'];
-        
-        //$cid = JRequest::get('cid');
-        //$jl = JRequest::get('jl');
-        //$jsm = JRequest::get('jsm');
-        
-        //$jsm_table = JRequest::get('jsm_table');
-        
-        // retrieve the value of the state variable. First see if the variable has been passed
-        // in the request. Otherwise retrieve the stored value. If none of these are specified,
-        // the specified default value will be returned
-        // function syntax is getUserStateFromRequest( $key, $request, $default );
-        
-        $jsm_table = $mainframe->getUserStateFromRequest( "$option.jsm_table", 'jsm_table', '' );
-        $jl_table = $mainframe->getUserStateFromRequest( "$option.jl_table", 'jl_table', '' );
-
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl<br><pre>'.print_r($jl,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm<br><pre>'.print_r($jsm,true).'</pre>'),'');
-        
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
-        
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
-    
-    //foreach ( $cid as $key => $value )
-        //{
-        //$jsm_table = $jsm[$value];
-        // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
-            // Berücksichtigung von Groß- und Kleinschreibung
-            if (preg_match("/project_team/i", $jsm_table)) 
-            {
-            
-            $query = $db->getQuery(true);
-            $query->clear();
-            $query->select('COUNT(id) AS total');
-            $query->from($jsm_table);
-            $query->where('import = 0');
-            
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
-            $db->setQuery($query);
-            $total = $db->loadResult();
-            
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
-            
-            return $total;
-            }
-        //}
-
-}        
+//function gettotals()
+//{
+//    $mainframe = JFactory::getApplication();
+//        $db = JFactory::getDbo(); 
+//        $option = JRequest::getCmd('option');
+//        //$post = JRequest::get('post');
+//        //$exportfields = array();
+//        //$cid = $post['cid'];
+//        //$jl = $post['jl'];
+//        //$jsm = $post['jsm'];
+//        
+//        //$cid = JRequest::get('cid');
+//        //$jl = JRequest::get('jl');
+//        //$jsm = JRequest::get('jsm');
+//        
+//        //$jsm_table = JRequest::get('jsm_table');
+//        
+//        // retrieve the value of the state variable. First see if the variable has been passed
+//        // in the request. Otherwise retrieve the stored value. If none of these are specified,
+//        // the specified default value will be returned
+//        // function syntax is getUserStateFromRequest( $key, $request, $default );
+//        
+//        $jsm_table = $mainframe->getUserStateFromRequest( "$option.jsm_table", 'jsm_table', '' );
+//        $jl_table = $mainframe->getUserStateFromRequest( "$option.jl_table", 'jl_table', '' );
+//
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl<br><pre>'.print_r($jl,true).'</pre>'),'');
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm<br><pre>'.print_r($jsm,true).'</pre>'),'');
+//        
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
+//        
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
+//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
+//    
+//    //foreach ( $cid as $key => $value )
+//        //{
+//        //$jsm_table = $jsm[$value];
+//        // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
+//            // Berücksichtigung von Groß- und Kleinschreibung
+//            if (preg_match("/project_team/i", $jsm_table)) 
+//            {
+//            
+//            $query = $db->getQuery(true);
+//            $query->clear();
+//            $query->select('COUNT(id) AS total');
+//            $query->from($jsm_table);
+//            $query->where('import = 0');
+//            
+//            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            
+//            $db->setQuery($query);
+//            $total = $db->loadResult();
+//            
+//            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
+//            
+//            return $total;
+//            }
+//        //}
+//
+//}        
 
 
 

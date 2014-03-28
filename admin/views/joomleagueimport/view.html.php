@@ -68,6 +68,7 @@ class sportsmanagementViewjoomleagueimport extends JView
         $uri = JFactory::getURI();
         
         $this->step = $mainframe->getUserState( "$option.step", '0' );
+        $this->totals = $mainframe->getUserState( "$option.totals", '0' );
         
         if ( !$this->step )
         {
@@ -75,11 +76,11 @@ class sportsmanagementViewjoomleagueimport extends JView
         }
         
 //        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
-        $this->assign('totals',$model->gettotals() );
+        //$this->assign('totals',$model->gettotals() );
         
         if ( $this->step <= $this->totals )
             {
-            $successTable = $model->newstructur($this->step);    
+            $successTable = $model->newstructur(0);    
             //$this->work_table = $this->sm_tables[$this->step];
             $this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
             }
@@ -144,7 +145,7 @@ $document->addScriptDeclaration( $javascript );
         
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        
+        JToolBarHelper::title(JText::_('Bearbeite Step: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		parent::display($tpl);
 	}

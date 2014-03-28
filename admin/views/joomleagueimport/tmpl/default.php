@@ -56,8 +56,8 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 </div>
 
-<input type="text" name="step" value="<?php echo $this->step; ?>" />
-<input type="text" name="totals" value="<?php echo $this->totals; ?>" />
+<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+<input type="hidden" name="totals" value="<?php echo $this->totals; ?>" />
 
 
 <?PHP
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if ( $this->bar_value < 100)
 {
-//echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
 }
 ?>
 

@@ -71,7 +71,9 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
         
         if ( $model->checkimport() )
         {
-            $mainframe->setUserState( "$option.step", 0); 
+            $totals = $model->gettotals();
+            $mainframe->setUserState( "$option.step", 0);
+            $mainframe->setUserState( "$option.totals", $totals);  
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&task=joomleagueimport.newstructur&tmpl=component'  , false));    
         }
         else
