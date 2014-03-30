@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controller library
-jimport('joomla.application.component.controller');
+//jimport('joomla.application.component.controller');
  
 
 /**
@@ -53,8 +53,28 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementController extends JController
+//class sportsmanagementController extends JController
+class sportsmanagementController extends JControllerLegacy
 {
+    
+    /**
+     * Constructor
+     *
+     * @since 0.1
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+    }
+    
+    public function display () {
+
+        parent::display();
+
+    }
+    
+    
 }
 
 ?>

@@ -145,7 +145,7 @@ $document->addScriptDeclaration( $javascript );
         
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        JToolBarHelper::title(JText::_('Bearbeite Step: '.$this->step.' von: '.$this->totals),'joomleague-import');
+        JToolBarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		parent::display($tpl);
 	}

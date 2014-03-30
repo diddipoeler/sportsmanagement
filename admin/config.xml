@@ -77,6 +77,25 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		
+		<field name="character_filter_start_hex" type="text" default="0041"
+               label="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_START_HEX" 
+               description="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_START_HEX_DESCR">
+        </field>
+
+		<field name="character_filter_end_hex" type="text" default="005A"
+               label="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_END_HEX" 
+               description="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_END_HEX_DESCR">
+        </field>
+		
+		
+		<field name="max_import_jl_import_steps" 
+    type="text" 
+    default="300"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_JL_STEPS_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_JL_STEPS_DESC">
+		</field>
+		
 		<field name="max_import_time" 
     type="text" 
     default="480"

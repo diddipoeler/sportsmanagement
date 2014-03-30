@@ -56,6 +56,33 @@ jimport('joomla.application.component.helper');
 class sportsmanagementHelperRoute
 {
 	
+  function sportsmanagementBuildRoute(&$query)
+{
+	$mainframe = JFactory::getApplication();
+    $segments = array();
+
+	if (isset($query['view'])) {
+		$segments[] = $query['view'];
+		unset($query['view']);
+	}
+	if (isset($query['p'])) {
+		$segments[] = $query['p'];
+		unset($query['p']);
+	}
+    if (isset($query['cid'])) {
+		$segments[] = $query['cid'];
+		unset($query['cid']);
+	}
+    
+    //$link = JRoute::_( "index.php?" . $segments, false );
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'),'');
+
+	return $segments;
+}
+  
+  
   /**
    * sportsmanagementHelperRoute::getKunenaRoute()
    * 
@@ -180,9 +207,10 @@ class sportsmanagementHelperRoute
 			$query = self::buildQuery( $params );
 			$link = JRoute::_( "index.php?" . $query, false );
 		}
+        self::sportsmanagementBuildRoute($params);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
         
 		return $link;
 	}

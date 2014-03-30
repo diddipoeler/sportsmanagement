@@ -42,6 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
+//require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
+
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
@@ -109,15 +111,37 @@ else
 $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
 $document->addScriptDeclaration( $js );    
 }
- 
+
+/* 
 // import joomla controller library
 jimport('joomla.application.component.controller');
  
 // Get an instance of the controller prefixed by HelloWorld
 $controller = JController::getInstance('sportsmanagement');
+//$classname  = 'sportsmanagementController'.$controller;
+//$controller = new $classname( );
  
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+//$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JRequest::getVar('task'));
  
 // Redirect if set by the controller
 $controller->redirect();
+
+*/
+
+/*
+require_once JPATH_SITE.DS.JSM_PATH.'/helpers/route.php';
+$controller	= JControllerLegacy::getInstance('sportsmanagement');
+$controller->execute(JRequest::getCmd('task'));
+$controller->redirect();
+*/
+
+// Require the base controller
+require_once (JPATH_COMPONENT.DS.'controller.php');
+
+// Execute the task.
+$controller = JControllerLegacy::getInstance('sportsmanagement');
+$controller->execute( JRequest::getCmd('task'));
+$controller->redirect();
+
