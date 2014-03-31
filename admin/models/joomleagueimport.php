@@ -98,6 +98,9 @@ function newstructur($step,$count=5)
                 $query->where('p.season_id = '.$season_id);
             }
             
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+            
             $db->setQuery($query,$step,$count);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

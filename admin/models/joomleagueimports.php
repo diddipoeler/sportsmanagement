@@ -87,14 +87,16 @@ function gettotals()
         
         $jsm_table = $mainframe->getUserStateFromRequest( "$option.jsm_table", 'jsm_table', '' );
         $jl_table = $mainframe->getUserStateFromRequest( "$option.jl_table", 'jl_table', '' );
-        $season_id = $mainframe->getUserStateFromRequest( "$option.season_id", '0' );
+        $season_id = $mainframe->getUserState( "$option.season_id", '0' );
 
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl<br><pre>'.print_r($jl,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm<br><pre>'.print_r($jsm,true).'</pre>'),'');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_table<br><pre>'.print_r($jl_table,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
@@ -119,7 +121,7 @@ function gettotals()
                 $query->where('p.season_id = '.$season_id);
             }
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             $db->setQuery($query);
             $total = $db->loadResult();
@@ -149,7 +151,7 @@ $mainframe = JFactory::getApplication();
         $jsm = $post['jsm'];
         $season_id= $post['filter_season'];
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         //JRequest::setVar('cid', $cid, 'post');
         //JRequest::setVar('jl', $jl, 'post');
@@ -173,7 +175,9 @@ $mainframe = JFactory::getApplication();
             return true;    
             }
             else
+            {
             return false;
+            }
         }        
     
 }
