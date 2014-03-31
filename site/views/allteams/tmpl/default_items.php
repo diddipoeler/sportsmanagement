@@ -88,6 +88,12 @@ else
 {
 echo $item->name;    
 }
+
+if ( !JFile::exists(JPATH_SITE.DS.$item->picture) )
+{
+$item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+}
+
 ?>
 </td>
 <td>

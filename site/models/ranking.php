@@ -192,6 +192,7 @@ class sportsmanagementModelRanking extends JModel
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
+       $starttime = microtime(); 
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
        
@@ -247,6 +248,12 @@ class sportsmanagementModelRanking extends JModel
         $query->order('r.roundcode ASC ');
                
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$games = $db->loadObjectList();
         
         if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -502,6 +509,8 @@ class sportsmanagementModelRanking extends JModel
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
         // Select some fields
 		$query->select('id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
@@ -509,6 +518,12 @@ class sportsmanagementModelRanking extends JModel
         $query->order('roundcode ASC');
 
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$res = $db->loadResultArray();
 		
 		if (!$res) {

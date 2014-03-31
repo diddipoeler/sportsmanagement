@@ -66,7 +66,10 @@ class sportsmanagementViewjoomleagueimport extends JView
         $document = JFactory::getDocument();
         $model = $this->getModel();
         $uri = JFactory::getURI();
-        $count = 5;
+        
+        //$count = 5;
+        $count = JComponentHelper::getParams($option)->get('max_import_jl_import_steps',0);
+        
         $this->step = $mainframe->getUserState( "$option.step", '0' );
         $this->totals = $mainframe->getUserState( "$option.totals", '0' );
         

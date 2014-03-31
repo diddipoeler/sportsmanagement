@@ -136,7 +136,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_EDIT_DETAILS');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -153,13 +153,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

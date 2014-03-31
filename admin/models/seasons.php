@@ -159,7 +159,7 @@ class sportsmanagementModelSeasons extends JModelList
             
             default:
             // Select some fields
-		    $query->select('s.*');
+		    $query->select('s.name,s.ordering,s.id');
 		    // From the seasons table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
             if ($search)

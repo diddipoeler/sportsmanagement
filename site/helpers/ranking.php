@@ -687,30 +687,9 @@ class JSMRanking
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
-	
+	$starttime = microtime(); 
 		
-    
-    if ( $division )
-    {
-    		$query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
-				. ' t.name, t.id as teamid, pt.neg_points_finally, '	
-				// new for use_finally
-				. ' pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally, '
-				. ' pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points '	
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
-				
-        . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m 
-        ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id )'
-        
-				. ' WHERE pt.project_id = ' . $db->Quote($pid)
-				//only show it in ranking when is_in_score=1
-				. ' AND pt.is_in_score = 1'
-				. ' AND m.division_id = '.$division;
-    }
-    else
-    {
-		$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+    $query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
         $query->select('t.name, t.id as teamid, pt.neg_points_finally');
         $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
         $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
@@ -719,8 +698,40 @@ class JSMRanking
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
         $query->where('pt.project_id = ' . $db->Quote($pid));
         $query->where('pt.is_in_score = 1');
+        
+    if ( $division )
+    {
+//    		$query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
+//				. ' t.name, t.id as teamid, pt.neg_points_finally, '	
+//				// new for use_finally
+//				. ' pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally, '
+//				. ' pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points '	
+//				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt '
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
+//				
+//        . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m 
+//        ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id )'
+//        
+//				. ' WHERE pt.project_id = ' . $db->Quote($pid)
+//				//only show it in ranking when is_in_score=1
+//				. ' AND pt.is_in_score = 1'
+//				. ' AND m.division_id = '.$division;
+                
+                $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ) ');
+                $query->where('m.division_id = ' . $division);
+    }
+    else
+    {
 
-
+//		$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+//        $query->select('t.name, t.id as teamid, pt.neg_points_finally');
+//        $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
+//        $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id'); 
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
+//        $query->where('pt.project_id = ' . $db->Quote($pid));
+//        $query->where('pt.is_in_score = 1');
 
 /*        
         $query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
@@ -739,6 +750,12 @@ class JSMRanking
         
         		
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$res = $db->loadObjectList();
         
         if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -827,7 +844,7 @@ class JSMRanking
 	$mainframe = JFactory::getApplication();
         $db = Jfactory::getDBO();
             $query = $db->getQuery(true);
-            
+            $starttime = microtime(); 
     
     $viewName = JRequest::getVar( "view");
 
@@ -885,6 +902,12 @@ class JSMRanking
     }
     
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$res = $db->loadObjectList();
 		$matches = array();
 		foreach ((array) $res as $r) 
@@ -907,17 +930,28 @@ class JSMRanking
         $db = Jfactory::getDBO();
             $query = $db->getQuery(true);
             
-		if (!$this->_division) {
+		if (!$this->_division) 
+        {
 			return false;
 		}
 		else if (empty($this->_divisions))
 		{
-			$db = &JFactory::getDBO();
-			$query = ' SELECT id from #__'.COM_SPORTSMANAGEMENT_TABLE.'_division '
-			. ' WHERE project_id = '. $db->Quote($this->_projectid)
-			. '   AND parent_id = '. $db->Quote($this->_division)
-			;
+			$query->select('id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division ');
+            $query->where('project_id = ' . $db->Quote($this->_projectid) );
+            $query->where('parent_id = ' . $db->Quote($this->_division) );
+            
+//			$query = ' SELECT id from #__'.COM_SPORTSMANAGEMENT_TABLE.'_division '
+//			. ' WHERE project_id = '. $db->Quote($this->_projectid)
+//			. '   AND parent_id = '. $db->Quote($this->_division)
+//			;
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+            
 			$res = $db->loadResultArray();
 			$res[] = $this->_division;
 			$this->_divisions = $res;
@@ -995,6 +1029,7 @@ class JSMRanking
 	$mainframe = JFactory::getApplication();
         $db = Jfactory::getDBO();
             $query = $db->getQuery(true);
+            $starttime = microtime(); 
             
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -1014,6 +1049,12 @@ class JSMRanking
 //			       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ' 
 //			       . ' WHERE r.project_id = ' . $this->_projectid;
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$this->_roundcodes = $db->loadAssocList('id');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

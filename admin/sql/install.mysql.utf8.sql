@@ -1052,8 +1052,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `sports_type_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
-  KEY `club_id` (`club_id`),
-  INDEX `fk_club` (`club_id` ASC)
+  KEY `club_id` (`club_id`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
