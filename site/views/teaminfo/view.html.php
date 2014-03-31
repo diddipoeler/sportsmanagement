@@ -119,10 +119,10 @@ class sportsmanagementViewTeamInfo extends JView
             
             if ( $this->config['show_history_leagues'] == 1 )
 	{
-	   $seasonshistory = $model->getSeasons( $config,1 );
-			$this->assignRef('seasonshistory', $seasonshistory );
-            $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasonshistory ) );
-			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasonshistory ) );
+	   $seasons = $model->getSeasons( $config,1 );
+			$this->assignRef('seasons', $seasons );
+            $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasons ) );
+			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasons ) );
 }
 
 		}
@@ -131,7 +131,6 @@ class sportsmanagementViewTeamInfo extends JView
             {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonshistory<br><pre>'.print_r($seasonshistory,true).'</pre>'),'');
 }
 
     	
