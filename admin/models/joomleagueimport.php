@@ -75,12 +75,6 @@ function newstructur($step,$count=5)
         $starttime = microtime(); 
         
         $season_id = $mainframe->getUserState( "$option.season_id", '0' );
-        
-//        $post = JRequest::get('post');
-//        $exportfields = array();
-//        $cid = $post['cid'];
-//        $jl = $post['jl'];
-//        $jsm = $post['jsm'];
     
 
             // Select some fields
@@ -98,7 +92,7 @@ function newstructur($step,$count=5)
                 $query->where('p.season_id = '.$season_id);
             }
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             
             $db->setQuery($query,$step,$count);
