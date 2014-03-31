@@ -134,7 +134,7 @@ class sportsmanagementModelTeams extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('t.*');
+		$query->select('t.name,t.website,t.middle_name,t.short_name,t.info,t.picture,t.ordering,t.id');
         $query->select('st.name AS sportstype');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');

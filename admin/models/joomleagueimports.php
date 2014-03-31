@@ -140,6 +140,9 @@ $mainframe = JFactory::getApplication();
         $cid = $post['cid'];
         $jl = $post['jl'];
         $jsm = $post['jsm'];
+        $season_id= $post['filter_season'];
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         //JRequest::setVar('cid', $cid, 'post');
         //JRequest::setVar('jl', $jl, 'post');
@@ -158,6 +161,7 @@ $mainframe = JFactory::getApplication();
                 // function syntax is setUserState( $key, $value );
                 $mainframe->setUserState( "$option.jsm_table", $jsm_table );
                 $mainframe->setUserState( "$option.jl_table", $jl_table );
+                $mainframe->setUserState( "$option.season_id", $season_id );
                 //JRequest::setVar('jsm_table', $jsm_table);
             return true;    
             }

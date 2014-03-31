@@ -72,6 +72,9 @@ class sportsmanagementViewcpanel extends JView
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
+        // für den import die jl tabellen lesen
+        $jl_table_import = $databasetool->getJoomleagueTables();
+        
         $params = JComponentHelper::getParams( $option );
         $sporttypes = $params->get( 'cfg_sport_types' );
         $sm_quotes = $params->get( 'cfg_quotes' );

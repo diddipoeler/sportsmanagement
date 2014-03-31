@@ -116,7 +116,7 @@ class sportsmanagementModelTemplates extends JModelList
         
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $query->select(array('tmpl.*', 'u.name AS editor','(0) AS isMaster'))
+        $query->select(array('tmpl.template,tmpl.title,tmpl.id', 'u.name AS editor','(0) AS isMaster'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
         

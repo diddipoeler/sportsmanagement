@@ -214,7 +214,7 @@ class sportsmanagementModelTeamInfo extends JModel
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
+       
        
 	    $seasons = array();
 	    if ( $config['ordering_teams_seasons'] == "1")
@@ -280,6 +280,7 @@ $query->order('s.ordering '.$season_ordering);
         {
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
         }
 
 	    foreach ($seasons as $k => $season)

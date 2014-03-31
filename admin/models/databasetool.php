@@ -165,6 +165,27 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     }
     
     
+    
+    /**
+     * sportsmanagementModeldatabasetool::getJoomleagueImportTables()
+     * 
+     * @return void
+     */
+    function getJoomleagueImportTables()
+    {
+        $mainframe = JFactory::getApplication();
+        $db = JFactory::getDbo();  
+        $option = JRequest::getCmd('option');
+        $query = $db->getQuery(true);
+        
+        $query->select('name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_jl_tables');
+        $db->setQuery($query);
+        $result = $db->loadResultArray();
+        return $result;
+    }
+    
+        
     /**
      * sportsmanagementModeldatabasetool::getJoomleagueTables()
      * 
@@ -177,7 +198,30 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $option = JRequest::getCmd('option');
         $query="SHOW TABLES LIKE '%_joomleague%'";
 		$db->setQuery($query);
-		return $db->loadResultArray();
+        $result = $db->loadResultArray();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        
+        foreach ( $result as $key => $value )
+        {
+        // Create and populate an object.
+                $temp = new stdClass();
+                $temp->name = $value;
+                $temp->import = 0;
+                $temp->import_data = 0;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_jl_tables', $temp);
+                if ( $result )
+                {
+
+                }
+                else
+                {
+                    
+                }    
+        }
+            
+		return $result;
     }
     
     /**

@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if ( $item->projectslug )
 {
-$link = sportsmanagementHelperRoute::getPlaygroundRoute( $item->projectslug, $item->slug );
+$link = sportsmanagementHelperRoute::getTeamInfoRoute( $item->projectslug, $item->slug );
 echo JHtml::link( $link, $item->name );
 }
 else

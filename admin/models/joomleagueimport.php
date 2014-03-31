@@ -137,6 +137,9 @@ function newstructur($step,$count=5)
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
+        
+        $season_id = $mainframe->getUserState( "$option.season_id", '0' );
+        
 //        $post = JRequest::get('post');
 //        $exportfields = array();
 //        $cid = $post['cid'];
@@ -153,7 +156,11 @@ function newstructur($step,$count=5)
 		    $query->from('#__sportsmanagement_project_team AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
             $query->where('pt.import = 0');
-            //$query->setLimit($a,1);
+            
+            if ( $season_id )
+            {
+                $query->where('p.season_id = '.$season_id);
+            }
             
             $db->setQuery($query,$step,$count);
             

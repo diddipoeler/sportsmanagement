@@ -48,6 +48,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_JOOMLEAGUE_IMPORT'); ?></legend>
 
+<table>
+		<tr>
+
+			<td class="nowrap" align="right"><?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?></td>
+
+		</tr>
+	</table>
+    
 <table class="adminlist">
 <thead>
 				<tr>
@@ -58,13 +66,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th>
                     <?php 
                     echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL'); 
-
-                    
                     ?>
                     </th>
                     <th><?php 
                     echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JSM'); 
-
+                    ?>
+                    </th>
+                    <th>
+                    <?php 
+                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_DATA'); 
+                    ?>
+                    </th>
+                    <th>
+                    <?php 
+                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_CHANGE_DATA'); 
                     ?>
                     </th>
 
@@ -87,6 +102,41 @@ $checked = JHtml::_('grid.checkedout',$row,$i);
 <td><?php echo $row->jsm; ?></td>
 <input type='hidden' name='jsm[<?php echo $row->id; ?>]' value='<?php echo $row->jsm; ?>' />
 
+<td class="center">
+<?php 
+if ( $row->import )
+{
+$imageTitle = JText::_('bereits importiert');
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+$imageTitle,'title= "'.$imageTitle.'"');    
+}
+else
+{
+$imageTitle = JText::_('noch nicht importiert');
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
+$imageTitle,'title= "'.$imageTitle.'"');      
+}
+ 
+?>
+</td>
+
+<td class="center">
+<?php 
+if ( $row->import_data )
+{
+$imageTitle = JText::_('bereits importiert');
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+$imageTitle,'title= "'.$imageTitle.'"');    
+}
+else
+{
+$imageTitle = JText::_('noch nicht importiert');
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
+$imageTitle,'title= "'.$imageTitle.'"');      
+}
+ 
+?>
+</td>
 
 </tr>
 <?php

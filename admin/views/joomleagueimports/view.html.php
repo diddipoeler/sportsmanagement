@@ -65,12 +65,32 @@ class sportsmanagementViewjoomleagueimports extends JView
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
+        
+        $this->state = $this->get('State'); 
+        
         $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
-        $this->assign('jl_tables',$databasetool->getJoomleagueTables() );
+        $this->assign('jl_tables',$databasetool->getJoomleagueImportTables() );
         
         $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
         
+        //build the html select list for seasons
+		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
+        $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
+		$allSeasons = $mdlSeasons->getSeasons();
+		$seasons = array_merge($seasons,$allSeasons);
+        
+		$lists['seasons'] = JHtml::_( 'select.genericList',
+									$seasons,
+									'filter_season',
+									'class="inputbox" onChange="" style="width:120px"',
+									'id',
+									'name',
+									$this->state->get('filter.season'));
+
+		unset($seasons);
+        
+        $this->assignRef('lists', $lists);
         $this->assign('request_url',$uri->toString());
         $this->assign('items',$checktables);
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jl_tables,true).'</pre>'),'');

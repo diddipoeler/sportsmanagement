@@ -491,6 +491,7 @@ if (!$matches )
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime();
         
 		for ($index=0; $index < count($matches); $index++) 
         {
@@ -532,9 +533,15 @@ if (!$matches )
 			}
 
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			if (! $referees = $db->loadObjectList())
 			{
-				echo $db->getErrorMsg();
+				$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 			}
 			$matches[$index]->referees=$referees;
 		}

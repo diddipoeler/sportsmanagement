@@ -40,7 +40,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+
 // welche tabelle soll genutzt werden
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );

@@ -61,6 +61,7 @@ class sportsmanagementViewTemplates extends JView
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $starttime = microtime(); 
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -68,6 +69,9 @@ class sportsmanagementViewTemplates extends JView
 
         
         $templates = $this->get('Items');
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
