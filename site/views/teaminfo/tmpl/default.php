@@ -40,11 +40,13 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
 
+
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'this->teaminfo config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
 echo 'this->teaminfo team<br /><pre>~' . print_r($this->team,true) . '~</pre><br />';
 echo 'this->teaminfo merge_clubs<br /><pre>~' . print_r($this->merge_clubs,true) . '~</pre><br />';
+echo 'this->teaminfo seasons<br /><pre>~' . print_r($this->seasons,true) . '~</pre><br />';
 }
 
 

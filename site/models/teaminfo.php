@@ -113,13 +113,13 @@ class sportsmanagementModelTeamInfo extends JModel
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
-       
+       $starttime = microtime(); 
        
 		if (is_null($this->team))
 		{
 		  $query->select('t.*,t.name AS tname, t.website AS team_website, pt.*, pt.notes AS notes, pt.info AS info');
           $query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture, c.*');
-          $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS slug ');
+          $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t '); 
 	      $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id '); 
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
@@ -137,6 +137,12 @@ class sportsmanagementModelTeamInfo extends JModel
 			}		
 			
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$this->team  = $db->loadObject();
             
             if ( !$this->team && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -166,6 +172,7 @@ class sportsmanagementModelTeamInfo extends JModel
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
+       $starttime = microtime(); 
        
 		if ( is_null( $this->club ) )
 		{
@@ -173,11 +180,17 @@ class sportsmanagementModelTeamInfo extends JModel
 			if ( $team->club_id > 0 )
 			{
 			 $query->select('*');
-             $query->select('CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug');
+             $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
              $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
              $query->where('id = '. $db->Quote($team->club_id));  
 
 				$db->setQuery($query);
+                
+                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 				$this->club  = $db->loadObject();
 			}
 		}
@@ -200,6 +213,8 @@ class sportsmanagementModelTeamInfo extends JModel
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
+       
+       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
        
 	    $seasons = array();
 	    if ( $config['ordering_teams_seasons'] == "1")
@@ -313,6 +328,7 @@ $query->order('s.ordering '.$season_ordering);
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
+       $starttime = microtime(); 
        
     $player = array();
     $query->select('SUM(tp.market_value) AS market_value');
@@ -326,6 +342,12 @@ $query->order('s.ordering '.$season_ordering);
     $query->where('ps.published = 1');
 		       
                $db->setQuery($query);
+               
+               if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$player = $db->loadResult();
 		return $player;    
         
