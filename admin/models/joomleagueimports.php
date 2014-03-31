@@ -142,7 +142,7 @@ $mainframe = JFactory::getApplication();
         $jsm = $post['jsm'];
         $season_id= $post['filter_season'];
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         //JRequest::setVar('cid', $cid, 'post');
         //JRequest::setVar('jl', $jl, 'post');

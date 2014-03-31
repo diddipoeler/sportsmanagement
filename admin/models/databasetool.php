@@ -143,7 +143,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $count = 1;
         foreach ( $tables as $key => $value )
         {
-            $jsmtable = str_replace(array_keys($convert), array_values($convert), $value  );
+            $jsmtable = str_replace(array_keys($convert), array_values($convert), $value->name  );
             $query = "SHOW TABLES LIKE '%".$jsmtable."%'";
 		    $db->setQuery($query);
             $result = $db->loadResultArray();
@@ -152,7 +152,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             {
             $temptable = new stdClass();
             $temptable->id = $count;
-            $temptable->jl = $value;
+            $temptable->jl = $value->name;
+            
+            $temptable->import = $value->import;
+            $temptable->import_data = $value->import_data;
+            
             $temptable->jsm = $jsmtable;
             $exporttable[] = $temptable;
             $count++;
@@ -178,10 +182,13 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $option = JRequest::getCmd('option');
         $query = $db->getQuery(true);
         
-        $query->select('name');
+        $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_jl_tables');
         $db->setQuery($query);
-        $result = $db->loadResultArray();
+        $result = $db->loadObjectList();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        
         return $result;
     }
     
