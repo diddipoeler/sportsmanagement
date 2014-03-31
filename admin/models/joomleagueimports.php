@@ -111,8 +111,8 @@ function gettotals()
             
             $query = $db->getQuery(true);
             $query->clear();
-            $query->select('COUNT(id) AS total');
-            $query->from($jsm_table);
+            $query->select('COUNT(pt.id) AS total');
+            $query->from($jsm_table.' AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
             $query->where('import = 0');
             
@@ -126,7 +126,7 @@ function gettotals()
             $db->setQuery($query);
             $total = $db->loadResult();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
             
             return $total;
             }
