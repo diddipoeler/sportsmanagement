@@ -85,7 +85,7 @@ class sportsmanagementViewTeamInfo extends JView
 			$this->assignRef('team',  $team );
 			$club = $model->getClub() ;
 			$this->assignRef('club', $club);
-			$seasons = $model->getSeasons( $config );
+			$seasons = $model->getSeasons( $config,0 );
 			$this->assignRef('seasons', $seasons );
 			$this->assignRef('showediticon', $isEditor);
 			$this->assignRef('projectteamid', $model->projectteamid);
@@ -119,15 +119,19 @@ class sportsmanagementViewTeamInfo extends JView
             
             if ( $this->config['show_history_leagues'] == 1 )
 	{
-            $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasons ) );
-			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasons ) );
+	   $seasonshistory = $model->getSeasons( $config,1 );
+			$this->assignRef('seasonshistory', $seasonshistory );
+            $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasonshistory ) );
+			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasonshistory ) );
 }
 
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonshistory<br><pre>'.print_r($seasonshistory,true).'</pre>'),'');
 }
 
     	

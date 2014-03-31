@@ -184,19 +184,22 @@ class sportsmanagementModelTeamInfo extends JModel
 		return $this->club;
 	}
 
+	
 	/**
-	 * get history of team in differents projects
-	 * @param object config
-	 * @return array
+	 * sportsmanagementModelTeamInfo::getSeasons()
+	 * 
+	 * @param mixed $config
+	 * @param integer $history
+	 * @return
 	 */
-	function getSeasons( $config )
+	function getSeasons( $config, $history = 0 )
 	{
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
-       
+       $starttime = microtime(); 
        
 	    $seasons = array();
 	    if ( $config['ordering_teams_seasons'] == "1")
@@ -212,9 +215,9 @@ class sportsmanagementModelTeamInfo extends JModel
 		$query->select('p.name as projectname,p.season_id, pt.division_id');
 		$query->select('s.name as season');
 		$query->select('l.name as league, t.extended as teamextended');
-		$query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS project_slug');
-		$query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
-		$query->select('CASE WHEN CHAR_LENGTH( d.alias ) THEN CONCAT_WS( \':\', d.id, d.alias ) ELSE d.id END AS division_slug');
+		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+		$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
+		$query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
 		$query->select('d.name AS division_name');
 		$query->select('d.shortname AS division_short_name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
@@ -225,6 +228,13 @@ class sportsmanagementModelTeamInfo extends JModel
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id ');
                         
+        
+        if ( $history )
+        {
+        $query->where('t.id = '. $db->Quote($this->teamid));    
+        }
+        else
+        {
         if($this->projectteamid > 0) 
         {
                     $query->where('pt.id = '. $db->Quote($this->projectteamid));
@@ -233,10 +243,17 @@ class sportsmanagementModelTeamInfo extends JModel
                 {
                     $query->where('t.id = '. $db->Quote($this->teamid));
 				}
+         }       
 
 $query->order('s.ordering '.$season_ordering);
 
 	    $db->setQuery( $query );
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 	    $seasons = $db->loadObjectList();
         
         if ( !$seasons && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
