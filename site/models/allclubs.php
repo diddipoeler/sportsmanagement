@@ -37,6 +37,19 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+/**
+SELECT v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,
+CONCAT_WS( ':', v.id, v.alias ) AS slug,CONCAT_WS( ':', p.id, p.alias ) AS projectslug 
+FROM j25_sportsmanagement_club AS v 
+INNER JOIN j25_sportsmanagement_team AS t ON t.club_id = v.id 
+INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.team_id = t.id 
+INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.team_id = st.id 
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = pt.project_id 
+GROUP BY v.id 
+ORDER BY v.name
+limit 0,20
+*/
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
@@ -66,7 +79,7 @@ var $_identifier = "clubs";
         {   
                 $config['filter_fields'] = array(
                         'v.name',
-                        'v.picture',
+                        'v.logo_big',
                         'v.website',
                         'v.address',
                         'v.zipcode',
@@ -160,9 +173,11 @@ var $_identifier = "clubs";
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.*');
-        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
-        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
+		$query->select('v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country');
+//        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
+//        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
+        $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS v');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = v.id');
@@ -187,6 +202,7 @@ var $_identifier = "clubs";
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
+        
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {        
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');

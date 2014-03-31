@@ -160,9 +160,9 @@ var $_identifier = "teams";
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.*');
-        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
-        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
+		$query->select('v.name,v.picture,v.website');
+        $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as v');
         // Join over the clubs

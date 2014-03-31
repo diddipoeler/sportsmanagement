@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_CLUBS', 'v.name', $this->sortDirection, $this->sortColumn) ; ?>
 </th>
 <th class="" id="">
-<?php echo JHtml::_('grid.sort', 'Bild', 'v.picture', $this->sortDirection, $this->sortColumn); ?>
+<?php echo JHtml::_('grid.sort', 'Bild', 'v.logo_big', $this->sortDirection, $this->sortColumn); ?>
 </th>
 <th class="" id="">
 <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn); ?>
@@ -91,8 +91,8 @@ echo $item->name;
 ?>
 </td>
 <td>
-<a href="<?php echo $item->picture;?>" title="<?php echo $item->name;?>" class="modal">
-<img src="<?php echo $item->picture;?>" alt="<?php echo $item->name;?>" width="20" />
+<a href="<?php echo $item->logo_big;?>" title="<?php echo $item->name;?>" class="modal">
+<img src="<?php echo $item->logo_big;?>" alt="<?php echo $item->name;?>" width="20" />
 </a>  
 
 </td>

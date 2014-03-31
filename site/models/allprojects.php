@@ -71,7 +71,7 @@ var $_identifier = "clubs";
                         'l.name',
                         's.name',
                         'v.location',
-                        'v.country'
+                        'l.country'
                         );
                 parent::__construct($config);
         }
@@ -178,11 +178,11 @@ var $_identifier = "clubs";
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.*');
+		$query->select('v.name,v.picture');
         $query->select('l.country,l.name as leaguename');
         $query->select('s.name as seasonname');
-        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
-        $query->select('CASE WHEN CHAR_LENGTH( l.alias ) THEN CONCAT_WS( \':\', l.id, l.alias ) ELSE l.id END AS leagueslug');
+        $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
+        $query->select('CONCAT_WS( \':\', l.id, l.alias ) AS leagueslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS v');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = v.league_id');
@@ -217,10 +217,14 @@ var $_identifier = "clubs";
         
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
+        
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {        
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
+        
+
+        
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
         
