@@ -151,12 +151,12 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             if ( $result )
             {
             $temptable = new stdClass();
-            $temptable->id = $count;
+            $temptable->id = $value->id;
             $temptable->jl = $value->name;
             
             $temptable->import = $value->import;
             $temptable->import_data = $value->import_data;
-            
+            $temptable->checked_out = $value->checked_out;
             $temptable->jsm = $jsmtable;
             $exporttable[] = $temptable;
             $count++;

@@ -101,7 +101,7 @@ $checked = JHtml::_('grid.checkedout',$row,$i);
 <input type='hidden' name='jl[<?php echo $row->id; ?>]' value='<?php echo $row->jl; ?>' />
 <td><?php echo $row->jsm; ?></td>
 <input type='hidden' name='jsm[<?php echo $row->id; ?>]' value='<?php echo $row->jsm; ?>' />
-
+<input type='hidden' name='jlid[<?php echo $row->id; ?>]' value='<?php echo $row->id; ?>' />
 <td class="center">
 <?php 
 if ( $row->import )
