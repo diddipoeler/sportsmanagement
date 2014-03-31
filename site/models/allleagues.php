@@ -156,7 +156,7 @@ var $_identifier = "leagues";
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.*');
+		$query->select('v.name,v.picture,v.country');
 //        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
 //        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
         // From table
