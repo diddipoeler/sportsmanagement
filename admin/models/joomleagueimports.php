@@ -308,21 +308,9 @@ function import()
                 foreach($results as $param )
                 {
                     $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$param->template.'.xml';
-                    /*
-                    $defaultvalues = array();
-					$defaultvalues = explode('\n', $param->params);
-					$parameter = new JRegistry;
-			        $ini = $parameter->loadINI($defaultvalues[0]);
-		            $ini = $parameter->toArray($ini);
                     
-                    $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
-                    $form->bind($parameter);
-                    $newparams = array();
-                    foreach($form->getFieldset($fieldset->name) as $field)
-                    {
-                    $newparams[$field->name] = $field->value;
-                    }
-			        */
+                    if ( JFile::exists($xmlfile) )
+			        {
                     $form = JForm::getInstance($param->template, $xmlfile,array('control'=> ''));
 		            $form->bind($param->params);
                     $newparams = array();
@@ -331,17 +319,15 @@ function import()
                     $newparams[$field->name] = $field->value;
                     }
                     $t_params = json_encode( $newparams );
-                    
-                    
-                    
-                    
+
                     // Create an object for the record we are going to update.
                     $object = new stdClass();
                     // Must be a valid primary key value.
                     $object->id = $param->id;
                     $object->params = $t_params;
                     // Update their details in the users table using id as the primary key.
-                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');   	
+                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');
+                    }   	
                 }
             
             }
