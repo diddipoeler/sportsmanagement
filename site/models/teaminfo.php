@@ -227,7 +227,7 @@ class sportsmanagementModelTeamInfo extends JModel
 	    }
         
         $query->select('pt.id as ptid, pt.team_id, pt.picture, pt.info, pt.project_id AS projectid');
-		$query->select('p.name as projectname,p.season_id, pt.division_id');
+		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');
 		$query->select('l.name as league, t.extended as teamextended');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');

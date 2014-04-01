@@ -40,6 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
 
+echo 'this->teaminfo seasons<br /><pre>~' . print_r($this->seasons,true) . '~</pre><br />';
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {

@@ -85,11 +85,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	$k=0;
 	foreach ($this->seasons as $season)
 	{
-		$ranking_link   = sportsmanagementHelperRoute::getRankingRoute($season->project_slug, null, null, null, 0, $season->division_slug);
-		$results_link   = sportsmanagementHelperRoute::getResultsRoute($season->project_slug, null, $season->division_slug);
+		$ranking_link   = sportsmanagementHelperRoute::getRankingRoute($season->project_slug, $season->current_round, null, null, 0, $season->division_slug);
+		$results_link   = sportsmanagementHelperRoute::getResultsRoute($season->project_slug, $season->current_round, $season->division_slug);
 		$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($season->project_slug, $this->team->slug, $season->division_slug, NULL);
 		$teamstats_link = sportsmanagementHelperRoute::getTeamStatsRoute($season->project_slug, $this->team->slug);
-		$players_link   = sportsmanagementHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug);
+		$players_link   = sportsmanagementHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug,null,$season->ptid);
 		?>
 	<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 		<td><?php echo $season->season; ?></td>

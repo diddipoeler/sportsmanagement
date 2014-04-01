@@ -227,7 +227,7 @@ class sportsmanagementModelRanking extends JModel
         
         $query->select('m.*, r.roundcode');
 		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
-		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');

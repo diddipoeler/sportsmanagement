@@ -690,10 +690,10 @@ class sportsmanagementModelProject extends JModel
           $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website');
           $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
           $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
-          $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
-          $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
-          $query->select('CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\',d.id,d.alias) ELSE d.id END AS division_slug');
-          $query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\',c.id,c.alias) ELSE c.id END AS club_slug');
+          $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+          $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+          $query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
+          $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id ');
@@ -705,6 +705,8 @@ class sportsmanagementModelProject extends JModel
           $query->where('tl.project_id = '.(int)self::$projectid);
 
 			$db->setQuery($query);
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {

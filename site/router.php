@@ -222,10 +222,10 @@ function sportsmanagementBuildRoute( &$query )
 				unset( $query['tid'] );
 			}
             // diddipoeler
-            if (isset($query['ptid']))
+            if (isset($query['ttid']))
 			{
-				$segments[] = $query['ptid'];
-				unset( $query['ptid'] );
+				$segments[] = $query['ttid'];
+				unset( $query['ttid'] );
 			}
 			break;
 		case 'teamplan':
@@ -496,7 +496,7 @@ function sportsmanagementParseRoute( $segments )
 			}
             //diddipoeler
             if (isset($segments[3])) {
-				$vars['ptid'] = $segments[3];
+				$vars['ttid'] = $segments[3];
 			}
 			break;
 				
