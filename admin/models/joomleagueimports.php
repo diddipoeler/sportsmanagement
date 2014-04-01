@@ -105,9 +105,9 @@ function gettotals()
             $query = $db->getQuery(true);
             $query->clear();
             $query->select('COUNT(pt.id) AS total');
-            $query->from($jsm_table.' AS pt');
+            $query->from($jl_table.' AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-            $query->where('import = 0');
+            $query->where('pt.import = 0');
             
             if ( $season_id )
             {
