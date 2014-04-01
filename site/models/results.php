@@ -317,6 +317,7 @@ class sportsmanagementModelResults extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         $query='	SELECT	pref.id AS person_id,
 								p.firstname,
@@ -328,9 +329,15 @@ class sportsmanagementModelResults extends JModel
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mr.project_position_id=ppos.id
 							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
 						WHERE mr.match_id='.(int)$match_id.' AND p.published = 1 ORDER BY pos.name,mr.ordering ';
-		$this->_db->setQuery($query);
+		$db->setQuery($query);
         
-        $result = $this->_db->loadObjectList();
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+        $result = $db->loadObjectList();
+        
         if ( !$result )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');

@@ -64,8 +64,11 @@ class sportsmanagementModelPagination extends JModel
     {
         $option = JRequest::getCmd('option');
        $mainframe = JFactory::getApplication();
-        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextlink,true).'</pre>' ),'');
+        }
+        
         return $this->nextlink;
     }
     
@@ -131,7 +134,10 @@ class sportsmanagementModelPagination extends JModel
             self::$prevlink = $link;
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prevlink'.'<pre>'.print_r($this->prevlink,true).'</pre>' ),'');
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+            }
 
 			$params['r'] = $firstRound['id'];
 			$query = JURI::buildQuery($params);
@@ -151,7 +157,10 @@ class sportsmanagementModelPagination extends JModel
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextink,true).'</pre>' ),'');
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+            }
             
 			$nextlink = $spacer4;
 			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
@@ -196,10 +205,13 @@ class sportsmanagementModelPagination extends JModel
 				}
 		}
         
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
+        }
         
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
 	}

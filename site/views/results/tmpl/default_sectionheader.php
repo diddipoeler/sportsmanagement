@@ -80,8 +80,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<input type='hidden' name='option' value='com_sportsmanagement' />
         <td>
         <?php
-		echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
-        echo 'prevlink -> '.$mdlPagination->prevlink;
+		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+        echo JHtml::link(sportsmanagementModelPagination::$prevlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
+        //echo sportsmanagementModelPagination::$prevlink;
 		?>
         </td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
@@ -89,7 +90,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</td>
                 <td>
         <?php
-		echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+        echo JHtml::link(sportsmanagementModelPagination::$nextlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
+        //echo sportsmanagementModelPagination::$nextlink;
 		?>
         </td>
                 </form>

@@ -561,6 +561,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         if (empty($this->_rounds))
 		{
@@ -574,12 +575,20 @@ class sportsmanagementModelProject extends JModel
                 $query->order('roundcode ASC');
 
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$this->_rounds = $db->loadObjectList();
 		}
 		
         if ( !$this->_rounds )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r($this->projectid,true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 	    }
         
         if ($ordering == 'DESC') 
@@ -603,14 +612,30 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
         // Select some fields
         $query->select("id as value, CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'__round ');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
         $query->where('project_id = '.(int)$this->projectid);
         $query->order('roundcode '.$ordering);
 
 		$db->setQuery($query);
-		return $db->loadObjectList();
+        $result = $db->loadObjectList();
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+        if ( !$result )
+	    {
+	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r($this->projectid,true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+	    }
+        
+		return $result;
 	}
 
 	/**
@@ -706,7 +731,10 @@ class sportsmanagementModelProject extends JModel
 
 			$db->setQuery($query);
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
