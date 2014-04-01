@@ -149,6 +149,7 @@
 <module module="mod_sportsmanagement_teamstats_ranking" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_top_tipper" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_ajax_top_navigation_menu" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
 
 </modules>
 
