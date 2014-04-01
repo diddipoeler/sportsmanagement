@@ -112,10 +112,10 @@ $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->get
 $document->addScriptDeclaration( $js );    
 }
 
-/* 
+ 
 // import joomla controller library
 jimport('joomla.application.component.controller');
- 
+/* 
 // Get an instance of the controller prefixed by HelloWorld
 $controller = JController::getInstance('sportsmanagement');
 //$classname  = 'sportsmanagementController'.$controller;
@@ -138,7 +138,7 @@ $controller->redirect();
 */
 
 // Require the base controller
-require_once (JPATH_COMPONENT.DS.'controller.php');
+//require_once (JPATH_COMPONENT.DS.'controller.php');
 
 // Execute the task.
 $controller = JControllerLegacy::getInstance('sportsmanagement');

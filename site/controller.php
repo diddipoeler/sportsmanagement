@@ -41,8 +41,8 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controller library
-//jimport('joomla.application.component.controller');
- 
+jimport('joomla.application.component.controller');
+//jimport('joomla.application.component.controllerlegacy');
 
 /**
  * sportsmanagementController
@@ -68,7 +68,8 @@ class sportsmanagementController extends JControllerLegacy
 
     }
     
-    public function display () {
+    public function display ($cachable = false, $urlparams = false) 
+    {
 
         parent::display();
 

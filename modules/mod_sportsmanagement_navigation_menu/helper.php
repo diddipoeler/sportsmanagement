@@ -154,9 +154,6 @@ class modsportsmanagementNavigationMenuHelper {
         $query->select('s.id AS value, s.name AS text');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s');
         
-//		$query = ' SELECT s.id AS value, s.name AS text '
-//				. ' FROM #__joomleague_season AS s '
-//				;
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -191,13 +188,7 @@ class modsportsmanagementNavigationMenuHelper {
             $query->where('d.parent_id > 0 = ');
         }
         $query->order('d.name');
-        
-//		$query = ' SELECT d.id AS value, d.name AS text ' 
-//		       . ' FROM #__joomleague_division AS d ' 
-//		       . ' WHERE d.project_id = ' .  $project->id 
-//		       . ($this->getParam("show_only_subdivisions", 0) ? ' AND parent_id > 0' : '') 
-//		       . ' ORDER BY d.name'
-//		       ;
+
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -221,9 +212,6 @@ class modsportsmanagementNavigationMenuHelper {
 		
         $query->select('l.id AS value, l.name AS text');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l');
-//        $query = ' SELECT id AS value, name AS text ' 
-//		       . ' FROM #__joomleague_league AS l ' 
-//		       ;
                
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -254,24 +242,13 @@ class modsportsmanagementNavigationMenuHelper {
         
         $query->where('p.published = 1');
         
-//		$query_base = ' SELECT p.id AS value, p.name AS text, s.name AS season_name, st.name as sports_type_name ' 
-//		       . ' FROM #__joomleague_project AS p ' 
-//		       . ' INNER JOIN #__joomleague_season AS s on s.id = p.season_id '
-//		       . ' INNER JOIN #__joomleague_league AS l on l.id = p.league_id '
-//		       . ' INNER JOIN #__joomleague_sports_type AS st on st.id = p.sports_type_id '
-//		       . ' WHERE p.published = 1 ';
-		       
-//		$query = $query_base;
-        
 		if ($this->getParam('show_project_dropdown') == 'season' && $this->getProject()) 
 		{
-//			$query .= ' AND p.season_id = '. $this->getProject()->season_id;
-//			$query .= ' AND p.league_id = '. $this->getProject()->league_id;
-            
+           
             $query->where('p.season_id = '. $this->getProject()->season_id);
             $query->where('p.league_id = '. $this->getProject()->league_id);
 		}
-		//$query .= ' GROUP BY p.id ';
+
 		$query->group('p.id');
         
 		switch ($this->getParam('project_ordering', 0)) 
@@ -391,15 +368,7 @@ class modsportsmanagementNavigationMenuHelper {
             }
             $query->order('t.name ASC');
         
-//			$query = ' SELECT t.id AS value, t.name AS text ' 
-//		       . ' FROM #__joomleague_project_team AS pt ' 
-//		       . ' INNER JOIN #__joomleague_team AS t ON t.id = pt.team_id '
-//		       . ' WHERE pt.project_id = '.intval($this->_project_id)
-//		       . ($this->_division_id ? ' AND pt.division_id = '.intval($this->_division_id) : '')
-//		       . ' ORDER BY t.name ASC '
-//		       ;
-			
-            
+
             $db->setQuery($query);
 			$res = $db->loadObjectList();
 
@@ -431,10 +400,6 @@ class modsportsmanagementNavigationMenuHelper {
         $query->select('p.id, p.name, p.season_id, p.league_id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
         $query->where('id = ' . $this->_project_id);
-        
-//			$query = ' SELECT p.id, p.name, p.season_id, p.league_id ' 
-//			       . ' FROM #__joomleague_project AS p ' 
-//			       . ' WHERE id = ' . $this->_project_id;
                    
 			$db->setQuery($query);
 			$this->_project = $db->loadObject();

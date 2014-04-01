@@ -105,9 +105,9 @@
 		
 				<field type="spacer" hr="true" />
 		
-				<field name="show_nav_links" type="radio" default="none" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">
-					<option value="0">MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_OPTION1</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_OPTION2</option>
+				<field name="show_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 		
 				<field type="spacer" hr="true" />
