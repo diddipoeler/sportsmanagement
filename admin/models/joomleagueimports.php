@@ -300,19 +300,41 @@ function import()
                 $mainframe->enqueueMessage(JText::_('Die Parameter aus der Tabelle: ( '.$jsm_table.' ) werden in das JSON-Format umgesetzt!'),'');
                 $query = $db->getQuery(true);
                 $query->clear();
-                $query->select('id,params');
+                $query->select('id,params,template');
                 $query->from($jsm_table);
                 $db->setQuery($query);
                 $results = $db->loadObjectList();
                 
                 foreach($results as $param )
                 {
+                    $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$param->template.'.xml';
+                    /*
                     $defaultvalues = array();
 					$defaultvalues = explode('\n', $param->params);
 					$parameter = new JRegistry;
 			        $ini = $parameter->loadINI($defaultvalues[0]);
 		            $ini = $parameter->toArray($ini);
-			        $t_params = json_encode( $ini );
+                    
+                    $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
+                    $form->bind($parameter);
+                    $newparams = array();
+                    foreach($form->getFieldset($fieldset->name) as $field)
+                    {
+                    $newparams[$field->name] = $field->value;
+                    }
+			        */
+                    $form = JForm::getInstance($param->template, $xmlfile,array('control'=> ''));
+		            $form->bind($param->params);
+                    $newparams = array();
+                    foreach($form->getFieldset($fieldset->name) as $field)
+                    {
+                    $newparams[$field->name] = $field->value;
+                    }
+                    $t_params = json_encode( $newparams );
+                    
+                    
+                    
+                    
                     // Create an object for the record we are going to update.
                     $object = new stdClass();
                     // Must be a valid primary key value.
