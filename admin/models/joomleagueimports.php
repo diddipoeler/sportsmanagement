@@ -293,6 +293,37 @@ function import()
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
             
             unset($exportfields);
+            
+            // in der template tabelle stehen die parameter nicht im json format
+            if (preg_match("/template_config/i", $jsm_table)) 
+            {
+                $mainframe->enqueueMessage(JText::_('Die Parameter aus der Tabelle: ( '.$jsm_table.' ) werden in das JSON-Format umgesetzt!'),'');
+                $query = $db->getQuery(true);
+                $query->clear();
+                $query->select('id,params');
+                $query->from($jsm_table);
+                $db->setQuery($query);
+                $results = $db->loadObjectList();
+                
+                foreach($results as $param )
+                {
+                    $defaultvalues = array();
+					$defaultvalues = explode('\n', $param->params);
+					$parameter = new JRegistry;
+			        $ini = $parameter->loadINI($defaultvalues[0]);
+		            $ini = $parameter->toArray($ini);
+			        $t_params = json_encode( $ini );
+                    // Create an object for the record we are going to update.
+                    $object = new stdClass();
+                    // Must be a valid primary key value.
+                    $object->id = $param->id;
+                    $object->params = $t_params;
+                    // Update their details in the users table using id as the primary key.
+                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');   	
+                }
+            
+            }
+            
             } 
             
             }   

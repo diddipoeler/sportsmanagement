@@ -167,9 +167,7 @@ function newstructur($step,$count=5)
             // danach die alten datensätze löschen
             //$db->truncateTable($jsm_table);
  
- /*
- UPDATE  `d00b716f`.`j25_joomleague_project_team` SET  `import` =  '0' ;           
- */           
+       
              
 
 }
