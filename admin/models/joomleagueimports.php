@@ -200,6 +200,7 @@ function import()
             $jsm_fields = $db->getTableFields($jsm[$value]);
             
             $jsm_table = $jsm[$value];
+            $jl_table = $jl[$value];
             // wenn in der jsm tabelle einträge vorhanden sind
             // dann wird nicht kopiert. es soll kein schaden entstehen
             $query = $db->getQuery(true);
@@ -214,15 +215,31 @@ function import()
             
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'totals<br><pre>'.print_r($totals,true).'</pre>'),'');
             
+            // noch die zu importierenden tabellen prüfen
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
             if (preg_match("/project_team/i", $jsm_table)) 
             {
-            $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jsm_table.' ) noch in die neue Struktur umsetzen!'),'');
+            $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
+            // wir müssen ein neues feld an die tabelle zum import einfügen
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+            if (array_key_exists('import', $jl_fields[$jl_table]  ) )
+            {
+                $mainframe->enqueueMessage(JText::_('Importfeld ist vorhanden'),'');
+            }
+            else
+            {
+                $mainframe->enqueueMessage(JText::_('importfeld ist nicht vorhanden'),'');
+                $query = $db->getQuery(true);
+                $query = 'ALTER TABLE '.$jl_table.' ADD import TINYINT(1)  NOT NULL DEFAULT 0 ';
+                $db->setQuery($query);
+                $db->query();
+            }
+            
             } 
             else 
             {
-            }
+            
 
             if ( $totals )
             {
@@ -276,7 +293,9 @@ function import()
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
             
             unset($exportfields);
-            }    
+            } 
+            
+            }   
         
         
         }

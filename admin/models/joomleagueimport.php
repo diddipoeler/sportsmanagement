@@ -70,20 +70,25 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 function newstructur($step,$count=5)
 {
     $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
-        $option = JRequest::getCmd('option');
-        $starttime = microtime(); 
+    $db = JFactory::getDbo(); 
+    $option = JRequest::getCmd('option');
+    $starttime = microtime(); 
         
-        $season_id = $mainframe->getUserState( "$option.season_id", '0' );
+    $season_id = $mainframe->getUserState( "$option.season_id", '0' );
+    $jl_table = $mainframe->getUserState( "$option.jl_table", '' );
+    $jsm_table = $mainframe->getUserState( "$option.jsm_table", '' );
     
+    // felder für den import auslesen
+    $jl_fields = $db->getTableFields($jl_table);
+    $jsm_fields = $db->getTableFields($jsm_table);
 
             // Select some fields
             $query = $db->getQuery(true);
             $query->clear();
-		    $query->select('pt.id,pt.project_id,pt.team_id');
+		    $query->select('pt.*');
             $query->select('p.season_id');
-            // From table
-		    $query->from('#__sportsmanagement_project_team AS pt');
+            // From joomleague table
+		    $query->from($jl_table.' AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
             $query->where('pt.import = 0');
             
@@ -129,16 +134,31 @@ function newstructur($step,$count=5)
                     $new_id = $db->loadResult();
                 }
                 
-                // Create an object for the record we are going to update.
+                // Create an object for the record we are going to joomleague update.
                 $object = new stdClass();
                 // Must be a valid primary key value.
                 $object->id = $row->id;
-                $object->team_id = $new_id;
                 $object->import = 1;
                 // Update their details in the users table using id as the primary key.
-                $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id'); 
+                $result = JFactory::getDbo()->updateObject($jl_table, $object, 'id'); 
                 
-                
+                // Create an object for the record we are going to joomleague update.
+                $object = new stdClass();
+                $jsm_field_array = $jsm_fields[$jsm_table];
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+                foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
+                {
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                if (array_key_exists($key2, $jsm_field_array)) 
+                {
+                    $object->$key2 = $row->$key2;
+                }
+                }
+                // jetzt die neue team_id
+                $object->team_id = $new_id;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject($jsm_table, $object);
             }
             
             

@@ -216,7 +216,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 $temp->name = $value;
                 $temp->import = 0;
                 $temp->import_data = 0;
-                // Insert the object into the user profile table.
+                // Insert the object into the table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_jl_tables', $temp);
                 if ( $result )
                 {
