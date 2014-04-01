@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	{
 		$ranking_link   = sportsmanagementHelperRoute::getRankingRoute($season->project_slug, $season->current_round, null, null, 0, $season->division_slug);
 		$results_link   = sportsmanagementHelperRoute::getResultsRoute($season->project_slug, $season->current_round, $season->division_slug);
-		$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($season->project_slug, $this->team->slug, $season->division_slug, NULL);
+		$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($season->project_slug, $this->team->slug, $season->division_slug, NULL,$season->ptid);
 		$teamstats_link = sportsmanagementHelperRoute::getTeamStatsRoute($season->project_slug, $this->team->slug);
 		$players_link   = sportsmanagementHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug,null,$season->ptid);
 		?>
