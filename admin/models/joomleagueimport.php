@@ -86,7 +86,7 @@ function newstructur($step,$count=5)
             $query = $db->getQuery(true);
             $query->clear();
 		    $query->select('pt.*');
-            $query->select('p.season_id');
+            //$query->select('p.season_id');
             // From joomleague table
 		    $query->from($jl_table.' AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
@@ -94,10 +94,11 @@ function newstructur($step,$count=5)
             
             if ( $season_id )
             {
+                $query->select('p.season_id');
                 $query->where('p.season_id = '.$season_id);
             }
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             
             $db->setQuery($query,$step,$count);
@@ -131,6 +132,7 @@ function newstructur($step,$count=5)
                     $query->from('#__sportsmanagement_season_team_id');
                     $query->where('season_id = '.$row->season_id);
                     $query->where('team_id = '.$row->team_id);
+                    $db->setQuery($query);
                     $new_id = $db->loadResult();
                 }
                 
@@ -165,8 +167,9 @@ function newstructur($step,$count=5)
             // danach die alten datensätze löschen
             //$db->truncateTable($jsm_table);
  
-            
-            
+ /*
+ UPDATE  `d00b716f`.`j25_joomleague_project_team` SET  `import` =  '0' ;           
+ */           
              
 
 }
