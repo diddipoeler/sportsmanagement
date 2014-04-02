@@ -42,6 +42,17 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
+// sprachdatei aus dem backend laden
+$langtag = JFactory::getLanguage();
+//echo 'Current language is: ' . $langtag->getTag();
+
+$lang = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+
 // welche tabelle soll genutzt werden
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
