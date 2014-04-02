@@ -129,7 +129,7 @@ echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
 ?>
 
 <p>
-<img style="float: left;" src="images/dfs_kl_<?php echo $value?>.gif" alt="<?php echo $value?>" width="144" height="" />
+<img style="float: left;" src="images/dfs_kl_<?php echo strtolower($value)?>.gif" alt="<?php echo $value?>" width="144" height="" />
 
 <?PHP
 if ( $country_id )
