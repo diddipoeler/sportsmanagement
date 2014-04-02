@@ -39,7 +39,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
-
+require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
 // welche tabelle soll genutzt werden
