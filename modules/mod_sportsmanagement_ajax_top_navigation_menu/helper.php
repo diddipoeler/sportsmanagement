@@ -122,11 +122,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations');
         $db->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
         $result = $db->loadObjectList();
-        
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'');
     
     return $result;
     
@@ -150,11 +146,6 @@ $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS s');
 $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
-//		$query = " SELECT s.id AS value, s.name AS text "
-//				. " FROM #__joomleague_associations AS s"
-//				. " where parent_id = ".$assoc_id 
-//				. " ORDER by s.name "
-//				;
                 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -184,11 +175,6 @@ $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS s');
 $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
-//		$query = " SELECT s.id AS value, s.name AS text "
-//				. " FROM #__joomleague_associations AS s"
-//				. " where parent_id = ".$assoc_id 
-//				. " ORDER by s.name "
-//				;
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -218,11 +204,6 @@ $query->where('s.country = \''.$country.'\'');
 $query->where('s.parent_id = 0');
 $query->order('s.name');
 
-//		$query = " SELECT s.id AS value, s.name AS text "
-//				. " FROM #__joomleague_associations AS s where country = '".$country."'"
-//				. " AND parent_id = 0 "
-//				. " ORDER by s.name "
-//				;
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -255,10 +236,6 @@ $query->order('s.name DESC');
 $db->setQuery($query);
 $res = $db->loadObjectList();
 
-
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($res,true).'</pre>'),'');
-    
 if ($res) 
     {
 
@@ -278,90 +255,6 @@ if ($res)
       }
 			
 		}
-        
-//  switch ($federation)
-//	{
-//	case 1:
-//	$fedtext = 'AFC';
-//	break;
-//	case 2:
-//	$fedtext = 'CAF';
-//	break;
-//	case 3:
-//	$fedtext = 'CONMEBOL';
-//	break;
-//	case 4:
-//	$fedtext = 'CONCACAF';
-//	break;
-//	case 5:
-//	$fedtext = 'OFC';
-//	break;
-//	case 6:
-//	$fedtext = 'UEFA';
-//	break;
-//	case 7:
-//	$fedtext = 'non_FIFA';
-//	break;
-//	case 8:
-//	$fedtext = '--- Turniere ---';
-//	break;
-//	}
-
-		
-//   switch ($federation)
-//	{
-//  case 1:
-//  case 2:
-//  case 3:
-//  case 4:
-//  case 5:
-//  case 6:
-//  case 7: 
-//    $query = ' SELECT s.alpha3 AS value, s.name AS text '
-//				. ' FROM #__joomleague_countries AS s where federation = '.$federation
-//				. ' ORDER by s.name DESC'
-//				;
-//		$this->_db->setQuery($query);
-//		$res = $this->_db->loadObjectList();
-//        
-//		if ($res) 
-//    {
-//
-//    foreach ( $res as $row )
-//			{
-//      $row->text = JText::_($row->text);
-//      }
-//      
-//      $res = JArrayHelper::sortObjects($res,'text',1);
-//      
-//		  $options = array(JHTML::_('select.option', 0, JText::_($fedtext)));
-//			$options = array_merge($options, $res);
-//			
-//			foreach ( $res as $row )
-//			{
-//      $this->_country_fed[$row->value] = $fedtext;
-//      }
-//			
-//		}
-//		break;
-//	case 8:
-//  $options = array(JHTML::_('select.option', 0, JText::_($fedtext)));
-//  $options[] = JHTML::_('select.option',  '891', 'AFC' );
-//  $options[] = JHTML::_('select.option',  '892', 'CAF' );
-//  $options[] = JHTML::_('select.option',  '894', 'CONMEBOL' );
-//  $options[] = JHTML::_('select.option',  '890', 'CONCACAF' );
-//  $options[] = JHTML::_('select.option',  '893', 'OFC' );
-//  $options[] = JHTML::_('select.option',  '888', 'UEFA' );
-//  $options[] = JHTML::_('select.option',  '889', 'FIFA' );
-//  $this->_country_fed['888'] = 'TURNIERE';	
-//  $this->_country_fed['889'] = 'TURNIERE';
-//  $this->_country_fed['890'] = 'TURNIERE';
-//  $this->_country_fed['891'] = 'TURNIERE';
-//  $this->_country_fed['892'] = 'TURNIERE';
-//  $this->_country_fed['893'] = 'TURNIERE';
-//  $this->_country_fed['894'] = 'TURNIERE';
-//  break;	                
-//	}	
 		
 
 		return $options;
@@ -612,15 +505,9 @@ return $user->username ;
         $query = $db->getQuery(true);
         
         $query->select('parent_id');
-        
-        
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations ');
-
             $query->where('id = '. $assoc_id );
-            
-//  $query = ' SELECT parent_id  '
-//				. ' FROM #__joomleague_associations where id = '. $assoc_id
-//				;
+
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		if ( $res )
@@ -646,15 +533,8 @@ return $user->username ;
         $query = $db->getQuery(true);
         
         $query->select('associations');
-        
-        
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league ');
-
             $query->where('id = '. $this->_league_id );
-            
-//	$query = ' SELECT associations  '
-//				. ' FROM #__joomleague_league where id = '. $this->_league_id
-//				;
                 
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -708,17 +588,10 @@ return $user->username ;
         $query->select('t.club_id');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
-        
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id ');
             $query->where('t.id = '. $this->_team_id );
             
-//		$query = ' SELECT t.club_id,  '
-//        . ' CONCAT_WS(\':\',t.id,t.alias) AS team_slug, '
-//        . ' CONCAT_WS(\':\',c.id,c.alias) AS club_slug '
-//				. ' FROM #__joomleague_team as t '
-//                . ' INNER JOIN #__joomleague_club c ON t.club_id = c.id'
-//                . ' where t.id = '. $this->_team_id;
                 
 		$db->setQuery($query);
 		$res = $db->loadObject();
@@ -753,10 +626,7 @@ return $user->username ;
         $query->select('fav_team');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
             $query->where('id = '. $project_id );
-            
-//  $query = ' SELECT fav_team  '
-//				. ' FROM #__joomleague_project where id = '. $project_id 
-//				;
+
 		$db->setQuery($query);
 		$teams = $db->loadResult();
 		
@@ -768,13 +638,7 @@ return $user->username ;
           $query->select('t.id as team_id, t.name, t.club_id');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
             $query->where('t.id in ('. $teams . ')' );
-            
-//    $query = " SELECT t.id as team_id, t.name, t.club_id  "
-//				. " FROM #__joomleague_team as t
-//         where t.id in (". $teams . ")"
-//				;
-		
-    //echo 'query -><pre>'.print_r($query,true).'</pre><br>';	
+
     	
 				$db->setQuery($query);
 				$res = $db->loadObjectList();
@@ -809,13 +673,7 @@ return $user->username ;
             
             $query->where('pt.project_id = '.intval($project_id));
             $query->where('t.club_id = '.$club_id);
-            
-//		$query = ' SELECT pt.team_id  '
-//				. ' FROM #__joomleague_project_team as pt
-//        inner join #__joomleague_team as t
-//        on t.id = pt.team_id
-//         where pt.project_id = '. $project_id .' and t.club_id = '.$club_id
-//				;
+
                 
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -850,10 +708,7 @@ return $user->username ;
         $query->select('s.id AS value, s.name AS text');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s');
             $query->order('s.name DESC');
-            
-//		$query = ' SELECT s.id AS value, s.name AS text '
-//				. ' FROM #__joomleague_season AS s ORDER by s.name DESC'
-//				;
+
                 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -874,13 +729,7 @@ return $user->username ;
 	   $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
-        
-//		$project = $this->getProject();
-//		if(!is_object($project)) return false;
-//		if(!$this->_project_id && !($this->_project_id>0) && $project->project_type!='DIVISION_LEAGUE') {
-//			return false;
-//		}
-//		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
+
 		$query = ' SELECT d.id AS value, d.name AS text ' 
 		       . ' FROM #__sportsmanagement_division AS d ' 
 		       . ' WHERE d.project_id = ' .  $project_id 
@@ -916,17 +765,7 @@ $mainframe = JFactory::getApplication();
             $query->where('l.country = \'' . $country_id. '\'' );
             $query->group('l.name');
             $query->order('l.name');
-            
-//		$query = ' SELECT l.id AS value, l.name AS text ' 
-//		       . ' FROM #__joomleague_league AS l ' 
-//		       . ' inner join #__joomleague_project AS p '
-//		       . ' on p.league_id = l.id '
-//		       . ' inner join #__joomleague_season AS s '
-//		       . ' on p.season_id = s.id '
-//		       . ' where l.associations = ' . $associd
-//               . " and l.country = '" . $country_id . "'"  
-//               .' GROUP BY l.name	ORDER BY	l.name '
-//		       ;
+
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -953,13 +792,7 @@ $mainframe = JFactory::getApplication();
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on l.id = p.league_id');
             $query->where('p.id = ' . $project_id );
-            
-//    $query = ' SELECT l.country '
-//				. ' FROM #__joomleague_league as l '
-//                . ' inner join #__joomleague_project AS p '
-//		        . ' on p.league_id = l.id '
-//                . ' where p.id = ' . $project_id
-//				;
+
 		$db->setQuery($query);
 		$res = $db->loadResult();
     
@@ -992,18 +825,7 @@ $mainframe = JFactory::getApplication();
             $query->where('s.id = ' . $season );
             $query->group('l.name');
             $query->order('l.name');
-            
-//		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
-		
-//        $query = ' SELECT l.id AS value, l.name AS text ' 
-//		       . ' FROM #__joomleague_league AS l ' 
-//		       . ' inner join #__joomleague_project AS p '
-//		       . ' on p.league_id = l.id '
-//		       . ' inner join #__joomleague_season AS s '
-//		       . ' on p.season_id = s.id '
-//		       . ' where s.id = ' . $season .' GROUP BY l.name	ORDER BY	l.name '
-//		       ;
-               
+              
                
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -1083,29 +905,12 @@ $mainframe = JFactory::getApplication();
 		
 		if ($res) 
 		{
-//			switch ($this->getParam('project_include_season_name', 0))
-//			{
-//				case 2:
-//					foreach ($res as $p)
-//					{
-//						$options[] = JHTML::_('select.option', $p->value, $p->text.' - '.$p->season_name);
-//					}
-//					break;
-//				case 1:
-//					foreach ($res as $p)
-//					{
-//						$options[] = JHTML::_('select.option', $p->value, $p->season_name .' - '. $p->text);
-//					}
-//					break;
-//				case 0:
-//				default:
 
 $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_project_dropdown'))));
 					$options = array_merge($options, $res);
-//				}
+
 		}
 
-//		return JHTML::_('select.genericlist', $options, 'p', 'class="jlnav-project"', 'value', 'text', $this->_project_id);
         return $options;		
 	}
 
@@ -1143,9 +948,6 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
         
 		if (empty($this->_teamoptions))
 		{
-//			if (!$this->_project_id) {
-//				return false;
-//			}
 
 			$query->select('t.id AS value, t.name AS text');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
@@ -1154,15 +956,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             
             $query->where('pt.project_id = '.intval($project_id));
             $query->order('t.name ASC');
-            
-//            $query = ' SELECT t.id AS value, t.name AS text ' 
-//		       . ' FROM #__joomleague_project_team AS pt ' 
-//		       . ' INNER JOIN #__joomleague_team AS t ON t.id = pt.team_id '
-//		       . ' WHERE pt.project_id = '.intval($project_id)
-////		       . ' AND pt.division_id = '.intval($this->_division_id)
-//		       . ' ORDER BY t.name ASC '
-//		       ;
-               
+              
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 			
@@ -1208,17 +1002,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             
           $query->where('p.id = ' . $this->_project_id);
           
-//			$query = ' SELECT p.id, p.name,
-//			CONCAT_WS(\':\',p.id,p.alias) AS project_slug,
-//            CONCAT_WS(\':\',s.id,s.alias) AS saeson_slug, 
-//            CONCAT_WS(\':\',l.id,l.alias) AS league_slug,
-//            CONCAT_WS(\':\',r.id,r.alias) AS round_slug,
-//			 p.season_id, p.league_id, p.current_round ' 
-//			       . ' FROM #__joomleague_project AS p '
-//			       . ' INNER JOIN #__joomleague_season AS s on s.id = p.season_id '
-//		           . ' INNER JOIN #__joomleague_league AS l on l.id = p.league_id '
-//                   . ' INNER JOIN #__joomleague_round AS r on p.id = r.project_id '  
-//			       . ' WHERE p.id = ' . $this->_project_id;
+
                    
 			$db->setQuery($query);
 			$this->_project = $db->loadObject();

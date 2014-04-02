@@ -83,32 +83,15 @@ $tab_points[] = $row->name;
     
 }
 
-//$tab_points[] = 'afc';
-//$tab_points[] = 'caf';
-//$tab_points[] = 'conmebol';
-//$tab_points[] = 'concacaf';
-//$tab_points[] = 'ofc';
-//$tab_points[] = 'uefa';
+
 $tab_points[] = 'NON';
-//$tab_points[] = 'turniere';
+
 
 $ajax= JRequest::getVar('ajaxCalMod',0,'default','POST');
 $ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
 
 $document = JFactory::getDocument();
-//$document->addScript(JURI::root(true).'/administrator/components/com_joomleague/assets/js/jl2.noconflict.js');
 
-// $jquery_version =  JComponentHelper::getParams('com_joomleague')->get('jqueryversionfrontend',0);
-// $jquery_sub_version = JComponentHelper::getParams('com_joomleague')->get('jquerysubversionfrontend',0);
-// $jquery_ui_version = JComponentHelper::getParams('com_joomleague')->get('jqueryuiversionfrontend',0);
-// $jquery_ui_sub_version = JComponentHelper::getParams('com_joomleague')->get('jqueryuisubversionfrontend',0);
-
-//$document->addScript('https://ajax.googleapis.com/ajax/libs/jqueryui/'.$jquery_ui_version.'.'.$jquery_ui_sub_version.'/jquery-ui.min.js');
-// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/'.$jquery_version.'/jquery.min.js');
-
-
-
-//$show_debug_info = JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0) ;
 
 $queryvalues = $helper->getQueryValues();
 $assoc_id = 0;
@@ -165,15 +148,7 @@ $ende_if = true;
  
 }
 
-if ( $_POST 
-
-// JRequest::getVar('jlamtopcountry',0,'default','POST')
-// || JRequest::getVar('jlamtopassocid',0,'default','POST')
-// || JRequest::getVar('jlamtopsubassocid',0,'default','POST')
-// || JRequest::getVar('jlamtopleague',0,'default','POST')
-// || JRequest::getVar('jlamtopproject',0,'default','POST')
-
-)
+if ( $_POST )
 {
 $project_id = 0;  
 $league_id = 0;   
@@ -192,11 +167,6 @@ $team_id  = JRequest::getVar('jlamtopteam',0,'default','POST');
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
 
-
-
-
-
-
 JHTML::_('behavior.mootools');
 JHTML::_('behavior.modal');
 
@@ -213,31 +183,19 @@ $federationselect[$row->name]	= $helper->getFederationSelect($row->name,$row->id
 
 $federationselect['NON']	= $helper->getFederationSelect('NON',0);
 
-//$federationselect['afc']	= $helper->getFederationSelect(1);
-//$federationselect['caf']	= $helper->getFederationSelect(2);
-//$federationselect['conmebol']	= $helper->getFederationSelect(3);
-//$federationselect['concacaf']	= $helper->getFederationSelect(4);
-//$federationselect['ofc']	= $helper->getFederationSelect(5);
-//$federationselect['uefa']	= $helper->getFederationSelect(6);      
-//$federationselect['non']	= $helper->getFederationSelect(7);
-//$federationselect['turniere']	= $helper->getFederationSelect(8);  
-
 $country_federation	= $helper->getCountryFederation($country_id);
 
 $startoffset = 0;
 foreach ( $tab_points as $key => $value )
 {
+
 if ( strtolower($country_federation) == $value )
 {
 $startoffset = $key;
 break;
 }
+
 }
-
-
-      
-
-
 
 if ( $country_id )
 {
@@ -274,10 +232,7 @@ $helper->setProject($project_id,$team_id,$division_id);
 $divisionsselect[$country_federation]['divisions']	= $helper->getDivisionSelect($project_id);
 $projectselect[$country_federation]['teams']	= $helper->getTeamSelect($project_id);
 }
-
-
-
-		
+	
 $inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'joomleague'):'';
 $document->addScriptDeclaration(';
     jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\'; 
@@ -293,11 +248,5 @@ if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
 	$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
-
-
-	
-
-// $defaultview   = $params->get('project_start');
-// $defaultitemid = $params->get('custom_item_id');
 
 require(JModuleHelper::getLayoutPath('mod_sportsmanagement_ajax_top_navigation_menu'));

@@ -44,7 +44,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
@@ -87,7 +87,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
@@ -128,7 +128,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
@@ -169,7 +169,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
@@ -245,7 +245,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
@@ -303,7 +303,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxmenu-' + modid).innerHTML += loadHtml;
     
@@ -371,7 +371,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
@@ -437,7 +437,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
@@ -478,7 +478,7 @@ loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_joomleague_ajax_top_navigation_menu/img/loading.gif'>";
+				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	$('jlajaxmenu-' + modid).innerHTML += loadHtml;
     
