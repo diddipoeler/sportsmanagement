@@ -65,8 +65,8 @@ class sportsmanagementViewPlayground extends JView
         // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
 
-		// Set page title
-		//$document->setTitle( JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_TITLE' ) );
+		
+		
 
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
@@ -107,6 +107,7 @@ class sportsmanagementViewPlayground extends JView
 		{
 			$pageTitle .= ' - ' . $this->playground->name;
 		}
+        // Set page title
 		$document->setTitle( $pageTitle );
 		$document->addCustomTag( '<meta property="og:title" content="' . $this->playground->name .'"/>' );
 		$document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );

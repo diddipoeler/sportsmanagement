@@ -39,6 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+echo ' playground<br><pre>'.print_r($this->playground,true).'</pre>';
+
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
