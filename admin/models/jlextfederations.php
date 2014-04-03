@@ -66,7 +66,9 @@ class sportsmanagementModeljlextfederations extends JModelList
                         'objassoc.name',
                         'objassoc.short_name',
                         'objassoc.id',
-                        'objassoc.ordering'
+                        'objassoc.ordering',
+                        'objassoc.checked_out',
+                        'objassoc.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -119,7 +121,7 @@ class sportsmanagementModeljlextfederations extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('objassoc.*');
+		$query->select(implode(",",$this->filter_fields));
 		// From the _associations table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations as objassoc');
         // Join over the users for the checked out user.

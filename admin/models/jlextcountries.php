@@ -70,7 +70,9 @@ class sportsmanagementModeljlextcountries extends JModelList
                         'objcountry.fifa',
                         'objcountry.ds',
                         'objcountry.wmo',
-                        'objcountry.ordering'
+                        'objcountry.ordering',
+                        'objcountry.checked_out',
+                        'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -123,7 +125,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('objcountry.*');
+		$query->select(implode(",",$this->filter_fields));
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS objcountry');
         // Join over the users for the checked out user.
