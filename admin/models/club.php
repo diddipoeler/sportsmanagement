@@ -98,6 +98,7 @@ class sportsmanagementModelclub extends JModelAdmin
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.club', 'club', array('control' => 'jform', 'load_data' => $loadData));
@@ -105,6 +106,11 @@ class sportsmanagementModelclub extends JModelAdmin
 		{
 			return false;
 		}
+        
+        if ( !$show_team_community )
+        {
+            $form->setFieldAttribute('merge_teams', 'type', 'hidden');
+        }
         
         $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/small');

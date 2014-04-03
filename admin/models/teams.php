@@ -67,15 +67,17 @@ class sportsmanagementModelTeams extends JModelList
         {   
                 $config['filter_fields'] = array(
                         't.name',
-                        'c.name',
+                        //'c.name',
                         't.website',
                         't.middle_name',
                         't.short_name',
                         't.info',
-                        'st.name',
+                        //'st.name',
                         't.picture',
                         't.id',
-                        't.ordering'
+                        't.ordering',
+                        't.checked_out',
+                        't.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -134,7 +136,7 @@ class sportsmanagementModelTeams extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('t.name,t.website,t.middle_name,t.short_name,t.info,t.picture,t.ordering,t.id');
+		$query->select(implode(",",$this->filter_fields));
         $query->select('st.name AS sportstype');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');

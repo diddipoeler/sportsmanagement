@@ -132,13 +132,22 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     function checkImportTablesJlJsm($tables)
     {
         $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();  
+        $db = JFactory::getDbo();
+        $prefix = $mainframe->getCfg('dbprefix');  
+        $storeFailedColor = 'red';
+	    $storeSuccessColor = 'green';
+	    $existingInDbColor = 'orange';
         $exporttable = array();
         $convert = array (
 'joomleague' => 'sportsmanagement'
   );
+        $convert2 = array (
+$prefix.'joomleague_' => ''
+  );
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
         
         $count = 1;
         foreach ( $tables as $key => $value )
@@ -154,6 +163,27 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
             $temptable->id = $value->id;
             $temptable->jl = $value->name;
             
+            $check_table = str_replace(array_keys($convert2), array_values($convert2), $value->name  );
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
+            
+            switch ($check_table)
+            {
+                case 'project_team':
+                $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NEW_STRUCTUR');
+                $temptable->color = $existingInDbColor;
+                break;
+                case 'prediction_groups':
+                case 'prediction_member':
+                case 'template_config':
+                $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_OK');
+                $temptable->color = $storeSuccessColor;
+                break;
+                default:
+                $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NOT_IMPORT');
+                $temptable->color = $storeFailedColor;
+                break;
+            }
             $temptable->import = $value->import;
             $temptable->import_data = $value->import_data;
             $temptable->checked_out = $value->checked_out;

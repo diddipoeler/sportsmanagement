@@ -82,7 +82,7 @@ $fieldsets = $this->form->getFieldsets();
             ?>
 				<li><?php echo $field->label; ?>
 				<?php echo $field->input; 
-                
+                 
                 if ( $field->name == 'jform[country]' )
                 {
                 echo JSMCountries::getCountryFlag($field->value);    
@@ -124,6 +124,8 @@ $fieldsets = $this->form->getFieldsets();
                     case 'id':
                     break;
                     default:
+                    if ( $field->type != 'Hidden')
+                    {
                 ?>
                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
@@ -136,6 +138,7 @@ $fieldsets = $this->form->getFieldsets();
 								</a>
                 
                 <?PHP
+                }
                 break;
                 }
                 ?>

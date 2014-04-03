@@ -114,8 +114,8 @@ class sportsmanagementViewjoomleagueimports extends JView
         // Set toolbar items for the page
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'),'joomleague-import');
         //JToolBarHelper::custom('joomleagueimports.newstructur','upload','upload',JText::_('JMODIFY'),false);
-        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JMODIFY'),false);
-        JToolBarHelper::custom('joomleagueimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+        JToolBarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));

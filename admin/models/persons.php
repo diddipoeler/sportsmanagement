@@ -67,8 +67,12 @@ class sportsmanagementModelPersons extends JModelList
                         'pl.country',
                         'pl.position_id',
                         'pl.id',
-                        'pl.ordering'
+                        'pl.ordering',
+                        'pl.published',
+                        'pl.checked_out',
+                        'pl.checked_out_time'
                         );
+                   
                 parent::__construct($config);
         }
         
@@ -86,7 +90,7 @@ class sportsmanagementModelPersons extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -100,7 +104,7 @@ class sportsmanagementModelPersons extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -135,7 +139,11 @@ class sportsmanagementModelPersons extends JModelList
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' filter_fields<br><pre>'.print_r($this->filter_fields,true).'</pre>'),'');
         }
+        
+
+
 
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -144,7 +152,8 @@ class sportsmanagementModelPersons extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('pl.*, pl.id as id2');
+		$query->select(implode(",",$this->filter_fields));
+        $query->select('pl.id as id2');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
         // Join over the users for the checked out user.
@@ -174,6 +183,7 @@ class sportsmanagementModelPersons extends JModelList
             switch ($this->_type)
             {
                 case 1:
+                // player
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
@@ -184,6 +194,7 @@ class sportsmanagementModelPersons extends JModelList
                 $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 2:
+                //staff
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
@@ -199,6 +210,7 @@ class sportsmanagementModelPersons extends JModelList
 //                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 3:
+                // referee
                 $Subquery->select('stp.person_id');
                 $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
                 $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  

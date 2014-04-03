@@ -68,8 +68,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL'); 
                     ?>
                     </th>
-                    <th><?php 
+                    <th>
+                    <?php 
                     echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JSM'); 
+                    ?>
+                    </th>
+                    <th>
+                    <?php 
+                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_INFO'); 
                     ?>
                     </th>
                     <th>
@@ -102,6 +108,9 @@ $checked = JHtml::_('grid.checkedout',$row,$i);
 <td><?php echo $row->jsm; ?></td>
 <input type='hidden' name='jsm[<?php echo $row->id; ?>]' value='<?php echo $row->jsm; ?>' />
 <input type='hidden' name='jlid[<?php echo $row->id; ?>]' value='<?php echo $row->id; ?>' />
+
+<td style="color: <?php echo $row->color; ?>;"><font><b><?php echo $row->info; ?></b></font></td>
+
 <td class="center">
 <?php 
 if ( $row->import )

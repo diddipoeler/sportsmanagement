@@ -72,13 +72,13 @@ class sportsmanagementModelClubs extends JModelList
                         'a.logo_middle',
                         'a.logo_small',
                         'a.country',
-                        
                         'a.location',
                         'a.latitude',
                         'a.longitude',
-                        
                         'a.id',
-                        'a.ordering'
+                        'a.ordering',
+                        'a.checked_out',
+                        'a.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -137,7 +137,7 @@ class sportsmanagementModelClubs extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('a.*');
+		$query->select(implode(",",$this->filter_fields));
 		// From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
         
