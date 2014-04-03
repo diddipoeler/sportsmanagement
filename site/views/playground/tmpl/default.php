@@ -41,6 +41,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //echo ' playground<br><pre>'.print_r($this->playground,true).'</pre>';
 //echo ' temas<br><pre>'.print_r($this->teams,true).'</pre>';
+//echo ' config<br><pre>'.print_r($this->config,true).'</pre>';
+//echo ' project<br><pre>'.print_r($this->project,true).'</pre>';
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view

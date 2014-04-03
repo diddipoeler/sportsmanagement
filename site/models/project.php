@@ -1021,7 +1021,7 @@ class sportsmanagementModelProject extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query2 = $db->getQuery(true);
+        //$query2 = $db->getQuery(true);
         
         //first load the default settings from the default <template>.xml file
 		$paramsdata = "";
@@ -1029,8 +1029,8 @@ class sportsmanagementModelProject extends JModel
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
        
 
 		if( $this->projectid == 0) return $arrStandardSettings;
@@ -1041,24 +1041,40 @@ $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.p
 $query->where('t.template='.$db->Quote($template));
 $query->where('p.id='.$db->Quote($this->projectid));
 
+$starttime = microtime(); 
 		$db->setQuery($query);
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		if (! $result = $db->loadResult())
 		{
 			$project = self::getProject();
 			if (!empty($project) && $project->master_template>0)
 			{
-				$query2->select('t.params');
-                $query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
-                $query2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
-                $query2->where('t.template='.$db->Quote($template));
-                $query2->where('p.id='.$db->Quote($project->master_template));
+			 $query->clear();
+				$query->select('t.params');
+                $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
+                $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
+                $query->where('t.template='.$db->Quote($template));
+                $query->where('p.id='.$db->Quote($project->master_template));
 
-				$db->setQuery($query2);
+$starttime = microtime(); 
+				$db->setQuery($query);
+                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 				if (! $result = $db->loadResult())
 				{
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
+                    
+                    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+                    
 					return $arrStandardSettings;
 				}
 			}
@@ -1066,6 +1082,9 @@ $query->where('p.id='.$db->Quote($this->projectid));
 			{
 				//JError::raiseNotice(500,'project ' . $this->projectid . '  setting not found');
 				//there are no saved settings found, use the standard xml file default values
+                
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+                
 				return $arrStandardSettings;
 			}
 		}
@@ -1085,6 +1104,9 @@ $query->where('p.id='.$db->Quote($this->projectid));
 
 		//merge and overwrite standard settings with individual view settings
 		$settings = array_merge($arrStandardSettings,$configvalues);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' settings<br><pre>'.print_r($settings,true).'</pre>'),'');
+        
         return $settings;
 		
 		//return $extended;

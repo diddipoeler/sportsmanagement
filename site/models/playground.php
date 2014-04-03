@@ -57,6 +57,7 @@ class sportsmanagementModelPlayground extends JModel
 {
     var $playgroundid = 0;
     var $playground = null;
+    var $projectid = 0;
 
     /**
      * sportsmanagementModelPlayground::__construct()
@@ -65,11 +66,13 @@ class sportsmanagementModelPlayground extends JModel
      */
     function __construct( )
     {
-        parent::__construct( );
+        
 
         $this->projectid = JRequest::getInt( "p", 0 );
         $this->playgroundid = JRequest::getInt( "pgid", 0 );
-        sportsmanagementModelProject::$projectid = $this->projectid; 
+        sportsmanagementModelProject::$projectid = $this->projectid;
+        
+        parent::__construct( ); 
     }
 
 //    /**
