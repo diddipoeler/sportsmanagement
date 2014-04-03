@@ -406,7 +406,7 @@ class sportsmanagementModelPlayground extends JModelAdmin
             $pgid = JRequest::getInt( "pgid", 0 );
             if ( $pgid > 0 )
             {
-                $this->playground = $this->getTable();
+                $this->playground = self::getTable();
                 $this->playground->load( $pgid );
             }
         }
