@@ -164,17 +164,13 @@ class sportsmanagementModelTeams extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
         
         
         
 	}
-
-
-	
-
     
     /**
      * sportsmanagementModelTeams::getTeamListSelect()
@@ -183,9 +179,28 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
      */
     public function getTeamListSelect()
 	{
-		$query="SELECT id,id AS value,name,club_id,short_name, middle_name,info FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        $starttime = microtime(); 
+        
+        // Select some fields
+		$query->select('id,id AS value,name,club_id,short_name, middle_name,info');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        $query->order('name');
+        
+//		$query="SELECT id,id AS value,name,club_id,short_name, middle_name,info FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
+
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+		if ($results = $db->loadObjectList())
 		{
 			foreach ($results AS $team)
 			{
@@ -211,24 +226,27 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		$query	= $db->getQuery(true);
         $query2	= $db->getQuery(true);
         $query3	= $db->getQuery(true);
-        
+
         $teams = array();
 
         //$playground = self::getPlayground();
         if ( $playground_id > 0 )
         {
         // Select some fields
-		$query->select('id, team_id, project_id');
+		$query->select('pt.id, st.team_id, pt.project_id');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
-        $query->where('standard_playground = '.(int)$playground->id);
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+        $query->where('pt.standard_playground = '.(int)$playground->id);
         
-/**
- *             $query = "SELECT id, team_id, project_id
- *                       FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
- *                       WHERE standard_playground = ".(int)$playground->id;
- */
+        $starttime = microtime(); 
+
             $db->setQuery( $query );
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
             $rows = $db->loadObjectList();
 			
             foreach ( $rows as $row )
@@ -240,12 +258,13 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
         $query2->where('id='.(int)$row->team_id);
 
-/**
- *                 $query = "SELECT name, short_name, notes
- *                           FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team
- *                           WHERE id=".(int)$row->team_id;
- */
+$starttime = microtime(); 
                 $db->setQuery( $query2 );
+                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
                 $teams[ $row->id ]->teaminfo[] = $db->loadObjectList();
                 
                 // Select some fields
@@ -253,13 +272,12 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
         // From table
 		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         $query3->where('id='.$row->project_id);
-
-/**
- *                 $query= "SELECT name
- *                          FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project
- *                          WHERE id=".(int)$row->project_id;
- */
+$starttime = microtime(); 
                 $db->setQuery( $query3 );
+                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
             	$teams[ $row->id ]->project = $db->loadResult();
             }
         }
@@ -300,11 +318,6 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->where('t.id IN ('.$listTeamId.')');
 
-/**
- *         $query = "SELECT t.id, t.name
- *                  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team t
- *                  WHERE t.id IN (".$listTeamId.")";
- */
         $db->setQuery( $query );
         $result = $db->loadObjectList();
 
