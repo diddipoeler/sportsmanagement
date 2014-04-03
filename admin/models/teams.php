@@ -224,8 +224,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-        $query2	= $db->getQuery(true);
-        $query3	= $db->getQuery(true);
+//        $query2	= $db->getQuery(true);
+//        $query3	= $db->getQuery(true);
 
         $teams = array();
 
@@ -253,13 +253,14 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
             {
                 $teams[$row->id]->project_team[] = $row;
                 // Select some fields
-		$query2->select('name, short_name, notes');
+                $query->clear();
+		$query->select('name, short_name, notes');
         // From table
-		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
-        $query2->where('id='.(int)$row->team_id);
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        $query->where('id='.(int)$row->team_id);
 
 $starttime = microtime(); 
-                $db->setQuery( $query2 );
+                $db->setQuery( $query );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -268,12 +269,13 @@ $starttime = microtime();
                 $teams[ $row->id ]->teaminfo[] = $db->loadObjectList();
                 
                 // Select some fields
-		$query3->select('name');
+                $query->clear();
+		$query->select('name');
         // From table
-		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
-        $query3->where('id='.$row->project_id);
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('id='.$row->project_id);
 $starttime = microtime(); 
-                $db->setQuery( $query3 );
+                $db->setQuery( $query );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
