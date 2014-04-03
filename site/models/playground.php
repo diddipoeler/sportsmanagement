@@ -44,6 +44,15 @@ jimport( 'joomla.application.component.model' );
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 //include_once JPATH_COMPONENT . DS . 'helpers' . DS . 'easygooglemap.php';
 
+/**
+ * sportsmanagementModelPlayground
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementModelPlayground extends JModel
 {
     var $playgroundid = 0;
@@ -60,6 +69,7 @@ class sportsmanagementModelPlayground extends JModel
 
         $this->projectid = JRequest::getInt( "p", 0 );
         $this->playgroundid = JRequest::getInt( "pgid", 0 );
+        sportsmanagementModelProject::$projectid = $this->projectid; 
     }
 
 //    /**
