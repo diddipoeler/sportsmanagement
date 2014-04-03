@@ -1029,6 +1029,7 @@ class sportsmanagementModelProject extends JModel
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
        
@@ -1038,11 +1039,14 @@ class sportsmanagementModelProject extends JModel
 $query->select('t.params');
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
-$query->where('t.template='.$db->Quote($template));
-$query->where('p.id='.$db->Quote($this->projectid));
+$query->where('t.template = '.$db->Quote($template));
+$query->where('p.id = '.$db->Quote($this->projectid));
 
 $starttime = microtime(); 
 		$db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -1051,17 +1055,20 @@ $starttime = microtime();
 		if (! $result = $db->loadResult())
 		{
 			$project = self::getProject();
-			if (!empty($project) && $project->master_template>0)
+			if ( !empty($project) && $project->master_template > 0 )
 			{
 			 $query->clear();
 				$query->select('t.params');
                 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS t');
                 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=t.project_id');
-                $query->where('t.template='.$db->Quote($template));
-                $query->where('p.id='.$db->Quote($project->master_template));
+                $query->where('t.template = '.$db->Quote($template));
+                $query->where('p.id = '.$db->Quote($project->master_template));
 
 $starttime = microtime(); 
 				$db->setQuery($query);
+                
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');

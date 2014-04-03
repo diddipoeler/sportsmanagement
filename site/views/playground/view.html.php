@@ -64,8 +64,13 @@ class sportsmanagementViewPlayground extends JView
         $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
+        
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
+        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ));
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+        
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
 		$this->assign( 'project', sportsmanagementModelProject::getProject() );
