@@ -30,8 +30,23 @@ jimport('joomla.filesystem.file');
 * @copyright    2010 HH
 */
 
+/**
+ * JSMsimpleGMapGeocoder
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class JSMsimpleGMapGeocoder {
 
+/**
+ * JSMsimpleGMapGeocoder::JLgetGeoCoords()
+ * 
+ * @param mixed $address
+ * @return
+ */
 function JLgetGeoCoords($address)
 {
     $coords = array();
@@ -68,6 +83,12 @@ $result = json_decode($file_content, true);
     return $result;
 }
 
+/**
+ * JSMsimpleGMapGeocoder::getGeoCoordsMapQuest()
+ * 
+ * @param mixed $address_string
+ * @return void
+ */
 function getGeoCoordsMapQuest($address_string)
 {
 
@@ -181,6 +202,13 @@ JFile::write($file, $xmlfile);
     
 }
 
+/**
+ * JSMsimpleGMapGeocoder::genkml3prediction()
+ * 
+ * @param mixed $project_id
+ * @param mixed $allmembers
+ * @return void
+ */
 function genkml3prediction($project_id,$allmembers)
 {
 $type = 'prediction';
@@ -267,6 +295,13 @@ $this->writekml3prediction($allmembers,$project_id,$type);
 
 }
     
+/**
+ * JSMsimpleGMapGeocoder::genkml3()
+ * 
+ * @param mixed $project_id
+ * @param mixed $allteams
+ * @return void
+ */
 function genkml3($project_id,$allteams)
 {
 $type = 'ranking';

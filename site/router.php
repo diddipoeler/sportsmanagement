@@ -50,10 +50,13 @@
 function sportsmanagementBuildRoute( &$query )
 {
     $mainframe = JFactory::getApplication();
+    $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+    //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
     
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+    if ( $show_debug_info )
         {
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
     }
     
 	$segments = array();
@@ -333,7 +336,7 @@ function sportsmanagementBuildRoute( &$query )
 			break;
 	}
     
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+    if ( $show_debug_info )
         {
     //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
@@ -350,10 +353,12 @@ function sportsmanagementBuildRoute( &$query )
 function sportsmanagementParseRoute( $segments )
 {
     $mainframe = JFactory::getApplication();
+    $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
     
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+    if ( $show_debug_info )
         {
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
 //	// include extensions routers for custom views - if extension does have a route file, use it
@@ -598,9 +603,9 @@ function sportsmanagementParseRoute( $segments )
 		break;
 	}
     
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+    if ( $show_debug_info )
         {
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vars<br><pre>'.print_r($vars,true).'</pre>'   ),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vars<br><pre>'.print_r($vars,true).'</pre>'   ),'');
     }
     
 	return $vars;

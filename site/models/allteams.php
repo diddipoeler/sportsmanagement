@@ -37,8 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die;
 
+defined('_JEXEC') or die;
 jimport('joomla.application.component.modellist');
 
 

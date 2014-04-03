@@ -112,36 +112,64 @@ $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->get
 $document->addScriptDeclaration( $js );    
 }
 
- 
-// import joomla controller library
-jimport('joomla.application.component.controller');
-/* 
-// Get an instance of the controller prefixed by HelloWorld
-$controller = JController::getInstance('sportsmanagement');
-//$classname  = 'sportsmanagementController'.$controller;
-//$controller = new $classname( );
- 
-// Perform the Request task
-//$controller->execute(JRequest::getCmd('task'));
-$controller->execute(JRequest::getVar('task'));
- 
-// Redirect if set by the controller
-$controller->redirect();
 
-*/
-
-/*
-require_once JPATH_SITE.DS.JSM_PATH.'/helpers/route.php';
-$controller	= JControllerLegacy::getInstance('sportsmanagement');
+require_once( JPATH_SITE.DS.JSM_PATH.DS. 'controller.php' );
+// Component Helper
+jimport( 'joomla.application.component.helper' );
+$controller = null;
+if(is_null($controller) && !($controller instanceof JController)) {
+	//fallback if no extensions controller has been initialized
+	$controller	= JController::getInstance('sportsmanagement');
+}
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
-*/
 
+/*
 // Require the base controller
-//require_once (JPATH_COMPONENT.DS.'controller.php');
+require_once (JPATH_SITE.DS.JSM_PATH.DS.'controller.php');
 
 // Execute the task.
 $controller = JControllerLegacy::getInstance('sportsmanagement');
 $controller->execute( JRequest::getCmd('task'));
 $controller->redirect();
+*/
 
+/*
+// Execute the task.
+$controller = JControllerLegacy::getInstance('sportsmanagement');
+$controller->execute( JRequest::getCmd('task'));
+$controller->redirect();
+*/
+
+/*
+// Require the base controller
+require_once( JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
+
+// Require specific controller if requested
+if( $controller = JRequest::getWord('controller'))
+{
+   $path = JPATH_SITE.DS.JSM_PATH.DS.'controllers'.DS.$controller.'.php';
+   if( file_exists($path))
+	{
+       require_once $path;
+   } else
+   {
+       $controller = '';
+   }
+}
+
+// Create the controller
+$classname    = 'sportsmanagementController'.$controller;
+$controller   = new $classname( );
+
+// Perform the Request task
+$controller->execute( JRequest::getVar( 'task' ) );
+
+// Redirect if set by the controller
+$controller->redirect();
+*/
+
+
+
+
+?>

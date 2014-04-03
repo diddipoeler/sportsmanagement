@@ -57,22 +57,14 @@ jimport('joomla.application.component.controller');
 class sportsmanagementController extends JControllerLegacy
 {
     
-    /**
-     * Constructor
-     *
-     * @since 0.1
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
+    function __construct($config = array())
+	{
+        parent::__construct($config);
+	}
     
     public function display ($cachable = false, $urlparams = false) 
     {
-
-        parent::display();
-
+        parent::display($cachable, $safeurlparams);
     }
     
     

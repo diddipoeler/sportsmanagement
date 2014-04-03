@@ -146,7 +146,7 @@ class sportsmanagementModelProject extends JModel
             $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
             $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture');
             $query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
-            $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS slug');
+            $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id ');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id ');
@@ -162,7 +162,7 @@ class sportsmanagementModelProject extends JModel
         
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     }
     
 			self::$_project = $db->loadObject();
@@ -170,7 +170,7 @@ class sportsmanagementModelProject extends JModel
             
             if ( !self::$_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             
             
@@ -1024,8 +1024,8 @@ class sportsmanagementModelProject extends JModel
         $query2 = $db->getQuery(true);
         
         //first load the default settings from the default <template>.xml file
-		$paramsdata="";
-		$arrStandardSettings=array();
+		$paramsdata = "";
+		$arrStandardSettings = array();
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
