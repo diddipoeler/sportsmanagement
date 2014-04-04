@@ -209,8 +209,8 @@ class sportsmanagementModelTeamPersons extends JModelList
 
 
         $query->where("ppl.published = 1");
-        $query->where('tp.team_id = '.$this->getState('filter.team_id') );
-        $query->where('tp.season_id = '.$this->getState('filter.season_id') );
+        $query->where('st.team_id = '.$this->getState('filter.team_id') );
+        $query->where('st.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.persontype = '.$this->getState('filter.persontype') );
         
         if ($search)
