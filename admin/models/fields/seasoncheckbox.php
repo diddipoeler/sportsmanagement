@@ -92,7 +92,16 @@ class JFormFieldseasoncheckbox extends JFormField
 			$query->select('id AS value, name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season');
 			$query->order('name');
+            
+            $starttime = microtime(); 
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$options = $db->loadObjectList();
     
     // teilnehmende saisons selektieren
@@ -101,7 +110,17 @@ class JFormFieldseasoncheckbox extends JFormField
 			$query->select('season_id');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable);
 			$query->where($targetid.'='.$select_id);
+            $query->group('season_id');
+            
+            $starttime = microtime(); 
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 			$this->value = $db->loadColumn();
     
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');

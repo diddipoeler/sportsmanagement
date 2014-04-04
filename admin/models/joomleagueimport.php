@@ -246,6 +246,38 @@ function newstructur($step,$count=5)
                     }
                 
                 }
+                
+                // als nächstes wird der speieler aus der startaufstellung selektiert.
+                // Select some fields
+                $query = $db->getQuery(true);
+                $query->clear();
+		        $query->select('*');
+                $query->from('#__joomleague_match_player');
+                $query->where('teamplayer_id = '.$row->id);
+                $query->where('came_in = 0');
+                $db->setQuery($query);
+                $result_mp = $db->loadObjectList();
+                
+                foreach ( $result_mp as $row )
+                {
+                // Create and populate an object.
+                $temp = new stdClass();
+                $jsm_field_array = $jsm_fields[$jsm_table];
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+                foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
+                {
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                if (array_key_exists($key2, $jsm_field_array)) 
+                {
+                    $temp->$key2 = $row->$key2;
+                }
+                }
+                // jetzt die neue teamplayer_id
+                $temp->teamplayer_id = $new_id;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match_player', $temp);
+                }
             
             
             
