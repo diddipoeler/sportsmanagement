@@ -68,17 +68,6 @@ function gettotals()
     $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
-        //$post = JRequest::get('post');
-        //$exportfields = array();
-        //$cid = $post['cid'];
-        //$jl = $post['jl'];
-        //$jsm = $post['jsm'];
-        
-        //$cid = JRequest::get('cid');
-        //$jl = JRequest::get('jl');
-        //$jsm = JRequest::get('jsm');
-        
-        //$jsm_table = JRequest::get('jsm_table');
         
         // retrieve the value of the state variable. First see if the variable has been passed
         // in the request. Otherwise retrieve the stored value. If none of these are specified,
@@ -92,14 +81,10 @@ function gettotals()
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_table<br><pre>'.print_r($jl_table,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
-        
 
-    //foreach ( $cid as $key => $value )
-        //{
-        //$jsm_table = $jsm[$value];
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
-            if (preg_match("/project_team/i", $jsm_table)) 
+            if ( preg_match("/project_team/i", $jsm_table) ) 
             {
             
             $query = $db->getQuery(true);
@@ -123,7 +108,30 @@ function gettotals()
             
             return $total;
             }
-        //}
+            
+            if (preg_match("/team_player/i", $jsm_table)) 
+            {
+            $query = $db->getQuery(true);
+            $query->clear();
+            $query->select('COUNT(tp.id) AS total');
+            $query->from($jl_table.' AS tp');
+            $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
+            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+            $query->where('tp.import = 0');
+            
+            if ( $season_id )
+            {
+                $query->where('p.season_id = '.$season_id);
+            }
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+            $db->setQuery($query);
+            $total = $db->loadResult();
+            
+            return $total;    
+            }    
+
 
 }        
 
@@ -155,6 +163,16 @@ $mainframe = JFactory::getApplication();
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
             if (preg_match("/project_team/i", $jsm_table)) 
+            {
+                // store the variable that we would like to keep for next time
+                // function syntax is setUserState( $key, $value );
+                $mainframe->setUserState( "$option.jsm_table", $jsm_table );
+                $mainframe->setUserState( "$option.jl_table", $jl_table );
+                $mainframe->setUserState( "$option.season_id", $season_id );
+                //JRequest::setVar('jsm_table', $jsm_table);
+            return true;    
+            }
+            elseif (preg_match("/team_player/i", $jsm_table)) 
             {
                 // store the variable that we would like to keep for next time
                 // function syntax is setUserState( $key, $value );
@@ -218,7 +236,7 @@ function import()
             // noch die zu importierenden tabellen prüfen
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
-            if (preg_match("/project_team/i", $jsm_table)) 
+            if ( preg_match("/project_team/i", $jsm_table) || preg_match("/team_player/i", $jsm_table) ) 
             {
             $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
             // wir müssen ein neues feld an die tabelle zum import einfügen

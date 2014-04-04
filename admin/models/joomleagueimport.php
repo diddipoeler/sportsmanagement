@@ -81,6 +81,9 @@ function newstructur($step,$count=5)
     // felder für den import auslesen
     $jl_fields = $db->getTableFields($jl_table);
     $jsm_fields = $db->getTableFields($jsm_table);
+    
+    if ( preg_match("/project_team/i", $jsm_table) )
+    {
 
             // Select some fields
             $query = $db->getQuery(true);
@@ -163,7 +166,45 @@ function newstructur($step,$count=5)
                 $result = JFactory::getDbo()->insertObject($jsm_table, $object);
             }
             
+            }
+            elseif ( preg_match("/team_player/i", $jsm_table) )
+    {
+        $query = $db->getQuery(true);
+        $query->clear();
+        $query->select('tp.*');
+        $query->from($jl_table.' AS tp');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        
+        
+        $query->where('tp.import = 0');
+        
+        if ( $season_id )
+            {
+                $query->select('p.season_id');
+                $query->where('p.season_id = '.$season_id);
+            }
             
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+            
+            $db->setQuery($query,$step,$count);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+            $result = $db->loadObjectList();
+        
+        foreach ( $result as $row )
+            {
+            
+            
+            
+            
+            }
+    }        
             // danach die alten datensätze löschen
             //$db->truncateTable($jsm_table);
  

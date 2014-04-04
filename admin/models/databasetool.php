@@ -169,10 +169,25 @@ $prefix.'joomleague_' => ''
             
             switch ($check_table)
             {
+                
                 case 'project_team':
+                case 'team_player':
+                case 'team_staff':
                 $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NEW_STRUCTUR');
                 $temptable->color = $existingInDbColor;
                 break;
+                case 'match':
+                case 'club':
+                case 'league':
+                case 'person':
+                case 'playground':
+                case 'project':
+                case 'round':
+                case 'season':
+                case 'team':
+                case 'match_commentary':
+                case 'match_player':
+                case 'match_statistic':
                 case 'prediction_groups':
                 case 'prediction_member':
                 case 'template_config':
@@ -180,6 +195,7 @@ $prefix.'joomleague_' => ''
                 $temptable->color = $storeSuccessColor;
                 break;
                 default:
+                
                 $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NOT_IMPORT');
                 $temptable->color = $storeFailedColor;
                 break;
