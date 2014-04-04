@@ -123,6 +123,12 @@ $starttime = microtime();
 		parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewPersons::_displayAssignPlayers()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayAssignPlayers($tpl=null)
 	{
 		$option = JRequest::getCmd('option');

@@ -60,7 +60,83 @@ class sportsmanagementModelTeamPersons extends JModelList
     var $_team_id = 0;
     var $_project_team_id = 0;
     var $_persontype = 0;
+    
+    
+    /**
+     * sportsmanagementModelTeamPersons::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'ppl.lastname',
+                        'ppl.person_id',
+                        'ppl.project_position_id',
+                        'ppl.published',
+                        'ppl.ordering',
+                        'ppl.picture',
+                        'ppl.id',
+                        'tp.market_value',
+                        'tp.jerseynumber'
+                        );
+                parent::__construct($config);
+        }
+    
+    
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+        
+        //$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.team_id', JRequest::getVar('team_id') );
+        $this->setState('filter.persontype', JRequest::getVar('persontype') );
+        $this->setState('filter.project_team_id', JRequest::getVar('project_team_id') );
+        
+        $this->setState('filter.pid', $mainframe->getUserState( "$option.pid", '0' ) );
+        $this->setState('filter.season_id', $mainframe->getUserState( "$option.season_id", '0' ) );
+
+//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
+//		$this->setState('filter.image_folder', $image_folder);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
+
+//		// Load the parameters.
+//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('ppl.lastname', 'asc');
+	}
+    
+    
+    /**
+	 * sportsmanagementModelTeamPersons::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$option = JRequest::getCmd('option');
@@ -68,37 +144,39 @@ class sportsmanagementModelTeamPersons extends JModelList
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        
+        $search	= $this->getState('filter.search');
 		        
-        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-        $this->_team_id = JRequest::getVar('team_id');
-        $this->_persontype = JRequest::getVar('persontype');
-        $this->_project_team_id = JRequest::getVar('project_team_id');
+//        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+//        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+//        $this->_team_id = JRequest::getVar('team_id');
+//        $this->_persontype = JRequest::getVar('persontype');
+//        $this->_project_team_id = JRequest::getVar('project_team_id');
+//        
+//        if ( !$this->_team_id )
+//        {
+//            $this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+//        }
+//        if ( !$this->_project_team_id )
+//        {
+//            $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+//        }
+//        if ( empty($this->_persontype) )
+//        {
+//            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
+//        }
         
-        if ( !$this->_team_id )
-        {
-            $this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
-        }
-        if ( !$this->_project_team_id )
-        {
-            $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
-        }
-        if ( empty($this->_persontype) )
-        {
-            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
-        }
+//        // Get the WHERE and ORDER BY clauses for the query
+//		$where = self::_buildContentWhere();
+//		$orderby = self::_buildContentOrderBy();
         
-        // Get the WHERE and ORDER BY clauses for the query
-		$where = self::_buildContentWhere();
-		$orderby = self::_buildContentOrderBy();
-        
-        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
-        {
+//        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+//        {
             
         //$query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.injury','ppl.suspension','ppl.away','ppl.id','ppl.id AS person_id');
-        $query->select('ppl.*');
+        $query->select('ppl.*,ppl.id as person_id');
 		$query->select('ppos.id as project_position_id,pos.id as position_id');
-        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber');
+        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,st.id as projectteam_id');
 		$query->select('u.name AS editor');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
@@ -108,108 +186,133 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
         
         $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
-        }
-        else
-        {    
-        $query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.id','ppl.id AS person_id');
-		$query->select('tp.*','tp.id as tpid');
-		$query->select('u.name AS editor');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id');
-        $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
-        }
+//        }
+//        else
+//        {    
+//        $query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.id','ppl.id AS person_id');
+//		$query->select('tp.*','tp.id as tpid');
+//		$query->select('u.name AS editor');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
+//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id');
+//        $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
+//        }
 
         
-        if ($where)
-        {
-            $query->where($where);
-        }
-        if ($orderby)
-        {
-            $query->order($orderby);
-        }
+//        if ($where)
+//        {
+//            $query->where($where);
+//        }
+//        if ($orderby)
+//        {
+//            $query->order($orderby);
+//        }
 
-		return $query;
+
+        $query->where("ppl.published = 1");
+        $query->where('tp.team_id = '.$this->getState('filter.team_id') );
+        $query->where('tp.season_id = '.$this->getState('filter.season_id') );
+        $query->where('tp.persontype = '.$this->getState('filter.persontype') );
+        
+        if ($search)
+		{
+        $query->where('(LOWER(ppl.lastname) LIKE ' . $db->Quote( '%' . $search . '%' ).
+						   'OR LOWER(ppl.firstname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
+						   'OR LOWER(ppl.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) . ')');
+        }
+            
+        $query->order($db->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
+                $db->escape($this->getState('list.direction', 'ASC')));
+                
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_filter_order','filter_order','ppl.ordering','cmd');
-		$filter_order_Dir = $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_filter_order_Dir','filter_order_Dir','','word');
-		if ( $filter_order == 'ppl.lastname' )
-		{
-			$orderby = ' ppl.lastname '.$filter_order_Dir;
-		}
-		else
-		{
-			$orderby = ' '.$filter_order.' '.$filter_order_Dir.',ppl.lastname ';
-		}
-		return $orderby;
-	}
+//	function _buildContentOrderBy()
+//	{
+//		$option = JRequest::getCmd('option');
+//		$mainframe = JFactory::getApplication();
+//        $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_filter_order','filter_order','ppl.ordering','cmd');
+//		$filter_order_Dir = $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_filter_order_Dir','filter_order_Dir','','word');
+//		if ( $filter_order == 'ppl.lastname' )
+//		{
+//			$orderby = ' ppl.lastname '.$filter_order_Dir;
+//		}
+//		else
+//		{
+//			$orderby = ' '.$filter_order.' '.$filter_order_Dir.',ppl.lastname ';
+//		}
+//		return $orderby;
+//	}
 
-	function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		
-        //$project_id=$mainframe->getUserState($option.'project');
-		//$team_id=$mainframe->getUserState($option.'project_team_id');
-        
-		$filter_state	= $mainframe->getUserStateFromRequest( $option . '.'.$this->_identifier.'.ppl_filter_state','filter_state','','word' );
-		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_search','search','','string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_search_mode','search_mode','','string');
-		$search = JString::strtolower($search);
-		$where = array();
-		
-        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
-        {
-            $where[]="ppl.published = 1";
-            //$where[]='ppos.project_id = '.$this->_project_id;
-            $where[]='tp.team_id = '.$this->_team_id;
-            $where[]='tp.season_id = '.$this->_season_id;
-            $where[]='tp.persontype = '.$this->_persontype;
-        }
-        else
-        {
-        $where[]='tp.projectteam_id= '.$this->_project_team_id;
-		$where[]="ppl.published = '1'";
-        }
-        
-        
-		if ($search)
-		{
-			if ($search_mode)
-			{
-				$where[]='(LOWER(ppl.lastname) LIKE '.$this->_db->Quote($search.'%') .
-							'OR LOWER(ppl.firstname) LIKE '.$this->_db->Quote($search.'%') .
-							'OR LOWER(ppl.nickname) LIKE '.$this->_db->Quote($search.'%').')';
-			}
-			else
-			{
-				$where[]='(LOWER(ppl.lastname) LIKE '.$this->_db->Quote('%'.$search.'%').
-							'OR LOWER(ppl.firstname) LIKE '.$this->_db->Quote('%'.$search.'%') .
-							'OR LOWER(ppl.nickname) LIKE '.$this->_db->Quote('%'.$search.'%').')';
-			}
-		}
+//	function _buildContentWhere()
+//	{
+//		$option = JRequest::getCmd('option');
+//		$mainframe = JFactory::getApplication();
+//		
+//        //$project_id=$mainframe->getUserState($option.'project');
+//		//$team_id=$mainframe->getUserState($option.'project_team_id');
+//        
+//		$filter_state	= $mainframe->getUserStateFromRequest( $option . '.'.$this->_identifier.'.ppl_filter_state','filter_state','','word' );
+//		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_search','search','','string');
+//		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.ppl_search_mode','search_mode','','string');
+//		$search = JString::strtolower($search);
+//		$where = array();
+//		
+//        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
+//        {
+//            $where[]="ppl.published = 1";
+//            //$where[]='ppos.project_id = '.$this->_project_id;
+//            $where[]='tp.team_id = '.$this->_team_id;
+//            $where[]='tp.season_id = '.$this->_season_id;
+//            $where[]='tp.persontype = '.$this->_persontype;
+//        }
+//        else
+//        {
+//        $where[]='tp.projectteam_id= '.$this->_project_team_id;
+//		$where[]="ppl.published = '1'";
+//        }
+//        
+//        
+//		if ($search)
+//		{
+//			if ($search_mode)
+//			{
+//				$where[]='(LOWER(ppl.lastname) LIKE '.$this->_db->Quote($search.'%') .
+//							'OR LOWER(ppl.firstname) LIKE '.$this->_db->Quote($search.'%') .
+//							'OR LOWER(ppl.nickname) LIKE '.$this->_db->Quote($search.'%').')';
+//			}
+//			else
+//			{
+//				$where[]='(LOWER(ppl.lastname) LIKE '.$this->_db->Quote('%'.$search.'%').
+//							'OR LOWER(ppl.firstname) LIKE '.$this->_db->Quote('%'.$search.'%') .
+//							'OR LOWER(ppl.nickname) LIKE '.$this->_db->Quote('%'.$search.'%').')';
+//			}
+//		}
+//
+//		if ( $filter_state )
+//		{
+//			if ( $filter_state == 'P' )
+//			{
+//				$where[] = 'tp.published = 1';
+//			}
+//			elseif ($filter_state == 'U' )
+//			{
+//				$where[] = 'tp.published = 0';
+//			}
+//		}
+//
+//		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
+//		return $where;
+//	}
 
-		if ( $filter_state )
-		{
-			if ( $filter_state == 'P' )
-			{
-				$where[] = 'tp.published = 1';
-			}
-			elseif ($filter_state == 'U' )
-			{
-				$where[] = 'tp.published = 0';
-			}
-		}
-
-		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
-		return $where;
-	}
-
+	/**
+	 * sportsmanagementModelTeamPersons::getProjectTeamplayers()
+	 * 
+	 * @param mixed $project_team_id
+	 * @return
+	 */
 	function getProjectTeamplayers($project_team_id)
     {
         $option = JRequest::getCmd('option');

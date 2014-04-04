@@ -62,10 +62,13 @@ class sportsmanagementViewteampersons extends JView
         $uri		= JFactory::getURI();
 		$document = JFactory::getDocument();
         $model	= $this->getModel();
+        $starttime = microtime(); 
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state, true).'</pre><br>','Notice');
 
 /*	
 		$baseurl    = JURI::root();
@@ -79,6 +82,12 @@ class sportsmanagementViewteampersons extends JView
 
         
         $items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
@@ -108,9 +117,9 @@ class sportsmanagementViewteampersons extends JView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_team_id<br><pre>'.print_r($this->project_team_id, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' team_id<br><pre>'.print_r($this->team_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id, true).'</pre><br>','Notice');
         }
         
         $mdlProjectTeam = JModel::getInstance("ProjectTeam", "sportsmanagementModel");

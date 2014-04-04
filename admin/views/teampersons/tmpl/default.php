@@ -79,7 +79,7 @@ JHtml::_('behavior.modal');
 	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
-        var s= document.getElementById("search");
+        var s= document.getElementById("filter_search");
         s.value = val;
         Joomla.submitform('', this.form)
 	}
@@ -118,15 +118,15 @@ JHtml::_('behavior.modal');
 					<?php
 					echo JText::_( 'JSEARCH_FILTER_LABEL' );
 					?>
-					<input	type="text" name="search" id="search"
-							value="<?php echo $this->lists['search']; ?>" class="text_area"
-							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
-					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
+					<input	type="text" name="filter_search" id="filter_search"
+							value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="text_area"
+							onchange="document.getElementById('filter_search').value=''; $('adminForm').submit(); " />
+					<button onclick="document.getElementById('filter_search').value=''; this.form.submit(); ">
 						<?php
 						echo JText::_( 'JSEARCH_FILTER_SUBMIT' );
 						?>
 					</button>
-					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
+					<button onclick="document.getElementById('filter_search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
 						<?php
 						echo JText::_( 'JSEARCH_FILTER_CLEAR' );
 						?>
@@ -134,10 +134,12 @@ JHtml::_('behavior.modal');
 				</td>
 				<td align="center" colspan="4">
 					<?php
-					for ( $i = 65; $i < 91; $i++ )
-					{
-						printf( "<a href=\"javascript:searchPlayer('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", chr($i), chr($i) );
-					}
+					$startRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0041'));
+		$endRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '005A'));
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+			printf("<a href=\"javascript:searchPlayer('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+			}
 					?>
 				 </td>
 			</tr>
@@ -169,17 +171,17 @@ JHtml::_('behavior.modal');
 						</th>
 						<th>
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE' );
+                            echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE', 'ppl.picture', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
-            <th width="20">
+                        <th width="20">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE' );
+                            echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE', 'tp.market_value', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th width="20">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR' );
+                            echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th width="20">
@@ -303,7 +305,7 @@ JHtml::_('behavior.modal');
 								elseif ( $row->picture == !'')
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>
 <a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
 <img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
