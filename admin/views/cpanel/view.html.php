@@ -226,7 +226,9 @@ class sportsmanagementViewcpanel extends JView
 		$this->assignRef( 'pane' , $pane );
         $this->assignRef( 'sporttypes' , $sporttypes );
         $this->assign( 'version', $model->getVersion() );
-        $this->assign( 'githubrequest', $model->getGithubRequests() );
+        
+        // diddipoeler erst mal abgeschaltet
+        //$this->assign( 'githubrequest', $model->getGithubRequests() );
         $this->assignRef('importData', $model->_success_text );
         $this->assignRef('importData2', $databasetool->_success_text );
         

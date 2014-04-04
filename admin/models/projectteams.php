@@ -716,7 +716,8 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 //			$query .= " AND tl.division_id = " . $divisionid;
             $query->where('tl.division_id = ' . $divisionid);
 		}
-		$query .= " ORDER BY t.name";
+//		$query .= " ORDER BY t.name";
+        $query->order('t.name');
 
 		$db->setQuery($query);
         
