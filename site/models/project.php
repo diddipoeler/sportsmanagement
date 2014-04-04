@@ -170,6 +170,7 @@ class sportsmanagementModelProject extends JModel
             
             if ( !self::$_project && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonid<br><pre>'.print_r(self::$seasonid,true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             

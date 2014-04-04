@@ -71,6 +71,7 @@ class sportsmanagementViewPlayer extends JView
 		$model->personid = JRequest::getInt( 'pid', 0 );
 		$model->teamplayerid = JRequest::getInt( 'pt', 0 );
         
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
         
 

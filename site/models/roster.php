@@ -253,14 +253,14 @@ class sportsmanagementModelRoster extends JModel
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');    
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id = pr.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
         switch ( $persontype )
         {
             case 1:
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
             break;
             case 2:
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
             $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS posparent ON pos.parent_id = posparent.id');
             break;
         }
@@ -283,7 +283,8 @@ class sportsmanagementModelRoster extends JModel
             
             if ( !$this->_players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');    
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');   
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error'); 
             }
             elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
