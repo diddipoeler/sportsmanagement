@@ -1029,9 +1029,12 @@ class sportsmanagementModelProject extends JModel
         
         $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
+        }
        
 
 		if( $this->projectid == 0) return $arrStandardSettings;
@@ -1045,7 +1048,10 @@ $query->where('p.id = '.$db->Quote($this->projectid));
 $starttime = microtime(); 
 		$db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1067,7 +1073,10 @@ $starttime = microtime();
 $starttime = microtime(); 
 				$db->setQuery($query);
                 
+                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
                 $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                }
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1080,7 +1089,10 @@ $starttime = microtime();
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
                     
+                    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
                     $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+                    }
                     
 					return $arrStandardSettings;
 				}
@@ -1090,7 +1102,10 @@ $starttime = microtime();
 				//JError::raiseNotice(500,'project ' . $this->projectid . '  setting not found');
 				//there are no saved settings found, use the standard xml file default values
                 
+                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
                 $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+                }
                 
 				return $arrStandardSettings;
 			}
@@ -1112,7 +1127,10 @@ $starttime = microtime();
 		//merge and overwrite standard settings with individual view settings
 		$settings = array_merge($arrStandardSettings,$configvalues);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' settings<br><pre>'.print_r($settings,true).'</pre>'),'');
+        }
         
         return $settings;
 		

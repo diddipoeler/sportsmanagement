@@ -104,7 +104,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	$params .= $this->loadTemplate('results');
 	$params .= "{/tabs}";
     echo JHTML::_('content.prepare', $params);     
-        
+    
+    if ($this->config['show_colorlegend'])
+		{
+			echo $this->loadTemplate('colorlegend');
+		}
+		
+		if ($this->config['show_explanation']==1)
+		{
+			echo $this->loadTemplate('explanation');
+		}
+        if (($this->config['show_ranking_maps'])==1)
+	{ 
+		echo $this->loadTemplate('googlemap');
+	}    
         
     }
     	
