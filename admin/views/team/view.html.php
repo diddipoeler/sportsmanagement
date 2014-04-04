@@ -64,10 +64,18 @@ class sportsmanagementViewTeam extends JView
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $model		= $this->getModel();
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        $starttime = microtime(); 
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.

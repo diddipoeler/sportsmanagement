@@ -209,6 +209,43 @@ function newstructur($step,$count=5)
                 $temp->persontype = 1;
                 // Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                
+                // ist der spieler schon in der season team person tabelle ?
+                // Select some fields
+                $query = $db->getQuery(true);
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_team_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                
+                if ( !$new_id )
+                {
+                    // Create and populate an object.
+                    $temp = new stdClass();
+                    $temp->season_id = $row->season_id;
+                    $temp->team_id = $row->team_id;
+                    $temp->person_id = $row->person_id;
+                    $temp->picture = $row->picture;
+                    $temp->persontype = 1;
+                    $temp->active = 1;
+                    $temp->published = 1;
+                    // Insert the object into the user profile table.
+                    $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+                    if ( $result )
+                    {
+                        $new_id = $db->insertid();
+                    }
+                    else
+                    {
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                
+                }
             
             
             
