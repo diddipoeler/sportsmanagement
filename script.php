@@ -322,7 +322,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         // Select some fields
         $query = $db->getQuery(true);
         $query->clear();
-		$query->select('id');
+		$query->select('extension_id');
         // From table
         $query->from('#__extensions');
         $query->where("type = 'plugin' ");
