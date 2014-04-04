@@ -319,15 +319,52 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
         
-        
+        // Select some fields
+        $query = $db->getQuery(true);
+        $query->clear();
+		$query->select('id');
+        // From table
+        $query->from('#__extensions');
+        $query->where("type = 'plugin' ");
+        $query->where("element = '".$name."' ");
+        $query->where("folder = '".$group."' ");
+        $db->setQuery($query);
+        $plugin_id = $db->loadResult();
+
+        switch ( $name )
+        {
+        case 'jqueryeasy';
+        case 'jw_ts';
+        case 'plugin_googlemap3';
+        if ( $plugin_id )
+        {
+            // plugin ist vorhanden
+            // wurde vielleicht schon aktualisiert
+        }
+        else
+        {
+            // plugin ist nicht vorhanden
+            // also installieren
+            $path = $src.DS.'plugins'.DS.$name;
+            $installer = new JInstaller;
+            $result = $installer->install($path);    
+        }    
+        break;
+        default:    
         $path = $src.DS.'plugins'.DS.$name;
         $installer = new JInstaller;
         $result = $installer->install($path);
+        break;
+        }
         
-        $query = "UPDATE #__extensions SET enabled=1 WHERE type='plugin' AND element='".$name."' AND folder='".$group."'";
-        $db->setQuery($query);
-        $db->query();
-        
+        // auf alle faelle einschalten        
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = $plugin_id;
+        $object->enabled = 1;
+        // Update their details in the users table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'id');  
         
         }    
 
