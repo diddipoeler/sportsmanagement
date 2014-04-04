@@ -74,6 +74,7 @@ class sportsmanagementViewRanking extends JView
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
         //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
         $mdlDivisions = JModel::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");

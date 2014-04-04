@@ -68,6 +68,8 @@ class sportsmanagementViewRoster extends JView
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$model = $this->getModel();
+        
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
 		$this->assign('project',sportsmanagementModelProject::getProject());
