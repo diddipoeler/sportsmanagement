@@ -169,6 +169,9 @@ function newstructur($step,$count=5)
             }
             elseif ( preg_match("/team_player/i", $jsm_table) )
     {
+        
+        
+        
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('tp.*,st.team_id');
@@ -247,7 +250,7 @@ function newstructur($step,$count=5)
                 
                 }
                 
-                // als nächstes wird der speieler aus der startaufstellung selektiert.
+                // als nächstes wird der spieler aus der startaufstellung selektiert.
                 // Select some fields
                 $query = $db->getQuery(true);
                 $query->clear();
@@ -255,16 +258,25 @@ function newstructur($step,$count=5)
                 $query->from('#__joomleague_match_player');
                 $query->where('teamplayer_id = '.$row->id);
                 $query->where('came_in = 0');
+                $query->where('import = 0');
                 $db->setQuery($query);
                 $result_mp = $db->loadObjectList();
                 
+                // wir brauchen noch die felder der tabellen
+                $jl_fields = $db->getTableFields('#__joomleague_match_player');
+                $jsm_fields = $db->getTableFields('#__sportsmanagement_match_player');
+                
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');
+                
+                // schleife match player anfang
                 foreach ( $result_mp as $row )
                 {
                 // Create and populate an object.
                 $temp = new stdClass();
-                $jsm_field_array = $jsm_fields[$jsm_table];
+                $jsm_field_array = $jsm_fields['#__sportsmanagement_match_player'];
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
-                foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
+                foreach ( $jl_fields['#__joomleague_match_player'] as $key2 => $value2 )
                 {
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
@@ -277,7 +289,73 @@ function newstructur($step,$count=5)
                 $temp->teamplayer_id = $new_id;
                 // Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match_player', $temp);
+                
+                if ( $result )
+                {
+                    // Create an object for the record we are going to joomleague update.
+                    $object = new stdClass();
+                    // Must be a valid primary key value.
+                    $object->id = $row->id;
+                    $object->import = 1;
+                    // Update their details in the users table using id as the primary key.
+                    $result_update = JFactory::getDbo()->updateObject('#__joomleague_match_player', $object, 'id'); 
                 }
+                
+                }
+                // schleife match player ende
+                
+                // als nächstes wird der speieler mit den ereignissen
+                // Select some fields
+                $query = $db->getQuery(true);
+                $query->clear();
+		        $query->select('*');
+                $query->from('#__joomleague_match_event');
+                $query->where('teamplayer_id = '.$row->id);
+                $query->where('import = 0');
+                $db->setQuery($query);
+                $result_mp = $db->loadObjectList();
+                
+                // wir brauchen noch die felder der tabellen
+                $jl_fields = $db->getTableFields('#__joomleague_match_event');
+                $jsm_fields = $db->getTableFields('#__sportsmanagement_match_event');
+                
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');
+                
+                // schleife match event anfang
+                foreach ( $result_mp as $row )
+                {
+                // Create and populate an object.
+                $temp = new stdClass();
+                $jsm_field_array = $jsm_fields['#__sportsmanagement_match_event'];
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+                foreach ( $jl_fields['#__joomleague_match_event'] as $key2 => $value2 )
+                {
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                if (array_key_exists($key2, $jsm_field_array)) 
+                {
+                    $temp->$key2 = $row->$key2;
+                }
+                }
+                // jetzt die neue teamplayer_id
+                $temp->teamplayer_id = $new_id;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match_event', $temp);
+                
+                if ( $result )
+                {
+                    // Create an object for the record we are going to joomleague update.
+                    $object = new stdClass();
+                    // Must be a valid primary key value.
+                    $object->id = $row->id;
+                    $object->import = 1;
+                    // Update their details in the users table using id as the primary key.
+                    $result_update = JFactory::getDbo()->updateObject('#__joomleague_match_event', $object, 'id'); 
+                }
+                
+                }
+                // schleife match event ende
             
             
             

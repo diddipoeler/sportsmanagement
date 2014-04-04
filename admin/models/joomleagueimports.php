@@ -249,9 +249,29 @@ function import()
             {
                 $mainframe->enqueueMessage(JText::_('importfeld ist nicht vorhanden'),'');
                 $query = $db->getQuery(true);
-                $query = 'ALTER TABLE '.$jl_table.' ADD import TINYINT(1)  NOT NULL DEFAULT 0 ';
+                $query = 'ALTER TABLE '.$jl_table.' ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
                 $db->setQuery($query);
                 $db->query();
+                if ( preg_match("/team_player/i", $jsm_table) ) 
+                {
+                    $query = $db->getQuery(true);
+                    $query = 'ALTER TABLE #__joomleague_match_event ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
+                    $db->setQuery($query);
+                    $db->query();
+                    $query = $db->getQuery(true);
+                    $query = 'ALTER TABLE #__joomleague_match_player ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
+                    $db->setQuery($query);
+                    $db->query();
+                    $query = $db->getQuery(true);
+                    $query = 'ALTER TABLE #__joomleague_match_referee ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
+                    $db->setQuery($query);
+                    $db->query();
+                    $query = $db->getQuery(true);
+                    $query = 'ALTER TABLE #__joomleague_match_staff ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
+                    $db->setQuery($query);
+                    $db->query();
+                
+                }
             }
             
             } 
