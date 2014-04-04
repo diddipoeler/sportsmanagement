@@ -67,6 +67,7 @@ class sportsmanagementModelPersons extends JModelList
                         'pl.country',
                         'pl.position_id',
                         'pl.id',
+                        'pl.picture',
                         'pl.ordering',
                         'pl.published',
                         'pl.checked_out',

@@ -59,9 +59,17 @@ class sportsmanagementViewPerson extends JView
         $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
+        $starttime = microtime(); 
+        
     // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.

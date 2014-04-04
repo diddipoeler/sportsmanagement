@@ -171,11 +171,11 @@ function newstructur($step,$count=5)
     {
         $query = $db->getQuery(true);
         $query->clear();
-        $query->select('tp.*');
+        $query->select('tp.*,st.team_id');
         $query->from($jl_table.' AS tp');
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-        
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         
         $query->where('tp.import = 0');
         
@@ -199,6 +199,16 @@ function newstructur($step,$count=5)
         
         foreach ( $result as $row )
             {
+                // als erstes wird der spieler der saison zugeordnet
+                // Create and populate an object.
+                $temp = new stdClass();
+                $temp->person_id = $row->person_id;
+                $temp->season_id = $row->season_id;
+                $temp->team_id = $row->team_id;
+                $temp->picture = $row->picture;
+                $temp->persontype = 1;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
             
             
             
