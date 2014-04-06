@@ -43,7 +43,11 @@ defined('_JEXEC') or die('Restricted access');
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+
+//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
 JHtml::_('behavior.framework');
 $document = JFactory::getDocument();

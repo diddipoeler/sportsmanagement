@@ -129,13 +129,13 @@ echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
 ?>
 
 <p>
-<img style="float: left;" src="images/dfs_kl_<?php echo strtolower($value)?>.gif" alt="<?php echo $value?>" width="144" height="" />
+<img style="float: left;" src="images/com_sportsmanagement/laender_karten/dfs_kl_<?php echo strtolower($value)?>.gif" alt="<?php echo $value?>" width="144" height="" />
 
 <?PHP
 if ( $country_id )
 {
 ?>
-<img style="float: right;" src="images/laender_karten/<?php echo strtolower($country_id) ?>.gif" alt="<?php echo $country_id?>" width="144" height="" />
+<img style="float: right;" src="images/com_sportsmanagement/laender_karten/<?php echo strtolower($country_id) ?>.gif" alt="<?php echo $country_id?>" width="144" height="" />
 <?PHP
 }
 ?>
