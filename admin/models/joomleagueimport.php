@@ -188,13 +188,14 @@ function newstructur($step,$count=5)
                 $query->where('p.season_id = '.$season_id);
             }
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
             
             
             $db->setQuery($query,$step,$count);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
@@ -256,7 +257,12 @@ function newstructur($step,$count=5)
                 $object->id = $row->id;
                 $object->import = $new_id;
                 // Update their details in the users table using id as the primary key.
-                $result_update = JFactory::getDbo()->updateObject('#__joomleague_match_player', $object, 'id'); 
+                $result_update = JFactory::getDbo()->updateObject('#__joomleague_team_player', $object, 'id'); 
+                
+                if ( !$result_update )
+                    {
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
                 
                 /*
                 // als nächstes wird der spieler aus der startaufstellung selektiert.

@@ -236,7 +236,7 @@ function import()
             // noch die zu importierenden tabellen prüfen
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
-            if ( preg_match("/project_team/i", $jsm_table) || preg_match("/team_player/i", $jsm_table) ) 
+            if ( preg_match("/project_team/i", $jsm_table) || preg_match("/team_player/i", $jsm_table) || preg_match("/team_staff/i", $jsm_table) ) 
             {
             $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
             // wir müssen ein neues feld an die tabelle zum import einfügen
@@ -249,7 +249,7 @@ function import()
             {
                 $mainframe->enqueueMessage(JText::_('importfeld ist nicht vorhanden'),'');
                 $query = $db->getQuery(true);
-                $query = 'ALTER TABLE '.$jl_table.' ADD import TINYINT(1) NOT NULL DEFAULT 0 ';
+                $query = 'ALTER TABLE '.$jl_table.' ADD import INT(11) NOT NULL DEFAULT 0 ';
                 $db->setQuery($query);
                 $db->query();
                 if ( preg_match("/team_player/i", $jsm_table) ) 
