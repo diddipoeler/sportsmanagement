@@ -188,9 +188,6 @@ function newstructur($step,$count=5)
                 $query->where('p.season_id = '.$season_id);
             }
             
-            
-            
-            
             $db->setQuery($query,$step,$count);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -262,6 +259,10 @@ function newstructur($step,$count=5)
                 if ( !$result_update )
                     {
                         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                    else
+                    {
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'update team_player id: '.$row->id.' mit season_team_person id: '.$new_id),'');
                     }
                 
                 /*
