@@ -58,8 +58,12 @@ class sportsmanagementModelSportsTypes extends JModelList
         {   
                 $config['filter_fields'] = array(
                         's.name',
+                        's.icon',
+                        's.sportsart',
                         's.id',
-                        's.ordering'
+                        's.ordering',
+                        's.checked_out',
+                        's.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -102,6 +106,11 @@ class sportsmanagementModelSportsTypes extends JModelList
 	}
     
 
+	/**
+	 * sportsmanagementModelSportsTypes::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -113,7 +122,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 		$user	= JFactory::getUser(); 
   
         // Select some fields
-		$query->select('s.*');
+		$query->select(implode(",",$this->filter_fields));
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s');
         $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
@@ -125,7 +134,10 @@ class sportsmanagementModelSportsTypes extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
         
 		return $query;
         

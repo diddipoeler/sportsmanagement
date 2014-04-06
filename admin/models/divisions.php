@@ -56,6 +56,12 @@ class sportsmanagementModelDivisions extends JModelList
 	var $_identifier = "divisions";
     var $_project_id = 0;
 	
+    /**
+     * sportsmanagementModelDivisions::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -130,7 +136,10 @@ class sportsmanagementModelDivisions extends JModelList
         $query->order($this->_db->escape($this->getState('list.ordering', 'dv.name')).' '.
                 $this->_db->escape($this->getState('list.direction', 'ASC')));
 
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
 
 		return $query;
 	}

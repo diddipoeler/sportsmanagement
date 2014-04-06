@@ -56,6 +56,12 @@ jimport('joomla.filesystem.file');
 class sportsmanagementViewClubs extends JView
 {
 
+	/**
+	 * sportsmanagementViewClubs::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');

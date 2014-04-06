@@ -54,12 +54,19 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewagegroups extends JView
 {
+	/**
+	 * sportsmanagementViewagegroups::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $starttime = microtime(); 
         $mdlSportsType = JModel::getInstance('SportsType', 'sportsmanagementModel');
         
         $this->state = $this->get('State'); 
@@ -69,6 +76,12 @@ class sportsmanagementViewagegroups extends JView
 
 
 		$items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         

@@ -53,6 +53,12 @@ class sportsmanagementModelEventtypes extends JModelList
 {
 	var $_identifier = "eventtypes";
 	
+    /**
+     * sportsmanagementModelEventtypes::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -106,6 +112,11 @@ class sportsmanagementModelEventtypes extends JModelList
 		parent::populateState('obj.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelEventtypes::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -149,7 +160,10 @@ class sportsmanagementModelEventtypes extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
         
 		return $query;
         

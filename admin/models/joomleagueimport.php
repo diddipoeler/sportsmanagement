@@ -250,6 +250,15 @@ function newstructur($step,$count=5)
                 
                 }
                 
+                // Create an object for the record we are going to joomleague update.
+                $object = new stdClass();
+                // Must be a valid primary key value.
+                $object->id = $row->id;
+                $object->import = $new_id;
+                // Update their details in the users table using id as the primary key.
+                $result_update = JFactory::getDbo()->updateObject('#__joomleague_match_player', $object, 'id'); 
+                
+                /*
                 // als nächstes wird der spieler aus der startaufstellung selektiert.
                 // Select some fields
                 $query = $db->getQuery(true);
@@ -304,7 +313,7 @@ function newstructur($step,$count=5)
                 }
                 // schleife match player ende
                 
-                // als nächstes wird der speieler mit den ereignissen
+                // als nächstes wird der spieler mit den ereignissen
                 // Select some fields
                 $query = $db->getQuery(true);
                 $query->clear();
@@ -356,6 +365,7 @@ function newstructur($step,$count=5)
                 
                 }
                 // schleife match event ende
+                */
             
             
             

@@ -68,7 +68,9 @@ class sportsmanagementModelSeasons extends JModelList
                 $config['filter_fields'] = array(
                         's.name',
                         's.id',
-                        's.ordering'
+                        's.ordering',
+                        's.checked_out',
+                        's.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -159,7 +161,7 @@ class sportsmanagementModelSeasons extends JModelList
             
             default:
             // Select some fields
-		    $query->select('s.name,s.ordering,s.id');
+		    $query->select(implode(",",$this->filter_fields));
 		    // From the seasons table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
             if ($search)
@@ -173,7 +175,10 @@ class sportsmanagementModelSeasons extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
 
         return $query;
 	}

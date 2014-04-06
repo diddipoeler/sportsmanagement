@@ -52,6 +52,12 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewEventtypes extends JView
 {
+	/**
+	 * sportsmanagementViewEventtypes::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
@@ -63,9 +69,14 @@ class sportsmanagementViewEventtypes extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-
-
-		$items		= $this->get('Items');
+        $starttime = microtime(); 
+        $items		= $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
 
