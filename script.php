@@ -191,6 +191,7 @@ switch ($type)
 		'clubs/small',
 		'clubs/trikot_home',
 		'clubs/trikot_away',
+        'laender_karten',
 		'events',
 		'leagues',
 		'divisions',
