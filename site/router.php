@@ -61,23 +61,6 @@ function sportsmanagementBuildRoute( &$query )
     
 	$segments = array();
 
-//	// include extensions routers for custom views - if extension does have a route file, use it
-//	$extensions = JoomleagueHelper::getExtensions(0);
-//	foreach ($extensions as $type)
-//	{
-//		$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'route.php';
-//		if (file_exists($file))
-//		{
-//			require_once($file);
-//			$obj = new $classname();
-//			$func = 'JoomleagueBuildRoute'.ucfirst($type);
-//			if ($segs = $func($query))
-//			{
-//				return $segs;
-//			}
-//		}
-//	}
-
 	$view = (isset($query['view']) ? $query['view'] : null);
 	if ($view)
 	{
@@ -361,23 +344,6 @@ function sportsmanagementParseRoute( $segments )
     $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
-//	// include extensions routers for custom views - if extension does have a route file, use it
-//	$extensions = JoomleagueHelper::getExtensions(0);
-//	foreach ($extensions as $type)
-//	{
-//		$file = JLG_PATH_SITE.DS.'extensions'.DS.$type.DS.'route.php';
-//		if (file_exists($file))
-//		{
-//			require_once($file);
-//			$obj = new $classname();
-//			$func = 'JoomleagueParseRoute'.ucfirst($type);
-//			if ($vars = $func($segments))
-//			{
-//				return $vars;
-//			}
-//		}
-//	}
-
 	$vars = array();
 
 	$vars['view'] = $segments[0];

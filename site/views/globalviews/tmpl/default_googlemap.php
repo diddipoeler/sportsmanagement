@@ -73,9 +73,9 @@ $arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
 $arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
 
 $arrPluginParams[] = "kml='".$this->kmlpath."'";
-$arrPluginParams[] = "kmlrenderer='GeoXML'";
-$arrPluginParams[] = "kmlsidebar='left'";
-$arrPluginParams[] = "kmlsbwidth='200'";
+$arrPluginParams[] = "kmlrenderer='".$paramsPlugin->get('kmlrenderer','')."'";
+$arrPluginParams[] = "kmlsidebar='".$paramsPlugin->get('kmlsidebar','')."'";
+$arrPluginParams[] = "kmlsbwidth='".$paramsPlugin->get('kmlsbwidth','')."'";
 $arrPluginParams[] = "overview='1'";
 $arrPluginParams[] = "lightbox='1'";
 
