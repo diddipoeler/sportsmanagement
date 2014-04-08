@@ -112,7 +112,7 @@ class sportsmanagementModelPerson extends JModel
 		//{
 		// Select some fields
 		$query->select('p.*');
-        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS slug ');
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ');
         $query->where('p.id = '.$db->Quote($this->personid));
         
@@ -145,7 +145,7 @@ class sportsmanagementModelPerson extends JModel
         
 		//if ( is_null( $this->_inproject ) )
 		//{
-		$query->select('p.*,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS slug');
+		$query->select('p.*,CONCAT_WS(\':\',p.id,p.alias) AS slug');
         $query->select('pr.id,pr.notes AS prnotes,pr.picture');
         $query->select('pos.name AS position_name');
         

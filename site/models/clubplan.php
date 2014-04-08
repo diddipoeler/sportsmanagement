@@ -398,16 +398,16 @@ class sportsmanagementModelClubPlan extends JModel
         
         // Select some fields
 		$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
-        $query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+        $query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS roundname');
         $query->select('l.name AS l_name');
         $query->select('playground.name AS pl_name');
-        $query->select('t1.club_id as t1club_id,t1.id AS team1_id,t1.name AS tname1,t1.short_name AS tname1_short,t1.middle_name AS tname1_middle,t1.club_id AS club1_id,CASE WHEN CHAR_LENGTH(t1.alias) THEN CONCAT_WS(\':\',t1.id,t1.alias) ELSE t1.id END AS team1_slug');
-        $query->select('t2.club_id as t2club_id,t2.id AS team1_id,t2.name AS tname2,t2.short_name AS tname2_short,t2.middle_name AS tname2_middle,t2.club_id AS club2_id,CASE WHEN CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',t2.id,t2.alias) ELSE t2.id END AS team2_slug');
-        $query->select('c1.logo_small AS home_logo_small,CASE WHEN CHAR_LENGTH(c1.alias) THEN CONCAT_WS(\':\',c1.id,c1.alias) ELSE c1.id END AS club1_slug');
-        $query->select('c2.logo_small AS away_logo_small,CASE WHEN CHAR_LENGTH(c2.alias) THEN CONCAT_WS(\':\',c2.id,c2.alias) ELSE c2.id END AS club2_slug');
+        $query->select('t1.club_id as t1club_id,t1.id AS team1_id,t1.name AS tname1,t1.short_name AS tname1_short,t1.middle_name AS tname1_middle,t1.club_id AS club1_id,CONCAT_WS(\':\',t1.id,t1.alias) AS team1_slug');
+        $query->select('t2.club_id as t2club_id,t2.id AS team1_id,t2.name AS tname2,t2.short_name AS tname2_short,t2.middle_name AS tname2_middle,t2.club_id AS club2_id,CONCAT_WS(\':\',t2.id,t2.alias) AS team2_slug');
+        $query->select('c1.logo_small AS home_logo_small,CONCAT_WS(\':\',c1.id,c1.alias) AS club1_slug');
+        $query->select('c2.logo_small AS away_logo_small,CONCAT_WS(\':\',c2.id,c2.alias) AS club2_slug');
         $query->select('tj1.division_id');
-        $query->select('d.name AS division_name, d.shortname AS division_shortname, d.parent_id AS parent_division_id,CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\',d.id,d.alias) ELSE d.id END AS division_slug');
+        $query->select('d.name AS division_name, d.shortname AS division_shortname, d.parent_id AS parent_division_id,CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // Join 
@@ -507,7 +507,7 @@ class sportsmanagementModelClubPlan extends JModel
         $query = $db->getQuery(true);
         
         // Select some fields
-		$query->select('p.id,p.firstname,p.lastname,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+		$query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
         $query->select('mp.project_position_id');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp');

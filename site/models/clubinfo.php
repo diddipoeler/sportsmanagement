@@ -240,7 +240,7 @@ class sportsmanagementModelClubInfo extends JModel
 		{
 		  // Select some fields
           $query->select('t.id,prot.trikot_home,prot.trikot_away');
-          $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
+          $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
           $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ');
           $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
@@ -363,7 +363,7 @@ class sportsmanagementModelClubInfo extends JModel
 		{
 		  // Select some fields
           $query->select('id AS value, name AS text, pl.*');
-          $query->select('CASE WHEN CHAR_LENGTH( pl.alias ) THEN CONCAT_WS( \':\', pl.id, pl.alias ) ELSE pl.id END AS slug');
+          $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
           // From 
 		  $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl');
           // Where

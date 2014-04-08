@@ -214,7 +214,7 @@ class sportsmanagementModelPrediction extends JModel
 				
                 // Select some fields
         $query->select('*');
-        $query->select("CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(':',id,alias) ELSE id END AS slug");
+        $query->select("CONCAT_WS(':',id,alias) AS slug");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
         $query->where('id = '.$db->Quote(self::$predictionGameID));
         $query->where('published = 1');
@@ -764,7 +764,7 @@ class sportsmanagementModelPrediction extends JModel
 		if ($pid > 0)
 		{
 		  // Select some fields
-        $query->select('current_round,CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\',id,alias) ELSE id END AS slug');
+        $query->select('current_round,CONCAT_WS(\':\',id,alias) AS slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         $query->where('id = '.$db->Quote($pid));
 

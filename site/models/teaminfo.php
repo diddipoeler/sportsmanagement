@@ -430,7 +430,7 @@ $query->order('s.ordering '.$season_ordering);
         // Create a new query object.		
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
-       $query->select('*, CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug');
+       $query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
     $query->where('id IN ( '. $merge_clubs .' )');
 				
