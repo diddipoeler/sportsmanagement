@@ -89,11 +89,12 @@ class sportsmanagementHelperRoute
 }
   
   
-  public static function getAllProjectsRoute( $country )
+  public static function getAllProjectsRoute( $country, $league_id )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 				"view" => "allprojects",
-				"filter_search_nation" => $country );
+				"filter_search_nation" => $country,
+				"filter_search_leagues" => $league_id );
 	
 		$query = self::buildQuery( $params );
 		$link = JRoute::_( 'index.php?' . $query, false );

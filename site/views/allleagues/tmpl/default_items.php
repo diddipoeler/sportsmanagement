@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if ( $item->country )
 {
-$link = sportsmanagementHelperRoute::getAllProjectsRoute( $item->country );
+$link = sportsmanagementHelperRoute::getAllProjectsRoute( $item->country, $item->id );
 echo JHtml::link( $link, $item->name );
 }
 else
