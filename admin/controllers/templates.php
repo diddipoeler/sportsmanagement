@@ -59,6 +59,11 @@ class sportsmanagementControllertemplates extends JControllerAdmin
 	
     
     
+    /**
+     * sportsmanagementControllertemplates::changetemplate()
+     * 
+     * @return void
+     */
     public function changetemplate() 
 	{
 	$post=JRequest::get('post');

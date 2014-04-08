@@ -63,6 +63,7 @@ $i    = 1;
 		<fieldset class="adminform">
 			<?php
 			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+            //echo '<br>'.strtoupper($this->form->getName()).'<br>';
 			?>
 		</fieldset>
 
@@ -86,10 +87,44 @@ $i    = 1;
 					<?php echo $field->label; ?>
 					<?php endif; ?>
 					<?php echo $field->input; 
-                    $suchmuster = array ("params[","]");
-                $ersetzen = array ('', '');
+                    
+                    
+                    
+                    //echo ' <br><pre>'.print_r($field->name,true).'</pre>';
+                    
+                    //if ($fieldSet->customselbox)
+                    //{
+                    //echo '<br>customselbox<br>'.$field->customselbox.'<br>';
+                    //}
+                    
+                    $suchmuster = array ("params[","]","[");
+                $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                 
+                if ( $var_onlinehelp == 'ordered_columns_new_select' )
+                {
+                ?>
+                <input  type="button" class="inputbox"
+						onclick="move_list_items('params_ordered_columns_new_select','params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
+						value="&gt;&gt;" />
+				<br /><br />
+                <?PHP    
+                }    
+                if ( $var_onlinehelp == 'ordered_columns_new' )
+                {
+                ?>
+                <input  type="button" class="inputbox"
+						onclick="move_list_items('params_ordered_columns_new','params_ordered_columns_new_select');jQuery('#params_ordered_columns_new option').prop('selected', true);"
+						value="&lt;&lt;" />
+                <input  type="button" class="inputbox"
+						onclick="move_up('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
+						value="<?php echo JText::_('JLIB_HTML_MOVE_UP'); ?>" />
+                        <br />
+                <input type="button" class="inputbox"
+					   onclick="move_down('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
+					   value="<?php echo JText::_('JLIB_HTML_MOVE_DOWN'); ?>" />            
+                <?PHP    
+                }
                 switch ($var_onlinehelp)
                 {
                     case 'id':

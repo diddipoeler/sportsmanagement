@@ -179,14 +179,15 @@ class sportsmanagementModelLeagues extends JModelList
         $db = JFactory::getDBO();
         // Create a new query object.
         $query = $db->getQuery(true);
-        $query->select(array('id', 'name'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league')
-        ->order('name ASC');
+        $query->select('id,name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league');
+        $query->order('name ASC');
 
         $db->setQuery($query);
         if (!$result = $db->loadObjectList())
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             return array();
         }
         foreach ($result as $league)

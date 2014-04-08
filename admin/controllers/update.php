@@ -42,16 +42,24 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
+
 /**
- * Joomleague Component Update/Samples Controller
- *
- * @author		Kurt Norgaz
- * @package		JoomLeague
- * @since		1.5
+ * sportsmanagementControllerUpdate
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllerUpdate extends JController
 {
 
+	/**
+	 * sportsmanagementControllerUpdate::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		// Register Extra tasks
@@ -59,6 +67,13 @@ class sportsmanagementControllerUpdate extends JController
 	}
 
 
+	/**
+	 * sportsmanagementControllerUpdate::display()
+	 * 
+	 * @param bool $cachable
+	 * @param bool $urlparams
+	 * @return void
+	 */
 	function display($cachable = false, $urlparams = false)
 	{
 //		$document = JFactory::getDocument();
@@ -72,6 +87,11 @@ class sportsmanagementControllerUpdate extends JController
 	}
 
 
+	/**
+	 * sportsmanagementControllerUpdate::save()
+	 * 
+	 * @return void
+	 */
 	function save()
 	{
 		JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));

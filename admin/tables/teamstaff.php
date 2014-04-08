@@ -44,11 +44,15 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
+
 /**
- * Joomleague TeamStaff Table class
- *
- * @package	Sportsmanagement
- * @since	1.50a
+ * sportsmanagementTableTeamStaff
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementTableTeamStaff extends JTable
 {

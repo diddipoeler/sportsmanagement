@@ -43,8 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
  
+
 /**
- * SportsManagement Controller
+ * sportsmanagementControlleragegroup
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControlleragegroup extends JControllerForm
 {

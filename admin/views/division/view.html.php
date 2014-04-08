@@ -42,15 +42,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @static
- * @package		Joomleague
- * @since 0.1
+ * sportsmanagementViewDivision
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementViewDivision extends JView
 {
+	/**
+	 * sportsmanagementViewDivision::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe	= JFactory::getApplication();
@@ -59,13 +68,21 @@ class sportsmanagementViewDivision extends JView
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
-        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+        $starttime = microtime(); 
+        
+        //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 
 		$lists=array();
         
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.
@@ -90,7 +107,7 @@ class sportsmanagementViewDivision extends JView
         
         $this->addToolbar();
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewDivision item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewDivision item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
         		
 		parent::display($tpl);
         // Set the document

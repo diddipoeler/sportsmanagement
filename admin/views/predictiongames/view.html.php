@@ -65,7 +65,7 @@ class sportsmanagementViewPredictionGames extends JView
 	{
 		$mainframe = JFactory::getApplication();
     $model = $this->getModel();
-    
+    $starttime = microtime(); 
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $uri = JFactory::getURI();
@@ -91,6 +91,12 @@ class sportsmanagementViewPredictionGames extends JView
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
 
 $items = $this->get('Items');
+
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         

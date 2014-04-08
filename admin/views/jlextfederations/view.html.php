@@ -43,8 +43,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewjlextfederations
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewjlextfederations extends JView
 {
+	/**
+	 * sportsmanagementViewjlextfederations::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		

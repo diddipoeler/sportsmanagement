@@ -43,8 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
+
 /**
- * SportsManagements Controller
+ * sportsmanagementControllerpredictiongroups
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllerpredictiongroups extends JControllerAdmin
 {

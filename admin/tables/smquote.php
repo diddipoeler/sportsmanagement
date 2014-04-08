@@ -43,12 +43,16 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
+
 /**
-* Season Table class
-*
-* @package		Joomleague
-* @since 0.1
-*/
+ * sportsmanagementTablesmquote
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTablesmquote extends JTable 
 {
 	/**
@@ -93,18 +97,18 @@ class sportsmanagementTablesmquote extends JTable
 	 */
 	function bind($array, $ignore = '')
 	{
-		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['extended']);
-			$array['extended'] = (string) $registry;
-		}
-		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['extendeduser']);
-			$array['extendeduser'] = (string) $registry;
-		}
+//		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
+//		{
+//			$registry = new JRegistry();
+//			$registry->loadArray($array['extended']);
+//			$array['extended'] = (string) $registry;
+//		}
+//		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
+//		{
+//			$registry = new JRegistry();
+//			$registry->loadArray($array['extendeduser']);
+//			$array['extendeduser'] = (string) $registry;
+//		}
 		return parent::bind($array, $ignore);
 	}
     
@@ -120,11 +124,11 @@ class sportsmanagementTablesmquote extends JTable
 	{
 		if (parent::load($pk, $reset)) 
 		{
-			// Convert the params field to a registry.
-			$params = new JRegistry;
-			$params->loadJSON($this->extended);
-			//$params->toArray($this->extended);
-            $this->extended = $params->toArray($this->extended);
+//			// Convert the params field to a registry.
+//			$params = new JRegistry;
+//			$params->loadJSON($this->extended);
+//			//$params->toArray($this->extended);
+//            $this->extended = $params->toArray($this->extended);
             
 			return true;
 			

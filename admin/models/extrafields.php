@@ -57,6 +57,12 @@ class sportsmanagementModelextrafields extends JModelList
 {
 	var $_identifier = "extrafields";
 	
+    /**
+     * sportsmanagementModelextrafields::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -65,7 +71,9 @@ class sportsmanagementModelextrafields extends JModelList
                         'objcountry.template_frontend',
                         'objcountry.published',
                         'objcountry.id',
-                        'objcountry.ordering'
+                        'objcountry.ordering',
+                        'objcountry.checked_out',
+                        'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -107,6 +115,11 @@ class sportsmanagementModelextrafields extends JModelList
 		parent::populateState('objcountry.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelextrafields::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -117,7 +130,7 @@ class sportsmanagementModelextrafields extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('objcountry.*');
+		$query->select(implode(",",$this->filter_fields));
 		// From the hello table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields AS objcountry');
         // Join over the users for the checked out user.

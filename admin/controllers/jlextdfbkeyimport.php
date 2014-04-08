@@ -44,9 +44,23 @@ jimport( 'joomla.application.component.controller' );
 //require_once ( JPATH_COMPONENT . DS . 'controllers' . DS . 'joomleague.php' );
 
 
+/**
+ * sportsmanagementControllerjlextdfbkeyimport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerjlextdfbkeyimport extends JController
 {
 
+/**
+ * sportsmanagementControllerjlextdfbkeyimport::__construct()
+ * 
+ * @return void
+ */
 function __construct()
     {
         parent::__construct();
@@ -56,6 +70,11 @@ function __construct()
         
     }
     
+/**
+ * sportsmanagementControllerjlextdfbkeyimport::display()
+ * 
+ * @return void
+ */
 function display()  
 {
 
@@ -121,10 +140,12 @@ $document	=& JFactory::getDocument();
     
     }    
     
-/*
-save the new rounds
-
-*/    
+  
+  /**
+   * sportsmanagementControllerjlextdfbkeyimport::save()
+   * 
+   * @return void
+   */
   function save()
 	{
 		$option = JRequest::getCmd('option');
@@ -201,10 +222,12 @@ save the new rounds
 		$this->setRedirect( $link, $msg );
 	}
     
-/*
-save the new schedule
 
-*/    
+  /**
+   * sportsmanagementControllerjlextdfbkeyimport::insert()
+   * 
+   * @return void
+   */
   function insert()
 	{
 		$option = JRequest::getCmd('option');

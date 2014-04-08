@@ -44,12 +44,16 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
+
 /**
-* Season Positionstool class
-*
-* @package	Sportsmanagement
-* @since	0.1
-*/
+ * sportsmanagementTableProjectposition
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableProjectposition extends JTable
 {
 	/**

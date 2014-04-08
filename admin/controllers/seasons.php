@@ -53,8 +53,22 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
+/**
+ * sportsmanagementControllerseasons
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllerseasons extends JControllerAdmin
 {
+	/**
+	 * sportsmanagementControllerseasons::applypersons()
+	 * 
+	 * @return void
+	 */
 	function applypersons()
     {
         $option = JRequest::getCmd('option');
@@ -68,6 +82,11 @@ class sportsmanagementControllerseasons extends JControllerAdmin
         
     }
     
+    /**
+     * sportsmanagementControllerseasons::savepersons()
+     * 
+     * @return void
+     */
     function savepersons()
     {
         $option = JRequest::getCmd('option');
@@ -81,6 +100,11 @@ class sportsmanagementControllerseasons extends JControllerAdmin
         
     }
     
+    /**
+     * sportsmanagementControllerseasons::applyteams()
+     * 
+     * @return void
+     */
     function applyteams()
     {
         $option = JRequest::getCmd('option');
@@ -94,6 +118,11 @@ class sportsmanagementControllerseasons extends JControllerAdmin
         
     }
     
+    /**
+     * sportsmanagementControllerseasons::saveteams()
+     * 
+     * @return void
+     */
     function saveteams()
     {
         $option = JRequest::getCmd('option');

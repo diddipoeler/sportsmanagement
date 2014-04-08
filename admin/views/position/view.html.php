@@ -55,9 +55,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewPosition extends JView
 {
+	
 	/**
-	 * display method of Hello view
-	 * @return void
+	 * sportsmanagementViewPosition::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -66,6 +69,7 @@ class sportsmanagementViewPosition extends JView
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $document = JFactory::getDocument();
+        $starttime = microtime(); 
         
         if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
         {
@@ -81,6 +85,12 @@ class sportsmanagementViewPosition extends JView
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.

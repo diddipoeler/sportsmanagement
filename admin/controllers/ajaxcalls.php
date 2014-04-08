@@ -37,9 +37,23 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+/**
+ * sportsmanagementControllerajaxcalls
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllerajaxcalls extends JControllerLegacy
 {
 
+/**
+ * sportsmanagementControllerajaxcalls::removeCommentary()
+ * 
+ * @return void
+ */
 function removeCommentary()
     {
         

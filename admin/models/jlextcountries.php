@@ -57,6 +57,12 @@ class sportsmanagementModeljlextcountries extends JModelList
 {
 	var $_identifier = "jlextcountries";
 	
+    /**
+     * sportsmanagementModeljlextcountries::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -114,6 +120,11 @@ class sportsmanagementModeljlextcountries extends JModelList
 		parent::populateState('objcountry.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModeljlextcountries::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();

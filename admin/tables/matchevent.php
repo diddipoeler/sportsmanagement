@@ -44,12 +44,16 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
+
 /**
-* Event Table class
-*
-* @package		SportsManagement
-* @since 0.1
-*/
+ * sportsmanagementTableMatchEvent
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableMatchEvent extends JTable
 {
 	

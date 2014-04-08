@@ -58,12 +58,19 @@ require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
  */
 class sportsmanagementViewProject extends JView
 {
+	/**
+	 * sportsmanagementViewProject::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
+        $starttime = microtime(); 
         
         if ($this->getLayout() == 'panel')
 		{
@@ -75,6 +82,12 @@ class sportsmanagementViewProject extends JView
 		// get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
 		// Check for errors.
@@ -112,17 +125,29 @@ class sportsmanagementViewProject extends JView
 	}
 	
 	
-    // display control panel
+    
+	/**
+	 * sportsmanagementViewProject::_displayPanel()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayPanel($tpl)
 	{
 	$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
 	$uri = JFactory::getURI();
 	$user = JFactory::getUser();
+    $starttime = microtime(); 
            
 	$this->project = $this->get('Item');
     
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project->project_art_id,true).'</pre>'),'');
+    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+    
+    
        
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");

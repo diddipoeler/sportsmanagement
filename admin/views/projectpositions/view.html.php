@@ -55,12 +55,19 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewprojectpositions extends JView
 {
 
+	/**
+	 * sportsmanagementViewprojectpositions::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $starttime = microtime(); 
         
         if ($this->getLayout()=='editlist')
 		{
@@ -68,10 +75,20 @@ class sportsmanagementViewprojectpositions extends JView
 			return;
 		}
 
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
+//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
+//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
 		
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        
 		$items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
                 
@@ -80,9 +97,9 @@ class sportsmanagementViewprojectpositions extends JView
         $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
 
-		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+//		// table ordering
+//		$lists['order_Dir']=$filter_order_Dir;
+//		$lists['order']=$filter_order;
 		
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());
@@ -95,6 +112,12 @@ class sportsmanagementViewprojectpositions extends JView
 		parent::display($tpl);
 	}
     
+    /**
+     * sportsmanagementViewprojectpositions::_displayEditlist()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function _displayEditlist($tpl)
 	{
 		$mainframe = JFactory::getApplication();
@@ -102,12 +125,19 @@ class sportsmanagementViewprojectpositions extends JView
 		$model = $this->getModel();
         $option = JRequest::getCmd('option');
         $document = JFactory::getDocument();
+        $starttime = microtime(); 
         
         $items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         //build the html select list for project assigned positions
-		$ress=array();
-		$res1=array();
-		$notusedpositions=array();
+		$ress = array();
+		$res1 = array();
+		$notusedpositions = array();
         
         if ( $items )
         {
@@ -282,7 +312,7 @@ class sportsmanagementViewprojectpositions extends JView
 		JToolBarHelper::divider();
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        
+        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 	}
     

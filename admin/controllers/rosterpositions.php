@@ -55,11 +55,21 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerrosterpositions extends JControllerAdmin
 {
 
+/**
+ * sportsmanagementControllerrosterpositions::addhome()
+ * 
+ * @return void
+ */
 function addhome()
 {
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=rosterposition&addposition=HOME_POS&layout=edit', false));    
 }
 
+/**
+ * sportsmanagementControllerrosterpositions::addaway()
+ * 
+ * @return void
+ */
 function addaway()
 {
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=rosterposition&addposition=AWAY_POS&layout=edit', false));    

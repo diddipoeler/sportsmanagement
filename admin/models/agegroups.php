@@ -57,6 +57,12 @@ class sportsmanagementModelagegroups extends JModelList
 {
 	var $_identifier = "agegroups";
 	
+	/**
+	 * sportsmanagementModelagegroups::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -68,7 +74,9 @@ class sportsmanagementModelagegroups extends JModelList
                         'obj.country',
                         'obj.sportstype_id',
                         'obj.id',
-                        'obj.ordering'
+                        'obj.ordering',
+                        'obj.checked_out',
+                        'obj.checked_out_time'
                         );
                 parent::__construct($config);
         }
@@ -112,6 +120,11 @@ class sportsmanagementModelagegroups extends JModelList
 		parent::populateState('obj.name', 'asc');
 	}
 	
+	/**
+	 * sportsmanagementModelagegroups::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -129,10 +142,10 @@ class sportsmanagementModelagegroups extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('obj.*');
+		$query->select(implode(",",$this->filter_fields));
         // From table
-		$query->from('#__sportsmanagement_agegroup as obj');
-        $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup as obj');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sportstype_id');
         $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
         

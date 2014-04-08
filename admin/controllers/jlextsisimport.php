@@ -56,6 +56,11 @@ jimport( 'joomla.application.component.controller' );
 class sportsmanagementControllerjlextsisimport extends JController
 {
 	
+    /**
+     * sportsmanagementControllerjlextsisimport::save()
+     * 
+     * @return void
+     */
     function save() 
     {
 	   $option = JRequest::getCmd('option');

@@ -48,6 +48,15 @@ jimport( 'joomla.filter.input' );
 
 
 
+/**
+ * sportsmanagementTableseasonteamperson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableseasonteamperson extends JTable
 {
 	/**

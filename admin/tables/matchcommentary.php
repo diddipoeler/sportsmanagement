@@ -44,14 +44,17 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
-/**
- * Match Table class
- *
- * @author Marco Vaninetti <martizva@tiscali.it>
- * @package	SportsManagement
- * @since	0.1
- */
 
+
+/**
+ * sportsmanagementTableMatchCommentary
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableMatchCommentary extends JTable
 {
 	

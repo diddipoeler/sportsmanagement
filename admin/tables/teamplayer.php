@@ -44,11 +44,15 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
+
 /**
- * Joomleague Person Table class
- *
- * @package	Sportsmanagement
- * @since 	1.50a
+ * sportsmanagementTableTeamPlayer
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementTableTeamPlayer extends JTable
 {

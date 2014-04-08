@@ -44,12 +44,16 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport('joomla.filter.input');
 
+
 /**
-* TeamTrainigData Table class
-*
-* @package	Sportsmanagement
-* @since	1.5.0
-*/
+ * sportsmanagementTableTrainingData
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableTrainingData extends JTable
 {
 	/**

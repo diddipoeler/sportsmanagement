@@ -59,6 +59,11 @@ jimport ( 'joomla.filesystem.archive' );
 class sportsmanagementControllerjlextdfbnetplayerimport extends JController 
 {
 
+	/**
+	 * sportsmanagementControllerjlextdfbnetplayerimport::save()
+	 * 
+	 * @return
+	 */
 	function save() {
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication ();

@@ -57,6 +57,11 @@ jimport('joomla.filesystem.archive');
 class sportsmanagementControllerjlextlmoimports extends JController
 {
 	
+	/**
+	 * sportsmanagementControllerjlextlmoimports::save()
+	 * 
+	 * @return
+	 */
 	function save()
 	{
 		$option = JRequest::getCmd('option');

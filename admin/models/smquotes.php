@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2013 fussballineuropa.de. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -15,16 +7,26 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 
+
 /**
- * Sportsmanagement Component Leagues Model
- *
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementModelsmquotes
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementModelsmquotes extends JModelList
 {
 	var $_identifier = "smquotes";
 	
+	/**
+	 * sportsmanagementModelsmquotes::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -73,6 +75,11 @@ class sportsmanagementModelsmquotes extends JModelList
     
     
     
+    /**
+     * sportsmanagementModelsmquotes::getListQuery()
+     * 
+     * @return
+     */
     protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -116,7 +123,12 @@ class sportsmanagementModelsmquotes extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'obj.quote')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-		//$mainframe->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
+        
+        //$mainframe->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');
         return $query;
 	}
 

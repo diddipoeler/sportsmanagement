@@ -43,14 +43,26 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
+
 /**
- * SportsManagements Controller
+ * sportsmanagementControllermatches
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementControllermatches extends JControllerAdmin
 {
   
     
     
+    /**
+     * sportsmanagementControllermatches::__construct()
+     * 
+     * @return void
+     */
     function __construct()
 	{
 		parent::__construct();
@@ -75,6 +87,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	}
     
     
+    /**
+     * sportsmanagementControllermatches::removeEvent()
+     * 
+     * @return void
+     */
     function removeEvent()
     {
         // Check for request forgeries
@@ -97,6 +114,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
     }
     
     
+    /**
+     * sportsmanagementControllermatches::removeCommentary()
+     * 
+     * @return void
+     */
     public function removeCommentary()
     {
         
@@ -146,6 +168,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
     }
     
     
+    /**
+     * sportsmanagementControllermatches::removeSubst()
+     * 
+     * @return void
+     */
     function removeSubst()
 	{
 		//JSession::checkToken() or die('JINVALID_TOKEN');
@@ -166,6 +193,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		JFactory::getApplication()->close();
 	}
     
+    /**
+     * sportsmanagementControllermatches::saveevent()
+     * 
+     * @return void
+     */
     function saveevent()
     {
         $option = JRequest::getCmd('option');
@@ -201,6 +233,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		JFactory::getApplication()->close();
     }
     
+    /**
+     * sportsmanagementControllermatches::savecomment()
+     * 
+     * @return void
+     */
     function savecomment()
     {
         //$option = JRequest::getCmd('option');
@@ -240,6 +277,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //$mainframe->close();
     }
     
+    /**
+     * sportsmanagementControllermatches::savesubst()
+     * 
+     * @return void
+     */
     function savesubst()
 	{
 		// Check for request forgeries
@@ -270,6 +312,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
     
     
     
+    /**
+     * sportsmanagementControllermatches::saveroster()
+     * 
+     * @return void
+     */
     function saveroster()
     {
         $option = JRequest::getCmd('option');
@@ -313,6 +360,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
     }    
     
     
+    /**
+     * sportsmanagementControllermatches::saveReferees()
+     * 
+     * @return void
+     */
     function saveReferees()
     {
         $option = JRequest::getCmd('option');

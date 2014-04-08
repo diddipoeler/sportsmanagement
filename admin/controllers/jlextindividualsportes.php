@@ -105,6 +105,11 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
         
     } 
     
+    /**
+     * sportsmanagementControllerjlextindividualsportes::publish()
+     * 
+     * @return void
+     */
     function publish() 
     {
            $option = JRequest::getCmd('option');
@@ -122,6 +127,11 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
         
     }
     
+    /**
+     * sportsmanagementControllerjlextindividualsportes::delete()
+     * 
+     * @return void
+     */
     function delete()
 	{
 	   $option = JRequest::getCmd('option');

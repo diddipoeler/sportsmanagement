@@ -109,6 +109,11 @@ class sportsmanagementModelDivisions extends JModelList
 		parent::populateState('dv.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelDivisions::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
@@ -121,10 +126,10 @@ class sportsmanagementModelDivisions extends JModelList
        
         // Create a new query object.
         $query = $this->_db->getQuery(true);
-        $query->select(array('dv.*', 'dvp.name AS parent_name','u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv')
-        ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id')
-        ->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
+        $query->select('dv.*,dvp.name AS parent_name,u.name AS editor');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id');
+        $query->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
         $query->where(' dv.project_id = ' . $this->_project_id);
         
@@ -158,16 +163,33 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-		$query = '	SELECT	id AS value,
-					name AS text
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division
-					WHERE project_id=' . $project_id .
-					' ORDER BY name ASC ';
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $starttime = microtime(); 
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $query->select('id AS value,name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+        $query->where('project_id = ' . $project_id);
+        $query->order('name ASC');
+        
+//		$query = '	SELECT	id AS value,
+//					name AS text
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division
+//					WHERE project_id=' . $project_id .
+//					' ORDER BY name ASC ';
 
-		$this->_db->setQuery( $query );
-		if ( !$result = $this->_db->loadObjectList("value") )
+		$db->setQuery( $query );
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
+        
+		if ( !$result = $db->loadObjectList("value") )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -185,12 +207,32 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-		$query='SELECT count(*) AS count
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d
-		JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = d.project_id
-		WHERE p.id='.$project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $starttime = microtime(); 
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        $query->select('count(*) AS count');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = d.project_id');
+        $query->where('p.id = ' . $project_id);
+        
+        
+//		$query='SELECT count(*) AS count
+//		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d
+//		JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = d.project_id
+//		WHERE p.id='.$project_id;
+        
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
+        
+		return $db->loadResult();
 	}
 	
 }

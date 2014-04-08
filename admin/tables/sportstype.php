@@ -46,12 +46,16 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport('joomla.filter.input');
 
+
 /**
-* sportstype Table class
-*
-* @package		Sportsmanagement
-* @since 0.1
-*/
+ * sportsmanagementTableSportsType
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementTableSportsType extends JTable
 {
 	/**

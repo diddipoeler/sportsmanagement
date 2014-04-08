@@ -44,8 +44,23 @@ jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
 
+/**
+ * sportsmanagementViewStatistics
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementViewStatistics extends JView
 {
+	/**
+	 * sportsmanagementViewStatistics::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');

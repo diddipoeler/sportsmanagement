@@ -55,6 +55,12 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewPredictionTemplates extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionTemplates::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe			= JFactory::getApplication();
@@ -62,6 +68,7 @@ class sportsmanagementViewPredictionTemplates extends JView
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $model = $this->getModel();
+    $starttime = microtime(); 
     
     $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -106,6 +113,12 @@ class sportsmanagementViewPredictionTemplates extends JView
         }
         
         $items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         

@@ -66,6 +66,11 @@ class sportsmanagementControllerjlextdbbimport extends JController
 {
 
 
+	/**
+	 * sportsmanagementControllerjlextdbbimport::save()
+	 * 
+	 * @return
+	 */
 	function save() {
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication ();

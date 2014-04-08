@@ -55,6 +55,12 @@ jimport('joomla.form.form');
  */
 class sportsmanagementViewTemplate extends JView
 {
+	/**
+	 * sportsmanagementViewTemplate::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
@@ -63,7 +69,8 @@ class sportsmanagementViewTemplate extends JView
 		$user = JFactory::getUser();
 		$mainframe = JFactory::getApplication();
 		$model = $this->getModel();
-		$lists=array();
+		$lists = array();
+        $starttime = microtime(); 
 
 		//get template data
 		//$template =& $this->get('data');
@@ -72,6 +79,12 @@ class sportsmanagementViewTemplate extends JView
         // get the Data
 		//$form = $this->get('Form');
 		$item = $this->get('Item');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$script = $this->get('Script');
  
  /*       
@@ -111,6 +124,8 @@ class sportsmanagementViewTemplate extends JView
 		$this->form = $form;
 		//$this->item = $item;
 		$this->script = $script;
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
         
 
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
@@ -192,29 +207,11 @@ class sportsmanagementViewTemplate extends JView
 			JToolBarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
 		}
         
+        JToolBarHelper::divider();
+        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences(JRequest::getCmd('option'));
         
-        /*
-        // Set toolbar items for the page
-		$edit=JRequest::getVar('edit',true);
-	
-		JToolBarHelper::save('template.save');
-		JToolBarHelper::apply('template.apply');
-
-		if (!$edit)
-		{
-			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_ADD_NEW'));
-			JToolBarHelper::divider();
-			JToolBarHelper::cancel('template.cancel');
-		}		
-		else
-		{		
-			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT'),'FrontendSettings');
-			JToolBarHelper::divider();
-			// for existing items the button is renamed `close`
-			JToolBarHelper::cancel('template.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		}
-		//JLToolBarHelper::onlinehelp();
-        */
+        
 	}
     
     /**

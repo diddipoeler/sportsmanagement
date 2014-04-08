@@ -44,9 +44,24 @@ jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
 
+/**
+ * sportsmanagementControllercurrentseason
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllercurrentseason extends JController
 {
 	protected $view_list = 'currentseasons';
+    
+    /**
+     * sportsmanagementControllercurrentseason::__construct()
+     * 
+     * @return void
+     */
     function __construct()
 	{
 		parent::__construct();
@@ -54,6 +69,11 @@ class sportsmanagementControllercurrentseason extends JController
 
 	}
     
+    /**
+     * sportsmanagementControllercurrentseason::display()
+     * 
+     * @return void
+     */
     function display()
 	{
 	

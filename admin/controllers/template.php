@@ -56,6 +56,11 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllertemplate extends JControllerForm
 {
 
+/**
+ * sportsmanagementControllertemplate::remove()
+ * 
+ * @return
+ */
 function remove()
 	{
 		$cid = JRequest::getVar('cid',array(0),'post','array');

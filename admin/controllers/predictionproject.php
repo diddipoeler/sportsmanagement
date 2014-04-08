@@ -43,13 +43,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
  
 
+
 /**
- * sportsmanagementControllerpredictiongame
+ * sportsmanagementControllerpredictionproject
  * 
  * @package   
  * @author 
  * @copyright diddi
- * @version 2013
+ * @version 2014
  * @access public
  */
 class sportsmanagementControllerpredictionproject extends JControllerForm

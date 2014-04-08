@@ -45,15 +45,23 @@ jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
 
+
 /**
- * Joomleague Component JLXMLImport Controller
- *
- * @author	Kurt Norgaz
- * @package	JoomLeague
- * @since	1.5.0a
+ * sportsmanagementControllerJLXMLImport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementControllerJLXMLImport extends JController
 {
+	/**
+	 * sportsmanagementControllerJLXMLImport::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -64,6 +72,13 @@ class sportsmanagementControllerJLXMLImport extends JController
 		$this->registerTask('selectpage','display');
 	}
 
+	/**
+	 * sportsmanagementControllerJLXMLImport::display()
+	 * 
+	 * @param bool $cachable
+	 * @param bool $urlparams
+	 * @return void
+	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 		switch ($this->getTask())
@@ -93,6 +108,11 @@ class sportsmanagementControllerJLXMLImport extends JController
 		parent::display($cachable = false, $urlparams = false);
 	}
 
+	/**
+	 * sportsmanagementControllerJLXMLImport::select()
+	 * 
+	 * @return void
+	 */
 	function select()
 	{
 		$mainframe = JFactory::getApplication();
@@ -109,6 +129,11 @@ class sportsmanagementControllerJLXMLImport extends JController
 		parent::display();
 	}
 
+	/**
+	 * sportsmanagementControllerJLXMLImport::save()
+	 * 
+	 * @return
+	 */
 	function save()
 	{
 		// Check for request forgeries
@@ -242,6 +267,11 @@ $mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worde
 		$this->setRedirect($link,$msg);
 	}
 
+	/**
+	 * sportsmanagementControllerJLXMLImport::insert()
+	 * 
+	 * @return void
+	 */
 	function insert()
 	{
 		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
@@ -253,6 +283,11 @@ $mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worde
 		#$this->setRedirect($link);
 	}
 
+	/**
+	 * sportsmanagementControllerJLXMLImport::cancel()
+	 * 
+	 * @return void
+	 */
 	function cancel()
 	{
 		$this->setRedirect('index.php?option=com_sportsmanagement&task=jlxmlimport.display');

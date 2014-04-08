@@ -44,12 +44,16 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
+
 /**
-* Season Table class
-*
-* @package		Joomleague
-* @since 0.1
-*/
+ * sportsmanagementTablejlextassociation
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTablejlextassociation extends JTable 
 {
 	

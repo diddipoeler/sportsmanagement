@@ -45,11 +45,15 @@ jimport('joomla.database.table');
 jimport('joomla.filter.input');
 
 
+
 /**
- * Position Statistic Table class
- *
- * @package	JoomLeague
- * @since	1.5
+ * sportsmanagementTablePositionStatistic
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
  */
 class sportsmanagementTablePositionStatistic extends JTable
 {

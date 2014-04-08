@@ -47,6 +47,15 @@ jimport('joomla.database.table');
 jimport( 'joomla.filter.input' );
 
 
+/**
+ * sportsmanagementTableseasonperson
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableseasonperson extends JTable
 {
 	/**

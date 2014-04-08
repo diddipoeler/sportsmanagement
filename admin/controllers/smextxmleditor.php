@@ -44,6 +44,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
  
 
+/**
+ * sportsmanagementControllersmextxmleditor
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllersmextxmleditor extends JControllerForm
 {
     
@@ -61,6 +70,11 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 		$this->registerTask('apply',		'save');
 	}
     
+    /**
+     * sportsmanagementControllersmextxmleditor::cancel()
+     * 
+     * @return void
+     */
     public function cancel()
 	{
     // Redirect to the list screen.

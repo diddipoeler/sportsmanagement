@@ -55,6 +55,11 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllersmquotes extends JControllerAdmin
 {
   
+/**
+ * sportsmanagementControllersmquotes::edittxt()
+ * 
+ * @return void
+ */
 function edittxt()
 {
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=smquotestxt', false));    

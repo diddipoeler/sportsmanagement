@@ -46,11 +46,15 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport('joomla.filter.input');
 
+
 /**
- * Statistic Table class
- *
- * @package	Joomleague
- * @since	1.5
+ * sportsmanagementTableStatistic
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementTableStatistic extends JTable
 {

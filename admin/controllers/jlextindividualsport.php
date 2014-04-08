@@ -44,6 +44,15 @@ jimport('joomla.application.component.controller');
 
 
 
+/**
+ * sportsmanagementControllerjlextindividualsport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerjlextindividualsport extends JController
 {
     
@@ -71,7 +80,12 @@ class sportsmanagementControllerjlextindividualsport extends JController
 //    }
     
 
-//	add a match to round
+
+	/**
+	 * sportsmanagementControllerjlextindividualsport::addmatch()
+	 * 
+	 * @return
+	 */
 	function addmatch()
 	{
 		$option = JRequest::getCmd('option');

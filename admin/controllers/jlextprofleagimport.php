@@ -46,9 +46,23 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
 
 
+/**
+ * sportsmanagementControllerjlextprofleagimport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerjlextprofleagimport extends JController
 {
 	
+	/**
+	 * sportsmanagementControllerjlextprofleagimport::save()
+	 * 
+	 * @return
+	 */
 	function save()
 	{
 		$option = JRequest::getCmd('option');

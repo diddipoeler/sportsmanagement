@@ -58,6 +58,12 @@ class sportsmanagementModelTemplates extends JModelList
 	var $_identifier = "templates";
 	var $_project_id = 0;
 
+	/**
+	 * sportsmanagementModelTemplates::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -106,6 +112,11 @@ class sportsmanagementModelTemplates extends JModelList
 		parent::populateState('tmpl.template', 'asc');
 	}    
 	
+	/**
+	 * sportsmanagementModelTemplates::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe	= JFactory::getApplication();
@@ -116,9 +127,9 @@ class sportsmanagementModelTemplates extends JModelList
         
         $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $query->select(array('tmpl.template,tmpl.title,tmpl.id', 'u.name AS editor','(0) AS isMaster'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl')
-        ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
+        $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl');
+        $query->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
         
         $query->where('tmpl.project_id = '.(int) $this->_project_id);
         
@@ -133,8 +144,11 @@ class sportsmanagementModelTemplates extends JModelList
 
 $query->order($db->escape($this->getState('list.ordering', 'tmpl.template')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
- 
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        { 
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+}
 
 		return $query;
 	}
@@ -145,31 +159,50 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 	 */
 	function checklist()
 	{
-	   $mainframe		= JFactory::getApplication();
-      $option = JRequest::getCmd('option');
-		$project_id=$this->_project_id;
-		$defaultpath=JPATH_COMPONENT_SITE.DS.'settings';
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $starttime = microtime(); 
+      
+      
+		$project_id = $this->_project_id;
+		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
         // Get the views for this component.
         $path = JPATH_SITE.'/components/'.$option.'/views';
-		$predictionTemplatePrefix='prediction';
+		$predictionTemplatePrefix = 'prediction';
 
 		if (!$project_id){return;}
 
 		// get info from project
-		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
+        $query->select('master_template,extension');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('id = '.(int)$project_id);
+//		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
 
-		$this->_db->setQuery($query);
-		$params=$this->_db->loadObject();
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        { 
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+}
+
+		$params = $db->loadObject();
 
 		// if it's not a master template,do not create records.
 		if ($params->master_template){return true;}
 
 		// otherwise,compare the records with the files
 		// get records
-		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
+        $query->clear();
+        $query->select('template');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->where('project_id = '.(int)$project_id);
+//		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
 
-		$this->_db->setQuery($query);
-		$records = $this->_db->loadResultArray();
+		$db->setQuery($query);
+		$records = $db->loadResultArray();
 		if (empty($records)) { $records=array(); }
 		
 		// add default folder
@@ -282,53 +315,116 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
 		}
 	}
 
+	/**
+	 * sportsmanagementModelTemplates::getMasterTemplatesList()
+	 * 
+	 * @return
+	 */
 	function getMasterTemplatesList()
 	{
-		// get current project settings
-		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$this->_project_id;
-		$this->_db->setQuery($query);
-		$current=$this->_db->loadResultArray();
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
+        // get current project settings
+        $query->select('template');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->where('project_id = '.(int)$this->_project_id);
+//		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$this->_project_id;
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        { 
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+}
+
+		$current = $db->loadResultArray();
+        
+        $query->clear();
+        
+        $starttime = microtime(); 
 
 		if ($this->_getALL)
 		{
-			$query='SELECT t.*,(1) AS isMaster ';
+//			$query='SELECT t.*,(1) AS isMaster ';
+            $query->select('t.*,(1) AS isMaster');
 		}
 		else
 		{
-			$query='SELECT t.id as value, t.title as text, t.template as template ';
+//			$query='SELECT t.id as value, t.title as text, t.template as template ';
+            $query->select('t.id as value, t.title as text, t.template as template');
 		}
-		$query .= '	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id=t.project_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=pm.id ';
-		$where=array();
-		$where[]=' p.id='.(int)$this->_project_id;
+//		$query .= '	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id=t.project_id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=pm.id ';
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id = t.project_id');            
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template = pm.id');
+//		$where = array();
+//		$where[]=' p.id='.(int)$this->_project_id;
+        $query->where('p.id = '.(int)$this->_project_id);
 
 		$oldTemplates="frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
 		$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
 		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
-		$where[]=" t.template NOT IN ('".$oldTemplates."')";
+//		$where[]=" t.template NOT IN ('".$oldTemplates."')";
+        $query->where(" t.template NOT IN ('".$oldTemplates."')");
 
 		if (count($current))
 		{
-			$where[]=" t.template NOT IN ('".implode("','",$current)."')";
+//			$where[]=" t.template NOT IN ('".implode("','",$current)."')";
+            $query->where(" t.template NOT IN ('".implode("','",$current)."')");
 		}
-		$query .= " WHERE ".implode(' AND ',$where);
-		$query .= " ORDER BY t.title ";
+		//$query .= " WHERE ".implode(' AND ',$where);
+//		$query .= " ORDER BY t.title ";
+        $query->order('t.title');
 		// Build in JText of template title here and sort it afterwards
-		$this->_db->setQuery($query);
-		$current=$this->_db->loadObjectList();
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        { 
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+}
+
+		$current = $db->loadObjectList();
 		return (count($current)) ? $current : array();
 	}
 
+	/**
+	 * sportsmanagementModelTemplates::getMasterName()
+	 * 
+	 * @return
+	 */
 	function getMasterName()
 	{
-		$query='	SELECT master.name
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=master.id
-					WHERE p.id='.(int) $this->_project_id;
-		$this->_db->setQuery($query);
-		return ($this->_db->loadResult());
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
+        $query->select('master.name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template = master.id');
+        $query->where('p.id = '.(int)$this->_project_id);
+        
+//		$query='	SELECT master.name
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=master.id
+//					WHERE p.id='.(int) $this->_project_id;
+		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        { 
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+}
+
+		return ($db->loadResult());
 	}
 
 }

@@ -74,6 +74,7 @@ class sportsmanagementViewClubs extends JView
         $this->sortColumn = $this->state->get('list.ordering');
         
         $starttime = microtime(); 
+        $inputappend = '';
 
 		$items		= $this->get('Items');
         
@@ -85,8 +86,8 @@ class sportsmanagementViewClubs extends JView
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		// state filter
-		$lists['state'] = JHtml::_('grid.state',$filter_state);
+//		// state filter
+//		$lists['state'] = JHtml::_('grid.state',$filter_state);
         
         //build the html options for nation
 		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));

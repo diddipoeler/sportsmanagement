@@ -54,6 +54,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewjlextassociations extends JView
 {
+	/**
+	 * sportsmanagementViewjlextassociations::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		

@@ -142,12 +142,12 @@ class sportsmanagementModelProjects extends JModelList
         // Create a new query object.
         $db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-        $query->select( array('p.id,p.ordering,p.published,p.project_type,p.name', 'st.name AS sportstype', 's.name AS season', 'l.name AS league', 'u.name AS editor') )
-    ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p')
-    ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id')
-    ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id')
-    ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id')
-    ->join('LEFT', '#__users AS u ON u.id = p.checked_out');
+        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id ,st.name AS sportstype,s.name AS season,l.name AS league,u.name AS editor');
+    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
+    $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
   
 

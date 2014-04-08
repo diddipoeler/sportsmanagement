@@ -66,6 +66,7 @@ class sportsmanagementViewLeagues extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $inputappend = '';
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');

@@ -46,12 +46,16 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport('joomla.filter.input');
 
+
 /**
-* Playground Table class
-*
-* @package		Joomleague
-* @since 0.1
-*/
+ * sportsmanagementTablePlayground
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTablePlayground extends JTable
 {
 	/**

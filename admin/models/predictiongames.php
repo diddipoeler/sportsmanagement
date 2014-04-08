@@ -150,7 +150,10 @@ class sportsmanagementModelPredictionGames extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'pre.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
 
 		
 		return $query;
@@ -171,6 +174,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $starttime = microtime(); 
         
 		$what = 'pro.*';
 		if ( $all )
@@ -187,7 +191,11 @@ $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE
         
 		$db->setQuery( $query );
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
         
 		if ( $all )
 		{

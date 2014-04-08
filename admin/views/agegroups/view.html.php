@@ -72,6 +72,8 @@ class sportsmanagementViewagegroups extends JView
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
 
@@ -122,7 +124,7 @@ class sportsmanagementViewagegroups extends JView
         if ( count($items)  == 0 )
         {
             $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
-            $insert_agegroup = $databasetool->insertAgegroup($search_nation,$filter_sports_type);
+            $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
         $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
         }
         

@@ -43,12 +43,16 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
+
 /**
-* agegroup Table class
-*
-* @package		sportsmanagement
-* @since 0.1
-*/
+ * sportsmanagementTableagegroup
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTableagegroup extends JTable 
 {
 	/**

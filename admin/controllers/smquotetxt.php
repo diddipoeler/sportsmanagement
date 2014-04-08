@@ -44,6 +44,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
  
 
+/**
+ * sportsmanagementControllersmquotetxt
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementControllersmquotetxt extends JControllerForm
 {
     
@@ -61,6 +70,11 @@ class sportsmanagementControllersmquotetxt extends JControllerForm
 		$this->registerTask('apply','save');
 	}
     
+    /**
+     * sportsmanagementControllersmquotetxt::cancel()
+     * 
+     * @return void
+     */
     public function cancel()
 	{
     // Redirect to the list screen.

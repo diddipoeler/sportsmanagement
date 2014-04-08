@@ -43,12 +43,16 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
+
 /**
-* Season Table class
-*
-* @package		Joomleague
-* @since 0.1
-*/
+ * sportsmanagementTablejlextcountry
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
 class sportsmanagementTablejlextcountry extends JTable 
 {
 	/**
