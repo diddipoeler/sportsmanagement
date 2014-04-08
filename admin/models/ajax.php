@@ -69,6 +69,27 @@ class sportsmanagementModelAjax extends JModel
                 return $elements;
         }
         
+        
+        
+        function getpersonlistoptions($person_art, $required = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        if ( $person_art == 2 )
+        {
+        $query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person ');
+			$query->order('lastname');
+			$db->setQuery($query);    
+            
+        }
+        
+        return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+        }
+        
         /**
          * sportsmanagementModelAjax::getProjectsBySportsTypesOptions()
          * 
@@ -84,7 +105,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END AS value,p.name AS text');
+        $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id ');
@@ -116,7 +137,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END AS value,a.name AS text');
+        $query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,a.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS a');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = a.sportstype_id ');
@@ -146,7 +167,7 @@ class sportsmanagementModelAjax extends JModel
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(d.alias) THEN CONCAT_WS(\':\', d.id, d.alias) ELSE d.id END AS value,d.name AS text');
+        $query->select('CONCAT_WS(\':\', d.id, d.alias) AS value,d.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = pt.division_id ');
@@ -180,7 +201,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\', t.id, t.alias) ELSE t.id END AS value,t.name AS text');
+        $query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
@@ -227,7 +248,7 @@ class sportsmanagementModelAjax extends JModel
                 else 
                 {
                     // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END AS value,p.name AS text');
+        $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
@@ -259,7 +280,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END AS value,p.name AS text');
+        $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p');
                                 
@@ -286,7 +307,7 @@ class sportsmanagementModelAjax extends JModel
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\', t.id, t.alias) ELSE t.id END AS value,t.name AS text');
+        $query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
@@ -319,7 +340,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\', pt.id, t.alias) ELSE pt.id END AS value,t.name AS text');
+        $query->select('CONCAT_WS(\':\', pt.id, t.alias) AS value,t.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
@@ -352,7 +373,7 @@ class sportsmanagementModelAjax extends JModel
         $query = $db->getQuery(true);
                 
         // Select some fields
-        $query->select("CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(':', p.id, p.alias) ELSE p.id END AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
+        $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = p.id ');
@@ -386,7 +407,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select("CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(':', p.id, p.alias) ELSE p.id END AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
+        $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = p.id ');
@@ -420,7 +441,7 @@ class sportsmanagementModelAjax extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END AS value,c.name AS text');
+        $query->select('CONCAT_WS(\':\', c.id, c.alias) AS value,c.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
@@ -455,7 +476,7 @@ $db->setQuery($query);
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(et.alias) THEN CONCAT_WS(\':\', et.id, et.alias) ELSE et.id END AS value,et.name AS text');
+        $query->select('CONCAT_WS(\':\', et.id, et.alias) AS value,et.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id ');
@@ -489,7 +510,7 @@ $db->setQuery($query);
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('CASE WHEN CHAR_LENGTH(s.alias) THEN CONCAT_WS(\':\', s.id, s.alias) ELSE s.id END AS value,s.name AS text');
+        $query->select('CONCAT_WS(\':\', s.id, s.alias) AS value,s.name AS text');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = ppos.position_id ');

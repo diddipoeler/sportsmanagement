@@ -31,7 +31,9 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_N_NAME_DESC"
 			class="inputbox"/>	
-      
+
+<fields name="request">
+                <fieldset name="request">      
 <field
 			name="person_art"
 			type="list"
@@ -49,9 +51,12 @@
 				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
 		</field>	
 
+        
 <field
 			name="person_id1"
-			type="personlist"
+			type="dependsql"
+			depends="person_art"
+			task="personlistoptions" 
 			class="inputbox"
 			style="display:none"
 			default="0"
@@ -63,9 +68,13 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
 		</field>	
+
+		
 <field
 			name="person_id2"
-			type="personlist"
+			type="dependsql"
+			depends="person_art"
+			task="personlistoptions"
 			class="inputbox"
 			style="display:none"
 			default="0"
@@ -77,7 +86,9 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
 		</field>	
-
+</fieldset>
+        </fields>		
+        
     <field
 			name="sports_type_id"
 			type="sportstypelist"
