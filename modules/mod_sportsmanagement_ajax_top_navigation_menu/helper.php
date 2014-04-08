@@ -226,11 +226,13 @@ $query->order('s.name');
 	   $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
-	
+	$options = array();
+    
     $fedtext = $federation;
 
 $query->select('s.alpha3 AS value, s.name AS text');
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS s');
+$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.country = s.alpha3 ');
 $query->where('s.federation = '.$federationid);
 $query->order('s.name DESC');
 $db->setQuery($query);
@@ -292,6 +294,7 @@ if ($res)
     $parsearray = parse_url($url);
     $startseo = 0;
     $jltemplate = '';
+    $varAdd_array = array();
     
     if ( $parsearray['query'] )
     {

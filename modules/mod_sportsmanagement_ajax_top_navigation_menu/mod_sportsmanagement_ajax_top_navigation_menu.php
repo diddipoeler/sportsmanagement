@@ -98,18 +98,21 @@ $tab_points[] = $row->name;
 $tab_points[] = 'NON';
 
 
-$ajax= JRequest::getVar('ajaxCalMod',0,'default','POST');
-$ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
+$ajax = JRequest::getVar('ajaxCalMod',0,'default','POST');
+$ajaxmod = JRequest::getVar('ajaxmodid',0,'default','POST');
 
 $document = JFactory::getDocument();
-
 
 $queryvalues = $helper->getQueryValues();
 $assoc_id = 0;
 $subassoc_id = 0;  
 $subsubassoc_id = 0;  
 $user_name = $helper->getUserName();
-
+$project_id = 0;  
+$league_id = 0;
+$team_id = 0;  
+$country_id  = ''; 
+$lightbox = '';
 
 if ( $queryvalues && !$_POST )
 {
