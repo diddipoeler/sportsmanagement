@@ -101,7 +101,7 @@ var $_identifier = "clubs";
 		$value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->getUserStateFromRequest(),true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -218,9 +218,9 @@ var $_identifier = "clubs";
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
         
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {        
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 

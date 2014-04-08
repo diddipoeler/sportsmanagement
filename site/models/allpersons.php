@@ -161,9 +161,9 @@ var $_identifier = "persons";
 		
         // Select some fields
 		$query->select('v.*');
-        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
-        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
-        $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS teamslug');
+        $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
+        $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS teamslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as v');
         // Join over the clubs
@@ -192,9 +192,9 @@ var $_identifier = "persons";
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {        
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');

@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+
 <div class="no-column">
 	<div class="contentpaneopen">
 		<div class="contentheading">

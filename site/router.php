@@ -81,7 +81,128 @@ function sportsmanagementBuildRoute( &$query )
 	// now, the specifics
 	switch ($view)
 	{
-		case 'clubinfo':
+		case 'predictionrules':
+			if (isset($query['prediction_id']))
+			{
+				$segments[] = $query['prediction_id'];
+				unset( $query['prediction_id'] );
+			}
+
+			break;
+        case 'predictionranking':
+			if (isset($query['prediction_id']))
+			{
+				$segments[] = $query['prediction_id'];
+				unset( $query['prediction_id'] );
+			}
+            if (isset($query['p']))
+			{
+				$segments[] = $query['p'];
+				unset( $query['p'] );
+			}
+            if (isset($query['pggroup']))
+			{
+				$segments[] = $query['pggroup'];
+				unset( $query['pggroup'] );
+			}
+            if (isset($query['pj']))
+			{
+				$segments[] = $query['pj'];
+				unset( $query['pj'] );
+			}
+            if (isset($query['r']))
+			{
+				$segments[] = $query['r'];
+				unset( $query['r'] );
+			}
+            if (isset($query['pggrouprank']))
+			{
+				$segments[] = $query['pggrouprank'];
+				unset( $query['pggrouprank'] );
+			}
+
+
+
+
+            
+
+			break;    
+        case 'predictionentry':
+			if (isset($query['prediction_id']))
+			{
+				$segments[] = $query['prediction_id'];
+				unset( $query['prediction_id'] );
+			}
+            if (isset($query['s']))
+			{
+				$segments[] = $query['s'];
+				unset( $query['s'] );
+			}
+            if (isset($query['pj']))
+			{
+				$segments[] = $query['pj'];
+				unset( $query['pj'] );
+			}
+            if (isset($query['r']))
+			{
+				$segments[] = $query['r'];
+				unset( $query['r'] );
+			}
+			break;
+        case 'predictionresults':
+			if (isset($query['prediction_id']))
+			{
+				$segments[] = $query['prediction_id'];
+				unset( $query['prediction_id'] );
+			}
+            if (isset($query['p']))
+			{
+				$segments[] = $query['p'];
+				unset( $query['p'] );
+			}
+            if (isset($query['pggroup']))
+			{
+				$segments[] = $query['pggroup'];
+				unset( $query['pggroup'] );
+			}
+            if (isset($query['pj']))
+			{
+				$segments[] = $query['pj'];
+				unset( $query['pj'] );
+			}
+            if (isset($query['r']))
+			{
+				$segments[] = $query['r'];
+				unset( $query['r'] );
+			}
+            if (isset($query['uid']))
+			{
+				$segments[] = $query['uid'];
+				unset( $query['uid'] );
+			}
+        break;
+        case 'predictionusers':
+			if (isset($query['prediction_id']))
+			{
+				$segments[] = $query['prediction_id'];
+				unset( $query['prediction_id'] );
+			}
+            if (isset($query['uid']))
+			{
+				$segments[] = $query['uid'];
+				unset( $query['uid'] );
+			}
+
+			break;
+        case 'allprojects':
+			if (isset($query['filter_search_nation']))
+			{
+				$segments[] = $query['filter_search_nation'];
+				unset( $query['filter_search_nation'] );
+			}
+			break;
+        
+        case 'clubinfo':
 			if (isset($query['cid']))
 			{
 				$segments[] = $query['cid'];
@@ -350,7 +471,113 @@ function sportsmanagementParseRoute( $segments )
 
 	switch( $vars['view'] ) // the view...
 	{
-		case 'clubinfo':
+		 case 'predictionranking':
+			if (isset($segments[1])) 
+            {
+				$vars['prediction_id'] = $segments[1];
+			}
+            if (isset($segments[2])) 
+            {
+				$vars['p'] = $segments[2];
+			}
+            if (isset($segments[3])) 
+            {
+				$vars['pggroup'] = $segments[3];
+			}
+             if (isset($segments[4])) 
+            {
+				$vars['pj'] = $segments[4];
+			}
+             if (isset($segments[5])) 
+            {
+				$vars['r'] = $segments[5];
+			}
+            if (isset($segments[6])) 
+            {
+				$vars['pggrouprank'] = $segments[6];
+			}
+
+
+			
+			break;
+            
+        case 'predictionentry':
+			if (isset($segments[1])) 
+            {
+				$vars['prediction_id'] = $segments[1];
+			}
+            if (isset($segments[2])) 
+            {
+				$vars['s'] = $segments[2];
+			}
+             if (isset($segments[3])) 
+            {
+				$vars['pj'] = $segments[3];
+			}
+             if (isset($segments[4])) 
+            {
+				$vars['r'] = $segments[4];
+			}
+			
+			break;
+        
+        case 'predictionresults':
+			if (isset($segments[1])) 
+            {
+				$vars['prediction_id'] = $segments[1];
+			}
+            if (isset($segments[2])) 
+            {
+				$vars['p'] = $segments[2];
+			}
+            if (isset($segments[3])) 
+            {
+				$vars['pggroup'] = $segments[3];
+			}
+             if (isset($segments[4])) 
+            {
+				$vars['pj'] = $segments[4];
+			}
+             if (isset($segments[5])) 
+            {
+				$vars['r'] = $segments[5];
+			}
+			if (isset($segments[6])) 
+            {
+				$vars['uid'] = $segments[6];
+			}
+			break;
+        
+        case 'predictionusers':
+			if (isset($segments[1])) 
+            {
+				$vars['prediction_id'] = $segments[1];
+			}
+            if (isset($segments[2])) 
+            {
+				$vars['uid'] = $segments[2];
+			}
+
+			
+			break;
+        
+        case 'predictionrules':
+			if (isset($segments[1])) 
+            {
+				$vars['prediction_id'] = $segments[1];
+			}
+		
+			break;
+                    
+        case 'allprojects':
+			if (isset($segments[1])) 
+            {
+				$vars['filter_search_nation'] = $segments[1];
+			}
+			
+			break;
+            
+        case 'clubinfo':
 			if (isset($segments[1])) {
 				$vars['p'] = $segments[1];
 			}

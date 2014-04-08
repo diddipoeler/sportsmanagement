@@ -71,9 +71,9 @@ defined('_JEXEC') or die('Restricted access');
 <tr class="row<?php echo $i % 2; ?>">
 <td>
 <?php 
-if ( $item->projectslug )
+if ( $item->country )
 {
-$link = sportsmanagementHelperRoute::getClubInfoRoute( $item->projectslug, $item->slug );
+$link = sportsmanagementHelperRoute::getAllProjectsRoute( $item->country );
 echo JHtml::link( $link, $item->name );
 }
 else

@@ -55,6 +55,11 @@ jimport('joomla.application.component.controller');
 class sportsmanagementControllerPredictionResults extends JController
 {
 
+	/**
+	 * sportsmanagementControllerPredictionResults::display()
+	 * 
+	 * @return void
+	 */
 	function display()
 	{
 		$this->showprojectheading();
@@ -62,6 +67,11 @@ class sportsmanagementControllerPredictionResults extends JController
 		$this->showfooter();
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionResults::selectprojectround()
+	 * 
+	 * @return void
+	 */
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));

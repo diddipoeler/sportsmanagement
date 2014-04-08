@@ -2,7 +2,8 @@
 <form>
 <!-- reiter 1 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_sectionheader" type="radio" default="1"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
@@ -92,7 +93,10 @@
 
 <!-- reiter 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
-		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
+    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
+    addfieldpath="/administrator/components/com_sportsmanagement/elements"
+    >
 
 		<field 	name="column_sorting" type="radio" default="1" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMN_SORT" 
@@ -118,6 +122,37 @@
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS" 
 				rows="4" cols="70">
 		</field>
+
+<field
+			name="ordered_columns_new_select"
+			type="rankingcolumns"
+			class="inputbox"
+			default="0"
+			selrankingcol="1"
+			size="10"
+			multiple="true"
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS_NEW"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS_NEW"
+			>
+</field>			
+			
+<field
+			name="ordered_columns_new"
+			type="rankingcolumns"
+			class="inputbox"
+			default="0"
+			selrankingcol="0"
+			size="10"
+			multiple="true"
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS_NEW"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS_NEW"
+			>
+			
+
+				
+				
+		</field>
+
 		
 		<field 	name="ordered_columns_names" type="textarea" default="Pl, W, D, L, Pts, SF, SA, +/-" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMNS_NAMES" 

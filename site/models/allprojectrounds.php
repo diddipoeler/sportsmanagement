@@ -280,8 +280,8 @@ $this->ProjectTeams[$value] = $db->loadResult();
     $query->select('pos2.name AS out_position');
     $query->select('ppos.id AS pposid1');
     $query->select('ppos2.id AS pposid2');
-    $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
-    $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+    $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+    $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ');
     $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');
@@ -399,8 +399,8 @@ if ( !$res )
     $query->select('ppos.position_id,ppos.id AS pposid,p.picture AS ppic');
     $query->select('pt.team_id,pt.id as ptid');
     $query->select('mp.teamplayer_id,mp.out,mp.in_out_time');
-    $query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
-    $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+    $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+    $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ');
     $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');

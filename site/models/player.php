@@ -328,9 +328,9 @@ class sportsmanagementModelPlayer extends JModel
     
     $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     $query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
-    $query->select('p.name AS project_name,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+    $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
     $query->select('s.name AS season_name,s.id AS season_id');
-    $query->select('t.name AS team_name,t.id AS team_id,CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
+    $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     $query->select('pos.name AS position_name,pos.id AS posID');
     $query->select('pt.id AS ptid,pt.project_id');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
@@ -392,9 +392,9 @@ class sportsmanagementModelPlayer extends JModel
        
     $query->select('pr.id AS pid,pr.firstname,pr.lastname');
     $query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
-    $query->select('p.name AS project_name,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+    $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
     $query->select('s.name AS season_name');
-    $query->select('t.name AS team_name,t.id AS team_id,CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
+    $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     $query->select('pos.name AS position_name,pos.id AS posID');
     $query->select('pt.id AS ptid,pt.project_id');
     $query->select('ppos.position_id');

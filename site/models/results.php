@@ -361,21 +361,42 @@ class sportsmanagementModelResults extends JModel
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
-        $query='	SELECT	mr.project_referee_id AS value,
-								t.name AS teamname,
-								pos.name AS position_name
+        $query->select('mr.project_referee_id AS value');
+        $query->select('t.name AS teamname');
+        $query->select('pos.name AS position_name');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = mr.project_referee_id');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = pt.team_id ');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON mr.project_position_id = pos.id');
+          
+          $query->where('mr.match_id = '.(int) $match_id);
+          $query->order('pos.name,mr.ordering ASC');
 
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id=mr.project_referee_id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON mr.project_position_id=pos.id
+          
+//        $query='	SELECT	mr.project_referee_id AS value,
+//								t.name AS teamname,
+//								pos.name AS position_name
+//
+//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id=mr.project_referee_id
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON mr.project_position_id=pos.id
+//
+//						WHERE mr.match_id='.(int) $match_id.' ORDER BY pos.name,mr.ordering ASC ';
 
-						WHERE mr.match_id='.(int) $match_id.' ORDER BY pos.name,mr.ordering ASC ';
-
-		$this->_db->setQuery($query);
+		$db->setQuery($query);
         
-        $result = $this->_db->loadObjectList('value');
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+        $result = $db->loadObjectList('value');
+        
         if ( !$result )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
@@ -393,16 +414,38 @@ class sportsmanagementModelResults extends JModel
 	 */
 	function isTeamEditor($userid)
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
 		if ($userid > 0)
 		{
-			$query=' SELECT tt.admin '
-			. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt '
-			. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON (m.projectteam1_id=tt.id OR m.projectteam2_id=tt.id)'
-			. ' WHERE tt.project_id='. $this->_db->Quote($this->projectid)
-			. '   AND tt.admin= '. $this->_db->Quote($userid)
-			;
-			$this->_db->setQuery($query);
-			if ($this->_db->loadResult()) return true;
+		  $query->select('tt.admin');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ');
+          $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON (m.projectteam1_id = tt.id OR m.projectteam2_id = tt.id)');
+          $query->where('tt.project_id = '. $db->Quote($this->projectid));
+          $query->where('tt.admin = '. $db->Quote($userid));
+          
+//			$query=' SELECT tt.admin '
+//			. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt '
+//			. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON (m.projectteam1_id=tt.id OR m.projectteam2_id=tt.id)'
+//			. ' WHERE tt.project_id='. $this->_db->Quote($this->projectid)
+//			. '   AND tt.admin= '. $this->_db->Quote($userid)
+//			;
+            
+            
+			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+			if ($db->loadResult()) return true;
 		}
 		return false;
 	}
@@ -416,14 +459,36 @@ class sportsmanagementModelResults extends JModel
 	 */
 	function isMatchAdmin($matchid,$userid)
 	{
-		$query=' SELECT COUNT(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-		. ' WHERE m.id='.$matchid
-		. ' AND (pt1.admin='.$userid.' OR pt2.admin='.$userid.')'
-		;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $starttime = microtime(); 
+        
+        $query->select('COUNT(*)');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+          $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+          $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+          $query->where('m.id = '.$matchid);
+          $query->where('(pt1.admin = '.$userid.' OR pt2.admin = '.$userid.')');
+          
+//		$query=' SELECT COUNT(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
+//		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
+//		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
+//		. ' WHERE m.id='.$matchid
+//		. ' AND (pt1.admin='.$userid.' OR pt2.admin='.$userid.')'
+//		;
+		
+        $db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+		return $db->loadResult();
 	}
 
 	/**

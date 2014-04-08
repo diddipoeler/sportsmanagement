@@ -158,6 +158,17 @@ class sportsmanagementViewClubInfo extends JView
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
+        $this->assignRef( 'modid',			$this->club->id );
+		// clubhistory
+        $this->assign( 'clubhistory',			$model->getClubHistory($this->club->id) );
+		$this->assign( 'clubhistoryhtml',			$model->getClubHistoryHTML($this->club->id) );
+    // clubhistorytree
+		$this->assign( 'clubhistorytree',			$model->getClubHistoryTree($this->club->id,$this->club->new_club_id) );
+		$this->assign( 'clubhistorysorttree',			$model->getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name) );
+        
+        $document->addScript( JURI::base().'components/'.$option.'/assets/js/dtree.js' );        
+        $document->addStyleSheet(JURI::base().'components/'.$option.'/assets/css/dtree.css');  
+    
         $document->setTitle( $pageTitle );
         $view = JRequest::getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";

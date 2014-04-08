@@ -67,18 +67,25 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  * @param mixed $groupID
  * @return
  */
-public static function getPredictionResultsRoute($predictionID,$roundID=null,$projectID=null,$userID=null,$anchor='',$groupID=null)
+public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionresults', 
 						'prediction_id' => $predictionID);
 
         // diddipoeler
-        if (!is_null($projectID)){$params['p']=$projectID;}
-        if (!is_null($groupID)){$params['pggroup']=$groupID;}
-		if (!is_null($projectID)){$params['pj']=$projectID;}
-		if (!is_null($roundID)){$params['r']=$roundID;}
-		if (!is_null($userID)){$params['uid']=$userID;}
+//        if (!is_null($projectID)){$params['p']=$projectID;}
+//        if (!is_null($groupID)){$params['pggroup']=$groupID;}
+//		if (!is_null($projectID)){$params['pj']=$projectID;}
+//		if (!is_null($roundID)){$params['r']=$roundID;}
+//		if (!is_null($userID)){$params['uid']=$userID;}
+        
+        $params['p']=$projectID;
+        $params['pggroup']=$groupID;
+        $params['pj']=$projectID;
+        $params['r']=$roundID;
+        $params['uid']=$userID;
+        
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		//echo $query; die();
 		$link = JRoute::_('index.php?' . $query . $anchor, false);
@@ -97,18 +104,23 @@ public static function getPredictionResultsRoute($predictionID,$roundID=null,$pr
  * @param integer $groupRank
  * @return
  */
-public static function getPredictionRankingRoute($predictionID,$projectID=null,$roundID=null,$anchor='',$groupID=null,$groupRank=0)
+public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionranking', 
 						'prediction_id' => $predictionID);
 
         // diddipoeler
-        if (!is_null($projectID)){$params['p']=$projectID;}
-        if (!is_null($groupID)){$params['pggroup']=$groupID;}
-		if (!is_null($projectID)){$params['pj']=$projectID;}
-		if (!is_null($roundID)){$params['r']=$roundID;}
+//        if (!is_null($projectID)){$params['p']=$projectID;}
+//        if (!is_null($groupID)){$params['pggroup']=$groupID;}
+//		if (!is_null($projectID)){$params['pj']=$projectID;}
+//		if (!is_null($roundID)){$params['r']=$roundID;}
+        
         //if (!is_null($groupRank)){$params['pggrouprank']=$groupRank;}
+        $params['p']=$projectID;
+        $params['pggroup']=$groupID;
+        $params['pj']=$projectID;
+        $params['r']=$roundID;
         $params['pggrouprank']=$groupRank;
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);

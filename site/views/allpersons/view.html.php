@@ -69,7 +69,7 @@ class sportsmanagementViewallpersons extends JView
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        
+        $inputappend = '';
         $app = JFactory::getApplication();
 		$user		= JFactory::getUser();
         $starttime = microtime(); 

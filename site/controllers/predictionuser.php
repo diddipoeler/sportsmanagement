@@ -44,7 +44,7 @@ jimport('joomla.application.component.controller');
 jimport('joomla.application.component.controllerform');
 
 
-//class JoomleagueControllerPredictionUsers extends JLGController
+
 /**
  * sportsmanagementControllerPredictionUsers
  * 
@@ -57,6 +57,11 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerPredictionUsers extends JControllerForm
 {
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::display()
+	 * 
+	 * @return void
+	 */
 	function display()
 	{
 		$this->showprojectheading();
@@ -64,11 +69,21 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 		$this->showfooter();
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::cancel()
+	 * 
+	 * @return void
+	 */
 	function cancel()
 	{
 		JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',JFactory::getURI()->toString()));
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::select()
+	 * 
+	 * @return void
+	 */
 	function select()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
@@ -80,6 +95,11 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 		$this->setRedirect($link);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::savememberdata()
+	 * 
+	 * @return void
+	 */
 	function savememberdata()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_USERS_INVALID_TOKEN_MEMBER_NOT_SAVED'));
@@ -134,6 +154,11 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 		$this->setRedirect($link,$msg);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionUsers::selectprojectround()
+	 * 
+	 * @return void
+	 */
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));

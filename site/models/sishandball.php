@@ -56,9 +56,19 @@ jimport('joomla.application.component.model');
  */
 class sportsmanagementModelsishandball extends JModel 
 {
-//class xmlsishandballv2Modelxmlsishandballv2 extends JModelItem {
 
-	//get sis link
+
+	
+	/**
+	 * sportsmanagementModelsishandball::getLink()
+	 * 
+	 * @param mixed $vereinsnummer
+	 * @param mixed $vereinspasswort
+	 * @param mixed $liganummer
+	 * @param mixed $sis_art
+	 * @param mixed $sis_xmllink
+	 * @return
+	 */
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
         $option = JRequest::getCmd('option');
@@ -68,7 +78,15 @@ class sportsmanagementModelsishandball extends JModel
 		return $link;
 	}
 
-	//get Tabelle
+	
+	/**
+	 * sportsmanagementModelsishandball::getTabelle()
+	 * 
+	 * @param mixed $linkresults
+	 * @param mixed $liganummer
+	 * @param mixed $sis_art
+	 * @return
+	 */
 	function getTabelle($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');
@@ -141,7 +159,14 @@ else
 		return $result;
 	}
 	
-	//get Statistik, Tore
+	
+	/**
+	 * sportsmanagementModelsishandball::getStatistik()
+	 * 
+	 * @param mixed $linkresults
+	 * @param mixed $liganummer
+	 * @return
+	 */
 	function getStatistik($linkresults,$liganummer) 
     {
         $option = JRequest::getCmd('option');
@@ -217,7 +242,15 @@ else
 	//Statistik, Tore end
 
 	
-	//get sis spielplan
+	
+	/**
+	 * sportsmanagementModelsishandball::getSpielplan()
+	 * 
+	 * @param mixed $linkresults
+	 * @param mixed $liganummer
+	 * @param mixed $sis_art
+	 * @return
+	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');

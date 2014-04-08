@@ -125,7 +125,12 @@ else
 			<span class="clubinfo_listing_value"><?php echo $addressString; ?>
 			</span>
 			<span class="clubinfo_listing_value">
-			<?php echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); ?>
+			<?php 
+            if ( isset($this->clubassoc->name) )
+            {
+            echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
+            }
+            ?>
       <br />
       </span>
 			
@@ -274,7 +279,33 @@ echo JHtml::link($link, $desc);
 </span>
 <?PHP
 		}
-        
+
+?>
+<fieldset>
+<legend>
+<strong>
+<br />
+<?php echo JText::_('Fusionen'); ?>
+</strong>
+</legend>
+
+<div class="left-column-teamlist">
+<div class="dtree">
+      <a href="javascript: d<?PHP echo $this->modid; ?>.openAll();">
+        <?php echo JText::_('&ouml;ffnen'); ?>&nbsp;&nbsp;</a>
+      <a href="javascript: d<?PHP echo $this->modid; ?>.closeAll();">
+        <?php echo JText::_('schliessen'); ?></a>
+    </div>
+<script type="text/javascript" language="javascript">
+    <!--
+<?php echo $this->clubhistorysorttree; ?>
+    // -->
+    </script>
+</div>
+
+</fieldset>
+
+<?PHP        
         
 		?>
 	</div>

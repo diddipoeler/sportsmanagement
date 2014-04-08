@@ -73,6 +73,7 @@ class sportsmanagementViewallprojects extends JView
         $app = JFactory::getApplication();
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
+        $inputappend = '';
 
 		$state 		= $this->get('State');
 		$items 		= $this->get('Items');
@@ -103,7 +104,7 @@ class sportsmanagementViewallprojects extends JView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'));
+        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
 		if ($res = sportsmanagementModelLeagues::getLeagues())
         {
             $temp = array_merge($temp,$res);
@@ -119,7 +120,7 @@ class sportsmanagementViewallprojects extends JView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'));
+        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
 		if ($res = sportsmanagementModelSeasons::getSeasons())
         {
             $temp = array_merge($temp,$res);

@@ -54,6 +54,11 @@ jimport('joomla.application.component.controller');
  */
 class sportsmanagementControllerPredictionRanking extends JController
 {
+	/**
+	 * sportsmanagementControllerPredictionRanking::display()
+	 * 
+	 * @return void
+	 */
 	function display()
 	{
 	  // Get the view name from the query string
@@ -91,6 +96,11 @@ class sportsmanagementControllerPredictionRanking extends JController
 		$this->showfooter();
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionRanking::selectprojectround()
+	 * 
+	 * @return void
+	 */
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));

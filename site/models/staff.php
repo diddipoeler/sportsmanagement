@@ -140,8 +140,8 @@ class sportsmanagementModelStaff extends JModel
 		    $query->select('pr.id AS pid,pr.firstname,pr.lastname');
             $query->select('o.person_id');
             $query->select('tt.project_id,tt.id AS ptid');
-            $query->select('t.id AS team_id,t.name AS team_name,CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
-            $query->select('p.name AS project_name,CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug');
+            $query->select('t.id AS team_id,t.name AS team_name,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+            $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
             $query->select('s.name AS season_name');
             $query->select('ppos.position_id');
             $query->select('pos.name AS position_name,pos.id AS posID');

@@ -56,6 +56,12 @@ jimport('joomla.application.component.helper');
 class sportsmanagementHelperRoute
 {
 	
+  /**
+   * sportsmanagementHelperRoute::sportsmanagementBuildRoute()
+   * 
+   * @param mixed $query
+   * @return
+   */
   function sportsmanagementBuildRoute(&$query)
 {
 	$mainframe = JFactory::getApplication();
@@ -83,6 +89,18 @@ class sportsmanagementHelperRoute
 }
   
   
+  public static function getAllProjectsRoute( $country )
+	{
+		$params = array(	"option" => "com_sportsmanagement",
+				"view" => "allprojects",
+				"filter_search_nation" => $country );
+	
+		$query = self::buildQuery( $params );
+		$link = JRoute::_( 'index.php?' . $query, false );
+	
+		return $link;
+	}
+    
   /**
    * sportsmanagementHelperRoute::getKunenaRoute()
    * 

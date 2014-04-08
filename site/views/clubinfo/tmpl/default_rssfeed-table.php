@@ -43,7 +43,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'club rssfeedoutput<pre>',print_r($this->rssfeedoutput,true),'</pre><br>';
 }
-$mainframe	=& JFactory::getApplication();
+
+$mainframe	= JFactory::getApplication();
 
 ?>
 <div class="no-column">

@@ -54,6 +54,11 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.ph
  */
 class sportsmanagementControllerPredictiongame extends JController
 {
+	/**
+	 * sportsmanagementControllerPredictiongame::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		//echo " - JoomleagueControllerPredictiongame construct";

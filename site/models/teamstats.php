@@ -43,15 +43,7 @@ jimport( 'joomla.application.component.model');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
-/**
- * sportsmanagementModelTeamStats
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
+
 /**
  * sportsmanagementModelTeamStats
  * 

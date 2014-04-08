@@ -81,6 +81,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <td>
         <?php
 		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+        $imgtitle = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PREV' );
         echo JHtml::link(sportsmanagementModelPagination::$prevlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
         //echo sportsmanagementModelPagination::$prevlink;
 		?>
@@ -91,6 +92,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 <td>
         <?php
 		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
+        $imgtitle = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEXT' );
         echo JHtml::link(sportsmanagementModelPagination::$nextlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
         //echo sportsmanagementModelPagination::$nextlink;
 		?>

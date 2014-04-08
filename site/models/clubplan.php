@@ -130,6 +130,7 @@ class sportsmanagementModelClubPlan extends JModel
        // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         if ($this->clubid > 0)
 		{
@@ -149,6 +150,13 @@ class sportsmanagementModelClubPlan extends JModel
         $query->order('p.name DESC');
 
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$teamsprojects = $db->loadObjectList();
 		}
         

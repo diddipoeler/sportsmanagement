@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.switcher');
 
-
+echo ' config<br><pre>'.print_r($this->config,true).'</pre>';   
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view

@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 <table>
 <tbody>
 <?php
-if ( $this->extrafields )
+if ( isset($this->extrafields) )
 {
 foreach ($this->extrafields as $field)
 {

@@ -121,7 +121,7 @@ class sportsmanagementModelTeamPlan extends JModel
 		{
 			
         // Select some fields
-        $query->select('d.*,CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\',id,alias) ELSE id END AS slug');
+        $query->select('d.*,CONCAT_WS(\':\',id,alias) AS slug');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d');
         // Where

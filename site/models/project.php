@@ -55,6 +55,7 @@ class sportsmanagementModelProject extends JModel
 {
 	static $_project = null;
 	static $projectid = 0;
+    static $matchid = 0;
 
 	/**
 	 * project league country
@@ -157,13 +158,11 @@ class sportsmanagementModelProject extends JModel
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-    }
+
     
 			self::$_project = $db->loadObject();
             self::$seasonid = self::$_project->season_id;
@@ -732,13 +731,11 @@ class sportsmanagementModelProject extends JModel
 
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+            
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
@@ -851,6 +848,12 @@ class sportsmanagementModelProject extends JModel
 		return array();
 	}
 
+	/**
+	 * sportsmanagementModelProject::getEventTypes()
+	 * 
+	 * @param integer $evid
+	 * @return
+	 */
 	function getEventTypes($evid=0)
 	{
 	   $option = JRequest::getCmd('option');
@@ -859,23 +862,28 @@ class sportsmanagementModelProject extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        $query->select('et.id AS etid,et.id AS etid,');
+        $query->select('me.event_type_id AS id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id');
 
-		$query="SELECT	et.id AS etid,
-							me.event_type_id AS id,
-							et.*
-							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype AS et
-							LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_event AS me ON et.id=me.event_type_id";
+//		$query="SELECT	et.id AS etid,
+//							me.event_type_id AS id,
+//							et.id AS etid,
+//							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype AS et
+//							LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_event AS me ON et.id=me.event_type_id";
 		if ($evid != 0)
 		{
-			if ($this->projectid > 0)
-			{
-				$query .= " AND";
-			}
-			else
-			{
-				$query .= " WHERE";
-			}
-			$query .= " me.event_type_id=".(int)$evid;
+//			if ($this->projectid > 0)
+//			{
+//				$query .= " AND";
+//			}
+//			else
+//			{
+//				$query .= " WHERE";
+//			}
+//			$query .= " me.event_type_id=".(int)$evid;
+            $query->where('me.event_type_id = '.(int)$evid);
 		}
 
 		$db->setQuery($query);
@@ -1494,6 +1502,7 @@ $starttime = microtime();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $starttime = microtime(); 
         
         if ($showcomments == 1) 
         {
@@ -1536,6 +1545,13 @@ $starttime = microtime();
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
         	
 		$db->setQuery( $query );
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		
         $events = $db->loadObjectList();
         
@@ -1554,7 +1570,8 @@ $starttime = microtime();
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
         // Where
-        $query->where('match_id = '. (int)$this->matchid );
+        //$query->where('match_id = '. (int)$this->matchid );
+        $query->where('match_id = '. (int)$match_id );
     
     $db->setQuery($query);
 		$commentary = $db->loadObjectList();

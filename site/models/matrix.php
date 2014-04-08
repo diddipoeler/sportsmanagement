@@ -137,6 +137,7 @@ class sportsmanagementModelMatrix extends JModel
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $starttime = microtime(); 
         
 		//$query_WHERE = "";
 		//$query_END	 = " ORDER BY roundcode";
@@ -173,7 +174,12 @@ class sportsmanagementModelMatrix extends JModel
 
 		$db->setQuery( $query );
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
         
 		if ( !$result = $db->loadObjectList() )
 		{

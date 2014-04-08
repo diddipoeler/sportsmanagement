@@ -100,6 +100,7 @@ class sportsmanagementModelPerson extends JModel
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $this->personid	= JRequest::getInt( 'pid', 0 );
+        $starttime = microtime(); 
         
         //$mainframe->enqueueMessage(JText::_('getPerson personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
         
@@ -115,14 +116,15 @@ class sportsmanagementModelPerson extends JModel
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ');
         $query->where('p.id = '.$db->Quote($this->personid));
         
-        //$mainframe->enqueueMessage(JText::_('getPerson query<br><pre>'.print_r($query,true).'</pre>'),'');
+
         
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-                {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-                }
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
                 
 		$this->person = $db->loadObject();
 		//}

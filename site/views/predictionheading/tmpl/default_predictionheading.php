@@ -133,7 +133,7 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
                 
 				$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,0);
+				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,0,0,'',0,0);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
                 
@@ -141,7 +141,7 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
                 {
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_GROUP_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/teaminfo_icon.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,NULL,NULL,'',NULL,1);
+				$link = JSMPredictionHelperRoute::getPredictionRankingRoute($this->predictionGame->id,0,0,'',0,1);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';
                 }

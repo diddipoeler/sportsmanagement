@@ -55,6 +55,11 @@ jimport( 'joomla.application.component.controller' );
 class sportsmanagementControllerPredictionEntry extends JController
 {
 	
+	/**
+	 * sportsmanagementControllerPredictionEntry::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		//$post	= JRequest::get('post');
@@ -68,6 +73,11 @@ class sportsmanagementControllerPredictionEntry extends JController
 	}
 	
 
+	/**
+	 * sportsmanagementControllerPredictionEntry::display()
+	 * 
+	 * @return void
+	 */
 	function display( )
 	{
 		// Get the view name from the query string
@@ -83,6 +93,11 @@ class sportsmanagementControllerPredictionEntry extends JController
 		$this->showfooter();
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionEntry::register()
+	 * 
+	 * @return void
+	 */
 	function register()
 	{
 		$option = JRequest::getCmd('option');
@@ -167,6 +182,11 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 		$this->setRedirect($link,$msg);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionEntry::select()
+	 * 
+	 * @return void
+	 */
 	function select()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
@@ -178,6 +198,11 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 		$this->setRedirect($link);
 	}
 
+	/**
+	 * sportsmanagementControllerPredictionEntry::selectprojectround()
+	 * 
+	 * @return void
+	 */
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
@@ -209,6 +234,11 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.pri
 		return $model;
 	}
 	
+	/**
+	 * sportsmanagementControllerPredictionEntry::addtipp()
+	 * 
+	 * @return void
+	 */
 	function addtipp()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));

@@ -57,6 +57,18 @@ class sportsmanagementModelClubInfo extends JModel
 	var $projectid = 0;
 	var $clubid = 0;
 	var $club = null;
+    
+    var $new_club_id = 0;
+    var $historyhtml = '';
+	var $historyobj = array();
+
+  var $catssorted = array();
+  	
+  var $jgcat_rows = array();
+  var $jgcat_rows_sorted = Array();
+     
+	var $treedepth = 0;
+	var $treedepthold = 0;	
 
 	/**
 	 * sportsmanagementModelClubInfo::__construct()
@@ -362,6 +374,367 @@ class sportsmanagementModelClubInfo extends JModel
 		}
 		return $playgrounds;
 	}
+    
+    /**
+     * sportsmanagementModelClubInfo::getClubHistory()
+     * 
+     * @param mixed $clubid
+     * @return
+     */
+    function getClubHistory( $clubid )
+	{
+	$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('c.id, c.name, c.new_club_id');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ');
+        $query->where('c.new_club_id = '. $clubid );
+        
+//				$query = ' SELECT c.id, c.name, c.new_club_id, '
+//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
+//				       . ' FROM #__joomleague_club AS c '
+//				       . ' WHERE c.new_club_id = '. $clubid
+//				            ;
+                            
+				$db->setQuery($query);
+				$result = $db->loadObjectList();
+			
+	foreach ( $result as $row )
+	{
+  $temp = new stdClass();
+  $temp->id = $row->id;
+	$temp->name = $row->name;
+  $temp->slug = $row->slug;	
+  $this->historyobj[] = $temp;
+  
+  if ( $row->new_club_id )
+  {
+  $this->getClubHistory( $row->id );
+  }
+  else
+  {
+  return $this->historyobj;
+  }
+  
+  }
+
+  return $this->historyobj;
+  
+	}
+    
+       
+        /**
+         * sportsmanagementModelClubInfo::getClubHistoryHTML()
+         * 
+         * @param mixed $clubid
+         * @return
+         */
+        function getClubHistoryHTML( $clubid )
+	{
+	   $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $subquery = $db->getQuery(true);
+        
+        $query->select('c.id, c.name, c.new_club_id');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        
+        $subquery->select('max(pt.project_id)');
+        $subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
+        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+        $subquery->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on pt.project_id = p.id');
+        $subquery->where('t.club_id = c.id ');
+        $subquery->where('p.published = 1');
+        
+        $query->select('('.$subquery.') as pid ');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+        
+        $query->where('c.new_club_id = '. $clubid );
+
+
+//$query = ' SELECT c.id, c.name, c.new_club_id, '
+//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
+//				. ',(select max(pt.project_id) 
+//             from #__joomleague_project_team pt
+//             inner join #__joomleague_team t
+//             on pt.team_id = t.id   
+//             right join #__joomleague_project p 
+//             on pt.project_id = p.id 
+//             where t.club_id = c.id 
+//             and p.published = 1) as pid'
+//				       . ' FROM #__joomleague_club AS c '
+//				       . ' WHERE c.new_club_id = '. $clubid
+//				            ;
+				            
+				$db->setQuery($query);
+				$result = $db->loadObjectList();
+			
+	foreach ( $result as $row )
+	{
+  //$temp = '<ul><li>'.$row->name.'</li>';
+  //$this->treedepthold = $this->treedepth;
+  
+  if ( $this->treedepthold === $this->treedepth )
+  {
+  $temp = '<li>';  
+  }
+  else
+  {
+  $temp = '<ul><li>';
+  }
+  
+  
+  $link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug );	
+  $imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM' );
+  
+  $temp .= JHTML::_(	'image',
+														'media/com_sportsmanagement/jl_images/club_from.png',
+														$imageTitle,
+														'title= "' . $imageTitle . '"' );
+	$temp .= "&nbsp;";								
+	$temp .= JHTML::link( $link, $row->name );
+  $temp .= '</li>';													
+  $this->historyhtml .= $temp;
+  
+  if ( $row->new_club_id )
+  {
+  $this->treedepth++;
+  $this->getClubHistoryHTML( $row->id );
+  }
+  else
+  {
+  
+  for ($a=0; $a < $this->treedepth;$a++)
+  {
+  $this->historyhtml .= '</ul>';
+  }
+  return $this->historyhtml;
+  }
+  
+  $this->treedepthold = $this->treedepth;
+  
+  }
+
+  return $this->historyhtml;
+  
+	}
+    
+    
+        /**
+         * sportsmanagementModelClubInfo::getClubHistoryTree()
+         * 
+         * @param mixed $clubid
+         * @param mixed $new_club_id
+         * @return
+         */
+        function getClubHistoryTree( $clubid, $new_club_id )
+	{
+	$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $subquery = $db->getQuery(true);
+    
+	if ( $this->new_club_id != 0 )
+	{
+  $icon = 'to_club.png';
+//  $querywhere = ' WHERE c.id = '. $this->new_club_id	;
+  $query->where('c.id = '. $this->new_club_id );
+  }
+  else
+  {
+  $icon = 'from_club.png';
+  //$querywhere = ' WHERE c.new_club_id = '. $clubid	;
+  $query->where('c.new_club_id = '. $clubid );
+  }
+  
+  $query->select('c.id, c.name, c.new_club_id');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        
+        $subquery->select('max(pt.project_id)');
+        $subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
+        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+        $subquery->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on pt.project_id = p.id');
+        $subquery->where('t.club_id = c.id ');
+        $subquery->where('p.published = 1');
+        
+        $query->select('('.$subquery.') as pid ');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+        
+//	$queryselect = ' SELECT c.id, c.name, c.new_club_id, '
+//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
+//				. ',(select max(pt.project_id) 
+//             from #__joomleague_project_team pt
+//             inner join #__joomleague_team t
+//             on pt.team_id = t.id   
+//             right join #__joomleague_project p 
+//             on pt.project_id = p.id 
+//             where t.club_id = c.id 
+//             and p.published = 1) as pid'
+//				       . ' FROM #__joomleague_club AS c ';
+				       
+	
+	
+  //$query = $queryselect.$querywhere;
+  			            
+				$db->setQuery($query);
+                
+//                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+                
+				$result = $db->loadObjectList();
+   foreach ( $result as $row )
+	 {
+   $row->link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug );
+   $row->icon = $icon;
+   }
+		
+  $this->jgcat_rows = array_merge($this->jgcat_rows, $result);
+  
+  //$mainframe->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
+  
+  foreach ( $result as $row )
+	{
+	if ( $row->new_club_id )
+  {
+  $this->treedepth++;
+  $this->getClubHistoryTree( $row->id, $row->new_club_id );
+  }
+  else
+  {
+    
+  return $this->jgcat_rows;
+  }
+	
+	}
+  	
+	return $this->jgcat_rows;
+	
+	}
+    
+    
+    
+        /**
+         * sportsmanagementModelClubInfo::getSortClubHistoryTree()
+         * 
+         * @param mixed $clubtree
+         * @param mixed $root_catid
+         * @param mixed $cat_name
+         * @return
+         */
+        function getSortClubHistoryTree( $clubtree, $root_catid, $cat_name )
+	{
+	$option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+	$script = '';
+	
+  $jgcat_rows_sorted = Array();
+  $jgcat_rows_sorted = $this->sortCategoryList($clubtree, $jgcat_rows_sorted);
+
+
+
+  $cat_link = '';
+  
+  $script .= "d" .$root_catid. " = new dTree('d" .$root_catid. "','".JURI::base()."/components/".$option."/assets/img/standard2/');"."\n";
+  $script .= "d" .$root_catid. ".add(" . "0" . ", " . "-1" . ", ";
+  $script .= "'" . $cat_name . "', ";
+  $script .= "'" . $cat_link . "', ";
+  $script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
+          
+  foreach ( $jgcat_rows_sorted as $key => $value )
+  {
+  
+  foreach ( $value as $row )
+  {
+  
+  if ( $root_catid == $row->new_club_id )
+  {
+  $script .= "d" .$root_catid. ".add(" . $row->id . ", " . "0" . ", ";
+  $script .= "'" . $row->name . "', ";
+  $script .= "'" . $row->link . "', ";
+  //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
+  $script .= "'','" . $row->name . "','','".JURI::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
+  }
+  else
+  {
+  $script .= "d" .$root_catid. ".add(" . $row->id . ", " . $row->new_club_id. ", ";
+  $script .= "'" . $row->name . "', ";
+  $script .= "'" . $row->link . "', ";
+  //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
+  $script .= "'','" . $row->name . "','','".JURI::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
+  }
+  
+  }
+  
+  }
+
+  $script .= "document.write(d" .$root_catid.  ");" . "\n";
+  
+	return $script;
+	}
+    
+    
+    
+    /**
+     * sportsmanagementModelClubInfo::sortCategoryListRecurse()
+     * 
+     * @param mixed $catid
+     * @param mixed $children
+     * @param mixed $catssorted
+     * @return void
+     */
+    function sortCategoryListRecurse($catid, &$children, &$catssorted)
+  {
+    if(isset($children[$catid]))
+    {
+      foreach($children[$catid] as $cat)
+      {
+        $catssorted[] = $cat;
+        $this->sortCategoryListRecurse($cat->cid, $children, $catssorted);
+      }
+    }
+  }
+    
+    /**
+     * sportsmanagementModelClubInfo::sortCategoryList()
+     * 
+     * @param mixed $cats
+     * @param mixed $catssorted
+     * @return
+     */
+    function sortCategoryList(&$cats, &$catssorted)
+  {
+  
+
+  
+    // First create a two dimensional array containing the child category objects
+    // for each parent category id
+    $children = array();
+    foreach($cats as $cat)
+    {
+      $pcid = $cat->new_club_id;
+      $list = isset($children[$pcid]) ? $children[$pcid] : array();
+      $list[] = $cat;
+      $children[$pcid] = $list;
+    }
+
+
+
+    // Now resort the given $cats array with the help of the $children array
+    $sortresult = $this->sortCategoryListRecurse(0, $children, $catssorted);
+    
+
+    
+    return $children;
+  }
+    
 
 /**
  * 	function getGoogleApiKey( )
