@@ -500,10 +500,10 @@ class sportsmanagementModelPerson extends JModel
 		$document = JFactory::getDocument();
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-		$allowed=false;
+		$allowed = false;
 		if ($user->id > 0)
 		{
-			$project=&$this->getProject();
+			$project= sportsmanagementModelProject::getProject();
 
 			// Check if user is project admin or editor
 			if ( $this->isUserProjectAdminOrEditor($user->id,$project) )

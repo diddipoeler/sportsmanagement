@@ -200,6 +200,12 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['filter_search_nation'];
 				unset( $query['filter_search_nation'] );
 			}
+			
+            if (isset($query['filter_search_leagues']))
+			{
+				$segments[] = $query['filter_search_leagues'];
+				unset( $query['filter_search_leagues'] );
+			}
 			break;
         
         case 'clubinfo':
@@ -573,6 +579,12 @@ function sportsmanagementParseRoute( $segments )
 			if (isset($segments[1])) 
             {
 				$vars['filter_search_nation'] = $segments[1];
+			}
+			
+			
+            if (isset($segments[2])) 
+            {
+				$vars['filter_search_leagues'] = $segments[2];
 			}
 			
 			break;
