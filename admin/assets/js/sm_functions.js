@@ -54,25 +54,56 @@ var selected = jQuery( "#jform_picture" ).val();
 jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
 }
 
+
+var modjlnav = {
+updateProjects : function(response)
+	{
+alert(response);
+	}
+
+};
+
+function EditshowPersonsPositions() 
+{
+alert('hier bin ich');
+var selected = jQuery( "#jform_sports_type_id" ).val();
+alert(selected);
+var url = 'index.php?option=com_sportsmanagement&task=ajax.personpositionoptions&tmpl=component&format=json&sports_type_id='+selected;
+	    var myXhr = new Request(
+	                    {
+	                    	url: url,
+	                    method: 'post',
+	                    onSuccess: modjlnav.updateProjects.bind(this)
+	                    }
+	        );
+	        
+}
+
+
+
+
+
+
+
 function EditshowPersons() 
 {
 //alert('hier bin ich');
-var selected = jQuery( "#jform_person_art" ).val();
+var selected = jQuery( "#jform_request_person_art" ).val();
 //alert(selected);
 
 if (selected == 1) 
 {
-		document.getElementById('jform_person_id1').style.display = 'none';
-		document.getElementById('jform_person_id2').style.display = 'none';
-		document.getElementById('jform_person_id1-lbl').style.display = 'none';
-		document.getElementById('jform_person_id2-lbl').style.display = 'none';
+		document.getElementById('jform_request_person_id1').style.display = 'none';
+		document.getElementById('jform_request_person_id2').style.display = 'none';
+		document.getElementById('jform_request_person_id1-lbl').style.display = 'none';
+		document.getElementById('jform_request_person_id2-lbl').style.display = 'none';
 } 
 if (selected == 2) 
 {
-		document.getElementById('jform_person_id1').style.display = 'block';
-		document.getElementById('jform_person_id2').style.display = 'block';
-		document.getElementById('jform_person_id1-lbl').style.display = 'block';
-		document.getElementById('jform_person_id2-lbl').style.display = 'block';
+		document.getElementById('jform_request_person_id1').style.display = 'block';
+		document.getElementById('jform_request_person_id2').style.display = 'block';
+		document.getElementById('jform_request_person_id1-lbl').style.display = 'block';
+		document.getElementById('jform_request_person_id2-lbl').style.display = 'block';
 }
 	
 }
@@ -80,22 +111,22 @@ if (selected == 2)
 function StartEditshowPersons(selected) 
 {
 //alert('hier bin ich');
-//var selected = jQuery( "#jform_person_art" ).val();
+var selected = jQuery( "#jform_request_person_art" ).val();
 //alert(selected);
 
 if (selected == 1) 
 {
-		document.getElementById('jform_person_id1').style.display = 'none';
-		document.getElementById('jform_person_id2').style.display = 'none';
-		document.getElementById('jform_person_id1-lbl').style.display = 'none';
-		document.getElementById('jform_person_id2-lbl').style.display = 'none';
+		document.getElementById('jform_request_person_id1').style.display = 'none';
+		document.getElementById('jform_request_person_id2').style.display = 'none';
+		document.getElementById('jform_request_person_id1-lbl').style.display = 'none';
+		document.getElementById('jform_request_person_id2-lbl').style.display = 'none';
 } 
 if (selected == 2) 
 {
-		document.getElementById('jform_person_id1').style.display = 'block';
-		document.getElementById('jform_person_id2').style.display = 'block';
-		document.getElementById('jform_person_id1-lbl').style.display = 'block';
-		document.getElementById('jform_person_id2-lbl').style.display = 'block';
+		document.getElementById('jform_request_person_id1').style.display = 'block';
+		document.getElementById('jform_request_person_id2').style.display = 'block';
+		document.getElementById('jform_request_person_id1-lbl').style.display = 'block';
+		document.getElementById('jform_request_person_id2-lbl').style.display = 'block';
 }
 	
 }

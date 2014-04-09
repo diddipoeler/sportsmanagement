@@ -47,11 +47,6 @@
 			>
 		</field>		
 
-
-          
-
-
-		
 	<field
 			name="published"
 			type="list"
@@ -68,7 +63,131 @@
 				JUNPUBLISHED</option>
 		</field>	
     		
+<fields name="request">
+<fieldset name="request">      
+<field
+			name="person_art"
+			type="list"
+			class="inputbox"
+			onchange="javascript:EditshowPersons();"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
+		</field>	
 
+        
+<field
+			name="person_id1"
+			type="dependsql"
+			depends="person_art"
+			task="personlistoptions" 
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+
+		
+<field
+			name="person_id2"
+			type="dependsql"
+			depends="person_art"
+			task="personlistoptions"
+			class="inputbox"
+			style="display:none"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+		</field>	
+</fieldset>
+</fields>		
+
+<fields name="request">
+<fieldset name="request">  
+
+<!--			
+default="0"
+-->
+          
+    <field
+			name="sports_type_id"
+			type="sportstypelist"
+			
+			
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+
+ 		
+<!--			
+type="positionlist" 
+default="0"
+-->
+		<field
+			name="position_id"
+			targettable="person"
+			type="dependsql"
+			depends="sports_type_id"
+			task="personpositionoptions" 
+			
+			class="inputbox"
+			
+			size="10"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+		</field>			
+		
+
+<!-- 
+type="personagegroup"  
+default="0"
+-->
+		<field
+			name="agegroup_id"
+			type="dependsql"
+			depends="sports_type_id"
+			task="personagegroupoptions" 
+      size="10"
+			
+      varname="id"
+      targettable="person"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+</fieldset>
+</fields>		
 
 <field
 			name="birthday"
@@ -215,125 +334,12 @@
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
 			class="inputbox"/>  
 
+	
+
+
+
+           	
 	</fieldset>
-
-<fields name="request">
-<fieldset name="request"
-label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
-  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_DESC">  
-  
-    <field
-			name="sports_type_id"
-			type="sportstypelist"
-			
-			
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			validate="">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
-		</field>
-    
-		<field
-			name="position_id"
-			targettable="person"
-			type="dependsql"
-			depends="sports_type_id"
-			task="personpositionoptions" 
-			
-			class="inputbox"
-			
-			size="10"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSITION_DESC"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
-		</field>			      
-
-		<field
-			name="agegroup_id"
-			type="dependsql"
-			depends="sports_type_id"
-			task="personagegroupoptions" 
-      size="10"
-			
-      varname="id"
-      targettable="person"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
-			class="inputbox">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
-      
-<field
-			name="person_art"
-			type="list"
-			class="inputbox"
-			onchange="javascript:EditshowPersons();"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
-			<option
-				value="2">
-				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
-		</field>	
-
-        
-<field
-			name="person_id1"
-			type="dependsql"
-			depends="person_art"
-			task="personlistoptions" 
-			class="inputbox"
-			style="display:none"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
-		</field>	
-
-		
-<field
-			name="person_id2"
-			type="dependsql"
-			depends="person_art"
-			task="personlistoptions"
-			class="inputbox"
-			style="display:none"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
-		</field>	
-</fieldset>
-</fields>		
-
-
-
-
-
-
-
-
 	
 <fieldset name="maps"
   label="COM_SPORTSMANAGEMENT_TABS_MAP"

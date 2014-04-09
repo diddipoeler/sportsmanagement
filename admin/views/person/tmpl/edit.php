@@ -76,10 +76,12 @@ $fieldsets = $this->form->getFieldsets();
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
                 
-                $suchmuster = array ("jform[","]");
-                $ersetzen = array ('', '');
+                $suchmuster = array ("jform[","]","[");
+                $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                 
+                //echo 'style: '.$field->style.'<br>';
+                 
                 switch ($var_onlinehelp)
                 {
                     case 'id':
@@ -113,6 +115,9 @@ $fieldsets = $this->form->getFieldsets();
 		<?php
 		echo JHtml::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
+        
+//        echo 'fieldset name'.$fieldset->name.'<br>';
+        
 			if ($fieldset->name == 'details') :
 				continue;
 			endif;

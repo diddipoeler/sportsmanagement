@@ -74,6 +74,24 @@ class sportsmanagementControllerAjax extends JController
                 echo json_encode((array) $model->getpersonlistoptions(JRequest::getInt( 'person_art' ), $required));
                 JFactory::getApplication()->close();
         }
+        
+        public function personpositionoptions()
+        {
+                $model = $this->getModel('ajax');
+                $req = JRequest::getVar('required', false);
+                $required = ($req == 'true' || $req == '1') ? true : false;
+                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $required));
+                JFactory::getApplication()->close();
+        }
+        
+        public function personagegroupoptions()
+        {
+                $model = $this->getModel('ajax');
+                $req = JRequest::getVar('required', false);
+                $required = ($req == 'true' || $req == '1') ? true : false;
+                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $required));
+                JFactory::getApplication()->close();
+        }
 
         /**
          * sportsmanagementControllerAjax::projectdivisionsoptions()

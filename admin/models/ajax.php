@@ -70,7 +70,63 @@ class sportsmanagementModelAjax extends JModel
         }
         
         
+        function getpersonpositionoptions($sports_type_id, $required = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
+        $query->select('pos.id AS value, pos.name AS text');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position as pos');
+			$query->where('pos.sports_type_id = '.$sports_type_id);
+            $query->order('pos.name');  
+			$db->setQuery($query);    
+            
+        $result = $db->loadObjectList();
+        
+//        foreach ($result as $row)
+//        {
+//            $row->name = JText::_($row->name);
+//        }
+        
+        return $this->addGlobalSelectElement($result, $required);
+        }
+        
+        function getpersonagegroupoptions($sports_type_id, $required = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+         $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup as a');
+            $query->where('a.sportstype_id = '.$sports_type_id);
+			$query->order('a.name');    
+                    
+        $db->setQuery($query);
+        
+        $result = $db->loadObjectList();
+        
+//        foreach ($result as $row)
+//        {
+//            $row->name = JText::_($row->name);
+//        }
+           
+        return $this->addGlobalSelectElement($result, $required);
+        }
+        
+        
+        /**
+         * sportsmanagementModelAjax::getpersonlistoptions()
+         * 
+         * @param mixed $person_art
+         * @param bool $required
+         * @return
+         */
         function getpersonlistoptions($person_art, $required = false)
         {
             $option = JRequest::getCmd('option');

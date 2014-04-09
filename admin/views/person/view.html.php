@@ -65,6 +65,11 @@ class sportsmanagementViewPerson extends JView
 		$form = $this->get('Form');
 		$item = $this->get('Item');
         
+        
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -82,6 +87,14 @@ class sportsmanagementViewPerson extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+        $this->form->setValue('position_id', 'request', $this->item->position_id);
+        $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+        
+        $this->form->setValue('person_art', 'request', $this->item->person_art);
+        $this->form->setValue('person_id1', 'request', $this->item->person_id1);
+        $this->form->setValue('person_id2', 'request', $this->item->person_id2);
         
         if ( $this->item->latitude == 255 )
         {
@@ -127,15 +140,18 @@ class sportsmanagementViewPerson extends JView
     
     $javascript = "\n";
     $javascript .= "window.addEvent('domready', function() {";   
-    $javascript .= 'StartEditshowPersons('.$form->getValue('person_art').');' . "\n"; 
+    $javascript .= 'StartEditshowPersons('.$form->getValue('request_person_art').');' . "\n"; 
     $javascript .= '});' . "\n"; 
     $document->addScriptDeclaration( $javascript );
     
+    //$mainframe->enqueueMessage(JText::_(' person_art<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
     
-    
-    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
     
     //echo 'ext_fields<br><pre>'.print_r($this->ext_fields, true).'</pre><br>';
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'Notice');
 
     
 		// Set the toolbar

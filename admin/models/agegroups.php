@@ -74,6 +74,7 @@ class sportsmanagementModelagegroups extends JModelList
                         'obj.country',
                         'obj.sportstype_id',
                         'obj.id',
+                        'obj.picture',
                         'obj.ordering',
                         'obj.checked_out',
                         'obj.checked_out_time'

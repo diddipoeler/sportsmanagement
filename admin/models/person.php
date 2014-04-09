@@ -105,12 +105,23 @@ class sportsmanagementModelperson extends JModelAdmin
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.person', 'person', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
+		
+        //$item = $this->getItem();
+        //$mainframe->set( 'person_art', 2 );
+        //JRequest::set('person_art', 2);
+        //$form->setValue('request_sports_type_id',$item->sports_type_id);
+        //JRequest::setVar('sports_type_id', $item->sports_type_id);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
+        
+        if (empty($form)) 
 		{
 			return false;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson form<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
         
         switch($form->getValue('person_art'))
         {
@@ -175,17 +186,31 @@ class sportsmanagementModelperson extends JModelAdmin
 	
   
   
+  /**
+   * sportsmanagementModelperson::getAgeGroupID()
+   * 
+   * @param mixed $age
+   * @return
+   */
   public function getAgeGroupID($age) 
 	{
   $mainframe = JFactory::getApplication();
-		$query = "SELECT id
-    FROM #__sportsmanagement_agegroup 
-    WHERE ".$age." >= age_from and ".$age." <= age_to";
+  $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup ');
+        $query->where($age." >= age_from and ".$age." <= age_to");
+  
+//		$query = "SELECT id
+//    FROM #__sportsmanagement_agegroup 
+//    WHERE ".$age." >= age_from and ".$age." <= age_to";
 		
     //$mainframe->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
 		
-		$this->_db->setQuery($query);
-			$person_range = $this->_db->loadResult();
+		$db->setQuery($query);
+			$person_range = $db->loadResult();
             return $person_range;
 	}
     
@@ -223,11 +248,21 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	function getPerson($person_id)
 	{
-		$query='SELECT *
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
-				  WHERE id='.$person_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('id = '.$person_id);
+        
+//		$query='SELECT *
+//				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
+//				  WHERE id='.$person_id;
+		
+        $db->setQuery($query);
+		return $db->loadObject();
 	}
     
     
@@ -411,8 +446,18 @@ class sportsmanagementModelperson extends JModelAdmin
        // Get a db connection.
         $db = JFactory::getDbo();
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       // request variablen umbauen
+       $data['person_art'] = $data['request']['person_art'];
+       $data['person_id1'] = $data['request']['person_id1'];
+       $data['person_id2'] = $data['request']['person_id2'];
+       
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['position_id'] = $data['request']['position_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+
        
        switch($data['person_art'])
         {
@@ -435,6 +480,7 @@ class sportsmanagementModelperson extends JModelAdmin
             break;
             
         }
+       
        
        
        
