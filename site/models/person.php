@@ -506,7 +506,7 @@ class sportsmanagementModelPerson extends JModel
 			$project= sportsmanagementModelProject::getProject();
 
 			// Check if user is project admin or editor
-			if ( $this->isUserProjectAdminOrEditor($user->id,$project) )
+			if ( sportsmanagementModelProject::isUserProjectAdminOrEditor($user->id,$project) )
 			{
 				$allowed = true;
 			}
