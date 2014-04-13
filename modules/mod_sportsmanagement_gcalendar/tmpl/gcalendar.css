@@ -1,0 +1,12 @@
+.fc-header tr,.fc-header td
+	{
+	border: 0px;
+}
+
+#tiptip_content {
+	text-align: left;
+}
+
+#tiptip_content ul {
+	margin-left: 10px;
+}

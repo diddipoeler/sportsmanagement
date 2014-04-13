@@ -43,8 +43,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
+
 /**
- * Session form field class
+ * JFormFieldJLMenuItems
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class JFormFieldJLMenuItems extends JFormFieldList
 {
@@ -89,6 +96,7 @@ class JFormFieldJLMenuItems extends JFormFieldList
                 JHTML::_('select.option', 'jltournamenttree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLTOURNAMENTTREE')),
 				JHTML::_('select.option', 'treetonode', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
                 JHTML::_('select.option', 'jlallprojectrounds', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
+                JHTML::_('select.option', 'jlxmlexports', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
 				);
 		
 		// Merge any additional options in the XML definition.

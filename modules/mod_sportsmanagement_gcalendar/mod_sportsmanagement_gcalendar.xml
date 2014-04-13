@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" method="upgrade" client="site">
+	<name>MOD_SPORTSMANAGEMENT_GCALENDAR</name>
+	<author>G4J Project</author>
+	<creationDate>Sep 2013</creationDate>
+	<copyright>This extension is released under the GNU/GPL License.
+	</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html
+		GNU/GPL</license>
+	<authorEmail>info@digital-peak.com</authorEmail>
+	<authorUrl>g4j.digital-peak.com</authorUrl>
+	<version>3.1.5</version>
+	<description>MOD_SPORTSMANAGEMENT_GCALENDAR_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php
+		</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<folder>language</folder>
+	</files>
+	<config>
+		<fields name="params"  addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			<fieldset name="basic">
+				<field name="calendarids" type="gcalendar" default="" multiple="true"
+					label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_LABEL" description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_DESC" />
+				<field name="compact_events" type="list" default="2" class="btn-group" 
+					label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_COMPACT_LABEL" description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_COMPACT_DESC">
+					<option value="1">JYES</option>
+					<option value="2">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_COMPACT_SINGLE</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="weekstart" type="list" default="1" label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_LABEL"
+					description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_DESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_SUNDAY</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_MONDAY</option>
+					<option value="2">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_TUESDAY</option>
+					<option value="3">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_WEDNESDAY</option>
+					<option value="4">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_THURSDAY</option>
+					<option value="5">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_FRIDAY</option>
+					<option value="6">MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_WEEK_START_SATURDAY</option>
+				</field>
+				<field name="titleformat_month" type="text" default="M Y" label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_TITLE_FORMAT_MONTH_LABEL"
+					description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_TITLE_FORMAT_MONTH_DESC" size="50" />
+				<field name="calendar_height" type="text" default="" label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_HEIGHT_LABEL"
+					description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_HEIGHT_DESC" size="5" />
+				<field name="event_color" type="color" default="135CAE" label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_COLOR_LABEL"
+						description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_COLOR_DESC" size="6" />
+				<field name="theme" type="text" size="50" default=""
+					label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_THEME_LABEL"
+					description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_THEME_DESC" />
+				<field name="@spacer" type="spacer" default="" label=""
+					description="" />
+				<field name="moduleclass_sfx" type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
