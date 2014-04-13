@@ -139,10 +139,12 @@ class jsmGCalendarUtil
 				$component = JComponentHelper::getComponent('com_sportsmanagement');
 				$menu = JFactory::getApplication()->getMenu();
 				$item = $menu->getItem($itemID);
-				if ($item !=null) {
+				if ($item !=null) 
+                {
 					$backLinkView = $item->query['view'];
 					$dateHash = '';
-					if ($backLinkView == 'gcalendar') {
+					if ($backLinkView == 'gcalendar') 
+                    {
 						$day = $event->getStartDate()->format('d', true);
 						$month = $event->getStartDate()->format('m', true);
 						$year = $event->getStartDate()->format('Y', true);
