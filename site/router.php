@@ -81,7 +81,19 @@ function sportsmanagementBuildRoute( &$query )
 	// now, the specifics
 	switch ($view)
 	{
-		case 'predictionrules':
+		case 'event':
+        if(isset($query['gcid']))
+		{
+			$segments[] = $query['gcid'];
+			unset( $query['gcid'] );
+		}
+		if(isset($query['eventID']))
+		{
+			$segments[] = $query['eventID'];
+			unset( $query['eventID'] );
+		}
+        break;
+        case 'predictionrules':
 			if (isset($query['prediction_id']))
 			{
 				$segments[] = $query['prediction_id'];
@@ -477,7 +489,22 @@ function sportsmanagementParseRoute( $segments )
 
 	switch( $vars['view'] ) // the view...
 	{
-		 case 'predictionranking':
+		 case 'event':
+			$vars['gcid'] = $segments[1];
+			if (count($segments) < 3) {
+				$vars['eventID'] = JRequest::getVar('eventId');
+			} else {
+				$vars['eventID'] = $segments[2];
+			}
+			$vars['Itemid'] = jsmGCalendarUtil::getItemId($vars['gcid']);
+			break;
+         case 'google':
+		case 'gcalendar':
+			// do nothing
+			break;
+         
+         
+         case 'predictionranking':
 			if (isset($segments[1])) 
             {
 				$vars['prediction_id'] = $segments[1];
