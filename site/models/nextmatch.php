@@ -235,28 +235,28 @@ class sportsmanagementModelNextMatch extends JModel
 		return $this->teams;
 	}
 
-	/**
-	 * sportsmanagementModelNextMatch::getMatchCommentary()
-	 * 
-	 * @return
-	 */
-	function getMatchCommentary()
-    {
-        $mainframe = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-       
-       // Select some fields
-		$query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary ');
-        $query->where('match_id = '.(int)$this->matchidid );
-        $query->order('event_time DESC');
-
-    $db->setQuery($query);
-		return $db->loadObjectList();
-    }
+//	/**
+//	 * sportsmanagementModelNextMatch::getMatchCommentary()
+//	 * 
+//	 * @return
+//	 */
+//	function getMatchCommentary()
+//    {
+//        $mainframe = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//       // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//       
+//       // Select some fields
+//		$query->select('*');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary ');
+//        $query->where('match_id = '.(int)$this->matchidid );
+//        $query->order('event_time DESC');
+//
+//    $db->setQuery($query);
+//		return $db->loadObjectList();
+//    }
     
     /**
      * sportsmanagementModelNextMatch::getReferees()

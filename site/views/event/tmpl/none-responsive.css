@@ -1,0 +1,17 @@
+@media screen and (max-width: 767px) {
+	.dp-container .row-fluid .row-fluid .event-label,
+	.dp-container .row-fluid .row-fluid .event-content {
+		float: left;
+		width: 49%;
+		margin: 0;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.dp-container .row-fluid .row-fluid .event-label,
+	.dp-container .row-fluid .row-fluid .event-content {
+		float: none;
+		width: 100%;
+		margin: 0;
+	}
+}

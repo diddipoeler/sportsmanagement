@@ -122,7 +122,7 @@ class sportsmanagementViewMatchReport extends JView
 		//$this->assign('matchrefereepositions',$model->getMatchRefereePositions());
         $this->assign('matchrefereepositions',$model->getMatchPositions('referee'));
 		$this->assign('matchreferees',$model->getMatchReferees());
-        $this->assign('matchcommentary',$model->getMatchCommentary());
+        $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
 		//$this->assign('substitutes',$model->getMatchSubstitutions());
         $this->assign('substitutes',sportsmanagementModelProject::getMatchSubstitutions($model->matchid));
 		$this->assign('eventtypes',$model->getEventTypes());

@@ -118,7 +118,7 @@ class sportsmanagementViewNextMatch extends JView
 			
 			$this->assignRef('previousx', $previousx);
 			$this->assignRef('allteams',  $teams);
-            $this->assign('matchcommentary',$model->getMatchCommentary());
+            $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
 		}
         
         //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );

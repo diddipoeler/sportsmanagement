@@ -562,41 +562,41 @@ class sportsmanagementModelMatchReport extends JModel
 //        return $result;
 //	}
 
-	/**
-	 * sportsmanagementModelMatchReport::getMatchCommentary()
-	 * 
-	 * @return
-	 */
-	function getMatchCommentary()
-    {
-    	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-    $starttime = microtime(); 
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
-        $query->where('match_id = '.(int)$this->matchid);
-        $query->order('event_time DESC');
-        
-//        $query = "SELECT *  
-//    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
-//    WHERE match_id = ".(int)$this->matchid." 
-//    ORDER BY event_time DESC";
-
-
-    $db->setQuery($query);
-    
-    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		return $db->loadObjectList();
-    }
+//	/**
+//	 * sportsmanagementModelMatchReport::getMatchCommentary()
+//	 * 
+//	 * @return
+//	 */
+//	function getMatchCommentary()
+//    {
+//    	$option = JRequest::getCmd('option');
+//	$mainframe = JFactory::getApplication();
+//    $starttime = microtime(); 
+//        // Get a db connection.
+//        $db = JFactory::getDbo();
+//        $query = $db->getQuery(true);
+//        
+//        $query->select('*');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
+//        $query->where('match_id = '.(int)$this->matchid);
+//        $query->order('event_time DESC');
+//        
+////        $query = "SELECT *  
+////    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
+////    WHERE match_id = ".(int)$this->matchid." 
+////    ORDER BY event_time DESC";
+//
+//
+//    $db->setQuery($query);
+//    
+//    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+//        {        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+//        }
+//        
+//		return $db->loadObjectList();
+//    }
     
     
     /**

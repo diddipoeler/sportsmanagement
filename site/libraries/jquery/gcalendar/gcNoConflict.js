@@ -1,0 +1,1 @@
+var gcjQuery = jQuery.noConflict();

@@ -1,0 +1,9 @@
+#gc_google_view_list table tr,#gc_google_view_list table td, #gc_google_view_toggle_status
+	{
+	border: 0px;
+}
+
+#gc_google_view_list table td {
+	padding-bottom: 5px;
+	padding-right: 5px;
+}
