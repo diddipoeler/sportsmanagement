@@ -99,6 +99,12 @@ class com_sportsmanagementInstallerScript
 	 */
 	function preflight($type, $parent) 
 	{
+	   echo JHtml::_('sliders.start','steps',array(
+						'allowAllClose' => true,
+						'startTransition' => true,
+						true));
+       $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
+		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');                      
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
@@ -113,6 +119,12 @@ class com_sportsmanagementInstallerScript
 	{
 	$mainframe =& JFactory::getApplication();
     $db = JFactory::getDbo();
+    
+    //echo JHtml::_('sliders.start','steps',array(
+//						'allowAllClose' => true,
+//						'startTransition' => true,
+//						true));
+                   
         // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
@@ -145,8 +157,14 @@ switch ($type)
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
+$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
     self::installModules($parent);
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
     self::installPlugins($parent);
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -154,8 +172,14 @@ switch ($type)
     break;
     case "update":
 //    self::installComponentLanguages();
+$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
     self::installModules($parent);
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
     self::installPlugins($parent);
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -167,7 +191,7 @@ switch ($type)
         
     }
 
-
+echo JHtml::_('sliders.end');
 	}
     
     
@@ -228,6 +252,8 @@ switch ($type)
         {
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+            
+            echo '<p>' . JText::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
             
             //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
             
@@ -317,6 +343,8 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         $name = (string)$plugin->attributes()->plugin;
         $group = (string)$plugin->attributes()->group;
         
+        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
         
@@ -397,6 +425,8 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
             
             $position = (string)$module->attributes()->position;
             $published = (string)$module->attributes()->published;
+            
+            echo '<p>' . JText::_('Modul : ' ) . $name . ' installiert!</p>';
             
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');

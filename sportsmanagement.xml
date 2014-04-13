@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.29</version>
+	<version>1.0.30</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -50,6 +50,7 @@
 		<folder>cronjobs</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
+		<folder>libraries</folder>
 		<folder>sisdata</folder>
 		<folder>data</folder>
 		<folder>lib</folder>
@@ -116,6 +117,7 @@
 			<folder>helpers</folder>
 			<folder>sisdata</folder>
 			<folder>modules</folder>
+			<folder>libraries</folder>
 		</files>
  
 		<languages folder="admin">
@@ -152,6 +154,7 @@
 <module module="mod_sportsmanagement_ajax_top_navigation_menu" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
 
+<module module="mod_sportsmanagement_gcalendar" client="site"  position="" published=""/>
 </modules>
 
 <plugins>
