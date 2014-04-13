@@ -43,8 +43,15 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
+
 /**
- * SportsManagements View
+ * sportsmanagementViewsportsmanagements
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewsportsmanagements extends JView
 {

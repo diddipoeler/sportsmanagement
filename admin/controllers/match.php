@@ -57,7 +57,19 @@ class sportsmanagementControllermatch extends JControllerForm
 {
 
 
-	/**
+	function insertgooglecalendar()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $model = $this->getModel('match');
+        $model->insertgooglecalendar();
+        
+        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+        $link = 'index.php?option=com_sportsmanagement&view=matches';
+		$this->setRedirect($link,$msg);
+    }
+    
+    /**
 	 * Method add a match to round
 	 *
 	 * @access	public

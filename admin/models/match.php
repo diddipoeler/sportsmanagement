@@ -43,6 +43,8 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
+
+
 /**
  * sportsmanagementModelMatch
  * 
@@ -60,7 +62,116 @@ class sportsmanagementModelMatch extends JModelAdmin
 	const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
 	const MATCH_ROSTER_RESERVE			= 3;
 
-	/**
+	
+    function insertgooglecalendar()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $post = JRequest::get('post');
+        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/GoogleClientApi/Google_Client.php';
+        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/GoogleClientApi/contrib/Google_CalendarService.php';
+        
+        $params = JComponentHelper::getParams( $option );
+        $sporttypes = $params->get( 'cfg_sport_types' );
+        $scriptUri = "http://".$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
+        
+        //session_start();
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+
+$client = new Google_Client();
+$client->setApplicationName("Google Calendar PHP Starter Application");
+
+// Visit https://code.google.com/apis/console?api=calendar to generate your
+// client id, client secret, and to register your redirect uri.
+// $client->setClientId('insert_your_oauth2_client_id');
+// $client->setClientSecret('insert_your_oauth2_client_secret');
+// $client->setRedirectUri('insert_your_oauth2_redirect_uri');
+// $client->setDeveloperKey('insert_your_developer_key');
+
+$client->setAccessType('online'); // default: offline/online
+
+$client->setClientId($params->get( 'google_api_clienid' ));
+$client->setClientSecret($params->get( 'google_api_clientsecret' ));
+$client->setRedirectUri($params->get( 'google_api_redirecturi' ));
+//$client->setRedirectUri($params->get( $scriptUri ));
+$client->setDeveloperKey($params->get( 'google_api_developerkey' ));
+
+$cal = new Google_CalendarService($client);
+if (isset($_GET['logout'])) {
+  unset($_SESSION['token']);
+}
+
+if (isset($_GET['code'])) {
+  $client->authenticate($_GET['code']);
+  $_SESSION['token'] = $client->getAccessToken();
+  header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
+}
+
+if (isset($_SESSION['token'])) {
+  $client->setAccessToken($_SESSION['token']);
+}
+
+if ($client->getAccessToken()) {
+$calList = $cal->calendarList->listCalendarList();
+//print "<h1>Calendar List</h1><pre>" . print_r($calList, true) . "</pre>";
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List</h1>post<br><pre>'.print_r($calList,true).'</pre>'),'');
+ 
+$calendarList = $cal->calendarList->listCalendarList();
+ 
+while(true) {
+foreach ($calendarList->getItems() as $calendarListEntry) {
+echo $calendarListEntry->getSummary().'</br>';
+}
+$pageToken = $calendarList->getNextPageToken();
+if ($pageToken) {
+$optParams = array('pageToken' => $pageToken);
+$calendarList = $service->calendarList->listCalendarList($optParams);
+} else {
+break;
+}
+}
+ 
+$events = $cal->events->listEvents('spielplan.fussball.wm@gmail.com');
+//print "<h1>Calendar List events </h1><pre>" . print_r($events , true) . "</pre>";
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List events </h1>post<br><pre>'.print_r($events,true).'</pre>'),''); 
+ 
+while(true) {
+foreach ($events->getItems() as $event) {
+//echo $event->getSummary().' - '. print_r($event->getStart() , true).'</br>';
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List getSummary </h1>post<br><pre>'.print_r($event->getSummary(),true).'</pre>'),'');
+
+}
+$pageToken = $events->getNextPageToken();
+if ($pageToken) {
+$optParams = array('pageToken' => $pageToken);
+$events = $service->events->listEvents('primary', $optParams);
+} else {
+break;
+}
+}
+ 
+ 
+ 
+ 
+$_SESSION['token'] = $client->getAccessToken();
+} else {
+$authUrl = $client->createAuthUrl();
+//print "<a class='login' href='$authUrl'>Connect Me!</a>";
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<a class=\'login\' href='.$authUrl.'>Connect Me!</a>'),'');
+
+}
+  
+
+
+
+        
+        
+    }
+    
+    
+    
+    /**
 	 * Method override to check if you can edit an existing record.
 	 *
 	 * @param	array	$data	An array of input data.
@@ -368,6 +479,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return parent::save($data);   
     }
       
+    /**
+     * sportsmanagementModelMatch::getMatchSingleData()
+     * 
+     * @param mixed $match_id
+     * @return
+     */
     function getMatchSingleData($match_id)
 	{
 		$option = JRequest::getCmd('option');
@@ -435,6 +552,14 @@ class sportsmanagementModelMatch extends JModelAdmin
 		
 	}
     
+    /**
+     * sportsmanagementModelMatch::getTeamPersons()
+     * 
+     * @param mixed $projectteam_id
+     * @param bool $filter
+     * @param mixed $persontype
+     * @return
+     */
     function getTeamPersons($projectteam_id,$filter=false,$persontype)
 	{
 	   $option = JRequest::getCmd('option');
@@ -549,6 +674,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $starttime = microtime(); 
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -594,6 +720,13 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->order("(mp.in_out_time+0)");
         
 		$db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$in_out[$tid] = $db->loadObjectList();
         
         if ( !$in_out[$tid] )
@@ -969,6 +1102,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 	}
 */    
     
+    /**
+     * sportsmanagementModelMatch::getInputStats()
+     * 
+     * @param mixed $project_id
+     * @return
+     */
     function getInputStats($project_id)
 	{
 		require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
@@ -993,6 +1132,14 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $stats;
 	}
     
+    /**
+     * sportsmanagementModelMatch::getMatchStatsInput()
+     * 
+     * @param mixed $match_id
+     * @param mixed $projectteam1_id
+     * @param mixed $projectteam2_id
+     * @return
+     */
     function getMatchStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
 		//$match =& $this->getData();
@@ -1008,6 +1155,14 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $stats;
 	}
 
+	/**
+	 * sportsmanagementModelMatch::getMatchStaffStatsInput()
+	 * 
+	 * @param mixed $match_id
+	 * @param mixed $projectteam1_id
+	 * @param mixed $projectteam2_id
+	 * @return
+	 */
 	function getMatchStaffStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
 		//$match =& $this->getData();
@@ -1059,6 +1214,13 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelMatch::getEventsOptions()
+     * 
+     * @param mixed $project_id
+     * @param mixed $match_id
+     * @return
+     */
     function getEventsOptions($project_id,$match_id)
 	{
 		$option = JRequest::getCmd('option');
@@ -1400,6 +1562,12 @@ class sportsmanagementModelMatch extends JModelAdmin
     
     
     
+    /**
+     * sportsmanagementModelMatch::deleteevent()
+     * 
+     * @param mixed $event_id
+     * @return
+     */
     function deleteevent($event_id)
 	{
 		$object = JTable::getInstance('MatchEvent','sportsmanagementTable');
@@ -1417,6 +1585,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 	}
     
     
+    /**
+     * sportsmanagementModelMatch::deletecommentary()
+     * 
+     * @param mixed $event_id
+     * @return
+     */
     function deletecommentary($event_id)
 	{
 	   $db = JFactory::getDbo();
@@ -1456,6 +1630,12 @@ if (!$db->query())
 	}
     
     
+    /**
+     * sportsmanagementModelMatch::savecomment()
+     * 
+     * @param mixed $data
+     * @return
+     */
     function savecomment($data)
 	{
 		
@@ -1529,6 +1709,12 @@ if (!$db->query())
 		return $object->id;
 	}
     
+    /**
+     * sportsmanagementModelMatch::saveevent()
+     * 
+     * @param mixed $data
+     * @return
+     */
     function saveevent($data)
 	{
 
@@ -1577,15 +1763,41 @@ if (!$db->query())
 	 */
 	function getMatchCommentary($match_id)
 	{
-		$query=' SELECT	me.*'
-        .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary AS me '
-		.' WHERE me.match_id='.$match_id
-		.' ORDER BY me.event_time ASC ';
-		$this->_db->setQuery($query);
-		return ($this->_db->loadObjectList());
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    $starttime = microtime(); 
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
+        $query->where('match_id = '.$match_id);
+        $query->order('event_time DESC');
+        
+//        $query = "SELECT *  
+//    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
+//    WHERE match_id = ".(int)$this->matchid." 
+//    ORDER BY event_time DESC";
+
+
+    $db->setQuery($query);
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+		return $db->loadObjectList();
 	}
     
     
+    /**
+     * sportsmanagementModelMatch::sendEmailtoPlayers()
+     * 
+     * @return void
+     */
     function sendEmailtoPlayers()
     {
         $mainframe = JFactory::getApplication();
@@ -1714,6 +1926,12 @@ $csv->auto($dcsv['cachefile']);
    return $csv;
     }
     
+    /**
+     * sportsmanagementModelMatch::getPresseberichtMatchnumber()
+     * 
+     * @param mixed $csv_file
+     * @return
+     */
     function getPresseberichtMatchnumber($csv_file)
     {
     $option = JRequest::getCmd('option');
@@ -1742,6 +1960,12 @@ $csv->auto($dcsv['cachefile']);
     
     }
     
+    /**
+     * sportsmanagementModelMatch::getPresseberichtReadPlayers()
+     * 
+     * @param mixed $csv_file
+     * @return void
+     */
     function getPresseberichtReadPlayers($csv_file)
     {
     $csv_player_count = 40;    

@@ -42,15 +42,24 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @static
- * @package	JoomLeague
- * @since	0.1
+ * sportsmanagementViewCurrentseasons
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewCurrentseasons extends JView
 {
+	/**
+	 * sportsmanagementViewCurrentseasons::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option 	= JRequest::getCmd('option');

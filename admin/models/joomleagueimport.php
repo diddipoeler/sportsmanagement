@@ -180,6 +180,18 @@ function newstructur($step,$count=5)
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+
+/*
+select count(tp.*, s.name) 
+from j25_joomleague_team_player AS tp
+INNER join j25_joomleague_project_team AS pt ON pt.id = tp.projectteam_id
+INNER join j25_joomleague_project AS p ON p.id = pt.project_id
+INNER join j25_joomleague_season AS s ON s.id = p.season_id
+
+where tp.import = 0
+group by s.name
+order by s.name
+*/
         
         $query->where('tp.import = 0');
         

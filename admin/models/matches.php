@@ -286,7 +286,10 @@ class sportsmanagementModelMatches extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'mc.match_number')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
- 
+ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
          
 
 		return $query;

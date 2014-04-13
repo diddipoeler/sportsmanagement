@@ -54,6 +54,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewMatches extends JView
 {
+	/**
+	 * sportsmanagementViewMatches::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
@@ -62,6 +68,7 @@ class sportsmanagementViewMatches extends JView
         $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
+        $starttime = microtime(); 
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -70,6 +77,12 @@ class sportsmanagementViewMatches extends JView
 
         
         $items = $this->get('Items');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
@@ -220,6 +233,9 @@ class sportsmanagementViewMatches extends JView
 		{
 			//JToolBarHelper::publishList('matches.publish');
 			//JToolBarHelper::unpublishList('matches.unpublish');
+            
+            JToolBarHelper::publish('match.insertgooglecalendar', 'JLIB_HTML_CALENDAR', true);
+            
             JToolBarHelper::publish('matches.publish', 'JTOOLBAR_PUBLISH', true);
             JToolBarHelper::unpublish('matches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();
