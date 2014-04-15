@@ -143,7 +143,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	    }
         
-        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');
 
 
         
@@ -157,10 +157,10 @@ class sportsmanagementModelMatch extends JModelAdmin
             $cryptor = new JSimpleCrypt();
             $gcalendar_id->password = $cryptor->decrypt($gcalendar_id->password);
             
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' gcalendar_id<br><pre>'.print_r($gcalendar_id->gcalendar_id, true).'</pre><br>','');
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' calendar_id<br><pre>'.print_r($gcalendar_id->calendar_id, true).'</pre><br>','');
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' username<br><pre>'.print_r($gcalendar_id->username, true).'</pre><br>','');
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' password<br><pre>'.print_r($gcalendar_id->password, true).'</pre><br>','');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' gcalendar_id<br><pre>'.print_r($gcalendar_id->gcalendar_id, true).'</pre><br>','');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' calendar_id<br><pre>'.print_r($gcalendar_id->calendar_id, true).'</pre><br>','');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' username<br><pre>'.print_r($gcalendar_id->username, true).'</pre><br>','');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' password<br><pre>'.print_r($gcalendar_id->password, true).'</pre><br>','');
             
             //$client = new Zend_Http_Client();
             //$client = Zend_Gdata_ClientLogin::getHttpClient($gcalendar_id->username, $gcalendar_id->password, Zend_Gdata_Calendar::AUTH_SERVICE_NAME);
@@ -174,6 +174,19 @@ class sportsmanagementModelMatch extends JModelAdmin
             // Methode vom Kalender Service
             $event = $service->newEventEntry();
             
+            if ($row->gcal_event_id) 
+            {
+				$query = $service->newEventQuery();
+                $query->setUser($gcalendar_id->calendar_id);
+                $query->setVisibility('private');
+                $query->setProjection('full');
+                $query->setEvent($row->gcal_event_id);
+                
+                //$event = jsmGCalendarZendHelper::getEvent($calendar, $row->gcal_event_id);
+                $event = $service->getCalendarEventEntry($query);
+                //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' alter event<br><pre>'.print_r($event, true).'</pre><br>','');
+			}
+            
             // Gibt das Event bekannt mit den gewünschten Informationen
             // Beachte das jedes Attribu als Instanz der zugehörenden Klasse erstellt wird
             $event->title = $service->newTitle($gcalendar_id->name.', '.$row->roundname);
@@ -185,7 +198,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             $time = strftime("%H:%M",strtotime($time));
             $endtime = date('H:i', strtotime('+'.($gcalendar_id->game_regular_time + $gcalendar_id->halftime ).' minutes', strtotime($time))); 
             
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endtime<br><pre>'.print_r($endtime, true).'</pre><br>','');
+            //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endtime<br><pre>'.print_r($endtime, true).'</pre><br>','');
             
             $startDate = $date;
             $startTime = $time;
@@ -200,22 +213,24 @@ class sportsmanagementModelMatch extends JModelAdmin
         
             if ( $row->gcal_event_id )
             {
-            $service->delete('https://www.google.com/calendar/feeds/'.$calendar->calendar_id.'/private/full/'.$row->gcal_event_id);    
-            $event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full/'.$row->gcal_event_id);    
+            
+            $event = $service->updateEntry($event,'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full/'.$row->gcal_event_id);
+               
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
+             
+            //$event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full/');    
             }
             else
             {
             $event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full');
-            }
             
-            //$event_id = jsmGCalendarZendHelper::getEvent($gcalendar_id, $event->getGCalId());
-            //$event_id = jsmGCalendarZendHelper::getEvent($calendar, $event->getGCalId());
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_insert<br><pre>'.print_r($event->id->text, true).'</pre><br>','');
+            
+            //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_insert<br><pre>'.print_r($event->id->text, true).'</pre><br>','');
             
             $event_id = substr($event->id, strrpos($event->id, '/')+1);
             $row->gcal_event_id = $event_id;
             
-            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_id<br><pre>'.print_r($event_id, true).'</pre><br>','');
+            //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_id<br><pre>'.print_r($event_id, true).'</pre><br>','');
             
             // die event id updaten
             // Create an object for the record we are going to update.
@@ -224,19 +239,13 @@ class sportsmanagementModelMatch extends JModelAdmin
             $object->id = $row->id;
             $object->gcal_event_id = $row->gcal_event_id;
             // Update their details in the users table using id as the primary key.
-            $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id'); 
+            $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id');
             
-//            $teile = explode("/", $event->id->text);
-//            $event_id = array_pop($teile);
             
-//            $gdataCal = new Zend_Gdata_Calendar($client);
-//            $query = $gdataCal->newEventQuery();
-//            $query->setUser($gcalendar_id->username);
-//            $query->setVisibility('private');
-//            $query->setProjection('full');
-//            $query->setEvent($event_id);
-//            $eventEntry = $gdataCal->getCalendarEventEntry($query);
-//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' eventEntry<br><pre>'.print_r($eventEntry, true).'</pre><br>','');
+            }
+            
+             
+            
             
             }
             
