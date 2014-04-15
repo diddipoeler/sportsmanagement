@@ -42,8 +42,9 @@ defined('_JEXEC') or die('Restricted access');
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
-
-
+JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
+JLoader::import('joomla.utilities.simplecrypt');
 
 /**
  * sportsmanagementModelMatch
@@ -63,104 +64,190 @@ class sportsmanagementModelMatch extends JModelAdmin
 	const MATCH_ROSTER_RESERVE			= 3;
 
 	
+    /**
+     * sportsmanagementModelMatch::insertgooglecalendar()
+     * http://framework.zend.com/manual/1.12/de/zend.gdata.calendar.html
+     * @return
+     */
     function insertgooglecalendar()
     {
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
         $post = JRequest::get('post');
-        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/GoogleClientApi/Google_Client.php';
-        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/GoogleClientApi/contrib/Google_CalendarService.php';
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $params = JComponentHelper::getParams( $option );
-        $sporttypes = $params->get( 'cfg_sport_types' );
-        $scriptUri = "http://".$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
+        //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         
-        //session_start();
+        $match_ids = implode(",", $pks);
+        //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' match_ids<br><pre>'.print_r($match_ids, true).'</pre><br>','Notice');
+        
+        // Select some fields
+		$query->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,gc.username,gc.password,gc.calendar_id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_gcalendar AS gc ON gc.id = p.gcalendar_id');
+        $query->where('p.id = ' . $project_id);
+        $db->setQuery($query);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		$gcalendar_id = $db->loadObject();
+        
+        // jetzt die spiele
+        $query->clear();
+        // select some fields
+        $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        $query->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
+        $query->select('pt1.project_id');
+        $query->select('t1.name as hometeam,t2.name as awayteam');
+        $query->select('r.name as roundname');
+        $query->select('d1.name as divhome');
+        $query->select('d2.name as divaway');
+        $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+        // from 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        // join
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
+		
+        // where
+        $query->where('m.published = 1');
+        $query->where('m.id IN ('.$match_ids.' )');
+        $query->where('r.project_id = '.(int)$project_id);
+        // group
+        $query->group('m.id ');
+        // order
+        $query->order('m.match_date ASC,m.match_number'); 
+        
+        $db->setQuery($query);
+        $result = $db->loadObjectList(); 
+        
+        if ( !$result )
+	    {
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+	    }
+        
+        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-$client = new Google_Client();
-$client->setApplicationName("Google Calendar PHP Starter Application");
-
-// Visit https://code.google.com/apis/console?api=calendar to generate your
-// client id, client secret, and to register your redirect uri.
-// $client->setClientId('insert_your_oauth2_client_id');
-// $client->setClientSecret('insert_your_oauth2_client_secret');
-// $client->setRedirectUri('insert_your_oauth2_redirect_uri');
-// $client->setDeveloperKey('insert_your_developer_key');
-
-$client->setAccessType('online'); // default: offline/online
-
-$client->setClientId($params->get( 'google_api_clienid' ));
-$client->setClientSecret($params->get( 'google_api_clientsecret' ));
-$client->setRedirectUri($params->get( 'google_api_redirecturi' ));
-//$client->setRedirectUri($params->get( $scriptUri ));
-$client->setDeveloperKey($params->get( 'google_api_developerkey' ));
-
-$cal = new Google_CalendarService($client);
-if (isset($_GET['logout'])) {
-  unset($_SESSION['token']);
-}
-
-if (isset($_GET['code'])) {
-  $client->authenticate($_GET['code']);
-  $_SESSION['token'] = $client->getAccessToken();
-  header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
-}
-
-if (isset($_SESSION['token'])) {
-  $client->setAccessToken($_SESSION['token']);
-}
-
-if ($client->getAccessToken()) {
-$calList = $cal->calendarList->listCalendarList();
-//print "<h1>Calendar List</h1><pre>" . print_r($calList, true) . "</pre>";
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List</h1>post<br><pre>'.print_r($calList,true).'</pre>'),'');
+        
+        $calendar = jsmGCalendarDBUtil::getCalendar($gcalendar_id->gcalendar_id);
+        
+        if ( $gcalendar_id )
+        {
+            
+            if ( $result )
+            {
+            $cryptor = new JSimpleCrypt();
+            $gcalendar_id->password = $cryptor->decrypt($gcalendar_id->password);
+            
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' gcalendar_id<br><pre>'.print_r($gcalendar_id->gcalendar_id, true).'</pre><br>','');
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' calendar_id<br><pre>'.print_r($gcalendar_id->calendar_id, true).'</pre><br>','');
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' username<br><pre>'.print_r($gcalendar_id->username, true).'</pre><br>','');
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' password<br><pre>'.print_r($gcalendar_id->password, true).'</pre><br>','');
+            
+            //$client = new Zend_Http_Client();
+            //$client = Zend_Gdata_ClientLogin::getHttpClient($gcalendar_id->username, $gcalendar_id->password, Zend_Gdata_Calendar::AUTH_SERVICE_NAME);
+            $client = Zend_Gdata_ClientLogin::getHttpClient($gcalendar_id->username, $gcalendar_id->password, Zend_Gdata_Calendar::AUTH_SERVICE_NAME);
+            $service = new Zend_Gdata_Calendar($client);
+            $service->setMajorProtocolVersion(2);
+            
+            foreach ( $result as $row )
+            {
+            // Erstellt einen neuen Eintrag und verwendet die magische Factory
+            // Methode vom Kalender Service
+            $event = $service->newEventEntry();
+            
+            // Gibt das Event bekannt mit den gewünschten Informationen
+            // Beachte das jedes Attribu als Instanz der zugehörenden Klasse erstellt wird
+            $event->title = $service->newTitle($gcalendar_id->name.', '.$row->roundname);
+            $event->where = array($service->newWhere($row->playground_name.','.$row->playground_city .','.$row->playground_address     ));
+            $event->content = $service->newContent($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.':'.$row->team2_result.')');
+            
+            // Setze das Datum und verwende das RFC 3339 Format.
+            list($date,$time) = explode(" ",$row->match_date);
+            $time = strftime("%H:%M",strtotime($time));
+            $endtime = date('H:i', strtotime('+'.($gcalendar_id->game_regular_time + $gcalendar_id->halftime ).' minutes', strtotime($time))); 
+            
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endtime<br><pre>'.print_r($endtime, true).'</pre><br>','');
+            
+            $startDate = $date;
+            $startTime = $time;
+            $endDate = $date;
+            $endTime = $endtime;
+            $tzOffset = "-00";
  
-$calendarList = $cal->calendarList->listCalendarList();
- 
-while(true) {
-foreach ($calendarList->getItems() as $calendarListEntry) {
-echo $calendarListEntry->getSummary().'</br>';
-}
-$pageToken = $calendarList->getNextPageToken();
-if ($pageToken) {
-$optParams = array('pageToken' => $pageToken);
-$calendarList = $service->calendarList->listCalendarList($optParams);
-} else {
-break;
-}
-}
- 
-$events = $cal->events->listEvents('spielplan.fussball.wm@gmail.com');
-//print "<h1>Calendar List events </h1><pre>" . print_r($events , true) . "</pre>";
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List events </h1>post<br><pre>'.print_r($events,true).'</pre>'),''); 
- 
-while(true) {
-foreach ($events->getItems() as $event) {
-//echo $event->getSummary().' - '. print_r($event->getStart() , true).'</br>';
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <h1>Calendar List getSummary </h1>post<br><pre>'.print_r($event->getSummary(),true).'</pre>'),'');
-
-}
-$pageToken = $events->getNextPageToken();
-if ($pageToken) {
-$optParams = array('pageToken' => $pageToken);
-$events = $service->events->listEvents('primary', $optParams);
-} else {
-break;
-}
-}
- 
- 
- 
- 
-$_SESSION['token'] = $client->getAccessToken();
-} else {
-$authUrl = $client->createAuthUrl();
-//print "<a class='login' href='$authUrl'>Connect Me!</a>";
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<a class=\'login\' href='.$authUrl.'>Connect Me!</a>'),'');
-
-}
+            $when = $service->newWhen();
+            $when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
+            $when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
+            $event->when = array($when);
+        
+            if ( $row->gcal_event_id )
+            {
+            $service->delete('https://www.google.com/calendar/feeds/'.$calendar->calendar_id.'/private/full/'.$row->gcal_event_id);    
+            $event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full/'.$row->gcal_event_id);    
+            }
+            else
+            {
+            $event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full');
+            }
+            
+            //$event_id = jsmGCalendarZendHelper::getEvent($gcalendar_id, $event->getGCalId());
+            //$event_id = jsmGCalendarZendHelper::getEvent($calendar, $event->getGCalId());
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_insert<br><pre>'.print_r($event->id->text, true).'</pre><br>','');
+            
+            $event_id = substr($event->id, strrpos($event->id, '/')+1);
+            $row->gcal_event_id = $event_id;
+            
+            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_id<br><pre>'.print_r($event_id, true).'</pre><br>','');
+            
+            // die event id updaten
+            // Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $row->id;
+            $object->gcal_event_id = $row->gcal_event_id;
+            // Update their details in the users table using id as the primary key.
+            $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id'); 
+            
+//            $teile = explode("/", $event->id->text);
+//            $event_id = array_pop($teile);
+            
+//            $gdataCal = new Zend_Gdata_Calendar($client);
+//            $query = $gdataCal->newEventQuery();
+//            $query->setUser($gcalendar_id->username);
+//            $query->setVisibility('private');
+//            $query->setProjection('full');
+//            $query->setEvent($event_id);
+//            $eventEntry = $gdataCal->getCalendarEventEntry($query);
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' eventEntry<br><pre>'.print_r($eventEntry, true).'</pre><br>','');
+            
+            }
+            
+            }
+            
+            return true;
+        }
+        else
+        {
+            return false;
+        }
   
 
 

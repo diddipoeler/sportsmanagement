@@ -57,14 +57,27 @@ class sportsmanagementControllermatch extends JControllerForm
 {
 
 
+	/**
+	 * sportsmanagementControllermatch::insertgooglecalendar()
+	 * 
+	 * @return void
+	 */
 	function insertgooglecalendar()
     {
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $model = $this->getModel('match');
-        $model->insertgooglecalendar();
+        $result = $model->insertgooglecalendar();
         
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+        if ( $result )
+        {
+            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+        }
+        else
+        {
+            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
+        }
+        
         $link = 'index.php?option=com_sportsmanagement&view=matches';
 		$this->setRedirect($link,$msg);
     }

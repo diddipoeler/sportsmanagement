@@ -296,6 +296,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `approved_date` TIME NOT NULL DEFAULT  '00:00',
   `approved_time` DATE NOT NULL DEFAULT  '0000-00-00',
   `approved_user` INT( 11 ) NOT NULL DEFAULT  '0',
+  
+  `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
@@ -716,6 +718,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   
   `tennis_single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `tennis_double_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  
+  `approved_gcalendar` TINYINT(1)  NOT NULL DEFAULT '0' ,
+  `gcalendar_id` INT( 11 ) NOT NULL DEFAULT  '0',
   
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),

@@ -116,6 +116,12 @@ class sportsmanagementViewDivision extends JView
 		
 	}
 
+	/**
+	 * sportsmanagementViewDivision::_displayForm()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayForm( $tpl )
 	{
 		$option = JRequest::getCmd('option');

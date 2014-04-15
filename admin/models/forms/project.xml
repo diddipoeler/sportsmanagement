@@ -217,6 +217,23 @@
 			multiple="true"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION_DESC"/>
+
+<field name="gcalendar_id" 
+type="gcalendar" 
+default="" 
+multiple=""
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
+
+<field 
+			name="approved_gcalendar" 
+			type="radio" 
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		
 	</fieldset>
 		

@@ -136,8 +136,8 @@ fieldset button {
 						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
 						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
 
-						list($date,$time)=explode(" ",$row->match_date);
-						$time=strftime("%H:%M",strtotime($time));
+						list($date,$time) = explode(" ",$row->match_date);
+						$time = strftime("%H:%M",strtotime($time));
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 						<?php if(($row->cancel)>0)
