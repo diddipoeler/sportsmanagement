@@ -64,16 +64,6 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'joomleague.core.php');
-
-//$lang = JFactory::getLanguage();
-//		$extension = "com_joomleague_countries";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
-
 JHTML::_('behavior.tooltip');
 
 $helper = new modSportsmanagementAjaxTopNavigationMenuHelper($params);
@@ -192,10 +182,10 @@ $favteams  = $helper->getFavTeams($project_id);
 
 foreach( $points as $row )
 {
-$federationselect[$row->name]	= $helper->getFederationSelect($row->name,$row->id);
+$federationselect[$row->name] = $helper->getFederationSelect($row->name,$row->id);
 }
 
-$federationselect['NON']	= $helper->getFederationSelect('NON',0);
+$federationselect['NON'] = $helper->getFederationSelect('NON',0);
 
 $country_federation	= $helper->getCountryFederation($country_id);
 

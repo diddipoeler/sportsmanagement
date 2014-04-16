@@ -81,16 +81,18 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	
 	protected $_project;
     
-    var $query_getFederations = '';
-    var $query_getFederationSelect = '';
+    static $query_getFederations = '';
+    static $query_getFederationSelect = '';
     
-    var $query_getCountryAssocSelect = '';
-    var $query_getCountryFederation = '';
-    var $query_getCountrySubAssocSelect = '';
-    var $query_getCountrySubSubAssocSelect = '';
+    static $query_getAssocLeagueSelect = '';
+
+    static $query_getCountryAssocSelect = '';
+    static $query_getCountryFederation = '';
+    static $query_getCountrySubAssocSelect = '';
+    static $query_getCountrySubSubAssocSelect = '';
     
-    var $query_getLeagueAssocId = '';
-    var $query_getLeagueSelect = '';
+    static $query_getLeagueAssocId = '';
+    static $query_getLeagueSelect = '';
     
 	
 	/**
@@ -135,6 +137,8 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $db->setQuery($query);
         
         $this->query_getFederations = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
         $result = $db->loadObjectList();
     
     return $result;
@@ -163,6 +167,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubSubAssocSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -195,6 +200,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubAssocSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -227,6 +233,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountryAssocSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -262,6 +269,7 @@ $query->order('s.name DESC');
 $db->setQuery($query);
 
 $this->getFederationSelect = $query->dump();
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 $res = $db->loadObjectList();
 
@@ -541,6 +549,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getAssocParentId = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -572,6 +581,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getLeagueAssocId = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -632,6 +642,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getClubId = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObject();
     
@@ -667,6 +678,9 @@ return $user->username ;
             $query->where('id = '. $project_id );
 
 		$db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		$teams = $db->loadResult();
 		
     //echo 'teams -><pre>'.print_r($teams,true).'</pre><br>';
@@ -677,9 +691,11 @@ return $user->username ;
           $query->select('t.id as team_id, t.name, t.club_id');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
             $query->where('t.id in ('. $teams . ')' );
-
-    	
+   	
 				$db->setQuery($query);
+                
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+                
 				$res = $db->loadObjectList();
 				return $res;
     }
@@ -717,6 +733,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getTeamId = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -753,6 +770,9 @@ return $user->username ;
 
                 
 		$db->setQuery($query);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		$res = $db->loadObjectList();
 		if ($res) {
 			$options = array_merge($options, $res);
@@ -807,10 +827,22 @@ $mainframe = JFactory::getApplication();
             $query->where('l.country = \'' . $country_id. '\'' );
             $query->group('l.name');
             $query->order('l.name');
+/*
+select l.id AS value, l.name AS text
+from j25_sportsmanagement_league AS l
+inner join j25_sportsmanagement_project AS p on l.id = p.league_id
+inner join j25_sportsmanagement_season AS s on s.id = p.season_id
+where l.associations = 0
+and l.country = '889'
+group by l.name
+order by l.name
+
+*/
 
 		$db->setQuery($query);
         
         $this->getAssocLeagueSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -841,6 +873,7 @@ $mainframe = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getProjectCountry = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -878,6 +911,7 @@ $mainframe = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getLeagueSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -954,6 +988,7 @@ $mainframe = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getProjectSelect = $query->dump();
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		
@@ -1012,6 +1047,9 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             $query->order('t.name ASC');
               
 			$db->setQuery($query);
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            
 			$res = $db->loadObjectList();
 			
 			if (!$res) 
@@ -1055,10 +1093,11 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.id = r.project_id ');
             
           $query->where('p.id = ' . $this->_project_id);
-          
-
-                   
+         
 			$db->setQuery($query);
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            
 			$this->_project = $db->loadObject();
 			$this->_project_slug = $this->_project->project_slug;
         $this->_saeson_slug = $this->_project->saeson_slug;
