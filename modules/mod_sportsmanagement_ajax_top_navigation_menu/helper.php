@@ -137,7 +137,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $db->setQuery($query);
         
         $this->query_getFederations = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
     
@@ -167,7 +167,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubSubAssocSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -200,7 +200,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubAssocSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -233,7 +233,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountryAssocSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -269,7 +269,7 @@ $query->order('s.name DESC');
 $db->setQuery($query);
 
 $this->getFederationSelect = $query->dump();
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 $res = $db->loadObjectList();
 
@@ -549,7 +549,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getAssocParentId = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -581,7 +581,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getLeagueAssocId = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -642,7 +642,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getClubId = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObject();
     
@@ -679,7 +679,7 @@ return $user->username ;
 
 		$db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$teams = $db->loadResult();
 		
@@ -694,7 +694,7 @@ return $user->username ;
    	
 				$db->setQuery($query);
                 
-                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
 				$res = $db->loadObjectList();
 				return $res;
@@ -733,7 +733,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getTeamId = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -771,7 +771,7 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -842,7 +842,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getAssocLeagueSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -873,7 +873,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getProjectCountry = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -911,7 +911,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getLeagueSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -988,7 +988,7 @@ $mainframe = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getProjectSelect = $query->dump();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		
@@ -1048,7 +1048,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
               
 			$db->setQuery($query);
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$res = $db->loadObjectList();
 			
@@ -1096,7 +1096,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
          
 			$db->setQuery($query);
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$this->_project = $db->loadObject();
 			$this->_project_slug = $this->_project->project_slug;
