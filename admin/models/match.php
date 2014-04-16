@@ -43,6 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
@@ -73,6 +74,10 @@ class sportsmanagementModelMatch extends JModelAdmin
     {
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
+        
+        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
+        
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -198,7 +203,12 @@ class sportsmanagementModelMatch extends JModelAdmin
             $time = strftime("%H:%M",strtotime($time));
             $endtime = date('H:i', strtotime('+'.($gcalendar_id->game_regular_time + $gcalendar_id->halftime ).' minutes', strtotime($time))); 
             
-            //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endtime<br><pre>'.print_r($endtime, true).'</pre><br>','');
+//            $allDay = '0';
+//            $startDate = jsmGCalendarUtil::getDateFromString($date, $time, $allDay, $timezone);
+//			$endDate = jsmGCalendarUtil::getDateFromString($date, $endtime, $allDay, $timezone);
+//            
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' startDate<br><pre>'.print_r($startDate, true).'</pre><br>','');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endDate<br><pre>'.print_r($endDate, true).'</pre><br>','');
             
             $startDate = $date;
             $startTime = $time;

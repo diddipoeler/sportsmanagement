@@ -67,7 +67,8 @@ class sportsmanagementModelDivisions extends JModelList
                 $config['filter_fields'] = array(
                         'dv.name',
                         'dv.id',
-                        'dv.ordering'
+                        'dv.ordering',
+                        'dv.picture'
                         );
                 parent::__construct($config);
         }

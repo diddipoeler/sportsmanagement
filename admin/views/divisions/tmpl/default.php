@@ -114,6 +114,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
+                        
+                        <th class="title" style="vertical-align: top; ">
+							<?php
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE', 'dv.picture', $this->sortDirection, $this->sortColumn );
+							?>
+						</th>
+                        
 						<th>
 					<?php
 						echo JHtml::_('grid.sort','JSTATUS','dv.published',$this->sortDirection,$this->sortColumn);
@@ -204,6 +211,33 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								echo $row->parent_name;
 								?>
 							</td>
+                            <td>
+                            <?php
+								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								else
+								{
+									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+</a>
+<?PHP
+								}
+								?>
+                            </td>
+                            
                             <td class="center"><?php echo $published; ?></td>
 							<td class="order">
 								<span>

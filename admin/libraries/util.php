@@ -515,7 +515,11 @@ class jsmGCalendarUtil
 		return $dateObj;
 	}
 
-	public static function getDateFromString($date, $time, $allDay, $timezone, $dateFormat = null, $timeFormat = null) {
+	public static function getDateFromString($date, $time, $allDay, $timezone, $dateFormat = null, $timeFormat = null) 
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
 		$string = $date;
 		if (!empty($time)) {
 			$string = $date.($allDay ? '' : ' '.$time);
@@ -536,6 +540,14 @@ class jsmGCalendarUtil
 		}
 
 		$date = DateTime::createFromFormat($dateFormat.($allDay ? '' : ' '.$timeFormat), $string, new DateTimeZone($timezone));
+        
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' dateFormat<br><pre>'.print_r($dateFormat, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' allDay<br><pre>'.print_r($allDay, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timeFormat<br><pre>'.print_r($timeFormat, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' string<br><pre>'.print_r($string, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' date<br><pre>'.print_r($date, true).'</pre><br>','Notice');
+        
 		$date = jsmGCalendarUtil::getDate($date->format('U'), $allDay);
 
 		return $date;

@@ -124,6 +124,8 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
        
+       $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
+       
        if ( empty($data['id']) )
        {
         // xml file erstellen
