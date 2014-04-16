@@ -80,6 +80,18 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	protected $_teamoptions;
 	
 	protected $_project;
+    
+    var $query_getFederations = '';
+    var $query_getFederationSelect = '';
+    
+    var $query_getCountryAssocSelect = '';
+    var $query_getCountryFederation = '';
+    var $query_getCountrySubAssocSelect = '';
+    var $query_getCountrySubSubAssocSelect = '';
+    
+    var $query_getLeagueAssocId = '';
+    var $query_getLeagueSelect = '';
+    
 	
 	/**
 	 * modSportsmanagementAjaxTopNavigationMenuHelper::__construct()
@@ -122,6 +134,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations');
         $db->setQuery($query);
         
+        $this->query_getFederations = $query->dump();
         $result = $db->loadObjectList();
     
     return $result;
@@ -148,8 +161,12 @@ $query->order('s.name');
 
                 
 		$db->setQuery($query);
+        
+        $this->getCountrySubSubAssocSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
-		if ($res) {
+		if ($res) 
+        {
 		$options = array(JHTML::_('select.option', 0, JText::_('-- Kreisverbände -- ')));
 			$options = array_merge($options, $res);
 		}
@@ -176,6 +193,9 @@ $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
 		$db->setQuery($query);
+        
+        $this->getCountrySubAssocSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
 		if ($res) {
 		$options = array(JHTML::_('select.option', 0, JText::_('-- Landesverbände -- ')));
@@ -205,6 +225,9 @@ $query->where('s.parent_id = 0');
 $query->order('s.name');
 
 		$db->setQuery($query);
+        
+        $this->getCountryAssocSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
 		if ($res) {
 		  $options = array(JHTML::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
@@ -234,8 +257,12 @@ $query->select('s.alpha3 AS value, s.name AS text');
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS s');
 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.country = s.alpha3 ');
 $query->where('s.federation = '.$federationid);
+$query->group('s.name');
 $query->order('s.name DESC');
 $db->setQuery($query);
+
+$this->getFederationSelect = $query->dump();
+
 $res = $db->loadObjectList();
 
 if ($res) 
@@ -512,6 +539,9 @@ return $user->username ;
             $query->where('id = '. $assoc_id );
 
 		$db->setQuery($query);
+        
+        $this->getAssocParentId = $query->dump();
+        
 		$res = $db->loadResult();
 		if ( $res )
     {
@@ -540,6 +570,9 @@ return $user->username ;
             $query->where('id = '. $this->_league_id );
                 
 		$db->setQuery($query);
+        
+        $this->getLeagueAssocId = $query->dump();
+        
 		$res = $db->loadResult();
 		if ( $res )
     {
@@ -597,6 +630,9 @@ return $user->username ;
             
                 
 		$db->setQuery($query);
+        
+        $this->getClubId = $query->dump();
+        
 		$res = $db->loadObject();
     
     if ( $res )
@@ -679,6 +715,9 @@ return $user->username ;
 
                 
 		$db->setQuery($query);
+        
+        $this->getTeamId = $query->dump();
+        
 		$res = $db->loadResult();
     
     if ( $res )
@@ -770,6 +809,9 @@ $mainframe = JFactory::getApplication();
             $query->order('l.name');
 
 		$db->setQuery($query);
+        
+        $this->getAssocLeagueSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
 		if ($res) 
         {
@@ -797,6 +839,9 @@ $mainframe = JFactory::getApplication();
             $query->where('p.id = ' . $project_id );
 
 		$db->setQuery($query);
+        
+        $this->getProjectCountry = $query->dump();
+        
 		$res = $db->loadResult();
     
     if ( $res )
@@ -831,6 +876,9 @@ $mainframe = JFactory::getApplication();
               
                
 		$db->setQuery($query);
+        
+        $this->getLeagueSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
 		if ($res) 
         {
@@ -904,6 +952,9 @@ $mainframe = JFactory::getApplication();
 //		}
 		
 		$db->setQuery($query);
+        
+        $this->getProjectSelect = $query->dump();
+        
 		$res = $db->loadObjectList();
 		
 		if ($res) 

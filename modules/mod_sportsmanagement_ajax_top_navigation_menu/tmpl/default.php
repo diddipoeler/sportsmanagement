@@ -125,6 +125,26 @@ echo 'jlamtopleague => '.$league_id.'<br>';
 echo 'jlamtopproject => '.$project_id.'<br>';
 echo 'jlamtopteam => '.$team_id.'<br>';
 echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
+
+echo 'federationselect => <pre>'.print_r($federationselect[$value], true).'</pre><br>';
+echo 'countryassocselect => <pre>'.print_r($countryassocselect[$fed_array]['assocs'], true).'</pre><br>';
+echo 'countrysubassocselect => <pre>'.print_r($countrysubassocselect[$fed_array]['assocs'], true).'</pre><br>';
+echo 'countrysubsubassocselect => <pre>'.print_r($countrysubsubassocselect[$fed_array]['subassocs'], true).'</pre><br>';
+echo 'countrysubsubsubassocselect => <pre>'.print_r($countrysubsubsubassocselect[$fed_array]['subsubassocs'], true).'</pre><br>';
+echo 'leagueselect => <pre>'.print_r($leagueselect[$fed_array]['leagues'], true).'</pre><br>';
+echo 'projectselect => <pre>'.print_r($projectselect[$fed_array]['projects'], true).'</pre><br>';
+
+echo 'getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
+echo 'getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
+
+echo 'getCountryAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryAssocSelect, true).'</pre><br>';
+echo 'getCountryFederation => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryFederation, true).'</pre><br>';
+echo 'getCountrySubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubAssocSelect, true).'</pre><br>';
+echo 'getCountrySubSubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubSubAssocSelect, true).'</pre><br>';
+
+echo 'getLeagueAssocId => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueAssocId, true).'</pre><br>';
+echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueSelect, true).'</pre><br>';
+
 }
 ?>
 
