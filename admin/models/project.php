@@ -481,7 +481,28 @@ class sportsmanagementModelProject extends JModelAdmin
         }    
    return true;     
    } 
-    
+   
+   /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $address_parts = array();
+       $post = JRequest::get('post');
+       
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+              
+       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+       
+       // Proceed with the save
+		return parent::save($data);   
+    }    
     
 	
 }

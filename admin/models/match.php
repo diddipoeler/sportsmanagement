@@ -93,7 +93,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         //$mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' match_ids<br><pre>'.print_r($match_ids, true).'</pre><br>','Notice');
         
         // Select some fields
-		$query->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,gc.username,gc.password,gc.calendar_id');
+		$query->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_gcalendar AS gc ON gc.id = p.gcalendar_id');
         $query->where('p.id = ' . $project_id);
@@ -102,6 +102,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$gcalendar_id = $db->loadObject();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');
         
         // jetzt die spiele
         $query->clear();
@@ -129,11 +131,18 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
-		
+		       
+        
         // where
         $query->where('m.published = 1');
         $query->where('m.id IN ('.$match_ids.' )');
         $query->where('r.project_id = '.(int)$project_id);
+        
+        if ($gcalendar_id->gcalendar_use_fav_teams )
+        {
+        $query->where('( t1.id IN ('.$gcalendar_id->fav_team.' ) OR t2.id IN ('.$gcalendar_id->fav_team.' )  )');    
+        }
+        
         // group
         $query->group('m.id ');
         // order

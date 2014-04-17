@@ -83,7 +83,7 @@ class JFormFieldFavteam extends JFormFieldList
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
-			$query->select('pt.team_id AS value, t.name AS text');
+			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
             $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
 			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');

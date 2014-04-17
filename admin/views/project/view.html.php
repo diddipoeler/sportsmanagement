@@ -113,6 +113,8 @@ class sportsmanagementViewProject extends JView
             $this->form->setValue('editor', null, $user->id);
             $user->id ;
         }
+        
+        $this->form->setValue('fav_team', null, explode(',',$this->item->fav_team) );
  
 		// Set the toolbar
 		$this->addToolBar();
