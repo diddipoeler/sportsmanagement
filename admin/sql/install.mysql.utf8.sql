@@ -241,7 +241,7 @@ DEFAULT CHARSET = utf8;
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `round_id` INT(11) NOT NULL DEFAULT '0' ,
-  `match_number` VARCHAR(10) NULL DEFAULT NULL ,
+  `match_number` VARCHAR(200) NULL DEFAULT NULL ,
   `projectteam1_id` INT(11) NOT NULL DEFAULT '0' ,
   `projectteam2_id` INT(11) NOT NULL DEFAULT '0' ,
   `playground_id` INT(11) NULL DEFAULT NULL ,

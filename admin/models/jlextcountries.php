@@ -186,7 +186,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('id as value,name as text');
-		// From the _associations table
+		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations as objassoc');
         $db->setQuery($query);
 		$results = $db->loadObjectList();

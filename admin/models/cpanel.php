@@ -70,6 +70,10 @@ public function getVersion()
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
        $manifest_cache = json_decode( $this->_db->loadResult(), true );
 	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
@@ -268,12 +272,31 @@ else
     function checkcountry()
     {
         $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $starttime = microtime(); 
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
         //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
-        $query='SELECT count(*) AS count
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+//        $query='SELECT count(*) AS count
+//		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
+		
+        // Select some fields
+		$query->select('count(*) AS count');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+        
+        $db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+		return $db->loadResult();
     }
     
     /**
@@ -284,11 +307,33 @@ else
      */
     function checksporttype($type)
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $starttime = microtime(); 
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
         $type = strtoupper($type);
-        $query="SELECT count(*) AS count
-		FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type where name LIKE '%".$type."%' ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+        
+//        $query="SELECT count(*) AS count
+//		FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type where name LIKE '%".$type."%' ";
+		
+        // Select some fields
+		$query->select('count(*) AS count');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+        $query->where('name LIKE '.$db->Quote('%'.$type.'%'));
+        
+        $db->setQuery($query);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+		return $db->loadResult();
         
         
     }
