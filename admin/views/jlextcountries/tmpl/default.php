@@ -81,6 +81,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
 					</th>
 					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
+                    
+                    <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
+                    <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
+                    
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2','objcountry.alpha2',$this->sortDirection,$this->sortColumn);
@@ -160,7 +164,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_EDIT_DETAILS');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -176,6 +180,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         echo JSMCountries::getCountryFlag($row->alpha3);
                         ?>
                         </td>
+                        
+                        <td><?php echo JText::_($row->name); ?></td>
+                        <td><?php echo $row->federation_name; ?></td>
+                        
 						<td><?php echo $row->alpha2; ?></td>
 						<td><?php echo $row->alpha3; ?></td>
 						

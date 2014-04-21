@@ -1638,17 +1638,40 @@ abstract class sportsmanagementHelper
 	* @param string $ordering
 	* @return array
 	*/
-	function getRoundsOptions($project_id, $ordering='ASC', $required = false)
+	function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL)
 	{
 		$mainframe = JFactory::getApplication();
         $db = JFactory::getDBO();
-		$query = ' SELECT id as value '
-		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
-		       . '      , id, name, round_date_first, round_date_last, roundcode '
-		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round '
-		       . ' WHERE project_id= ' .$project_id
-           . ' AND published =  1'
-		       . ' ORDER BY roundcode '.$ordering;
+        $query = $db->getQuery(true);
+        $query->select('id as value');
+        $query->select('name AS text');
+        $query->select('id, name, round_date_first, round_date_last, roundcode');
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        
+        $query->where('project_id = '.$project_id);
+        $query->where('published = 1');
+        
+        if ( $round_ids )
+    {
+    $query->where('id IN (' . implode(',', $round_ids) . ')');   
+    }
+        
+        $query->order('roundcode '.$ordering);  
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        
+//		$query = ' SELECT id as value '
+//		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
+//		       . '      , id, name, round_date_first, round_date_last, roundcode '
+//		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round '
+//		       . ' WHERE project_id= ' .$project_id
+//           . ' AND published =  1'
+//		       . ' ORDER BY roundcode '.$ordering;
 	
 		$db->setQuery($query);
 		if(!$required) {

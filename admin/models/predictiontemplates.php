@@ -58,6 +58,12 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 
 	var $_identifier = "predictiontemplates";
 	
+    /**
+     * sportsmanagementModelPredictionTemplates::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -119,6 +125,11 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 	}
 	
 
+	/**
+	 * sportsmanagementModelPredictionTemplates::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
