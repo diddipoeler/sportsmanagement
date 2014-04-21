@@ -63,6 +63,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
+                </td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['federation'].'&nbsp;&nbsp;'; ?>
+            </td>
 			</td>
 		</tr>
 	</table>
@@ -138,7 +141,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="17"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;

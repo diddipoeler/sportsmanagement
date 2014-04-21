@@ -106,8 +106,8 @@ class sportsmanagementModeljlextcountries extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
 
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
+		$federation = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
+		$this->setState('filter.federation', $federation);
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
@@ -130,6 +130,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
+        $federation	= $this->getState('filter.federation');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -149,6 +150,10 @@ class sportsmanagementModeljlextcountries extends JModelList
 		{
         $query->where('LOWER(objcountry.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
+        if ($federation)
+		{
+        $query->where('objcountry.federation = '.$federation);
+        }
 
         
         $query->order($db->escape($this->getState('list.ordering', 'objcountry.name')).' '.
@@ -166,6 +171,34 @@ class sportsmanagementModeljlextcountries extends JModelList
         
         
 	}
+    
+    /**
+     * sportsmanagementModeljlextcountries::getFederation()
+     * 
+     * @return void
+     */
+    function getFederation()
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('id as value,name as text');
+		// From the _associations table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations as objassoc');
+        $db->setQuery($query);
+		$results = $db->loadObjectList();
+        
+        if (!$results)
+		{
+		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+          $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+		}  
+        
+		return $results;
+    }
 
 
 

@@ -60,18 +60,37 @@ class sportsmanagementViewjlextcountries extends JView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
+        $inputappend = '';
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 $starttime = microtime(); 
 		$items = $this->get('Items');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
+        
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+         //build the html options for nation
+		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
+		if ($res = $this->get('Federation') )
+        {
+            $nation = array_merge($nation,$res);
+        }
+		
+        //$lists['nation'] = $nation;
+        $lists['federation']= JHtmlSelect::genericlist(	$nation,
+																'filter_federation',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.federation'));
+                                                                
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);

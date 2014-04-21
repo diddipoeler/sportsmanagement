@@ -64,7 +64,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 				</button>
 			</td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
+            </td>
 		</tr>
 	</table>
 	<div id="editcell">
