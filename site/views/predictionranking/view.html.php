@@ -103,21 +103,24 @@ class sportsmanagementViewPredictionRanking extends JView
 		
 		if (isset($this->predictionGame))
 		{
-			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
-      $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+      $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+      $configentries = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
       
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->assignRef('model',				$model);
-			$this->assignRef('roundID',				$this->model->roundID);
+			$this->assignRef('model', $model);
+			$this->assignRef('roundID', $this->model->roundID);
 			//$this->assignRef('config',				array_merge($overallConfig,$config));
-      $this->assignRef('configavatar',				$configavatar );
-      $this->assign('config',				array_merge($overallConfig,$config));
+      $this->assignRef('configavatar', $configavatar );
+      $this->assignRef('configentries', $configentries );
+      //array_merge($configentries,$config);
+      $this->assign('config', array_merge($overallConfig,$config));
       
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionMember', sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',		JFactory::getUser());
+			$this->assign('actJoomlaUser', JFactory::getUser());
 			
 			//echo '<br /><pre>~' . print_r( $this->config, true ) . '~</pre><br />';
             

@@ -123,10 +123,17 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
+        $round_ids = NULL;
 		if (($showProjectID > 0) && ($this->config['show_rankingnav']))
 		{
-			$from_matchday=$this->model->createFromMatchdayList($predictionProject->project_id);
-			$to_matchday=$this->model->createToMatchdayList($predictionProject->project_id);
+			
+            if ( $this->configentries['use_pred_select_rounds'] )
+      {
+      $round_ids = $this->configentries['predictionroundid'];
+      }
+            
+            $from_matchday = $this->model->createFromMatchdayList($predictionProject->project_id,$round_ids);
+			$to_matchday = $this->model->createToMatchdayList($predictionProject->project_id,$round_ids);
 			?>
 			<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
             <input type="hidden" name="view" value="predictionranking" />

@@ -88,17 +88,22 @@ else
 			$memberProjectJokersCount = sportsmanagementModelPrediction::getMemberPredictionJokerCount($this->predictionMember->user_id,
 																					$predictionProject->project_id);
 
-      $match_ids = '';
+      $match_ids = NULL;
+      $round_ids = NULL;
       if ( $this->config['use_pred_select_matches'] )
       {
       //echo '<br />predictionmatchid<pre>~' . print_r($this->config['predictionmatchid'],true) . '~</pre><br />';
       $match_ids = $this->config['predictionmatchid'];
       }
+      if ( $this->config['use_pred_select_rounds'] )
+      {
+      $round_ids = $this->config['predictionroundid'];
+      }  
       
 			$roundResults = $this->model->getMatchesDataForPredictionEntry(	$this->model->predictionGameID,
 																			$predictionProject->project_id,
 																			$this->model->roundID,
-																			$this->predictionMember->user_id,$match_ids);
+																			$this->predictionMember->user_id,$match_ids,$round_ids);
 
 			//$roundResults = null;
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -133,7 +138,12 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 						<td class='sectiontableheader'><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
 						<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
 							<?php
-							$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id);
+                            if ( $this->config['use_pred_select_rounds'] )
+      {
+      $round_ids = $this->config['predictionroundid'];
+      }
+                            
+							$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
 							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',$this->model->roundID);
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',

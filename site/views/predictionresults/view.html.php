@@ -67,15 +67,15 @@ class sportsmanagementViewPredictionResults extends JView
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
-		$model		=& $this->getModel();
+		$document	= JFactory::getDocument();
+		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
     //$this->assignRef( 'optiontext',			$optiontext );
     
 		$mainframe = JFactory::getApplication();
 
-		$this->assignRef('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 
 		if (isset($this->predictionGame))
 		{
@@ -89,15 +89,15 @@ class sportsmanagementViewPredictionResults extends JView
       
 			$this->assignRef('model',				$model);
 			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assignRef('config',				array_merge($overallConfig,$config) );
+			$this->assign('config',				array_merge($overallConfig,$config) );
             $model->config = $this->config;
 			$this->assignRef('configavatar',				$configavatar );
             $model->configavatar = $this->configavatar;
 
-			$this->assignRef('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
-			$this->assignRef('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
+			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('actJoomlaUser',		JFactory::getUser());
 			//$this->assignRef('rounds',				$model->getRounds());
 			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
@@ -114,8 +114,8 @@ class sportsmanagementViewPredictionResults extends JView
         
         // Get data from the model
  	//$items = $model->getPredictionMembersList($this->config,$this->configavatar,false);
-     $items =& $this->get('Data');	
- 	$pagination =& $this->get('Pagination');
+     $items = $this->get('Data');	
+ 	$pagination = $this->get('Pagination');
             $this->assignRef('memberList', $items );
             $this->assignRef('pagination', $pagination);
 

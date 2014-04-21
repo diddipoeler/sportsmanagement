@@ -100,8 +100,15 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
 						?>
 					</td>
-					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' ><?php
-						$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id);
+					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
+                    <?php
+                    if ( $this->config['use_pred_select_rounds'] )
+      {
+      $round_ids = $this->config['predictionroundid'];
+      }
+                    
+						$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
+                        
                         $groups = sportsmanagementModelPrediction::getPredictionGroupList();
 						//$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->roundID);
 						$htmlRoundsOptions = JHTML::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->roundID);
@@ -153,14 +160,19 @@ echo $this->pagination->getListFooter();
 				}
                 
 				// holen wir uns die spiele
-				$match_ids = '';
+				$match_ids = NULL;
+                $round_ids = NULL;
 				if ( $this->config['use_pred_select_matches'] )
         {
         $match_ids = $this->config['predictionmatchid'];
         //echo '<br />predictionmatchid<pre>~' . print_r($this->config['predictionmatchid'],true) . '~</pre><br />';
         }
+        if ( $this->config['use_pred_select_rounds'] )
+      {
+      $round_ids = $this->config['predictionroundid'];
+      }  
         
-				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids);
+				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids);
 				
 				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
 				

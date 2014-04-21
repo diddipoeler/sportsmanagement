@@ -60,6 +60,11 @@ class sportsmanagementModelPagination extends JModel
     public static $prevlink = '';
 
 	
+    /**
+     * sportsmanagementModelPagination::getnextlink()
+     * 
+     * @return
+     */
     function getnextlink()
     {
         $option = JRequest::getCmd('option');
@@ -216,6 +221,16 @@ class sportsmanagementModelPagination extends JModel
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
 	}
 
+	/**
+	 * sportsmanagementModelPagination::pagenav2()
+	 * 
+	 * @param mixed $jl_task
+	 * @param mixed $rlimit
+	 * @param integer $currentRoundcode
+	 * @param string $user
+	 * @param string $mode
+	 * @return
+	 */
 	function pagenav2($jl_task,$rlimit,$currentRoundcode=0,$user='',$mode='')
 	{
 	   $option = JRequest::getCmd('option');

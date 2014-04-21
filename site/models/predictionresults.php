@@ -242,11 +242,12 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
     
     if ( $match_ids )
     {
-    $convert = array (
-      '|' => ','
-        );
-    $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
-    $query->where("AND m.id IN (" . $match_ids . ")");    
+//    $convert = array (
+//      '|' => ','
+//        );
+//    $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
+//    $query->where("AND m.id IN (" . $match_ids . ")");  
+    $query->where('m.id IN (' . implode(',', $match_ids) . ')');    
     }
     
     $query->order('m.match_date, m.id ASC');

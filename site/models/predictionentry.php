@@ -318,7 +318,7 @@ public $_predictionGame		= null;
 	 * @param mixed $match_ids
 	 * @return
 	 */
-	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids)
+	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL)
 	{
 		    $option = JRequest::getCmd('option');    
     $mainframe = JFactory::getApplication();
@@ -344,14 +344,18 @@ public $_predictionGame		= null;
         				
 		if ( $match_ids )
     {
-    $convert = array (
-      '|' => ','
-        );
-    $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
-   
-    $query->where('m.id IN (' . $match_ids . ')');   
+    $query->where('m.id IN (' . implode(',', $match_ids) . ')');   
     }
 
+//    if ( $round_ids )
+//    {
+//    $query->where('r.id IN (' . implode(',', $round_ids) . ')');   
+//    }
+//    else
+//    {
+//        $query->where('r.id = '.$projectRoundID);
+//    }
+    
     $query->order('m.match_date ASC');
     				
 		$db->setQuery($query);

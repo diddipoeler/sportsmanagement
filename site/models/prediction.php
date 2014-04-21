@@ -1076,10 +1076,15 @@ class sportsmanagementModelPrediction extends JModel
       $match_ids = $configprediction['predictionmatchid'];
       }
       
+  if ( $configprediction['use_pred_select_rounds'] )
+      {
+      $round_ids = $configprediction['predictionroundid'];
+      }    
+      
   $roundResults = $this->getMatchesDataForPredictionEntry(	$predictionGameID,
 																			$ProjectID,
 																			$RoundID,
-																			$joomlaUserID,$match_ids);
+																			$joomlaUserID,$match_ids,$round_ids);
   
                                         
   $predictionGameMemberMail = $this->getPredictionMemberEMailAdress($predictionMemberID);
@@ -2090,7 +2095,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param string $ordering
 	 * @return
 	 */
-	function getRoundNames($project_id,$ordering='ASC')
+	function getRoundNames($project_id,$ordering='ASC', $round_ids = NULL)
 	{
 
   $document	= JFactory::getDocument();
@@ -2108,7 +2113,18 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
     $query->select('id AS value, name AS text');
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
     $query->where('project_id = '.(int)$project_id);
+    
+    if ( $round_ids )
+    {
+    $query->where('id IN (' . implode(',', $round_ids) . ')');   
+    }
+    
     $query->order('id '.$ordering);
+
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 			$db->setQuery($query);
 			$this->_roundNames = $db->loadObjectList();
