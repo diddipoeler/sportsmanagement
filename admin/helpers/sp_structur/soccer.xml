@@ -46,6 +46,9 @@
 <mainname switch="persontype" parent="0" content="2">COACHES</mainname>
 </mainpositions>
 <mainpositions>
+<mainname switch="persontype" parent="0" content="2">MAINTAINER_TEAM</mainname>
+</mainpositions>
+<mainpositions>
 <mainname switch="persontype" parent="0" content="2">MEDICAL_STAFF</mainname>
 </mainpositions>
 <mainpositions>
@@ -69,6 +72,9 @@
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
 
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MAINTAINER_TEAM">MAINTAINER</parentname>
+</parentpositions>
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
 </parentpositions>

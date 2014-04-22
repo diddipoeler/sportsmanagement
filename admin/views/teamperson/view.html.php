@@ -96,7 +96,7 @@ class sportsmanagementViewTeamPerson extends JView
         $project_team = $mdlProject->getProjectTeam($this->item->projectteam_id);
         $this->assignRef('project_team',$project_team);
         
-        $person_id	= $this->item->person_id;;
+        $person_id	= $this->item->person_id;
         $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
@@ -194,11 +194,11 @@ class sportsmanagementViewTeamPerson extends JView
         
 		if ( $this->_persontype == 1 )
         {
-        JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_TEAMPLAYER_NEW') : JText::_('COM_SPORTSMANAGEMENT_TEAMPLAYER_EDIT'), 'teamplayer');
+        JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
 		}
         elseif ( $this->_persontype == 2 )
         {
-        JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_TEAMSTAFF_EDIT'), 'teamstaff');
+        JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
 		}
         
         $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
