@@ -119,6 +119,14 @@ class sportsmanagementTablePerson extends JTable
 //			$array['extended'] = $parameter->toArray($array['extended']);;
 //		}
         
+        if (isset($array['extended']) && is_array($array['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($array['extended']);
+			$array['extended'] = (string)$parameter;
+		}
+        
     if (isset($array['season_ids']) && is_array($array['season_ids'])) 
     {
          $array['season_ids'] = implode(',', $array['season_ids']);
@@ -128,6 +136,7 @@ class sportsmanagementTablePerson extends JTable
     
     
 	}
+    
     /**
 	 * Overloaded load function
 	 *
