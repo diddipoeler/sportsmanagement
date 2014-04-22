@@ -101,9 +101,9 @@ class sportsmanagementViewMatchReport extends JView
         
         $this->assignRef('matchsingle',$matchsingle);
         
-		$ret = $model->getMatchText($match->new_match_id);
+		$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
 		$this->assignRef('newmatchtext',$ret->text);
-		$ret=$model->getMatchText($match->old_match_id);
+		$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
 		$this->assignRef('oldmatchtext',$ret->text);
 
 		$this->assign('round',$model->getRound());
@@ -128,7 +128,7 @@ class sportsmanagementViewMatchReport extends JView
 		$this->assign('eventtypes',$model->getEventTypes());
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
 		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc));
-		$this->assign('playground',$model->getPlayground($this->match->playground_id));
+		$this->assign('playground',sportsmanagementModelPlayground::getPlayground($this->match->playground_id));
         $this->assign('stats',sportsmanagementModelProject::getProjectStats());
 		$this->assign('playerstats',$model->getMatchStats());
 		$this->assign('staffstats',$model->getMatchStaffStats());

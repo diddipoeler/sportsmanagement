@@ -480,11 +480,16 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function getAllowed($config_editOwnPlayer)
 	{
+	   $mainframe = JFactory::getApplication();
+       
 		$user = JFactory::getUser();
 		$allowed = false;
 		if(self::_isAdmin($user) || self::_isOwnPlayer($user,$config_editOwnPlayer)) {
 			$allowed=true;
 		}
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        
 		return $allowed;
 	}
 
@@ -496,6 +501,7 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function _isAdmin($user)
 	{
+	   
 	   // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $mainframe = JFactory::getApplication();
@@ -521,6 +527,9 @@ class sportsmanagementModelPerson extends JModel
 				}
 			}
 		}
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        
 		return $allowed;
 	}
 
@@ -533,6 +542,8 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function _isOwnPlayer($user,$config_editOwnPlayer)
 	{
+	   $mainframe = JFactory::getApplication();
+       
 		if($user->id > 0)
 		{
 			$person = self::getPerson();
@@ -550,6 +561,8 @@ class sportsmanagementModelPerson extends JModel
 	 */
 	function isEditAllowed($config_editOwnPlayer,$config_editAllowed)
 	{
+	   $mainframe = JFactory::getApplication();
+       
 		$allowed = false;
 		$user = JFactory::getUser();
 		if($user->id > 0)
@@ -559,6 +572,9 @@ class sportsmanagementModelPerson extends JModel
 			}
 			return $allowed;
 		}
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        
 		return false;
 	}
 

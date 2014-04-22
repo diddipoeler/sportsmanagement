@@ -641,72 +641,72 @@ class sportsmanagementModelNextMatch extends JModel
 		return $teams;
 	}
 
-	/**
-	 * sportsmanagementModelNextMatch::getPlayground()
-	 * 
-	 * @param mixed $pgid
-	 * @return
-	 */
-	function getPlayground( $pgid )
-	{
-	   $mainframe = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-       
-       // Select some fields
-		$query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ');
-        $query->where('id = '. $db->Quote($pgid));
-    
-		$db->setQuery($query, 0, 1);
-        
-        if ( !$db->loadObject() )
-	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
-		return $db->loadObject();
-	}
+//	/**
+//	 * sportsmanagementModelNextMatch::getPlayground()
+//	 * 
+//	 * @param mixed $pgid
+//	 * @return
+//	 */
+//	function getPlayground( $pgid )
+//	{
+//	   $mainframe = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//       // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//       
+//       // Select some fields
+//		$query->select('*');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ');
+//        $query->where('id = '. $db->Quote($pgid));
+//    
+//		$db->setQuery($query, 0, 1);
+//        
+//        if ( !$db->loadObject() )
+//	    {
+//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//	    }
+//        
+//		return $db->loadObject();
+//	}
 
-	/**
-	 * sportsmanagementModelNextMatch::getMatchText()
-	 * 
-	 * @param mixed $match_id
-	 * @return
-	 */
-	function getMatchText($match_id)
-	{
-	   $mainframe = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
-       
-       // Select some fields
-		$query->select('m.*');
-        $query->select('t1.name as t1name,t2.name as t2name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
-        $query->where('m.id = ' . $match_id );
-        $query->where('m.published = 1');
-        $query->order('m.match_date, t1.short_name');
-                    
-		$db->setQuery($query);
-        
-        if ( !$db->loadObject() )
-	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
-		return $db->loadObject();
-	}
+//	/**
+//	 * sportsmanagementModelNextMatch::getMatchText()
+//	 * 
+//	 * @param mixed $match_id
+//	 * @return
+//	 */
+//	function getMatchText($match_id)
+//	{
+//	   $mainframe = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//       // Create a new query object.		
+//	   $db = JFactory::getDBO();
+//	   $query = $db->getQuery(true);
+//       
+//       // Select some fields
+//		$query->select('m.*');
+//        $query->select('t1.name as t1name,t2.name as t2name');
+//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+//        $query->where('m.id = ' . $match_id );
+//        $query->where('m.published = 1');
+//        $query->order('m.match_date, t1.short_name');
+//                    
+//		$db->setQuery($query);
+//        
+//        if ( !$db->loadObject() )
+//	    {
+//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//	    }
+//        
+//		return $db->loadObject();
+//	}
 	
 	/**
 	 * Calculates chances between 2 team

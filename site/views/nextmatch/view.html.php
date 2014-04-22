@@ -73,7 +73,7 @@ class sportsmanagementViewNextMatch extends JView
 			$newmatchtext = "";
 			if($match->new_match_id > 0)
 			{
-				$ret = $model->getMatchText($match->new_match_id);
+				$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
 				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
@@ -82,7 +82,7 @@ class sportsmanagementViewNextMatch extends JView
 			$prevmatchtext = "";
 			if($match->old_match_id > 0)
 			{
-				$ret = $model->getMatchText($match->old_match_id);
+				$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
 				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
@@ -92,7 +92,7 @@ class sportsmanagementViewNextMatch extends JView
 			$this->assign( 'teams', 		$model->getMatchTeams() );
 
 			$this->assign( 'referees', 	$model->getReferees() );
-			$this->assign( 'playground',	$model->getPlayground( $this->match->playground_id ) );
+			$this->assign( 'playground',	sportsmanagementModelPlayground::getPlayground( $this->match->playground_id ) );
 
 			$this->assign( 'homeranked',	$model->getHomeRanked() );		
 			$this->assign( 'awayranked',	$model->getAwayRanked() );

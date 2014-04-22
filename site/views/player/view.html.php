@@ -124,6 +124,8 @@ class sportsmanagementViewPlayer extends JView
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		$this->assign('stats',sportsmanagementModelProject::getProjectStats());
         
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');

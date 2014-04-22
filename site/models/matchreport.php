@@ -646,34 +646,43 @@ class sportsmanagementModelMatchReport extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-		$query='	SELECT	et.id,
-							et.name,
-							et.icon
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id					
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id
-					WHERE me.match_id='.(int)$this->matchid.'
-					GROUP BY et.id
-					ORDER BY pet.ordering ';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+        $query->select('et.id,et.name,et.icon');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id ');
+	    $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id ');
+        $query->where('me.match_id = '.(int)$this->matchid);
+        $query->group('et.id');
+        $query->order('pet.ordering');
+        
+//		$query='	SELECT	et.id,
+//							et.name,
+//							et.icon
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id					
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id
+//					WHERE me.match_id='.(int)$this->matchid.'
+//					GROUP BY et.id
+//					ORDER BY pet.ordering ';
+                    
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
-	/**
-	 * sportsmanagementModelMatchReport::getPlayground()
-	 * 
-	 * @param mixed $pgid
-	 * @return
-	 */
-	function getPlayground($pgid)
-	{
-		//$this->playground =& $this->getTable('Playground','Table');
-        $mdl = JModel::getInstance("Playground", "sportsmanagementModel");
-        $this->playground = $mdl->getTable();
-		$this->playground->load($pgid);
-
-		return $this->playground;
-	}
+//	/**
+//	 * sportsmanagementModelMatchReport::getPlayground()
+//	 * 
+//	 * @param mixed $pgid
+//	 * @return
+//	 */
+//	function getPlayground($pgid)
+//	{
+//		//$this->playground =& $this->getTable('Playground','Table');
+//        $mdl = JModel::getInstance("Playground", "sportsmanagementModel");
+//        $this->playground = $mdl->getTable();
+//		$this->playground->load($pgid);
+//
+//		return $this->playground;
+//	}
 
 	
 	/**
@@ -873,34 +882,35 @@ class sportsmanagementModelMatchReport extends JModel
 		return $this->_staffsbasicstats;
 	}
 
-	/**
-	 * sportsmanagementModelMatchReport::getMatchText()
-	 * 
-	 * @param mixed $match_id
-	 * @return
-	 */
-	function getMatchText($match_id)
-	{
-		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        
-		$query="SELECT	m.*,
-						t1.name t1name,
-						t2.name t2name
-				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
-				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt1 ON m.projectteam1_id=pt1.id
-				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt2 ON m.projectteam2_id=pt2.id
-				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t1 ON pt1.team_id=t1.id
-				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t2 ON pt2.team_id=t2.id
-				WHERE m.id=".$match_id."
-				AND m.published=1
-				ORDER BY m.match_date,t1.short_name";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
-	}
+//	/**
+//	 * sportsmanagementModelMatchReport::getMatchText()
+//	 * 
+//	 * @param mixed $match_id
+//	 * @return
+//	 */
+//	function getMatchText($match_id)
+//	{
+//		$option = JRequest::getCmd('option');
+//	$mainframe = JFactory::getApplication();
+//        // Get a db connection.
+//        $db = JFactory::getDbo();
+//        $query = $db->getQuery(true);
+//        
+//		$query="SELECT	m.*,
+//						t1.name t1name,
+//						t2.name t2name
+//				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
+//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt1 ON m.projectteam1_id=pt1.id
+//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt2 ON m.projectteam2_id=pt2.id
+//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t1 ON pt1.team_id=t1.id
+//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t2 ON pt2.team_id=t2.id
+//				WHERE m.id=".$match_id."
+//				AND m.published=1
+//				ORDER BY m.match_date,t1.short_name";
+//                
+//		$db->setQuery($query);
+//		return $db->loadObject();
+//	}
 	
 	/**
 	 * sportsmanagementModelMatchReport::getSchemaHome()

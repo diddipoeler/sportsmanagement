@@ -91,8 +91,10 @@ class sportsmanagementViewStaff extends JView
 		$this->assignRef('person',$person);
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
+        
 		$staff=&$model->getTeamStaff();
-		$titleStr=JText::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
+		$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
 		
 		$this->assignRef('inprojectinfo',$staff);
         

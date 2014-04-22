@@ -39,10 +39,11 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 JHtml::_('behavior.mootools');
-$option = JRequest::getCmd('option');
-$modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
+//$option = JRequest::getCmd('option');
+$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 
+echo ' default_sectionheader showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'
 
 ?>
 <table width="100%" class="contentpaneopen">
@@ -67,7 +68,7 @@ $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900
 	
 	?>   
 	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=editperson&cid=<?php echo $this->person->id; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
