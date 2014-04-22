@@ -102,11 +102,18 @@ class sportsmanagementControllereditperson extends JControllerForm
         
         public function save()
         {
-            $data	= JRequest::getVar('jform', array(), 'post', 'array');
+            // Initialise variables.
+            $app    = JFactory::getApplication();
+            $model  = $this->getModel('editperson');
+
+            //$data	= JRequest::getVar('jform', array(), 'post', 'array');
+            $data = JRequest::get('post');
 		    $id		= JRequest::getInt('id');
+            
+            // Now update the loaded data to the database via a function in the model
+            $upditem        = $model->updItem($data);
         
-//            $msg = 'save';
-//            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+
             
             // Set the redirect based on the task.
 		switch ($this->getTask())

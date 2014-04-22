@@ -89,12 +89,12 @@ $fieldsets = $this->form->getFieldsets();
 				<li><?php echo $field->label; ?>
 				<?php echo $field->input; 
                  
-                if ( $field->name == 'jform[country]' )
+                if ( $field->name == 'country' )
                 {
                 echo JSMCountries::getCountryFlag($field->value);    
                 }
                 
-                if ( $field->name == 'jform[standard_playground]' )
+                if ( $field->name == 'standard_playground' )
                 {
                 //echo sportsmanagementHelper::getPicturePlayground($field->value);
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
@@ -108,15 +108,15 @@ $fieldsets = $this->form->getFieldsets();
 <?PHP                   
                 }
                 
-                if ( $field->name == 'jform[website]' )
+                if ( $field->name == 'website' )
                 {
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
-                if ( $field->name == 'jform[twitter]' )
+                if ( $field->name == 'twitter' )
                 {
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
-                if ( $field->name == 'jform[facebook]' )
+                if ( $field->name == 'facebook' )
                 {
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
                 }
@@ -163,7 +163,7 @@ $fieldsets = $this->form->getFieldsets();
 		<?php
 		echo JHtml::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
-			if ( $fieldset->name == 'details' || $fieldset->name == 'request' ) :
+			if ( $fieldset->name == 'details' ||  $fieldset->name == 'seasons' ) :
 				continue;
 			endif;
 			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);

@@ -65,7 +65,70 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	var $latitude	= null;
 	var $longitude	= null;
 	
-	/**
+	
+    /**
+     * sportsmanagementModelEditPerson::updItem()
+     * 
+     * @param mixed $data
+     * @return void
+     */
+    function updItem($data)
+    {
+        $mainframe = JFactory::getApplication();
+        
+        foreach( $data['request'] as $key => $value)
+        {
+            $data[$key] = $value;
+        }
+        
+        // Specify which columns are to be ignored. This can be a string or an array.
+        //$ignore = 'id';
+        $ignore = '';
+        // Get the table object from the model.
+        $table = $this->getTable( 'person' );
+        // Bind the array to the table object.
+        $table->bind( $data, $ignore );
+        
+        if ( !$table->store() )
+        {
+            JError::raiseError(500, $db->getErrorMsg());
+        }
+        else
+        {
+            
+        }
+        
+/*
+        // set the data into a query to update the record
+        $db = $this->getDbo();
+        $query  = $db->getQuery(true);
+        $query->clear();
+        $query->update(' #__sportsmanagement_person ');
+        
+        foreach( $data as $key => $value)
+        {
+            switch ($key)
+            {
+                case 'id':
+                $id	= $value;
+                break;
+                default:
+                $query->set($key.' = '.$db->Quote($value) );
+                break;
+            }
+        }
+        
+        $query->where(' id = ' . (int) $id );
+        $db->setQuery((string)$query);
+*/        
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table<br><pre>'.print_r($table,true).'</pre>'),'Notice');
+        
+    }
+    
+    
+    /**
 	 * Method to load content person data
 	 *
 	 * @access	private
@@ -85,30 +148,6 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 //		}
 //		return true;
 	}
-
-	
-
-	/**
-	 * Method to return a joomla users array (id,name)
-	 *
-	 * @access	public
-	 * @return	array
-	 *
-
-	function getJLUsers()
-	{
-		$query="SELECT id AS value,name AS text FROM #__users ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
-	 */
-	
-
 
 
 	/**
