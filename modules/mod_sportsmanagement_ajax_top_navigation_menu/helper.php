@@ -106,8 +106,17 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 		$this->_params = $params;
 		$this->_db = Jfactory::getDBO();
         
+        $projectid = JRequest::getInt('p',0);
+        if ( $projectid )
+        {
+        $this->_project_id = $projectid ;
+        }
+        
     if ( $this->_project_id )
 		{
+
+JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry($this->_project_id) );
+
     JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
     JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
     JRequest::setVar( 'jlamtopproject', $this->_project_id );
