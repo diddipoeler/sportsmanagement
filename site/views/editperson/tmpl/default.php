@@ -1,30 +1,71 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.pane');
+// Load the tooltip behavior.
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
 //echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 
 ?>
+<script type="text/javascript">
+	Joomla.submitbutton = function(task)
+	{
+		if (document.formvalidator.isValid(document.id('editperson'))) {
+			Joomla.submitform(task, document.getElementById('editperson'));
+		}
+	}
+</script>
 <form name="editperson" id="editperson" method="post" action="<?php echo JRoute::_('index.php'); ?>">
 <?php
-		//save and close 
-		$close = JRequest::getInt('close',0);
-		if($close == 1) {
-			?><script>
-			window.addEvent('domready', function() {
-				$('cancel').onclick();	
-			});
-			</script>
-			<?php 
-		}
+
 		?>
 	<fieldset class="adminform">
 	<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editperson.save');">
+					<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
-					<button type="button" onclick="$('close').value=1; Joomla.submitform('editperson.save');">
+					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
 						<?php echo JText::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
@@ -139,14 +180,13 @@ $fieldsets = $this->form->getFieldsets();
 	</div>
 
 
-
+<div class="clr"></div>
 
     
 	<input type="hidden" name="assignperson" value="0" id="assignperson" />
 	<input type="hidden" name="option" value="com_sportsmanagement" /> 
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
-	<input type="hidden" name="task" value="editperson.save" />
+	<input type="hidden" name="task" value="" />
 	<?php echo JHTML::_('form.token')."\n"; ?>
 	
 </form>
-<div class="clr"></div>
