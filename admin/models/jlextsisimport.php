@@ -96,6 +96,11 @@ var $_project_id = 0;
 var $_sis_art = 1;
 var $_sis_datei = '';
 
+/**
+ * sportsmanagementModeljlextsisimport::getData()
+ * 
+ * @return void
+ */
 function getData()
 	{
   //global $mainframe, $option;
@@ -776,7 +781,17 @@ JFile::write($file, $xmlfile);
 
 }  
 
-	//get sis link
+
+	/**
+	 * sportsmanagementModeljlextsisimport::getLink()
+	 * 
+	 * @param mixed $vereinsnummer
+	 * @param mixed $vereinspasswort
+	 * @param mixed $liganummer
+	 * @param mixed $sis_art
+	 * @param mixed $sis_xmllink
+	 * @return
+	 */
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
 		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
@@ -785,7 +800,15 @@ JFile::write($file, $xmlfile);
 	}
     
     
-    //get sis spielplan
+
+	/**
+	 * sportsmanagementModeljlextsisimport::getSpielplan()
+	 * 
+	 * @param mixed $linkresults
+	 * @param mixed $liganummer
+	 * @param mixed $sis_art
+	 * @return
+	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');

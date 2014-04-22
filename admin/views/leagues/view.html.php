@@ -67,6 +67,7 @@ class sportsmanagementViewLeagues extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
+        $startmemory = memory_get_usage();
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -105,6 +106,13 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 		$this->addToolbar();
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
+        }
+        
+        
 		parent::display($tpl);
 	}
 	

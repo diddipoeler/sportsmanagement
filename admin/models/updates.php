@@ -58,6 +58,13 @@ jimport('joomla.filesystem.folder');
 class sportsmanagementModelUpdates extends JModel
 {
 
+	/**
+	 * sportsmanagementModelUpdates::loadUpdateFile()
+	 * 
+	 * @param mixed $myfilename
+	 * @param mixed $file
+	 * @return
+	 */
 	function loadUpdateFile($myfilename,$file)
 	{
 		include_once($myfilename);
@@ -112,6 +119,11 @@ class sportsmanagementModelUpdates extends JModel
 		return '';
 	}
 
+	/**
+	 * sportsmanagementModelUpdates::getVersions()
+	 * 
+	 * @return
+	 */
 	function getVersions()
 	{
 		$query='SELECT id, version, DATE_FORMAT(date,"%Y-%m-%d %H:%i") date FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_version';
@@ -124,6 +136,13 @@ class sportsmanagementModelUpdates extends JModel
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelUpdates::_cmpDate()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function _cmpDate($a,$b)
 	{
 		$ua=strtotime($a['updateFileDate']);
@@ -132,17 +151,36 @@ class sportsmanagementModelUpdates extends JModel
 		return ($ua > $ub ? -1 : 1);
 	}
 
+	/**
+	 * sportsmanagementModelUpdates::_cmpName()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function _cmpName($a,$b)
 	{
 		return strcasecmp($a['file_name'],$b['file_name']);
 	}
 
+	/**
+	 * sportsmanagementModelUpdates::_cmpVersion()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	function _cmpVersion($a,$b)
 	{
 		return strcasecmp($a['last_version'],$b['last_version']);
 	}
 
 
+  /**
+   * sportsmanagementModelUpdates::getVersionHistory()
+   * 
+   * @return
+   */
   function getVersionHistory()
   {
   $query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_version_history order by date DESC';
@@ -151,6 +189,11 @@ class sportsmanagementModelUpdates extends JModel
   return $result;
   }
   
+	/**
+	 * sportsmanagementModelUpdates::loadUpdateFiles()
+	 * 
+	 * @return
+	 */
 	function loadUpdateFiles()
 	{
 		$option = JRequest::getCmd('option');

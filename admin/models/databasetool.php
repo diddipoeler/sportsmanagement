@@ -94,6 +94,32 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return $form;
 	}
     
+    
+    /**
+     * sportsmanagementModeldatabasetool::getMemory()
+     * 
+     * @param mixed $startmemory
+     * @param mixed $endmemory
+     * @return
+     */
+    function getMemory($startmemory,$endmemory) 
+    {
+  $memory = array();
+  $temp = new stdClass();
+  $temp->name = 'start';
+  $temp->memory = $startmemory;
+  $memory[] = $temp;
+  $temp = new stdClass();
+  $temp->name = 'ende';
+  $temp->memory = $endmemory;
+  $memory[] = $temp;
+  $temp = new stdClass();
+  $temp->name = 'verbrauch';
+  $temp->memory = $endmemory - $startmemory;
+  $memory[] = $temp;
+  return $memory;
+}
+    
     /**
      * sportsmanagementModeldatabasetool::getQueryTime()
      * 

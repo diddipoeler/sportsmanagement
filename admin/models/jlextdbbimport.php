@@ -94,6 +94,11 @@ var $import_version='';
 var $debug_info = false;
 var $_project_id = 0;
 
+/**
+ * sportsmanagementModeljlextdbbimport::__construct()
+ * 
+ * @return void
+ */
 function __construct( )
 	{
 	   $option = JRequest::getCmd('option');
@@ -111,6 +116,12 @@ function __construct( )
 	
 	}
 
+/**
+ * sportsmanagementModeljlextdbbimport::dump_header()
+ * 
+ * @param mixed $text
+ * @return void
+ */
 private function dump_header($text)
 	{
 		echo "<h1>$text</h1>";
@@ -121,6 +132,19 @@ private function dump_header($text)
 		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
 	}
     
+/**
+ * sportsmanagementModeljlextdbbimport::multisort()
+ * 
+ * @param mixed $array
+ * @param mixed $sort_by
+ * @param mixed $key1
+ * @param mixed $key2
+ * @param mixed $key3
+ * @param mixed $key4
+ * @param mixed $key5
+ * @param mixed $key6
+ * @return
+ */
 function multisort($array, $sort_by, $key1, $key2=NULL, $key3=NULL, $key4=NULL, $key5=NULL, $key6=NULL)
 {
 // usage (only enter the keys you want sorted):
@@ -154,6 +178,12 @@ function multisort($array, $sort_by, $key1, $key2=NULL, $key3=NULL, $key4=NULL, 
     }
 
 
+/**
+ * sportsmanagementModeljlextdbbimport::super_unique()
+ * 
+ * @param mixed $array
+ * @return
+ */
 function super_unique($array) 
 { 
 $result = array_map("unserialize", array_unique(array_map("serialize", $array)));
@@ -169,6 +199,14 @@ $result[$key] = $this->super_unique($value);
 return $result; 
 }
 
+/**
+ * sportsmanagementModeljlextdbbimport::property_value_in_array()
+ * 
+ * @param mixed $array
+ * @param mixed $property
+ * @param mixed $value
+ * @return
+ */
 function property_value_in_array($array, $property, $value) 
 {
     $flag = false;
@@ -203,6 +241,11 @@ function property_value_in_array($array, $property, $value)
 }
 
 
+/**
+ * sportsmanagementModeljlextdbbimport::getUpdateData()
+ * 
+ * @return
+ */
 function getUpdateData()
 	{
   global $mainframe, $option;
@@ -345,6 +388,13 @@ $my_text .= '<span style="color:green">';
 	return $this->_success_text;
 	}
 
+/**
+ * sportsmanagementModeljlextdbbimport::getProjectUpdateData()
+ * 
+ * @param mixed $csvdata
+ * @param mixed $project
+ * @return
+ */
 function getProjectUpdateData($csvdata,$project)
 	{
   //global $mainframe, $option;
@@ -421,6 +471,11 @@ $exportmatch[] = $tempmatch;
   }
   
   	
+/**
+ * sportsmanagementModeljlextdbbimport::getData()
+ * 
+ * @return
+ */
 function getData()
 	{
   //global $mainframe, $option;

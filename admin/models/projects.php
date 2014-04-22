@@ -107,6 +107,8 @@ class sportsmanagementModelProjects extends JModelList
 		$this->setState('filter.sports_type', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.season', 'filter_season', '');
 		$this->setState('filter.season', $temp_user_request);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
@@ -137,7 +139,7 @@ class sportsmanagementModelProjects extends JModelList
         $search_sports_type	= $this->getState('filter.sports_type');
         $search_season	= $this->getState('filter.season');
         $filter_state = $this->getState('filter.state');
-        
+        $search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.
         $db = JFactory::getDBO();
@@ -171,6 +173,10 @@ if ($search)
 		{
 		$query->where('p.published = '.$filter_state);	
 		}
+        if ($search_nation)
+		{
+        $query->where("l.country = '".$search_nation."'");
+        }
      
      $query->order($db->escape($this->getState('list.ordering', 'p.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));

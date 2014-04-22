@@ -87,18 +87,18 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					for ($i=0, $n=count($this->templates); $i < $n; $i++)
 					{
 						$row =& $this->templates[$i];
-						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=template.edit&id='.$row->id);
-						$checked=JHtml::_('grid.checkedout',$row,$i);
+						$link1 = JRoute::_('index.php?option=com_sportsmanagement&task=template.edit&id='.$row->id);
+						$checked = JHtml::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked; ?></td>
 							<td><?php
-								$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
-								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
-								$linkParams='';
+								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
+								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
+								$imageParams = 'title= "'.$imageTitle.'"';
+								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
+								$linkParams = '';
 								echo JHtml::link($link1,$image);
 								?></td>
 							<td><?php echo $row->template; ?></td>
