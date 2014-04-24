@@ -39,8 +39,25 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * modMatchesHelper
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class modMatchesHelper {
 
+	/**
+	 * modMatchesHelper::__construct()
+	 * 
+	 * @param mixed $params
+	 * @param mixed $id
+	 * @param integer $match_id
+	 * @return
+	 */
 	public function __construct(& $params, $id, $match_id = 0) {
 		$this->module_id = $id;
 		$this->params = $params;
@@ -55,6 +72,13 @@ class modMatchesHelper {
 		$params->get('use_icons') . '/' : false;
 	}
 
+	/**
+	 * modMatchesHelper::arrStrToClean()
+	 * 
+	 * @param mixed $string
+	 * @param string $sep
+	 * @return
+	 */
 	public function arrStrToClean(& $string, $sep = ',') {
 		if (empty ($string)) {
 			return $string;
@@ -65,6 +89,14 @@ class modMatchesHelper {
 		return $string;
 	}
 
+	/**
+	 * modMatchesHelper::getFromDB()
+	 * 
+	 * @param mixed $query
+	 * @param string $key
+	 * @param string $type
+	 * @return
+	 */
 	public function getFromDB($query, $key = "", $type = "objlist") 
     {
 		$db = JFactory::getDBO();
@@ -89,6 +121,14 @@ class modMatchesHelper {
 		return $result;
 	}
 
+	/**
+	 * modMatchesHelper::jl_utf8_convert()
+	 * 
+	 * @param mixed $text
+	 * @param string $fromenc
+	 * @param string $toenc
+	 * @return
+	 */
 	public function jl_utf8_convert($text, $fromenc = 'iso-8859-1', $toenc = 'UTF-8') {
 		if (!defined('_MODJLML_SPORTSMANAGEMENT_JC'))
 		return $text;
@@ -107,6 +147,14 @@ class modMatchesHelper {
 		return $text;
 	}
 
+	/**
+	 * modMatchesHelper::sortObject()
+	 * 
+	 * @param mixed $array
+	 * @param mixed $comparefunction
+	 * @param string $property
+	 * @return
+	 */
 	public function sortObject($array, $comparefunction, $property = '') {
 		$zcount = count($array);
 		for ($i = 1; $i < $zcount; $i++) {
@@ -121,6 +169,14 @@ class modMatchesHelper {
 		return $array;
 	}
 	
+	/**
+	 * modMatchesHelper::sortArray()
+	 * 
+	 * @param mixed $array
+	 * @param mixed $comparefunction
+	 * @param string $property
+	 * @return
+	 */
 	public function sortArray($array, $comparefunction, $property = '') {
 		$zcount = count($array);
 		for ($i = 1; $i < $zcount; $i++) {
@@ -135,6 +191,13 @@ class modMatchesHelper {
 		return $array;
 	}
 
+	/**
+	 * modMatchesHelper::asc()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	private function asc($a, $b) {
 		if ($a < $b)
 		return -1;
@@ -143,6 +206,13 @@ class modMatchesHelper {
 		return 1;
 	}
 
+	/**
+	 * modMatchesHelper::desc()
+	 * 
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return
+	 */
 	private function desc($a, $b) {
 		if ($a > $b)
 		return -1;
@@ -151,6 +221,12 @@ class modMatchesHelper {
 		return 1;
 	}
 	
+	/**
+	 * modMatchesHelper::array_trim()
+	 * 
+	 * @param mixed $a
+	 * @return
+	 */
 	public function array_trim($a) {
 		$j = 0;
 		$b = array ();
@@ -163,6 +239,11 @@ class modMatchesHelper {
 		return $b;
 	}
 	
+	/**
+	 * modMatchesHelper::addusedprojects()
+	 * 
+	 * @return
+	 */
 	private function addusedprojects() {
 		$usedp = $this->params->get('project');
 		if (is_array($usedp)) {
@@ -175,10 +256,23 @@ class modMatchesHelper {
 		}
 	}
 	
+	/**
+	 * modMatchesHelper::usedteamscheck()
+	 * 
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @return
+	 */
 	public function usedteamscheck($team_id, $project_id) {
 		return ((isset ($this->usedteams[0]) AND is_array($this->usedteams[0]) AND in_array($team_id, $this->usedteams[0])) OR (isset ($this->usedteams[$project_id]) AND is_array($this->usedteams[$project_id]) AND in_array($team_id, $this->usedteams[$project_id]))) ? 1 : 0;
 	}
 	
+	/**
+	 * modMatchesHelper::addteamicon()
+	 * 
+	 * @param mixed $which
+	 * @return
+	 */
 	public function addteamicon($which) {
 		$path = ($this->iconpath) ? $this->iconpath . 'teamlinks/' : false;
 		if ($path) {
@@ -188,6 +282,13 @@ class modMatchesHelper {
 		}
 	}
 	
+	/**
+	 * modMatchesHelper::getTeamDetails()
+	 * 
+	 * @param mixed $team
+	 * @param mixed $nr
+	 * @return
+	 */
 	public function getTeamDetails(& $team, $nr) {
 		if (!is_object($team))
 		return false;
@@ -216,6 +317,12 @@ class modMatchesHelper {
 		return $teamdetails;
 	}
 	
+	/**
+	 * modMatchesHelper::getpix()
+	 * 
+	 * @param mixed $team
+	 * @return
+	 */
 	public function getpix($team) {
 		$pt = $this->params->get('picture_type');
 		if ($this->params->get('show_picture') == 0)
@@ -245,6 +352,13 @@ class modMatchesHelper {
 		return $pic;
 	}
 	
+	/**
+	 * modMatchesHelper::formatResults()
+	 * 
+	 * @param mixed $row
+	 * @param mixed $match
+	 * @return
+	 */
 	public function formatResults(& $row, & $match) {
 		$live = ($match->live == 'z') ? 0 : 1;
 		$mrt = array (
@@ -319,6 +433,13 @@ class modMatchesHelper {
 		$row['result'] .= $mrt[$match->match_result_type][$live];
 	}
 	
+	/**
+	 * modMatchesHelper::createMatchInfo()
+	 * 
+	 * @param mixed $row
+	 * @param mixed $match
+	 * @return
+	 */
 	public function createMatchInfo(& $row, $match) {
 		$row['notice'] = ($match->match_result_detail != '' AND $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 		if ($this->params->get('show_referee', 1) == 1 AND $match->refname != '') {
@@ -346,6 +467,12 @@ class modMatchesHelper {
 		}
 	}
 	
+	/**
+	 * modMatchesHelper::formatMatches()
+	 * 
+	 * @param mixed $matches
+	 * @return
+	 */
 	public function formatMatches(& $matches) {
 		if ($this->params->get('lastsortorder') == 'desc') {
 			$matches = $this->sortObject($matches, 'desc', 'alreadyplayed');
@@ -441,6 +568,11 @@ class modMatchesHelper {
 		return $rows;
 	}
 	
+	/**
+	 * modMatchesHelper::getTimeLimit()
+	 * 
+	 * @return
+	 */
 	public function getTimeLimit() {
 		$livematchestime = "IF((p.allow_add_time > 0), ((p.game_regular_time+(p.game_parts * p.halftime)) + p.add_time), (p.game_regular_time+(p.game_parts * p.halftime)))";
 		$timeforfirstmatch = "DATE_SUB(" . $this->getDateString() . ", INTERVAL $livematchestime MINUTE) > NOW()";
@@ -456,6 +588,13 @@ class modMatchesHelper {
 		return $wheretime;
 	}
 	
+	/**
+	 * modMatchesHelper::createAjaxMenu()
+	 * 
+	 * @param mixed $row
+	 * @param mixed $cnt
+	 * @return
+	 */
 	public function createAjaxMenu(& $row, $cnt) {
 		if ($this->params->get('next_last', 0) == 0) {
 			$row->ajax = false;
@@ -543,6 +682,12 @@ class modMatchesHelper {
 			$row->ajax = $temp;
 	}
 	
+	/**
+	 * modMatchesHelper::arrayToUri()
+	 * 
+	 * @param mixed $arr
+	 * @return
+	 */
 	public function arrayToUri(& $arr) {
 		if (!is_array($arr))
 		return false;
