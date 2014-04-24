@@ -412,10 +412,14 @@ class MatchesSportsmanagementConnector extends modMatchesHelper
 				foreach ((array) $fav AS $key => $team) {
 					$fav_team = $this->arrStrToClean($team['fav_team']);
 					$this->usedteams[$key] = explode(',', $fav_team);
-					$cond = "(
-								(pt1.team_id IN (" . $fav_team . ") OR pt2.team_id IN (" . $fav_team . ")) AND
+//					$cond = "(
+//								(pt1.team_id IN (" . $fav_team . ") OR pt2.team_id IN (" . $fav_team . ")) AND
+//			                    (pt1.project_id = " . $key . "  OR pt2.project_id = " . $key . ")
+//							)";
+                    $cond = "(
+								(st1.team_id IN (" . $fav_team . ") OR st2.team_id IN (" . $fav_team . ")) AND
 			                    (pt1.project_id = " . $key . "  OR pt2.project_id = " . $key . ")
-							)";
+							)";        
 					$conditions[] = $cond;
 				}
 			}		
@@ -427,7 +431,8 @@ class MatchesSportsmanagementConnector extends modMatchesHelper
 			//$other_teams = implode(',', $customteams);
 			$other_teams = (is_array($teams)) ? implode(',', $teams) : $teams;
 			if($other_teams != '') {
-				$conditions[] = "(pt1.team_id IN (" . $other_teams . ") OR pt2.team_id IN (" . $other_teams . "))";
+//				$conditions[] = "(pt1.team_id IN (" . $other_teams . ") OR pt2.team_id IN (" . $other_teams . "))";
+                $conditions[] = "(st1.team_id IN (" . $other_teams . ") OR st2.team_id IN (" . $other_teams . "))";
 			}
 		}
 		if(count($conditions) ) {
