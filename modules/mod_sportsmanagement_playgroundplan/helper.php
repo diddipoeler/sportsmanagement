@@ -105,39 +105,6 @@ class modSportsmanagementPlaygroundplanHelper
         $query->join('LEFT',' #__sportsmanagement_playground AS pl ON m.playground_id = pl.id');
         
 
-//		$query = 'SELECT  m.match_date, DATE_FORMAT(m.time_present, "%H:%i") time_present,
-//                             p.name AS project_name, p.id AS project_id, tj1.team_id team1, tj2.team_id team2, lg.name AS league_name,
-//			     plcd.id AS club_playground_id, 
-//			     plcd.name AS club_playground_name,
-//			     pltd.id AS team_playground_id, 
-//			     pltd.name AS team_playground_name, 
-//			     pl.id AS playground_id, 
-//			     pl.name AS playground_name,
-//			     t1.name AS team1_name,
-//			     t2.name AS team2_name
-//                      FROM #__sportsmanagement_match AS m
-//                      INNER JOIN #__sportsmanagement_project_team tj1 ON tj1.id = m.projectteam1_id 
-//                      INNER JOIN #__sportsmanagement_project_team tj2 ON tj2.id = m.projectteam2_id 
-//                      INNER JOIN #__sportsmanagement_project AS p ON p.id=tj1.project_id
-//                      
-//                      INNER JOIN #__sportsmanagement_team t1 ON t1.id = tj1.team_id
-//		              INNER JOIN #__sportsmanagement_team t2 ON t2.id = tj2.team_id
-//                      
-//                      INNER JOIN #__sportsmanagement_club c ON c.id = t1.club_id
-//                      
-//		      INNER JOIN #__sportsmanagement_league lg ON lg.id = p.league_id
-//		      LEFT JOIN #__sportsmanagement_playground AS plcd ON c.standard_playground = plcd.id
-//		      LEFT JOIN #__sportsmanagement_playground AS pltd ON tj1.standard_playground = pltd.id 
-//		      LEFT JOIN #__sportsmanagement_playground AS pl ON m.playground_id = pl.id
-//
-//                      WHERE (m.playground_id IN ('. $playgroundstring .')
-//                          OR (tj1.standard_playground IN ('. $playgroundstring .') AND m.playground_id IS NULL)
-//                          OR (c.standard_playground IN ('. $playgroundstring .') AND (m.playground_id IS NULL AND tj1.standard_playground IS NULL )))
-//                      AND m.match_date > NOW()
-//                      AND m.published = 1
-//                      AND p.published = 1';
-
-
 		$query->where('( m.playground_id IN ('.$playgroundstring.') 
         OR (tj1.standard_playground IN ('. $playgroundstring .') AND m.playground_id IS NULL)
                           OR (c.standard_playground IN ('. $playgroundstring .') AND (m.playground_id IS NULL AND tj1.standard_playground IS NULL )))
@@ -148,14 +115,11 @@ class modSportsmanagementPlaygroundplanHelper
         
         if ($projectstring != 0)
 		{
-			//$query .= ' AND p.id IN ('. $projectstring .')';
             $query->where('p.id IN ('.$projectstring.')');
 		}
         
         $query->order('m.match_date ASC');
         $query->setLimit($numberofmatches);
-
-		//$query .= " ORDER BY m.match_date ASC LIMIT ".$numberofmatches;
 
 			
 		$db->setQuery($query);
@@ -189,9 +153,6 @@ class modSportsmanagementPlaygroundplanHelper
        $query->from('#__sportsmanagement_team AS t ');
        $query->where('t.id ='.(int)$team1_id);
 
-//		$query = "SELECT ". $teamformat. "
-//                 FROM #__sportsmanagement_team
-//                 WHERE id=".(int)$team1_id;
 		
 		$db->setQuery( $query );
         
@@ -219,12 +180,6 @@ class modSportsmanagementPlaygroundplanHelper
        $query->join('LEFT',' #__sportsmanagement_club as c ON c.id = t.club_id ');
        $query->where('t.id ='.$team_id);
        
-//		$query = "
-//            SELECT c.logo_small
-//            FROM #__sportsmanagement_team t
-//            LEFT JOIN #__sportsmanagement_club c ON c.id = t.club_id
-//            WHERE t.id = ".$team_id;
-
 	
 		$db->setQuery( $query );
         
