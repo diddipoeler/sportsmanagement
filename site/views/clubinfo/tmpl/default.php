@@ -99,7 +99,8 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 	}
     // ################################################################
   
-    if ( $this->use_joomlaworks == 0 || $this->config['show_clubinfo_tabs'] == 'no_tabs' )
+    //if ( $this->use_joomlaworks == 0 || $this->config['show_clubinfo_tabs'] == 'no_tabs' )
+    if ( !JPluginHelper::isEnabled('content', 'jw_ts') || $this->config['show_clubinfo_tabs'] == 'no_tabs' )
     {	
 	echo "<div class='jl_defaultview_spacing'>";
 	echo "&nbsp;";

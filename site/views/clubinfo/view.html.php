@@ -147,7 +147,7 @@ class sportsmanagementViewClubInfo extends JView
 }
 
     $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
+    //$this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
     
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE' );
 		if ( isset( $this->club ) )
