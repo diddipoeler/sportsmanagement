@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //echo 'project<pre>',print_r($this->project,true),'</pre>';
 //echo 'rows <pre>',print_r($this->rows,true),'</pre>';
-//echo 'rows <pre>',print_r($this->playereventstats,true),'</pre>';
+//echo 'playereventstats <pre>',print_r($this->playereventstats,true),'</pre>';
 
 /*
 das sind alle projektdaten

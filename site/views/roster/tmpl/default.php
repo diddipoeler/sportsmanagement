@@ -40,6 +40,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_('behavior.modal');
 
+//echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
+//echo ' positioneventtypes<br><pre>'.print_r($this->positioneventtypes,true).'</pre>';
+
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -93,10 +96,10 @@ if (count($this->rows > 0))
 			{
 				if (!in_array($eventtype->eventtype_id, $eventtypes_done))
 				{
-					$iconPath=$eventtype->icon;
+					$iconPath = $eventtype->icon;
 					if (!strpos(' '.$iconPath,'/'))
 					{
-						$iconPath='media/com_sportsmanagement/event_icons/'.$iconPath;
+						$iconPath = 'media/com_sportsmanagement/event_icons/'.$iconPath;
 					}
 					$css .= ".jl_roster_event".$eventtype->eventtype_id." { 
 					background: #ddd url('".JURI::base().$iconPath."') left top  no-repeat;

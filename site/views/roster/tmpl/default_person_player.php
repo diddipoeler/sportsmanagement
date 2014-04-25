@@ -258,8 +258,13 @@ if ($this->config['show_player_numbers'])
 		if ($this->overallconfig['use_jl_substitution'])
 		{
 			// Events of JL_substitutions are shown
-			$model =& $this->getModel();
-			$this->assignRef('InOutStat',sportsmanagementModelPlayer::getInOutStats($this->row->pid));
+			//$model =& $this->getModel();
+			//$this->assignRef('InOutStat',sportsmanagementModelPlayer::getInOutStats($this->row->pid));
+            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->season_team_id,$this->row->season_team_person_id,$this->project->game_regular_time));
+            
+            //echo ' project_id<br><pre>'.print_r($this->row->project_id,true).'</pre>';
+            //echo ' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>';
+            
 			$cnt=0;
 				if ($this->config['show_games_played'] AND isset($this->InOutStat->played) )
 				{
