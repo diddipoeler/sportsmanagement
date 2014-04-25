@@ -38,7 +38,8 @@
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+
 if (!defined('_JLMATCHLISTMODPATH')) { define('_JLMATCHLISTMODPATH', dirname( __FILE__ ));}
 if (!defined('_JLMATCHLISTMODURL')) { define('_JLMATCHLISTMODURL', JURI::base().'modules/mod_sportsmanagement_matches/');}
 require_once (_JLMATCHLISTMODPATH.DS.'helper.php');
