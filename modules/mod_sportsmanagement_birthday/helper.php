@@ -49,6 +49,14 @@ $crew = array();
 if(!function_exists('jl_birthday_sort'))
 {
 	// snippet taken from http://de3.php.net/manual/en/function.uasort.php
+	/**
+	 * jl_birthday_sort()
+	 * 
+	 * @param mixed $array
+	 * @param mixed $arguments
+	 * @param bool $keys
+	 * @return
+	 */
 	function jl_birthday_sort ($array, $arguments = array(), $keys = true) {
 		$code = "\$result=0;";
 		foreach ($arguments as $argument) {
@@ -84,10 +92,9 @@ if ($params->get('use_fav')==1)
     $query->select('fav_team');
     $query->from('#__sportsmanagement_project');
             
-	//$query='SELECT fav_team FROM #__sportsmanagement_project';
 	if ($p!='' && $p>0) 
     $query->where('id IN ('.$p.')');
-    //$query.= ' WHERE id IN ('.$p.')'
+
     ;
 
 	$database->setQuery($query);
@@ -122,33 +129,7 @@ if ($params->get('use_which') <= 1)
 {
     $query = $database->getQuery(true);
     $query->clear();
-    
-//	$query="SELECT p.id, p.birthday, p.firstname, p.nickname, p.lastname,
-//			p.picture AS default_picture, p.country, 
-//			DATE_FORMAT(p.birthday, '%m-%d')AS daymonth,
-//			YEAR( CURRENT_DATE( ) ) as year,
-//
-//			(YEAR( CURRENT_DATE( ) ) - YEAR( p.birthday ) +
-//			IF(DATE_FORMAT(CURDATE(), '%m.%d') > DATE_FORMAT(p.birthday, '%m.%d'), 1, 0)) AS age,
-//
-//			$dateformat, tp.picture,
-//
-//			(TO_DAYS(DATE_ADD(p.birthday, INTERVAL
-//			(YEAR(CURDATE()) - YEAR(p.birthday) +
-//			IF(DATE_FORMAT(CURDATE(), '%m.%d') >
-//			DATE_FORMAT(p.birthday, '%m.%d'), 1, 0))
-//			YEAR)) - TO_DAYS( CURDATE())+0) AS days_to_birthday,
-//
-//			'person' AS func_to_call, '' project_id, '' team_id,
-//			'pid' AS id_to_append, 1 AS type,
-//
-//			pt.team_id, pt.project_id
-//
-//			FROM #__sportsmanagement_person p 
-//			INNER JOIN #__sportsmanagement_team_player tp ON tp.person_id = p.id 
-//			INNER JOIN #__sportsmanagement_project_team pt ON pt.id = tp.projectteam_id 
-//			WHERE p.published = 1 AND p.birthday != '0000-00-00'";
-            
+         
     $query->select('p.id, p.birthday, p.firstname, p.nickname, p.lastname,p.picture AS default_picture, p.country,DATE_FORMAT(p.birthday, \'%m-%d\')AS daymonth');        
 	$query->select('YEAR( CURRENT_DATE( ) ) as year');
     $query->select('(YEAR( CURRENT_DATE( ) ) - YEAR( p.birthday ) +	IF(DATE_FORMAT(CURDATE(), \'%m.%d\') > DATE_FORMAT(p.birthday, \'%m.%d\'), 1, 0)) AS age');
@@ -167,36 +148,28 @@ if ($params->get('use_which') <= 1)
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 1');
 
-    
-    
     		
 	if ($usedteams!='') 
     $query->where('st.team_id IN ('.$usedteams.')');
-    //$query .= " AND pt.team_id IN (".$usedteams.") "
-    //;
+
 
 	if ($p!='' && $p>0) 
     $query->where('pt.project_id IN ('.$p.')');
-    //$query .= " AND pt.project_id IN (".$p.") "
-    //;
+
 
 	$query->group('p.id');
-    //$query .= " GROUP BY p.id ";
 
 	$maxDays = $params->get('maxdays');
 	if ((strlen($maxDays) > 0) && (intval($maxDays) >= 0))
 	{
-		//$query .= " HAVING days_to_birthday <= " . intval($maxDays);
         $query->having('days_to_birthday <= '. intval($maxDays));
 	}
 
 	$query->order('days_to_birthday ASC');
-    //$query .= " ORDER BY days_to_birthday ASC ";
 
 	if ($params->get('limit') > 0) 
     $query->setLimit($params->get('limit'));
-    //$query .= " LIMIT " . $params->get('limit')
-    //;
+
 
 	$database->setQuery($query);
 	//echo("<hr>".$database->getQuery($query));
@@ -211,33 +184,6 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
 {
     $query = $database->getQuery(true);
     $query->clear();
-    
-    
-//	$query="SELECT p.id, p.birthday, p.firstname, p.nickname, p.lastname,
-//			p.picture AS default_picture, p.country, 
-//			DATE_FORMAT(p.birthday, '%m-%d')AS daymonth,
-//			YEAR( CURRENT_DATE( ) ) as year,
-//
-//			(YEAR( CURRENT_DATE( ) ) - YEAR( p.birthday ) +
-//			IF(DATE_FORMAT(CURDATE(), '%m.%d') > DATE_FORMAT(p.birthday, '%m.%d'), 1, 0)) AS age,
-//
-//			$dateformat, ts.picture,
-//
-//			(TO_DAYS(DATE_ADD(p.birthday, INTERVAL
-//			(YEAR(CURDATE()) - YEAR(p.birthday) +
-//			IF(DATE_FORMAT(CURDATE(), '%m.%d') >
-//			DATE_FORMAT(p.birthday, '%m.%d'), 1, 0))
-//			YEAR)) - TO_DAYS( CURDATE())+0) AS days_to_birthday,
-//
-//			'staff' AS func_to_call, '' project_id, '' team_id,
-//			'tsid' AS id_to_append, 2 AS type, 
-//
-//			pt.team_id, pt.project_id
-//
-//			FROM #__sportsmanagement_person p
-//			INNER JOIN #__sportsmanagement_team_staff ts ON ts.person_id = p.id 
-//			INNER JOIN #__sportsmanagement_project_team pt ON pt.id = ts.projectteam_id 
-//			WHERE p.published = 1 AND p.birthday != '0000-00-00'";
 
 	$query->select('p.id, p.birthday, p.firstname, p.nickname, p.lastname,p.picture AS default_picture, p.country,DATE_FORMAT(p.birthday, \'%m-%d\')AS daymonth');        
 	$query->select('YEAR( CURRENT_DATE( ) ) as year');
@@ -265,34 +211,27 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
 		{
 			$ids .= "," . $player['id'];
 		}
-		//$query .= " AND p.id NOT IN (" . $ids . ") ";
         $query->where('p.id NOT IN ('.$ids.')');
 	}
 
 	if ($usedteams!='') 
     $query->where('st.team_id IN ('.$usedteams.')');
-    //$query .= " AND pt.team_id IN (".$usedteams.") ";
 
 	if ($p!='' && $p>0) 
     $query->where('pt.project_id IN ('.$p.')');
-    //$query .= " AND pt.project_id IN (".$p.") ";
 
 	$query->group('p.id');
-    //$query .= " GROUP BY p.id ";
 
 	$maxDays = $params->get('maxdays');
 	if ((strlen($maxDays) > 0) && (intval($maxDays) >= 0))
 	{
-		//$query .= " HAVING days_to_birthday <= " . intval($maxDays);
         $query->having('days_to_birthday <= '. intval($maxDays));
 	}
 
 	$query->order('days_to_birthday ASC');
-    //$query .= " ORDER BY days_to_birthday ASC";
 
 	if ($params->get('limit') > 0) 
     $query->setLimit($params->get('limit'));
-    //$query .= " LIMIT " . $params->get('limit');
 
 	$database->setQuery($query);
     
