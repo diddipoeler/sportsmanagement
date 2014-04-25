@@ -230,6 +230,16 @@ class sportsmanagementModelProject extends JModel
 		$round = self::increaseRound();
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view: '.$view.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        $this->_current_round = $round;
+        
+        switch ($view)
+        {
+            case 'result':
+            sportsmanagementModelResults::$roundid = $this->_current_round;
+            break;
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view: '.$view.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
         
 		return ($round ? $round->id : 0);
 	}

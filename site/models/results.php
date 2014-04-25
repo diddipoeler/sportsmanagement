@@ -56,7 +56,7 @@ class sportsmanagementModelResults extends JModel
 {
 	var $projectid	= 0;
 	var $divisionid	= 0;
-	var $roundid = 0;
+	static $roundid = 0;
 	var $rounds = array(0);
 	var $mode = 0;
 	var $order = 0;
@@ -71,7 +71,9 @@ class sportsmanagementModelResults extends JModel
 	 */
 	function __construct()
 	{
-		parent::__construct();
+		$mainframe = JFactory::getApplication();
+        
+        parent::__construct();
 
 		$this->divisionid = JRequest::getInt('division',0);
 		$this->mode = JRequest::getInt('mode',0);
@@ -82,16 +84,23 @@ class sportsmanagementModelResults extends JModel
         
         sportsmanagementModelProject::$projectid = $this->projectid;
         
-		if($round) 
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        
+		if( $round > 0 ) 
         {
-			$roundid = $round;
+			$this->roundid = $round;
 		} 
         else 
         {
-			$roundid = sportsmanagementModelProject::getCurrentRound();
+			sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
+            //$roundid = sportsmanagementModelProject::$_current_round;
 		}
-		$this->roundid = $roundid;
+		//$this->roundid = $roundid;
 		$this->config = sportsmanagementModelProject::getTemplateConfig('results');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid<br><pre>'.print_r($this->roundid,true).'</pre>'),'');
+        
 	}
 
 	/**
@@ -243,12 +252,17 @@ class sportsmanagementModelResults extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+        
         $project = sportsmanagementModelProject::getProject();
 
-		if (!$round) 
+		if ( !$round ) 
         {
-			$round = sportsmanagementModelProject::getCurrentRound();
+			//$round = sportsmanagementModelProject::getCurrentRound();
+            $round = $project->current_round;
 		}
+
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
 
 		$result = array();
         // select some fields
@@ -297,7 +311,7 @@ class sportsmanagementModelResults extends JModel
         if ( !$result )
 	    {
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
 		return $result;
