@@ -225,9 +225,9 @@ if ( $this->config['show_match_points'] == 1 )
 {
 ?>
     <tr class="sectiontableentry1">
-        <td class="valueleft"><?php echo $this->homeranked->getPoints();?></td>
+        <td class="valueleft"><?php echo JSMRankingTeam::getPoints();?></td>
         <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_POINTS');?></td>
-        <td class="valueright"><?php echo $this->awayranked->getPoints();?></td>
+        <td class="valueright"><?php echo JSMRankingTeam::getPoints();?></td>
     </tr>
 <?php
 }
