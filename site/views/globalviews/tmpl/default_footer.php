@@ -46,18 +46,32 @@ $view = ucfirst(strtolower($view));
 $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-	
+$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
 //if (JComponentHelper::getParams('com_sportsmanagement')->get('show_footer',0))
 //{
 ?>
-	
+
+<script>
+window.onload = function() 
+{
+var width = get_windowPopUpWidth();
+var heigth = get_windowPopUpHeight();
+var linkbugtracker = "<?php echo $cfg_bugtracker_server ?>";
+var linkonlinehelp = "<?php echo $cfg_help_server ?>";
+var view = "<?php echo $view ?>";
+
+document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
+document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
+}
+
+</script>	
 
 <div style="text-align:center; clear:both">      
       
       <br />      
       
               <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target= "_blank" href="http://www.fussballineuropa.de">
-                <img src= "<?php echo JURI::base( true ) ?>/administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto"</a>            
+                <img src= "<?php echo JURI::base( true ) ?>/administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto"</a>            
       <br />
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
       <br />      
@@ -70,13 +84,11 @@ $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_hei
       echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
       ?>
       <br />      
-      <?php
-      echo 'Hilfeseite ';
-			$send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
-         ' href="'.$cfg_help_server.'SM-Frontend:'.$view.'">'.JText::_('Onlinehilfe').'</a>';
-//$send="<a href=\"".$cfg_help_server."Frontend:".$view."\" target=\"_blank\" onclick=\"window.open(this.href,this.target,'width=".$modal_popup_width.",height=".$modal_popup_height."'); return false;\">Popup öffnen</a>";             
-      echo $send;   
-			?>     
+<div id="onlinehelp-link"></div>      
+<br /> 
+<div id="bugtracker-link"></div>     
+     
+              
     </div>   
             
 <?php

@@ -1,9 +1,31 @@
+//var windowWidth = jQuery(window).width(); //retrieve current window width
+//var windowHeight = jQuery(window).height(); //retrieve current window height
+//var documentWidth = jQuery(document).width(); //retrieve current document width
+//var documentHeight = jQuery(document).height(); //retrieve current document height
+//var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
+//var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
+
+
 //add 1.5 compatibility layer
 window.addEvent('domready', function() {
 	if($('adminForm')) {
 		$('adminForm').setProperty('name', 'adminForm');
 	}
 });
+
+
+function get_windowPopUpWidth()
+{
+var documentWidth = jQuery(window).width();
+return documentWidth - 100;
+}
+
+function get_windowPopUpHeight()
+{
+var documentHeight = jQuery(window).height();
+return documentHeight - 100 ;
+}
+
 
 function joomleague_changedoc(docid){
   if (docid != "" && docid.options[docid.options.selectedIndex].value!="") {

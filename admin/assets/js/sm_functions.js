@@ -1,9 +1,9 @@
-//var windowWidth = jQuery(window).width(); //retrieve current window width
-//var windowHeight = jQuery(window).height(); //retrieve current window height
-//var documentWidth = jQuery(document).width(); //retrieve current document width
-//var documentHeight = jQuery(document).height(); //retrieve current document height
-//var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
-//var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
+var windowWidth = jQuery(window).width(); //retrieve current window width
+var windowHeight = jQuery(window).height(); //retrieve current window height
+var documentWidth = jQuery(document).width(); //retrieve current document width
+var documentHeight = jQuery(document).height(); //retrieve current document height
+var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
+var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
 
 function get_documentWidth()
@@ -17,6 +17,20 @@ function get_documentHeight()
 var documentHeight = jQuery(document).height();
 return documentHeight ;
 }
+
+
+function get_windowPopUpWidth()
+{
+var documentWidth = jQuery(window).width();
+return documentWidth - 100;
+}
+
+function get_windowPopUpHeight()
+{
+var documentHeight = jQuery(window).height();
+return documentHeight - 100 ;
+}
+
 
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)

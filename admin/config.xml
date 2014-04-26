@@ -11,11 +11,19 @@
 	
   <field name="cfg_help_server" 
   type="text" 
-  default="http://smwiki.diddipoeler.de/index.php/"
+  default="http://smwiki.diddipoeler.de/index.php/" 
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
-		</field>	
+		</field>
+    
+  <field name="cfg_bugtracker_server" 
+  type="text" 
+  default="http://mantisbugtracker.fussballineuropa.de/my_view_page.php"
+		size="100"
+    label="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER_DESC">
+		</field>	  	
 	
   <field name="cfg_update_server_file" 
   type="text" 
