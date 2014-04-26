@@ -59,12 +59,12 @@ var linkbugtracker = "<?php echo $cfg_bugtracker_server ?>";
 var linkonlinehelp = "<?php echo $cfg_help_server ?>";
 var view = "<?php echo $view ?>";
 
-alert(linkbugtracker);
+//alert(linkbugtracker);
 
 document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
 //document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
 }
-	
+</script>		
         
 <div style="text-align:center; clear:both">      
       

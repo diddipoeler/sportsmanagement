@@ -40,7 +40,34 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
+
+$option = JRequest::getCmd('option');
+$view = JRequest::getVar( "view") ;
+$view = ucfirst(strtolower($view));
+$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
+
+
 ?>
+
+<script>
+window.onload = function() 
+{
+var width = get_windowPopUpWidth();
+var heigth = get_windowPopUpHeight();
+var linkbugtracker = "<?php echo $cfg_bugtracker_server ?>";
+var linkonlinehelp = "<?php echo $cfg_help_server ?>";
+var view = "<?php echo $view ?>";
+
+//alert(linkbugtracker);
+
+document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
+//document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
+}
+</script>	
+
     <div>      
       <div class="cpanel-left">        
         <div style="clear:both">          
@@ -383,5 +410,7 @@ JHtml::_('behavior.tooltip');
       <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
       <br />      
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
-      <?php echo JText::sprintf( '%1$s', $this->version ); ?>     
+      <?php echo JText::sprintf( '%1$s', $this->version ); ?>  
+      
+      <div id="bugtracker-link"></div>    
     </div>

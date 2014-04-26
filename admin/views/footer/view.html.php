@@ -60,9 +60,9 @@ class sportsmanagementViewFooter extends JView
 	 */
 	function display( $tpl = null )
 	{
-	   // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-  $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+//	   // Get a refrence of the page instance in joomla
+//	   $document	= JFactory::getDocument();
+//       $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 	
 		parent::display( $tpl );
 	}
