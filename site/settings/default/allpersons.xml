@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<form>
+  
+
+	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	name= "COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_NAME"
+			description="COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR">
+
+	
+
+    <field	name="show_columns" type="radio" default="1" 
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COLUMNS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_COLUMNS">
+			<option value="0">COM_SPORTSMANAGEMENT_1_COLUMNS</option>
+			<option value="1">COM_SPORTSMANAGEMENT_2_COLUMNS</option>
+		</field>
+		
+
+
+
+	</fieldset>
+
+
+
+</form>

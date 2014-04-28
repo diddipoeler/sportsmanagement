@@ -346,115 +346,192 @@ class sportsmanagementModelPersons extends JModelList
 		}
 	}
 
+	
 	/**
-	 * return persons list from ids contained in var cid
-	 *
-	 * @return array
+	 * sportsmanagementModelPersons::getPersonsToAssign()
+	 * 
+     * im augenblick keine verwendung
+     * 
+	 * @return
 	 */
 	function getPersonsToAssign()
 	{
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        
 		$cid = JRequest::getVar( 'cid' );
 
 		if ( !count( $cid ) )
 		{
 			return array();
 		}
+        
+        $query->select('pl.id,pl.firstname, pl.nickname,pl.lastname');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
+        $query->where('pl.id IN (' . implode( ', ', $cid ) . ')');
+        $query->where('pl.published = 1');
 
-		$query = '	SELECT	pl.id,
-							pl.firstname, pl.nickname,
-							pl.lastname
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-					WHERE pl.id IN (' . implode( ', ', $cid ) . ') AND pl.published = 1';
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+//		$query = '	SELECT	pl.id,
+//							pl.firstname, pl.nickname,
+//							pl.lastname
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
+//					WHERE pl.id IN (' . implode( ', ', $cid ) . ') AND pl.published = 1';
+		
+        $db->setQuery( $query );
+		return $db->loadObjectList();
 	}
 
 
 	/**
 	 * return list of project teams for select options
 	 *
+     * im augenblick keine verwendung
+     * 
 	 * @return array
 	 */
 	function getProjectTeamList()
 	{
-		$query = '	SELECT	t.id AS value,
-							t.name AS text
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.team_id = t.id
-					WHERE tt.project_id = ' . $this->_project_id . '
-					ORDER BY text ASC ';
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        
+        $query->select('t.id AS value,t.name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
+        $query->where('tt.project_id = ' . $this->_project_id);
+        $query->order('text ASC');
+        
+//		$query = '	SELECT	t.id AS value,
+//							t.name AS text
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+//					INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.team_id = t.id
+//					WHERE tt.project_id = ' . $this->_project_id . '
+//					ORDER BY text ASC ';
+
 		#echo '<br />'.$query.'<br />';
 
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$db->setQuery( $query );
+		return $db->loadObjectList();
 	}
 
+	
 	/**
-	 * get team name
-	 *
-	 * @return string
+	 * sportsmanagementModelPersons::getTeamName()
+	 * 
+     * im augenblick keine verwendung
+     * 
+	 * @param mixed $team_id
+	 * @return
 	 */
 	function getTeamName( $team_id )
 	{
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        
 		if ( !$team_id )
 		{
 			return '';
 		}
-		$query = ' SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team WHERE id = ' . $team_id;
-		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
+        
+        $query->select('name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+        $query->where('id = '. $team_id);
+        
+		//$query = ' SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team WHERE id = ' . $team_id;
+		
+        $db->setQuery( $query );
+		return $db->loadResult();
 	}
 
+	
 	/**
-	 * get team name
-	 *
-	 * @return string
+	 * sportsmanagementModelPersons::getProjectTeamName()
+	 * 
+	 * @param mixed $project_team_id
+	 * @return
 	 */
 	function getProjectTeamName( $project_team_id )
 	{
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        
 		if ( !$project_team_id )
 		{
 			return '';
 		}
-		$query = ' SELECT t.name
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
-					ON t.id=pt.team_id
-					WHERE pt.id = '. $this->_db->Quote($project_team_id);
-		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
+        
+        $query->select('t.name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
+        
+        $query->where('pt.id = '. $db->Quote($project_team_id));
+        
+//		$query = ' SELECT t.name
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
+//					ON t.id=pt.team_id
+//					WHERE pt.id = '. $db->Quote($project_team_id);
+
+		$db->setQuery( $query );
+		return $db->loadResult();
 	}
     
-    /**
-	 * Method to return the players array (projectid,teamid)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
+    
 
+	/**
+	 * sportsmanagementModelPersons::getPersons()
+	 * 
+     * im augenblick keine verwendung
+     * 
+	 * @return
+	 */
 	function getPersons()
 	{
-		$query='SELECT	id AS value,
-				lastname,
-				firstname,
-				info,
-				weight,
-				height,
-				picture,
-				birthday,
-				notes,
-				nickname,
-				knvbnr,
-				country,
-				phone,
-				mobile,
-				email
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
-				WHERE published = 1
-				ORDER BY lastname ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        
+        $query->select('id AS value,lastname,firstname,info,weight,height,picture,birthday,notes,nickname,knvbnr,country,phone,mobile,email');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('published = 1');
+        $query->order('lastname ASC');
+        
+//		$query='SELECT	id AS value,
+//				lastname,
+//				firstname,
+//				info,
+//				weight,
+//				height,
+//				picture,
+//				birthday,
+//				notes,
+//				nickname,
+//				knvbnr,
+//				country,
+//				phone,
+//				mobile,
+//				email
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
+//				WHERE published = 1
+//				ORDER BY lastname ASC ';
+		
+        $db->setQuery($query);
+		if (!$result = $db->loadObjectList())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
@@ -462,17 +539,38 @@ class sportsmanagementModelPersons extends JModelList
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelPersons::getPersonListSelect()
+     * 
+     * wird beim xmlimport aufgerufen
+     * 
+     * @return
+     */
     public function getPersonListSelect()
 	{
-		$query ="	SELECT id,id AS value,firstname,lastname,nickname,birthday,info,
-        LOWER(lastname) AS low_lastname,
-					LOWER(firstname) AS low_firstname,
-					LOWER(nickname) AS low_nickname
-						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
-						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
-						ORDER BY lastname,firstname";
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       // Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        $query->select('id,id AS value,firstname,lastname,nickname,birthday,info');
+        $query->select('LOWER(lastname) AS low_lastname');
+        $query->select('LOWER(firstname) AS low_firstname');
+        $query->select('LOWER(nickname) AS low_nickname');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where("firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'");
+        $query->order('lastname,firstname');
+        
+//		$query ="	SELECT id,id AS value,firstname,lastname,nickname,birthday,info,
+//        LOWER(lastname) AS low_lastname,
+//					LOWER(firstname) AS low_firstname,
+//					LOWER(nickname) AS low_nickname
+//						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
+//						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
+//						ORDER BY lastname,firstname";
+		
+        $db->setQuery($query);
+		if ($results = $db->loadObjectList())
 		{
 			foreach ($results AS $person)
 			{

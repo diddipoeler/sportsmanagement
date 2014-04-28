@@ -84,8 +84,113 @@ else
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
 
+//$command = JRequest::getVar('task');
+$command = JRequest::getVar('task', 'display');
+
+$view = JRequest::getVar('view');
+$lang = JFactory::getLanguage();
+$app = JFactory::getApplication();
+$type = '';
+$arrExtensions = sportsmanagementHelper::getExtensions();
+$model_pathes[]	= array();
+$view_pathes[]	= array();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
 
 
+// Check for array format.
+$filter = JFilterInput::getInstance();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter<br><pre>'.print_r($filter,true).'</pre>'),'');
+
+if (is_array($command))
+{
+	$command = $filter->clean(array_pop(array_keys($command)), 'cmd');
+}
+else
+{
+	$command = $filter->clean($command, 'cmd');
+}
+
+// Check for a controller.task command.
+if (strpos($command, '.') !== false)
+{
+	// Explode the controller.task command.
+	list ($type, $task) = explode('.', $command);
+}
+
+
+for ($e = 0; $e < count($arrExtensions); $e++)
+{
+$extension = $arrExtensions[$e];
+$extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extensionpath<br><pre>'.print_r($extensionpath,true).'</pre>'),'');
+
+
+if($app->isAdmin()) 
+{
+		$base_path = $extensionpath.DS.'admin';
+		// language file
+		$lang->load('com_sportsmanagement_'.$extension, $base_path);
+	}
+
+//set the base_path to the extension controllers directory
+	if(is_dir($base_path))
+	{
+		$params = array('base_path'=>$base_path);
+	}
+	else
+	{
+		$params = array();
+	}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+ 
+ 
+// own controllers currently not supported in 2.0
+	if (!file_exists($base_path.DS.'controller.php') )
+	{
+		if($type!=$extension) {
+			$params = array();
+		}
+		$extension = "sportsmanagement";
+	}
+	elseif (!file_exists($base_path.DS.$extension.'.php'))
+	{
+		if($type!=$extension) {
+			$params = array();
+		}
+		$extension = "sportsmanagement";
+	}
+
+// import joomla controller library
+jimport('joomla.application.component.controller');
+	try
+	{
+		$controller = JController::getInstance(ucfirst($extension), $params);
+	}
+	catch (Exception $exc)
+	{
+		//fallback if no extensions controller has been initialized
+		$controller	= JController::getInstance('sportsmanagement');
+	}
+     
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
+    
+	if (is_dir($base_path.DS.'models')) {
+		$model_pathes[] = $base_path.DS.'models';
+	}
+
+	if (is_dir($base_path.DS.'views')) {
+		$view_pathes[] = $base_path.DS.'views';
+        //$view_pathes[] = $base_path.DS.'views'.DS.$extension.DS.'tmpl';
+	}
+
+
+}
+    
 /*
 $document = JFactory::getDocument();
 $mainframe = JFactory::getApplication();
@@ -115,11 +220,40 @@ $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
 DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
 */
 
-// import joomla controller library
-jimport('joomla.application.component.controller');
+//// import joomla controller library
+//jimport('joomla.application.component.controller');
  
 // Get an instance of the controller prefixed by SportsManagement
-$controller = JController::getInstance('SportsManagement');
+//$controller = JController::getInstance('SportsManagement');
+
+// import joomla controller library
+jimport('joomla.application.component.controller');
+
+if(is_null($controller) && !($controller instanceof JController)) {
+	//fallback if no extensions controller has been initialized
+	$controller	= JController::getInstance('sportsmanagement');
+}
+
+foreach ($model_pathes as $path)
+{
+	if(!empty($path))
+	{
+		$controller->addModelPath($path, 'sportsmanagementModel');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addModelPath<br><pre>'.print_r($path,true).'</pre>'),'');
+	}
+}
+
+foreach ($view_pathes as $path)
+{
+	if(!empty($path))
+	{
+		$controller->addViewPath($path, 'sportsmanagementView');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addViewPath<br><pre>'.print_r($path,true).'</pre>'),'');
+	}
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
+
  
 // Perform the Request task
 $controller->execute(JRequest::getCmd('task'));

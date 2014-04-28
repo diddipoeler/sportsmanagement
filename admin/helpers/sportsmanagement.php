@@ -224,8 +224,12 @@ abstract class sportsmanagementHelper
 
     
     
-    /**
-	 * Configure the Linkbar.
+    
+	/**
+	 * sportsmanagementHelper::addSubmenu()
+	 * 
+	 * @param mixed $submenu
+	 * @return void
 	 */
 	public static function addSubmenu($submenu) 
 	{
@@ -276,6 +280,8 @@ abstract class sportsmanagementHelper
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgooglecalendar', $submenu == 'googlecalendar');
         
+        JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions');
+        
 		// set some global property
 		$document = JFactory::getDocument();
 		$document->addStyleDeclaration('.icon-48-helloworld {background-image: url(../media/com_sportsmanagement/images/tux-48x48.png);}');
@@ -284,6 +290,7 @@ abstract class sportsmanagementHelper
 			$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
 		}
 	}
+    
 	/**
 	 * Get the actions
 	 */
@@ -608,21 +615,12 @@ abstract class sportsmanagementHelper
 		return (!empty($res) ? $res : false);
 	}
 
-	public static function getExtensions($project_id)
+	public static function getExtensions()
 	{
 		$option='com_sportsmanagement';
 		$arrExtensions = array();
 		$excludeExtension = array();
-		if ($project_id) {
-			$db= JFactory::getDBO();
-			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
-
-			$db->setQuery($query);
-			$res=$db->loadObject();
-			if(!empty($res)) {
-				$excludeExtension = explode(",", $res->extension);
-			}
-		}
+		
 		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
 			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
 													'.', false, false, $excludeExtension);
@@ -636,6 +634,35 @@ abstract class sportsmanagementHelper
 
 		return $arrExtensions;
 	}
+    
+//	public static function getExtensions($project_id)
+//	{
+//		$option='com_sportsmanagement';
+//		$arrExtensions = array();
+//		$excludeExtension = array();
+//		if ($project_id) {
+//			$db= JFactory::getDBO();
+//			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
+//
+//			$db->setQuery($query);
+//			$res=$db->loadObject();
+//			if(!empty($res)) {
+//				$excludeExtension = explode(",", $res->extension);
+//			}
+//		}
+//		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
+//			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
+//													'.', false, false, $excludeExtension);
+//			if($folderExtensions !== false) {
+//				foreach ($folderExtensions as $ext)
+//				{
+//					$arrExtensions[] = $ext;
+//				}
+//			}
+//		}
+//
+//		return $arrExtensions;
+//	}
 	
 		public static function getExtensionsOverlay($project_id)
 	{
