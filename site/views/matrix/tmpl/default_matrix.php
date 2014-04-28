@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			foreach ($this->teams as $team_row_header) {
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->id, $team_row_header->club_id);
+				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id);
 				$desc = $team_row_header->short_name;
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
@@ -145,7 +145,9 @@ defined('_JEXEC') or die('Restricted access');
 		$matrix .= '<tr class="' . $class . '">';
 		$k_c = 0; //count columns
 
-		foreach ($this->teams as $team_col_id => $team_col) {
+		foreach ($this->teams as $team_col_id => $team_col) 
+        {
+                        
 			if ($k_c == 0) // Header columns
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
@@ -157,6 +159,12 @@ defined('_JEXEC') or die('Restricted access');
 					$picture = $trow->logo_small;
 					$desc = sportsmanagementHelper::getPictureThumb($picture, $title,0,0,3);
 				}
+                
+                $tValue = '<th class="">';
+					$tValue .= $k_r + 1;
+					$tValue .= '</th>';
+					$matrix .= $tValue;
+                    
 				if ($this->config['link_teams'] == 1) {
 					$tValue = '<th class="teamsleft">';
 					$tValue .= JHTML :: link($link, $desc);
@@ -353,7 +361,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				$value = $dummy;
 				$title = '' ;
-				$picture = 'media/com_sportsmanagement/jl_images/bullet_red.png';
+				$picture = $this->config['image_placeholder'];
 				$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 				$value .= $desc; 
 			} else {

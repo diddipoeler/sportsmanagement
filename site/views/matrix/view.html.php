@@ -52,6 +52,12 @@ jimport( 'joomla.application.component.view');
  */
 class sportsmanagementViewMatrix extends JView
 {
+	/**
+	 * sportsmanagementViewMatrix::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		// Get a refrence of the page instance in joomla

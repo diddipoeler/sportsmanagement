@@ -14,8 +14,21 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="show_matrix_russia" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_MATRIX_RUSSIA"
+			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_MATRIX_RUSSIA">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="image_placeholder" type="media" directory="com_sportsmanagement/database/jl_images"
+				hide_none="1" label="COM_SPORTSMANAGEMENT_FES_MATRIX_FIELD_IMAGE_LABEL"
+				size="80"
+				description="COM_SPORTSMANAGEMENT_FES_MATRIX_FIELD_IMAGE_DESC" />
+				
 	</fieldset>
 
+<!--
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
@@ -26,6 +39,7 @@
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
+-->
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
