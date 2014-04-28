@@ -54,8 +54,9 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelallpersons extends JModelList
 {
 
-var $_identifier = "persons";
-	
+var $_identifier = "allpersons";
+	var $limitstart = 0;
+    var $limit = 0;
 	/**
 	 * sportsmanagementModelallpersons::__construct()
 	 * 
@@ -64,17 +65,67 @@ var $_identifier = "persons";
 	 */
 	public function __construct($config = array())
         {   
+            //$app = JFactory::getApplication('site');
+                $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+//                JRequest::setVar('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+                //$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+              //  $this->limit = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
                 $config['filter_fields'] = array(
-                        'v.name',
+                        'v.lastname',
+                        'v.firstname',
                         'v.picture',
                         'v.website',
                         'v.address',
                         'v.zipcode',
                         'v.city',
-                        'v.country'
+                        'v.country',
+                        'v.birthday',
+                        'v.deathday',
+                        'v.position_id'
                         );
                 parent::__construct($config);
         }
+
+/**
+ * Method to get the starting number of items for the data set.
+ *
+ * @return  integer  The starting number of items available in the data set.
+ *
+ * @since   11.1
+ */
+public function getStart()
+{
+    $app = JFactory::getApplication();
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', $this->limitstart );
+    
+    $store = $this->getStoreId('getstart');
+
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+
+    return $this->cache[$store];
+}
 
 /**
 	 * Method to auto-populate the model state.
@@ -90,15 +141,38 @@ var $_identifier = "persons";
         // Initialise variables.
 		$app = JFactory::getApplication('site');
         
+        
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r(JRequest::getVar('limitstart'),true).'</pre>'),'');
+        
         // List state information
 		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+        
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
-
-		$value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
+        //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
+        
+        // In case limit has been changed, adjust limitstart accordingly
+        //$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
+
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($value,true).'</pre>'),'');
+
+		//$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+		//$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart',0);
+        //$value = JRequest::getVar('limitstart');
+//        $this->setState('limitstart', $this->limitstart);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getState('limitstart'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        
+        $columns = JRequest::getVar('show_columns');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
+        $this->setState('filter.select_columns', $columns);
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -138,7 +212,7 @@ var $_identifier = "persons";
 //		$this->setState('params', $params);
 
 		// List state information.
-		//parent::populateState('v.name', 'ASC');
+		parent::populateState('v.firstname', 'ASC');
 	}
     
     
@@ -153,6 +227,12 @@ var $_identifier = "persons";
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
+        $select_columns	= $this->getState('filter.select_columns');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns' .  ' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
+        
+        //$select_columns_temp	= implode(",",$select_columns);
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns_temp' .  ' <br><pre>'.print_r($select_columns_temp,true).'</pre>'),'Notice');
         
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -160,7 +240,15 @@ var $_identifier = "persons";
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.*');
+        if ( $select_columns )
+        {
+        $query->select(implode(",",$select_columns)); 
+        }
+        else
+        {
+        $query->select('v.*');    
+        }
+		
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS teamslug');
@@ -189,9 +277,14 @@ var $_identifier = "persons";
         $query->where("v.country = '".$search_nation."'");
         }
         
+        //$query->limit($this->getState('list.start'));
+        
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {        
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');

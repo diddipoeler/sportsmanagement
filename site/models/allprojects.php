@@ -54,8 +54,10 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelallprojects extends JModelList
 {
 
-var $_identifier = "clubs";
-	
+var $_identifier = "allprojects";
+	var $limitstart = 0;
+    var $limit = 0;
+    
 	/**
 	 * sportsmanagementModelallprojects::__construct()
 	 * 
@@ -64,6 +66,7 @@ var $_identifier = "clubs";
 	 */
 	public function __construct($config = array())
         {   
+            $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
                         'v.picture',
@@ -75,6 +78,47 @@ var $_identifier = "clubs";
                         );
                 parent::__construct($config);
         }
+
+/**
+ * Method to get the starting number of items for the data set.
+ *
+ * @return  integer  The starting number of items available in the data set.
+ *
+ * @since   11.1
+ */
+public function getStart()
+{
+    $app = JFactory::getApplication();
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', $this->limitstart );
+    
+    $store = $this->getStoreId('getstart');
+
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+
+    return $this->cache[$store];
+}
 
 /**
 	 * Method to auto-populate the model state.
@@ -98,8 +142,8 @@ var $_identifier = "clubs";
         //$temp_user_request = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($temp_user_request,true).'</pre>'   ),'');
 
-		$value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+		//$value = JRequest::getUInt('limitstart', 0);
+//		$this->setState('list.start', $value);
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->getUserStateFromRequest(),true).'</pre>'   ),'');
 

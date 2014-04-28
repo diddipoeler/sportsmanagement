@@ -54,8 +54,10 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelallteams extends JModelList
 {
 
-var $_identifier = "teams";
-	
+var $_identifier = "allteams";
+	var $limitstart = 0;
+    var $limit = 0;
+    
 	/**
 	 * sportsmanagementModelallteams::__construct()
 	 * 
@@ -64,6 +66,8 @@ var $_identifier = "teams";
 	 */
 	public function __construct($config = array())
         {   
+            $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+            
                 $config['filter_fields'] = array(
                         'v.name',
                         'v.picture',
@@ -75,6 +79,47 @@ var $_identifier = "teams";
                         );
                 parent::__construct($config);
         }
+        
+        /**
+ * Method to get the starting number of items for the data set.
+ *
+ * @return  integer  The starting number of items available in the data set.
+ *
+ * @since   11.1
+ */
+public function getStart()
+{
+    $app = JFactory::getApplication();
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', $this->limitstart );
+    
+    $store = $this->getStoreId('getstart');
+
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+
+    return $this->cache[$store];
+}
 
 /**
 	 * Method to auto-populate the model state.
@@ -88,17 +133,24 @@ var $_identifier = "teams";
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('site');
+		$app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'   ),'');
+        
         
         // List state information
 		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
-		$value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+//		$value = JRequest::getVar('limitstart', 0, '', 'int');
+//		$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
+        
+//        $this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+//        // In case limit has been changed, adjust limitstart accordingly
+//        $this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -138,7 +190,7 @@ var $_identifier = "teams";
 //		$this->setState('params', $params);
 
 		// List state information.
-		//parent::populateState('v.name', 'ASC');
+		parent::populateState('v.name', 'ASC');
 	}
     
     
