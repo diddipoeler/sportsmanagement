@@ -1,13 +1,13 @@
 @charset "utf-8";
 /* CSS Document */
 
-table.modjlclubicons {
+table.modjsmclubicons {
   margin:0 auto;
   padding:0;
   width:100%;
   height:auto;
 }
-div.modjlclubicons {
+div.modjsmclubicons {
   display:block !important;
   margin:0 auto;
   padding:0;
@@ -15,20 +15,20 @@ div.modjlclubicons {
   text-align:center;
   overflow:hidden;
 }
-div.modjlclubicons > div {
+div.modjsmclubicons > div {
   display:block !important;
   margin:0 auto;
   width:100%;
   text-align:center;
   overflow:hidden;
 }
-.modjlclubicons td{
+.modjsmclubicons td{
   margin:0;
   padding:0;
   text-align:center;
   vertical-align:middle;
 }
-span.modjlclubicons {
+span.modjsmclubicons {
   display:block;
   margin:0 auto;
   padding:0;

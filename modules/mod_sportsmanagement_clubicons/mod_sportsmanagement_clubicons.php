@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
 require_once (dirname(__FILE__).DS.'helper.php');
 
