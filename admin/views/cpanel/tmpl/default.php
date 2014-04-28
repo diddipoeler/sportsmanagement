@@ -40,6 +40,7 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
