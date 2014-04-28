@@ -70,15 +70,28 @@ class JFormFieldprojectlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		$mainframe = JFactory::getApplication();
+        // Initialize variables.
 		$options = array();
     
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('l.id AS value, l.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as l');
+            if ( defined(COM_SPORTSMANAGEMENT_TABLE) )
+            {
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as l');    
+            }
+            else
+            {
+            $query->from('#__sportsmanagement_project as l');    
+            }
+			
 			$query->order('l.name');
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'Notice');
+            
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     

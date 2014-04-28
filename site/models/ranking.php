@@ -54,7 +54,7 @@ jimport( 'joomla.application.component.model' );
  */
 class sportsmanagementModelRanking extends JModel
 {
-	var $projectid = 0;
+	static $projectid = 0;
 	var $round = 0;
 	var $rounds = array(0);
 	var $part = 0;
