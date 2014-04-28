@@ -298,6 +298,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `approved_user` INT( 11 ) NOT NULL DEFAULT  '0',
   
   `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL ,
+  `result_type` INT(11) NOT NULL DEFAULT '0' ,
+  
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
