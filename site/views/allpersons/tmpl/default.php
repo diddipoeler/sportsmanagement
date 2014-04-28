@@ -83,7 +83,7 @@ function tableOrdering( order, dir, task )
 	
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<input type="hidden" name="limitstart" value="" />
+
         
     <div class="display-limit">
 			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;

@@ -5,4 +5,35 @@
             <![CDATA[COM_SPORTSMANAGEMENT_XML_ALLPERSONS_LAYOUT_DESCR]]>
         </message>
     </layout>
+    
+    <fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+          <field 	name="show_columns" 
+          type="list" 
+          default=""
+          size="20"
+          multiple="true"
+				label="COM_SPORTSMANAGEMENT_FES_ALLPERSONS_SHOW_COLUMNS"
+				description="COM_SPORTSMANAGEMENT_FES_ALLPERSONS_SHOW_COLUMNS_DESC">
+			<option value="v.firstname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_firstname</option>
+			<option value="v.lastname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_lastname</option>
+			<option value="v.picture">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_picture</option>
+			<option value="v.website">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_website</option>
+			<option value="v.address">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_address</option>
+			<option value="v.zipcode">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_zipcode</option>
+			
+			<option value="v.birthday">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_birthday</option>
+			<option value="v.deathday">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_deathday</option>
+			<option value="v.position_id">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_position_id</option>
+			
+		</field>
+
+
+		</fieldset>
+	</fields>
+    
+    
 </metadata>

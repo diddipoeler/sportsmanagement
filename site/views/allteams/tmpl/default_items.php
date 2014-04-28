@@ -119,6 +119,8 @@ $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 </td>
 </tr>
 <?php endforeach; ?>
+
+<tfoot><tr><td colspan="10"><?php //echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 </table>
 
 
@@ -130,4 +132,5 @@ $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
     <?php echo $this->pagination->getResultsCounter(); ?>
     </p>
 	<?php echo $this->pagination->getPagesLinks(); ?>
+    <?php //echo $this->pagination->getListFooter(); ?>
 </div>
