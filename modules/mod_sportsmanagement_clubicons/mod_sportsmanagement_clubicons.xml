@@ -23,7 +23,7 @@
 	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_clubicons.sys.ini</language>
 </languages>
 <config>
-		<fields name="params" addpath="/modules/mod_sportsmanagement_clubicons/elements/">
+		<fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/elements">
 			<fieldset name="advanced">
 	<field name="template" type="list" default="default" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE_DESC">
 	  <option value="default">default</option>
@@ -35,7 +35,7 @@
 		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
 	</field>
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
-	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTHDIF" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTHDIFF_DESC" />
+	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
 	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
 	<field name="iconpos" type="list" default="middle" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_DESC">
 		<option value="top">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_TOP</option>
@@ -54,7 +54,7 @@
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 	</field>
-  <field name="project_ids" type="projectsmultiple" default="" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
+  <field name="project_ids" type="projects" default="" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
   <field name="usepfromcomponent" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>

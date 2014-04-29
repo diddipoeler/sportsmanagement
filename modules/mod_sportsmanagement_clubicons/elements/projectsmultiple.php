@@ -39,11 +39,29 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * JElementProjectsmultiple
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class JElementProjectsmultiple extends JElement
 {
 
   var $_name = 'projectsmultiple';
 
+  /**
+   * JElementProjectsmultiple::fetchElement()
+   * 
+   * @param mixed $name
+   * @param mixed $value
+   * @param mixed $node
+   * @param mixed $control_name
+   * @return
+   */
   function fetchElement($name, $value, &$node, $control_name){
     $db = JFactory::getDBO();
     $query = 'SELECT p.id, p.name FROM #__sportsmanagement_project p WHERE published=1 ORDER BY id DESC';
