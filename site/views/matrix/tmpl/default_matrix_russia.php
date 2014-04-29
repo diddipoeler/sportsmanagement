@@ -38,6 +38,10 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+
+//echo 'russiamatrix<pre>'.print_r($this->russiamatrix,true).'</pre>';
+
+
 ?>
 
 <!--[if IE]>
@@ -81,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 
       .rotated_cell
       {
-         height:400px;
+         height:200px;
          background-color: ;
          color: white;
          padding-bottom: 3px;
@@ -105,11 +109,13 @@ defined('_JEXEC') or die('Restricted access');
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
 
 	$k_r = 0; // count rows
-	foreach ($this->teams as $team_row_id => $team_row) {
+	foreach ($this->teams as $team_row_id => $team_row) 
+    {
 		if ($k_r == 0) // Header rows
 			{
 			$matrix .= '<tr class="sectiontableheader">';
 			//write the first row
+            $matrix .= '<th class="headerspacer">&nbsp;</th>';
 			if ($crosstable_icons_horizontal) {
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			} else {
@@ -162,7 +168,7 @@ defined('_JEXEC') or die('Restricted access');
 					$desc = sportsmanagementHelper::getPictureThumb($picture, $title,0,0,3);
 				}
             
-            $tValue = '<th class="">';
+                    $tValue = '<th class="">';
 					$tValue .= $k_r + 1;
 					$tValue .= '</th>';
 					$matrix .= $tValue;
@@ -185,14 +191,20 @@ defined('_JEXEC') or die('Restricted access');
 
 			// find the corresponding game
 			$Allresults = '';
-			foreach ($this->results as $result) 
-            {
-				if($team_row->division_id != $division_id) continue;
-				if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) {
-					$ResultType = '';
-					if ($result->decision == 0) {
-						$e1 = $result->e1;
-						$e2 = $result->e2;
+            // darstelung russisch
+            
+            //$e1 = $team_row->first[$team_col_id]->e1;
+//			$e2 = $team_row->first[$team_col_id]->e2;
+
+            	// erste runde
+                $ResultType = '';
+					if ($team_row->first[$team_col_id]->decision == 0) 
+                    {
+						//$e1 = $result->e1;
+//						$e2 = $result->e2;
+                        
+                        $e1 = $team_row->first[$team_col_id]->e1;
+			$e2 = $team_row->first[$team_col_id]->e2;
 						
 						if($e1 > $e2) {
 							$e1 = '<span style="color:'.$this->config['color_win'].'">'.$e1.'</span>';
@@ -205,7 +217,7 @@ defined('_JEXEC') or die('Restricted access');
 							$e2 = '<span style="color:'.$this->config['color_loss'].'">'.$e2.'</span>';
 						}
 						
-						switch ($result->rtype) {
+						switch ($team_row->first[$team_col_id]->rtype) {
 								case 1 : // Overtime
 									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                                     $ResultType .= ')';
@@ -220,29 +232,31 @@ defined('_JEXEC') or die('Restricted access');
 									break;
 
 							} 
-					} else {
-						$e1 = $result->v1;
-						$e2 = $result->v2;
-						if (!isset ($result->v1)) {
+					} 
+                    else 
+                    {
+						$e1 = $team_row->first[$team_col_id]->v1;
+						$e2 = $team_row->first[$team_col_id]->v2;
+						if (!isset ($team_row->first[$team_col_id]->v1)) {
 							$e1 = 'X';
 						}
-						if (!isset ($result->v2)) {
+						if (!isset ($team_row->first[$team_col_id]->v2)) {
 							$e2 = 'X';
 						}
 					}
 					$showMatchReportLink = false;
 
-					if ($result->show_report == 1 || $this->config['force_link_report'] == 1) {
+					if ($team_row->first[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1) {
 						$showMatchReportLink = true;
 					}
-					if ($result->show_report == 0 && $e1 == "" && $e2 == "")
+					if ($team_row->first[$team_col_id]->show_report == 0 && $e1 == "" && $e2 == "")
 						$showMatchReportLink = true;
 					if ($showMatchReportLink) {
 						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
-						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $result->id);
+						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $team_row->first[$team_col_id]->id);
 						if (($e1 != "") && ($e2 != "")) {
 							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
 							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
@@ -271,7 +285,7 @@ defined('_JEXEC') or die('Restricted access');
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $result->id);
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $team_row->first[$team_col_id]->id);
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -288,14 +302,14 @@ defined('_JEXEC') or die('Restricted access');
 									break;
 
 							}
-							if($result->cancel) {
+							if($team_row->first[$team_col_id]->cancel) {
 								$picture = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 								$match_result = JHTML::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $result->new_match_id);
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $team_row->first[$team_col_id]->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = JHTML::link($link, $desc);
@@ -323,7 +337,7 @@ defined('_JEXEC') or die('Restricted access');
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $result->roundid);
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $team_row->first[$team_col_id]->roundid);
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
@@ -348,8 +362,179 @@ defined('_JEXEC') or die('Restricted access');
 					} else {
 						$Allresults .= '<br>' . $match_result;
 					}
-				}
-			}
+            
+            // zweite runde
+            //$e1 = $team_row->second[$team_col_id]->e1;
+//			$e2 = $team_row->second[$team_col_id]->e2;
+            
+            $ResultType = '';
+					if ($team_row->second[$team_col_id]->decision == 0) 
+                    {
+						//$e1 = $result->e1;
+//						$e2 = $result->e2;
+                        
+                        $e1 = $team_row->second[$team_col_id]->e1;
+			$e2 = $team_row->second[$team_col_id]->e2;
+						
+						if($e1 > $e2) {
+							$e1 = '<span style="color:'.$this->config['color_win'].'">'.$e1.'</span>';
+							$e2 = '<span style="color:'.$this->config['color_win'].'">'.$e2.'</span>';
+						} else if ($e1 == $e2) {
+							$e1 = '<span style="color:'.$this->config['color_draw'].'">'.$e1.'</span>';
+							$e2 = '<span style="color:'.$this->config['color_draw'].'">'.$e2.'</span>';
+						} else if ($e1 < $e2) {
+							$e1 = '<span style="color:'.$this->config['color_loss'].'">'.$e1.'</span>';
+							$e2 = '<span style="color:'.$this->config['color_loss'].'">'.$e2.'</span>';
+						}
+						
+						switch ($team_row->first[$team_col_id]->rtype) {
+								case 1 : // Overtime
+									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+                                    $ResultType .= ')';
+									break;
+
+								case 2 : // Shootout
+									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+                                    $ResultType .= ')';
+									break;
+
+								case 0 :
+									break;
+
+							} 
+					} 
+                    else 
+                    {
+						$e1 = $team_row->second[$team_col_id]->v1;
+						$e2 = $team_row->second[$team_col_id]->v2;
+						if (!isset ($team_row->second[$team_col_id]->v1)) {
+							$e1 = 'X';
+						}
+						if (!isset ($team_row->second[$team_col_id]->v2)) {
+							$e2 = 'X';
+						}
+					}
+					$showMatchReportLink = false;
+
+					if ($team_row->second[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1) {
+						$showMatchReportLink = true;
+					}
+					if ($team_row->second[$team_col_id]->show_report == 0 && $e1 == "" && $e2 == "")
+						$showMatchReportLink = true;
+					if ($showMatchReportLink) {
+						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
+						// result with matchreport
+						$title = "";
+						$arrayString = array ();
+						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $team_row->second[$team_col_id]->id);
+						if (($e1 != "") && ($e2 != "")) {
+							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
+							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
+
+							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams))) {
+								#$resultStr = str_replace( "%TEAMHOME%",
+								#                           $this->teams[$result->projectteam1_id]->name,
+								#                           JText::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
+								#$title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
+								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
+								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams))) {
+									$arrayString = array (
+										"style" => $colorStr . $bgColorStr
+									);
+								} else {
+									$arrayString = "";
+								}
+							} else {
+								$resultStr = "";
+								$resultStr .= "&nbsp;" . $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType . "&nbsp;" ;
+								$arrayString = array (
+									"style" => $colorStr . $bgColorStr
+								);
+							}
+							$match_result = JHTML :: link($link, $resultStr, $arrayString);
+						} else {
+							switch ($this->config['which_link']) {
+								case 1 : // Link to Next Match page
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $team_row->second[$team_col_id]->id);
+									//FIXME
+									// $title = str_replace( "%TEAMHOME%",
+									//                       $this->teams[$result->projectteam1_id]->name,
+									//                       JText::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
+									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
+									break;
+
+								case 2 : // Link to Match report
+									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, JText :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
+									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
+									break;
+
+								default :
+									break;
+
+							}
+							if($team_row->second[$team_col_id]->cancel) {
+								$picture = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif';
+								$title = $result->cancel_reason;
+								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
+								$match_result = JHTML::link($link, $desc);
+								$new_match = "";
+								if($result->new_match_id > 0) {
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $team_row->second[$team_col_id]->new_match_id);
+									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
+									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
+									$new_match = JHTML::link($link, $desc);
+								} 
+								$match_result .= $new_match;
+							} else {
+								$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
+								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
+								$match_result = JHTML :: link($link, $desc);
+							}
+						}
+					}
+					elseif (($e1 != "") && ($e2 != "")) {
+						// result without match report
+						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {
+							$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
+						} else {
+							$resultStr = "";
+							$resultStr .= "<span style='color:" . $this->project->fav_team_text_color . ";'>";
+							$resultStr .= "<span style='background-color:" . $this->project->fav_team_color . ";'>";
+							$resultStr .= "&nbsp;" . $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType . "&nbsp;";
+							$resultStr .= "</span>";
+							$resultStr .= "</span>";
+						}
+						$match_result = $resultStr;
+					} else {
+						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $team_row->second[$team_col_id]->roundid);
+						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
+						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
+						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
+						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {
+							$spanStartStr = "";
+							$spanEndStr = "";
+						} else {
+							$spanStartStr = "";
+							$spanStartStr .= "<span style='color:" . $this->project->fav_team_text_color . ";'>";
+							$spanStartStr .= "<span style='background-color:" . $this->project->fav_team_color . ";'>";
+							$spanStartStr .= "&nbsp;";
+
+							$spanEndStr = "&nbsp;";
+							$resultStr .= "</span>";
+							$resultStr .= "</span>";
+						}
+						$match_result = $spanStartStr . JHTML :: link($link, $desc) . $spanEndStr;
+					}
+					//Don’t break, allow for multiple results
+					if ($Allresults == '') {
+						$Allresults = $match_result;
+					} else {
+						$Allresults .= '<br>' . $match_result;
+					}
+            
+            
+
 
 			$value = "";
 

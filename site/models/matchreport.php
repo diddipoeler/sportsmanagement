@@ -56,26 +56,27 @@ jimport( 'joomla.filesystem.folder' );
 class sportsmanagementModelMatchReport extends JModel
 {
 
-	var $matchid=0;
-	var $match=null;
+	var $matchid = 0;
+	var $match = null;
+    var $projectid= 0;
 
 	/**
 	 * caching for players events. Used in stats calculations
 	 * @var unknown_type
 	 */
-	var $_playersevents=null;
+	var $_playersevents = null;
 
 	/**
 	 * caching for players basic stats. Used in stats calculations
 	 * @var unknown_type
 	 */
-	var $_playersbasicstats=null;
+	var $_playersbasicstats = null;
 
 	/**
 	 * caching for staff basic stats. Used in stats calculations
 	 * @var unknown_type
 	 */
-	var $_staffsbasicstats=null;
+	var $_staffsbasicstats = null;
 
 
 	/**
@@ -86,6 +87,8 @@ class sportsmanagementModelMatchReport extends JModel
 	function __construct()
 	{
 		$this->matchid = JRequest::getInt('mid',0);
+        $this->projectid = JRequest::getInt( 'p', 0 );
+		sportsmanagementModelProject::$projectid = $this->projectid;
 		parent::__construct();
 	}
 

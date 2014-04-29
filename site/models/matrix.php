@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelMatrix
  * 
@@ -55,7 +53,12 @@ jimport( 'joomla.application.component.model' );
  */
 class sportsmanagementModelMatrix extends JModel
 {
-	/**
+	
+    var $divisionid= 0;
+    var $roundid= 0;
+    var $projectid= 0;
+    
+    /**
 	 * sportsmanagementModelMatrix::__construct()
 	 * 
 	 * @return
@@ -64,9 +67,9 @@ class sportsmanagementModelMatrix extends JModel
 	{
 		parent::__construct( );
 
-		$this->divisionid	= JRequest::getInt( 'division', 0 );
-		$this->roundid		= JRequest::getInt( 'r', 0 );
-		$this->projectid		= JRequest::getInt( 'p', 0 );
+		$this->divisionid = JRequest::getInt( 'division', 0 );
+		$this->roundid = JRequest::getInt( 'r', 0 );
+		$this->projectid = JRequest::getInt( 'p', 0 );
 		sportsmanagementModelProject::$projectid = $this->projectid;
 	}
 
@@ -123,6 +126,109 @@ class sportsmanagementModelMatrix extends JModel
 	}
 
 	
+    /**
+     * sportsmanagementModelMatrix::getRussiaMatrixResults()
+     * 
+     * @param mixed $teams
+     * @param mixed $results
+     * @return
+     */
+    function getRussiaMatrixResults($teams, $results )
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$russiamatrix = array();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
+        
+        foreach ($teams as $team_row_id => $team_row) 
+        {
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row_id<br><pre>'.print_r($team_row_id,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row<br><pre>'.print_r($team_row,true).'</pre>'),'Notice');
+        
+        foreach ($teams as $team_col_id => $team_col) 
+        {
+            //$team_row->first = array();
+        foreach ($results as $result) 
+            {
+            if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
+                {
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
+                if ( isset($team_row->first[(int)$team_col->projectteamid]) )
+                {
+                $team_row->second[(int)$team_col->projectteamid]->e1 = $result->e1;    
+                $team_row->second[(int)$team_col->projectteamid]->e2 = $result->e2;
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->e1 = $result->e2;    
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->e2 = $result->e1;
+                
+                $team_row->second[(int)$team_col->projectteamid]->v1 = $result->v1;    
+                $team_row->second[(int)$team_col->projectteamid]->v2 = $result->v2;
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->v1 = $result->v2;    
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->v2 = $result->v1;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->decision = $result->decision;
+                $team_row->second[(int)$team_col->projectteamid]->decision = $result->decision;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->rtype = $result->rtype;
+                $team_row->second[(int)$team_col->projectteamid]->rtype = $result->rtype;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->id = $result->id;
+                $team_row->second[(int)$team_col->projectteamid]->id = $result->id;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->roundid = $result->roundid;
+                $team_row->second[(int)$team_col->projectteamid]->roundid = $result->roundid;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->new_match_id = $result->new_match_id;
+                $team_row->second[(int)$team_col->projectteamid]->new_match_id = $result->new_match_id;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->show_report = $result->show_report;
+                $team_row->second[(int)$team_col->projectteamid]->show_report = $result->show_report;        
+                            
+                }
+                else
+                {
+                $team_row->first[(int)$team_col->projectteamid]->e1 = $result->e1;    
+                $team_row->first[(int)$team_col->projectteamid]->e2 = $result->e2;
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->e1 = $result->e2;    
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->e2 = $result->e1;
+                
+                $team_row->first[(int)$team_col->projectteamid]->v1 = $result->v1;    
+                $team_row->first[(int)$team_col->projectteamid]->v2 = $result->v2;
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->v1 = $result->v2;    
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->v2 = $result->v1;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->decision = $result->decision;
+                $team_row->first[(int)$team_col->projectteamid]->decision = $result->decision;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->rtype = $result->rtype;
+                $team_row->first[(int)$team_col->projectteamid]->rtype = $result->rtype;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->id = $result->id;
+                $team_row->first[(int)$team_col->projectteamid]->id = $result->id;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->roundid = $result->roundid;
+                $team_row->first[(int)$team_col->projectteamid]->roundid = $result->roundid;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->new_match_id = $result->new_match_id;
+                $team_row->first[(int)$team_col->projectteamid]->new_match_id = $result->new_match_id;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->show_report = $result->show_report;
+                $team_row->first[(int)$team_col->projectteamid]->show_report = $result->show_report;
+                
+                }
+                
+                }    
+            }    
+        }
+        }    
+            
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
+    
+    
+    return $teams;    
+    }
+    
 	/**
 	 * sportsmanagementModelMatrix::getMatrixResults()
 	 * 

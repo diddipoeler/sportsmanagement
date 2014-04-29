@@ -105,11 +105,13 @@ defined('_JEXEC') or die('Restricted access');
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
 
 	$k_r = 0; // count rows
-	foreach ($this->teams as $team_row_id => $team_row) {
+	foreach ($this->teams as $team_row_id => $team_row) 
+    {
 		if ($k_r == 0) // Header rows
 			{
 			$matrix .= '<tr class="sectiontableheader">';
 			//write the first row
+            $matrix .= '<th class="headerspacer">&nbsp;</th>';
 			if ($crosstable_icons_horizontal) {
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			} else {
@@ -185,9 +187,11 @@ defined('_JEXEC') or die('Restricted access');
 			$Allresults = '';
 			foreach ($this->results as $result) {
 				if($team_row->division_id != $division_id) continue;
-				if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) {
+				if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
+                {
 					$ResultType = '';
-					if ($result->decision == 0) {
+					if ($result->decision == 0) 
+                    {
 						$e1 = $result->e1;
 						$e2 = $result->e2;
 						
@@ -217,7 +221,9 @@ defined('_JEXEC') or die('Restricted access');
 									break;
 
 							} 
-					} else {
+					} 
+                    else 
+                    {
 						$e1 = $result->v1;
 						$e2 = $result->v2;
 						if (!isset ($result->v1)) {
