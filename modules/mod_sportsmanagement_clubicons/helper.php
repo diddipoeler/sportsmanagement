@@ -103,12 +103,12 @@ class modJSMClubiconsHelper
 
 		$this->project = sportsmanagementModelProject::getProject();
 
-		//$ranking = JSMRanking::getInstance($this->project);
+		$ranking = JSMRanking::getInstance($this->project);
 		//$ranking->setProjectId($project_id);
         sportsmanagementModelRanking::$projectid = $project_id;
 		$divisionid = explode(':', $this->params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$this->ranking   = sportsmanagementModelRanking::getRanking(null, null, $divisionid);
+		$this->ranking   = $ranking->getRanking(null, null, $divisionid);
 
 		if ($this->params->get( 'logotype' ) == 'logo_small')
 		{
