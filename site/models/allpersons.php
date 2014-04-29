@@ -57,6 +57,8 @@ class sportsmanagementModelallpersons extends JModelList
 var $_identifier = "allpersons";
 	var $limitstart = 0;
     var $limit = 0;
+    var $columns= array();
+    
 	/**
 	 * sportsmanagementModelallpersons::__construct()
 	 * 
@@ -173,6 +175,7 @@ public function getStart()
         $columns = JRequest::getVar('show_columns');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
         $this->setState('filter.select_columns', $columns);
+        $this->columns = $columns;
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -212,7 +215,7 @@ public function getStart()
 //		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('v.firstname', 'ASC');
+		parent::populateState('v.lastname', 'ASC');
 	}
     
     
@@ -228,6 +231,11 @@ public function getStart()
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
         $select_columns	= $this->getState('filter.select_columns');
+        
+        foreach( $select_columns as $key => $value )
+        {
+            $select_columns[$key] = 'v.'.$value;
+        } 
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns' .  ' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
         

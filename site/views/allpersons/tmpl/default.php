@@ -43,6 +43,8 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.framework');
 JHtml::_('behavior.modal');
 
+//echo ' columns<br><pre>'.print_r($this->columns,true).'</pre>';
+
 //$listOrder	= $this->escape($this->state->get('list.ordering'));
 //$listDirn	= $this->escape($this->state->get('list.direction'));
 
@@ -61,6 +63,12 @@ function tableOrdering( order, dir, task )
         form.filter_order_Dir.value = dir;
         document.adminForm.submit( task );
 }
+function searchPerson(val)
+	{
+        var s= document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+	}
 </script>
 
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
@@ -78,6 +86,20 @@ function tableOrdering( order, dir, task )
 					?>
 				</button>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+        
+        <td align="center" colspan="4">
+				<?php
+                $startRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0041'));
+		$endRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '005A'));
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+			printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+			}
+				
+				?>
+			</td>
+        
+        
 	</div>
 
 	

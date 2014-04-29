@@ -47,76 +47,72 @@ defined('_JEXEC') or die('Restricted access');
 
 <thead>
 <tr>
-<th class="" id="">
-<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_PERSON_LAST_NAME', 'v.lastname', $this->sortDirection, $this->sortColumn) ; ?>
-</th>
-<th class="" id="">
-<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_PERSON_FIRST_NAME', 'v.firstname', $this->sortDirection, $this->sortColumn) ; ?>
-</th>
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'Bild', 'v.picture', $this->sortDirection, $this->sortColumn); ?>
-</th>
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'v.address', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'v.zipcode', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.location', $this->sortDirection, $this->sortColumn); ?>
-</th>                 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
-</th>                                 
-                
-	</tr>
-		</thead>
 
-
-
-
-<?php foreach ($this->items as $i => $item) : ?>
-<tr class="row<?php echo $i % 2; ?>">
-<td>
-<?php 
-if ( $item->projectslug )
+<?PHP
+foreach( $this->columns as $key => $value )
 {
-$link = sportsmanagementHelperRoute::getPlayerRoute( $item->projectslug, $item->teamslug, $item->slug );
-echo JHtml::link( $link, $item->lastname );
+?>
+<th class="" id="">
+<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_FES_ALLPERSONS_'.strtoupper($value), 'v.'.$value, $this->sortDirection, $this->sortColumn) ; ?>
+</th>
+<?PHP    
 }
-else
+
+?>
+</tr>
+</thead>
+
+
+<?php foreach ($this->items as $field => $item) : ?>
+<tr class="row<?php echo $i % 2; ?>">
+
+<?php 
+
+foreach( $this->columns as $key => $value )
 {
-echo $item->lastname;    
+?>
+<td>
+<?PHP 
+switch ($value)
+{
+    case 'lastname':
+    if ( $item->projectslug )
+    {
+    $link = sportsmanagementHelperRoute::getPlayerRoute( $item->projectslug, $item->teamslug, $item->slug );
+    echo JHtml::link( $link, $item->$value );
+    }
+    else
+    {
+    echo $item->$value;    
+    }
+    break;
+    case 'country':
+    echo JSMCountries::getCountryFlag($item->$value);
+    break;
+    case 'picture':
+    ?>
+    <a href="<?php echo $item->$value;?>" title="<?php echo $item->lastname;?>" class="modal">
+    <img src="<?php echo $item->$value;?>" alt="<?php echo $item->lastname;?>" width="20" />
+    </a>  
+    <?PHP 
+    break;
+    case 'website':
+    echo JHtml::link( $item->$value, $item->$value, array( 'target' => '_blank' ) );
+    break;
+    default:
+    echo $item->$value;
+    break;
+
+    
 }
 ?>
 </td>
-<td>
-<?php echo $item->firstname; ?>
-</td>
-<td>
-<a href="<?php echo $item->picture;?>" title="<?php echo $item->lastname;?>" class="modal">
-<img src="<?php echo $item->picture;?>" alt="<?php echo $item->lastname;?>" width="20" />
-</a>  
+<?PHP 
 
-</td>
-<td>
-<?php echo JHtml::link( $item->website, $item->website, array( 'target' => '_blank' ) ); ?>
-</td>
-<td>
-<?php echo $item->address; ?>
-</td>
-<td>
-<?php echo $item->zipcode; ?>
-</td>
-<td>
-<?php echo $item->location; ?>
-</td>
-<td>
-<?php echo JSMCountries::getCountryFlag($item->country); ?>
-</td>
+}
+
+?>
+
 </tr>
 <?php endforeach; ?>
 </table>

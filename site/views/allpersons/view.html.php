@@ -73,6 +73,7 @@ class sportsmanagementViewallpersons extends JView
         $app = JFactory::getApplication();
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
+        $model	= $this->getModel();
 
 		
         $state 		= $this->get('State');
@@ -86,8 +87,10 @@ class sportsmanagementViewallpersons extends JView
         }
         
 		$pagination	= $this->get('Pagination');
+        $this->assignRef('columns',$model->columns);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pagination<br><pre>'.print_r($pagination,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
 		
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
