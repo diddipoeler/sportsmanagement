@@ -40,6 +40,15 @@
 defined('_JEXEC') or die('Restricted access');
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+
 /**
  * modJSMClubiconsHelper
  * 
@@ -89,24 +98,25 @@ class modJSMClubiconsHelper
 		
         if ( $project_id )
         {
-        $model = JModel::getInstance('project', 'sportsmanagementModel');
-		$model->setProjectId($project_id);
+        //$model = JModel::getInstance('project', 'sportsmanagementModel');
+		sportsmanagementModelProject::setProjectId($project_id);
 
-		$this->project = $model->getProject();
+		$this->project = sportsmanagementModelProject::getProject();
 
-		$ranking = JSMRanking::getInstance($this->project);
-		$ranking->setProjectId($project_id);
+		//$ranking = JSMRanking::getInstance($this->project);
+		//$ranking->setProjectId($project_id);
+        sportsmanagementModelRanking::$projectid = $project_id;
 		$divisionid = explode(':', $this->params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$this->ranking   = $ranking->getRanking(null, null, $divisionid);
+		$this->ranking   = sportsmanagementModelRanking::getRanking(null, null, $divisionid);
 
 		if ($this->params->get( 'logotype' ) == 'logo_small')
 		{
-			$teams = $model->getTeamsIndexedByPtid();
+			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 		}
 		else //get the teams cause we don't have logo_middle and big in ranking model's getTeams:
 		{
-			$teams = $model->getTeams($divisionid);
+			$teams = sportsmanagementModelProject::getTeams($divisionid);
 		}
 		
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
