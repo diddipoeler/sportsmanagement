@@ -90,6 +90,36 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_FRONTEND','objcountry.template_frontend',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_VIEW_BACKEND','objcountry.views_backend',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_FIELDTYP','objcountry.fieldtyp',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_VIEWS_BACKEND_FIELD','objcountry.views_backend_field',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_SELECT_COLUMNS','objcountry.select_columns',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_EXT_FIELD_SELECT_VALUES','objcountry.select_values',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
+                    
+                    
+                    
 
           <th width="5%">
 						<?php
@@ -147,6 +177,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td><?php echo $row->name; ?></td>
                         <td><?php echo $row->template_backend; ?></td>
                         <td><?php echo $row->template_frontend; ?></td>
+                        
+                        <td><?php echo $row->views_backend; ?></td>
+                        <td><?php echo $row->fieldtyp; ?></td>
+                        <td><?php echo $row->views_backend_field; ?></td>
+                        <td><?php echo $row->select_columns; ?></td>
+                        <td><?php echo $row->select_values; ?></td>
+                        
                         
 						<td class="center"><?php echo $published; ?></td>
 						

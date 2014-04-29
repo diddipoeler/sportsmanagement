@@ -117,6 +117,7 @@ fieldset button {
 							<?php
 						}
 						?>
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
@@ -470,6 +471,24 @@ fieldset button {
 								<?php
 							}
 							?>
+                            
+                            <td class="center">
+                            	<?php
+                                if (array_key_exists('result_type', $this->selectlist)) 
+                                {
+                                    $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                                    echo JHtml::_(	'select.genericlist',$this->selectlist['result_type'],
+													'result_type'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
+													$row->result_type);
+    
+}
+ else                               
+     {                           
+								echo $row->result_type;
+                                }
+								?>
+                            
+                            </td>
 							<td class="center">
                             
                             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"

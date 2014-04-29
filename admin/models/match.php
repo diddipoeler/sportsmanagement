@@ -442,7 +442,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$tblMatch->id = $pks[$x];
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
             $tblMatch->match_date = $post['match_date'.$pks[$x]];
-            //$tblMatch->match_time = $post['match_time'.$pks[$x]];
+            $tblMatch->result_type = $post['result_type'.$pks[$x]];
             $tblMatch->crowd = $post['crowd'.$pks[$x]];
             $tblMatch->round_id	= $post['round_id'.$pks[$x]];
             $tblMatch->division_id	= $post['division_id'.$pks[$x]];

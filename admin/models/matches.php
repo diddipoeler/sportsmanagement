@@ -318,10 +318,6 @@ class sportsmanagementModelMatches extends JModelList
   
   }
   
-	
-
-	
-
 	/**
 	 * sportsmanagementModelMatches::getMatchesByRound()
 	 * 
@@ -329,14 +325,19 @@ class sportsmanagementModelMatches extends JModelList
 	 * @return
 	 */
 	function getMatchesByRound($roundId)
-	{
+	{$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');    
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
 		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;
-		$this->_db->setQuery($query);
+		$db->setQuery($query);
 		//echo($this->_db->getQuery());
-		$result = $this->_db->loadObjectList();
+		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $this->_db->getErrorMsg());
+			JError::raiseError(0, $db->getErrorMsg());
 			return false;
 		}
 		return $result;

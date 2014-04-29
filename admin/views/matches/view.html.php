@@ -68,6 +68,12 @@ class sportsmanagementViewMatches extends JView
         $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
+        $view = JRequest::getVar( "view") ;
+        $_db = JFactory::getDBO(); // the method is contextual so we must have a DBO
+        $table_info = $_db->getTableFields('#__sportsmanagement_match');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
+
         $starttime = microtime(); 
         
         $this->state = $this->get('State'); 
@@ -160,7 +166,7 @@ class sportsmanagementViewMatches extends JView
 			$divhomeid = 0;
 			//apply the filter only if both teams are from the same division
 			//teams are not from the same division in tournament mode with divisions
-			if($row->divhomeid==$row->divawayid) {
+			if( $row->divhomeid == $row->divawayid ) {
 				$divhomeid = $row->divhomeid;
 			} else {
 				$row->divhomeid =0;
@@ -177,21 +183,39 @@ class sportsmanagementViewMatches extends JView
 
         
         //build the html options for divisions
-		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id)){
 			$divisions=array_merge($divisions,$res);
 		}
-		$lists['divisions']=$divisions;
+		$lists['divisions'] = $divisions;
 		unset($divisions);
         
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
+        
+        foreach ($table_info['#__sportsmanagement_match'] as $field => $value )
+        {
+        $select_Options = sportsmanagementHelper::getExtraSelectOptions($view,$field); 
+        
+        if( $select_Options )
+        {
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_Options,true).'</pre>'),'Notice');  
+        
+        $select[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+        $select = array_merge($select,$select_Options);  
+        $selectlist[$field] = $select;
+		unset($select);
+        }   
+        
+        }
+
 
         
 		//$this->assignRef('division',$division);
 
 		$this->assign('user',JFactory::getUser());
         $this->assignRef('lists',$lists);
+        $this->assignRef('selectlist',$selectlist);
 		$this->assignRef('option',$option);
 		$this->assignRef('matches',$items);
 		$this->assignRef('ress',$ress);

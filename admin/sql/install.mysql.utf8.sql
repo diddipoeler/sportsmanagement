@@ -1299,6 +1299,11 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_user_extra_fields` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `published` tinyint(1) NOT NULL default '1',
+  `views_backend` VARCHAR(75) NOT NULL DEFAULT '' ,
+  `fieldtyp` tinyint(1) NOT NULL default '1',
+  `views_backend_field` VARCHAR(75) NOT NULL DEFAULT '' ,
+  `select_columns` TEXT NULL ,
+  `select_values` TEXT NULL ,
   PRIMARY KEY (`id`) 
   )
 ENGINE = MyISAM

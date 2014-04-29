@@ -1747,6 +1747,66 @@ abstract class sportsmanagementHelper
 		}
 	}
     
+
+/**
+ * sportsmanagementHelper::getExtraSelectOptions()
+ * 
+ * @param string $view
+ * @param string $field
+ * @return
+ */
+function getExtraSelectOptions($view='', $field='')	
+{
+$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option'); 
+        $select_columns = array();
+        $select_values = array();
+        $select_options = array();    
+    // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
+
+    // Select some fields
+		$query->select('select_columns,select_values');
+		// From the match table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields');
+        $query->where("views_backend LIKE '" . $view . "'");
+        $query->where("views_backend_field LIKE '" . $field. "'");
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+    $db->setQuery($query);
+    $result = $db->loadObject();
+    if ( $result)
+		{
+		  $select_columns = explode(",",$result->select_columns);
+          $select_values = explode(",",$result->select_values);
+          
+          //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
+          
+          foreach($select_columns as $key => $value )
+          {
+          $temp = new stdClass();
+          $temp->value = $value;
+          $temp->text = $select_values[$key];
+          $select_options[] = $temp;  
+          }
+          
+          return $select_options;
+          
+			
+		}
+		else
+        {
+//            JError::raiseError(0, $db->getErrorMsg());
+            return false;
+        }
+}    
+    
+    
     /**
 	 * Method to check extra fields
 	 *

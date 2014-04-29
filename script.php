@@ -242,6 +242,7 @@ echo JHtml::_('sliders.end');
 		'teamplayers',
 		'teamstaffs',
 		'venues',
+        'jl_images',
 		'statistics');
 		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');

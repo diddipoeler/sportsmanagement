@@ -37,30 +37,26 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$massadd=JRequest::getInt('massadd',0);
-$templatesToLoad = array('footer');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//echo 'selectlist <br><pre>'.print_r($this->selectlist,true).'</pre>';
+jimport( 'joomla.application.component.view' );
 
-?>
 
-<div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
-<?php 
-echo $this->loadTemplate('massadd'); 
+class sportsmanagementViewgithub extends JView
+{
+	
+	function display( $tpl = null )
+	{
+	   $document=JFactory::getDocument();
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $model	= $this->getModel();
+        
+        $list = $model->getGithubList();
+
+	
+		parent::display( $tpl );
+	}
+
+}
 ?>
-</div>
-<?php 
-echo $this->loadTemplate('matches'); 
-?>	
-<?php 
-echo $this->loadTemplate('matrix'); 
-?>
-<?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   

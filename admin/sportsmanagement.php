@@ -94,7 +94,7 @@ $type = '';
 $arrExtensions = sportsmanagementHelper::getExtensions();
 $model_pathes[]	= array();
 $view_pathes[]	= array();
-
+$template_pathes[]	= array();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
 
@@ -124,10 +124,11 @@ if (strpos($command, '.') !== false)
 for ($e = 0; $e < count($arrExtensions); $e++)
 {
 $extension = $arrExtensions[$e];
+$extensionname = $arrExtensions[$e];
 $extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extensionpath<br><pre>'.print_r($extensionpath,true).'</pre>'),'');
-
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extension<br><pre>'.print_r($extension,true).'</pre>'),'');
 
 if($app->isAdmin()) 
 {
@@ -185,7 +186,7 @@ jimport('joomla.application.component.controller');
 
 	if (is_dir($base_path.DS.'views')) {
 		$view_pathes[] = $base_path.DS.'views';
-        //$view_pathes[] = $base_path.DS.'views'.DS.$extension.DS.'tmpl';
+        $template_pathes[] = $base_path.DS.'views'.DS.$extensionname.DS.'tmpl';
 	}
 
 
@@ -251,6 +252,21 @@ foreach ($view_pathes as $path)
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addViewPath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
+
+foreach ($template_pathes as $path)
+{
+	if(!empty($path))
+	{
+	   // get view and set template context 
+        $view = $controller->getView( $extensionname, "html", "sportsmanagementView"); 
+        $view->addTemplatePath($path); 
+        
+//	   $view = new JView;
+//		$view->addTemplatePath($path);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
+	}
+}
+
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
 

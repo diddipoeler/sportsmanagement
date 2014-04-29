@@ -177,7 +177,14 @@ document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="moda
             <div id="icon">              
               <?php echo $this->addIcon('statistik.png','index.php?option=com_sportsmanagement&view=statistics', JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS'));?>            
             </div>          
-          </div>        
+          </div>
+          
+          <div class="icon-wrapper">            
+            <div id="icon">              
+              <?php echo $this->addIcon('github.png','index.php?option=com_sportsmanagement&view=github', JText::_('COM_SPORTSMANAGEMENT_D_MENU_GITHUB'));?>            
+            </div>          
+          </div> 
+                  
         </div>
         <br>        
         <div style="clear:both">          

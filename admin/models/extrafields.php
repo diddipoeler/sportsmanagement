@@ -73,7 +73,14 @@ class sportsmanagementModelextrafields extends JModelList
                         'objcountry.id',
                         'objcountry.ordering',
                         'objcountry.checked_out',
-                        'objcountry.checked_out_time'
+                        'objcountry.checked_out_time',
+                        
+                        'objcountry.views_backend',
+                        'objcountry.fieldtyp',
+                        'objcountry.views_backend_field',
+                        'objcountry.select_columns',
+                        'objcountry.select_values'
+                        
                         );
                 parent::__construct($config);
         }
