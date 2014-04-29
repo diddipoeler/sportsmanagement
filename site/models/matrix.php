@@ -289,8 +289,8 @@ class sportsmanagementModelMatrix extends JModel
         
 		if ( !$result = $db->loadObjectList() )
 		{
-		  $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+          $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			//echo $db->getErrorMsg();
 		}
 		return $result;

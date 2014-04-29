@@ -700,12 +700,14 @@ class sportsmanagementModelProject extends JModel
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::_getTeams()
 	 * 
+	 * @param string $teamname
 	 * @return
 	 */
-	function & _getTeams()
+	function & _getTeams($teamname='name')
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -757,13 +759,15 @@ class sportsmanagementModelProject extends JModel
 		return self::$_teams;
 	}
 
+	
 	/**
-	 * return teams of the project
-	 *
-	 * @param int $division
-	 * @return array
+	 * sportsmanagementModelProject::getTeams()
+	 * 
+	 * @param integer $division
+	 * @param string $teamname
+	 * @return
 	 */
-	function getTeams($division=0)
+	function getTeams($division=0,$teamname='name')
 	{
 		$teams = array();
 		if ($division != 0)
@@ -779,7 +783,7 @@ class sportsmanagementModelProject extends JModel
 		}
 		else
 		{
-			$teams = self::_getTeams();
+			$teams = self::_getTeams($teamname);
 		}
 
 		return $teams;
@@ -802,15 +806,17 @@ class sportsmanagementModelProject extends JModel
 		return $teams;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getTeamsIndexedById()
 	 * 
 	 * @param integer $division
+	 * @param string $teamname
 	 * @return
 	 */
-	function getTeamsIndexedById($division=0)
+	function getTeamsIndexedById($division=0,$teamname='name')
 	{
-		$result = self::getTeams($division);
+		$result = self::getTeams($division,$teamname);
 		$teams = array();
 		if (count($result))
 		{
@@ -823,15 +829,17 @@ class sportsmanagementModelProject extends JModel
 		return $teams;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getTeamsIndexedByPtid()
 	 * 
 	 * @param integer $division
+	 * @param string $teamname
 	 * @return
 	 */
-	function getTeamsIndexedByPtid($division=0)
+	function getTeamsIndexedByPtid($division=0,$teamname='name')
 	{
-		$result = self::getTeams($division);
+		$result = self::getTeams($division,$teamname);
 		$teams = array();
 
 		if (count($result))

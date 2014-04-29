@@ -125,7 +125,10 @@ defined('_JEXEC') or die('Restricted access');
 			foreach ($this->teams as $team_row_header) {
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id);
-				$desc = $team_row_header->short_name;
+				//$desc = $team_row_header->short_name;
+                $name = $this->config['teamnames'];
+                $desc = $team_row_header->$name;
+                
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
 					$picture = $team_row_header->logo_small;
@@ -160,7 +163,9 @@ defined('_JEXEC') or die('Restricted access');
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->id, $trow->id);
-				$desc = $trow->short_name;
+				//$desc = $trow->short_name;
+                $name = $this->config['teamnames'];
+                $desc = $trow->$name;
 
 				if ($crosstable_icons_vertical) // icons on the left side of matrix
 					{

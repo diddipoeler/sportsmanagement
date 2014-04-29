@@ -78,7 +78,7 @@ class sportsmanagementViewMatrix extends JView
 		$this->assign('roundid', $model->getRoundID() );
 		$this->assign('division', $model->getDivision() );
 		$this->assign('round', $model->getRound() );
-		$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid( $model->getDivisionID() ) );
+		$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid( $model->getDivisionID(),$this->config->teamnames ) );
 		$this->assign('results', $model->getMatrixResults( $project->id ) );
 		
         if (($this->config['show_matrix_russia'])==1)

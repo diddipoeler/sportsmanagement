@@ -26,6 +26,14 @@
 				size="80"
 				description="COM_SPORTSMANAGEMENT_FES_MATRIX_FIELD_IMAGE_DESC" />
 				
+		<field 	name="teamnames" type="list" default="name" 
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_TYPE_NAME" 
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_TYPE_NAME">
+			<option value="short_name">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_OPTION0_TYPE_NAME</option>
+			<option value="middle_name">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_OPTION1_TYPE_NAME</option>
+			<option value="name">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_OPTION2_TYPE_NAME</option>
+		</field>	
+    		
 	</fieldset>
 
 <!--
