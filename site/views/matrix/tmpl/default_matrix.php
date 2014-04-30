@@ -120,13 +120,16 @@ defined('_JEXEC') or die('Restricted access');
 			} else {
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			}
-
-			foreach ($this->teams as $team_row_header) {
+            
+            $teamnumber = 1;
+			foreach ($this->teams as $team_row_header) 
+            {
+                
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id);
 				//$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
-                $desc = $team_row_header->$name;
+                $desc = $teamnumber .', ' . $team_row_header->$name;
                 
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
@@ -144,11 +147,16 @@ defined('_JEXEC') or die('Restricted access');
 					$header .= '</div></th>';
 					$matrix .= $header;
 				}
+                
+                $teamnumber++;
 			}
 			$matrix .= '</tr>';
 		}
 
 		$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
+        
+        //echo 'class '.$class.'<br>';
+        
 		$trow = $team_row;
 		$matrix .= '<tr class="' . $class . '">';
 		$k_c = 0; //count columns
