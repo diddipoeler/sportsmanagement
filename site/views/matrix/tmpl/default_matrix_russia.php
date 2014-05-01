@@ -59,7 +59,8 @@ defined('_JEXEC') or die('Restricted access');
 			if ($crosstable_icons_horizontal) {
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			} else {
-				$matrix .= '<th class="teamheader">Команда</th>';
+				//$matrix .= '<th class="teamheader">Команда</th>';
+                $matrix .= '<th class="teamheader">'.JText :: _('COM_SPORTSMANAGEMENT_MATRIX_TEAM_NAME') . '</th>';
 			}
             
             $teamnumber = 1;
@@ -141,19 +142,21 @@ defined('_JEXEC') or die('Restricted access');
 			$Allresults = '';
             // darstelung russisch
             
-            //$e1 = $team_row->first[$team_col_id]->e1;
-//			$e2 = $team_row->first[$team_col_id]->e2;
-
             	// erste runde
                 $ResultType = '';
-					if ($team_row->first[$team_col_id]->decision == 0) 
+					if ( isset($team_row->first[$team_col_id]) && $team_row->first[$team_col_id]->decision == 0 ) 
                     {
-						//$e1 = $result->e1;
-//						$e2 = $result->e2;
                         
+                        if ( isset($team_row->first[$team_col_id]) )
+                        {
                         $e1 = $team_row->first[$team_col_id]->e1;
 			$e2 = $team_row->first[$team_col_id]->e2;
-						
+						}
+                        else
+                        {
+                        $e1 = '';
+						$e2 = '';    
+                        }
 						if($e1 > $e2) {
 							$e1 = '<span style="color:'.$this->config['color_win'].'">'.$e1.'</span>';
 							$e2 = '<span style="color:'.$this->config['color_win'].'">'.$e2.'</span>';
@@ -165,6 +168,8 @@ defined('_JEXEC') or die('Restricted access');
 							$e2 = '<span style="color:'.$this->config['color_loss'].'">'.$e2.'</span>';
 						}
 						
+                        if ( isset($team_row->first[$team_col_id]) )
+                        {
 						switch ($team_row->first[$team_col_id]->rtype) {
 								case 1 : // Overtime
 									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
@@ -180,11 +185,20 @@ defined('_JEXEC') or die('Restricted access');
 									break;
 
 							} 
+                            }
 					} 
                     else 
                     {
+                        if ( isset($team_row->first[$team_col_id]) )
+                        {
 						$e1 = $team_row->first[$team_col_id]->v1;
 						$e2 = $team_row->first[$team_col_id]->v2;
+                        }
+                        else
+                        {
+                        $e1 = '';
+						$e2 = '';    
+                        }
 						if (!isset ($team_row->first[$team_col_id]->v1)) {
 							$e1 = 'X';
 						}
@@ -194,11 +208,15 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					$showMatchReportLink = false;
 
-					if ($team_row->first[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1) {
+					if ( isset($team_row->first[$team_col_id]) && ( $team_row->first[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1 ) ) {
 						$showMatchReportLink = true;
 					}
+                    
+                    if ( isset($team_row->first[$team_col_id]) )
+                    {
 					if ($team_row->first[$team_col_id]->show_report == 0 && $e1 == "" && $e2 == "")
 						$showMatchReportLink = true;
+                        }
 					if ($showMatchReportLink) {
 						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
 						// result with matchreport
@@ -312,18 +330,22 @@ defined('_JEXEC') or die('Restricted access');
 					}
             
             // zweite runde
-            //$e1 = $team_row->second[$team_col_id]->e1;
-//			$e2 = $team_row->second[$team_col_id]->e2;
             
             $ResultType = '';
-					if ($team_row->second[$team_col_id]->decision == 0) 
+					if ( isset($team_row->second[$team_col_id]) && $team_row->second[$team_col_id]->decision == 0 ) 
                     {
-						//$e1 = $result->e1;
-//						$e2 = $result->e2;
-                        
+						                       
+                        if ( isset($team_row->second[$team_col_id]) )
+                        {
                         $e1 = $team_row->second[$team_col_id]->e1;
 			$e2 = $team_row->second[$team_col_id]->e2;
-						
+						}
+                        else
+                        {
+                        $e1 = '';
+						$e2 = '';    
+                        }
+                        
 						if($e1 > $e2) {
 							$e1 = '<span style="color:'.$this->config['color_win'].'">'.$e1.'</span>';
 							$e2 = '<span style="color:'.$this->config['color_win'].'">'.$e2.'</span>';
@@ -334,7 +356,8 @@ defined('_JEXEC') or die('Restricted access');
 							$e1 = '<span style="color:'.$this->config['color_loss'].'">'.$e1.'</span>';
 							$e2 = '<span style="color:'.$this->config['color_loss'].'">'.$e2.'</span>';
 						}
-						
+						if ( isset($team_row->first[$team_col_id]) )
+                        {
 						switch ($team_row->first[$team_col_id]->rtype) {
 								case 1 : // Overtime
 									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
@@ -350,11 +373,20 @@ defined('_JEXEC') or die('Restricted access');
 									break;
 
 							} 
+                            }
 					} 
                     else 
                     {
-						$e1 = $team_row->second[$team_col_id]->v1;
+						if ( isset($team_row->second[$team_col_id]) )
+                        {
+                        $e1 = $team_row->second[$team_col_id]->v1;
 						$e2 = $team_row->second[$team_col_id]->v2;
+                        }
+                        else
+                        {
+                        $e1 = '';
+						$e2 = '';    
+                        }
 						if (!isset ($team_row->second[$team_col_id]->v1)) {
 							$e1 = 'X';
 						}
@@ -364,10 +396,10 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					$showMatchReportLink = false;
 
-					if ($team_row->second[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1) {
+					if ( isset($team_row->second[$team_col_id]) && ($team_row->second[$team_col_id]->show_report == 1 || $this->config['force_link_report'] == 1 ) )  {
 						$showMatchReportLink = true;
 					}
-					if ($team_row->second[$team_col_id]->show_report == 0 && $e1 == "" && $e2 == "")
+					if ( isset($team_row->second[$team_col_id]) && ( $team_row->second[$team_col_id]->show_report == 0 && $e1 == "" && $e2 == "" ) )
 						$showMatchReportLink = true;
 					if ($showMatchReportLink) {
 						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
