@@ -39,71 +39,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//echo 'russiamatrix<pre>'.print_r($this->russiamatrix,true).'</pre>';
-
-
 ?>
 
-<!--[if IE]>
-   <style>
-      .rotate_text
-      {
-         writing-mode: tb-rl;
-         filter: flipH() flipV();
-      }
-      .rotated_cell
-      {
-         height:400px;
-         background-color: grey;
-         color: white;
-         padding-bottom: 3px;
-         padding-left: 5px;
-         padding-right: 5px;
-         white-space:nowrap; 
-         vertical-align:bottom
-      }
-   </style>
-<![endif]-->
-
-<!--[if !IE]><!-->
-<style>  
-.rotate_text
-      {
-         text-align: center;
-                vertical-align: middle;
-                width: 20px;
-                margin: 0px;
-                padding: 0px;
-                padding-left: 3px;
-                padding-right: 3px;
-                padding-top: 10px;
-                white-space: nowrap;
-                -webkit-transform: rotate(-90deg); 
-                -moz-transform: rotate(-90deg); 
-                -o-transform: rotate(-90deg);
-      }      
-
-      .rotated_cell
-      {
-         height:200px;
-         background-color: ;
-         color: white;
-         padding-bottom: 3px;
-         padding-left: 5px;
-         padding-right: 5px;
-         white-space:nowrap; 
-         vertical-align:bottom
-      }
-   </style>
-<!--<![endif]--> 
-
-<div>
  <?php
-
-	#$this->config['highlight_fav_team'] = 1;
-	#$this->project->fav_team_text_color = "#FFFFFF";
 	$division_id = $this->divisionid;
-	$matrix = '<table class="matrix">';
+	$matrix = '<table class="matrix" border="2px">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
@@ -115,11 +55,11 @@ defined('_JEXEC') or die('Restricted access');
 			{
 			$matrix .= '<tr class="sectiontableheader">';
 			//write the first row
-            $matrix .= '<th class="headerspacer">&nbsp;</th>';
+            $matrix .= '<th class="rankheader">п/п</th>';
 			if ($crosstable_icons_horizontal) {
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			} else {
-				$matrix .= '<th class="headerspacer">&nbsp;</th>';
+				$matrix .= '<th class="teamheader">Команда</th>';
 			}
             
             $teamnumber = 1;
@@ -127,9 +67,8 @@ defined('_JEXEC') or die('Restricted access');
             {
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id);
-				//$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
-                $desc = $teamnumber .', ' .$team_row_header->$name;
+                $desc = $teamnumber;
                 
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
@@ -586,5 +525,4 @@ defined('_JEXEC') or die('Restricted access');
 	$matrix .= '</table>';
 	echo $matrix;
 ?>
-</div>
 
