@@ -157,8 +157,11 @@ class sportsmanagementModelMatrix extends JModel
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
                 if ( isset($team_row->first[(int)$team_col->projectteamid]) )
                 {
+                $team_row->second[(int)$team_col->projectteamid] = new stdClass();     
                 $team_row->second[(int)$team_col->projectteamid]->e1 = $result->e1;    
                 $team_row->second[(int)$team_col->projectteamid]->e2 = $result->e2;
+                
+                $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid] = new stdClass();  
                 $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->e1 = $result->e2;    
                 $teams[$team_col->projectteamid]->second[(int)$team_row->projectteamid]->e2 = $result->e1;
                 
@@ -188,8 +191,11 @@ class sportsmanagementModelMatrix extends JModel
                 }
                 else
                 {
+                $team_row->first[(int)$team_col->projectteamid] = new stdClass();    
                 $team_row->first[(int)$team_col->projectteamid]->e1 = $result->e1;    
                 $team_row->first[(int)$team_col->projectteamid]->e2 = $result->e2;
+                
+                $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid] = new stdClass();
                 $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->e1 = $result->e2;    
                 $teams[$team_col->projectteamid]->first[(int)$team_row->projectteamid]->e2 = $result->e1;
                 
