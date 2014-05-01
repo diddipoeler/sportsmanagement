@@ -25,15 +25,15 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
-		<language tag="de-DE">language/en-GB/en-GB.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
 	</languages>
-	
+
 	<config>  
 		<fields name="params">
 
 			<fieldset name="basic" addfieldpath="/modules/mod_sportsmanagement_ajax_top_navigation_menu/fields">
-
-				
 
 				<field name="project_ordering" type="list" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_DESC">
 					<option value="0">MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_PROJECT_ASC</option>
@@ -43,51 +43,51 @@
 					<option value="4">MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_PROJECT_NAME_ASC</option>
 					<option value="5">MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_PROJECT_NAME_DESC</option>
 				</field>
-				
+
 				<field name="project_include_season_name" type="list" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SEASON_NAME_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SEASON_NAME_DESC">
 					<option value="0">JNO</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SEASON_NAME_BEFORE</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SEASON_NAME_AFTER</option>
 				</field>
-				
-				<field name="custom_item_id" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_CUSTOM_ID_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_CUSTOM_ID_DESC " />
-		
+
+				<field name="custom_item_id" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_CUSTOM_ID_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_CUSTOM_ID_DESC" />
+
 				<field name="stringlength" type="text" default="20" label="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_DESC" />
-<field type="spacer" hr="true" />
-<field name="show_project_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
+				<field type="spacer" hr="true" />
+				<field name="show_project_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
 				<field name="text_project_dropdown" type="text" default="-&gt; Choose Project..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_DESC" />
-<field type="spacer" hr="true" />
-<field name="show_season_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
+				<field type="spacer" hr="true" />
+				<field name="show_season_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
 				<field name="seasons_text" type="text" default="-&gt; Choose Season..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_DESC" />
-<field type="spacer" hr="true" />
-<field name="show_league_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
+				<field type="spacer" hr="true" />
+				<field name="show_league_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
 				<field name="leagues_text" type="text" default="-&gt; Choose League..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_DESC" />
-<field type="spacer" hr="true" />
-<field name="show_division_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
+				<field type="spacer" hr="true" />
+				<field name="show_division_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="divisions_text" type="text" default="-&gt; Choose Division..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_DESC" />
-<field type="spacer" hr="true" />
-<field name="show_teams_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_DESC">
+				<field type="spacer" hr="true" />
+				<field name="show_teams_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
-<field name="text_teams_dropdown" type="text" default="-&gt; Select Team..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_DESC" />
-<field type="spacer" hr="true" />
+				</field>
+				<field name="text_teams_dropdown" type="text" default="-&gt; Select Team..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_DESC" />
+				<field type="spacer" hr="true" />
 
 
 				<field name="default_project_id" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_DEFAULT_PROJECT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_DEFAULT_PROJECT_DESC" />
-		
+
 				<field name="project_start" type="list" default="ranking" label="MOD_SPORTSMANAGEMENT_NAVIGATION_START_PAGE_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_START_PAGE_DESCR">
 					<option value=""></option>
 					<option value="resultsranking">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE_AND_RESULTS</option>
@@ -95,327 +95,284 @@
 					<option value="ranking">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE</option>
 					<option value="calendar">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CALENDAR</option>
 				</field>
-		
+
 				<field type="spacer" hr="true" />
-		
-				
+
 				<field name="link_teams_dropdown" type="list" default="roster" label="MOD_SPORTSMANAGEMENT_NAVIGATION_LINK_TEAM_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_LINK_TEAM_DROPDOWN_DESC">
 					<option value="roster">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_roster</option>
 					<option value="teaminfo">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_teaminfo</option>
 					<option value="teamplan">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_teamplan</option>
 					<option value="teamstats">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_teamstats</option>
 				</field>
-		
+
 				<field name="heading_teams_dropdown" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_DESC" />
-		
-				
 
 				<field type="spacer" hr="true" />
-		
-				
+
 				<field name="show_only_subdivisions" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-		
+
 		<field type="spacer" hr="true" />
-		
+
 				<field name="show_favteams_nav_links" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				
+
 				<field type="spacer" hr="true" />
-<field type="spacer" name="extended3" label="&lt;span style=&quot;width:474px;display:block;font-weight:bold&quot;&gt;MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_LINKS&lt;/span&gt;"/>				
-<field name="show_tournament_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
+				<field type="spacer" name="extended3" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_LINKS"/>
+				<field name="show_tournament_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-<field name="show_tournament_text" type="text" default="Turnierbaum" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_DESC" />				
+
+				<field name="show_tournament_text" type="text" default="Turnierbaum" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_DESC" />
 				<field type="spacer" hr="true" />
-<field type="spacer" name="extended4" label="&lt;span style=&quot;width:474px;display:block;font-weight:bold&quot;&gt;MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_LINKS&lt;/span&gt;"/>
-<field name="show_alltimetable_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
+				<field type="spacer" name="extended4" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_LINKS"/>
+				<field name="show_alltimetable_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-<field name="show_alltimetable_text" type="text" default="ewige Tabelle" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_DESC" />
-<field name="show_alltimetable_points" type="text" default="3,1,0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_DESCR" size="10"/>
+
+				<field name="show_alltimetable_text" type="text" default="ewige Tabelle" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_DESC" />
+				<field name="show_alltimetable_points" type="text" default="3,1,0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_DESCR" size="10"/>
 
 <!-- 
 <field 	name="show_logo_alltimetable" type="list" default="logo_small" 
-				label="COM_JOOMLEAGUE_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO" 
-				description="COM_JOOMLEAGUE_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
-			<option value="no_logo">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
-			<option value="logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
-      <option value="country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
-      <option value="logo_small_country_flag">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
-      <option value="country_flag_logo_small">COM_JOOMLEAGUE_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-		</field>        				
+				label="MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO" 
+				description="MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+			<option value="no_logo">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+			<option value="logo_small">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
+      <option value="country_flag">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+      <option value="logo_small_country_flag">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
+      <option value="country_flag_logo_small">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+		</field>
 -->
 
 				<field type="spacer" hr="true" />
-        		
+
 				<field name="show_nav_links" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-		
-		<field type="spacer" hr="true" />
-				<field type="spacer" name="extended1" label="&lt;span style=&quot;width:474px;display:block;font-weight:bold&quot;&gt;MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS&lt;/span&gt;" />
-		
+
+				<field type="spacer" hr="true" />
+				<field type="spacer" name="extended1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
+
 				<field name="navpoint1"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-				
+
 				<field name="navpoint_label1" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint2"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label2" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint3"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label3" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-		
-		
+
 				<field name="navpoint4"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label4" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint5"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label5" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-		
-		
+
 				<field name="navpoint6"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label6" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint7"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label7" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint8"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label8" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint9"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label9" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint10"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label10" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint11"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label11" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-			
-		
+
 				<field name="navpoint12"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label12" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint13"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label13" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint14"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label14" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint15"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
 		
 				<field name="navpoint_label15" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpoint16"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
 		
 				<field name="navpoint_label16" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
-	<field name="navpoint17"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+				<field name="navpoint17"
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label17" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-        <field type="spacer" hr="true" />
-        <field type="spacer" name="extended2" label="&lt;span style=&quot;width:474px;display:block;font-weight:bold&quot;&gt;MOD_SPORTSMANAGEMENT_NAVIGATION_CLUB_TEAM_LINKS&lt;/span&gt;"/>
-        
-        <field name="navpointct17"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+				<field type="spacer" hr="true" />
+				<field type="spacer" name="extended2" label="MOD_SPORTSMANAGEMENT_NAVIGATION_CLUB_TEAM_LINKS"/>
+
+				<field name="navpointct17"
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-<field name="navpointct_label17" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
+				<field name="navpointct_label17" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 				
-<field name="navpointct18"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+				<field name="navpointct18"
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpointct_label18" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpointct19"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpointct_label19" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpointct20"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpointct_label20" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
-		
-				
-		
+
 				<field name="navpointct21"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpointct_label21" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
-	<field name="navpointct22"
-				       type="JLMenuItems"
-				       default=""
-				       label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
-				       description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
+				<field name="navpointct22"
+						type="JLMenuItems"
+						default=""
+						label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpointct_label22" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />        
-        
-        
-        
-        
-        
-        
-<field type="spacer" hr="true" />
-        		  
-      </fieldset>
-			  
+
+				<field type="spacer" hr="true" />
+
+		</fieldset>
+
 				<fieldset
 					name="advanced">
 					<field
@@ -423,13 +380,13 @@
 						type="modulelayout"
 						label="JFIELD_ALT_LAYOUT_LABEL"
 						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-	
+
 					<field
 						name="moduleclass_sfx"
 						type="text"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-	
+
 					<field
 						name="cache"
 						type="list"
@@ -441,7 +398,7 @@
 						<option
 							value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 					</field>
-	
+
 					<field
 						name="cache_time"
 						type="text"
