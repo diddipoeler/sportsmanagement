@@ -24,6 +24,8 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_teamstats_ranking.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_teamstats_ranking.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_teamstats_ranking.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_teamstats_ranking.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_teamstats_ranking.sys.ini</language>
 	</languages>
 
 	<config>
@@ -31,102 +33,101 @@
 
 			<fieldset name="basic"
 				addfieldpath="/administrator/components/com_sportsmanagement/elements">
-				
-        <field name="p" type="project" 
+
+			<field name="p" type="project" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_DESCR" />
-				
-        <field name="sid" type="dependsql" depends="p"
+
+			<field name="sid" type="dependsql" depends="p"
 					task="projectstatsoptions" query="" required="1" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_STAT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_STAT_DESCR" />
-				
-        <field name="ranking_order" type="list" default="DESC"
+
+			<field name="ranking_order" type="list" default="DESC"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_STAT_RANKING_ORDER" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_STAT_RANKING_ORDER_DESC">
 					<option value="ASC">Ascending</option>
 					<option value="DESC">Descending</option>
 				</field>
-				
-        <field name="limit" type="text" default="5" 
+
+			<field name="limit" type="text" default="5" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_ROW_LIMIT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_ROW_LIMIT_LABEL_DESC" />
-				
-        <field name="show_project_name" type="list" default="0"
+
+			<field name="show_project_name" type="list" default="0"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_PROJECT_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_PROJECT_NAME_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				
-        <field name="@spacer" type="spacer" default="" label=""
+
+			<field name="@spacer" type="spacer" default="" label=""
 					description="" />
-				
-        <field name="teamnametype" type="list" default="short_name"
+
+			<field name="teamnametype" type="list" default="short_name"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_NAME_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_NAME_DESC">
-					<option value="short_name">TEAM NAME SHORT</option>
-					<option value="middle_name">TEAM NAME MEDIUM</option>
-					<option value="name">TEAM NAME FULL</option>
+					<option value="short_name">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_NAME_SHORT</option>
+					<option value="middle_name">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_NAME_MEDIUM</option>
+					<option value="name">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_NAME_FULL</option>
 				</field>
-				
-        <field name="teamlink" type="list" default="teaminfo" 
+
+			<field name="teamlink" type="list" default="teaminfo" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_LINK_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_TEAM_LINK_DESC">
-					<option value="">LINK NO LINK</option>
-					<option value="teaminfo">LINK TEAMINFO</option>
-					<option value="roster">LINK ROSTER</option>
-					<option value="teamplan">LINK TEAMPLAN</option>
-					<option value="clubinfo">LINK CLUBINFO</option>
+					<option value="">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_LINK_NO_LINK</option>
+					<option value="teaminfo">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_LINK_TEAMINFO</option>
+					<option value="roster">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_LINK_ROSTER</option>
+					<option value="teamplan">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_LINK_TEAMPLAN</option>
+					<option value="clubinfo">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_LINK_CLUBINFO</option>
 				</field>
-				
-        <field name="show_logo" type="list" default="0" 
+
+			<field name="show_logo" type="list" default="0" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_LOGO_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_LOGO_LABEL_DESC">
-					<option value="0">No</option>
-					<option value="1">Club Logo</option>
-					<option value="2">Country Flag</option>
+					<option value="0">JNO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CLUB_LOGO</option>
+					<option value="2">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COUNTRY_FLAG</option>
 				</field>
-				
-        <field name="@spacer" type="spacer" default="" label=""
+
+			<field name="@spacer" type="spacer" default="" label=""
 					description="" />
 				<field name="show_event_icon" type="list" default="1"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_STATISTIC_ICON_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_STATISTIC_ICON_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			
-      </fieldset>
-
-			<fieldset name="advanced">
-				<field name="cache" type="list" default="1"
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHING_LABEL" 
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHING_DESCR">
-					<option value="1">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHING_USE_GLOBAL</option>
-					<option value="0">MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHING_NO_CACHING</option>
-				</field>
-				
-        <field name="cache_time" type="text" default="900"
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHE_TIME_LABEL" 
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_CACHE_TIME_DESCR">
-				</field>
-				
-        <field name="moduleclass_sfx" type="text" default=""
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_MODULE_CLASS_SUFFIX_LABEL"
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_MODULE_CLASS_SUFFIX_DESCR">
-				</field>
-				
-        <field name="style_class1" type="text" default="sectiontableentry1"
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_PARAM_LABEL_STYLE_ODD" 
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_PARAM_DESCR_STYLE_ODD">
-				</field>
-				
-        <field name="style_class2" type="text" default="sectiontableentry2"
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_PARAM_LABEL_STYLE_EVEN" 
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_PARAM_DESCR_STYLE_EVEN">
-				</field>
 			</fieldset>
+
+				<fieldset name="advanced">
+					<field
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+					<field name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+					<field name="cache"
+						type="list"
+						default="1"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
+						<option value="1">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+					</field>
+
+					<field name="cache_time"
+						type="text"
+						default="900"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				</fieldset>
 		</fields>
 	</config>
 </extension>
