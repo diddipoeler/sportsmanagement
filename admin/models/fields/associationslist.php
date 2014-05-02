@@ -72,6 +72,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $selected = 0;
         //$mainframe->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
         // Initialize variables.
 		$options = array();

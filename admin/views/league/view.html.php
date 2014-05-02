@@ -72,6 +72,8 @@ class sportsmanagementViewLeague extends JView
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
 		$this->assignRef( 'extended', $extended );
+        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');		
+		$this->assignRef( 'extendeduser', $extendeduser );
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
 		// Set the toolbar

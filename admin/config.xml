@@ -87,69 +87,18 @@
 		
 		
 		<field name="character_filter_start_hex" 
-    type="list" 
-    default="0041"
+    type="languagecharacter" 
+    default=""
                label="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_START_HEX" 
                description="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_START_HEX_DESCR">
-        <option value="0041">A</option>
-        <option value="0042">B</option>
-        <option value="0043">C</option>
-        <option value="0044">D</option>
-        <option value="0045">E</option>
-        <option value="0046">F</option>
-        <option value="0047">G</option>
-        <option value="0048">H</option>
-        <option value="0049">I</option>
-        <option value="004A">J</option>
-        <option value="004B">K</option>
-        <option value="004C">L</option>
-        <option value="004D">M</option>
-        <option value="004E">N</option>
-        <option value="004F">O</option>
-        <option value="0050">P</option>
-        <option value="0051">Q</option>
-        <option value="0052">R</option>
-        <option value="0053">S</option>
-        <option value="0054">T</option>
-        <option value="0055">U</option>
-        <option value="0056">V</option>
-        <option value="0057">W</option>
-        <option value="0058">X</option>
-        <option value="0059">Y</option>
-        <option value="005A">Z</option>
+        
         </field>
 
 		<field name="character_filter_end_hex" 
-    type="list" 
-    default="005A"
+    type="languagecharacter" 
+    default=""
                label="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_END_HEX" 
                description="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_END_HEX_DESCR">
-        <option value="0041">A</option>
-        <option value="0042">B</option>
-        <option value="0043">C</option>
-        <option value="0044">D</option>
-        <option value="0045">E</option>
-        <option value="0046">F</option>
-        <option value="0047">G</option>
-        <option value="0048">H</option>
-        <option value="0049">I</option>
-        <option value="004A">J</option>
-        <option value="004B">K</option>
-        <option value="004C">L</option>
-        <option value="004D">M</option>
-        <option value="004E">N</option>
-        <option value="004F">O</option>
-        <option value="0050">P</option>
-        <option value="0051">Q</option>
-        <option value="0052">R</option>
-        <option value="0053">S</option>
-        <option value="0054">T</option>
-        <option value="0055">U</option>
-        <option value="0056">V</option>
-        <option value="0057">W</option>
-        <option value="0058">X</option>
-        <option value="0059">Y</option>
-        <option value="005A">Z</option>
         </field>
 		
 		

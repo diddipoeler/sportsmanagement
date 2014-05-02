@@ -150,7 +150,7 @@ if($app->isAdmin())
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
  
  
-// own controllers currently not supported in 2.0
+// own controllers 
 	if (!file_exists($base_path.DS.'controller.php') )
 	{
 		if($type!=$extension) {
@@ -191,41 +191,6 @@ jimport('joomla.application.component.controller');
 
 
 }
-    
-/*
-$document = JFactory::getDocument();
-$mainframe = JFactory::getApplication();
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-
-$task = JRequest::getCmd('task');
-$option = JRequest::getCmd('option');
-if ( $mainframe->isAdmin() )
-{
-if($task == '' && $option == 'com_sportsmanagement') 
-{
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
-$document->addScriptDeclaration( $js );
-}
-}
-else
-{
-    
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
-$document->addScriptDeclaration( $js );    
-}
-*/
-
-/*
-// fehler in der komponente protokollieren 
-$databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
-DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
-*/
-
-//// import joomla controller library
-//jimport('joomla.application.component.controller');
- 
-// Get an instance of the controller prefixed by SportsManagement
-//$controller = JController::getInstance('SportsManagement');
 
 // import joomla controller library
 jimport('joomla.application.component.controller');

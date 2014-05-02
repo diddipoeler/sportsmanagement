@@ -114,6 +114,8 @@ class sportsmanagementViewPerson extends JView
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'person');
 		$this->assignRef( 'extended', $extended );
+        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'person');		
+		$this->assignRef( 'extendeduser', $extendeduser );
 
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
@@ -124,7 +126,7 @@ class sportsmanagementViewPerson extends JView
             //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
-    $this->assignRef('lists',		$lists);
+    $this->assignRef('lists',$lists);
     
     
     $person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));

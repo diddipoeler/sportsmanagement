@@ -81,6 +81,21 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
+		
+		<field
+		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
+			name="agegroup_id"
+			type="agegroups"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
+			required="false">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
+		</field>	
+		
   <field
 			name="associations"
 			type="associationslist" 

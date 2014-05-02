@@ -585,6 +585,13 @@ class sportsmanagementModelperson extends JModelAdmin
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
+        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extendeduser']);
+			$data['extendeduser'] = (string)$parameter;
+		}
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         

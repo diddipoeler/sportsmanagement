@@ -102,6 +102,17 @@ class sportsmanagementViewProject extends JView
 		$this->script = $script;
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
+        
+        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');		
+		$this->assignRef( 'extendeduser', $extendeduser );
+        
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        if ( $this->checkextrafields )
+        {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+        }
+        
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
         $isNew = $this->item->id == 0;
@@ -115,6 +126,8 @@ class sportsmanagementViewProject extends JView
         }
         
         $this->form->setValue('fav_team', null, explode(',',$this->item->fav_team) );
+        
+        $this->assignRef('lists',$lists);
  
 		// Set the toolbar
 		$this->addToolBar();

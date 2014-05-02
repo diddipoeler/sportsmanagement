@@ -76,12 +76,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</td>
-			<td align="center" colspan="4">
+			 <td align="center" colspan="4">
 				<?php
-				for ($i=65; $i < 91; $i++)
-				{
-					printf("<a href=\"javascript:searchTeam('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
-				}
+                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+			
+            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+            printf("<a href=\"javascript:searchTeam('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
+			}
+				
 				?>
 			</td>
 		</tr>

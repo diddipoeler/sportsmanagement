@@ -73,11 +73,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 			<td align="center" colspan="4">
 				<?php
-                $startRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0041'));
-		$endRange = hexdec(JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '005A'));
+                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
-			printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+			
+            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
 				
 				?>

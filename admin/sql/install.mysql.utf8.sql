@@ -227,6 +227,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   
   `federation` int(11) NOT NULL DEFAULT '0',
   `website` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -725,7 +726,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `gcalendar_id` INT( 11 ) NOT NULL DEFAULT  '0',
   
   `gcalendar_use_fav_teams` INT( 11 ) NOT NULL DEFAULT  '0',
-  
+  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
@@ -1304,6 +1305,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_user_extra_fields` (
   `views_backend_field` VARCHAR(75) NOT NULL DEFAULT '' ,
   `select_columns` TEXT NULL ,
   `select_values` TEXT NULL ,
+  `field_type` VARCHAR(15) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) 
   )
 ENGINE = MyISAM
@@ -1762,4 +1764,17 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_gcalendarap_comment` (
   PRIMARY KEY  (`id`)
 );
 
-
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
+`id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+ `name` VARCHAR( 250 ) DEFAULT NULL ,
+ `link` VARCHAR( 250 ) DEFAULT NULL ,
+ `nummer` VARCHAR( 10 ) DEFAULT NULL ,
+ `project` INT( 11 ) DEFAULT NULL ,
+ `country` VARCHAR( 3 ) DEFAULT NULL ,
+ `teamart` VARCHAR( 30 ) DEFAULT NULL ,
+ `team_id` INT( 11 ) NOT NULL DEFAULT  '0',
+ `club_id` INT( 11 ) NOT NULL DEFAULT  '0',
+ `person_id` INT( 11 ) NOT NULL DEFAULT  '0',
+PRIMARY KEY (  `id` ),
+  UNIQUE KEY `schluessel` (`name`(150),`link`(150)) 
+) ENGINE = MYISAM DEFAULT CHARSET = utf8;

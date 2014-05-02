@@ -384,6 +384,59 @@ abstract class sportsmanagementHelper
 		return $extended;
 	}
     
+    
+    /**
+     * sportsmanagementHelper::getExtendedUser()
+     * 
+     * @param string $data
+     * @param mixed $file
+     * @param string $format
+     * @return
+     */
+    static function getExtendedUser($data='', $file, $format='ini') 
+    {
+        $mainframe = JFactory::getApplication();
+		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extendeduser'.DS.$file.'.xml';
+		
+    /*
+    //extension management
+		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		foreach ($extensions as $e => $extension) {
+			$JLGPATH_EXTENSION = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension.DS.'admin';
+			//General extension extended xml 
+			$file = $JLGPATH_EXTENSION.DS.'assets'.DS.'extended'.DS.$file.'.xml';
+			if(file_exists(JPath::clean($file))) {
+				$xmlfile = $file;
+				break; //first extension file will win
+			}
+		}
+		*/
+		
+		/*
+		 * extended data
+		*/
+		
+        if (JFile::exists($xmlfile))
+        {
+        $jRegistry = new JRegistry;
+		//$jRegistry->loadString($data, $format);
+        $jRegistry->loadJSON($data);
+        
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        
+		$extended = JForm::getInstance('extendeduser', $xmlfile,
+				array('control'=> 'extendeduser'),
+				false, '/config');
+		$extended->bind($jRegistry);
+		return $extended;
+        }
+        else
+        {
+            return false;
+        }
+	}
+    
 	/**
 	 * Method to return a project array (id,name)
 	 *
@@ -607,14 +660,24 @@ abstract class sportsmanagementHelper
 			return false;
 		}
 
-		$db=&JFactory::getDBO();
-		$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
+		$db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('extension');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('id ='. $db->Quote((int)$project_id) );
+        
+//		$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 		$db->setQuery($query);
-		$res=$db->loadResult();
+		$res = $db->loadResult();
 
 		return (!empty($res) ? $res : false);
 	}
 
+	/**
+	 * sportsmanagementHelper::getExtensions()
+	 * 
+	 * @return
+	 */
 	public static function getExtensions()
 	{
 		$option='com_sportsmanagement';

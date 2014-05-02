@@ -14,7 +14,13 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
 			required=""/>
-		
+
+<field name="field_type" type="radio" default="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_DESC">
+			<option value="text">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_TEXT</option>
+			<option value="link">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_LINK</option>
+		</field>		
       
       <field
 			name="template_backend"
@@ -26,6 +32,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		<option value="club">Verein</option>
 		<option value="team">Mannschaft</option>
 		<option value="person">Personen</option>
+		<option value="project">Projekt</option>
 		</field>		
 
     <field

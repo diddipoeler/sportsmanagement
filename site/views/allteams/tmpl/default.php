@@ -61,6 +61,12 @@ function tableOrdering( order, dir, task )
         form.filter_order_Dir.value = dir;
         document.adminForm.submit( task );
 }
+function searchPerson(val)
+	{
+        var s= document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+	}
 </script>
 
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
@@ -78,6 +84,20 @@ function tableOrdering( order, dir, task )
 					?>
 				</button>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+        
+        <td align="center" colspan="4">
+				<?php
+                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+			
+            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
+			}
+				
+				?>
+			</td>
 	</div>
 
 	

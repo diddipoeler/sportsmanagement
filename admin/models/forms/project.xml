@@ -68,7 +68,21 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
-		
+
+<field
+		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
+			name="agegroup_id"
+			type="agegroups"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
+			required="false">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
+		</field>	
+    		
 		<field
 			name="league_id"
 			type="leaguelist"
@@ -511,5 +525,18 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
+  </fieldset>
+  
+<fieldset name="extendeduser"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER_DESC">
+  
   </fieldset>	
+
+ <fieldset name="extra_fields"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+  </fieldset>
+      	
 </form>

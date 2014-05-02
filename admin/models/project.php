@@ -508,8 +508,28 @@ class sportsmanagementModelProject extends JModelAdmin
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
               
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extendeduser']);
+			$data['extendeduser'] = (string)$parameter;
+		}
+        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
        
+       //-------extra fields-----------//
+        sportsmanagementHelper::saveExtraFields($post,$data['id']);
+        
        // Proceed with the save
 		return parent::save($data);   
     }    

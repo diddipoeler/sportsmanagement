@@ -46,7 +46,6 @@ jimport('joomla.database.table');
 // Include library dependencies
 jimport( 'joomla.filter.input' );
 
-
 /**
  * sportsmanagementTableClub
  * 
@@ -88,12 +87,6 @@ class sportsmanagementTableClub extends JTable
 		}
 		return true;
 	}
-	
-	
-    
-    
-    
-    
 
 }
 ?>

@@ -324,6 +324,14 @@ class sportsmanagementModelteam extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
+        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extendeduser']);
+			$data['extendeduser'] = (string)$parameter;
+		}
+        
         if ( $post['delete'] )
         {
             self::DeleteTrainigData($post['delete'][0]);

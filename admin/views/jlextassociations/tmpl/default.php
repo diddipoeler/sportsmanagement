@@ -48,6 +48,15 @@ JHtml::_('behavior.modal');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+<script language="javascript" type="text/javascript">
+
+function searchPerson(val)
+	{
+        var s= document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+	}
+</script>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<table>
 		<tr>
@@ -66,6 +75,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				</button>
 			</td>
             <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+            <td align="center" colspan="4">
+				<?php
+                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+			
+            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
+            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
+			}
+				
+				?>
+			</td>
 		</tr>
 	</table>
 	<div id="editcell">
