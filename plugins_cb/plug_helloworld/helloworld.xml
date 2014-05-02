@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* Joomla Community Builder User Plugin: plug_cbhelloworld
+* @version $Id$
+* @package plug_helloworld
+* @subpackage helloworld.xml
+* @author Nant, JoomlaJoe and Beat
+* @copyright (C) Nant, JoomlaJoe and Beat, www.joomlapolis.com
+* @license Limited  http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* @final 1.0
+*/
+-->
+<cbinstall version="1.0.0" type="plugin" group="user">
+	<name>CB Hello World</name>
+	<author>Nick A.</author>
+	<creationDate>2006-09-22</creationDate>
+	<copyright>(C) 2006 joomlapolis.com</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>nant@joomlapolis.com</authorEmail>
+	<authorUrl>www.joomlapolis.com</authorUrl>
+	<version>1.0</version>
+	<description>
+		This is a hello world plugin used as a rough guideline for novice CB plugin developers.
+		The only thing it does is to read a plugin parameter, read a tab parameter and display something in a new tab.
+	</description>
+	<files>
+		<filename plugin="helloworld">helloworld.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<params>
+		<param	name="hwPlugEnabled" type="radio" label="Hello World Plugin Enabled" default="1" description="Specify Yes to enable hello world plugin.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param	name="@spacer" type="spacer" label="Credits:" default="This plugin was created by Nick A. with the support of JoomlaJoe and Beat B." description="" />
+		<param	name="@spacer" type="spacer" label="License:" default="This plugin is distributed under a limited GNU/GPL license and cannot be modified to work with anything else outside of the Community Builder suite supported by the Joomlapolis.com site" description="" />
+		<param	name="@spacer" type="spacer" label="Parameters:" default="Please look at the relevant tab for additional parameters" description="" />
+
+	</params>
+	<tabs>
+		<tab name="Hello World" description="This tab is just a basic hello world type project to demonstrate a simple CB API application" class="gethelloworldTab" fields="0" position="cb_tabmain" displaytype="tab">
+			<params>
+				<param name="hwTabMessage" type="text" label="CB Hello World Tab Text" default="Hello Joomlapolitans!" description="Actual hello world message to display in the tab (default: Hello Joomlapolitans!)." />
+			</params>
+			<fields>
+			</fields>
+		</tab>
+	</tabs>
+	<install>
+		<queries>
+		</queries>
+	</install>
+	<uninstall>
+	</uninstall>
+</cbinstall>

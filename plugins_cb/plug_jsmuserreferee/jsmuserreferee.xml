@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* Joomla Community Builder User Plugin: plug_cbhelloworld
+* @version $Id$
+* @package plug_helloworld
+* @subpackage helloworld.xml
+* @author Nant, JoomlaJoe and Beat
+* @copyright (C) Nant, JoomlaJoe and Beat, www.joomlapolis.com
+* @license Limited  http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* @final 1.0
+*/
+-->
+<cbinstall version="1.0.0" type="plugin" group="user">
+
+	<name>CB JSM User Referee</name>
+	<creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	
+	
+	<description>
+		This is a CB JSM User Referee plugin used as a rough guideline for novice CB plugin developers.
+		The only thing it does is to read a plugin parameter, read a tab parameter and display something in a new tab.
+	</description>
+	<files>
+		<filename plugin="jsmuserreferee">jsmuserreferee.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<params>
+		<param	name="hwPlugEnabled" 
+    type="radio" 
+    label="CB JSM User Referee Enabled" 
+    default="1" 
+    description="Specify Yes to enable hello world plugin.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param	name="@spacer" 
+    type="spacer" 
+    label="Credits:" 
+    default="This plugin was created by diddipoeler" 
+    description="" />
+		<param	name="@spacer" 
+    type="spacer" 
+    label="License:" 
+    default="deafault" 
+    description="description" />
+		<param	name="@spacer"
+    type="spacer" 
+    label="Parameters:" 
+    default="default" 
+    description="description" />
+
+	</params>
+	<tabs>
+		<tab name="JSM User Referee" 
+    description="description" 
+    class="getjsmuserrefereeTab" 
+    fields="0" 
+    position="cb_tabmain" 
+    displaytype="tab">
+			<params>
+				<param 
+        name="hwTabMessage" 
+        type="text" 
+        label="CB JSM User Referee" 
+        default="CB JSM User Referee" 
+        description="CB JSM User Referee" />
+			</params>
+			<fields>
+			</fields>
+		</tab>
+	</tabs>
+	<install>
+		<queries>
+		</queries>
+	</install>
+	<uninstall>
+	</uninstall>
+</cbinstall>
