@@ -39,7 +39,36 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+
+// welche tabelle soll genutzt werden
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+}
+if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+}
+
 
 require_once (dirname(__FILE__).DS.'helper.php');
 
