@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="site" method="upgrade">
-	<name>MOD_SPORTSMANAGEMENT_NAVIGATION_MENU</name>
+	<name>MOD_SPORTSMANAGEMENT_NAVIGATION</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
