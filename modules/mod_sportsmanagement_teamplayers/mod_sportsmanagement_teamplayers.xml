@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="site" method="upgrade">
-	<name>MOD_SPORTSMANAGEMENT_TEAMPLAYERS_NAME</name>
+	<name>MOD_SPORTSMANAGEMENT_TEAMPLAYERS</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
@@ -40,26 +40,26 @@
 				<field name="show_project_name" type="radio" default="0"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_team_name" type="radio" default="0"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_TEAM_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_TEAM_NAME_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_player_link" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_player_flag" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="name_format" type="nameformat"
 					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT" 

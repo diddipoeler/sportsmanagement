@@ -19,10 +19,12 @@
 	</files>
 
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.ini
-		</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.sys.ini
-		</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_randomplayer.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_randomplayer.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_randomplayer.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_randomplayer.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_randomplayer.sys.ini</language>
 	</languages>
 
 	<config>
@@ -32,50 +34,50 @@
 				addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 				<field name="projects" type="projects" default="" required="true"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL" 
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL_DESC" />
 				<field name="teams" type="teams" default=""
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL" 
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
 				<field name="show_project_name" type="radio" default="1"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME" 
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_team_name" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_TEAM_NAME" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_TEAM_NAME_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_team_link" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_TEAM_LINK" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_TEAM_LINK_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_position_name" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_POSITION_NAME" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_POSITION_NAME_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_player_link" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PLAYER_LINK" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PLAYER_LINK_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="show_player_flag" type="radio" default="1"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PLAYER_FLAG" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PLAYER_FLAG_DESC">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="name_format" type="nameformat"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_LABEL_NAME_FORMAT"
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_DESCR_NAME_FORMAT" />
+					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT"
+					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
 				<field name="picture_width" type="text" default="0"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH_DESC" />
@@ -91,20 +93,30 @@
 			</fieldset>
 
 			<fieldset name="advanced">
-				<field 	name="cache" type="list" default="1" 
-						label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHING_LABEL"
-						description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHING_DESCR">
-					<option value="1">MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHING_USE_GLOBAL</option>
-					<option value="0">MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHING_NO_CACHING</option>
+				<field name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
-				<field 	name="cache_time" type="text" default="900" 
-						label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHE_TIME_LABEL"
-						description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_CACHE_TIME_DESCR">
-				</field>		
-				<field 	name="moduleclass_sfx" type="text" default=""
-						label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_MODULE_CLASS_SUFFIX_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_MODULE_CLASS_SUFFIX_DESCR">
-				</field>
+
+				<field name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
