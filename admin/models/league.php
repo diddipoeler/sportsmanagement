@@ -175,6 +175,9 @@ class sportsmanagementModelleague extends JModelAdmin
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+       
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.

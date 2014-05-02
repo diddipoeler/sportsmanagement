@@ -43,14 +43,24 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
  
+
 /**
- * SportsManagement View
+ * sportsmanagementViewLeague
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewLeague extends JView
 {
+	
 	/**
-	 * display method of Hello view
-	 * @return void
+	 * sportsmanagementViewLeague::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -70,6 +80,9 @@ class sportsmanagementViewLeague extends JView
 		$this->item = $item;
 		$this->script = $script;
 		
+        $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+        $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+        
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
 		$this->assignRef( 'extended', $extended );
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');		

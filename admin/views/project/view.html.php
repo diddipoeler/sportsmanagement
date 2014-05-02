@@ -100,6 +100,10 @@ class sportsmanagementViewProject extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+        $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+        
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
 		$this->assignRef( 'extended', $extended );
         

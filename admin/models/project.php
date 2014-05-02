@@ -506,7 +506,10 @@ class sportsmanagementModelProject extends JModelAdmin
        $post = JRequest::get('post');
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-              
+       
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+       
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
        
        if (isset($post['extended']) && is_array($post['extended'])) 

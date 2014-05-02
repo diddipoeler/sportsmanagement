@@ -54,34 +54,9 @@
 				JUNPUBLISHED</option>
 		</field>
 		
-		<field
-			name="sports_type_id"
-			type="sportstypelist"
-			class="inputbox validate-select-required"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			validate="superiorzero">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
-		</field>
 
-<field
-		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
-			name="agegroup_id"
-			type="agegroups"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
-			required="false">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
-		</field>	
+
+	
     		
 		<field
 			name="league_id"
@@ -261,6 +236,43 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 		</field>
     		
 	</fieldset>
+
+<fields name="request">
+<fieldset name="request"
+label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
+  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_DESC">  
+  
+    <field
+			name="sports_type_id"
+			type="sportstypelist"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+			required="true"
+			validate="">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+		</field>
+    
+		<field
+			name="agegroup_id"
+			type="dependsql"
+			depends="sports_type_id"
+			task="personagegroupoptions" 
+      size="10"
+      varname="id"
+      targettable="person"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+	
+</fieldset>
+</fields>		
 		
 	<fieldset name="date"
   label="COM_SPORTSMANAGEMENT_TABS_DATE"
