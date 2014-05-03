@@ -6,12 +6,11 @@
 	<authorUrl>www.fussballineuropa.de</authorUrl>
 	<copiright>kein</copiright>
 	<creationDate>Februar 2014</creationDate>
-	<copyright>(C) 2013 </copyright>
+	<copyright>(C) 2014 </copyright>
 	<license>kein</license>
 	<version>1.00</version>
-	<description>
- MOD_SPORTSMANAGEMENT_LIVETICKER_DESC
-	</description>
+	<description>MOD_SPORTSMANAGEMENT_LIVETICKER_DESC</description>
+
 	<files>
 		<filename module="mod_sportsmanagement_liveticker">mod_sportsmanagement_liveticker.php</filename>
 		<filename>mod_sportsmanagement_liveticker.xml</filename>
@@ -30,66 +29,66 @@
 	<languages>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
-	</languages>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.sys.ini</language>
+		</languages>
 
-<config>
-		<fields name="params">	
-		
-	<fieldset name="basic">
+	<config>
+		<fields name="params">
+
+		<fieldset name="basic">
 		<field name="use_local_jquery" 
 			type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY" description="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY_DESC" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+
 		<field name="use_css" type="list" default="simple.css" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS" description="" >
 			<option value="">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_NO</option>
 			<option value="simple.css">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_SIMPLE</option>
 		</field>
-		
+
 		<field name="allow_unregistered" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_ALLOW_UNREGISTERED_SHOUT" description="" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-			
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 
-<field name="display_liganame" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
+		<field name="display_liganame" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
-					</field>
-					
-<field name="display_commentary" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY" >
-			<option value="1">JYES</option>
+		</field>
+
+		<field name="display_commentary" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY" >
 			<option value="0">JNO</option>
-					</field>
-          					
-<field name="display_ligaflagge" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="display_ligaflagge" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
-					</field>
-                    		
-<field name="display_teamname" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME" >
-			<option value="0">lang</option>
-			<option value="1">mittel</option>
-			<option value="2">kurz</option>
-			<option value="3">kein</option>
-		</field>		
-		
-<field name="display_teamwappen" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
+		</field>
+
+		<field name="display_teamname" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME" >
+			<option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_LONG</option>
+			<option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_MIDDLE</option>
+			<option value="2">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_SHORT</option>
+			<option value="3">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_NO</option>
+		</field>
+
+		<field name="display_teamwappen" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
-					</field>				
+		</field>
 		<field name="display_anstoss" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
-					</field>				
+		</field>
 		<field name="display_abpfiff" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
-		</field>				
-		
-		
+		</field>
+
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="display_username" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USERNAME" >
 			<option value="0">JNO</option>
@@ -113,9 +112,9 @@
 		<field name="cols" type="text" default="17" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_COLS" description="" />
 		<field name="rows" type="text" default="5"  label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_ROWS" description="" />
 		<field name="moduleclass_sfx"  type="text"  default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-	</fieldset>
-	
-	<fieldset name="advanced">
+		</fieldset>
+
+		<fieldset name="advanced">
 		<field name="use_secret_salt" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT" description="" >
 			<option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_ON</option>
 			<option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_OFF</option>
@@ -123,9 +122,8 @@
 		<field name="secret_salt" type="text" default="tGbd8mfTb4p3f1_aAQpn84Qds" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT_DESC" />
 		<field name="add_timeout" type="text" default="10" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT_DESC" />
 		<field name="update_timeout" type="text" default="10" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT_DESC" />
-	</fieldset>
+		</fieldset>
 
-</fields>
-	</config>		
-		
+		</fields>
+	</config>
 </extension>
