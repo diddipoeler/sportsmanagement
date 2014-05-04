@@ -98,6 +98,18 @@ $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanag
 
 $task = JRequest::getCmd('task');
 $option = JRequest::getCmd('option');
+
+$view = JRequest::getVar( "view") ;
+$view = ucfirst(strtolower($view));
+$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;
+
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',$cfg_help_server );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',$cfg_bugtracker_server );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_VIEW',$view );
+
 if ( $mainframe->isAdmin() )
 {
 if($task == '' && $option == 'com_sportsmanagement') 

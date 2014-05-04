@@ -115,7 +115,12 @@ class sportsmanagementModelProject extends JModel
 	 */
 	function __construct()
 	{
-		self::$projectid = JRequest::getInt('p',0);
+		$mainframe = JFactory::getApplication();
+        
+        self::$projectid = JRequest::getInt('p',0);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        
 		parent::__construct();
 	}
 
@@ -135,7 +140,7 @@ class sportsmanagementModelProject extends JModel
         $starttime = microtime(); 
 
       // $this->projectid = JRequest::getInt('p',0);
-    
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
     $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');

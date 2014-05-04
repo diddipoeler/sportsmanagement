@@ -49,7 +49,30 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 
+
 ?>
+<script>
+
+jQuery(document).ready(function() {
+    // document is loaded and DOM is ready
+    //alert("document is ready");
+var width = get_windowPopUpWidth();
+var heigth = get_windowPopUpHeight();
+var linkbugtracker = "<?php echo COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER ?>";
+var linkonlinehelp = "<?php echo COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER ?>";
+var view = "<?php echo COM_SPORTSMANAGEMENT_SHOW_VIEW ?>";
+
+document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
+document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';    
+});
+
+jQuery(window).load(function() {
+    // page is fully loaded, including all frames, objects and images
+    //alert("window is loaded");
+});
+
+</script>
+
 <div class="joomleague">
 	<?php
 	echo $this->loadTemplate('projectheading');

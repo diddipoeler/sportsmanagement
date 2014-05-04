@@ -41,28 +41,18 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.modal' );
 
 $option = JRequest::getCmd('option');
-$view = JRequest::getVar( "view") ;
-$view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
+//$view = JRequest::getVar( "view") ;
+//$view = ucfirst(strtolower($view));
+//$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+//$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+//$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+//$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
 //if (JComponentHelper::getParams('com_sportsmanagement')->get('show_footer',0))
 //{
 ?>
 
 <script>
-window.onload = function() 
-{
-var width = get_windowPopUpWidth();
-var heigth = get_windowPopUpHeight();
-var linkbugtracker = "<?php echo $cfg_bugtracker_server ?>";
-var linkonlinehelp = "<?php echo $cfg_help_server ?>";
-var view = "<?php echo $view ?>";
 
-document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
-document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
-}
 
 </script>	
 
@@ -90,6 +80,20 @@ document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal
      
               
     </div>   
+
+<!-- Eine Seite in der Modalbox laden -->
+<a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe'}">Joomla!.org</a>
+ 
+<!-- Eine Seite mit einer bestimmten Größe in der Modalbox laden -->
+<a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe', size: {x: 570, y: 200}}">Joomla!.org</a>
+ 
+<!-- Ein Bild in der Modalbox laden -->
+<a href="http://cdn.joomla.org/images/logo.png" title="Joomla! Logo" class="modal">
+<img src="http://cdn.joomla.org/images/logo.png" alt="Joomla! Logo" />
+</a>
+
+
+
             
 <?php
 //}
