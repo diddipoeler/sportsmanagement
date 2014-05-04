@@ -1099,7 +1099,8 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s on s.id = p.season_id');
             
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l on l.id = p.league_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.id = r.project_id ');
+            //$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.id = r.project_id ');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.current_round = r.id ');
             
           $query->where('p.id = ' . $this->_project_id);
          
