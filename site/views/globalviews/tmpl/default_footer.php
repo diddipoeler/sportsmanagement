@@ -80,19 +80,17 @@ $option = JRequest::getCmd('option');
      
               
     </div>   
+<!--
 
-<!-- Eine Seite in der Modalbox laden -->
 <a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe'}">Joomla!.org</a>
- 
-<!-- Eine Seite mit einer bestimmten Größe in der Modalbox laden -->
+
 <a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe', size: {x: 570, y: 200}}">Joomla!.org</a>
- 
-<!-- Ein Bild in der Modalbox laden -->
+
 <a href="http://cdn.joomla.org/images/logo.png" title="Joomla! Logo" class="modal">
 <img src="http://cdn.joomla.org/images/logo.png" alt="Joomla! Logo" />
 </a>
 
-
+-->
 
             
 <?php
