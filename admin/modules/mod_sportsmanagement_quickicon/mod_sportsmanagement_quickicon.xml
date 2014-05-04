@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="administrator" method="upgrade">
-	<name>MOD_SPORTSMANAGEMENT_QUICKICON</name>
+	<name>Sports Management Module Quickicon</name>
 	<creationDate>15.01.2014</creationDate>
 	<author>JSM Team</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
@@ -20,8 +20,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_quickicon.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_quickicon.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_quickicon.sys.ini</language>
 	</languages>
 	
 </extension>

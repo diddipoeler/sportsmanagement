@@ -181,6 +181,12 @@ class sportsmanagementViewMatches extends JView
 
 
 
+        //build the html options for extratime
+		$match_result_type[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
+		$match_result_type[] = JHtmlSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
+		$match_result_type[] = JHtmlSelect::option('2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
+		$lists['match_result_type'] = $match_result_type;
+		unset($match_result_type);
         
         //build the html options for divisions
 		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));

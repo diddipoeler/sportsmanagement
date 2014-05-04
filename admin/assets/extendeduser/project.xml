@@ -2,6 +2,151 @@
 <config>
 	
   <fieldset name="COM_JOOMLEAGUE_EXT_EXTENDED_USER_PREFERENCES">
+  	<field name="insertmatchplan" type="radio" default="1" label="insertmatchplan" description="insertmatchplan">
+			<option value="0">Nein</option>
+			<option value="1">Ja</option>
+		</field>
+    
+		<field name="ergebnismatrix" type="textarea" rows="25" cols="250" label="ergebnismatrix" description="ergebnismatrix">
+		</field>
+    
+    <field name="weltfussballlink" type="textarea" rows="1" cols="100" label="weltfussballlink" description="weltfussballlink">
+		</field>
+		
+		<field name="soccerwaylink" type="textarea" rows="1" cols="100" label="soccerwaylink" description="soccerwaylink">
+		</field>
+    
+    <field name="futbolmelink" type="textarea" rows="1" cols="100" label="futbolmelink" description="futbolmelink">
+		</field>
+		<field name="futbolmelinkfertig" type="radio" default="0" label="futbolmelinkfertig" description="futbolmelinkfertig">
+			<option value="0">Nein</option>
+			<option value="1">Ja</option>
+		</field>
+		
+		<field name="tonykempsterlink" type="textarea" rows="1" cols="100" label="tonykempsterlink" description="tonykempsterlink">
+		</field>		
+    <field name="tonykempsterspieltage" type="text" rows="1" cols="100" label="tonykempsterspieltage" description="tonykempsterspieltage">
+		</field>
+		<field name="tonykempsterpaarungspieltag" type="text" rows="1" cols="100" label="tonykempsterpaarungspieltag" description="tonykempsterpaarungspieltag">
+		</field>
+    		
+		<field name="footbocomlink" type="textarea" rows="1" cols="100" label="footbocomlink" description="footbocomlink">
+		</field>
+		<field name="imscoutinglink" type="textarea" rows="1" cols="100" label="imscoutinglink" description="imscoutinglink">
+		</field>		
+		<field name="futbol24link" type="textarea" rows="1" cols="100" label="futbol24link" description="futbol24link">
+		</field>
+		
+		<field name="escudosdefutbollink" type="textarea" rows="1" cols="100" label="escudosdefutbollink" description="escudosdefutbollink">
+		</field>
+
+		<field name="fussballzzlink" type="textarea" rows="1" cols="100" label="fussballzzlink" description="fussballzzlink">
+		</field>		
+		
+		<field name="footballenfrancelink" type="textarea" rows="1" cols="100" label="footballenfrancelink" description="footballenfrancelink">
+		</field>
+		<field name="footballenfranceteams" type="text" rows="1" cols="100" label="footballenfranceteams" description="footballenfranceteams">
+		</field>
+    
+    <field name="manfredsarchivlink" type="textarea" rows="1" cols="100" label="manfredsarchivlink" description="manfredsarchivlink">
+		</field>
+		<field name="manfredsarchivteams" type="text" rows="1" cols="100" label="manfredsarchivteams" description="manfredsarchivteams">
+		</field>
+		
+    <field name="ascneuenheimlink" type="textarea" rows="1" cols="100" label="ascneuenheimlink" description="ascneuenheimlink">
+		</field>
+		
+		<field name="ascneuenheimtyp" type="radio" default="0" label="ascneuenheimtyp" description="ascneuenheimtyp">
+		<option value="0">Spielplan</option>
+		<option value="1">Tabelle mit S/U/N</option>
+		<option value="2">Tabelle ohne S/U/N</option>
+		</field>
+		
+		<field name="ascneuenheimfertig" type="radio" default="0" label="ascneuenheimfertig" description="ascneuenheimfertig">
+			<option value="0">Nein</option>
+			<option value="1">Ja</option>
+    </field> 
+         	
+<field name="soccervistacomlink" type="textarea" rows="1" cols="100" label="soccervistacomlink" description="soccervistacomlink">
+		</field>
+		
+		<field name="faroesoccerlink" type="textarea" rows="1" cols="100" label="faroesoccerlink" description="faroesoccerlink">
+		</field>
+             	
+    <field name="bari91comlink" type="textarea" rows="1" cols="100" label="bari91comlink" description="bari91comlink">
+		</field>
+		<field name="bari91comspieltage" type="text" rows="1" cols="100" label="bari91comspieltage" description="bari91comspieltage">
+		</field>
+		<field name="bari91compaarungspieltag" type="text" rows="1" cols="100" label="bari91compaarungspieltag" description="bari91compaarungspieltag">
+		</field>
+		<field name="bari91comfertig" type="radio" default="0" label="bari91comfertig" description="bari91comfertig">
+			<option value="0">Nein</option>
+			<option value="1">Ja</option>
+		</field>
+		
+		<field name="fussballdelink" type="textarea" rows="1" cols="100" label="fussballdelink" description="fussballdelink">
+		</field>
+		
+		<field name="fussballgiessenlink" type="textarea" rows="1" cols="100" label="fussballgiessenlink" description="fussballgiessenlink">
+		</field>
+		
+		<field name="austriasoccer" type="textarea" rows="1" cols="100" label="austriasoccer" description="austriasoccer">
+		</field>
+		
+		<field name="erstellung" type="calendar" label="erstellung" description="erstellung">
+		</field>
+    <field name="update" type="calendar" label="update" description="update">
+		</field>
+		<field name="minutlink" type="textarea" rows="1" cols="100" label="minutlink" description="minutlink">
+		</field>
+		
+		<field name="wildstatlink" type="textarea" rows="1" cols="100" label="wildstatlink" description="wildstatlink">
+		</field>
+
+		<field name="ddrlink" type="textarea" rows="1" cols="100" label="ddrlink" description="ddrlink">
+		</field>
+		
+		<field name="archivbadenwuerttemberg" type="textarea" rows="1" cols="100" label="archivbadenwuerttemberg" description="archivbadenwuerttemberg">
+		</field>
+    		
+		<field name="fussballoesterreich" type="textarea" rows="1" cols="100" label="fussballoesterreich" description="fussballoesterreich">
+		</field>
+		
+		<field name="fussballschweiz" type="textarea" rows="1" cols="100" label="fussballschweiz" description="fussballschweiz">
+		</field>
+		
+		<field name="fussballschweden" type="textarea" rows="1" cols="100" label="fussballschweden" description="fussballschweden">
+		</field>
+		
+		<field name="fussballnorwegen" type="textarea" rows="1" cols="100" label="fussballnorwegen" description="fussballnorwegen">
+		</field> 
+
+		
+    
+    <field name="wikitabelle" type="textarea" rows="25" cols="150" label="wikitabelle" description="wikitabelle">
+		</field>        
+		<field name="wikitabellestruktur" type="textarea" rows="25" cols="150" label="wikitabellestruktur" description="wikitabellestruktur">
+		</field>
+
+		<field name="statistikslink" type="textarea" rows="1" cols="100" label="statistikslink" description="statistikslink">
+		</field>    
+
+		<field name="stadtsuchen" type="text" label="stadtsuchen" description="stadtsuchen">
+		</field>
+    
+           		
+		<field name="projectart" type="radio" default="1" label="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?" description="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?">
+			<option value="0">Pokal</option>
+			<option value="1">Liga</option>
+			<option value="2">Freundschaftsspiele</option>
+			<option value="3">Verbandsturnier</option>
+		</field>
+		
+
+		
+		<field name="rssfeeds" type="textarea" rows="2" cols="100" label="rssfeeds" description="rssfeeds"/>
+		
+    <field name="rsslivefeeds" type="textarea" rows="2" cols="100" label="rsslivefeeds" description="rsslivefeeds"/>
 		
 	</fieldset>
 </config>
