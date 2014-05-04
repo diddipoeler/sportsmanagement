@@ -140,7 +140,10 @@ class sportsmanagementModelProject extends JModel
         $starttime = microtime(); 
 
       // $this->projectid = JRequest::getInt('p',0);
+    
     $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(self::$_current_round,true).'</pre>'),'');
+    
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
     $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
@@ -390,7 +393,7 @@ class sportsmanagementModelProject extends JModel
         }
        
             
-			$this->_current_round = $result;
+			self::$_current_round = $result;
 		}
         
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
@@ -398,7 +401,7 @@ class sportsmanagementModelProject extends JModel
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->id<br><pre>'.print_r($project->id,true).'</pre>'),'');
         
         
-		return $this->_current_round;
+		return self::$_current_round;
 	}
 
 	/**
@@ -459,7 +462,7 @@ class sportsmanagementModelProject extends JModel
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
         // Where
-        $query->where('project_id = '.$this->projectid);
+        $query->where('project_id = '.self::$projectid);
         
         if ( $divLevel == 1 )
 		{
@@ -541,7 +544,7 @@ class sportsmanagementModelProject extends JModel
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
                 // Where
-                $query->where('project_id = '.$this->projectid);
+                $query->where('project_id = '.self::$projectid);
 
 				$db->setQuery($query);
 				$this->_divisions = $db->loadObjectList('id');
@@ -585,7 +588,7 @@ class sportsmanagementModelProject extends JModel
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
                 // Where
-                $query->where('project_id = '.$this->projectid);
+                $query->where('project_id = '.self::$projectid);
                 // order
                 $query->order('roundcode ASC');
 
@@ -602,7 +605,7 @@ class sportsmanagementModelProject extends JModel
         if ( !$this->_rounds )
 	    {
 	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
-		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r($this->projectid,true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 	    }
         
@@ -632,7 +635,7 @@ class sportsmanagementModelProject extends JModel
         // Select some fields
         $query->select("id as value, CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
-        $query->where('project_id = '.(int)$this->projectid);
+        $query->where('project_id = '.(int)self::$projectid);
         $query->order('roundcode '.$ordering);
 
 		$db->setQuery($query);
@@ -646,7 +649,7 @@ class sportsmanagementModelProject extends JModel
         if ( !$result )
 	    {
 	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
-		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r($this->projectid,true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 	    }
         
@@ -932,7 +935,7 @@ class sportsmanagementModelProject extends JModel
         $query->select('id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
         $query->where('team_id = '.(int)$teamid);
-        $query->where('project_id = '.(int)$this->projectid);
+        $query->where('project_id = '.(int)self::$projectid);
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
@@ -1205,7 +1208,7 @@ $starttime = microtime();
         $query->select('l.country');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro ON pro.league_id = l.id ');
-        $query->where('pro.id = '. $db->Quote($this->projectid));
+        $query->where('pro.id = '. $db->Quote(self::$projectid));
 
 		  $db->setQuery( $query );
 		  $this->country = $db->loadResult();
@@ -1229,7 +1232,7 @@ $starttime = microtime();
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id ');
-        $query->where('ppos.project_id = '. $db->Quote($this->projectid));
+        $query->where('ppos.project_id = '. $db->Quote(self::$projectid));
 
 		if ($position_id)
 		{
