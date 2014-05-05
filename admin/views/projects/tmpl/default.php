@@ -106,6 +106,8 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+					</th>
 					<th width="5%" class="title">
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
@@ -129,7 +131,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='12'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan='13'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -184,7 +186,36 @@ JHtml::_('behavior.modal');
 						<td class="center"><?php echo $row->season; ?></td>
 						<td class="center"><?php echo JText::_($row->sportstype); ?></td>
 						<td class="center"><?php echo JText::_($row->project_type); ?></td>
-						<td class="center">
+						
+                        <td class="center">
+								<?php
+								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								else
+								{
+									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+?>                                    
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+</a>
+<?PHP
+								}
+								?>
+							</td>
+                        
+                        
+                        <td class="center">
 							<?php if ($row->current_round): ?>
 								<?php echo JHtml::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
 								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>

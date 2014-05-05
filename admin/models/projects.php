@@ -73,7 +73,8 @@ class sportsmanagementModelProjects extends JModelList
                         'p.project_type',
                         'p.published',
                         'p.id',
-                        'p.ordering'
+                        'p.ordering',
+                        'p.picture'
                         );
                 parent::__construct($config);
         }
