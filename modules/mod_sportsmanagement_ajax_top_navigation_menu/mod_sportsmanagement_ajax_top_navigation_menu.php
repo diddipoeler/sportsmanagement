@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
+$mainframe = JFactory::getApplication();
 // sprachdatei aus dem backend laden
 $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
@@ -114,8 +115,11 @@ $team_id = 0;
 $country_id  = ''; 
 $lightbox = '';
 
-if ( $queryvalues && !$_POST )
+if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
 {
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
+    
 $ende_if = false;
 $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
@@ -162,13 +166,28 @@ $ende_if = true;
  
 }
 
-if ( $_POST )
+if ( $_POST && !isset($_POST['reload_View']) )
 {
-$project_id = 0;  
-$league_id = 0;   
 
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
+    
+$league_id = 0;   
+$project_id = 0;
 $team_id = 0;
 $division_id = 0;
+    
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
+
+$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
+
+if ( empty($project_id) )
+{
+$project_id = JRequest::getInt( "p", 0 );    
+}    
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+  
+
 
 $assoc_id  = JRequest::getVar('jlamtopassocid',0,'default','POST');
 $subassoc_id  = JRequest::getVar('jlamtopsubassocid',0,'default','POST');
@@ -176,7 +195,7 @@ $subsubassoc_id  = JRequest::getVar('jlamtopsubsubassocid',0,'default','POST');
 $country_id  = JRequest::getVar('jlamtopcountry',0,'default','POST');
 $season_id  = JRequest::getVar('jlamtopseason',0,'default','POST');
 $league_id  = JRequest::getVar('jlamtopleague',0,'default','POST');
-$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
+//$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
 $team_id  = JRequest::getVar('jlamtopteam',0,'default','POST');
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
