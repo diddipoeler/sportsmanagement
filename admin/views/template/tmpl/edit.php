@@ -86,6 +86,7 @@ $i    = 1;
 				endif;
 				?>
 				<!-- <ul class="config-option-list"> -->
+                <table>
 				<?php 
                 foreach ($this->form->getFieldset($name) as $field): 
                 
@@ -98,12 +99,17 @@ $i    = 1;
                     //echo '<li>';
                 }    
                 ?>
-					
+				<tr>	
 					<?php if (!$field->hidden) : ?>
+                    <td>
 					<?php echo $field->label; ?>
+                    </td>
 					<?php endif; ?>
+                    <td>
 					<?php echo $field->input; 
-                    
+                    ?>
+                    </td>
+                    <?php
                     
                   
                     //echo ' <br><pre>'.print_r($field->name,true).'</pre>';
@@ -121,15 +127,18 @@ $i    = 1;
                 if ( $var_onlinehelp == 'ordered_columns_new_select' )
                 {
                 ?>
+                <td>
                 <input  type="button" class="inputbox"
 						onclick="move_list_items('params_ordered_columns_new_select','params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 						value="&gt;&gt;" />
 				<br /><br />
+                </td>
                 <?PHP    
                 }    
                 if ( $var_onlinehelp == 'ordered_columns_new' )
                 {
                 ?>
+                <td>
                 <input  type="button" class="inputbox"
 						onclick="move_list_items('params_ordered_columns_new','params_ordered_columns_new_select');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 						value="&lt;&lt;" />
@@ -139,7 +148,8 @@ $i    = 1;
                         <br />
                 <input type="button" class="inputbox"
 					   onclick="move_down('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
-					   value="<?php echo JText::_('JLIB_HTML_MOVE_DOWN'); ?>" />            
+					   value="<?php echo JText::_('JLIB_HTML_MOVE_DOWN'); ?>" />  
+                       </td>          
                 <?PHP    
                 }
                 switch ($var_onlinehelp)
@@ -149,6 +159,7 @@ $i    = 1;
                     break;
                     default:
                 ?>
+                <td>
                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Templateparameter:'.$var_onlinehelp; ?>"
 									 class="modal">
@@ -158,7 +169,7 @@ $i    = 1;
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
-                
+                </td>
                 <?PHP
                 break;
                 }
@@ -169,11 +180,12 @@ $i    = 1;
                 }  
                 
                 ?>
-			
+			</tr>
 				<?php 
                 endforeach; 
                 ?>
 				<!-- </ul> -->
+                </table>
                 </fieldset>
                 <?PHP
                 
