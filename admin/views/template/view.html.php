@@ -133,9 +133,26 @@ class sportsmanagementViewTemplate extends JView
             $this->assignRef('teamscount',$iProjectTeamsCount);
             $this->form->setFieldAttribute('colors_ranking','rankingteams' , $iProjectTeamsCount);
             $this->form->setFieldAttribute('colors','type' , 'hidden');
+            
+            $colors = $this->form->getValue('colors');
+            $colors_ranking = $this->form->getValue('colors_ranking');
+            if ( empty($colors_ranking[1]['von']) )
+            {
+            $count = 1;    
+            $teile = explode(";",$colors);    
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
+            foreach($teile as $key => $value )
+            {
+            $teile2 = explode(",",$value);      
+            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;  
+            $count++;  
+            }
+            $this->form->setValue('colors_ranking',null,$colors_ranking);
+            }
             //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($iProjectTeamsCount,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($this->form,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
+            
             break;
         }
 
