@@ -172,7 +172,7 @@ class JFormFieldjsmcolorsranking extends JFormField
                 $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
                 $html[] = '</td>';  
                 $html[] = '<td>';    
-                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="20"' . '/>';
+                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
                 $html[] = '</td>';               
                 $html[] = '</tr>';  
 
