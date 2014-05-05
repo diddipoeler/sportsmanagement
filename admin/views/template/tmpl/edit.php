@@ -85,9 +85,20 @@ $i    = 1;
 					echo '<fieldset class="adminform">'.JText::_($fieldSet->description).'</fieldset>';
 				endif;
 				?>
-				<ul class="config-option-list">
-				<?php foreach ($this->form->getFieldset($name) as $field): ?>
-					<li>
+				<!-- <ul class="config-option-list"> -->
+				<?php 
+                foreach ($this->form->getFieldset($name) as $field): 
+                
+                $suchmuster = array ("params[","]","[");
+                $ersetzen = array ('', '', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                
+                if ( $var_onlinehelp != 'colors' )
+                {
+                    //echo '<li>';
+                }    
+                ?>
+					
 					<?php if (!$field->hidden) : ?>
 					<?php echo $field->label; ?>
 					<?php endif; ?>
@@ -102,9 +113,9 @@ $i    = 1;
                     //echo '<br>customselbox<br>'.$field->customselbox.'<br>';
                     //}
                     
-                    $suchmuster = array ("params[","]","[");
-                $ersetzen = array ('', '', '');
-                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+//                    $suchmuster = array ("params[","]","[");
+//                $ersetzen = array ('', '', '');
+//                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                
                     
                 if ( $var_onlinehelp == 'ordered_columns_new_select' )
@@ -134,6 +145,7 @@ $i    = 1;
                 switch ($var_onlinehelp)
                 {
                     case 'id':
+                    case 'colors':
                     break;
                     default:
                 ?>
@@ -150,19 +162,23 @@ $i    = 1;
                 <?PHP
                 break;
                 }
+                
+                if ( $var_onlinehelp != 'colors' )
+                {
+                    //echo '</li>';
+                }  
+                
                 ?>
-					</li>
-				<?php endforeach; ?>
-				</ul>
+			
+				<?php 
+                endforeach; 
+                ?>
+				<!-- </ul> -->
                 </fieldset>
                 <?PHP
                 
                 ?>
-                
-                
-                
-			
- 
+
     <div class="clr"></div>
     <?php endforeach; ?>
     <?php echo JHtml::_('tabs.end'); ?>

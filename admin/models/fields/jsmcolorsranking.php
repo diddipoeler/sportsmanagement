@@ -44,9 +44,13 @@ jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
+// Get the pane and slider class
+jimport('joomla.html.pane');
 
 /**
  * JFormFieldjsmcolorsranking
+ * http://docs.joomla.org/Creating_a_modal_form_field
+ * http://docs.joomla.org/Creating_a_custom_form_field_type
  * 
  * @package   
  * @author 
@@ -62,14 +66,18 @@ class JFormFieldjsmcolorsranking extends JFormField
 	 */
 	public $type = 'jsmcolorsranking';
 
-	/**
+	
+    
+    
+    
+    /**
 	 * Method to get the field options.
 	 *
 	 * @return  array  The field option objects.
 	 *
 	 * @since   11.1
 	 */
-	protected function getInput()
+	public function getInput()
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -77,37 +85,69 @@ class JFormFieldjsmcolorsranking extends JFormField
         //$this->value = explode(",", $this->value);
         $rankingteams = $this->element['rankingteams'];
         //$targetid = $this->element['targetid'];
+        // Initialize variables.
+        $html = array();
         
+        //build the html options for extratime
+		$select_ranking[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+        for($a=1; $a <= $rankingteams ; $a++)
+                {
+                $select_ranking[] = JHtmlSelect::option($a,$a);    
+                    
+                }    
+
+// We need and instance of the pane class to create the sliders.
+      //$pane = JPane::getInstance('sliders');
         
 	
-    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_ranking<br><pre>'.print_r($select_ranking,true).'</pre>'),'');
    // $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
-    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
+
    
 
 
-// Initialize variables.
-            $html = array();
+/*
            
+            $html[] = '<fieldset id="' . $this->id . '"' .  '>';
+            for($a=1; $a <= $rankingteams ; $a++)
+                {
+                    
+                if ( !is_array($this->value) )
+                {
+                $this->value[$a]['von'] = '';
+                }
+                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+													$this->name . '['. $a .'][von]"','class="inputbox" size="1"','value','text',
+													$this->value[$a]['von']);
+                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+													$this->name . '['. $a .'][bis]"','class="inputbox" size="1"','value','text',
+													$this->value[$a]['bis']);
+                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
+                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="10"' . '/>';
+                $html[] = "<br />"; 
+                }    
+                $html[] = '</fieldset>'; 
+ */           
+            
+            
+            
             //$html[] = '<fieldset id="' . $this->id . '"' .  '>';
-            //$html[] = '<table>';
-            $html[] = '<ul class="config-option-list>';
-//            $html[] = '<li>';
-//            $html[] = '<table>';
-//            $html[] = '<tr>';
-//            $html[] = '<th>';
-//            $html[] = 'von'; 
-//            $html[] = '</th>';
-//            $html[] = '<th>';
-//            $html[] = 'bis'; 
-//            $html[] = '</th>';
-//            $html[] = '<th>';
-//            $html[] = 'farbe'; 
-//            $html[] = '</th>';
-//            $html[] = '<th>';
-//            $html[] = 'text'; 
-//            $html[] = '</th>';
-//            $html[] = '</tr>';  
+            $html[] = '<table>';
+            $html[] = '<tr>';
+            $html[] = '<th>';
+            $html[] = 'von'; 
+            $html[] = '</th>';
+            $html[] = '<th>';
+            $html[] = 'bis'; 
+            $html[] = '</th>';
+            $html[] = '<th>';
+            $html[] = 'farbe'; 
+            $html[] = '</th>';
+            $html[] = '<th>';
+            $html[] = 'text'; 
+            $html[] = '</th>';
+            $html[] = '</tr>';  
+                
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
                     
@@ -115,33 +155,38 @@ class JFormFieldjsmcolorsranking extends JFormField
                 {
                 $this->value[$a]['von'] = '';
                 }
+ 
+               $html[] = '<tr>';
+                $html[] = '<td>';    
+                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+													$this->name . '['. $a .'][von]"','class="inputbox" size="1"','value','text',
+													$this->value[$a]['von']);
+                $html[] = '</td>'; 
+                $html[] = '<td>';    
+                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+													$this->name . '['. $a .'][bis]"','class="inputbox" size="1"','value','text',
+													$this->value[$a]['bis']);
                 
-                $html[] = '<li>';    
-//                $html[] = '<tr>';
-//                $html[] = '<td>';    
-                $html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][von]"' . ' value="' .$this->value[$a]['von']. '" size="5"' . '/>';
-//                $html[] = '</td>'; 
-//                $html[] = '<td>';    
-                $html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][bis]"' . ' value="' .$this->value[$a]['bis']. '" size="5"' . '/>';
-//                $html[] = '</td>';  
-//                $html[] = '<td>';    
+                $html[] = '</td>';  
+                $html[] = '<td>';    
                 $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
-//                $html[] = '</td>';  
-//                $html[] = '<td>';    
-                $html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="50"' . '/>';
-//                $html[] = '</td>';               
-//                $html[] = '</tr>';  
-                $html[] = '</li>'; 
+                $html[] = '</td>';  
+                $html[] = '<td>';    
+                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="20"' . '/>';
+                $html[] = '</td>';               
+                $html[] = '</tr>';  
+
                 }    
-//                $html[] = '</table>';
-//                $html[] = '</li>';
-                $html[] = '</ul>';  
-            //$html[] = '</table>';
-           
-            //$html[] = '</fieldset>';         
+            $html[] = '</table>';
+           //$html[] = '</fieldset>';
+                    
     
             //return $html;
-            return implode($html);      
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html<br><pre>'.print_r($html,true).'</pre>'),'');
+            
+            //return implode("\n", $html);
+            return implode($html);     
     
     }
 }
