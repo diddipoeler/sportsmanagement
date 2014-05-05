@@ -110,6 +110,12 @@ class JFormFieldjsmcolorsranking extends JFormField
 //            $html[] = '</tr>';  
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
+                    
+                if ( !is_array($this->value) )
+                {
+                $this->value[$a]['von'] = '';
+                }
+                
                 $html[] = '<li>';    
 //                $html[] = '<tr>';
 //                $html[] = '<td>';    
