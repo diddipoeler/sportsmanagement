@@ -37,7 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+?>
 
 <form name="adminForm" id="adminForm" method="post"
 	action="<?php echo $this->action;?>">
@@ -60,6 +61,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			value="<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>"></td>
 	</tr>
 </table>
-	<?php echo JHtml::_( 'form.token' ); ?></form>
+	<?php echo JHtml::_( 'form.token' ); ?>
+    </form>
 <br />
 

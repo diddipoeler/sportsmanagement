@@ -56,6 +56,8 @@ class sportsmanagementModelProject extends JModel
 	static $_project = null;
 	static $projectid = 0;
     static $matchid = 0;
+    static $_round_from;
+    static $_round_to;
 
 	/**
 	 * project league country
@@ -141,8 +143,8 @@ class sportsmanagementModelProject extends JModel
 
       // $this->projectid = JRequest::getInt('p',0);
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(self::$_current_round,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(self::$_current_round,true).'</pre>'),'');
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -326,6 +328,9 @@ class sportsmanagementModelProject extends JModel
                 $query->order('m.match_date ASC LIMIT 1');
 					break;
 			}
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
 			$db->setQuery($query);
 			$result = $db->loadObject();
 				
@@ -334,8 +339,8 @@ class sportsmanagementModelProject extends JModel
 			if (!$result)
 			{
 			 
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
              
 			$query->clear();
             $query->select('r.id, r.roundcode');
@@ -373,18 +378,30 @@ class sportsmanagementModelProject extends JModel
 			}
 			
 			// Update the database if determined current round is different from that in the database
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round<br><pre>'.print_r($project->current_round,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id<br><pre>'.print_r($result->id,true).'</pre>'),'');
+            
 			if ($result && ($project->current_round <> $result->id))
 			{
 			 // Must be a valid primary key value.
              $object = new stdClass();
-             $object->id = $db->Quote($project->id);
+             $object->id = $project->id;
              $object->current_round = $result->id;
              // Update their details in the users table using id as the primary key.
-             $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');
+             $resultupdate = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');
 
-				if (!$result) {
-					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));					
+				if (!$resultupdate) 
+                {
+//                    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultupdate<br><pre>'.print_r($resultupdate,true).'</pre>'),'Error');
+//                    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object,true).'</pre>'),'Error');
+                    JError::raiseWarning(500, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));
 				}
+                else
+                {
+//                    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultupdate<br><pre>'.print_r($resultupdate,true).'</pre>'),'');
+//                    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object,true).'</pre>'),'');
+                }
 			}
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

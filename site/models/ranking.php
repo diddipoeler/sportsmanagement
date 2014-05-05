@@ -59,8 +59,10 @@ class sportsmanagementModelRanking extends JModel
 	var $rounds = array(0);
 	var $part = 0;
 	var $type = 0;
-	var $from = 0;
+	
+    var $from = 0;
 	var $to = 0;
+    
 	var $divLevel = 0;
 	var $currentRanking = array();
 	var $previousRanking = array();
@@ -88,18 +90,41 @@ class sportsmanagementModelRanking extends JModel
 		$this->to	 = JRequest::getInt( 'to', $this->round);
 		$this->type  = JRequest::getInt( 'type', 0 );
 		$this->last  = JRequest::getInt( 'last', 0 );
-    $this->viewName = JRequest::getVar( "view");
-    
-		$this->selDivision = JRequest::getInt( 'division', 0 );
+        $this->viewName = JRequest::getVar( "view");
+    	$this->selDivision = JRequest::getInt( 'division', 0 );
         
         sportsmanagementModelProject::$projectid = $this->projectid; 
         
-//        if ( empty($this->round) )
-//        {
-//            $this->round = sportsmanagementModelProject::getCurrentRoundNumber();
-//        }
+        if ( empty($this->from)  )
+        {
+        $from	= sportsmanagementModelRounds::getFirstRound($this->projectid);
+        $this->from	= $from[id];
+        }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+        if ( empty($this->to)  )
+        {
+		$to	= sportsmanagementModelRounds::getLastRound($this->projectid);
+        $this->to	= $to[id];
+        }
+        else
+        {
+        $this->round = $this->to;    
+        }
+        
+        
+        if ( empty($this->round) )
+        {
+            $this->round = sportsmanagementModelProject::getCurrentRound();
+            $this->current_round = $this->round;
+        }
+        
+        sportsmanagementModelProject::$_round_from = $this->from; 
+        sportsmanagementModelProject::$_round_to = $this->round;
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round<br><pre>'.print_r($this->current_round,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($this->to,true).'</pre>'),'');
 
 		parent::__construct( );
 	}

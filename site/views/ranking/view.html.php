@@ -154,9 +154,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('rounds',$rounds);
 		$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
 		$this->assignRef('type',$model->type);
-		$this->assignRef('from',$model->from);
-		$this->assignRef('to',$model->to);
+		//$this->assignRef('from',$model->from);
+		//$this->assignRef('to',$model->to);
+        
+        $this->assignRef('from',sportsmanagementModelProject::$_round_from);
+		$this->assignRef('to',sportsmanagementModelProject::$_round_to);
+        
 		$this->assignRef('divLevel',$model->divLevel);
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($this->to,true).'</pre>'),'');
         
         if ($this->config['show_table_1']==1)
 	{
