@@ -170,9 +170,29 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $post=JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) 
+		{
+		  $colors = array();
+          foreach ( $post['params']['colors_ranking'] as $key => $value )
+          {
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
+            
+            if ( !empty($value['von']) )
+            {
+                $colors[] = implode(",",$value);
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
+            }
+          }
+          
+          //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' colors<br><pre>'.print_r($colors,true).'</pre>'),'Notice');
+        
+        $post['params']['colors'] = implode(";",$colors); 
+        }  
+        
        if (isset($post['params']) && is_array($post['params'])) 
 		{
 			// Convert the params field to a string.
@@ -189,6 +209,13 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		return parent::save($data);   
     }
     
+    /**
+     * sportsmanagementModeltemplate::getAllTemplatesList()
+     * 
+     * @param mixed $project_id
+     * @param mixed $master_id
+     * @return
+     */
     function getAllTemplatesList($project_id,$master_id)
 	{
 		

@@ -116,17 +116,28 @@ class sportsmanagementViewTemplate extends JView
         $form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);
         $form->bind($item->params);
-        
-        
-             
+      
         
         // Assign the Data
 		$this->form = $form;
 		//$this->item = $item;
 		$this->script = $script;
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
         
+        switch ( $this->form->getName() )
+        {
+            case 'ranking':
+            $mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+	        $iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
+            $this->assignRef('teamscount',$iProjectTeamsCount);
+            $this->form->setFieldAttribute('colors_ranking','rankingteams' , $iProjectTeamsCount);
+            $this->form->setFieldAttribute('colors','type' , 'hidden');
+            //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($iProjectTeamsCount,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($this->form,true).'</pre>'),'Notice');
+            break;
+        }
 
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
         $templates=array();
@@ -142,6 +153,10 @@ class sportsmanagementViewTemplate extends JView
         
         $this->assign('request_url',$uri->toString());
 		$this->assignRef('template',$item);
+        
+        
+        
+        $this->assignRef('templatename',$this->form->getName());
 		$this->assignRef('project',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('user',$user);
@@ -223,9 +238,11 @@ class sportsmanagementViewTemplate extends JView
 	{
 		$isNew = $this->template->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        //$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
+        $document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     		

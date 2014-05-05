@@ -21,10 +21,24 @@
 
 defined('_JEXEC') or die();
 
+/**
+ * JFormFieldColor
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class JFormFieldColor extends JFormFieldText
 {
 	protected $type = 'Color';
 
+	/**
+	 * JFormFieldColor::getInput()
+	 * 
+	 * @return
+	 */
 	public function getInput()
 	{
 		$document = &JFactory::getDocument();
@@ -32,6 +46,14 @@ class JFormFieldColor extends JFormFieldText
 		return parent::getInput();
 	}
 
+	/**
+	 * JFormFieldColor::setup()
+	 * 
+	 * @param mixed $element
+	 * @param mixed $value
+	 * @param mixed $group
+	 * @return
+	 */
 	public function setup(& $element, $value, $group = null)
 	{
 		$return= parent::setup($element, $value, $group);

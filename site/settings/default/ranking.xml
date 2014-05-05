@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form
+addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 <!-- reiter 1 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
@@ -202,6 +203,15 @@
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS" 
 				rows="4" cols="70">
 		</field>
+		
+		<field name="colors_ranking" 
+    type="jsmcolorsranking" 
+    default=""
+    rankingteams=""
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
+      description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS">
+		</field>
+		
 		<field 	name="use_background_row_color" type="radio" default="1" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_USE_BACKGROUND_ROW_COLOR" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_USE_BACKGROUND_ROW_COLOR">

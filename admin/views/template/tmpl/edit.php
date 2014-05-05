@@ -36,13 +36,18 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
+
+//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'jlgcolor.php');
+
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 JHtml::_('behavior.formvalidation');
+//JHtml::_('behavior.colorpicker');
 $params = $this->form->getFieldsets('params');
 
 $i    = 1;
@@ -89,7 +94,7 @@ $i    = 1;
 					<?php echo $field->input; 
                     
                     
-                    
+                  
                     //echo ' <br><pre>'.print_r($field->name,true).'</pre>';
                     
                     //if ($fieldSet->customselbox)
@@ -100,7 +105,8 @@ $i    = 1;
                     $suchmuster = array ("params[","]","[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
+               
+                    
                 if ( $var_onlinehelp == 'ordered_columns_new_select' )
                 {
                 ?>
@@ -148,7 +154,14 @@ $i    = 1;
 					</li>
 				<?php endforeach; ?>
 				</ul>
-			</fieldset>
+                </fieldset>
+                <?PHP
+                
+                ?>
+                
+                
+                
+			
  
     <div class="clr"></div>
     <?php endforeach; ?>
