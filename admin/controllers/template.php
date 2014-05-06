@@ -92,6 +92,8 @@ function remove()
 $templateid=JRequest::getVar('templateid',0,'post','int');
 $projectid=JRequest::getVar('pid',0,'post','int');
 $model=$this->getModel('template');
+if ( $templateid )
+{
 if ($model->import($templateid,$projectid))
 {
 $msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_IMPORTED_TEMPLATE');
@@ -99,6 +101,8 @@ $msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_IMPORTED_TEMPLATE');
 else
 {
 $msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_ERROR_IMPORT_TEMPLATE').$model->getError();
+}
+
 }
 $this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.$projectid,$msg);
 }	
