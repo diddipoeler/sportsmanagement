@@ -53,7 +53,7 @@ window.addEvent('domready', function()
 //-->
 </script>
 <div id="masterimport">
-	<form action="<?php echo $this->request_url; ?>" method="post" id="importform">
+	<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<p class='helpText'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER_HINT_01','<span class="masterName" >'.$this->master.'</span>'); ?></p>
 		<p class='helpText'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER_HINT_02'); ?></p>
 		<?php echo $this->lists['mastertemplates']; ?>
