@@ -142,7 +142,7 @@ class sportsmanagementViewTemplates extends JView
 		if ($this->projectws->master_template)
 		{
 			//JToolBarHelper::deleteList('','template.remove');
-			 JToolBarHelper::deleteList('', 'template.delete', 'JTOOLBAR_DELETE');
+			 JToolBarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
 		}
 		else
 		{
