@@ -74,7 +74,8 @@ class sportsmanagementModelProjects extends JModelList
                         'p.published',
                         'p.id',
                         'p.ordering',
-                        'p.picture'
+                        'p.picture',
+                        'ag.name',
                         );
                 parent::__construct($config);
         }
@@ -150,11 +151,15 @@ class sportsmanagementModelProjects extends JModelList
         $query->select('s.name AS season');
         $query->select('l.name AS league');
         $query->select('u.name AS editor');
+        $query->select('ag.name AS agegroup');
         
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
+    
+    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = p.agegroup_id');
+    
     $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
   
