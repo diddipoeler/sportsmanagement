@@ -62,6 +62,7 @@ class sportsmanagementViewCurve extends JView
 	function display($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
 		// Get a reference of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri      = JFactory::getURI();
@@ -119,14 +120,20 @@ class sportsmanagementViewCurve extends JView
 				}
 				$divisions[0] = $div;
 				$teams = sportsmanagementModelProject::getTeams($division);
+                
+                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+                
 				$i=0;
 				foreach ((array) $teams as $t) {
 					$options[] = JHtml::_( 'select.option', $t->id, $t->name );
-					if($i==0 && $teamid1==0) {
-						$teamid1=$t->id;
+					if( $i == 0 && $teamid1 == 0 ) 
+                    {
+						//$teamid1 = $t->id;
+                        $teamid1 = $t->team_id;
 					}
-					if($i==1 && $teamid2==0) {
-						$teamid2=$t->id;
+					if( $i == 1 && $teamid2 == 0 ) {
+						//$teamid2 = $t->id;
+                        $teamid2 = $t->team_id;
 					}
 					$i++;
 				}
@@ -169,6 +176,9 @@ class sportsmanagementViewCurve extends JView
 	 */
 	function _setChartdata($config)
 	{
+	   $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
+        
 		$model 			= $this->getModel();
 		$rounds			= $this->get('Rounds');
 		$round_labels	= array();
@@ -186,6 +196,9 @@ class sportsmanagementViewCurve extends JView
 		{
 			$data = $model->getDataByDivision($division->id);
 			$allteams = sportsmanagementModelProject::getTeams($division->id);
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($allteams,true).'</pre>'),'');
+            
 			if(empty($allteams) || count($allteams)==0) continue;
 			
 			$chart = new open_flash_chart();

@@ -164,28 +164,32 @@ class sportsmanagementModelCurve extends JModel
 //				. ' INNER JOIN #__joomleague_project AS p ON pt1.project_id=p.id AND pt2.project_id=p.id';
 
 //			$where = ' WHERE m.published=1 AND m.cancel=0';
-            $query->where('m.published=1 AND m.cancel=0');
+            $query->where('m.published = 1 AND m.cancel = 0');
             
 			if ($this->teamid1)
 			{
 				$quoted_team_id = $db->Quote($this->teamid1);
-				$team = 't1';
+				//$team = 't1';
+                $team = 'st1';
 			}
 			else
 			{
 				$quoted_team_id = $db->Quote($this->teamid2);
-				$team = 't2';
+				//$team = 't2';
+                $team = 'st2';
 			}
             
 			if ($this->both)
 			{
 //				$where .= ' AND (t1.id='.$quoted_team_id.' OR t2.id='.$quoted_team_id.')';
-                $query->where('(t1.id='.$quoted_team_id.' OR t2.id='.$quoted_team_id.')');
+                //$query->where('(t1.id='.$quoted_team_id.' OR t2.id='.$quoted_team_id.')');
+                $query->where('(st1.team_id='.$quoted_team_id.' OR st2.team_id='.$quoted_team_id.')');
 			}
 			else
 			{
 //				$where .= ' AND '.$team.'.id='.$quoted_team_id;
-                $query->where($team.'.id='.$quoted_team_id);
+                //$query->where($team.'.id='.$quoted_team_id);
+                $query->where($team.'.team_id='.$quoted_team_id);
 			}
             
 			$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
