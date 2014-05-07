@@ -76,7 +76,8 @@ class modSportsmanagementPlaygroundplanHelper
 		$result = array();
 		
         $query->select('m.match_date, DATE_FORMAT(m.time_present, "%H:%i") time_present');	
-        $query->select('p.name AS project_name, p.id AS project_id, tj1.team_id team1, tj2.team_id team2, lg.name AS league_name');
+        //$query->select('p.name AS project_name, p.id AS project_id, tj1.team_id as team1, tj2.team_id as team2, lg.name AS league_name');
+        $query->select('p.name AS project_name, p.id AS project_id, st1.team_id as team1, st2.team_id as team2, lg.name AS league_name');
         $query->select('plcd.id AS club_playground_id');
         $query->select('plcd.name AS club_playground_name');
         $query->select('pltd.id AS team_playground_id');
@@ -85,6 +86,7 @@ class modSportsmanagementPlaygroundplanHelper
         $query->select('pl.name AS playground_name');
         $query->select('t1.name AS team1_name');
         $query->select('t2.name AS team2_name');
+        //$query->select('st1.team_id as season_team1, st2.team_id as season_team2');
         
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER',' #__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id  ');
@@ -92,8 +94,8 @@ class modSportsmanagementPlaygroundplanHelper
         
         $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = tj1.project_id  ');
         
-        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = tj1.team_id ');
-        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.team_id = tj2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tj1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
         
         $query->join('INNER',' #__sportsmanagement_team as t1 ON t1.id = st1.team_id ');
         $query->join('INNER',' #__sportsmanagement_team as t2 ON t2.id = st2.team_id ');
