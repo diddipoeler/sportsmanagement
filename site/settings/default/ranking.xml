@@ -198,7 +198,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="1">JYES</option>
 		</field>		
 
-		<field 	name="colors" type="textarea" default="1,1,#bdd8be,Champions;2,2,#cee0ce,Champions League;3,3,#dce7dc,Qualification Champions League;4,5,#f7f6d0,Europa League;6,6,#fcfbed,UI Cup;16,18,#f6dfdb,Relegation;" 
+		<field 	name="colors" type="textarea" default="1,1,#bdd8be,Champions;" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS" 
 				rows="4" cols="70">
@@ -269,7 +269,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			</option>
 		</field>
 
-		<field name="show_logo_small_table" type="list" default="logo_small"
+		<field name="show_logo_small_table" type="list" default="logo_big"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
             <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
