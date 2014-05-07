@@ -109,7 +109,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   
   // ################################################################
   
-    if ( $this->use_joomlaworks == 0 || $this->config['show_teaminfo_tabs'] == 'no_tabs' )
+    if ( !JPluginHelper::isEnabled('content', 'jw_ts') || $this->config['show_teaminfo_tabs'] == 'no_tabs' )
     {
         
     if ($this->config['show_teaminfo']==1)
