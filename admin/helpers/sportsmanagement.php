@@ -1918,9 +1918,9 @@ $mainframe = JFactory::getApplication();
         
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ef.id = ev.field_id ');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
         $query->where('ef.template_backend LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
-        $query->where('ev.jl_id = '.$jlid );
+        //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
         
         
@@ -1939,6 +1939,7 @@ $mainframe = JFactory::getApplication();
 		{
 			//$this->setError($db->getErrorMsg());
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 			return false;
 		}
 		return $result;
