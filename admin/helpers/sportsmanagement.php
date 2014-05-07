@@ -1882,7 +1882,12 @@ $mainframe = JFactory::getApplication();
          $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
-    $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
+        $query = $db->getQuery(true);
+        
+        $query->select('ef.id');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
+        $query->where('ef.template_backend LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+    //$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
 			//echo '<pre>'.print_r($query,true).'</pre>';
 			$db->setQuery($query);
 			if ($db->loadResult())
@@ -1905,20 +1910,35 @@ $mainframe = JFactory::getApplication();
 	 */
     static function getUserExtraFields($jlid)
     {
+        $mainframe = JFactory::getApplication();
     	$db = JFactory::getDBO();
-        $query = "SELECT ef.*,
-        ev.fieldvalue as fvalue,
-        ev.id as value_id 
-        FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
-        LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields_values as ev 
-        ON ef.id = ev.field_id 
-        AND ev.jl_id = ".$jlid." 
-        WHERE ef.template_backend LIKE '".JRequest::getVar('view')."'  
-        ORDER BY ef.ordering";    
+        $query = $db->getQuery(true);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
+        
+        $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ef.id = ev.field_id ');
+        $query->where('ef.template_backend LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+        $query->where('ev.jl_id = '.$jlid );
+        $query->order('ef.ordering');
+        
+        
+//        $query = "SELECT ef.*,
+//        ev.fieldvalue as fvalue,
+//        ev.id as value_id 
+//        FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
+//        LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields_values as ev 
+//        ON ef.id = ev.field_id 
+//        AND ev.jl_id = ".$jlid." 
+//        WHERE ef.template_backend LIKE '".JRequest::getVar('view')."'  
+//        ORDER BY ef.ordering";   
+         
         $db->setQuery($query);
-		if (!$result=$db->loadObjectList())
+		if (!$result = $db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			//$this->setError($db->getErrorMsg());
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
 		return $result;
@@ -1926,6 +1946,13 @@ $mainframe = JFactory::getApplication();
     }
     
     
+    /**
+     * sportsmanagementHelper::saveExtraFields()
+     * 
+     * @param mixed $post
+     * @param mixed $pid
+     * @return void
+     */
     function saveExtraFields($post,$pid)
   {
     $mainframe = JFactory::getApplication();

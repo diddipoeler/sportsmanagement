@@ -256,6 +256,13 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	}
     
     
+	/**
+	 * sportsmanagementModeltemplate::import()
+	 * 
+	 * @param mixed $templateid
+	 * @param mixed $projectid
+	 * @return
+	 */
 	function import($templateid,$projectid)
 {
 $row =& $this->getTable();
@@ -288,6 +295,12 @@ return true;
 }    
 
 
+	/**
+	 * sportsmanagementModeltemplate::delete()
+	 * 
+	 * @param mixed $pks
+	 * @return
+	 */
 	public function delete(&$pks)
 {
 $mainframe = JFactory::getApplication();

@@ -73,7 +73,7 @@ class sportsmanagementViewTemplates extends JView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-        
+        // das sind die eigenen templates
         $templates = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -82,7 +82,7 @@ class sportsmanagementViewTemplates extends JView
         }
         
 		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+//		$pagination = $this->get('Pagination');
         
 		//$projectws =& $this->get('Data','projectws');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -93,7 +93,7 @@ class sportsmanagementViewTemplates extends JView
         
 		if ($project->master_template)
 		{
-			
+			// das sind die templates aus einenm anderen projekt
             $model->set('_getALL',1);
 			$allMasterTemplates = $model->getMasterTemplatesList();
 			$model->set('_getALL',0);
@@ -102,12 +102,18 @@ class sportsmanagementViewTemplates extends JView
 			$importlist[] = JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
 			$importlist = array_merge($importlist,$masterTemplates);
 			$lists['mastertemplates'] = JHtml::_('select.genericlist',$importlist,'templateid',
-				'class="inputbox" onChange="this.form.submit();" ');
+				'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
 			$master = $model->getMasterName();
 			$this->assign('master',$master);
 			$templates = array_merge($templates,$allMasterTemplates);
             
+            $total = count($templates);
 		}
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'');
+        
+        //$total = $this->get('Total');
+		$pagination = $this->get('Pagination');
 
 
 
@@ -141,7 +147,7 @@ class sportsmanagementViewTemplates extends JView
 		JToolBarHelper::save('template.save');
 		if ($this->projectws->master_template)
 		{
-			//JToolBarHelper::deleteList('','template.remove');
+
 			 JToolBarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
 		}
 		else

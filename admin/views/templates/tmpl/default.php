@@ -56,11 +56,23 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 <div id="editcell">
 	<fieldset class="adminform">
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
-		<?php if ($this->projectws->master_template){echo $this->loadTemplate('import');} ?>
-		<form action="index.php?option=com_sportsmanagement&view=templates" method="post" id="adminForm"  name="adminForm">
+	
+		<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm"  name="adminForm">
 			<table class="adminlist">
 				<thead>
-					<tr>
+					<?php 
+        if ($this->projectws->master_template)
+        {
+            ?>
+                    <tr>
+                    <td align="right" colspan="6">
+                    <?php echo $this->lists['mastertemplates']; ?>
+                    </td>
+                    </tr>
+                    <?php
+                    } 
+            ?>
+                    <tr>
 						<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="20">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
@@ -122,7 +134,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="filter_order_Dir" value="" />
 			<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-			<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" />
+<input type="hidden" name="pid" value="<?php echo $this->projectws->id; ?>" />
 			<?php echo JHtml::_('form.token')."\n"; ?>
 		</form>
 	</fieldset>

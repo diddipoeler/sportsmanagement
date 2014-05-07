@@ -87,6 +87,11 @@ function remove()
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.JRequest::getInt( "pid", 0 ), $msg);
 	}
 	
+	/**
+	 * sportsmanagementControllertemplate::masterimport()
+	 * 
+	 * @return void
+	 */
 	function masterimport()
 {
 $templateid=JRequest::getVar('templateid',0,'post','int');

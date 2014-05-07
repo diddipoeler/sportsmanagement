@@ -54,6 +54,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewrosterposition extends JView
 {
+	/**
+	 * sportsmanagementViewrosterposition::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
@@ -149,6 +155,8 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
      // position ist vorhanden
      if ( $this->item->id )   
      {   
+        $count_players = $this->item->players;
+        
         // bearbeiten positionen übergeben
     $position = 1;
     //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
@@ -163,7 +171,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     {
     case 'HOME_POS':
     $bildpositionenhome = $mdlRosterpositions->getRosterHome();
-    for($a=0; $a < 11; $a++)
+    for($a=0; $a < $count_players; $a++)
     {
     $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenhome[$this->item->name][$a]['heim']['oben']);
     $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenhome[$this->item->name][$a]['heim']['links']);
@@ -173,7 +181,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     break;
     case 'AWAY_POS':
     $bildpositionenaway = $mdlRosterpositions->getRosterAway();
-    for($a=0; $a < 11; $a++)
+    for($a=0; $a < $count_players; $a++)
     {
     $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenaway[$this->item->name][$a]['heim']['oben']);
     $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenaway[$this->item->name][$a]['heim']['links']);
@@ -185,12 +193,28 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         
     }
     
+    
+//    for($a=$count_players; $a < 11; $a++)
+//    {
+//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,'');
+//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,'');
+//    $position++;
+//    }
+    
     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
     
-    for($a=0; $a < 11; $a++)
+    for($a=0; $a < $count_players; $a++)
     {
+    //if ( $a < $count_players )
+//    {    
     $bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
     $bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
+   // }
+//    else
+//    {
+//    $bildpositionen[$this->item->name][$a]['heim']['oben'] = '';
+//    $bildpositionen[$this->item->name][$a]['heim']['links'] = '';    
+//    }
     $position++;
     }
     $this->assignRef('bildpositionen',$bildpositionen);  
