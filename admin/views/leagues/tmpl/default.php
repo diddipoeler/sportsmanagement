@@ -121,6 +121,13 @@ function searchPerson(val)
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    
+                    <th class="title">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
                     
@@ -174,6 +181,7 @@ function searchPerson(val)
 						<td><?php echo $row->short_name; ?></td>
 						<td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
+                        <td class="center"><?php echo JText::_($row->agegroup); ?></td>
                         <td class="center">
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))

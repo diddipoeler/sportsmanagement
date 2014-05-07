@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.modal' );
+//JHtml::_('behavior.modal', 'a.modal');
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
@@ -51,19 +52,19 @@ $cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtrack
 ?>
 
 <script>
-window.onload = function() 
+
+function openLink(url)
 {
 var width = get_windowPopUpWidth();
-var heigth = get_windowPopUpHeight();
-var linkbugtracker = "<?php echo $cfg_bugtracker_server ?>";
-var linkonlinehelp = "<?php echo $cfg_help_server ?>";
-var view = "<?php echo $view ?>";
+var heigth = get_windowPopUpHeight(); 
 
-//alert(linkbugtracker);
+SqueezeBox.open(url, {
+       handler: 'iframe', 
+       size: { x: width, y: heigth }
+   });
+       
+} 
 
-document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
-//document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
-}
 </script>		
         
 <div style="text-align:center; clear:both">      
@@ -81,8 +82,17 @@ document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="moda
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
       <?php echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?> 
       <br />
-      <div id="bugtracker-link"></div> 
-          
+      
+      Bug-Tracker <a href="javascript:openLink('<?php echo $cfg_bugtracker_server; ?>')">Bug-Tracker</a>
+      <br />
+      
+      Online-Help <a href="javascript:openLink('<?php echo $cfg_help_server; ?>')">Online-Help</a>
+      <br />
+            
+      <script>
+      bugtrackerlink();
+      </script>
+
     </div>        
         
         

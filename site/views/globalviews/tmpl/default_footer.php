@@ -41,18 +41,29 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.modal' );
 
 $option = JRequest::getCmd('option');
-//$view = JRequest::getVar( "view") ;
-//$view = ucfirst(strtolower($view));
-//$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
-//$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
-//$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-//$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
+$view = JRequest::getVar( "view") ;
+$view = ucfirst(strtolower($view));
+$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
 //if (JComponentHelper::getParams('com_sportsmanagement')->get('show_footer',0))
 //{
 ?>
 
 <script>
 
+function openLink(url)
+{
+var width = get_windowPopUpWidth();
+var heigth = get_windowPopUpHeight(); 
+
+SqueezeBox.open(url, {
+       handler: 'iframe', 
+       size: { x: width, y: heigth }
+   });
+       
+} 
 
 </script>	
 
@@ -74,23 +85,15 @@ $option = JRequest::getCmd('option');
       echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
       ?>
       <br />      
-<div id="onlinehelp-link"></div>      
-<br /> 
-<div id="bugtracker-link"></div>     
+      Bug-Tracker <a href="javascript:openLink('<?php echo $cfg_bugtracker_server; ?>')">Bug-Tracker</a>
+      <br />
+      
+      Online-Help <a href="javascript:openLink('<?php echo $cfg_help_server; ?>')">Online-Help</a>
+      <br />   
      
               
     </div>   
-<!--
 
-<a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe'}">Joomla!.org</a>
-
-<a href="http://www.joomla.org" title="Joomla!.org" class="modal" rel="{handler: 'iframe', size: {x: 570, y: 200}}">Joomla!.org</a>
-
-<a href="http://cdn.joomla.org/images/logo.png" title="Joomla! Logo" class="modal">
-<img src="http://cdn.joomla.org/images/logo.png" alt="Joomla! Logo" />
-</a>
-
--->
 
             
 <?php

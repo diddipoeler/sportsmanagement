@@ -40,7 +40,9 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+
+//JHtml::_('behavior.modal');
+JHtml::_('behavior.modal', 'a.modal');
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
@@ -64,7 +66,7 @@ var view = "<?php echo $view ?>";
 
 //alert(linkbugtracker);
 
-document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
+//document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkbugtracker + '">Bug-Tracker</a>';
 //document.getElementById("onlinehelp-link").innerHTML='Onlinehelp <a class="modal" rel="{handler: \'iframe\', size: {x: ' + width + ', y: ' + heigth + '}}" href="' + linkonlinehelp + 'SM-Frontend:' + view + '">Onlinehelp</a>';
 }
 </script>	
@@ -421,4 +423,6 @@ document.getElementById("bugtracker-link").innerHTML='Bug-Tracker <a class="moda
       <?php echo JText::sprintf( '%1$s', $this->version ); ?>  
       
       <div id="bugtracker-link"></div>    
+      <div id="onlinehelp-link"></div>   
+      
     </div>

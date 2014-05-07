@@ -71,7 +71,8 @@ class sportsmanagementModelLeagues extends JModelList
                         'obj.country',
                         'st.name',
                         'obj.id',
-                        'obj.ordering'
+                        'obj.ordering',
+                        'ag.name'
                         );
                 parent::__construct($config);
         }
@@ -139,6 +140,9 @@ class sportsmanagementModelLeagues extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+        
+        $query->select('ag.name AS agegroup');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = obj.agegroup_id');
         
         if ($search)
 		{
