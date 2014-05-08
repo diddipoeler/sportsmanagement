@@ -208,6 +208,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
     type="jsmcolorsranking" 
     default=""
     rankingteams=""
+    templatename="template"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
       description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS">
 		</field>
