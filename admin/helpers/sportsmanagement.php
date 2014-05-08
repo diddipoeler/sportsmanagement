@@ -1811,14 +1811,18 @@ abstract class sportsmanagementHelper
 	}
     
 
+
+
 /**
  * sportsmanagementHelper::getExtraSelectOptions()
  * 
  * @param string $view
  * @param string $field
+ * @param bool $template
+ * @param integer $fieldtyp
  * @return
  */
-function getExtraSelectOptions($view='', $field='')	
+function getExtraSelectOptions($view='', $field='', $template = FALSE, $fieldtyp = 0  )	
 {
 $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option'); 
@@ -1832,12 +1836,27 @@ $mainframe = JFactory::getApplication();
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
 
-    // Select some fields
-		$query->select('select_columns,select_values');
-		// From the match table
+        // Select some fields
+        if ( $template )
+        {
+        $query->select('select_columns,select_values');
+		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields');
-        $query->where("views_backend LIKE '" . $view . "'");
-        $query->where("views_backend_field LIKE '" . $field. "'");
+        $query->where('template_backend LIKE '. $db->Quote(''.$view.'') );
+        $query->where('name LIKE ' . $db->Quote(''.$field.'') );    
+        }
+        else
+        {
+        $query->select('select_columns,select_values');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields');
+        $query->where('views_backend LIKE '. $db->Quote(''.$view.'') );
+        $query->where('views_backend_field LIKE ' . $db->Quote(''.$field.'') );    
+        }
+    
+		
+        $query->where('fieldtyp = ' . $fieldtyp );
+        
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
@@ -1846,8 +1865,16 @@ $mainframe = JFactory::getApplication();
     if ( $result)
 		{
 		  $select_columns = explode(",",$result->select_columns);
-          $select_values = explode(",",$result->select_values);
+          //$select_values = explode(",",$result->select_values);
           
+          if ( $result->select_values )
+          {
+          $select_values = explode(",",$result->select_values);  
+          }
+          else
+          {
+          $select_values = explode(",",$result->select_columns);  
+          }
           //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
           
           foreach($select_columns as $key => $value )

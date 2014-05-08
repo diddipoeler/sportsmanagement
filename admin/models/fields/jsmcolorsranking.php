@@ -66,10 +66,6 @@ class JFormFieldjsmcolorsranking extends JFormField
 	 */
 	public $type = 'jsmcolorsranking';
 
-	
-    
-    
-    
     /**
 	 * Method to get the field options.
 	 *
@@ -84,7 +80,8 @@ class JFormFieldjsmcolorsranking extends JFormField
         $select_id = JRequest::getVar('id');
         //$this->value = explode(",", $this->value);
         $rankingteams = $this->element['rankingteams'];
-        //$targetid = $this->element['targetid'];
+        $templatename = $this->element['templatename'];
+        $templatefield = $this->element['name'];
         // Initialize variables.
         $html = array();
         
@@ -96,11 +93,27 @@ class JFormFieldjsmcolorsranking extends JFormField
                     
                 }    
 
+        $select_Options = sportsmanagementHelper::getExtraSelectOptions($templatename,$templatefield,TRUE);
+        
+        
+        if ( $select_Options )
+        {
+            $select_text[] = JHtmlSelect::option('',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+            foreach ( $select_Options as $row )
+            {
+                $select_text[] = JHtmlSelect::option($row->value,$row->text); 
+            }
+        }
+        
 // We need and instance of the pane class to create the sliders.
       //$pane = JPane::getInstance('sliders');
         
 	
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_ranking<br><pre>'.print_r($select_ranking,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatename<br><pre>'.print_r($templatename,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatefield<br><pre>'.print_r($templatefield,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_Options<br><pre>'.print_r($select_Options,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_text<br><pre>'.print_r($select_text,true).'</pre>'),'');
+    
    // $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
 
    
@@ -171,8 +184,18 @@ class JFormFieldjsmcolorsranking extends JFormField
                 $html[] = '<td>';    
                 $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
                 $html[] = '</td>';  
-                $html[] = '<td>';    
+                $html[] = '<td>'; 
+                if ( $select_Options )
+        {
+            $html[] = JHtml::_(	'select.genericlist',$select_text,
+													$this->name . '['. $a .'][text]"','class="inputbox" size="1"','value','text',
+													$this->value[$a]['text']);
+            }
+            else
+            {
                 $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
+            }
+                
                 $html[] = '</td>';               
                 $html[] = '</tr>';  
 

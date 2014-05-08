@@ -10,6 +10,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		<field
 			name="name"
 			type="text"
+			size="50"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			class="inputbox"
@@ -33,6 +34,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		<option value="team">Mannschaft</option>
 		<option value="person">Personen</option>
 		<option value="project">Projekt</option>
+		<option value="template">Template</option>
 		</field>		
 
     <field
