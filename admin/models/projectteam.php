@@ -186,6 +186,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	function saveshort()
 	{
 		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
@@ -228,6 +229,12 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelprojectteam::storeAssign()
+     * 
+     * @param mixed $post
+     * @return void
+     */
     function storeAssign($post)
     {
         $option = JRequest::getCmd('option');
@@ -290,6 +297,63 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		return parent::save($data);   
     }
     
+    /**
+     * sportsmanagementModelprojectteam::delete()
+     * 
+     * @param mixed $pks
+     * @return void
+     */
+    public function delete(&$pks)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		//$query	= $db->getQuery(true);
+        //$pks = JRequest::getVar('cid', null, 'post', 'array');
+        
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        
+        // als erstes die heimspiele
+        if (count($pks))
+		{
+			$cids = implode(',',$pks);
+            /* Ein JDatabaseQuery Objekt beziehen */
+            $query = $db->getQuery(true);
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam1_id IN ('.$cids.')'  );
+            $db->setQuery($query);
+            $result = $db->query();
+            if ( $result )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
+            }
+            else
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
+            }
+        }    
+        // dann die auswärtsspiele
+        if (count($pks))
+		{
+			$cids = implode(',',$pks);
+            /* Ein JDatabaseQuery Objekt beziehen */
+            $query = $db->getQuery(true);
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam2_id IN ('.$cids.')'  );
+            $db->setQuery($query);
+            $result = $db->query();
+            if ( $result )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
+            }
+            else
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
+            }
+        }    
+        
+        // dann den eigentlichen eintrag an joomla standard
+        return parent::delete($pks);
+        
+    }
     /**
 	 * return 
 	 *

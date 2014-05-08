@@ -257,7 +257,7 @@ class sportsmanagementViewprojectteams extends JView
             JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE'),'projectpersons');
         }
 		
-        JToolBarHelper::deleteList('', 'projectteam.remove');
+        JToolBarHelper::deleteList('', 'projectteams.delete');
 
 		JToolBarHelper::apply('projectteams.saveshort');
 		//JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
