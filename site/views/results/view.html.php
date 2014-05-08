@@ -88,7 +88,7 @@ class sportsmanagementViewResults extends JView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
         
 		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
