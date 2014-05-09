@@ -177,7 +177,7 @@
 			<option value="0">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_FAV_HIGHLIGHT</option>			
 		</field>
 
-		<field 	name="show_logo_small_table" type="list" default="logo_small" 
+		<field 	name="show_logo_small_table" type="list" default="logo_big" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
 			<option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>

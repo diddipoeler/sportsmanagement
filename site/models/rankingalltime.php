@@ -320,11 +320,11 @@ $query->group('tl.team_id' );
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match m');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON st1.team_id = t1.id '); 
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON st1.team_id = t1.id '); 
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON st2.team_id = t2.id '); 
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON st2.team_id = t2.id '); 
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
         
         $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');

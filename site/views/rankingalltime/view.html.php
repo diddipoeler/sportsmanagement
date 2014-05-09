@@ -70,8 +70,6 @@ class sportsmanagementViewRankingAllTime extends JView
         $this->assignRef('currentRanking', $model->getCurrentRanking());
 
         $this->assign('action', $uri->toString());
-//        $this->assignRef('lists', $lists);
-//        $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0));
         $this->assignRef('colors', $model->getColors($this->config['colors']));
         
 
