@@ -350,7 +350,8 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
     
     endif; 
     
-    if ( $user_name != '' )
+    //if ( $user_name != '' )
+    if ( $user_name == 'diddipoeler' )
     {
         $params_new = array(	"option" => "com_sportsmanagement",
 				"view" => "jlxmlexports",

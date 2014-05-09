@@ -111,6 +111,7 @@ $subsubassoc_id = 0;
 $user_name = $helper->getUserName();
 $project_id = 0;  
 $league_id = 0;
+$division_id = 0;
 $team_id = 0;  
 $country_id  = ''; 
 $lightbox = '';
@@ -125,9 +126,20 @@ $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
 $sub_sub_assoc_parent_id = 0;
 
+if ( isset($queryvalues['p']) )
+{
 $project_id  = intval($queryvalues['p']);
+}
+if ( isset($queryvalues['tid']) )
+{
 $team_id  = intval($queryvalues['tid']);
-$helper->setProject( intval($queryvalues['p']), intval($queryvalues['tid']),intval($queryvalues['division'])  );
+}
+if ( isset($queryvalues['division']) )
+{
+$division_id  = intval($queryvalues['division']);
+}
+
+$helper->setProject( $project_id, $team_id, $division_id );
 $league_id  = $helper->getLeagueId();
 $country_id  = $helper->getProjectCountry($project_id);
 
