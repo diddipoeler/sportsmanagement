@@ -48,6 +48,17 @@ jimport('joomla.utilities.arrayhelper');
 
 // require_once (JLG_PATH_SITE . DS . 'models' . DS . 'project.php');
 
+//$classname = 'sportsmanagementModelRanking';
+//if (!class_exists($classname))
+//{
+//$file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'ranking.php';
+//if (file_exists($file))
+//{
+//require_once($file);
+//}
+//}
+
+
 $maxImportTime = 480;
 error_reporting(0);
 if ((int)ini_get('max_execution_time') < $maxImportTime) {
@@ -73,6 +84,7 @@ class sportsmanagementModelRankingAllTime extends JModel
     var $debug_info = false;
     var $projectid = 0;
     var $leagueid = 0;
+    var $classname = 'sportsmanagementModelRanking';
     
     /**
      * ranking parameters
@@ -93,10 +105,28 @@ class sportsmanagementModelRankingAllTime extends JModel
      */
     function __construct()
     {
+        $mainframe = JFactory::getApplication();
         $this->alltimepoints = JRequest::getVar("points", 0);
+        
+        if (!class_exists($this->classname))
+        {
+        $file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'ranking.php';
+        if (file_exists($file))
+        {
+        require_once($file);
+        }
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r($this->classname,true).'</pre>'),'Notice');
         
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item->query['view'],true).'</pre>'),'Notice');
+        
         $params = $menu->getParams($item->id);
 
         //$menu = &JSite::getMenu();
@@ -108,7 +138,7 @@ class sportsmanagementModelRankingAllTime extends JModel
             $this->debug_info = false;
         }
         
-        if ( $item->id )
+        if ( $item->query['view'] == 'rankingalltime' )
         {
         // diddipoeler
         // menueeintrag vorhanden    
@@ -126,21 +156,40 @@ foreach ($newparams['data'] as $key => $value ) {
         }
         else
         {
-        $strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'settings'.DS.'default'.DS.'rankingalltime.xml';    
-        // get the JForm object
-        $form = &JForm::getInstance('jlattform', $strXmlFile);
-        //echo "<b>menue form</b><pre>" . print_r($form, true) . "</pre>";
-        foreach($form->getFieldset($fieldset->name) as $field)
-        {
-//         echo ' -> '. $field->name.'<br>';
-//         echo ' -> '. $field->type.'<br>';
-//         echo ' -> '. $field->input.'<br>';
-        $this->_params[$field->name] = $field->value;
+        //$strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'settings'.DS.'default'.DS.'rankingalltime.xml';    
+        $strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'views'.DS.'rankingalltime'.DS.'tmpl'.DS.'default.xml';
+        //$xml = simplexml_load_file($strXmlFile);
         
-        }
-    
-        }
+        $xml = JFactory::getXMLParser( 'Simple' );
+        $xml->loadFile($strXmlFile);
+        $children = $xml->document->children();
         
+        //$positions = $xml->document->field;
+        
+        // We can now step through each element of the file 
+foreach( $xml->document->fields as $field ) 
+{
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' field<br><pre>'.print_r($field->attributes() ,true).'</pre>'),'Notice');
+foreach( $field->fieldset  as $fieldset ) 
+{
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset->attributes(),true).'</pre>'),'Notice');
+
+foreach( $fieldset->field  as $param ) 
+{
+$attributes = $param->attributes();
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($param->attributes(),true).'</pre>'),'Notice');
+$this->_params[$attributes['name']] = $attributes['default'];
+
+}
+
+}    
+
+   }
+        
+}        
+
+
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'Notice');
         
         parent::__construct();
 
@@ -862,60 +911,60 @@ $query->group('tl.team_id' );
             //     }
             switch ($order) {
                 case 'played':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "playedCmp"));
+                    uasort($ranking, array($this->classname, "playedCmp"));
                     break;
                 case 'name':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "teamNameCmp"));
+                    uasort($ranking, array($this->classname, "teamNameCmp"));
                     break;
                 case 'rank':
                     break;
                 case 'won':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "wonCmp"));
+                    uasort($ranking, array($this->classname, "wonCmp"));
                     break;
                 case 'draw':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "drawCmp"));
+                    uasort($ranking, array($this->classname, "drawCmp"));
                     break;
                 case 'loss':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "lossCmp"));
+                    uasort($ranking, array($this->classname, "lossCmp"));
                     break;
                 case 'winpct':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "winpctCmp"));
+                    uasort($ranking, array($this->classname, "winpctCmp"));
                     break;
                 case 'quot':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "quotCmp"));
+                    uasort($ranking, array($this->classname, "quotCmp"));
                     break;
                 case 'goalsp':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "goalspCmp"));
+                    uasort($ranking, array($this->classname, "goalspCmp"));
                     break;
                 case 'goalsfor':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "goalsforCmp"));
+                    uasort($ranking, array($this->classname, "goalsforCmp"));
                     break;
                 case 'goalsagainst':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "goalsagainstCmp"));
+                    uasort($ranking, array($this->classname, "goalsagainstCmp"));
                     break;
                 case 'legsdiff':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "legsdiffCmp"));
+                    uasort($ranking, array($this->classname, "legsdiffCmp"));
                     break;
                 case 'legsratio':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "legsratioCmp"));
+                    uasort($ranking, array($this->classname, "legsratioCmp"));
                     break;
                 case 'diff':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "diffCmp"));
+                    uasort($ranking, array($this->classname, "diffCmp"));
                     break;
                 case 'points':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "pointsCmp"));
+                    uasort($ranking, array($this->classname, "pointsCmp"));
                     break;
                 case 'start':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "startCmp"));
+                    uasort($ranking, array($this->classname, "startCmp"));
                     break;
                 case 'bonus':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "bonusCmp"));
+                    uasort($ranking, array($this->classname, "bonusCmp"));
                     break;
                 case 'negpoints':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "negpointsCmp"));
+                    uasort($ranking, array($this->classname, "negpointsCmp"));
                     break;
                 case 'pointsratio':
-                    uasort($ranking, array("sportsmanagementModelRankingAllTime", "pointsratioCmp"));
+                    uasort($ranking, array($this->classname, "pointsratioCmp"));
                     break;
 
                 default:
@@ -935,249 +984,243 @@ $query->group('tl.team_id' );
         
     }
 
-    /**
-     * sportsmanagementModelRankingAllTime::playedCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function playedCmp(&$a, &$b)
-    {
-        $res = $a->cnt_matches - $b->cnt_matches;
-        return $res;
-    }
+//    /**
+//     * sportsmanagementModelRankingAllTime::playedCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function playedCmp(&$a, &$b)
+//    {
+//        $res = $a->cnt_matches - $b->cnt_matches;
+//        return $res;
+//    }
 
-    /**
-     * sportsmanagementModelRankingAllTime::teamNameCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    /**
-     * sportsmanagementModelRankingAllTime::teamNameCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function teamNameCmp(&$a, &$b)
-    {
-        return strcasecmp($a->_name, $b->_name);
-    }
+    
+//    /**
+//     * sportsmanagementModelRankingAllTime::teamNameCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function teamNameCmp(&$a, &$b)
+//    {
+//        return strcasecmp($a->_name, $b->_name);
+//    }
 
-    /**
-     * sportsmanagementModelRankingAllTime::wonCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function wonCmp(&$a, &$b)
-    {
-        $res = $a->cnt_won - $b->cnt_won;
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::drawCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function drawCmp(&$a, &$b)
-    {
-        $res = ($a->cnt_draw - $b->cnt_draw);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::lossCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function lossCmp(&$a, &$b)
-    {
-        $res = ($a->cnt_lost - $b->cnt_lost);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::winpctCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function winpctCmp(&$a, &$b)
-    {
-        $pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
-        $pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
-        $res = ($pct_a < $pct_b);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::quotCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function quotCmp(&$a, &$b)
-    {
-        $pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
-        $pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
-        $res = ($pct_a < $pct_b);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::goalspCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function goalspCmp(&$a, &$b)
-    {
-        $res = ($a->sum_team1_result - $b->sum_team1_result);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::goalsforCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function goalsforCmp(&$a, &$b)
-    {
-        $res = ($a->sum_team1_result - $b->sum_team1_result);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::goalsagainstCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function goalsagainstCmp(&$a, &$b)
-    {
-        $res = ($a->sum_team2_result - $b->sum_team2_result);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::legsdiffCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function legsdiffCmp(&$a, &$b)
-    {
-        $res = ($a->diff_team_legs - $b->diff_team_legs);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::legsratioCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function legsratioCmp(&$a, &$b)
-    {
-        $res = ($a->legsRatio - $b->legsRatio);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::diffCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function diffCmp(&$a, &$b)
-    {
-        $res = ($a->diff_team_results - $b->diff_team_results);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::pointsCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function pointsCmp(&$a, &$b)
-    {
-        $res = ($a->getPoints() - $b->getPoints());
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::startCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function startCmp(&$a, &$b)
-    {
-        $res = ($a->team->start_points * $b->team->start_points);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::bonusCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function bonusCmp(&$a, &$b)
-    {
-        $res = ($a->bonus_points - $b->bonus_points);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::negpointsCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function negpointsCmp(&$a, &$b)
-    {
-        $res = ($a->neg_points - $b->neg_points);
-        return $res;
-    }
-
-    /**
-     * sportsmanagementModelRankingAllTime::pointsratioCmp()
-     * 
-     * @param mixed $a
-     * @param mixed $b
-     * @return
-     */
-    function pointsratioCmp(&$a, &$b)
-    {
-        $res = ($a->pointsRatio - $b->pointsRatio);
-        return $res;
-    }
+//    /**
+//     * sportsmanagementModelRankingAllTime::wonCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function wonCmp(&$a, &$b)
+//    {
+//        $res = $a->cnt_won - $b->cnt_won;
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::drawCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function drawCmp(&$a, &$b)
+//    {
+//        $res = ($a->cnt_draw - $b->cnt_draw);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::lossCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function lossCmp(&$a, &$b)
+//    {
+//        $res = ($a->cnt_lost - $b->cnt_lost);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::winpctCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function winpctCmp(&$a, &$b)
+//    {
+//        $pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
+//        $pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
+//        $res = ($pct_a < $pct_b);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::quotCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function quotCmp(&$a, &$b)
+//    {
+//        $pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
+//        $pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
+//        $res = ($pct_a < $pct_b);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::goalspCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function goalspCmp(&$a, &$b)
+//    {
+//        $res = ($a->sum_team1_result - $b->sum_team1_result);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::goalsforCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function goalsforCmp(&$a, &$b)
+//    {
+//        $res = ($a->sum_team1_result - $b->sum_team1_result);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::goalsagainstCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function goalsagainstCmp(&$a, &$b)
+//    {
+//        $res = ($a->sum_team2_result - $b->sum_team2_result);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::legsdiffCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function legsdiffCmp(&$a, &$b)
+//    {
+//        $res = ($a->diff_team_legs - $b->diff_team_legs);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::legsratioCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function legsratioCmp(&$a, &$b)
+//    {
+//        $res = ($a->legsRatio - $b->legsRatio);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::diffCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function diffCmp(&$a, &$b)
+//    {
+//        $res = ($a->diff_team_results - $b->diff_team_results);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::pointsCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function pointsCmp(&$a, &$b)
+//    {
+//        $res = ($a->getPoints() - $b->getPoints());
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::startCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function startCmp(&$a, &$b)
+//    {
+//        $res = ($a->team->start_points * $b->team->start_points);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::bonusCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function bonusCmp(&$a, &$b)
+//    {
+//        $res = ($a->bonus_points - $b->bonus_points);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::negpointsCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function negpointsCmp(&$a, &$b)
+//    {
+//        $res = ($a->neg_points - $b->neg_points);
+//        return $res;
+//    }
+//
+//    /**
+//     * sportsmanagementModelRankingAllTime::pointsratioCmp()
+//     * 
+//     * @param mixed $a
+//     * @param mixed $b
+//     * @return
+//     */
+//    function pointsratioCmp(&$a, &$b)
+//    {
+//        $res = ($a->pointsRatio - $b->pointsRatio);
+//        return $res;
+//    }
 
     /**
      * sportsmanagementModelRankingAllTime::array_msort()
@@ -1240,7 +1283,7 @@ $mainframe = JFactory::getApplication();
                 if (method_exists($this, '_cmp' . $v)) {
                     $crit[] = '_cmp' . $v;
                 } else {
-                    JError::raiseWarning(0, JText::_('JL_RANKING_NOT_VALID_CRITERIA') . ': ' . $v);
+                    JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v);
                 }
             }
             // set a default criteria if empty
