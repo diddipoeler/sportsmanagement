@@ -314,7 +314,7 @@ $query->group('tl.team_id' );
         $query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
 		$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
 		$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
-        $query->select(' t1.id AS team1_id,t2.id AS team2_id');
+        $query->select('t1.id AS team1_id,t2.id AS team2_id');
 		$query->select('r.id as roundid, m.team_won, r.roundcode');
         
         
