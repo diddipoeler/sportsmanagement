@@ -259,7 +259,7 @@ $option = JRequest::getCmd('option');
         $query->select('tl.id AS projectteamid,tl.division_id');
         $query->select('tl.standard_playground,tl.admin,tl.start_points');
         $query->select('tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
-        $query->select('tl.is_in_score,tl.info,tl.team_id,tl.checked_out,tl.checked_out_time');
+        $query->select('tl.is_in_score,tl.info,st.team_id,tl.checked_out,tl.checked_out_time');
         $query->select('tl.picture,tl.project_id');
         $query->select('t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
         $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country, c.website');
@@ -280,7 +280,8 @@ $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id 
 $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id' );
             
 $query->where('tl.project_id IN (' . $project_ids . ')' );
-$query->group('tl.team_id' );
+//$query->group('tl.team_id' );
+$query->group('st.team_id' );
             
 
         $db->setQuery($query);
@@ -320,11 +321,11 @@ $query->group('tl.team_id' );
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match m');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON st1.team_id = t1.id '); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON st1.team_id = t1.id '); 
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON st2.team_id = t2.id '); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON st2.team_id = t2.id '); 
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
         
         $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
@@ -1681,7 +1682,7 @@ class JSMRankingalltimeTeam
      * contructor requires ptid
      * @param int $ptid
      */
-    function JLGRankingTeam($ptid)
+    function JSMRankingalltimeTeam($ptid)
     {
         $this->setPtid($ptid);
     }
