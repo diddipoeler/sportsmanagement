@@ -235,7 +235,43 @@ $mainframe = JFactory::getApplication();
 								<?php
 							}
 							?>
-							<td><?php echo $row->name; ?></td>
+							<td><?php 
+                            
+                            if ($row->club_logo == '')
+							{
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+												$imageTitle,'title= "'.$imageTitle.'"');
+
+							}
+							elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
+							{
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
+								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+												$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                
+							} else {
+								if (JFile::exists(JPATH_SITE.DS.$row->club_logo)) {
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                    
+								} else {
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+							}
+                            echo $row->name; ?>
+                            </td>
 							<td class="center"><?php
 								if($row->playercount==0) {
 									$image = "players_add.png";

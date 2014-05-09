@@ -160,7 +160,20 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory=""/>	  					
+				directory=""/>
+        
+        <!--
+        <field
+				name="logo_big"
+				type=""
+				default=""
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
+				class="inputbox"
+				preview="show"
+				targetfolder="clubs_large"
+				directory=""/>	
+        -->	  					
 	</fieldset>	
 
 <fieldset name="description" 

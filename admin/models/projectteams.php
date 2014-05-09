@@ -201,7 +201,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->select('t.name,t.club_id');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on st.team_id = t.id');
         // Join over the club
-		$query->select('c.email AS club_email');
+		$query->select('c.email AS club_email,c.logo_big as club_logo');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c on t.club_id = c.id');
         
         // Join over the playground

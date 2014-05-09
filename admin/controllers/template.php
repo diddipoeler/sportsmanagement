@@ -94,9 +94,9 @@ function remove()
 	 */
 	function masterimport()
 {
-$templateid=JRequest::getVar('templateid',0,'post','int');
-$projectid=JRequest::getVar('pid',0,'post','int');
-$model=$this->getModel('template');
+$templateid = JRequest::getVar('templateid',0,'post','int');
+$projectid = JRequest::getVar('pid',0,'post','int');
+$model = $this->getModel('template');
 if ( $templateid )
 {
 if ($model->import($templateid,$projectid))
