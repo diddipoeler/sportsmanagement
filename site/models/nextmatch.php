@@ -82,6 +82,9 @@ class sportsmanagementModelNextMatch extends JModel
 		$this->matchid = JRequest::getInt( "mid", 0 );
 		$this->showpics = JRequest::getInt( "pics", 0 );
 		$this->projectteamid = JRequest::getInt( "ptid", 0 );
+        
+        sportsmanagementModelProject::$projectid = $this->projectid; 
+        
         if ( $this->projectteamid )
         {
 		self::getSpecifiedMatch($this->projectid, $this->projectteamid, $this->matchid);
