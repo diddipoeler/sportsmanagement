@@ -244,6 +244,26 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
+                            // die möglichkeit bieten, das vereinslogo zu aktualisieren
+?>
+              
+							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
+									 class="modal"
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+									 <?php
+									 
+								 	$image = 'icon-16-Teams.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+							
+              <?php                               
 
 							}
 							elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
@@ -255,7 +275,31 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
 <a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
-<?PHP                                                
+<?PHP
+
+// die möglichkeit bieten, das vereinslogo zu aktualisieren
+?>
+              
+							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
+									 class="modal"
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+									 <?php
+									 
+								 	$image = 'icon-16-Teams.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+							
+              <?php           
+
+
+                                                
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->club_logo)) {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
