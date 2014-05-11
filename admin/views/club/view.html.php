@@ -73,6 +73,9 @@ class sportsmanagementViewClub extends JView
         
         $this->option = $option;
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
+        $this->assign( 'tmpl', JRequest::getVar('tmpl') );
+        
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -203,7 +206,7 @@ class sportsmanagementViewClub extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

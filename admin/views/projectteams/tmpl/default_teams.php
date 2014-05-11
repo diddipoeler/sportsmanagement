@@ -42,6 +42,8 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $mainframe = JFactory::getApplication();
 
+$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 
 ?>
 <script language="javascript">
@@ -251,7 +253,7 @@ $mainframe = JFactory::getApplication();
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
 <?PHP                                                
 							} else {
@@ -261,13 +263,37 @@ $mainframe = JFactory::getApplication();
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
 <?PHP                                                    
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
+                                // die möglichkeit bieten, das vereinslogo zu aktualisieren
+?>
+              
+							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
+									 class="modal"
+									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+									 <?php
+									 
+								 	$image = 'icon-16-Teams.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+							
+              <?php                                
+                                
+                                
+                                
+                                                    
 								}
 							}
                             echo $row->name; ?>
@@ -358,14 +384,7 @@ $mainframe = JFactory::getApplication();
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
-/**
- * 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CUSTOM_IMAGE');
- * 									$imageParams=array();
- * 									$imageParams['title']=$imageTitle ;
- * 									$imageParams['height']=30;
- * 									//$imageParams['width'] =40;
- * 									echo JHtml::image($row->picture,$imageTitle,$imageParams);
- */
+
 								}
 								?>
 							</td>

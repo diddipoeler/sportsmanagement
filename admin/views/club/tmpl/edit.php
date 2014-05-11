@@ -69,8 +69,26 @@ $options = array(
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
- 
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id .'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm">
+
+<?PHP
+if ( $this->tmpl )
+{
+		?>
+			<fieldset>
+				<div class="fltrt">
+					<button type="button" onclick="Joomla.submitform('club.apply', this.form);">
+						<?php echo JText::_('JAPPLY');?></button>
+					<button type="button" onclick="Joomla.submitform('club.save', this.form);">
+						<?php echo JText::_('JSAVE');?></button>
+					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+						<?php echo JText::_('JCANCEL');?></button>
+				</div>
+				
+			</fieldset>
+<?PHP                
+}
+?> 
 <div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
