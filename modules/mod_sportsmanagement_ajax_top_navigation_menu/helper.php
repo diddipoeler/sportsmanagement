@@ -103,7 +103,8 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function __construct($params)
 	{
-		$this->_params = $params;
+		$mainframe = JFactory::getApplication();
+        $this->_params = $params;
 		$this->_db = Jfactory::getDBO();
         
 //        $projectid = JRequest::getInt('p',0);
@@ -114,6 +115,8 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         
     if ( $this->_project_id )
 		{
+
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
 
 //JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry($this->_project_id) );
 
@@ -327,6 +330,8 @@ if ($res)
    */
   public function getQueryValues()
 	{
+	   $mainframe = JFactory::getApplication();
+       
 	// diddipoeler
 	/*
 	muss ich erstmal so machen, da die request variablen falsch 
@@ -340,12 +345,18 @@ if ($res)
     $jltemplate = '';
     $varAdd_array = array();
     
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parsearray<pre>'.print_r($parsearray,true).'</pre><br>'),'');
+    
     if ( $parsearray['query'] )
     {
     $varAdd = explode('&', $parsearray['query']);
         foreach($varAdd as $varOne)
         {
             $name_value = explode('=', $varOne);
+            
+            //$mainframe->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[0],true).'</pre><br>'),'');
+            //$mainframe->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[1],true).'</pre><br>'),'');
+            
             switch ($name_value[0])
             {
             case 'p':
@@ -358,13 +369,21 @@ if ($res)
             case 'cid':
             $varAdd_array[$name_value[0]] = (int) $name_value[1];
             break;
+            case 'l':
+            $project = $this->getProject($name_value[1]);
+            //$project = $this->getProjectSelect($name_value[1]);
+            $varAdd_array['p'] = $this->_project_id;
+            break;
             default:
             $varAdd_array[$name_value[0]] = $name_value[1];
             break;
             }
             
        }
-       //echo 'jltemplaterequest queries -> <pre>'.print_r($varAdd_array,true).'</pre><br>';
+
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd_array<pre>'.print_r($varAdd_array,true).'</pre><br>'),'');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<pre>'.print_r($project,true).'</pre><br>'),'');
+
     }
     else
     {
@@ -379,6 +398,7 @@ if ($res)
     $jltemplate = $varAdd[$startseo];
     
     //echo 'jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>';
+    //$mainframe->enqueueMessage(JText::_('jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>'),'');
     
     switch ($jltemplate)
     {
@@ -401,6 +421,10 @@ if ($res)
     case 'ranking':
     $varAdd_array['p'] = $varAdd[$startseo + 1];
     $varAdd_array['r'] = $varAdd[$startseo + 3];
+    break;
+    
+    case 'rankingalltime':
+    //getProject($varAdd[$startseo + 1]);
     break;
     
     case 'results':
@@ -997,6 +1021,7 @@ $mainframe = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getProjectSelect = $query->dump();
+        
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
@@ -1075,15 +1100,18 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 * 
 	 * @return object
 	 */
-	public function getProject()
+	public function getProject($league_id = 0)
 	{
 	   $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r($this->_project,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+        
 		if (!$this->_project)
 		{
-			if (!$this->_project_id) 
+			if (!$this->_project_id && !$league_id ) 
             {
 				return false;
 			}
@@ -1102,13 +1130,22 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             //$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.id = r.project_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.current_round = r.id ');
             
-          $query->where('p.id = ' . $this->_project_id);
+//          $query->where('p.id = ' . $this->_project_id);
          
+         if ( $league_id )
+         {
+            $query->where('p.league_id = ' . $league_id);
+         }
+         else
+         {
+            $query->where('p.id = ' . $this->_project_id);
+         }
 			$db->setQuery($query);
             
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$this->_project = $db->loadObject();
+            $this->_project_id = $this->_project->id;
 			$this->_project_slug = $this->_project->project_slug;
         $this->_saeson_slug = $this->_project->saeson_slug;
         $this->_league_slug = $this->_project->league_slug;
