@@ -257,6 +257,8 @@ public function getStart()
         $query->where('v.season_id = ' . $search_seasons);
         }
         
+        $query->where('v.published = 1');
+        
         $query->group('v.id');
         
 
