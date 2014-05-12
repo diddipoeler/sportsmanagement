@@ -153,12 +153,13 @@ JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
-					$link2=JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
-					$link2panel=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
+					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
+					$link2panel = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
+                    $link2teams = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
 
-					$checked    = JHtml::_('grid.checkedout',$row,$i);
-					$published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
+					$checked = JHtml::_('grid.checkedout',$row,$i);
+					$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -236,7 +237,11 @@ JHtml::_('behavior.modal');
 								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
-						<td class="center"><?php echo $row->proteams; ?></td>
+						<td class="center">
+                        <a href="<?php echo $link2teams; ?>"><?php echo $row->proteams; ?></a>
+                        
+                        </td>
+                        
                         <td class="center"><?php echo $published; ?></td>
 						<td class="order">
 							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'projects.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
