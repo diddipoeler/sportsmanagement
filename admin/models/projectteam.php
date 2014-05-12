@@ -229,6 +229,71 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		return $result;
 	}
     
+    
+    /**
+     * sportsmanagementModelprojectteam::matchgroups()
+     * 
+     * @return void
+     */
+    function matchgroups()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $post = JRequest::get('post');
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        
+        for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+        $projectteam_division_id = $post['division_id' . $pks[$x]];  
+        
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_division_id<br><pre>'.print_r($projectteam_division_id , true).'</pre><br>','Notice');
+        
+        // Fields to update.
+        $query = $db->getQuery(true);
+        $query->clear();
+        $fields = array(
+        $db->quoteName('division_id') . '=' . $projectteam_division_id
+        );
+        // Conditions for which records should be updated.
+        $conditions = array(
+        $db->quoteName('projectteam1_id') . '=' . $projectteam_id
+        );
+        $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match'))->set($fields)->where($conditions);
+        $db->setQuery($query);
+        $result = $db->query();  
+        if ( !$result )
+		{
+			$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		}
+        
+        $query->clear();
+        $fields = array(
+        $db->quoteName('division_id') . '=' . $projectteam_division_id
+        );
+        // Conditions for which records should be updated.
+        $conditions = array(
+        $db->quoteName('projectteam2_id') . '=' . $projectteam_id
+        );
+        $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match'))->set($fields)->where($conditions);
+        $db->setQuery($query);
+        $result = $db->query();  
+        if ( !$result )
+		{
+			$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		}
+        
+        
+        
+        
+        }  
+        
+    }    
     /**
      * sportsmanagementModelprojectteam::storeAssign()
      * 
@@ -372,12 +437,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
         $query->where('st.team_id = '.$team_id);
-        
-/**
- * 		$query='SELECT *
- * 				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
- * 				  WHERE id='.$team_id;
- */
+
 		$db->setQuery($query);
 		return $db->loadObject();
 	}

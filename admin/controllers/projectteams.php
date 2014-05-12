@@ -76,6 +76,18 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
   
   
   /**
+   * sportsmanagementControllerprojectteams::matchgroups()
+   * 
+   * @return void
+   */
+  function matchgroups()
+	{
+	   $model = $this->getModel();
+       $model->matchgroups();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    } 
+    
+  /**
 	 * Method to update checked projectteams
 	 *
 	 * @access	public
