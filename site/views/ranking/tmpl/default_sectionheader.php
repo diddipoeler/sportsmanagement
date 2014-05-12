@@ -51,18 +51,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     <tr>
         <td align="left">
             <?php
-            /*
-            if ( $this->tableconfig['show_ranking_dropdown'] == 1 )
-            {
-                echo JoomleagueHelperHtml::rankingnav(
-                                                                                $this->rounds,
-                                                                                $this->type,
-                                                                                $this->from,
-                                                                                $this->to,
-                                                                                $this->divLevel,
-                                                                                $this->tableconfig );
-            }
-            */
+
             ?>
         </td>
     </tr>

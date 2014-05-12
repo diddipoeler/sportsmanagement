@@ -152,7 +152,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->assignRef('round',$model->round);
 		$this->assignRef('part',$model->part);
 		$this->assignRef('rounds',$rounds);
-		$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
+		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
+        $this->assign('divisions',sportsmanagementModelProject::getDivisions());
 		$this->assignRef('type',$model->type);
 		//$this->assignRef('from',$model->from);
 		//$this->assignRef('to',$model->to);
