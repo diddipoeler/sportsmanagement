@@ -101,9 +101,6 @@ function newstructur($step,$count=5)
                 $query->where('p.season_id = '.$season_id);
             }
             
-            
-            
-            
             $db->setQuery($query,$step,$count);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -120,7 +117,7 @@ function newstructur($step,$count=5)
                 $temp = new stdClass();
                 $temp->season_id = $row->season_id;
                 $temp->team_id = $row->team_id;
-                // Insert the object into the user profile table.
+                // Insert the object into table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
                 if ( $result )
                 {
@@ -163,8 +160,29 @@ function newstructur($step,$count=5)
                 }
                 // jetzt die neue team_id
                 $object->team_id = $new_id;
-                // Insert the object into the user profile table.
-                $result = JFactory::getDbo()->insertObject($jsm_table, $object);
+                // Insert the object into table.
+                $result2 = JFactory::getDbo()->insertObject($jsm_table, $object);
+                
+                if ( $result2 )
+                {
+                    // alles in ordnung
+                }
+                else
+                {
+                    // eintrag schon vorhanden, ein update
+                    // Create an object for the record we are going to update.
+                    $object = new stdClass();
+                    // Must be a valid primary key value.
+                    $object->id = $row->id;
+                    $object->team_id = $new_id;
+                    // Update their details in the users table using id as the primary key.
+                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');
+                }
+                
+                
+                
+                
+                
             }
             
             }
