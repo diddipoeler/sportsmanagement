@@ -41,13 +41,13 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.modal' );
 //JHtml::_('behavior.modal', 'a.modal');
 
-$option = JRequest::getCmd('option');
+//$option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
+$cfg_help_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;	
 
 ?>
 

@@ -45,6 +45,13 @@ $mainframe = JFactory::getApplication();
 $modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 
+$view = JRequest::getVar( "view") ;
+$view = ucfirst(strtolower($view));
+$cfg_help_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;
+
 ?>
 <script language="javascript">
 
@@ -337,12 +344,10 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
                                 // die möglichkeit bieten, das vereinslogo zu aktualisieren
+                                $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               
-							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+							<a	href="javascript:openLink('<?php echo $link; ?>')">
 									 <?php
 									 
 								 	$image = 'icon-16-Teams.png';
