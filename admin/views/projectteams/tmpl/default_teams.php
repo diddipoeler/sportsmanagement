@@ -84,7 +84,7 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
 	<div id="editcell">
 		<fieldset class="adminform">
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-			<?php $cell_count=22; ?>
+			<?php $cell_count=24; ?>
 			<table class="adminlist">
 				<thead>
 					<tr>
@@ -189,7 +189,9 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
                         <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
                         <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
                         
-                        
+                        <th width="1%">
+							<?php echo JHtml::_('grid.sort','STID','st.id',$this->sortDirection,$this->sortColumn); ?>
+						</th>
 						<th width="1%">
 							<?php echo JHtml::_('grid.sort','TID','st.team_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
@@ -543,7 +545,7 @@ $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('moda
 									?>
 								</td>
                             
-                            
+                            <td class="center"><?php echo $row->season_team_id; ?></td>
 							<td class="center"><?php echo $row->team_id; ?></td>
 							<td class="center"><?php echo $row->id; ?></td>
 						</tr>

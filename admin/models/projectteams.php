@@ -77,6 +77,7 @@ class sportsmanagementModelProjectteams extends JModelList
                         'd.name',
                         'tl.picture',
                         'st.team_id',
+                        'st.id',
                         'tl.id',
                         't.ordering'
                         );
@@ -148,7 +149,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		
         
         // Select some fields
-		$query->select('tl.id AS projectteamid,tl.*,st.team_id as team_id');
+		$query->select('tl.id AS projectteamid,tl.*,st.team_id as team_id,st.id as season_team_id');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl');
         
@@ -215,12 +216,6 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
         $query->where('tl.project_id = ' . $this->_project_id);
-        
-//        if (self::_buildContentWhere())
-//		{
-//        $query->where(self::_buildContentWhere());
-//        }
-//		$query->order(self::_buildContentOrderBy());
 
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
@@ -234,80 +229,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		return $query;
 	}
 
-//	function _buildContentOrderBy()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//        $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
-//		//$filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order_Dir','filter_order_Dir','','word' );
-//        
-//        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
-//        
-//        if ( $this->project_art_id == 3 )
-//        {
-//        $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd' );
-//        
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
-//        }
-//            
-//        if ( $filter_order == 't.lastname' || $filter_order == 't.name' )
-//		{
-//			$orderby 	= ' t.lastname ' . $filter_order_Dir;
-//		}
-//		else
-//		{
-//			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , t.lastname ';
-//		}    
-//        }
-//        else
-//        {
-//        $filter_order		= $mainframe->getUserStateFromRequest( $option .'.'.$this->_identifier.'.tl_filter_order','filter_order','t.name','cmd' );
-//        
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' tl_filter_order<br><pre>'.print_r($filter_order , true).'</pre><br>','Notice');
-//        }
-//            
-//		if ( $filter_order == 't.name' || $filter_order == 't.lastname' )
-//		{
-//			$orderby 	= ' t.name ' . $filter_order_Dir;
-//		}
-//		else
-//		{
-//			$orderby 	= ' ' . $filter_order . ' ' . $filter_order_Dir . ' , t.name ';
-//		}
-//        
-//        }
-//
-//		return $orderby;
-//	}
-
-//	function _buildContentWhere()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$mainframe	= JFactory::getApplication();
-//		$where=array();
-//		
-//		$division	= (int) $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tl_division', 'division', 0);
-//		$where[] 	= ' tl.project_id = ' . $this->_project_id;
-//		$division = JString::strtolower($division);
-//        
-//        //$mainframe->enqueueMessage('sportsmanagementModelProjectteams _buildContentWhere division<br><pre>'.print_r($division, true).'</pre><br>','Notice');
-//        
-//		if ( $division > 0)
-//		{
-//			$where[]=' d.id = '.$this->_db->Quote($division);
-//		}
-//		$where=(count($where) ? ' '.implode(' AND ',$where) : '');
-//		
-//		return $where;
-//	}
-    
-    
-    
 
 	/**
 	 * Method to update project teams list
@@ -437,13 +358,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->where('t.sports_type_id = ' . $this->sports_type_id);
         $query->order('t.name ASC');
         }
-/*        
-        $query = '	SELECT	id AS value,
-							name AS text,
-							info
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team
-					ORDER BY text ASC ';
-*/
+
 		$db->setQuery( $query );
         
         //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
@@ -460,32 +375,47 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		}
 	}
 
+	/**
+	 * sportsmanagementModelProjectteams::setNewTeamID()
+	 * 
+	 * @return void
+	 */
 	function setNewTeamID()
 	{
-//		global $mainframe;
-		$mainframe	= JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-		$post=JRequest::get('post');
-		$oldteamid=JRequest::getVar('oldteamid',array(),'post','array');
-		$newteamid=JRequest::getVar('newteamid',array(),'post','array');
+		$post = JRequest::get('post');
+		$oldteamid = JRequest::getVar('oldteamid',array(),'post','array');
+		$newteamid = JRequest::getVar('newteamid',array(),'post','array');
 
 		for ($a=0; $a < sizeof($oldteamid); $a++ )
 		{
 			$project_team_id = $oldteamid[$a];
 			$project_team_id_new = $newteamid[$project_team_id];
-			$query = 'SELECT t.name
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
-					inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt
-					on t.id = pt.team_id 
-					WHERE pt.id='.$project_team_id;
-			$this->_db->setQuery($query);
-			$old_team_name = $this->_db->loadResult();
+            
+            // Select some fields
+		$query->select('t.name');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->where('pt.id = ' . $project_team_id);
+			$db->setQuery($query);
+			$old_team_name = $db->loadResult();
+            
+            $query->clear();
+            $query->select('t.name');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+        $query->where('t.id = ' . $project_team_id_new);
 
-			$query = 'SELECT t.name
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
-					WHERE t.id='.$project_team_id_new;
-			$this->_db->setQuery($query);
-			$new_team_name = $this->_db->loadResult();
+//			$query = 'SELECT t.name
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
+//					WHERE t.id='.$project_team_id_new;
+			$db->setQuery($query);
+			$new_team_name = $db->loadResult();
 
 			$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_MODEL_ASSIGNED_OLD_TEAMNAME', $old_team_name, $new_team_name),'Notice');
 
@@ -497,7 +427,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 			$wertneu->team_id = $project_team_id_new;
 
 			// Neue Werte in den vorher erstellten Datenbankeintrag einf?gen
-			$this->_db->updateObject($tabelle, $wertneu, 'id');
+			$db->updateObject($tabelle, $wertneu, 'id');
 
 		}
 
@@ -518,39 +448,52 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 		$db = JFactory::getDBO();
 		$mainframe = JFactory::getApplication();
+        $query = $db->getQuery(true);
+        
 		if ( $pid[0] )
 		{
 			// jetzt brauchen wir noch das land der liga !
-			$querycountry = "SELECT l.country
-							from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
-							inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
-							on p.league_id = l.id
-							where p.id = '$pid'
-							";
+            $query->clear();
+            $query->select('l.country');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p on p.league_id = l.id');
+        $query->where('p.id = ' . $pid);
 
-			$db->setQuery( $querycountry );
+			$db->setQuery( $query );
 			$country = $db->loadResult();
 
+
+
+      $query->clear();
+            $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c ON c.id = t.club_id');
+        //$query->order('t.name ASC');
+        
       if ( $country )
       {
-      $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
-					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
-					ON c.id = t.club_id
-					WHERE c.country = '$country'  
-					ORDER BY t.name ASC 
-					";
+      $query->where('c.country LIKE '.$db->Quote(''.$country.''));
+        
+//      $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
+//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
+//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
+//					ON c.id = t.club_id
+//					WHERE c.country = '$country'  
+//					ORDER BY t.name ASC 
+//					";
       }
       else
       {
       $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_LEAGUE_COUNTRY'),'Error');
       $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_ALL_TEAMS'),'Notice');
-      $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
-					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
-					ON c.id = t.club_id
-					ORDER BY t.name ASC 
-					";
+//      $query->clear();
+//            $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+//        // From table
+//		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c ON c.id = t.club_id');
+//        $query->order('t.name ASC');
       }
       
       
@@ -559,19 +502,23 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		}
 		else
 		{
-			$query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text 
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t 
-					ORDER BY name ASC ";
+		  $query->clear();
+            $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+//        $query->order('t.name ASC');
 		}
+        
+        $query->order('t.name ASC');
 
 		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
+		if (!$result = $db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
 		foreach ($result as $teams){
-			$teams->name=JText::_($teams->text);
+			$teams->name = JText::_($teams->text);
 		}
 		return $result;
 	}
@@ -623,21 +570,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->where('pt.project_id = ' . $project_id);
         $query->order('t.name ASC');
         }
-/*        
-        $query = '	SELECT	t.id AS value,
-							t.name AS text,
-							t.notes, pt.info
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
-					WHERE pt.project_id = ' . $project_id . '
-					ORDER BY text ASC ';
-*/
+
 		$db->setQuery( $query );
 		if ( !$result = $db->loadObjectList() )
 		{
 			
             //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Error');
-            $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+            $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
 		else
@@ -677,49 +616,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         $query->where('tl.project_id = ' . $projectid);
 
-//		$query = "SELECT
-//                    tl.id AS projectteamid,
-//                    tl.team_id,
-//                    tl.picture projectteam_picture,
-//                    tl.project_id,
-//                    t.id,
-//                    t.name as team_name,
-//                    t.short_name,
-//                    t.middle_name,
-//                    t.club_id,
-//                    t.website AS team_www,
-//                    t.picture team_picture,
-//                    c.name as club_name,
-//                    c.address as club_address,
-//                    c.zipcode as club_zipcode,
-//                    c.state as club_state,
-//                    c.location as club_location,
-//                    c.email as club_email,
-//                    c.logo_big,
-//                    c.unique_id,
-//                    c.logo_small,
-//                    c.logo_middle,
-//                    c.country as club_country,
-//                    c.website AS club_www,
-//                    
-//                    c.latitude AS latitude,
-//                    c.longitude AS longitude,
-//                    
-//				    CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( ':', t.id, t.alias ) ELSE t.id END AS team_slug,
-//				    CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( ':', c.id, c.alias ) ELSE c.id END AS club_slug
-//                  FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as tl
-//                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team as t ON tl.team_id = t.id
-//                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c ON t.club_id = c.id
-//                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_division as d ON d.id = tl.division_id
-//                  LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_playground as plg ON plg.id = tl.standard_playground
-//                  WHERE tl.project_id = " . $projectid;
-
 		if ( $divisionid > 0 )
 		{
-//			$query .= " AND tl.division_id = " . $divisionid;
             $query->where('tl.division_id = ' . $divisionid);
 		}
-//		$query .= " ORDER BY t.name";
         $query->order('t.name');
 
 		$db->setQuery($query);
@@ -731,7 +631,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
 		if ( ! $teams = $db->loadObjectList() )
 		{
-			//echo $db->getErrorMsg();
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
@@ -821,11 +720,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pt.project_id ');
         $query->where('p.id ='. $project_id);
-        
-//		$query='SELECT count(*) AS count
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
-//				JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pt.project_id
-//				WHERE p.id='.$project_id;
 		
         $db->setQuery($query);
         

@@ -111,9 +111,14 @@ class sportsmanagementModelRounds extends JModelList
 //		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('r.name', 'asc');
+		parent::populateState('r.roundcode', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelRounds::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();

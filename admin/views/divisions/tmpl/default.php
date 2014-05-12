@@ -144,7 +144,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 				<tfoot>
 					<tr>
-						<td colspan="9">
+						<td colspan="10">
 							<?php
 							echo $this->pagination->getListFooter();
 							?>
