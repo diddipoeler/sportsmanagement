@@ -128,6 +128,12 @@ function searchPerson(val)
 						?>
 					</th>
                     
+                    <th class="title">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME','fed.name',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
                     
@@ -142,7 +148,7 @@ function searchPerson(val)
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -182,6 +188,7 @@ function searchPerson(val)
 						<td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
                         <td class="center"><?php echo JText::_($row->agegroup); ?></td>
+                        <td class="center"><?php echo JText::_($row->fedname); ?></td>
                         <td class="center">
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
