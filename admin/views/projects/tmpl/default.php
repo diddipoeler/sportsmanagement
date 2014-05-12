@@ -120,6 +120,13 @@ JHtml::_('behavior.modal');
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
 						?>
 					</th>
+                    
+                    <th class="title">
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
+						?>
+					</th>
+                    
 					<th width="5%" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
@@ -138,7 +145,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='14'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan='15'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -229,7 +236,8 @@ JHtml::_('behavior.modal');
 								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
-						<td class="center"><?php echo $published; ?></td>
+						<td class="center"><?php echo $row->proteams; ?></td>
+                        <td class="center"><?php echo $published; ?></td>
 						<td class="order">
 							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'projects.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
 							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projects.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>

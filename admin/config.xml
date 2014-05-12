@@ -104,7 +104,7 @@
 		
 		<field name="max_import_jl_import_steps" 
     type="text" 
-    default="300"
+    default="1"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_JL_STEPS_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_JL_STEPS_DESC">
 		</field>
