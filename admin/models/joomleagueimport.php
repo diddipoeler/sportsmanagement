@@ -170,6 +170,19 @@ function newstructur($step,$count=5)
                 else
                 {
                     // eintrag schon vorhanden, ein update
+                    $tblProjectteam = JTable::getInstance('Projectteam', 'sportsmanagementtable');
+                    $tblProjectteam->load($row->id);
+                    
+                    if ( empty($tblProjectteam->team_id) )
+                    {
+                        $tblProjectteam->team_id = $new_id;
+                        if (!$tblProjectteam->store())
+				        {
+				        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+				        }
+                    }
+                    /*
+                    // eintrag schon vorhanden, ein update
                     // Create an object for the record we are going to update.
                     $object = new stdClass();
                     // Must be a valid primary key value.
@@ -177,6 +190,7 @@ function newstructur($step,$count=5)
                     $object->team_id = $new_id;
                     // Update their details in the users table using id as the primary key.
                     $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');
+                    */
                 }
                 
                 
