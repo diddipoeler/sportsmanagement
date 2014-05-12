@@ -146,7 +146,7 @@ class sportsmanagementModelProjects extends JModelList
         // Create a new query object.
         $db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round ');
+        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
         $query->select('l.name AS league');
