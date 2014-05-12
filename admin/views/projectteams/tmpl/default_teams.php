@@ -254,12 +254,10 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
                             // die möglichkeit bieten, das vereinslogo zu aktualisieren
+                            $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               
-							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+							<a	href="javascript:openLink('<?php echo $link; ?>')">
 									 <?php
 									 
 								 	$image = 'icon-16-Teams.png';
@@ -287,12 +285,10 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 <?PHP
 
 // die möglichkeit bieten, das vereinslogo zu aktualisieren
+$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               
-							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+							<a	href="javascript:openLink('<?php echo $link; ?>')">
 									 <?php
 									 
 								 	$image = 'icon-16-Teams.png';
@@ -320,12 +316,10 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 </a>
 <?PHP 
 // die möglichkeit bieten, das vereinslogo zu aktualisieren
+$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               
-							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=<?php echo $row->club_id ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'); ?>">
+							<a	href="javascript:openLink('<?php echo $link; ?>')">
 									 <?php
 									 
 								 	$image = 'icon-16-Teams.png';
