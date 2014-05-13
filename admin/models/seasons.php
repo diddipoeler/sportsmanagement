@@ -112,7 +112,7 @@ class sportsmanagementModelSeasons extends JModelList
 		$app = JFactory::getApplication('administrator');
         $order = '';
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -151,10 +151,10 @@ class sportsmanagementModelSeasons extends JModelList
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
         
-        $this->setState('list.ordering', $this->_order);
+        //$this->setState('list.ordering', $this->_order);
         
         // List state information.
-		//parent::populateState($this->_order, 'asc');
+		parent::populateState($this->_order, 'asc');
         
 	}
     
@@ -171,6 +171,10 @@ class sportsmanagementModelSeasons extends JModelList
         $search_nation	= $this->getState('filter.search_nation');
         $layout = JRequest::getVar('layout');
         $season_id = JRequest::getVar('id');
+        
+        $this->setState('list.ordering', $this->_order);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getState<br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
         
         //$order = '';
         
