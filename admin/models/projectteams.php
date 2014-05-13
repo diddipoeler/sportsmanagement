@@ -322,22 +322,38 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
         $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
         $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
         
+        // noch das land der liga
+        $query->clear();
+        $query->select('l.country,p.season_id,p.project_type');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p on p.league_id = l.id');
+        $query->where('p.id = '.$this->_project_id);
+
+        $db->setQuery( $query );
+        $result = $db->loadObject();
+    
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($result->country, true).'</pre><br>','Notice');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
         }
-        
-        $db	= $this->getDbo();
-		$query = $db->getQuery(true);
-        
+       
         if ( $this->project_art_id == 3 )
         {
+            $query->clear();
         // Select some fields
 		$query->select("st.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.info");
         // From table
@@ -349,13 +365,18 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         }
         else
         {
+            $query->clear();
         // Select some fields
 		$query->select('st.id AS value,t.name AS text,t.info');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
         $query->where('st.season_id = ' . $this->_season_id);
         $query->where('t.sports_type_id = ' . $this->sports_type_id);
+        
+        $query->where('c.country LIKE '.$db->Quote(''.$result->country.''));
+        
         $query->order('t.name ASC');
         }
 

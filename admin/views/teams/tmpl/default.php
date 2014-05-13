@@ -76,6 +76,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</td>
+            
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
+        </td>
 			 <td align="center" colspan="4">
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');

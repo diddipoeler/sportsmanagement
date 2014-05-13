@@ -104,6 +104,9 @@ class sportsmanagementModelTeams extends JModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
+        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
@@ -129,6 +132,7 @@ class sportsmanagementModelTeams extends JModelList
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
+        $search_nation	= $this->getState('filter.search_nation');
 
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -151,8 +155,14 @@ class sportsmanagementModelTeams extends JModelList
         
         if ($search)
 		{
-        $query->where('LOWER(t.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(t.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
+        
+        if ($search_nation)
+		{
+        $query->where('c.country LIKE '.$db->Quote(''.$search_nation.''));
+        }
+                
         if ($cid = JRequest::getvar('club_id', 0, 'GET', 'INT')) 
                 {
                     $mainframe->setUserState( "$option.club_id", $cid); 

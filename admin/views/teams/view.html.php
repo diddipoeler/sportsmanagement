@@ -82,6 +82,21 @@ $starttime = microtime();
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        //build the html options for nation
+		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		if ( $res = JSMCountries::getCountryOptions() )
+        {
+            $nation = array_merge($nation,$res);
+        }
+		
+        $lists['nation'] = $nation;
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+																'filter_search_nation',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_nation'));
 
 
 
