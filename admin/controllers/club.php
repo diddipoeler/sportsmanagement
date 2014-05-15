@@ -75,13 +75,36 @@ class sportsmanagementControllerclub extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app	= JFactory::getApplication();
-        $id		= JRequest::getInt('id');
+		$app = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $id	= JRequest::getInt('id');
         $tmpl = JRequest::getVar('tmpl');
-		$model	= $this->getModel('club');
-        $data	= JRequest::getVar('jform', array(), 'post', 'array');
+		$model = $this->getModel('club');
+        $data = JRequest::getVar('jform', array(), 'post', 'array');
+        $createTeam = JRequest::getVar('createTeam');
         $return = $model->save($data);
         
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insertid<br><pre>'.print_r($db->insertid(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' createTeam<br><pre>'.print_r($createTeam,true).'</pre>'),'');
+        
+        if ( empty($id) )
+        {
+            $id = $db->insertid();
+        }
+        
+        if ($createTeam)
+		{
+			 $mdlTeam = JModel::getInstance("team", "sportsmanagementModel");
+             $team_name = $data['name'];
+		     $team_short_name = strtoupper(substr(ereg_replace("[^a-zA-Z]","",$team_name),0,3));
+			
+				$tpost['id']= "0";
+				$tpost['name']= $team_name;
+				$tpost['short_name']= $team_short_name ;
+				$tpost['club_id']= $id;
+				$mdlTeam->save($tpost);
+        }
+             
         // Set the redirect based on the task.
 		switch ($this->getTask())
 		{

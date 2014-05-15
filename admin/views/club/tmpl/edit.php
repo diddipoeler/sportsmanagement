@@ -83,13 +83,30 @@ if ( $this->tmpl )
 						<?php echo JText::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
-				</div>
+				
+                
+                </div>
 				
 			</fieldset>
 <?PHP                
 }
 ?> 
 <div class="width-60 fltlft">
+           
+<?PHP
+                if ( !$this->item->id )
+                {
+                    
+                ?>
+                <fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
+                <input type="checkbox" name="createTeam" />
+                </fieldset>
+                <?PHP
+                }
+                ?>
+
+
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">

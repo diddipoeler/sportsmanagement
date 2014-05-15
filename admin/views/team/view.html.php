@@ -89,7 +89,15 @@ class sportsmanagementViewTeam extends JView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->item->club_id = $mainframe->getUserState( "$option.club_id", '0' );;
+        //$this->item->club_id = $mainframe->getUserState( "$option.club_id", '0' );
+        
+        if ( empty($this->item->id) )
+        {
+            $this->form->setValue('club_id', null, $mainframe->getUserState( "$option.club_id", '0' ));
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+        
 		//$this->item->season_ids = explode(",", $this->item->season_ids);
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
         
@@ -97,13 +105,11 @@ class sportsmanagementViewTeam extends JView
 		$this->assignRef( 'extended', $extended );
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');		
 		$this->assignRef( 'extendeduser', $extendeduser );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
         
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
         if ( $show_debug_info )
