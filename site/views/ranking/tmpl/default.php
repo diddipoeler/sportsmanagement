@@ -185,6 +185,11 @@ echo JHtml::_('tabs.end');
 		echo $this->loadTemplate('pagnav');
 	}
 	
+    if ($this->config['show_projectinfo'] == 1)
+	{
+		echo $this->loadTemplate('projectinfo');
+	}
+    
 	if ($this->config['show_notes'] == 1)
 	{
 		echo $this->loadTemplate('notes');

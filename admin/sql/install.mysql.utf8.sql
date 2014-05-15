@@ -727,6 +727,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   
   `gcalendar_use_fav_teams` INT( 11 ) NOT NULL DEFAULT  '0',
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  `projectinfo` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),

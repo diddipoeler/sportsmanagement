@@ -91,6 +91,7 @@ class sportsmanagementViewRanking extends JView
 		//$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 		$this->assignRef('model',$model);
 		$this->assignRef('project', $project);
+        $this->assignRef('projectinfo', $project->projectinfo);
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->assignRef( 'extended', $extended );
         

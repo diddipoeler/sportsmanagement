@@ -75,6 +75,13 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="1">JYES</option>
 		</field>
 		
+		<field 	name="show_projectinfo" type="radio" default="1" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_PROJECTINFO" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_PROJECTINFO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
         <field 	name="show_help" type="radio" default="0" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_HELP" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_HELP">
