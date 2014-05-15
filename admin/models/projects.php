@@ -68,6 +68,7 @@ class sportsmanagementModelProjects extends JModelList
                 $config['filter_fields'] = array(
                         'p.name',
                         'l.name',
+                        'l.country',
                         's.name',
                         'st.name',
                         'p.project_type',
@@ -155,7 +156,7 @@ class sportsmanagementModelProjects extends JModelList
         $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
-        $query->select('l.name AS league');
+        $query->select('l.name AS league,l.country');
         $query->select('u.name AS editor');
         $query->select('ag.name AS agegroup');
         $query->select('(' . $subQuery . ') AS proteams'); 

@@ -55,8 +55,6 @@
 		</field>
 		
 
-
-	
     		
 		<field
 			name="league_id"
@@ -237,10 +235,22 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
     		
 	</fieldset>
 
+      	<fieldset name="description"
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="projectinfo"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>	
+	
 <fields name="request">
 <fieldset name="request"
-label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
-  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_DESC">  
+label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
+  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP_DESC">  
   
     <field
 			name="sports_type_id"

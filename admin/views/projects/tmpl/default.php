@@ -91,6 +91,11 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    <th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th class="title">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
@@ -145,7 +150,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='15'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan='16'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -198,6 +203,7 @@ JHtml::_('behavior.modal');
 							?>
 						</td>
 						<td><?php echo $row->league; ?></td>
+                        <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="center"><?php echo $row->season; ?></td>
 						<td class="center"><?php echo JText::_($row->sportstype); ?></td>
                         <td class="center"><?php echo JText::_($row->agegroup); ?></td>
