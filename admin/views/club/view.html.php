@@ -197,6 +197,7 @@ class sportsmanagementViewClub extends JView
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences($option);
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *

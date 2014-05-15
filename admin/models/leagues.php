@@ -152,9 +152,10 @@ class sportsmanagementModelLeagues extends JModelList
 		{
         $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$search.'%'));
         }
+        
         if ($search_nation)
 		{
-        $query->where("obj.country = '".$search_nation."'");
+        $query->where('obj.country LIKE '.$db->Quote(''.$search_nation.''));
         }
         
 
@@ -183,12 +184,19 @@ class sportsmanagementModelLeagues extends JModelList
      */
     function getLeagues()
     {
+        $search_nation	= $this->getState('filter.search_nation');
         // Get a db connection.
         $db = JFactory::getDBO();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select('id,name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league');
+        
+        if ($search_nation)
+		{
+        $query->where('country LIKE '.$db->Quote(''.$search_nation.''));
+        }
+        
         $query->order('name ASC');
 
         $db->setQuery($query);

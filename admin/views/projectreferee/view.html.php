@@ -42,16 +42,25 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewProjectReferee
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewProjectReferee extends JView
 {
 
+	/**
+	 * sportsmanagementViewProjectReferee::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$mainframe	= JFactory::getApplication();
@@ -177,7 +186,7 @@ class sportsmanagementViewProjectReferee extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW') : JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

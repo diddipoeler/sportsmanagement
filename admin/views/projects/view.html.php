@@ -75,18 +75,20 @@ class sportsmanagementViewProjects extends JView
 		$starttime = microtime(); 
 		// Get data from the model
 		$items		= $this->get('Items');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total		= $this->get('Total');
+		
+        $total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
 
 
 
 		//build the html select list for leagues
-		$leagues[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
+		$leagues[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
 		$mdlLeagues = JModel::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
 		$leagues = array_merge($leagues,$allLeagues);

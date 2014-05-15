@@ -55,6 +55,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewRound extends JView
 {
+	/**
+	 * sportsmanagementViewRound::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 	   $option = JRequest::getCmd('option');
@@ -171,7 +177,7 @@ class sportsmanagementViewRound extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

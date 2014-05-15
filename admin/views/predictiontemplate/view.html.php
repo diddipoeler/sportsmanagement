@@ -55,6 +55,12 @@ jimport('joomla.form.form');
  */
 class sportsmanagementViewPredictionTemplate extends JView
 {
+	/**
+	 * sportsmanagementViewPredictionTemplate::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe	= JFactory::getApplication();

@@ -55,9 +55,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewTeam extends JView
 {
+	
 	/**
-	 * display method of Hello view
-	 * @return void
+	 * sportsmanagementViewTeam::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -206,6 +209,7 @@ class sportsmanagementViewTeam extends JView
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences($option);
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *
@@ -215,7 +219,7 @@ class sportsmanagementViewTeam extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

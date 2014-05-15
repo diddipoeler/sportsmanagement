@@ -43,9 +43,24 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewpredictiongroup
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewpredictiongroup extends JView
 {
 
+	/**
+	 * sportsmanagementViewpredictiongroup::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display($tpl=null)
 	{
 		$mainframe = JFactory::getApplication();
@@ -88,6 +103,12 @@ class sportsmanagementViewpredictiongroup extends JView
 		
 	}
 
+	/**
+	 * sportsmanagementViewpredictiongroup::_displayForm()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayForm($tpl)
 	{
 		$option = JRequest::getCmd('option');
@@ -183,31 +204,7 @@ class sportsmanagementViewpredictiongroup extends JView
 			}
 			JToolBarHelper::cancel('predictiongroup.cancel', 'JTOOLBAR_CLOSE');
 		}
-        
-        /*
-        // Set toolbar items for the page
-		$edit=JRequest::getVar('edit',true);
-		$text=!$edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
-
-		JLToolBarHelper::save('predictiongroup.save');
-
-		if (!$edit)
-		{
-			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP_ADD_NEW'),'predictiongroups');
-			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('predictiongroup.cancel');
-		}
-		else
-		{
-			// for existing items the button is renamed `close` and the apply button is showed
-			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP_EDIT'),'predictiongroups');
-			JLToolBarHelper::apply('predictiongroup.apply');
-			JToolBarHelper::divider();
-			JLToolBarHelper::cancel('predictiongroup.cancel','COM_SPORTSMANAGEMENT_GLOBAL_CLOSE');
-		}
-		JToolBarHelper::divider();
-		JLToolBarHelper::onlinehelp();
-        */
+                
 	}
     
     /**
@@ -219,7 +216,7 @@ class sportsmanagementViewpredictiongroup extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

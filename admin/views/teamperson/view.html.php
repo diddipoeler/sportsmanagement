@@ -55,6 +55,12 @@ jimport( 'joomla.application.component.view' );
 class sportsmanagementViewTeamPerson extends JView
 {
 
+	/**
+	 * sportsmanagementViewTeamPerson::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	function display( $tpl = null )
 	{
 		$mainframe	= JFactory::getApplication();

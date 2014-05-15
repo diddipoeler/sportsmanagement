@@ -55,9 +55,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewstatistic extends JView
 {
+	
 	/**
-	 * display method of Hello view
-	 * @return void
+	 * sportsmanagementViewstatistic::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
 	 */
 	public function display($tpl = null) 
 	{
@@ -187,7 +190,7 @@ class sportsmanagementViewstatistic extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW') : JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');

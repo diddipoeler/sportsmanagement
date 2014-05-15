@@ -160,6 +160,7 @@ class sportsmanagementViewextrafield extends JView
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences($option);
 	}
+    
 	/**
 	 * Method to set up the document properties
 	 *
@@ -169,7 +170,7 @@ class sportsmanagementViewextrafield extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW') : JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
