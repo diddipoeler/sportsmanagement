@@ -213,7 +213,7 @@ class sportsmanagementModelResults extends JModel
 	{
 		if (is_null($this->matches))
 		{
-			$this->matches = self::getResultsRows($this->roundid,$this->divisionid,$this->config);
+			$this->matches = self::getResultsRows(self::$roundid,$this->divisionid,$this->config);
 		}
 		
 		$allowed = $this->isAllowed();

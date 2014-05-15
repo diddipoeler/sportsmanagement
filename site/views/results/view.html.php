@@ -68,7 +68,7 @@ class sportsmanagementViewResults extends JView
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
         $mainframe = JFactory::getApplication();
-        
+        $roundcode = 0;
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
@@ -164,8 +164,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
        }
        
+       sportsmanagementHelperHtml::$roundid = $project->current_round;
        
-			$lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
+//			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+            
+            $lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->assignRef('lists',$lists);
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}

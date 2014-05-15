@@ -50,7 +50,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @version 2014
  * @access public
  */
-class sportsmanagementHelperHtml {
+class sportsmanagementHelperHtml 
+{
+    static $roundid = 0;
 
 
 	/**
@@ -243,31 +245,44 @@ class sportsmanagementHelperHtml {
 		}
 	}
 
+	/**
+	 * sportsmanagementHelperHtml::getRoundSelectNavigation()
+	 * 
+	 * @param mixed $form
+	 * @return
+	 */
 	function getRoundSelectNavigation($form)
 	{
-		$rounds = sportsmanagementModelProject::getRoundOptions();
+		$mainframe = JFactory::getApplication();
+        $rounds = sportsmanagementModelProject::getRoundOptions();
 		$division = JRequest::getInt('division',0);
 
 		if($form)
         {
-			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
-			$options=array();
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, self::$roundid, $division);
+			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
-				$options[]=JHtml::_('select.option', $link, $r->text);
+				$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		} 
         else 
         {
-			$currenturl=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $this->roundid, $division);
-			$options=array();
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, self::$roundid, $division);
+			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
-				$options[]=JHtml::_('select.option', $link, $r->text);
+				$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		}
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r(self::$roundid,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currenturl'.'<pre>'.print_r($currenturl,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' options'.'<pre>'.print_r($options,true).'</pre>' ),'');
+        
 		return JHtml::_('select.genericlist',$options,'select-round','onchange="top.location.href=this.options[this.selectedIndex].value;"','value','text',$currenturl);
 	}
 
@@ -483,6 +498,15 @@ class sportsmanagementHelperHtml {
 		
 	}
 
+    /**
+     * sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking()
+     * 
+     * @param mixed $columnTitle
+     * @param mixed $paramName
+     * @param mixed $config
+     * @param string $default
+     * @return void
+     */
     public static function printColumnHeadingSortAllTimeRanking( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
 		$output = "";
@@ -524,6 +548,15 @@ class sportsmanagementHelperHtml {
 		}
 	}
     
+	/**
+	 * sportsmanagementHelperHtml::printColumnHeadingSort()
+	 * 
+	 * @param mixed $columnTitle
+	 * @param mixed $paramName
+	 * @param mixed $config
+	 * @param string $default
+	 * @return void
+	 */
 	public static function printColumnHeadingSort( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
 		$output = "";
@@ -563,6 +596,16 @@ class sportsmanagementHelperHtml {
 		}
 	}
 	
+	/**
+	 * sportsmanagementHelperHtml::nextLastPages()
+	 * 
+	 * @param mixed $url
+	 * @param mixed $text
+	 * @param mixed $maxentries
+	 * @param integer $limitstart
+	 * @param integer $limit
+	 * @return void
+	 */
 	public static function nextLastPages( $url, $text, $maxentries, $limitstart = 0, $limit = 10 )
 	{
 		$latestlimitstart = 0;
