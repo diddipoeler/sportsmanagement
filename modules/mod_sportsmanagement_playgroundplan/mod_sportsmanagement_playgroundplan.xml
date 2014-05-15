@@ -77,6 +77,21 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				
+				<field 	name="show_picture" type="list" default="logo_big"
+				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PICTURE"
+				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PICTURE_DESC">
+			<option value="logo_small">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_SMALL</option>
+			<option value="logo_middle">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_MIDDLE</option>
+			<option value="logo_big">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_BIG</option>
+		</field>
+		
+		<field 	name="picture_width" type="text" default="25"
+				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_WIDTH" 
+				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_WIDTH_DESC">
+		</field>
+				
+				
 				<field name="maxmatches" type="text" default="7"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER_DESC" />

@@ -171,13 +171,13 @@ class modSportsmanagementPlaygroundplanHelper
 	 * @param mixed $team_id
 	 * @return
 	 */
-	function getTeamLogo($team_id)
+	function getTeamLogo($team_id,$logo = 'logo_big')
 	{
 	   $mainframe = JFactory::getApplication();
 	   $db  = JFactory::getDBO();
        $query = $db->getQuery(true);
        
-       $query->select('c.logo_small');
+       $query->select('c.'.$logo);
        $query->from('#__sportsmanagement_team AS t ');
        $query->join('LEFT',' #__sportsmanagement_club as c ON c.id = t.club_id ');
        $query->where('t.id ='.$team_id);
@@ -189,8 +189,22 @@ class modSportsmanagementPlaygroundplanHelper
         
 		$club_logo = $db->loadResult();
 
-		if ($club_logo == '') {
-			$club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
+		if ($club_logo == '') 
+        {
+            switch ($logo)
+            {
+                case 'logo_small':
+                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
+                break;
+                case 'logo_middle':
+                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogomiddle');
+                break;
+                case 'logo_big':
+                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
+                break;
+                
+            }
+
 		}
 		return $club_logo;
 	}

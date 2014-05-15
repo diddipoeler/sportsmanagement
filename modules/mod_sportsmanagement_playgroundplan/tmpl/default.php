@@ -94,47 +94,73 @@ if( $params->get('show_playground_link'))
 		
 }
 $textdiv.= $playgroundname.'</div>';
- }
+}
+ 
 $textdiv .= '<div class="jlplplanedate">';
- $textdiv .= JHTML::date( $match->match_date,$dateformat );
+$textdiv .= JHtml::date( $match->match_date,$dateformat );
 $textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
- $textdiv .= JHTML::date( $match->match_date,$timeformat );
- $textdiv.= '</div>';
+$textdiv .= JHtml::date( $match->match_date,$timeformat );
+$textdiv.= '</div>';
+
 if ($params->get ('show_project_name',0)) 
 {
 $textdiv .= '<div class="jlplplaneleaguename">';
 
 $textdiv .= $match->project_name;
- $textdiv.= '</div>';
+$textdiv.= '</div>';
 }
+
 if ($params->get ('show_league_name',0)) 
 {
 $textdiv .= '<div class="jlplplaneleaguename">';
-
 $textdiv .= $match->league_name;
- $textdiv.= '</div>';
+$textdiv.= '</div>';
 }
+
 $textdiv .= '<div>';
- $textdiv .= '<div class="jlplplanetname">';
+$textdiv .= '<div class="jlplplanetname">';
+
 if( $params->get('show_club_logo'))
 {
-$team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1);
-$textdiv .= '<p>'.JHTML::image( $team1logo,"").'</p>';
+$team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1,$params->get('show_picture'));
+
+if( $params->get('show_picture') == 'logo_big')
+{
+    $textdiv .= '<p>'.JHtml::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
 }
+else
+{
+$textdiv .= '<p>'.JHtml::image( $team1logo,"").'</p>';    
+}
+
+}
+
 $textdiv .= '<p>'.modSportsmanagementPlaygroundplanHelper::getTeams($match->team1,$teamformat).'</p>';
- $textdiv.= '</div>';
+$textdiv.= '</div>';
 $textdiv .= '<div class="jlplplanetnamesep"> - </div>';
- $textdiv .= '<div class="jlplplanetname">';
+$textdiv .= '<div class="jlplplanetname">';
+
 if( $params->get('show_club_logo'))
 {
-$team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2);
-$textdiv .= '<p>'.JHTML::image( $team2logo,"").'</p>';
+$team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2,$params->get('show_picture'));
+
+if( $params->get('show_picture') == 'logo_big')
+{
+    $textdiv .= '<p>'.JHtml::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
 }
+else
+{
+$textdiv .= '<p>'.JHtml::image( $team2logo,"").'</p>';    
+}
+
+
+}
+
 $textdiv .= '<p>'.modSportsmanagementPlaygroundplanHelper::getTeams($match->team2,$teamformat).'</p>';
- $textdiv.= '</div>';
- $textdiv.= '</div>';
- $textdiv.= '<div style="clear:both"></div>';
- $textdiv.= '</div>';
+$textdiv.= '</div>';
+$textdiv.= '</div>';
+$textdiv.= '<div style="clear:both"></div>';
+$textdiv.= '</div>';
 
 }
 
