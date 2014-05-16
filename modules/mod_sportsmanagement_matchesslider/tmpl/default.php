@@ -37,6 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+
+defined('_JEXEC') or die('Restricted access');
+
 //echo '<pre>'.print_r($slidermatches,true).'</pre>';
 
 //
@@ -71,6 +74,7 @@ echo ' ';
 echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 ?>
 </a>
+</h1>
 <p>
 <?PHP
 echo '<img src="'.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
@@ -85,7 +89,7 @@ echo '<img src="'.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$param
 ?>
 
 </p>
-    </h1>
+    
     </div>
     </div>
   </div>
