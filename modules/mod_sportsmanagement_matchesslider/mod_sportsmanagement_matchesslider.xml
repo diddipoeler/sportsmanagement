@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_MATCHESSLIDER</name>
+	<creationDate>2014-03-13</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_matchesslider">mod_sportsmanagement_matchesslider.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>mod_sportsmanagement_matchesslider.xml</filename>
+		<folder>connectors</folder>
+		<folder>fields</folder>
+		<folder>tmpl</folder>
+		<folder>assets</folder>
+	</files>
+
+	<languages>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_matchesslider.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_matchesslider.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+
+			<fieldset	name="basic"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
+						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
+
+
+ 
+				<field	name="project" type="projects" default="" required="false"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
+
+						
+
+			</fieldset>
+
+
+
+
+
+			<fieldset	name="Heading settings"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
+						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
+
+				<field 	name="p_link_func" type="list" default="results"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_TITLE" 
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_DESCR">
+					<option value="results">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RESULTS</option>
+					<option value="ranking">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RANKING</option>
+					<option value="resultsrank">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RANKING_AND_RESULTS</option>
+				</field>
+
+			</fieldset>
+			
+			<fieldset	name="Teams and picture settings"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_AND_PICTURE_SETTINGS_TITLE"
+						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
+
+				<field 	name="show_picture" type="radio" default="1"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field 	name="picture_type" type="list" default="logo_big" 
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_DESCR">
+					<option value="logo_big">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_BIG</option>
+					<option value="logo_middle">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_MEDIUM</option>
+					<option value="logo_small">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_SMALL</option>
+					<option value="team_picture">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_TEAM</option>
+					<option value="country">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_COUNTRY</option>
+				</field>
+
+				<field 	name="xsize" type="text" default="50" 
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_DESCR" />
+
+				<field 	name="team_names" type="list" default="short_name"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_DESCR">
+					<option value="short_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHORT_TEAM_NAME</option>
+					<option value="middle_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MEDIUM_TEAM_NAME</option>
+					<option value="name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FULL_TEAM_NAME</option>
+				</field>
+
+
+			</fieldset>
+
+
+			<fieldset	name="Teams and picture settings"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MATCH_INFO_SETTINGS_TITLE"
+						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
+						
+						<field 	name="dateformat" type="text" size=""
+						default="D, d. M. Y"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_DESCR" />
+						
+            <field 	name="timeformat" type="text"
+						default="H.i"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_DESCR" />
+
+
+
+
+
+			</fieldset>
+
+			<fieldset name="advanced">
+
+				<field 	name="moduleclass_sfx" type="text" default="" 
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>
