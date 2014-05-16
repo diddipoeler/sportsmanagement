@@ -105,8 +105,9 @@ class sportsmanagementModelPagination extends JModel
         {
             $roundid = $project->current_round;
         }
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
         
 		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
 		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");

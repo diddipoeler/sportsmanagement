@@ -244,7 +244,7 @@ class sportsmanagementModelResults extends JModel
 	 * @param mixed $config
 	 * @return
 	 */
-	function getResultsRows($round,$division,&$config)
+	function getResultsRows($round,$division,&$config,$params = NULL)
 	{
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -252,6 +252,8 @@ class sportsmanagementModelResults extends JModel
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
         
         $project = sportsmanagementModelProject::getProject();
 
@@ -272,10 +274,22 @@ class sportsmanagementModelResults extends JModel
         $query->select('d1.name as divhome');
         $query->select('d2.name as divaway');
         $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+        
+        if ( $params )
+        {
+            $query->select('c1.'.$params->get('picture_type').' as logohome');
+            $query->select('c2.'.$params->get('picture_type').' as logoaway');
+            $query->select('t1.'.$params->get('team_names').' as teamhome');
+            $query->select('t2.'.$params->get('team_names').' as teamaway');
+            $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+        }
+        
         // from 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // join
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
         
@@ -283,7 +297,11 @@ class sportsmanagementModelResults extends JModel
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
         
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
+        
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
+        
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
