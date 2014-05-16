@@ -149,6 +149,7 @@
 <module module="mod_sportsmanagement_club_birthday" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_teamplayers" client="site"  position="" published=""/>
