@@ -184,7 +184,15 @@ class sportsmanagementModelLeagues extends JModelList
      */
     function getLeagues()
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($mainframe,true).'</pre>'),'Notice');
+        
+        if ( $mainframe->isAdmin() )
+        {
         $search_nation	= $this->getState('filter.search_nation');
+        }
         // Get a db connection.
         $db = JFactory::getDBO();
         // Create a new query object.
