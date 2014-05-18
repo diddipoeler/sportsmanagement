@@ -283,6 +283,14 @@ class sportsmanagementModelResults extends JModel
             $query->select('t2.'.$params->get('team_names').' as teamaway');
             $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
             $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+            
+            // favorisierte teams nutzen
+            if ( $params->get('use_fav') )
+            {
+                //$favteams = explode(",",$project->fav_team);
+                $query->where('(t1.id IN ('.(implode(',',$project->fav_team)).') OR t2.id IN ('.(implode(',',$project->fav_team)).'))');
+            }
+            
         }
         
         // from 
