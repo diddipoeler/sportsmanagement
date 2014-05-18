@@ -40,15 +40,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//echo '<pre>'.print_r($slidermatches,true).'</pre>';
-
-//
-//foreach( $matches as $match )
-//{
-//
-//echo '<pre>'.print_r($match,true).'</pre>';
-//
-//}
 
 ?>
 
@@ -58,8 +49,6 @@ defined('_JEXEC') or die('Restricted access');
 <?PHP
 foreach( $slidermatches as $match )
 {
-
-//echo '<pre>'.print_r($match,true).'</pre>';
     
 ?>  
   <div class="section">
@@ -75,21 +64,26 @@ echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 ?>
 </a>
 </h1>
-<p>
+<p style="text-align: center;">
 <?PHP
-echo '<img src="'.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
-echo $match->teamhome;
-echo ' ( ';
-echo $match->team1_result;
-echo ' - ';
-echo $match->team2_result;
-echo ' ) ';
-echo $match->teamaway;
-echo '<img src="'.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
-?>
+echo '<img style="float: left;" src="'.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
 
+echo ''.$match->team1_result;
+echo ' - ';
+echo $match->team2_result.'';
+
+echo '<img style="float: right;" src="'.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
+?>
 </p>
-    
+
+<p style="text-align: center;"> 
+<?PHP
+echo $match->teamhome;
+echo ' - ';
+echo $match->teamaway;
+?>
+</p>
+   
     </div>
     </div>
   </div>
