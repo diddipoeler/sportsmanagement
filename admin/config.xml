@@ -321,6 +321,16 @@ multiple="true"
       
       />
 
+<field name="which_article_component" 
+    type="radio" 
+    default="com_content"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT_DESC">
+			<option value="com_content">COM_CONTENT</option>
+			<option value="com_k2">COM_K2</option>
+		</field>
+		
+		
 <field name="show_team_community" 
     type="radio" 
     default="0"

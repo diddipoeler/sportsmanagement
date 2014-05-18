@@ -140,6 +140,17 @@ class sportsmanagementModelProject extends JModelAdmin
         
         //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. ' sports_type_id<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
+        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    {
+        case 'com_content':
+        $form->setFieldAttribute('category_id', 'type', 'category');
+        $form->setFieldAttribute('category_id', 'extension', 'com_content');
+        break;
+        case 'com_k2':
+        $form->setFieldAttribute('category_id', 'type', 'categorylistk2');
+
+        break;
+    }
         
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projects');

@@ -300,7 +300,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   
   `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL ,
   `result_type` INT(11) NOT NULL DEFAULT '0' ,
-  
+  `content_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
@@ -728,6 +728,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `gcalendar_use_fav_teams` INT( 11 ) NOT NULL DEFAULT  '0',
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `projectinfo` TEXT NOT NULL ,
+  `category_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),

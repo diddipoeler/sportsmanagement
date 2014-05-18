@@ -688,6 +688,35 @@ class sportsmanagementModelMatchReport extends JModel
 //	}
 
 	
+    
+    function getMatchArticle($article_id)
+	{
+		$option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    $starttime = microtime(); 
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('c.id,c.title');
+       $query->select('c.introtext');
+       
+        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    {
+        case 'com_content':
+        
+        $query->from('#__content as c');
+        break;
+        case 'com_k2':
+        $query->from('#__k2_items as c');
+        break;
+    }
+    $query->where('id ='. $article_id );
+       $db->setQuery($query); 
+        $result = $db->loadObject();
+        return $result;
+        
+    }
+        
 	/**
 	 * sportsmanagementModelMatchReport::getMatchStats()
 	 * 

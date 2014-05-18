@@ -2289,5 +2289,30 @@ public function getOSMGeoCoords($address)
 		return $picture;    
         
     }
+    
+    function getArticleList($project_category_id)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $db = JFactory::getDBO();
+    // Create a new query object.
+        $query = $db->getQuery(true);
+        
+        $query->select('c.id as value,c.title as text');
+       
+        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    {
+        case 'com_content':
+        $query->from('#__content as c');
+        break;
+        case 'com_k2':
+        $query->from('#__k2_items as c');
+        break;
+    }
+    $query->where('catid ='. $project_category_id );
+       $db->setQuery($query); 
+        $result = $db->loadObjectList();
+        return $result;
+    }
         
 }

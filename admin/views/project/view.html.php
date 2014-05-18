@@ -206,6 +206,22 @@ class sportsmanagementViewProject extends JView
     $mainframe->setUserState( "$option.project_art_id", $this->project->project_art_id);
     $mainframe->setUserState( "$option.sports_type_id", $this->project->sports_type_id);  
     
+    
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
+    
+    $bar = JToolBar::getInstance('toolbar');
+    
+    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    {
+        case 'com_content':
+        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
+        break;
+        case 'com_k2':
+        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
+        break;
+    }
+    
+        
     JToolBarHelper::divider();
 	sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	JToolBarHelper::preferences(JRequest::getCmd('option'));
@@ -270,6 +286,17 @@ class sportsmanagementViewProject extends JView
 			}
 			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CLOSE');
 		}
+        
+        $bar = JToolBar::getInstance('toolbar');
+        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    {
+        case 'com_content':
+        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
+        break;
+        case 'com_k2':
+        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
+        break;
+    }
         
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

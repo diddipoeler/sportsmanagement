@@ -181,6 +181,11 @@ if (!empty($this->matchplayerpositions ))
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY'] = 'summary';
 	}
     
+    if (($this->config['show_article'])==1 )
+	{
+        $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE'] = 'article';
+	}
+    
     if (($this->config['show_commentary'])==1 && $this->matchcommentary )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';

@@ -61,7 +61,7 @@ fieldset button {
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
 			<?php
-			$colspan=($this->projectws->allow_add_time) ? 16 : 15;
+			$colspan=($this->projectws->allow_add_time) ? 19 : 18;
 			?>
 			<table class="adminlist">
 				<thead>
@@ -118,6 +118,9 @@ fieldset button {
 						}
 						?>
                         <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+                        
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
+                        
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
@@ -489,6 +492,20 @@ fieldset button {
 								?>
                             
                             </td>
+                            
+                            <td class="center">
+                            <?php
+                                
+                                    $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                                    echo JHtml::_(	'select.genericlist',$this->lists['articles'],
+													'content_id'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
+													$row->content_id);
+    
+                        
+
+                                	?>
+                            </td>
+                            
 							<td class="center">
                             
                             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"

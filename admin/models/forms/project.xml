@@ -195,7 +195,7 @@
 			multiple="false"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_KUNENA_FORUM"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_KUNENA_FORUM_DESC"/>
-			
+		
 		<field
 			name="extension"
 			type="extensionlist"
@@ -205,6 +205,13 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION_DESC"/>
 
+      <!-- http://docs.joomla.org/Category_form_field_type -->
+      <field name="category_id" 
+      type="" 
+      extension="" 
+      label="JCATEGORIES" 
+      description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
+      
 <field name="gcalendar_id" 
 type="gcalendar" 
 default="" 

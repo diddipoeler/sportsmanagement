@@ -188,11 +188,20 @@ class sportsmanagementViewMatches extends JView
 		$lists['match_result_type'] = $match_result_type;
 		unset($match_result_type);
         
+        //build the html options for article
+        $articles[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
+        if ($res = sportsmanagementHelper::getArticleList($projectws->category_id)){
+			$articles = array_merge($articles,$res);
+		}
+        $lists['articles'] = $articles;
+		unset($articles);
+        
+        
         //build the html options for divisions
 		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id)){
-			$divisions=array_merge($divisions,$res);
+			$divisions = array_merge($divisions,$res);
 		}
 		$lists['divisions'] = $divisions;
 		unset($divisions);

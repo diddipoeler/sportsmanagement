@@ -105,6 +105,10 @@ class sportsmanagementViewMatchReport extends JView
 		$this->assignRef('newmatchtext',$ret->text);
 		$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
 		$this->assignRef('oldmatchtext',$ret->text);
+        
+        $this->assign('match_article',$model->getMatchArticle($this->match->content_id));
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
 
 		$this->assign('round',$model->getRound());
 		$this->assign('team1',sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id));

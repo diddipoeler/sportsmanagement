@@ -455,7 +455,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             $tblMatch->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
             $tblMatch->team1_single_games = $post['team1_single_games'.$pks[$x]];
             $tblMatch->team2_single_games = $post['team2_single_games'.$pks[$x]];
-            
+            $tblMatch->content_id = $post['content_id'.$pks[$x]];
             
             if ( $post['use_legs'] )
             {
@@ -959,7 +959,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         if ( !$db->loadObject() )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__METHOD__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
 		return $db->loadObject();
