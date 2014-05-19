@@ -290,7 +290,16 @@ class sportsmanagementModelResults extends JModel
                 //$favteams = explode(",",$project->fav_team);
                 $query->where('(t1.id IN ('.$project->fav_team.') OR t2.id IN ('.$project->fav_team.'))');
             }
+            // ganze saison ?
+            if ( !$params->get('project_season') )
+            {
+                $query->where('r.id = '.$round); 
+            }
             
+        }
+        else
+        {
+        $query->where('r.id = '.$round);    
         }
         
         // from 
@@ -316,7 +325,7 @@ class sportsmanagementModelResults extends JModel
 		
         // where
         $query->where('m.published = 1');
-        $query->where('r.id = '.$round);
+//        $query->where('r.id = '.$round);
         $query->where('r.project_id = '.(int)$project->id);
         // group
         $query->group('m.id ');
