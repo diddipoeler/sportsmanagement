@@ -96,7 +96,8 @@ if ( !$projectid )
 else
 {
 sportsmanagementModelProject::$projectid = $projectid;
-$slidermatches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+$matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+$slidermatches = array_merge($matches);
 }
 
 foreach( $slidermatches as $match )
