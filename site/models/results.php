@@ -340,7 +340,8 @@ class sportsmanagementModelResults extends JModel
 		if (!is_null($round)) 
         {
 			$db->setQuery($query);
-            $result = $db->loadObjectList();
+            //$result = $db->loadObjectList();
+            $result = $db->loadObjectList('id');
 		}
 		
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
