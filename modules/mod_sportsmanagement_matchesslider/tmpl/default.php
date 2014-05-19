@@ -40,6 +40,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+//echo ' matches<br><pre>'.print_r($slidermatches,true).'</pre>';
 
 ?>
 

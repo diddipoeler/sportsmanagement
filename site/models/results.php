@@ -288,9 +288,18 @@ class sportsmanagementModelResults extends JModel
             if ( $params->get('use_fav') )
             {
                 //$favteams = explode(",",$project->fav_team);
-                $query->where('(t1.id IN ('.(implode(',',$project->fav_team)).') OR t2.id IN ('.(implode(',',$project->fav_team)).'))');
+                $query->where('(t1.id IN ('.$project->fav_team.') OR t2.id IN ('.$project->fav_team.'))');
+            }
+            // ganze saison ?
+            if ( !$params->get('project_season') )
+            {
+                $query->where('r.id = '.$round); 
             }
             
+        }
+        else
+        {
+        $query->where('r.id = '.$round);    
         }
         
         // from 
@@ -316,7 +325,7 @@ class sportsmanagementModelResults extends JModel
 		
         // where
         $query->where('m.published = 1');
-        $query->where('r.id = '.$round);
+//        $query->where('r.id = '.$round);
         $query->where('r.project_id = '.(int)$project->id);
         // group
         $query->group('m.id ');
@@ -331,10 +340,11 @@ class sportsmanagementModelResults extends JModel
 		if (!is_null($round)) 
         {
 			$db->setQuery($query);
-            $result = $db->loadObjectList();
+            //$result = $db->loadObjectList();
+            $result = $db->loadObjectList('id');
 		}
 		
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
@@ -378,7 +388,7 @@ class sportsmanagementModelResults extends JModel
         
         $result = $db->loadObjectList();
         
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
@@ -437,7 +447,7 @@ class sportsmanagementModelResults extends JModel
         
         $result = $db->loadObjectList('value');
         
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }

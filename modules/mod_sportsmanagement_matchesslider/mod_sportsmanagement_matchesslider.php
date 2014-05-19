@@ -79,17 +79,25 @@ $doc->addScriptDeclaration('
 //$matches = $mod->getMatches();
 
 $config = array();
+$slidermatches = array();
 $projectid = JRequest::getInt('p',0);
 if ( !$projectid )
 {
     foreach( $params->get('project') as $key => $value )
     {
         $projectid = $value;
+        sportsmanagementModelProject::$projectid = $projectid;
+        $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+        //$slidermatches[] = $matches;
+        $slidermatches = array_merge($matches);
     }
     
 }    
+else
+{
 sportsmanagementModelProject::$projectid = $projectid;
 $slidermatches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+}
 
 foreach( $slidermatches as $match )
 {
