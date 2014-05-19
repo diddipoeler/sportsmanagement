@@ -288,7 +288,7 @@ class sportsmanagementModelResults extends JModel
             if ( $params->get('use_fav') )
             {
                 //$favteams = explode(",",$project->fav_team);
-                $query->where('(t1.id IN ('.(implode(',',$project->fav_team)).') OR t2.id IN ('.(implode(',',$project->fav_team)).'))');
+                $query->where('(t1.id IN ('.$project->fav_team.') OR t2.id IN ('.$project->fav_team.'))');
             }
             
         }
@@ -334,7 +334,7 @@ class sportsmanagementModelResults extends JModel
             $result = $db->loadObjectList();
 		}
 		
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
@@ -378,7 +378,7 @@ class sportsmanagementModelResults extends JModel
         
         $result = $db->loadObjectList();
         
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
@@ -437,7 +437,7 @@ class sportsmanagementModelResults extends JModel
         
         $result = $db->loadObjectList('value');
         
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
