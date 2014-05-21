@@ -112,6 +112,9 @@ class sportsmanagementModelProjects extends JModelList
 		$this->setState('filter.season', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
+        
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);

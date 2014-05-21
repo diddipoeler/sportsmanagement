@@ -111,6 +111,9 @@ class sportsmanagementModeljlextcountries extends JModelList
 		$federation = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
 		$this->setState('filter.federation', $federation);
         
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 

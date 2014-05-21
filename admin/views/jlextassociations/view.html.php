@@ -74,6 +74,8 @@ class sportsmanagementViewjlextassociations extends JView
     $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
    
 $starttime = microtime(); 
 		$items = $this->get('Items');

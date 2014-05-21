@@ -139,13 +139,13 @@ class sportsmanagementModelPersons extends JModelList
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _type<br><pre>'.print_r($this->_type,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' search<br><pre>'.print_r($search,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' filter_fields<br><pre>'.print_r($this->filter_fields,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _type<br><pre>'.print_r($this->_type,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' search<br><pre>'.print_r($search,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter_fields<br><pre>'.print_r($this->filter_fields,true).'</pre>'),'');
         }
         
 
@@ -373,12 +373,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->where('pl.id IN (' . implode( ', ', $cid ) . ')');
         $query->where('pl.published = 1');
-
-//		$query = '	SELECT	pl.id,
-//							pl.firstname, pl.nickname,
-//							pl.lastname
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
-//					WHERE pl.id IN (' . implode( ', ', $cid ) . ') AND pl.published = 1';
 		
         $db->setQuery( $query );
 		return $db->loadObjectList();
@@ -406,15 +400,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
         $query->where('tt.project_id = ' . $this->_project_id);
         $query->order('text ASC');
-        
-//		$query = '	SELECT	t.id AS value,
-//							t.name AS text
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-//					INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.team_id = t.id
-//					WHERE tt.project_id = ' . $this->_project_id . '
-//					ORDER BY text ASC ';
-
-		#echo '<br />'.$query.'<br />';
 
 		$db->setQuery( $query );
 		return $db->loadObjectList();
@@ -445,8 +430,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->select('name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
         $query->where('id = '. $team_id);
-        
-		//$query = ' SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team WHERE id = ' . $team_id;
 		
         $db->setQuery( $query );
 		return $db->loadResult();
@@ -478,12 +461,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
         
         $query->where('pt.id = '. $db->Quote($project_team_id));
-        
-//		$query = ' SELECT t.name
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt
-//					ON t.id=pt.team_id
-//					WHERE pt.id = '. $db->Quote($project_team_id);
 
 		$db->setQuery( $query );
 		return $db->loadResult();
@@ -510,25 +487,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
         $query->where('published = 1');
         $query->order('lastname ASC');
-        
-//		$query='SELECT	id AS value,
-//				lastname,
-//				firstname,
-//				info,
-//				weight,
-//				height,
-//				picture,
-//				birthday,
-//				notes,
-//				nickname,
-//				knvbnr,
-//				country,
-//				phone,
-//				mobile,
-//				email
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
-//				WHERE published = 1
-//				ORDER BY lastname ASC ';
 		
         $db->setQuery($query);
 		if (!$result = $db->loadObjectList())
@@ -560,14 +518,6 @@ class sportsmanagementModelPersons extends JModelList
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
         $query->where("firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'");
         $query->order('lastname,firstname');
-        
-//		$query ="	SELECT id,id AS value,firstname,lastname,nickname,birthday,info,
-//        LOWER(lastname) AS low_lastname,
-//					LOWER(firstname) AS low_firstname,
-//					LOWER(nickname) AS low_nickname
-//						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
-//						WHERE firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'
-//						ORDER BY lastname,firstname";
 		
         $db->setQuery($query);
 		if ($results = $db->loadObjectList())

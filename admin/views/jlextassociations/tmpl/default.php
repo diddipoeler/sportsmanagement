@@ -130,7 +130,11 @@ function searchPerson(val)
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td>
+            <td colspan='3'>
+            <?php echo $this->pagination->getResultsCounter();?>
+            </td>
+            </tr></tfoot>
 			<tbody>
 				<?php
 				$k=0;
