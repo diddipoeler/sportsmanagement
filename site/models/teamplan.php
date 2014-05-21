@@ -238,7 +238,10 @@ class sportsmanagementModelTeamPlan extends JModel
 			$ordering = $config['plan_order'];
 		}
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' pro_teamid'.'<pre>'.print_r($this->pro_teamid,true).'</pre>' ),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		{
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pro_teamid'.'<pre>'.print_r($this->pro_teamid,true).'</pre>' ),'');
+        }
         
 		return self::_getResultsPlan($this->pro_teamid,$ordering,0,1,$config['show_referee']);
 	}

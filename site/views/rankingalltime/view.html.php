@@ -45,15 +45,34 @@ jimport('joomla.application.component.view');
 
 //require_once (JLG_PATH_ADMIN . DS . 'models' . DS . 'divisions.php');
 
+/**
+ * sportsmanagementViewRankingAllTime
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewRankingAllTime extends JView
 {
 
+    /**
+     * sportsmanagementViewRankingAllTime::display()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function display($tpl = null)
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         $uri = JFactory::getURI();
         //$this->project->id = JRequest::getInt('p', 0);
+        
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
          $model = $this->getModel();
 
