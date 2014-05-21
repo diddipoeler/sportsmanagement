@@ -92,7 +92,7 @@ class sportsmanagementModelResults extends JModel
 		} 
         else 
         {
-			sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
+			$this->roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
             //$roundid = sportsmanagementModelProject::$_current_round;
 		}

@@ -94,7 +94,7 @@ class sportsmanagementViewResults extends JView
 		
 			
 		$this->assignRef('project', $project);
-		$lists=array();
+		$lists = array();
 		
 		if (isset($this->project))
 		{
