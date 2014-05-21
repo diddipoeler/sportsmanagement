@@ -149,6 +149,9 @@ $sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
+echo 'league_id  => <pre>'.print_r($league_id  , true).'</pre><br>';
+echo 'country_id  => <pre>'.print_r($country_id  , true).'</pre><br>';
+    
 echo 'league_assoc_id => <pre>'.print_r($league_assoc_id, true).'</pre><br>';
 echo 'sub_assoc_parent_id => <pre>'.print_r($sub_assoc_parent_id, true).'</pre><br>';
 echo 'sub_sub_assoc_parent_id => <pre>'.print_r($sub_sub_assoc_parent_id, true).'</pre><br>';
