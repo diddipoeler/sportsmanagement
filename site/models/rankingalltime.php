@@ -258,7 +258,7 @@ $option = JRequest::getCmd('option');
         
         $query->select('tl.id AS projectteamid,tl.division_id');
         $query->select('tl.standard_playground,tl.admin,tl.start_points');
-        $query->select('tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
+        $query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
         $query->select('tl.is_in_score,tl.info,st.team_id,tl.checked_out,tl.checked_out_time');
         $query->select('tl.picture,tl.project_id');
         $query->select('t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
@@ -292,6 +292,28 @@ $query->group('st.team_id' );
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
+        
+        
+        
+        //foreach ( $this->_teams as $team )
+//    {
+//    if ( $team->use_finally ) 
+//			{
+//				$team->sum_points = $team->points_finally;
+//				$team->neg_points = $team->neg_points_finally;
+//				$team->cnt_matches = $team->matches_finally;
+//				$team->cnt_won = $team->won_finally;
+//				$team->cnt_draw = $team->draws_finally;
+//				$team->cnt_lost = $team->lost_finally;
+//				$team->sum_team1_result = $team->homegoals_finally;
+//				$team->sum_team2_result = $team->guestgoals_finally;
+//				$team->diff_team_results = $team->diffgoals_finally;
+//			}    
+//        
+//        
+//    }
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_teams,true).'</pre>'),'Error');
 
         return $this->_teams;
 
@@ -372,23 +394,25 @@ $query->group('st.team_id' );
 		$decision = $match->decision;
 		if ($decision == 0)
 			{
-				$home_score=$match->home_score;
-				$away_score=$match->away_score;
-				$leg1=$match->l1;
-				$leg2=$match->l2;
+				$home_score = $match->home_score;
+				$away_score = $match->away_score;
+				$leg1 = $match->l1;
+				$leg2 = $match->l2;
 			}
 			else
 			{
-				$home_score=$match->home_score_decision;
-				$away_score=$match->away_score_decision;
-				$leg1=0;
-				$leg2=0;
+				$home_score = $match->home_score_decision;
+				$away_score = $match->away_score_decision;
+				$leg1 = 0;
+				$leg2 = 0;
 			}
             
 		$homeId = $match->team1_id;
 		$awayId = $match->team2_id;
     $home = &$this->teams[$homeId];
     $away = &$this->teams[$awayId];
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' home<br><pre>'.print_r($home,true).'</pre>'),'');
     
     $home->cnt_matches++;
 		$away->cnt_matches++;
@@ -647,6 +671,29 @@ $query->group('st.team_id' );
     
     
     }
+    
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
+    
+    foreach ( $this->_teams as $team )
+    {
+    if ( $team->use_finally ) 
+			{
+				$this->teams[$team->team_id]->sum_points += $team->points_finally;
+				$this->teams[$team->team_id]->neg_points += $team->neg_points_finally;
+				$this->teams[$team->team_id]->cnt_matches += $team->matches_finally;
+				$this->teams[$team->team_id]->cnt_won += $team->won_finally;
+				$this->teams[$team->team_id]->cnt_draw += $team->draws_finally;
+				$this->teams[$team->team_id]->cnt_lost += $team->lost_finally;
+				$this->teams[$team->team_id]->sum_team1_result += $team->homegoals_finally;
+				$this->teams[$team->team_id]->sum_team2_result += $team->guestgoals_finally;
+				$this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
+			}    
+        
+        
+    }
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
     return $this->teams;
      
