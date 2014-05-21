@@ -96,6 +96,9 @@ class sportsmanagementModelResults extends JModel
             //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
             //$roundid = sportsmanagementModelProject::$_current_round;
 		}
+        
+        sportsmanagementHelperHtml::$roundid = $this->roundid;
+        
 		//$this->roundid = $roundid;
 		$this->config = sportsmanagementModelProject::getTemplateConfig('results');
         

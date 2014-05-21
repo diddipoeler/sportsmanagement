@@ -42,7 +42,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
-//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
 /**
  * sportsmanagementViewResults
@@ -130,41 +129,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     }
     //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     
-    /*
-    if ( $rssfeedlink )
-    {
-    $srfrFeedsArray 							= explode(",",$rssfeedlink);
-    $perFeedItems 								= $this->overallconfig['perFeedItems'];
-    $totalFeedItems 							= $this->overallconfig['totalFeedItems'];
-    $feedTimeout									= $this->overallconfig['feedTimeout'];
-    $this->assignRef( 'feedTitle' , $this->overallconfig['feedTitle'] );
-    $this->assignRef( 'feedFavicon' , $this->overallconfig['feedFavicon'] );
-    $this->assignRef( 'feedItemTitle' , $this->overallconfig['feedItemTitle'] );
-    $this->assignRef( 'feedItemDate' , $this->overallconfig['feedItemDate'] );
-    $feedItemDateFormat						= $this->overallconfig['feedItemDateFormat'];
-    $this->assignRef( 'feedItemDescription' , $this->overallconfig['feedItemDescription'] );
-    $feedItemDescriptionWordlimit	= $this->overallconfig['feedItemDescriptionWordlimit'];
-    $feedItemImageHandling				= $this->overallconfig['feedItemImageHandling'];
-    $feedItemImageResizeWidth			= $this->overallconfig['feedItemImageResizeWidth'];
-    $feedItemImageResampleQuality	= $this->overallconfig['feedItemImageResampleQuality'];
-    $this->assignRef( 'feedItemReadMore' , $this->overallconfig['feedItemReadMore'] );
-    
-    $this->assignRef( 'feedsBlockPreText' ,	$this->overallconfig['feedsBlockPreText'] );
-    $this->assignRef( 'feedsBlockPostText' , $this->overallconfig['feedsBlockPostText'] );
-    $this->assignRef( 'feedsBlockPostLink' , $this->overallconfig['feedsBlockPostLink'] );
-    $feedsBlockPostLinkURL				= $this->overallconfig['feedsBlockPostLinkURL'];
-    $feedsBlockPostLinkTitle			= $this->overallconfig['feedsBlockPostLinkTitle'];
-    $srfrCacheTime								= $this->overallconfig['srfrCacheTime'];
-    $cacheLocation								= 'cache'.DS.$mod_name;
-    $this->assignRef( 'rssfeedoutput',SimpleRssFeedReaderHelper::getFeeds($srfrFeedsArray,$totalFeedItems,$perFeedItems,$feedTimeout,$feedItemDateFormat,$feedItemDescriptionWordlimit,$cacheLocation,$srfrCacheTime,$feedItemImageHandling,$feedItemImageResizeWidth,$feedItemImageResampleQuality,$this->feedFavicon) );
-    $css = JURI::root().'components/com_sportsmanagement/assets/css/rssfeedstyle.css';
-		$document->addStyleSheet($css); 
-		}
-        */ 
-       
+  
        }
-       
-       sportsmanagementHelperHtml::$roundid = $project->current_round;
+      
        
 //			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
             
