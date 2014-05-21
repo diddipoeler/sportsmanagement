@@ -207,7 +207,7 @@ class sportsmanagementViewProject extends JView
     $mainframe->setUserState( "$option.sports_type_id", $this->project->sports_type_id);  
     
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
     
     $bar = JToolBar::getInstance('toolbar');
     
