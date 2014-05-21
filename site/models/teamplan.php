@@ -180,7 +180,7 @@ class sportsmanagementModelTeamPlan extends JModel
         
 		if ( !$result = $db->loadResult())
 		{
-			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
             $this->pro_teamid = 0;
             return 0;
 		}
@@ -380,7 +380,7 @@ class sportsmanagementModelTeamPlan extends JModel
 			$this->_getRefereesByMatch($matches,$joomleague);
 		}
 
-if (!$matches )
+if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		{
 			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -468,7 +468,7 @@ if (!$matches )
 			$this->_getRefereesByMatch($matches,$joomleague);
 		}
 
-if (!$matches )
+if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		{
 
 			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');

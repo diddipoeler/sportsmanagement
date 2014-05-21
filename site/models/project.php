@@ -619,7 +619,7 @@ class sportsmanagementModelProject extends JModel
 			$this->_rounds = $db->loadObjectList();
 		}
 		
-        if ( !$this->_rounds )
+        if ( !$this->_rounds && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
@@ -663,7 +663,7 @@ class sportsmanagementModelProject extends JModel
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-        if ( !$result )
+        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
@@ -710,7 +710,7 @@ class sportsmanagementModelProject extends JModel
         
         $result = $db->loadObject();
         
-            if ( !$result )
+            if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		    {
 			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		    }
