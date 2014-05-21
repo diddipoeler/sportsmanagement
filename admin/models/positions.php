@@ -95,6 +95,9 @@ class sportsmanagementModelPositions extends JModelList
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
 		$this->setState('filter.sports_type', $temp_user_request);
+        
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
