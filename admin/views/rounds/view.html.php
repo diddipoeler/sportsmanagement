@@ -138,8 +138,12 @@ class sportsmanagementViewRounds extends JView
 		//$projectws =& $this->get('Data','projectws');
 
 
-                
-		//$massadd=JRequest::getVar('massadd');				
+
+		//$massadd=JRequest::getVar('massadd');
+        $myoptions = array();
+		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$lists['tournementround'] = $myoptions;				
 				
 		//$this->assignRef('massadd',$massadd);				
 		$this->assignRef('lists',$lists);

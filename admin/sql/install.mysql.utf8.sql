@@ -876,6 +876,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `extendeduser` TEXT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
+  `tournement` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )

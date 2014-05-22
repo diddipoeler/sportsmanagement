@@ -957,7 +957,7 @@ class sportsmanagementModelMatch extends JModelAdmin
                     
 		$db->setQuery($query);
         
-        if ( !$db->loadObject() )
+        if ( !$db->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');

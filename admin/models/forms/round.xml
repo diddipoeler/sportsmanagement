@@ -45,7 +45,19 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>				
+			format="%Y-%m-%d"/>		
+      
+      <field
+			name="tournement"
+			type="radio"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT_DESC"
+			class="radio">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    		
 	</fieldset>		
   
   <fieldset name="picture"

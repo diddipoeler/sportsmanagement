@@ -201,6 +201,7 @@ class sportsmanagementModelround extends JModelAdmin
 			$tblRound = & $this->getTable();
 			$tblRound->id = $pks[$x];
             $tblRound->roundcode	= $post['roundcode'.$pks[$x]];
+            $tblRound->tournement	= $post['tournementround'.$pks[$x]];
 			$tblRound->name	= $post['name'.$pks[$x]];
             $tblRound->round_date_first	= sportsmanagementHelper::convertDate($post['round_date_first'.$pks[$x]], 0);
             $tblRound->round_date_last	= sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
@@ -445,8 +446,8 @@ class sportsmanagementModelround extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $post=JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

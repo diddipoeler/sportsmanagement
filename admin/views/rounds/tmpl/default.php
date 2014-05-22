@@ -95,6 +95,7 @@ window.addEvent('domready',function(){
 						<th width="10%"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
 						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
 						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
+                        <th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT'); ?></th>
 						<th width="5%" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JSTATUS','r.published',$this->sortDirection,$this->sortColumn);
@@ -103,7 +104,11 @@ window.addEvent('domready',function(){
             <th width="5%"><?php echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn ); ?></th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+				<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
+                <td colspan='3'>
+            <?php echo $this->pagination->getResultsCounter();?>
+            </td>
+                </tr></tfoot>
 				<tbody>
 					<?php
 					$k=0;
@@ -216,6 +221,20 @@ window.addEvent('domready',function(){
 									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
 								?></td>
+                                
+                                
+                                <td class="center">
+									<?php
+                                    $append=' style="background-color:#bbffff"';
+									echo JHtml::_(	'select.genericlist',
+													$this->lists['tournementround'],
+													'tournementround'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->tournement);
+									?>
+								</td>
+                                
                 <td class="center"><?php echo $published; ?></td>
 							<td class="center"><?php echo $row->id; ?></td>
 						</tr>

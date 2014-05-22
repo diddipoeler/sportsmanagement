@@ -129,7 +129,7 @@ class sportsmanagementViewRound extends JView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT'), 'matchday');
+		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT'), 'matchday');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
@@ -177,7 +177,7 @@ class sportsmanagementViewRound extends JView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT'));
+		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
