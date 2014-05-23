@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <form>
 
-	<fieldset group="COM_JOOMLEGAUE_FES_FLASH_PARAMS_GROUP_SETTINGS"
+	<fieldset group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS"
   name="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS"  
 			addpath="/administrator/components/com_sportsmanagement/elements"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_DESCR_SETTINGS">

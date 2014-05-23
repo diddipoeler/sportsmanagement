@@ -4,7 +4,7 @@
 	<fieldset	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
   addpath="/administrator/components/com_sportsmanagement/elements"
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTION">
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
     <field	name="show_debug_modus" type="radio" default="0"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
