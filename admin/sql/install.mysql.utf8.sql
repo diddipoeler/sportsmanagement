@@ -1328,7 +1328,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_user_extra_fields_values` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `published` tinyint(1) NOT NULL default '1',
-  PRIMARY KEY (`id`) 
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `fields` (`field_id`,`jl_id`) 
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8; 

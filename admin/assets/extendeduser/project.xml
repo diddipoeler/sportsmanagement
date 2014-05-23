@@ -142,7 +142,8 @@
 			<option value="3">Verbandsturnier</option>
 		</field>
 		
-
+    	<field name="teamart" type="text" label="teamart" description="teamart">
+		</field>
 		
 		<field name="rssfeeds" type="textarea" rows="2" cols="100" label="rssfeeds" description="rssfeeds"/>
 		
