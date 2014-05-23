@@ -303,6 +303,17 @@
 				
 	</fieldset>
 
+<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
+  label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
+
+<field name="force_ranking_cache" type="radio" default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE" description="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+</fieldset>
+
 <!-- register 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"

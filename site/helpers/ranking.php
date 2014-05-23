@@ -286,7 +286,7 @@ class JSMRanking
 		}
 			
 		// Get a reference to the global cache object.
-		$cache = JFactory::getCache('joomleague.project'.$this->_projectid);
+		$cache = JFactory::getCache('sportsmanagement.project'.$this->_projectid);
 		 
 		// Enable caching regardless of global setting
 		$params = JComponentHelper::getParams('com_sportsmanagement');
