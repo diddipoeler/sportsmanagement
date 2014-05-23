@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -46,6 +82,11 @@ var $jl_tree_bracket_width = 140;
 var $jl_tree_jquery_version = '1.7.1';
 
 
+/**
+ * sportsmanagementModeljltournamenttree::__construct()
+ * 
+ * @return void
+ */
 function __construct( )
 	{
         $menu =  JSite::getMenu();
@@ -55,6 +96,10 @@ function __construct( )
  		$this->round = JRequest::getVar( "r");
         $this->request = JRequest::get();
         $this->menue_itemid = JRequest::getInt( "Itemid", 0 );
+        
+        $this->request['r'] = (int) $this->request['r'];
+        $this->request['from'] = (int) $this->request['from'];
+        $this->request['to'] = (int) $this->request['to'];
         
         //$this->color_from = JRequest::getVar( "color_from");
         //$this->color_to = JRequest::getVar( "color_to");
@@ -115,16 +160,31 @@ function __construct( )
 		parent::__construct( );
 	}
 
+/**
+ * sportsmanagementModeljltournamenttree::getWhichJQuery()
+ * 
+ * @return
+ */
 function getWhichJQuery()
 {
 return $this->jl_tree_jquery_version;    
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getWhichShowFirstRound()
+ * 
+ * @return
+ */
 function getWhichShowFirstRound()
 {
 return $this->which_first_round;
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTreeBracketRoundWidth()
+ * 
+ * @return
+ */
 function getTreeBracketRoundWidth()
 {
 global $mainframe;
@@ -154,12 +214,22 @@ $fieldtype = $tFields[$tableName][$fieldName]->Type;
 return $this->jl_tree_bracket_round_width;    
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTreeBracketTeambWidth()
+ * 
+ * @return
+ */
 function getTreeBracketTeambWidth()
 {
 $this->jl_tree_bracket_teamb_width = ( 70 * $this->jl_tree_bracket_round_width / 100);
 return $this->jl_tree_bracket_teamb_width;
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTreeBracketWidth()
+ * 
+ * @return
+ */
 function getTreeBracketWidth()
 {
 //$this->jl_tree_bracket_width =  $this->jl_tree_bracket_teamb_width * 2;
@@ -172,21 +242,41 @@ $this->jl_tree_bracket_width = $this->jl_tree_bracket_round_width + 40;
 return $this->jl_tree_bracket_width;
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getFontSize()
+ * 
+ * @return
+ */
 function getFontSize()
 {
 return $this->font_size;    
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getColorFrom()
+ * 
+ * @return
+ */
 function getColorFrom()
 {
 return $this->color_from;    
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getColorTo()
+ * 
+ * @return
+ */
 function getColorTo()
 {
 return $this->color_to;    
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTournamentName()
+ * 
+ * @return
+ */
 function getTournamentName()
 {
 $option = JRequest::getCmd('option');
@@ -211,6 +301,11 @@ $this->project_art_id = $result->project_art_id;
 }
 
 	
+/**
+ * sportsmanagementModeljltournamenttree::getTournamentRounds()
+ * 
+ * @return
+ */
 function getTournamentRounds()
 {
 $option = JRequest::getCmd('option');
@@ -218,6 +313,8 @@ $mainframe	= JFactory::getApplication();
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
 
 if ( $this->debug_info )
 {
@@ -242,23 +339,14 @@ $query->select("ro.*");
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as ro');
 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as ma on ma.round_id = ro.id');
 $query->where('ro.project_id = '.$this->projectid);
-    
-//$query_SELECT = "SELECT ro.* ";
-//
-//$query_FROM = " FROM #__sportsmanagement_round as ro
-//		  inner join #__sportsmanagement_match as ma
-//          on ma.round_id = ro.id";
-           
-//$query_WHERE = " WHERE ro.project_id = ".$this->projectid;
 
 // von bis runde gesetzt
 if ( array_key_exists('from', $this->request) 
 && array_key_exists('to', $this->request) 
-&& !empty($this->request['from']) 
+&& !empty( $this->request['from']) 
 && !empty($this->request['to']) )
 {
-//$query_WHERE .= " and ( ro.id between ".$this->request['from']." and ".$this->request['to']." )";
-$query->where("ro.id between ".$this->request['from']." and ".$this->request['to']." )");
+$query->where("( ro.id between ".$this->request['from']." and ".$this->request['to']." )");
 }
 
 // nur von runde gesetzt
@@ -266,8 +354,7 @@ if ( array_key_exists('from', $this->request)
 && !array_key_exists('to', $this->request) 
 && !empty($this->request['from']) )
 {
-//$query_WHERE .= " and ( ro.id between ".$this->request['from']." and ".$this->request['from']." )";
-$query->where("ro.id between ".$this->request['from']." and ".$this->request['from']." )");
+$query->where("( ro.id between ".$this->request['from']." and ".$this->request['from']." )");
 }
 
 // nur bis runde gesetzt
@@ -275,44 +362,37 @@ if ( !array_key_exists('from', $this->request)
 && array_key_exists('to', $this->request) 
 && !empty($this->request['to']) )
 {
-//$query_WHERE .= " and ( ro.id between ".$this->request['to']." and ".$this->request['from']." )";
-$query->where("ro.id between ".$this->request['to']." and ".$this->request['from']." )");
+$query->where("( ro.id between ".$this->request['to']." and ".$this->request['from']." )");
 }
 
 // array an runden gesetzt
 if ( array_key_exists('r', $this->request) && !empty($this->request['r'] ) )
 {
-$temprounds = explode("|",$this->request['r']);
-$selectrounds = implode(",",$temprounds);
-//$query_WHERE .= " and ro.id IN (".$selectrounds.")";
-$query->where("ro.id IN (".$selectrounds.")");
+//$temprounds = explode("|",$this->request['r']);
+//$selectrounds = implode(",",$temprounds);
+//$query->where("ro.id IN (".$selectrounds.")");
+$query->where("ro.tournement = 1");
 }
 
-// keine runden gesetzt
-if ( !array_key_exists('from', $this->request) 
-&& !array_key_exists('to', $this->request) 
-&& !array_key_exists('r', $this->request) )
-{
-//$query_WHERE .= " and ma.count_result = 0 ";
-$query->where("ma.count_result = 0");
-}
-
-
-//$query_END = " GROUP BY ro.roundcode
-//          ORDER BY ro.roundcode DESC
-//          ";
+//// keine runden gesetzt
+//if ( !array_key_exists('from', $this->request) 
+//&& !array_key_exists('to', $this->request) 
+//&& !array_key_exists('r', $this->request) )
+//{
+//$query->where("ma.count_result = 0");
+//}
 
 $query->group("ro.roundcode");
 $query->order("ro.roundcode DESC");
 
-//$query = $query_SELECT.$query_FROM.$query_WHERE.$query_END;
-
 $db->setQuery($query);
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 if ( $this->debug_info )
 {
 echo 'Runden -> <br /><pre>~'.print_r($db->loadObjectList(),true).'~</pre><br />';
-echo 'Runden query-> <br /><pre>~'.print_r($query,true).'~</pre><br />';
+echo 'Runden query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
 }
 
 $this->count_tournament_round = count($db->loadObjectList());		
@@ -321,6 +401,12 @@ return $db->loadObjectList();
 
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTournamentBracketRounds()
+ * 
+ * @param mixed $rounds
+ * @return
+ */
 function getTournamentBracketRounds($rounds)
 {
 $temp_rounds = array();
@@ -1143,6 +1229,12 @@ return implode(",",$varteams);
 
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::getTournamentResults()
+ * 
+ * @param mixed $rounds
+ * @return
+ */
 function getTournamentResults($rounds)
 {
     
