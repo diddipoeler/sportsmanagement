@@ -10,7 +10,7 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 
-			<field	type="sql" name="prediction_id" label="COM_JOOMLEAGUE_XML_JL_PRED_USERS_SELECT_GAME"
+			<field	type="sql" name="prediction_id" label="COM_SPORTSMANAGEMENT_XML_JL_PRED_USERS_SELECT_GAME"
 					description="COM_SPORTSMANAGEMENT_XML_JL_PRED_USERS_SELECT_GAME_DESC"
 					query="	SELECT CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(':', id, alias) ELSE id END AS value,
 									name AS prediction_id
@@ -22,7 +22,7 @@
       name="uid" 
       depends="prediction_id" 
       task="predictionmembersoptions" 
-      label="COM_SPORTSMANAGEMENT_XML_JL_PRED_USERS_SELECT_MEMBERr"
+      label="COM_SPORTSMANAGEMENT_XML_JL_PRED_USERS_SELECT_MEMBER"
 					description="COM_SPORTSMANAGEMENT_XML_JL_PRED_USERS_SELECT_MEMBER_DESC"
 					query="" />
 
