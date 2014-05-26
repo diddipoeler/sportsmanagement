@@ -53,9 +53,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<tr class="sectiontableheader">
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON'); ?></th>
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></th>
-		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
-		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; ">><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_DIVISION'); ?></th>
-		<?php } ?> 
+		<?php 
+		if($this->project->project_type=='DIVISIONS_LEAGUE') 
+		{ 
+		?> 
+		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_DIVISION'); ?></th>
+		<?php 
+		} 
+		?> 
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_RANK'); ?></th>
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></th>
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_POINTS'); ?></th>
