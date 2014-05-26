@@ -194,7 +194,7 @@ echo $this->pagination->getListFooter();
                             
 						if ( $this->config['show_logo_small_overview'] == 2 )
                         {
-                            echo Countries::getCountryFlag($match->homeCountry).'<br />';
+                            echo JSMCountries::getCountryFlag($match->homeCountry).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeCountry.'<br />';
@@ -214,7 +214,7 @@ echo $this->pagination->getListFooter();
                         }
 						if ( $this->config['show_logo_small_overview'] == 2 )
                         {
-                            echo '<br />'.Countries::getCountryFlag($match->awayCountry);
+                            echo '<br />'.JSMCountries::getCountryFlag($match->awayCountry);
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayCountry.'<br />';

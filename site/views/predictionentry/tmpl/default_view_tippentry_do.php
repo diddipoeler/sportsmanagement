@@ -362,7 +362,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 if ( $this->config['show_logo_small'] == 2 )
 								{
                 $country_home = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam1_id);
-                echo Countries::getCountryFlag($country_home);
+                echo JSMCountries::getCountryFlag($country_home);
                 }
 								?>
 							</td>							
@@ -388,7 +388,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 if ( $this->config['show_logo_small'] == 2 )
 								{
                 $country_away = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam2_id);
-                echo Countries::getCountryFlag($country_away);
+                echo JSMCountries::getCountryFlag($country_away);
                 }
 								?>
 							</td>						
