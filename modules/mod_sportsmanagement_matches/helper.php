@@ -330,8 +330,8 @@ class modMatchesHelper {
 		$appendimage = ' align="middle" ';
 		$countrycode = $team->country;
 		if($pt=="country" && strlen($countrycode)==3) {
-			$pic['src'] = Countries::getIso3Flag($countrycode);
-			$pic['alt'] = Countries::getCountryName($countrycode);
+			$pic['src'] = JSMCountries::getIso3Flag($countrycode);
+			$pic['alt'] = JSMCountries::getCountryName($countrycode);
 		} else {
 			$defaultlogos = $this->getDefaultLogos();
 			$matchpart_pic = (!empty ($team-> $pt) AND file_exists(JPATH_ROOT . DS . $team-> $pt)) ? $team-> $pt : $defaultlogos[$pt];
