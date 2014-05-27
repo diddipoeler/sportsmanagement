@@ -562,7 +562,7 @@ class sportsmanagementModelClubPlan extends JModel
 		}
 		elseif ($type==2 && isset($country))
 		{
-			return Countries::getCountryFlag($team->country);
+			return JSMCountries::getCountryFlag($team->country);
 		}
 	}
 

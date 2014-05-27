@@ -87,8 +87,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 					</td>
 					<td class="data">
 					<?php
-						echo Countries::getCountryFlag( $this->person->country ) . " " .
-						JText::_( Countries::getCountryName($this->person->country));
+						echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
+						JText::_( JSMCountries::getCountryName($this->person->country));
 						?>
 					</td>
 				</tr>

@@ -3,20 +3,27 @@
 
 jimport( 'joomla.application.component.view' );
 
-class JoomleagueViewResults extends JLGView
+class sportsmanagementViewResults extends JView
 {
 
 	function display($tpl = null)
 	{
 
 		$document	= JFactory::getDocument();
+		$option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
 		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
-		$this->assignRef( 'config', $model->getTemplateConfig( 'results' ));
-		$this->assignRef( 'overallconfig', $model->getOverallConfig() );
-		$this->assignRef( 'matches',		$model->getMatches() );
-		$this->assignRef( 'project',		$model->getProject() );
-		$this->assignRef( 'teams',			$model->getTeamsIndexedByPtid() );
+		$matches = $model->getMatches();
+		sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
+		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$project = sportsmanagementModelProject::getProject();
+		
+		$this->assignRef( 'config', 		$config);
+		$this->assignRef( 'overallconfig',	sportsmanagementModelProject::getOverallConfig());
+		$this->assignRef( 'matches',		$matches);
+		$this->assignRef( 'project',		$project);
+		$this->assignRef( 'teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
 		$dates = $this->sortByDate();
 		foreach( $dates as $date => $games )
 		{
