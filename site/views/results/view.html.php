@@ -178,9 +178,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 */
 	public function showNotPlayingTeams(&$games,&$teams,&$config,&$favteams,&$project)
 	{
-		$output='';
-		$playing_teams=array();
-		foreach($games as $game)
+		$output = '';
+		$playing_teams = array();
+		foreach ($games as $game)
 		{
 			self::addPlayingTeams($playing_teams,$game->projectteam1_id,$game->projectteam2_id,$game->published);
 		}

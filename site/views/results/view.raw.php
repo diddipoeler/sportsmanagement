@@ -5,13 +5,16 @@ jimport( 'joomla.filesystem.file' );
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
-class JoomleagueViewResults extends JLGView
+class sportsmanagementViewResults extends JView
 {
 
 	public function display($tpl = null)
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
+        $roundcode = 0;
 		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
 		$document->addStyleSheet($css);
 		$css		= 'components/com_sportsmanagement/assets/css/joomleague.css';
@@ -27,11 +30,12 @@ class JoomleagueViewResults extends JLGView
 		
 		$config	= $model->getTemplateConfig($this->getName());
 		$project = $model->getProject();
-		$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
-		$roundcode = $mdlRound->getRoundcode($model->roundid);
-		$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
-		$rounds = $mdlRounds->getRoundsOptions($project->id);
-		
+		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
+		//$roundcode = $mdlRound->getRoundcode($model->roundid);
+		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
+		//$rounds = $mdlRounds->getRoundsOptions($project->id);
+		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
+		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
 		$this->assignRef('project', $project);
 		$lists=array();
@@ -46,9 +50,9 @@ class JoomleagueViewResults extends JLGView
 			$this->assignRef('matches',			$matches);
 			$this->assignRef('roundid',			$model->roundid);
 			$this->assignRef('roundcode',		$roundcode);
-			$this->assignRef('rounds',			$model->getRounds());
+			$this->assignRef('rounds',			sportsmanagementModelProject::getRounds());
 			$this->assignRef('favteams',		$model->getFavTeams($project));
-			$this->assignRef('projectevents',	$model->getProjectEvents());
+			$this->assignRef('projectevents',	sportsmanagementModelProject::getProjectEvents());
 			$this->assignRef('model',			$model);
 			$this->assignRef('isAllowed',		$model->isAllowed());
 
@@ -104,7 +108,7 @@ class JoomleagueViewResults extends JLGView
 			$output .= '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';
 			foreach ($teams AS $id => $team)
 			{
-				if(!isset($team->$config['names'])) continue;
+				if (!isset($team->$config['names'])) continue;
 				if (isset($team->projectteamid) && in_array($team->projectteamid,$playing_teams))
 				{
 					continue; //if team is playing,go to next
@@ -119,7 +123,8 @@ class JoomleagueViewResults extends JLGView
 				}
 				if ($config['highlight_fav'] > 0 && isset($team->id) && (in_array($team->id,$favteams)) ? 1 : 0)
 				{
-					$output .= '<b style="font-weight:normal;padding:2px;color:'.$project->fav_team_text_color.';background-color:'.$project->fav_team_color.'">';
+					//$output .= '<b style="font-weight:normal;padding:2px;color:'.$project->fav_team_text_color.';background-color:'.$project->fav_team_color.'">';
+					$output .= sportsmanagementHelper::formatTeamName($team, 't'.$team->id, $config, $isFavTeam );
 				}
 				$output .= str_replace(' ','&nbsp;', $team->$config['names']);
 				if ($config['highlight_fav'] > 0 && (isset($team->id) && in_array($team->id,$favteams)) ? 1 : 0){$output .=  '</b>';}
@@ -155,7 +160,7 @@ class JoomleagueViewResults extends JLGView
 			}
 			else
 			{
-				$image=JHtml::image(JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_small.gif',$title,$attribs);
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -163,7 +168,7 @@ class JoomleagueViewResults extends JLGView
 			$image=JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image=JHtml::image(JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_flags.png',$title,$attribs);
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
 		else
@@ -483,15 +488,15 @@ class JoomleagueViewResults extends JLGView
 	{
 		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
 
-		$output='';
-		$report_link=JoomleagueHelperRoute::getMatchReportRoute($game->project_id,$game->id);
+		$output = '';
+		$report_link = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 
 		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{
 			if ($game->alt_decision)
 			{
-				$imgTitle=JText::_($game->decision_info);
-				$img='media/com_sportsmanagement/jl_images/court.gif';
+				$imgTitle = JText::_($game->decision_info);
+				$img = 'media/com_sportsmanagement/jl_images/court.gif';
 			}
 			else
 			{
@@ -746,14 +751,14 @@ class JoomleagueViewResults extends JLGView
 		$output			= '';
 		// check home and away team for favorite team
 		$fav 			= isset($team1->id) && in_array($team1->id,$this->favteams) ? 1 : 0;
-		if(!$fav)
+		if (!$fav)
 		{
 			$fav		= isset($team2->id) && in_array($team2->id,$this->favteams) ? 1 : 0;
 		}
 		// 0=no links
 		// 1=For all teams
 		// 2=For favorite team(s) only
-		if($this->config['show_link_matchreport'] == 1 || ($this->config['show_link_matchreport'] == 2 && $fav))
+		if ($this->config['show_link_matchreport'] == 1 || ($this->config['show_link_matchreport'] == 2 && $fav))
 		{
 			$output = JHtml::_(	'link', $reportLink,
 					'<span class="score0">'.$this->showMatchState($game,$this->config).'</span>',
@@ -770,7 +775,7 @@ class JoomleagueViewResults extends JLGView
 	
 	function _formatEventContainerInResults($matchevent,$event,$projectteamId,$backgroundStyle)
 	{
-		$output='';
+		$output = '';
 		if ($matchevent->event_type_id == $event->id && $matchevent->ptid == $projectteamId)
 		{
 			$output .= '<li class="events" style="'.$backgroundStyle.'">';
@@ -812,7 +817,7 @@ class JoomleagueViewResults extends JLGView
 
 	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn)
 	{
-		$output='';
+		$output = '';
 		if ($subs->ptid == $projectteamId)
 		{
 			$output .= '<li class="events">';
