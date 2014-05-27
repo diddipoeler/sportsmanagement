@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -447,7 +447,7 @@ class sportsmanagementModelPrediction extends JModel
 				self::$_predictionProjectS = $db->loadObjectList();
 			}
 		}
-        // das startdatum überprüfen
+        // das startdatum ï¿½berprï¿½fen
         foreach( self::$_predictionProjectS as $row )
         {
         if ( $row->start_date == '0000-00-00' )
@@ -1064,12 +1064,12 @@ class sportsmanagementModelPrediction extends JModel
   $document	= JFactory::getDocument();
   $mainframe = JFactory::getApplication();
   
-  $configprediction			= $this->getPredictionTemplateConfig('predictionentry');
-  $overallConfig	= $this->getPredictionOverallConfig();
+  $configprediction			= self::getPredictionTemplateConfig('predictionentry');
+  $overallConfig	= self::getPredictionOverallConfig();
   $configprediction			=array_merge($overallConfig,$configprediction);
-  $predictionProjectSettings = $this->getPredictionProject($ProjectID);
-  $predictionProject = $this->getPredictionGame();
-  $predictionProjectS = $this->getPredictionProjectS();
+  $predictionProjectSettings = self::getPredictionProject($ProjectID);
+  $predictionProject = self::getPredictionGame();
+  $predictionProjectS = self::getPredictionProjectS();
   
   if ( $configprediction['use_pred_select_matches'] )
       {
@@ -1087,7 +1087,7 @@ class sportsmanagementModelPrediction extends JModel
 																			$joomlaUserID,$match_ids,$round_ids);
   
                                         
-  $predictionGameMemberMail = $this->getPredictionMemberEMailAdress($predictionMemberID);
+  $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
   //Fetch the mail object
 	$mailer =& JFactory::getMailer();
@@ -1128,7 +1128,7 @@ $body .= "</table>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 	$body .= "</tr>";
 	
-	// schleife über die ergebnisse in der runde
+	// schleife ï¿½ber die ergebnisse in der runde
 	foreach ($roundResults AS $result)
 	{
   $class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
@@ -1177,7 +1177,7 @@ $body .=  ' ';
 if ( $configprediction['show_logo_small'] == 2 )
 {
 $country_home = self::getMatchTeamClubFlag($result->projectteam1_id);
-$body .=  Countries::getCountryFlag($country_home);
+$body .=  JSMCountries::getCountryFlag($country_home);
 }
 $body .= "</td>";	
 
@@ -1201,7 +1201,7 @@ $body .=  JHTML::image(JURI::root().$logo_away,$imgTitle,array(' title' => $imgT
 if ( $configprediction['show_logo_small'] == 2 )
 {
 $country_away = self::getMatchTeamClubFlag($result->projectteam2_id);
-$body .=  Countries::getCountryFlag($country_away);
+$body .=  JSMCountries::getCountryFlag($country_away);
 }
 $body .= "</td>";				
 $body .= "<td nowrap='nowrap' class='td_l'>";
