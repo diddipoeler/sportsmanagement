@@ -86,7 +86,7 @@ class sportsmanagementModelRanking extends JModel
 		$this->projectid = JRequest::getInt( "p", 0 );
 		$this->round = JRequest::getInt( "r", $this->current_round);
 		$this->part  = JRequest::getInt( "part", 0);
-		$this->from  = JRequest::getInt( 'from', $this->round );
+		$this->from  = JRequest::getInt( 'from', 0 );
 		$this->to	 = JRequest::getInt( 'to', $this->round);
 		$this->type  = JRequest::getInt( 'type', 0 );
 		$this->last  = JRequest::getInt( 'last', 0 );
