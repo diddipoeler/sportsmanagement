@@ -94,8 +94,52 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 
 $document = JFactory::getDocument();
 $mainframe = JFactory::getApplication();
+$config = JFactory::getConfig();
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
+
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
+// meta daten der komponente setzen
+$meta_keys = array();
+$meta_keys[] = $config->getValue( 'config.MetaKeys' );
+$project_id = JRequest::getInt( "p") ;
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+
+if ( $project_id )
+{
+    sportsmanagementModelProject::$projectid = $project_id; 
+    $teams = sportsmanagementModelProject::getTeams();
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams <br><pre>'.print_r($teams,true).'</pre>'),'');
+    
+    if ( $teams )
+    {
+        foreach( $teams as $team )
+        {
+            $meta_keys[] = $team->name;
+        }
+    }
+}
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+
+$document->setMetaData( 'author', 'Dieter Ploeger' );
+$document->setMetaData( 'revisit-after', '2 days' );
+$document->setMetaData( 'robots', 'index,follow' );
+
+/** meta name
+ * keywords
+ * description
+ * generator
+ * 
+ */
+$document->setMetaData( 'keywords', implode(",",$meta_keys) );
+$document->setMetaData( 'generator', "JSM - Joomla Sports Management" );
+ 
 $task = JRequest::getCmd('task');
 $option = JRequest::getCmd('option');
 
