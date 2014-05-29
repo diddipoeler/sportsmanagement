@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
 		</div>
 	</div>
 
@@ -51,13 +51,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             <td align="left">
                 <br />
                 <?php 
-                if ( $this->ranking_notes )
+                if ( $this->projectinfo )
                 {
-                echo $this->ranking_notes;
+                echo $this->projectinfo;
                 }
                 else
                 {
-                echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
+                echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO');
                 }
                 ?>
         </td>
