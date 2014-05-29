@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
 	</div>
 
-    <table width="96%" align="center" border="2" cellpadding="0" cellspacing="0">
+    <table width="96%" align="center" border="1" cellpadding="0" cellspacing="0">
         <tr>
             <td align="left">
                 <br />
@@ -63,5 +63,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
             </tr>
     </table>
-
-</div> 
