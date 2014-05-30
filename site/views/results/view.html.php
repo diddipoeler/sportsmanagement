@@ -236,11 +236,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	public function getTeamClubIcon($team,$type=1,$attribs=array())
 	{
 		if(!isset($team->name)) return "";
-		$title=$team->name;
-		$attribs=array_merge(array('title' => $title,$attribs));
+		$title = $team->name;
+		$attribs = array_merge(array('title' => $title,$attribs));
 		if ($type==1)
 		{
-			if (!empty($team->logo_small) && JFile::exists($team->logo_small))
+			$attribs=array_merge(array('width' => '20',$attribs));
+            if (!empty($team->logo_small) && JFile::exists($team->logo_small))
 			{
 				$image=JHtml::image($team->logo_small,$title,$attribs);
 			}
@@ -251,6 +252,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
         elseif ($type==5)
 		{
+		  $attribs=array_merge(array('width' => '20',$attribs));
 			if (!empty($team->logo_middle) && JFile::exists($team->logo_middle))
 			{
 				$image=JHtml::image($team->logo_middle,$title,$attribs);
@@ -262,6 +264,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
         elseif ($type==6)
 		{
+		  $attribs=array_merge(array('width' => '20',$attribs));
 			if (!empty($team->logo_big) && JFile::exists($team->logo_big))
 			{
 				$image=JHtml::image($team->logo_big,$title,$attribs);
