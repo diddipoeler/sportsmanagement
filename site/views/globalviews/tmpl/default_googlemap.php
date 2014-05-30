@@ -56,6 +56,8 @@ if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
             else
             {
                 JError::raiseNotice(100,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'));
+                JError::raiseNotice(100,JText::_($this->kmlpath));
+                JError::raiseNotice(100,JText::_($this->kmlfile));
                 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
                 $paramsPlugin = new JRegistry($plugin->params);
 

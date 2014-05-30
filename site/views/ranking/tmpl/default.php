@@ -48,7 +48,7 @@ JHtml::_( 'behavior.modal' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
-
+$this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
 <script>
