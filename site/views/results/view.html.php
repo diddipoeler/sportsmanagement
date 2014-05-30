@@ -98,19 +98,19 @@ class sportsmanagementViewResults extends JView
 		
 		if (isset($this->project))
 		{
-			$this->assign('overallconfig',	sportsmanagementModelProject::getOverallConfig());
-			$this->assign('config',			array_merge($this->overallconfig, $config));
-			$this->assign('teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
-			$this->assign('showediticon',	$model->getShowEditIcon());
-			$this->assign('division',		$model->getDivision());
-			$this->assignRef('matches',			$matches);
-			$this->assignRef('roundid',			$model->roundid);
-			$this->assignRef('roundcode',		$roundcode);
-			$this->assign('rounds',			sportsmanagementModelProject::getRounds());
-			$this->assign('favteams',		$model->getFavTeams($project));
-			$this->assign('projectevents',	sportsmanagementModelProject::getProjectEvents());
-			$this->assignRef('model',			$model);
-			$this->assign('isAllowed',		$model->isAllowed());
+			$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig());
+			$this->assign('config',	array_merge($this->overallconfig, $config));
+			$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid());
+			$this->assign('showediticon', $model->getShowEditIcon());
+			$this->assign('division', $model->getDivision());
+			$this->assignRef('matches',	$matches);
+			$this->assignRef('roundid',	$model->roundid);
+			$this->assignRef('roundcode', $roundcode);
+			$this->assign('rounds',	sportsmanagementModelProject::getRounds());
+			$this->assign('favteams', $model->getFavTeams($project));
+			$this->assign('projectevents', sportsmanagementModelProject::getProjectEvents());
+			$this->assignRef('model', $model);
+			$this->assign('isAllowed', $model->isAllowed());
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
             $this->assignRef( 'extended', $extended );
 
@@ -132,8 +132,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
   
        }
       
-       
-//			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
             
             $lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->assignRef('lists',$lists);
