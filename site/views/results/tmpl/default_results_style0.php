@@ -304,6 +304,8 @@ $link = "javascript:void(0);";
     case 0:
     case 1:
     case 2:
+    case 5:
+    case 6:
     $width = '20';
     break;
     case 3:

@@ -249,6 +249,28 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
+        elseif ($type==5)
+		{
+			if (!empty($team->logo_middle) && JFile::exists($team->logo_middle))
+			{
+				$image=JHtml::image($team->logo_middle,$title,$attribs);
+			}
+			else
+			{
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),$title,$attribs);
+			}
+		}
+        elseif ($type==6)
+		{
+			if (!empty($team->logo_big) && JFile::exists($team->logo_big))
+			{
+				$image=JHtml::image($team->logo_big,$title,$attribs);
+			}
+			else
+			{
+				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),$title,$attribs);
+			}
+		}
 		elseif ($type==2 && !empty($team->country))
 		{
 			$image=JSMCountries::getCountryFlag($team->country);
