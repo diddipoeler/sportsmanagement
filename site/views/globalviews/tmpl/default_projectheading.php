@@ -101,7 +101,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 			    	if ( $this->overallconfig['show_project_picture'] == 1 )
 					{
 						$picture = $this->project->picture;
-                        if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' )
+                        if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
                         {
                             $picture = $this->project->leaguepicture;
                         }
