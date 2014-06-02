@@ -872,6 +872,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		{
 			$output = sportsmanagementViewResults::showMatchState($game,$this->config);
 		}
+		//added by stony - Ausgabe der Halbzeitresultate, wenn im Template freigeschaltet
+		
+		if($this->config['show_part_results']) 
+		{
+			$output .= '&nbsp;(' . str_replace(";","",$game->team1_result_split) . '&nbsp;'. ($this->config['seperator']) .'&nbsp;' . str_replace(";","",$game->team2_result_split) . ')';
+		}
 
 		return $output;
 
