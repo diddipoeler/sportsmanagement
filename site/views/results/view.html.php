@@ -241,46 +241,49 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$attribs = array_merge(array('title' => $title,$attribs));
 		if ($type==1)
 		{
-			$attribs=array_merge(array('width' => '20',$attribs));
+			$attribs = array_merge(array('width' => '20',$attribs));
             if (!empty($team->logo_small) && JFile::exists($team->logo_small))
 			{
-				$image=JHtml::image($team->logo_small,$title,$attribs);
+				$image = JHtml::image($team->logo_small,$title,$attribs);
 			}
 			else
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
         elseif ($type==5)
 		{
-		  $attribs=array_merge(array('width' => '20',$attribs));
+		  $attribs = array_merge(array('width' => '20',$attribs));
 			if (!empty($team->logo_middle) && JFile::exists($team->logo_middle))
 			{
-				$image=JHtml::image($team->logo_middle,$title,$attribs);
+				$image = JHtml::image($team->logo_middle,$title,$attribs);
 			}
 			else
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),$title,$attribs);
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),$title,$attribs);
 			}
 		}
         elseif ($type==6)
 		{
-		  $attribs=array_merge(array('width' => '20',$attribs));
+		  $attribs = array_merge(array('width' => '20',$attribs));
 			if (!empty($team->logo_big) && JFile::exists($team->logo_big))
 			{
-				$image=JHtml::image($team->logo_big,$title,$attribs);
+				//$image = JHtml::image($team->logo_big,$title,$attribs);
+                $image="<a href=\"".JURI::root().$team->logo_big."\" title=\"".$title."\" class=\"modal\">";
+				$image.=JHtml::image($team->logo_big,$title,$attribs);
+				$image.="</a>";
 			}
 			else
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),$title,$attribs);
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),$title,$attribs);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
 		{
-			$image=JSMCountries::getCountryFlag($team->country);
+			$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
 			}
 		}
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )

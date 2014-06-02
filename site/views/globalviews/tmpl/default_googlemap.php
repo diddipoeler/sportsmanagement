@@ -128,10 +128,17 @@ width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height'
     
 //    	echo JHtml::_('content.prepare', $params);		
 
-$params  = '{mosmap ';
-		$params .= implode('|', $arrPluginParams);
-		$params .= "}";
-        echo JHtml::_('content.prepare', $params);
+//$params  = '{mosmap ';
+//$params .= implode('|', $arrPluginParams);
+//$params .= "}";
+
+//$params  = "{mosmap kml[0]='http://tech.reumer.net/images/florida.kml'}";		
+//$params  = "{mosmap kml[0]='http://www.fourdirectionsmaine.org/map/tribes.kml'}";
+//$params  = "{mosmap kml[0]='".'tmp'.DS."tribes.kml'}";
+
+$params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
+
+echo JHtml::_('content.prepare', $params);
  
 //		$content = JHtml::_('content.prepare', $params);
 //        echo $content;
