@@ -78,7 +78,7 @@ class JFormFieldseasonlist extends JFormFieldList
 			
 			$query->select('id AS value, name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season');
-			$query->order('name');
+			$query->order('name DESC');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
