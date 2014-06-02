@@ -335,7 +335,7 @@ $link = "javascript:void(0);";
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='right'>
+			<td class='t-right'>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
@@ -355,7 +355,7 @@ $link = "javascript:void(0);";
 			<td width='20'>
 				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='left'>
+			<td class='t-left'>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
@@ -371,7 +371,7 @@ $link = "javascript:void(0);";
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='right'>
+			<td class='t-right'>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
@@ -386,7 +386,7 @@ $link = "javascript:void(0);";
 			<td width='20'>
 				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='left'>
+			<td class='t-left'>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
@@ -439,7 +439,7 @@ $link = "javascript:void(0);";
 		{
 			?>
 		<!-- show attendance -->
-			<td class="right"><?php
+			<td class="t-right"><?php
 			if ( $game->crowd > 0 )
 			{
 				echo $game->crowd;
