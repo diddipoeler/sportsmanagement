@@ -45,7 +45,7 @@ function example_alertBox( boxText )
 {		
 	var options = {size: {x: 300, y: 250}};
 	SqueezeBox.initialize(options);
-	SqueezeBox.setContent('string','nummer: ' + boxText);
+	SqueezeBox.setContent('string','Spielnummer: ' + boxText);
 			
 	
 }
@@ -258,7 +258,7 @@ else
         <?php
 $link = "javascript:void(0);";
 			$img = JHtml::image('media/com_sportsmanagement/jl_images/discuss.gif', 'discuss.gif');
-			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCH_NUMBER'),
 							"onclick" => 'example_alertBox(\''.$game->id.'\');');
 			echo JHtml::link($link,$img,$params);
             ?></td>
@@ -349,7 +349,7 @@ $link = "javascript:void(0);";
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='right'>
+			<td class='t-right'>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
@@ -369,7 +369,7 @@ $link = "javascript:void(0);";
 			<td width='20'>
 				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='left'>
+			<td class='t-left'>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
@@ -385,7 +385,7 @@ $link = "javascript:void(0);";
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='right'>
+			<td class='t-right'>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
@@ -400,7 +400,7 @@ $link = "javascript:void(0);";
 			<td width='20'>
 				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='left'>
+			<td class='t-left'>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);

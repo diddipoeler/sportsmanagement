@@ -63,11 +63,11 @@ a:focus {
 	text-align: center;
 }
 
-.fixtures-results td.right, .fixtures-results th.right {
+.fixtures-results td.t-right, .fixtures-results th.right {
 	text-align: right;
 }
 
-.fixtures-results td.left, .fixtures-results th.left{
+.fixtures-results td.t-left, .fixtures-results th.left{
 	text-align: left;
 }
 
