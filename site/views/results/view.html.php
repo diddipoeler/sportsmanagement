@@ -874,7 +874,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		//added by stony - Ausgabe der Halbzeitresultate, wenn im Template freigeschaltet
 		
-		if($this->config['show_part_results']) 
+		$slhr = array(";", "NULL");
+		
+		if($this->config['show_part_results'] && ((str_replace($slhr, '', $game->team1_result_split) != "") && (str_replace($slhr, '', $game->team2_result_split) != "")) )
 		{
 			$output .= '&nbsp;(' . str_replace(";","",$game->team1_result_split) . '&nbsp;'. ($this->config['seperator']) .'&nbsp;' . str_replace(";","",$game->team2_result_split) . ')';
 		}
