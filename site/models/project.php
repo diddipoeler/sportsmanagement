@@ -1400,7 +1400,7 @@ $starttime = microtime();
 
 
 			$image = "<a href=\"".JURI::root().$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
-			$image.=JHtml::image($team->$club_icon,$title,$attribs);
+			$image.=JHtml::image($team->$club_icon,$title,$params);
 			$image.="</a>";
                 
             //return JHtml::image($small_club_icon,'',$params);
