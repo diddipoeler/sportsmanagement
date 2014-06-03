@@ -1366,25 +1366,45 @@ $starttime = microtime();
 	 * @param integer $with_space
 	 * @return
 	 */
-	function getClubIconHtml(&$team,$type=1,$with_space=0)
+	function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small')
 	{
-		$small_club_icon = $team->logo_small;
-		if ($type==1)
+		$small_club_icon = $team->$club_icon;
+        $title = $team->name;
+		if ( $type == 1 )
 		{
-			$params=array();
-			$params['align']="top";
-			$params['border']=0;
-			$params['width']=21;
-			if ($with_space==1)
+			$params = array();
+			$params['align'] = "top";
+			$params['border'] = 0;
+			$params['width'] = 21;
+			if ( $with_space == 1 )
 			{
 				$params['style']='padding:1px;';
 			}
-			if ($small_club_icon=='')
-			{
-				$small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
-			}
+            
+            switch ($small_club_icon)
+            {
+                case 'logo_small':
+                $small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
+                break;
+                case 'logo_middle':
+                $small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
+                break;
+                case 'logo_big':
+                $small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+                break;
+            }
+//			if ($small_club_icon=='')
+//			{
+//				$small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
+//			}
 
-			return JHtml::image($small_club_icon,'',$params);
+
+			$image = "<a href=\"".JURI::root().$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
+			$image.=JHtml::image($team->$club_icon,$title,$attribs);
+			$image.="</a>";
+                
+            //return JHtml::image($small_club_icon,'',$params);
+            return $image;
 		}
 		elseif (($type==2) && (isset($team->country)))
 		{

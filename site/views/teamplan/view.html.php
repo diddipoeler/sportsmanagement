@@ -63,6 +63,12 @@ JHtml::_('behavior.tooltip');
  */
 class sportsmanagementViewTeamPlan extends JView
 {
+	/**
+	 * sportsmanagementViewTeamPlan::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -285,6 +291,15 @@ class sportsmanagementViewTeamPlan extends JView
 	}
 	
 	
+	/**
+	 * sportsmanagementViewTeamPlan::_formatEventContainerInResults()
+	 * 
+	 * @param mixed $matchevent
+	 * @param mixed $event
+	 * @param mixed $projectteamId
+	 * @param mixed $showEventInfo
+	 * @return
+	 */
 	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
 	{
 		// Meaning of $showEventInfo:
@@ -352,6 +367,16 @@ class sportsmanagementViewTeamPlan extends JView
 		return $output;
 	}
 
+	/**
+	 * sportsmanagementViewTeamPlan::_formatSubstitutionContainerInResults()
+	 * 
+	 * @param mixed $subs
+	 * @param mixed $projectteamId
+	 * @param mixed $imgTime
+	 * @param mixed $imgOut
+	 * @param mixed $imgIn
+	 * @return
+	 */
 	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn)
 	{
 		$output='';

@@ -541,14 +541,38 @@ $nbcols = 0;
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small');
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small').' ';
 					$teamB .= '</td>';
 				}
 				break;
+                
+            case 5 :
+            {
+					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle');
+					$teamA .= '</td>';
+
+					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle').' ';
+					$teamB .= '</td>';
+				}
+            break;
+            
+            case 6 :
+            {
+					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big');
+					$teamA .= '</td>';
+
+					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big').' ';
+					$teamB .= '</td>';
+				}
+            break;
 
 			case 2 :
 				{

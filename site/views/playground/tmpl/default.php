@@ -49,6 +49,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
+$this->kmlfile = $this->playground->id.'-playground.kml';
+
 ?>
 <div class="joomleague">
 	<?php 

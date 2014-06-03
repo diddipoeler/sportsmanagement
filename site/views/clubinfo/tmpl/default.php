@@ -54,6 +54,8 @@ echo 'club clubassoc<pre>',print_r($this->clubassoc,true),'</pre><br>';
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
+$this->kmlfile = $this->club->id.'-club.kml';
+
 ?>
 <div class="joomleague">
 	<?php 
