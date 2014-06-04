@@ -113,8 +113,8 @@ class sportsmanagementControllerPredictionEntry extends JController
 		$link	= '';
 		$post	= JRequest::get('post');
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
 		$predictionGameID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
 		$joomlaUserID		= JRequest::getVar('user_id',		'',	'post',	'int');
