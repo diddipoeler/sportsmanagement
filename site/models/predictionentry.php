@@ -432,22 +432,22 @@ public $_predictionGame		= null;
 				//echo 'prID:~'.$dprID.'~ ';
 
 				$dHome = $homes[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dHome = $dHome;
-				if ((!isset($homes[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dHome==''))){$dHome = "NULL";}else{$dHome = "'".$dHome."'";}
+				if ((!isset($homes[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dHome==''))){$dHome = "NULL";}else{$dHome = $dHome;}
 				//echo 'Home:~'.$dHome.'~ ';
 
 				$dAway = $aways[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dAway = $dAway;
-				if ((!isset($aways[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dAway==''))){$dAway = "NULL";}else{$dAway = "'".$dAway."'";}
+				if ((!isset($aways[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dAway==''))){$dAway = "NULL";}else{$dAway = $dAway;}
 				//echo 'Away:~'.$dAway.'~ ';
 
 				/*
 				$dJoker = (	isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]]) &&
 							!empty($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "'1'" : 'NULL';
 				*/
-				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "'1'" : 'NULL';
+				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "1" : 'NULL';
 				//echo 'Joker:~'.$dJoker.'~ ';
 
 				$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dTipp = $dTipp;
-				if ((!isset($tipps[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dTipp==''))){$dTipp = "NULL";}else{$dTipp = "'".$dTipp."'";}
+				if ((!isset($tipps[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dTipp==''))){$dTipp = "NULL";}else{$dTipp = $dTipp;}
 				//echo 'Tipp:~'.$dTipp.'~ ';
 				//echo '<br />';
 
@@ -465,7 +465,7 @@ public $_predictionGame		= null;
 
 					if ($dTipp=="NULL")
 					{
-						if ($tmp_dHome > $tmp_dAway){$dTipp = "'1'";}elseif($tmp_dHome < $tmp_dAway){$dTipp = "'2'";}else{$dTipp = "'0'";}
+						if ($tmp_dHome > $tmp_dAway){$dTipp = "1";}elseif($tmp_dHome < $tmp_dAway){$dTipp = "2";}else{$dTipp = "0";}
 					}
 
 					if (!empty($dprID))
@@ -507,7 +507,7 @@ public $_predictionGame		= null;
                         $temp->joker = $dJoker;
                         // Insert the object
                         $resultquery = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $temp);
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
 
 					if ( !$resultquery )
 					{
