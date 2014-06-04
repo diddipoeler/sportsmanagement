@@ -505,7 +505,7 @@ public $_predictionGame		= null;
 
 					if ( !$resultquery )
 					{
-                        $mainframe->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 					}
 
@@ -533,7 +533,7 @@ public $_predictionGame		= null;
 					if( !$db->query() )
 					{
 
-                        $mainframe->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 
 					}
@@ -551,7 +551,7 @@ public $_predictionGame		= null;
 
 		if (!$resultquery)
 		{
-            $mainframe->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 
 		}

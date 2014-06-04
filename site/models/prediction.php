@@ -874,7 +874,7 @@ class sportsmanagementModelPrediction extends JModel
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-		$allowed=false;
+		$allowed = false;
         $groupNames = '';
         // Application Instanz holen
         $mainframe = JFactory::getApplication();

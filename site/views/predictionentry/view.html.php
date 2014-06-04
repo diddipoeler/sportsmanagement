@@ -116,7 +116,7 @@ class sportsmanagementViewPredictionEntry extends JView
                         }
                         
 				$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
-				if ($res=&$model->getPredictionMemberList($this->config))
+				if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config))
                 {
                     $predictionMembers = array_merge($predictionMembers,$res);
                     }
