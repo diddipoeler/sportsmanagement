@@ -391,7 +391,7 @@ public $_predictionGame		= null;
 
 		$post	= JRequest::get('post');
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
 		$pids = JRequest::getVar('pids',array(),'post','array');
 		JArrayHelper::toInteger($pids);
@@ -479,8 +479,16 @@ public $_predictionGame		= null;
                         $query->set(' joker = '.$dJoker );
 		                $query->where(' id = ' . (int) $dprID );
                 		$db->setQuery((string)$query);
-                        $db->query();
-                                                
+                        //$db->query();
+                        
+                        if( !$db->query() )
+					{
+
+                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+						$result = false;
+
+					}
+                                            
 //                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 //                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($object,true).'</pre>'),'');
 
@@ -501,13 +509,16 @@ public $_predictionGame		= null;
                         $resultquery = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $temp);
                         //$mainframe->enqueueMessage(JText::_(__METHOD__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
 
-					}
-
 					if ( !$resultquery )
 					{
                         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 					}
+                    
+                    
+                    }
+
+					
 
 				}
 				else
