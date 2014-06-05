@@ -303,6 +303,11 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 							AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get( 'id' ) . ' ) )';
 
 			$this->_db->setQuery( $query );
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Error');
+            
 			if ( !$this->_db->query() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
