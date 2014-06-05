@@ -109,6 +109,9 @@ class sportsmanagementModelTeamPersons extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+        
         //$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.team_id', JRequest::getVar('team_id') );
         $this->setState('filter.persontype', JRequest::getVar('persontype') );
