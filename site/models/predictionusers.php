@@ -382,7 +382,8 @@ class sportsmanagementModelPredictionUsers extends JModel
         // Select some fields
         $query->select('pt.id AS value,t.name AS text');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
         $query->where('pt.project_id = ' . (int)$project_id );
         $query->order('text');
 
