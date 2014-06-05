@@ -64,7 +64,9 @@ class sportsmanagementViewPredictionMembers extends JView
    */
   function display( $tpl = null )
 	{
-
+	   
+       $mainframe = JFactory::getApplication();
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
     if ( $this->getLayout() == 'default')
 		{

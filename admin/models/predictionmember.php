@@ -127,7 +127,7 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
     {
     $member_email = $this->getPredictionMemberEMailAdress( $value );
     
-    //echo '<br />member_email<pre>~' . print_r( $member_email, true ) . '~</pre><br />'; 
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),''); 
 
     $subject = addslashes(
 				sprintf(
