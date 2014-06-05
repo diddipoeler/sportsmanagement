@@ -56,6 +56,44 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
     
+    
+    // send a reminder mail to make a tipp on needed prediction games to selected members
+	/**
+	 * sportsmanagementControllerpredictionmembers::sendReminder()
+	 * 
+	 * @return void
+	 */
+	function sendReminder()
+	{
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+
+		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
+		$post		= JRequest::get( 'post' );
+		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$pgmid		= JRequest::getVar( 'prediction_id', array(0), 'post', 'array' );
+		$post['id'] = (int) $cid[0];
+		$post['predgameid'] = (int) $pgmid[0];
+		echo '<pre>'; print_r($post); echo '</pre>';
+
+
+		if ( $post['predgameid'] == 0 )
+		{
+			JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
+		}
+		$msg		= '';
+		$d			= ' - ';
+
+		$model = $this->getModel( 'predictionmember' );
+    $model->sendEmailtoMembers($cid,$pgmid);
+
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
+		//echo $msg;
+		$this->setRedirect( $link, $msg );
+	}
+    
+    
+    
     /**
      * sportsmanagementControllerpredictionmembers::publish()
      * 
