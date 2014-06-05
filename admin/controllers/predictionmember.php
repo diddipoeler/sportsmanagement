@@ -55,10 +55,5 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerpredictionmember extends JControllerForm
 {
 
-
-
-
-
-
 }
 ?>

@@ -1,4 +1,6 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JHtml::_( 'behavior.tooltip' );
 
@@ -80,7 +82,7 @@ window.addEvent('domready', function() {
 	
 </style>
 
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<div class="col50">
 		<fieldset class="adminform">
 			<legend>

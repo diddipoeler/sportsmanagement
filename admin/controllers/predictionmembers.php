@@ -55,6 +55,156 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
+    
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::editlist()
+     * 
+     * @return void
+     */
+    function editlist()
+	{
+	   $msg		= '';
+       $link = 'index.php?option=com_sportsmanagement&view=predictionmembers&layout=editlist';
+		//echo $msg;
+		$this->setRedirect( $link, $msg );
+       
+    }
+       
+    // send a reminder mail to make a tipp on needed prediction games to selected members
+	/**
+	 * sportsmanagementControllerpredictionmembers::sendReminder()
+	 * 
+	 * @return void
+	 */
+	function reminder()
+	{
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
+		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+
+		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
+		$post		= JRequest::get( 'post' );
+		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$pgmid		= JRequest::getVar( 'prediction_id', array(0), 'post', 'array' );
+		$post['id'] = (int) $cid[0];
+		$post['predgameid'] = (int) $pgmid[0];
+		echo '<pre>'; print_r($post); echo '</pre>';
+
+
+		if ( $post['predgameid'] == 0 )
+		{
+			JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
+		}
+		$msg		= '';
+		$d			= ' - ';
+
+		$model = $this->getModel( 'predictionmember' );
+    $model->sendEmailtoMembers($cid,$pgmid);
+
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
+		//echo $msg;
+		$this->setRedirect( $link, $msg );
+	}
+    
+    
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::publish()
+     * 
+     * @return void
+     */
+    function publish()
+	{
+		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger( $cids );
+		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+
+		if ( count( $cids ) < 1 )
+		{
+			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
+		}
+
+		$model = $this->getModel( 'predictionmember' );
+		if( !$model->publish( $cids, 1, $predictionGameID ) )
+		{
+			echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+		}
+
+		$this->setRedirect( 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+	}
+    
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::unpublish()
+     * 
+     * @return void
+     */
+    function unpublish()
+	{
+		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger( $cids );
+		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+
+		if ( count( $cids ) < 1 )
+		{
+			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
+		}
+
+		$model = $this->getModel( 'predictionmember' );
+		if ( !$model->publish( $cids, 0, $predictionGameID ) )
+		{
+			echo "<script> alert( '" . $model->getError(true)  ."' ); window.history.go(-1); </script>\n";
+		}
+
+		$this->setRedirect( 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+	}
+    
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::remove()
+     * 
+     * @return void
+     */
+    function remove()
+	{
+		//$post		= JRequest::get( 'post' );
+		//echo '<pre>'; print_r($post); echo '</pre>';
+    $option = JRequest::getCmd('option');
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+		$mainframe = JFactory::getApplication();
+    
+		$d		= ' - ';
+		$msg	= '';
+		$cid	= JRequest::getVar('cid',array(),'post','array');
+		JArrayHelper::toInteger($cid);
+		$prediction_id	= JRequest::getInt('prediction_id',(-1),'post');
+		//echo '<pre>'; print_r($cid); echo '</pre>';
+
+		if (count($cid) < 1)
+		{
+			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
+		}
+
+		$model =& $this->getModel('predictionmember');
+
+		if (!$model->deletePredictionResults($cid,$prediction_id))
+		{
+			$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+		}
+		$msg .= $d . JText::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+
+		if (!$model->deletePredictionMembers($cid))
+		{
+			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+		}
+
+		$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
+		//echo $msg;
+		$this->setRedirect($link,$msg);
+	}
+    
   
 
     

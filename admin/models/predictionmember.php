@@ -110,14 +110,24 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	
     
     
+  /**
+   * sportsmanagementModelpredictionmember::sendEmailtoMembers()
+   * 
+   * @param mixed $cid
+   * @param mixed $prediction_id
+   * @return void
+   */
   function sendEmailtoMembers($cid,$prediction_id)
   {
+    $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
   
   foreach ( $cid as $key => $value )
     {
     $member_email = $this->getPredictionMemberEMailAdress( $value );
     
-    //echo '<br />member_email<pre>~' . print_r( $member_email, true ) . '~</pre><br />'; 
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),''); 
 
     $subject = addslashes(
 				sprintf(
@@ -135,8 +145,16 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 
 
 
+	/**
+	 * sportsmanagementModelpredictionmember::getSystemAdminsEMailAdresses()
+	 * 
+	 * @return
+	 */
 	function getSystemAdminsEMailAdresses()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$query =	'	SELECT u.email
 						FROM #__users AS u
 						WHERE	u.sendEmail = 1 AND
@@ -148,11 +166,20 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return $this->_db->loadResultArray();
 	}
 
+	/**
+	 * sportsmanagementModelpredictionmember::getPredictionGameAdminsEMailAdresses()
+	 * 
+	 * @param mixed $predictionGameID
+	 * @return
+	 */
 	function getPredictionGameAdminsEMailAdresses( $predictionGameID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$query =	'	SELECT u.email
 						FROM #__users AS u
-						INNER JOIN #__joomleague_prediction_admin AS pa ON	pa.prediction_id = ' . (int) $predictionGameID . ' AND
+						INNER JOIN #__sportsmanagement_prediction_admin AS pa ON	pa.prediction_id = ' . (int) $predictionGameID . ' AND
 																			pa.user_id = u.id
 						WHERE	u.sendEmail = 1 AND
 								u.block = 0
@@ -162,11 +189,20 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return $this->_db->loadResultArray();
 	}
 
+	/**
+	 * sportsmanagementModelpredictionmember::getPredictionMembersEMailAdresses()
+	 * 
+	 * @param mixed $cids
+	 * @return
+	 */
 	function getPredictionMembersEMailAdresses( $cids )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 		$query =	'	SELECT user_id
-						FROM #__joomleague_prediction_member
+						FROM #__sportsmanagement_prediction_member
 						WHERE	id IN (' . $cids . ')';
 		//echo $query . '<br />';
 		$this->_db->setQuery( $query );
@@ -186,13 +222,22 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return $this->_db->loadResultArray();
 	}
 
+	/**
+	 * sportsmanagementModelpredictionmember::getPredictionMemberEMailAdress()
+	 * 
+	 * @param mixed $predictionMemberID
+	 * @return
+	 */
 	function getPredictionMemberEMailAdress( $predictionMemberID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		
     //echo '<br />predictionMemberID<pre>~' . print_r( $predictionMemberID, true ) . '~</pre><br />';
 		
     $query =	'	SELECT user_id
-						FROM #__joomleague_prediction_member
+						FROM #__sportsmanagement_prediction_member
 						WHERE	id = ' . $predictionMemberID;
 		
     echo $query . '<br />';
@@ -215,10 +260,17 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return $this->_db->loadResultArray();
 	}
     
+    /**
+     * sportsmanagementModelpredictionmember::getPredictionGroups()
+     * 
+     * @return
+     */
     function getPredictionGroups()
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         
-        $query = 'SELECT id, name as text FROM #__joomleague_prediction_groups ORDER BY name ASC ';
+        $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
 		$this->_db->setQuery($query);
 		if (!$result = $this->_db->loadObjectList())
 		{
@@ -237,20 +289,29 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function publish( $cid = array(), $publish = 1, $predictionGameID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$user =& JFactory::getUser();
 		if ( count( $cid ) )
 		{
 			$cids = implode( ',', $cid );
 
-			$query =	'	UPDATE #__joomleague_prediction_member
+			$query =	'	UPDATE #__sportsmanagement_prediction_member
 							SET approved = ' . (int) $publish . '
 							WHERE id IN ( ' . $cids . ' )
 							AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get( 'id' ) . ' ) )';
 
 			$this->_db->setQuery( $query );
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+            
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				//$this->setError( $this->_db->getErrorMsg() );
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
@@ -369,48 +430,54 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return true;
 	}
 
-	/**
-	 * Method to remove selected items
-	 * from #__joomleague_prediction_member
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.1
-	 */
+	
 
+	/**
+	 * sportsmanagementModelpredictionmember::deletePredictionMembers()
+	 * 
+	 * @param mixed $cid
+	 * @return
+	 */
 	function deletePredictionMembers( $cid = array() )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		if ( count( $cid ) )
 		{
 			JArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
-			$query = 'DELETE FROM #__joomleague_prediction_member WHERE id IN (' . $cids . ')';
+			$query = 'DELETE FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ')';
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				//$this->setError( $this->_db->getErrorMsg() );
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
 		return true;
 	}
 
-	/**
-	 * Method to remove selected items
-	 * from #__joomleague_prediction_result
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.1
-	 */
+	
 
+	/**
+	 * sportsmanagementModelpredictionmember::deletePredictionResults()
+	 * 
+	 * @param mixed $cid
+	 * @param integer $prediction_id
+	 * @return
+	 */
 	function deletePredictionResults($cid=array(),$prediction_id=0)
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		if (count($cid))
 		{
 			JArrayHelper::toInteger($cid);
 			$cids = implode(',',$cid);
-			$query = 'SELECT user_id FROM #__joomleague_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
+			$query = 'SELECT user_id FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />';
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -423,12 +490,13 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 
 			JArrayHelper::toInteger($result);
 			$cids = implode(',',$result);
-			$query = 'DELETE FROM #__joomleague_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
+			$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />'; return true;
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
-				$this->setError($this->_db->getErrorMsg());
+				//$this->setError($this->_db->getErrorMsg());
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
