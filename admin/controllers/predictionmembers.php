@@ -57,13 +57,27 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
     
     
+    /**
+     * sportsmanagementControllerpredictionmembers::editlist()
+     * 
+     * @return void
+     */
+    function editlist()
+	{
+	   $msg		= '';
+       $link = 'index.php?option=com_sportsmanagement&view=predictionmembers&layout=editlist';
+		//echo $msg;
+		$this->setRedirect( $link, $msg );
+       
+    }
+       
     // send a reminder mail to make a tipp on needed prediction games to selected members
 	/**
 	 * sportsmanagementControllerpredictionmembers::sendReminder()
 	 * 
 	 * @return void
 	 */
-	function sendReminder()
+	function reminder()
 	{
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
 		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
