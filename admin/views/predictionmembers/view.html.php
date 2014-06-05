@@ -225,12 +225,15 @@ $mainframe = JFactory::getApplication();
 		
         JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'predmembers' );
         
+        JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
+		JToolBarHelper::divider();
+        
         if ( $this->prediction_id )
         {
-          JToolBarHelper::custom('predictionmember.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
-          JToolBarHelper::publishList( 'predictionmember.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
-		  JToolBarHelper::unpublishList( 'predictionmember.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
-          JToolBarHelper::deleteList( '', 'predictionmember.remove' );  
+          JToolBarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+          JToolBarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+		  JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
+          JToolBarHelper::deleteList( '','predictionmembers.remove' );  
         }
 		
      /*   

@@ -55,6 +55,58 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::publish()
+     * 
+     * @return void
+     */
+    function publish()
+	{
+		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger( $cids );
+		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+
+		if ( count( $cids ) < 1 )
+		{
+			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
+		}
+
+		$model = $this->getModel( 'predictionmember' );
+		if( !$model->publish( $cids, 1, $predictionGameID ) )
+		{
+			echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+		}
+
+		$this->setRedirect( 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+	}
+    
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::unpublish()
+     * 
+     * @return void
+     */
+    function unpublish()
+	{
+		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger( $cids );
+		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+
+		if ( count( $cids ) < 1 )
+		{
+			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
+		}
+
+		$model = $this->getModel( 'predictionmember' );
+		if ( !$model->publish( $cids, 0, $predictionGameID ) )
+		{
+			echo "<script> alert( '" . $model->getError(true)  ."' ); window.history.go(-1); </script>\n";
+		}
+
+		$this->setRedirect( 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+	}
+    
   
 
     

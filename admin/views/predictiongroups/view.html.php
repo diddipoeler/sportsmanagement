@@ -113,7 +113,7 @@ class sportsmanagementViewpredictiongroups extends JView
 		JToolBarHelper::editList('predictiongroup.edit');
 		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
+		JToolBarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         JToolBarHelper::preferences(JRequest::getCmd('option'));
