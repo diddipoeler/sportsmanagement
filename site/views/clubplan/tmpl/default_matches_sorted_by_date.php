@@ -212,7 +212,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 					<?php if ($this->config['show_club_logo']==1) { ?>
 				<td>
-					<?php echo JoomleagueModelClubPlan::getClubIconHtmlSimple($game->home_logo_small,1); ?>
+					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->home_logo_small,1); ?>
 				</td>
 					<?php } ?>				
 				<td>
@@ -220,7 +220,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 					<?php if ($this->config['show_club_logo']==1) { ?>
 				<td>
-					<?php echo JoomleagueModelClubPlan::getClubIconHtmlSimple($game->away_logo_small,1); ?>
+					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->away_logo_small,1); ?>
 				</td>
 					<?php } ?>
 				<td>
