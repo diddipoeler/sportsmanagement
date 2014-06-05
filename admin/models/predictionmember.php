@@ -119,6 +119,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
+    $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
   
   foreach ( $cid as $key => $value )
     {
@@ -149,6 +152,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function getSystemAdminsEMailAdresses()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$query =	'	SELECT u.email
 						FROM #__users AS u
 						WHERE	u.sendEmail = 1 AND
@@ -168,6 +174,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function getPredictionGameAdminsEMailAdresses( $predictionGameID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$query =	'	SELECT u.email
 						FROM #__users AS u
 						INNER JOIN #__sportsmanagement_prediction_admin AS pa ON	pa.prediction_id = ' . (int) $predictionGameID . ' AND
@@ -188,6 +197,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function getPredictionMembersEMailAdresses( $cids )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 		$query =	'	SELECT user_id
 						FROM #__sportsmanagement_prediction_member
@@ -218,6 +230,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function getPredictionMemberEMailAdress( $predictionMemberID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		
     //echo '<br />predictionMemberID<pre>~' . print_r( $predictionMemberID, true ) . '~</pre><br />';
 		
@@ -252,6 +267,8 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
      */
     function getPredictionGroups()
     {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         
         $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
 		$this->_db->setQuery($query);
@@ -272,6 +289,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function publish( $cid = array(), $publish = 1, $predictionGameID )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$user =& JFactory::getUser();
 		if ( count( $cid ) )
 		{
@@ -285,7 +305,8 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				//$this->setError( $this->_db->getErrorMsg() );
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
@@ -414,6 +435,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function deletePredictionMembers( $cid = array() )
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		if ( count( $cid ) )
 		{
 			JArrayHelper::toInteger( $cid );
@@ -422,7 +446,8 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->query() )
 			{
-				$this->setError( $this->_db->getErrorMsg() );
+				//$this->setError( $this->_db->getErrorMsg() );
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -440,6 +465,9 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	function deletePredictionResults($cid=array(),$prediction_id=0)
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		if (count($cid))
 		{
 			JArrayHelper::toInteger($cid);
@@ -462,7 +490,8 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
-				$this->setError($this->_db->getErrorMsg());
+				//$this->setError($this->_db->getErrorMsg());
+                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}

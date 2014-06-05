@@ -107,6 +107,52 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		$this->setRedirect( 'index.php?option=com_sportsmanagement&view=predictionmembers' );
 	}
     
+    
+    /**
+     * sportsmanagementControllerpredictionmembers::remove()
+     * 
+     * @return void
+     */
+    function remove()
+	{
+		//$post		= JRequest::get( 'post' );
+		//echo '<pre>'; print_r($post); echo '</pre>';
+    $option = JRequest::getCmd('option');
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+		$mainframe = JFactory::getApplication();
+    
+		$d		= ' - ';
+		$msg	= '';
+		$cid	= JRequest::getVar('cid',array(),'post','array');
+		JArrayHelper::toInteger($cid);
+		$prediction_id	= JRequest::getInt('prediction_id',(-1),'post');
+		//echo '<pre>'; print_r($cid); echo '</pre>';
+
+		if (count($cid) < 1)
+		{
+			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
+		}
+
+		$model =& $this->getModel('predictionmember');
+
+		if (!$model->deletePredictionResults($cid,$prediction_id))
+		{
+			$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+		}
+		$msg .= $d . JText::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+
+		if (!$model->deletePredictionMembers($cid))
+		{
+			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+		}
+
+		$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
+		//echo $msg;
+		$this->setRedirect($link,$msg);
+	}
+    
   
 
     
