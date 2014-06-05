@@ -56,6 +56,12 @@ jimport( 'joomla.application.component.view' );
 class sportsmanagementViewPredictionMembers extends JView
 {
 
+  /**
+   * sportsmanagementViewPredictionMembers::display()
+   * 
+   * @param mixed $tpl
+   * @return
+   */
   function display( $tpl = null )
 	{
 
@@ -76,6 +82,12 @@ class sportsmanagementViewPredictionMembers extends JView
 		
 	}
 
+  /**
+   * sportsmanagementViewPredictionMembers::_editlist()
+   * 
+   * @param mixed $tpl
+   * @return void
+   */
   function _editlist( $tpl = null )
 	{
 		$mainframe			=& JFactory::getApplication();
@@ -144,6 +156,12 @@ class sportsmanagementViewPredictionMembers extends JView
 	
     
     
+    /**
+     * sportsmanagementViewPredictionMembers::_display()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function _display( $tpl = null )
 	{
 $mainframe = JFactory::getApplication();
@@ -155,15 +173,11 @@ $mainframe = JFactory::getApplication();
          $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
-        
 
-    
     $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-        
 
-        
         //build the html select list for prediction games
         $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
@@ -181,6 +195,7 @@ $mainframe = JFactory::getApplication();
 										);
 		unset( $res );
        
+       $this->prediction_id = $this->state->get('filter.prediction_id');
 
         
         $this->assign('user',JFactory::getUser());
@@ -199,6 +214,8 @@ $mainframe = JFactory::getApplication();
 	*/
 	protected function addToolbar()
 	{
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
@@ -207,6 +224,14 @@ $mainframe = JFactory::getApplication();
 		// Set toolbar items for the page
 		
         JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'predmembers' );
+        
+        if ( $this->prediction_id )
+        {
+          JToolBarHelper::custom('predictionmember.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+          JToolBarHelper::publishList( 'predictionmember.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+		  JToolBarHelper::unpublishList( 'predictionmember.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
+          JToolBarHelper::deleteList( '', 'predictionmember.remove' );  
+        }
 		
      /*   
 		JToolBarHelper::addNew('predictiongroup.add');

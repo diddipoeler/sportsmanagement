@@ -54,6 +54,12 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewpredictiongroups extends JView
 {
+	/**
+	 * sportsmanagementViewpredictiongroups::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
