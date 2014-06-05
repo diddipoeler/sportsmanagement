@@ -121,23 +121,54 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
   {
     $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        
+        $config = JFactory::getConfig();
+  $mailer =& JFactory::getMailer();
   
+  //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+  
+//  $meta_keys[] = $config->getValue( 'config.MetaKeys' );
+//$your_name = $config->getValue( 'config.sitename' );
+
+//add the sender Information.
+$sender = array( 
+    $config->getValue( 'config.mailfrom' ),
+    $config->getValue( 'config.fromname' ) );
+
+$mailer->setSender($sender); 
+
   foreach ( $cid as $key => $value )
     {
     $member_email = $this->getPredictionMemberEMailAdress( $value );
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),''); 
-
-    $subject = addslashes(
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),'');
+    
+    //add the recipient. $recipient = $user_email;
+    $mailer->addRecipient($member_email); 
+    //add the subject
+     $subject = addslashes(
 				sprintf(
 				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				'perdictionname' ) );
+    $mailer->setSubject($subject);
+
+//add body
+$message = 'Tip-Results';
+$mailer->setBody($message);
+$send =& $mailer->Send();
+
+if ( $send !== true ) {
+    //echo 'Error sending email: ' . $send->message;
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+} else {
+    //echo 'Mail sent';
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
+}
+   
 				
-    $message = 'Tip-Results';
+    
 
 
-    JUtility::sendMail( '', '', $member_email, $subject, $message );
+//    JUtility::sendMail( '', '', $member_email, $subject, $message );
 
     }
   
@@ -257,7 +288,7 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
     echo $query . '<br />';
 		
     $this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		return $this->_db->loadResult();
 	}
     
     /**
