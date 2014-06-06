@@ -74,6 +74,8 @@ class sportsmanagementViewTeams extends JView
 
 		//$this->assignRef( 'teams', $model->getTeams() );
         $this->assignRef( 'teams', sportsmanagementModelProject::getTeams($model->divisionid) );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
