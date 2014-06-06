@@ -62,6 +62,7 @@ class sportsmanagementViewTeams extends JView
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
+        $mainframe = JFactory::getApplication();
 
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
