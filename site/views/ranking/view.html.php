@@ -286,28 +286,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
-	  
-// 	  $this->map = new simpleGMapAPI();
-//   $this->geo = new simpleGMapGeocoder();
-//   $this->map->setWidth($this->mapconfig['width']);
-//   $this->map->setHeight($this->mapconfig['height']);
-//   $this->map->setZoomLevel($this->mapconfig['map_zoom']); 
-//   $this->map->setMapType($this->mapconfig['default_map_type']);
-//   $this->map->setBackgroundColor('#d0d0d0');
-//   $this->map->setMapDraggable(true);
-//   $this->map->setDoubleclickZoom(false);
-//   $this->map->setScrollwheelZoom(true);
-//   $this->map->showDefaultUI(false);
-//   $this->map->showMapTypeControl(true, 'DROPDOWN_MENU');
-//   $this->map->showNavigationControl(true, 'DEFAULT');
-//   $this->map->showScaleControl(true);
-//   $this->map->showStreetViewControl(true);
-//   $this->map->setInfoWindowBehaviour('SINGLE_CLOSE_ON_MAPCLICK');
-//   $this->map->setInfoWindowTrigger('CLICK');
-  
-  //echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre><br>';
-
-  
   
   foreach ( $this->allteams as $row )
     {
@@ -336,47 +314,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
 		$row->address_string = implode(', ', $address_parts);
-//    $this->map->addMarkerByAddress($row->address_string, $row->team_name, '"<a href="'.$row->club_www.'" target="_blank">'.$row->club_www.'</a>"', "http://maps.google.com/mapfiles/kml/pal2/icon49.png");		
-    
-    /*
-    $paramsdata	= $row->club_extended;
-		$paramsdefs	= JLG_PATH_ADMIN . DS . 'assets' . DS . 'extended' . DS . 'club.xml';
-		$extended	= new JLGExtraParams( $paramsdata, $paramsdefs );
-		foreach ( $extended->getGroups() as $key => $groups )
-		{
-		$lat = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LATITUDE');
-    $lng = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LONGITUDE');
-		}
-		
-    if ( $lat && $lng )
-    {
-    $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
-        
-    //echo JURI::root().'<br>';
-    						
-		if ( $row->logo_big )
-    {
-    $path = JURI::root().$row->logo_big;
+
     }
-    else
-    {
-    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
-    }
-    
-    //echo $path.'<br>';
-    						
-    $this->map->addMarker($lat, $lng, $row->club_name, $adressecountry_flag.' '.$row->address_string.'<br>',$path);
-    }
-    */
-    
-    }
-    
-  
-//   $document->addScript($this->map->JLprintGMapsJS());
-//   $document->addScriptDeclaration($this->map->JLshowMap(false));
-  
+
 	}
-	  //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+
 	  
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
