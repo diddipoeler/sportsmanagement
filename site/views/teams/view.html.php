@@ -67,12 +67,12 @@ class sportsmanagementViewTeams extends JView
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
 		$this->assignRef( 'project', sportsmanagementModelProject::getProject() );
-		$this->assignRef( 'division', $model->getDivision() );
+		//$this->assignRef( 'division', $model->getDivision() );
 		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
 		$this->assignRef( 'config', $config );
 
 		//$this->assignRef( 'teams', $model->getTeams() );
-        $this->assignRef( 'teams', sportsmanagementModelProject::getTeams($model::$divisionid) );
+        $this->assignRef( 'teams', sportsmanagementModelProject::getTeams($model->divisionid) );
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
