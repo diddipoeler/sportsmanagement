@@ -43,6 +43,10 @@ defined('_JEXEC') or die('Restricted access');
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews', 'results', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+$this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlfile = $this->project->id.'-ranking.kml';
+
 ?>
 <div class="joomleague">
 	<a name="jl_top" id="jl_top"></a>

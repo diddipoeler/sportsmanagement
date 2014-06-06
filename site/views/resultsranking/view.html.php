@@ -98,6 +98,9 @@ class sportsmanagementViewResultsranking extends JView
 		// add the ranking config file
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking');
 		$rankingmodel->computeRanking();
+        
+        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+        
 		// add the results model		
 		$resultsmodel	= new sportsmanagementModelResults();
 		// add the results config file
@@ -175,7 +178,46 @@ class sportsmanagementViewResultsranking extends JView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
+        // diddipoeler
+		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
         
+        if (($this->config['show_ranking_maps'])==1)
+	  {
+	  $this->geo = new JSMsimpleGMapGeocoder();
+	  $this->geo->genkml3($project->id,$this->allteams);
+  
+  foreach ( $this->allteams as $row )
+    {
+    $address_parts = array();
+		if (!empty($row->club_address))
+		{
+			$address_parts[] = $row->club_address;
+		}
+		if (!empty($row->club_state))
+		{
+			$address_parts[] = $row->club_state;
+		}
+		if (!empty($row->club_location))
+		{
+			if (!empty($row->club_zipcode))
+			{
+				$address_parts[] = $row->club_zipcode. ' ' .$row->club_location;
+			}
+			else
+			{
+				$address_parts[] = $row->club_location;
+			}
+		}
+		if (!empty($row->club_country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
+		}
+		$row->address_string = implode(', ', $address_parts);
+
+    }
+
+	}
+    
 		/*
 		//build feed links
 		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';

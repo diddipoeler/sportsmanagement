@@ -15,14 +15,14 @@ JToolBarHelper::save( 'predictionmember.save_memberlist' );
 // for existing items the button is renamed `close` and the apply button is showed
 JToolBarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
 
-JLToolBarHelper::onlinehelp();
+//JLToolBarHelper::onlinehelp();
 
 $uri =& JFactory::getURI();
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
-$version = urlencode(JoomleagueHelper::getVersion());
-echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
+//$version = urlencode(JoomleagueHelper::getVersion());
+//echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
 ?>
 <script language="javascript" type="text/javascript">
 	function submitbutton(pressbutton)
@@ -132,7 +132,7 @@ window.addEvent('domready', function() {
 		<div class="clr"></div>
 
 		<input type="hidden" name="teamschanges_check"	value="0"	id="teamschanges_check" />
-		<input type="hidden" name="option"				value="com_joomleague" />
+		<input type="hidden" name="option"				value="com_sportsmanagement" />
 		<input type="hidden" name="task"				value="predictionmember.save_memberlist" />
 		<input type="hidden" name="cid[]"				value="<?php echo $this->prediction_id; ?>" />
 		

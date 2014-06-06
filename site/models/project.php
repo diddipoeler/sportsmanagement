@@ -757,6 +757,12 @@ class sportsmanagementModelProject extends JModel
           $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
           $query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
           $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
+          
+          // für die anzeige der teams im frontend
+          $query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture team_picture,c.name as club_name,c.address as club_address');
+          $query->select('c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.email as club_email,c.unique_id,c.country as club_country,c.website AS club_www');
+          
+          
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tl ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = tl.team_id ');
           $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id ');
