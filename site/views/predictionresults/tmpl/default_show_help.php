@@ -118,7 +118,7 @@ $gameModeStr = ($this->model->predictionProject->mode==0) ? JText::_('COM_SPORTS
 									<td class='info'><?php echo '2:2'; ?></td>
 									<td class='info'><?php
 										$result = sportsmanagementModelPrediction::createResultsObject(1,1,0,2,2,0);
-										echo $this->model->getMemberPredictionPointsForSelectedMatch($this->model->predictionProject,$result);
+										echo sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($this->model->predictionProject,$result);
 										?></td>
 									<?php
 									if (($this->model->predictionProject->joker) && ($this->model->predictionProject->mode==0))
