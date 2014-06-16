@@ -2147,13 +2147,16 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 */
 	function compare($a,$b)
 	{
+	    $option = JRequest::getCmd('option');    
+    $mainframe = JFactory::getApplication();
+    
 		$res	= 0;
 		$i		= 1;
 
 		//while (array_key_exists('sort_order_'.$i,$this->table_config) and $res==0)
         while (array_key_exists('sort_order_'.$i,self::$table_config) and $res==0)
 		{
-			switch ($this->table_config['sort_order_'.$i++])
+			switch (self::$table_config['sort_order_'.$i++])
 			{
 				// 1. decision: more points
 				case 'points':
