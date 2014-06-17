@@ -409,8 +409,10 @@ echo $this->pagination->getListFooter();
 					
 					$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
-					if (($member->show_profile)||($this->predictionMember->pmID==$member->pmID))
+					// bugtracker id 0000088
+                    //$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
+                    $link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound);
+					if (($member->show_profile)||($this->predictionMember->pmID == $member->pmID))
 					{
 						$output = JHTML::link( $link, $imgFile);
 					}
