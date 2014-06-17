@@ -82,36 +82,36 @@
 			name="points_tipp_joker" 
 			type="hidden" 
 			default="0"
-			label="Points for wrong prediction with Joker" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER_DESC"
       />
 <field 
 			name="points_correct_result_joker" 
 			type="hidden" 
 			default="0"
-			label="Points for correct prediction with Joker" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER_DESC"
       />
 <field 
 			name="points_correct_diff_joker" 
 			type="hidden" 
 			default="0"
-			label="Points for correct margin with Joker" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER_DESC"
       />      
 <field 
 			name="points_correct_draw_joker" 
 			type="hidden" 
 			default="0"
-			label="Points for draw difference with Joker" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
       />
 <field 
 			name="points_correct_tendence_joker" 
 			type="hidden" 
 			default="0"
-			label="Points for correct tendency with Joker" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
       />
       
       			
@@ -140,8 +140,8 @@
 			name="points_tipp_champ" 
 			type="hidden" 
 			default="0"
-			label="Points for picking the champion" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP_DESC"
       />    
 
 <!-- punkte  -->
@@ -149,8 +149,8 @@
 			name="points_tipp" 
 			type="text" 
 			default="0"
-			label="Points for wrong prediction" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_DESC"
       />
 
 
@@ -158,32 +158,32 @@
 			name="points_correct_result" 
 			type="text" 
 			default="0"
-			label="Points for correct prediction" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_DESC"
       />
 
 <field 
 			name="points_correct_diff" 
 			type="text" 
 			default="0"
-			label="Points for correct margin" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_DESC"
       />
 
 <field 
 			name="points_correct_draw" 
 			type="text" 
 			default="0"
-			label="Points for draw difference" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_DESC"
       />
 
 <field 
 			name="points_correct_tendence" 
 			type="text" 
 			default="0"
-			label="Points for correct tendency" 
-			description=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
       />
 
                                                                 		

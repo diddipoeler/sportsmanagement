@@ -60,7 +60,7 @@ JHtml::_('behavior.tooltip');
 			<?php
 		}
 	}
-	if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0))
+	if (JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
 	{
 		?><fieldset>
 			<legend><?php echo JText::_('Post data from importform was:'); ?></legend>
@@ -71,7 +71,7 @@ JHtml::_('behavior.tooltip');
 </div>
 <p style='text-align:right;'><a href='#page_top'><?php echo JText::_('top'); ?></a></p>
 <?php
-if (JComponentHelper::getParams('com_joomleague')->get('show_debug_info',0))
+if (JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
 {
 	echo '<center><hr>';
 		echo JText::sprintf('Memory Limit is %1$s',ini_get('memory_limit')) . '<br />';
