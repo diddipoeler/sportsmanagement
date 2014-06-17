@@ -76,6 +76,7 @@ class sportsmanagementModelClubs extends JModelList
                         'a.latitude',
                         'a.longitude',
                         'a.id',
+                        'a.unique_id',
                         'a.ordering',
                         'a.checked_out',
                         'a.checked_out_time'
@@ -110,11 +111,6 @@ class sportsmanagementModelClubs extends JModelList
         
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
-
-
-        
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
 
 //		// Load the parameters.
 //		$params = JComponentHelper::getParams('com_sportsmanagement');

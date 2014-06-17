@@ -261,25 +261,26 @@ echo $this->pagination->getListFooter();
 
       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-				echo '<br />memberList<pre>~' . print_r($this->memberList,true) . '~</pre><br />';
-				}
+		echo '<br />memberList<pre>~' . print_r($this->memberList,true) . '~</pre><br />';
+		}
 				
 			foreach ($this->memberList AS $member)
 			{
 			
-			  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-				echo '<br />member<pre>~' . print_r($member,true) . '~</pre><br />';
-				}
+		echo '<br />member<pre>~' . print_r($member,true) . '~</pre><br />';
+		}
 				
 				$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$predictionProject->project_id,
 																							$this->roundID,
 																							$this->roundID,
 																							$member->user_id);
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {																							
-				echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
-				}
+        
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{																							
+echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
+}
 
 				$memberPredictionPointsCount=0;
 				$predictionsCount=0;
@@ -300,10 +301,10 @@ echo $this->pagination->getListFooter();
 							(!is_null($memberPredictionPoint->awayDecision)))
 						{
 						
-						if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-				    echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-				    }
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
+}
 				    
 							$predictionsCount++;
 							$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
@@ -317,8 +318,8 @@ echo $this->pagination->getListFooter();
 							$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 							//if (!is_null($memberPredictionPoint->prPoints))
 							{
-								$points=$memberPredictionPoint->prPoints;
-								if ($newPoints!=$points)
+								$points = $memberPredictionPoint->prPoints;
+								if ( $newPoints != $points )
 								{
 									// this check also should be done if the result is not displayed
 									$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(	$memberPredictionPoint,
@@ -334,10 +335,10 @@ echo $this->pagination->getListFooter();
 							if (!is_null($memberPredictionPoint->prTend)){$totalTend=$totalTend+$memberPredictionPoint->prTend;}
 						}
 
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-            }
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
+}
 						
 						$memberPredictionOutput = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 						$matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->serveroffset);
@@ -348,6 +349,10 @@ echo $this->pagination->getListFooter();
 										(!is_null($memberPredictionPoint->homeDecision)) ||
 										(!is_null($memberPredictionPoint->awayDecision)) ||
 										($this->predictionMember->pmID==$member->pmID));
+
+//echo '<br />showAllowed<pre>~' . print_r($showAllowed,true) . '~</pre><br />';
+//echo '<br />matchTimeDate <pre>~' . print_r($matchTimeDate ,true) . '~</pre><br />';
+//echo '<br />thisTimeDate <pre>~' . print_r($thisTimeDate ,true) . '~</pre><br />';
 
 						if ($showAllowed)
 						{
@@ -369,7 +374,7 @@ echo $this->pagination->getListFooter();
 								(!is_null($memberPredictionPoint->homeDecision)) ||
 								(!is_null($memberPredictionPoint->awayDecision)))
 							{
-								$points=$memberPredictionPoint->prPoints;
+								$points = $memberPredictionPoint->prPoints;
 								$totalPoints = $totalPoints+$points;
 								$memberPredictionPointsCount++;
 								$memberPredictionOutput .= '<sub style="color: red;">'.$points.'</sub>';
@@ -444,20 +449,20 @@ echo $this->pagination->getListFooter();
 				}
 			}
 
-      if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-      {
-			echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
-			echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
-			}
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
+echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
+}
 			
 			$computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
 			$recordCount = count($computedMembersRanking);
 			
-			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-      {
-			echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
-      echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~</pre><br />';
-      }
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
+echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~</pre><br />';
+}
       
 			$i=1;
 /*			

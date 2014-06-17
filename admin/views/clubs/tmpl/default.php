@@ -112,6 +112,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<th>
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE','a.website',$this->sortDirection,$this->sortColumn); ?>
 					</th>
+                    
+                    <th>
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID','a.unique_id',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    
 					<th width="20">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO','a.logo_big',$this->sortDirection,$this->sortColumn); ?>
 					</th>
@@ -149,7 +154,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan='6'>
             <?php echo $this->pagination->getResultsCounter();?>
             </td>
@@ -205,6 +210,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							if ($row->website != ''){echo '</a>';}
 							?>
 						</td>
+                        <td><?php echo $row->unique_id; ?></td>
 						<td class="center">
 							<?php
 							if ($row->logo_big == '')
