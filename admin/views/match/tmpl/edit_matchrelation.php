@@ -20,7 +20,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td align="left">
 						<?php echo $this->lists['old_match']; ?>  
 						<?php if($this->match->old_match_id >0) : ?>
-						  <a href="index.php?option=com_joomleague&tmpl=component&controller=match&task=edit&cid[]=<?php echo $this->match->old_match_id?>">Match Link</a>
+						  <a href="index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=edit&cid[]=<?php echo $this->match->old_match_id?>">Match Link</a>
 						<?php endif ?>
 					</td>
 				</tr>
@@ -35,7 +35,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td align="left">
 						<?php echo $this->lists['new_match']; ?> 
 						<?php if($this->match->new_match_id >0) : ?>
-						  <a href="index.php?option=com_joomleague&tmpl=component&controller=match&task=edit&cid[]=<?php echo $this->match->new_match_id?>">Match Link</a>
+						  <a href="index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=edit&cid[]=<?php echo $this->match->new_match_id?>">Match Link</a>
 						<?php endif ?>
 					</td>
 				</tr>
