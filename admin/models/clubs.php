@@ -142,7 +142,8 @@ class sportsmanagementModelClubs extends JModelList
         
         if ($search)
 		{
-        $query->where('LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%'));
+        //$query->where('LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where(' ( LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%') .' OR LOWER(a.unique_id) LIKE '.$db->Quote('%'.$search.'%') .')' );
         }
         if ($search_nation)
 		{
