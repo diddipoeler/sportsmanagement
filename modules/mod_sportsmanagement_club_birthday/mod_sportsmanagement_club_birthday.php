@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
 
 require_once(dirname(__FILE__).DS.'helper.php');
 
