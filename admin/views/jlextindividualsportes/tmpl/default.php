@@ -97,7 +97,7 @@ JHtml::_('behavior.modal');
 				{
 					// handles the link ref for starting lineup window
 					var matchid=this.id.substr(10);
-					$E('a.openroster-'+this.id).href="index.php?option=com_joomleague&tmpl=component&controller=match&task=editlineup&cid[]="+matchid+"&team="+this.value;
+					$E('a.openroster-'+this.id).href="index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=editlineup&cid[]="+matchid+"&team="+this.value;
 				});
 			}
 			else
@@ -182,5 +182,5 @@ JHtml::_('behavior.modal');
 <?php 
 //echo $this->loadTemplate('massadd'); ?>
 </div>
-<?php echo $this->loadTemplate('matches'); ?>	
+<?php echo $this->loadTemplate('matches'); ?>
 <?php echo $this->loadTemplate('matrix'); ?>
