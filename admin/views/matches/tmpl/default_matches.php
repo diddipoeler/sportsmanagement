@@ -61,7 +61,7 @@ fieldset button {
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
 			<?php
-			$colspan=($this->projectws->allow_add_time) ? 19 : 18;
+			$colspan = ($this->projectws->allow_add_time) ? 19 : 18;
 			?>
 			<table class="adminlist">
 				<thead>
@@ -130,8 +130,16 @@ fieldset button {
 						</th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-				<tbody>
+                
+				<tfoot>
+                <tr>
+                <td colspan="<?php echo $colspan - 3; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
+                <td colspan="3"><?php echo $this->pagination->getResultsCounter();?></td>
+                </tr>
+                </tfoot>
+				
+                
+                <tbody>
 					<?php
 					$k=0;
 					for ($i=0,$n=count($this->matches); $i < $n; $i++)

@@ -104,11 +104,14 @@ window.addEvent('domready',function(){
             <th width="5%"><?php echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn ); ?></th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
-                <td colspan='3'>
-            <?php echo $this->pagination->getResultsCounter();?>
-            </td>
-                </tr></tfoot>
+                
+				<tfoot>
+                <tr>
+                <td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
+                <td colspan="3"><?php echo $this->pagination->getResultsCounter();?></td>
+                </tr>
+                </tfoot>
+                
 				<tbody>
 					<?php
 					$k=0;
