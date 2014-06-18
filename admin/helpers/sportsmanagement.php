@@ -2029,14 +2029,18 @@ if (!$db->query())
 
 		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address='.urlencode($address) .'&sensor=false&language=de';
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
+
 		$content = self::getContent($url);
-		
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');   		
+
 		$status = null;	
 		if(!empty($content))
 		{
 			$json = new Services_JSON();
 			$status = $json->decode($content);
 		}
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($status,true).'</pre>'),'');   
 
 		return $status;
 	}
