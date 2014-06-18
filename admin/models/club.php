@@ -240,6 +240,7 @@ class sportsmanagementModelclub extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $address_parts = array();
+       $address_parts2 = array();
        $post = JRequest::get('post');
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -293,20 +294,30 @@ class sportsmanagementModelclub extends JModelAdmin
 			if (!empty($data['zipcode']))
 			{
 				$address_parts[] = $data['zipcode']. ' ' .$data['location'];
+                $address_parts2[] = $data['zipcode']. ' ' .$data['location'];
 			}
 			else
 			{
 				$address_parts[] = $data['location'];
+                $address_parts2[] = $data['location'];
 			}
 		}
 		if (!empty($data['country']))
 		{
 			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
+            $address_parts2[] = JSMCountries::getShortCountryName($data['country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
 		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+        
+        if ( !$coords )
+        {
+        $address = implode(', ', $address_parts2);
+		$coords = sportsmanagementHelper::resolveLocation($address);
+		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
+        }    
         
         if ( $coords )
         {
