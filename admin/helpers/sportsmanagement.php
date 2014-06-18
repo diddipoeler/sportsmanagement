@@ -1754,15 +1754,7 @@ abstract class sportsmanagementHelper
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-        
-//		$query = ' SELECT id as value '
-//		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
-//		       . '      , id, name, round_date_first, round_date_last, roundcode '
-//		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round '
-//		       . ' WHERE project_id= ' .$project_id
-//           . ' AND published =  1'
-//		       . ' ORDER BY roundcode '.$ordering;
-	
+
 		$db->setQuery($query);
 		if(!$required) {
 			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
@@ -1950,21 +1942,9 @@ $mainframe = JFactory::getApplication();
         //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
         
-        
-//        $query = "SELECT ef.*,
-//        ev.fieldvalue as fvalue,
-//        ev.id as value_id 
-//        FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
-//        LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields_values as ev 
-//        ON ef.id = ev.field_id 
-//        AND ev.jl_id = ".$jlid." 
-//        WHERE ef.template_backend LIKE '".JRequest::getVar('view')."'  
-//        ORDER BY ef.ordering";   
-         
         $db->setQuery($query);
 		if (!$result = $db->loadObjectList())
 		{
-			//$this->setError($db->getErrorMsg());
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 			return false;
@@ -2033,17 +2013,7 @@ if (!$db->query())
 			
             $mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
-        
-/*
-				$query = "DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_values WHERE f_id = ".$post['extra_id'][$p]." AND uid = ".$pid;
-				$db->setQuery($query);
-				$db->query();
-                */
-                /*
-				$query = "INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_values(f_id,uid,fvalue) VALUES(".$post['extra_id'][$p].",".$pid.",'".$post['extraf'][$p]."')";
-				$db->setQuery($query);
-				$db->query();
-                */
+
 			}
 		}
   
@@ -2055,8 +2025,10 @@ if (!$db->query())
 	*/	 	
 	public function getAddressData($address)
 	{
+	   $mainframe = JFactory::getApplication();
 
 		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address='.urlencode($address) .'&sensor=false&language=de';
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
 		$content = self::getContent($url);
 		
 		$status = null;	
@@ -2087,11 +2059,13 @@ public function getOSMGeoCoords($address)
     // output in JSON
     $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
                   urlencode($address);
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
     
     $result = json_decode(file_get_contents($geoCodeURL), true);
     
     
-//    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
+
 
 /*
 [COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME] => D�rpum
@@ -2111,20 +2085,26 @@ public function getOSMGeoCoords($address)
     
     }
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
     return $coords;
 }
 
+    /**
+     * sportsmanagementHelper::resolveLocation()
+     * 
+     * @param mixed $address
+     * @return
+     */
     public function resolveLocation($address)
 	{
 		$mainframe = JFactory::getApplication();
     $coords = array();
 		$data = self::getAddressData($address);
         
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($address,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
-//		$osm = self::getOSMGeoCoords($address);  
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
+//$osm = self::getOSMGeoCoords($address);  
         
 		if($data)
         {
@@ -2178,7 +2158,15 @@ public function getOSMGeoCoords($address)
         
 	}
     
-    // Return content of the given url
+
+	/**
+	 * sportsmanagementHelper::getContent()
+	 * Return content of the given url
+	 * @param mixed $url
+	 * @param bool $raw
+	 * @param bool $headerOnly
+	 * @return
+	 */
 	static public function getContent($url , $raw = false , $headerOnly = false)
 	{
 		if (!$url)
@@ -2243,6 +2231,12 @@ public function getOSMGeoCoords($address)
 		return false;
 	}
     
+    /**
+     * sportsmanagementHelper::getPictureClub()
+     * 
+     * @param mixed $id
+     * @return
+     */
     static function getPictureClub($id)
     {
         $mainframe = JFactory::getApplication();
@@ -2266,6 +2260,12 @@ public function getOSMGeoCoords($address)
 		return $picture;
     }
     
+    /**
+     * sportsmanagementHelper::getPicturePlayground()
+     * 
+     * @param mixed $id
+     * @return
+     */
     static function getPicturePlayground($id)
     {
         $mainframe = JFactory::getApplication();
@@ -2290,6 +2290,12 @@ public function getOSMGeoCoords($address)
         
     }
     
+    /**
+     * sportsmanagementHelper::getArticleList()
+     * 
+     * @param mixed $project_category_id
+     * @return
+     */
     function getArticleList($project_category_id)
     {
         $mainframe = JFactory::getApplication();
