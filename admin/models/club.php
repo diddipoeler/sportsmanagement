@@ -310,13 +310,15 @@ class sportsmanagementModelclub extends JModelAdmin
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts<br><pre>'.print_r($address_parts,true).'</pre>' ),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         if ( !$coords )
         {
         $address = implode(', ', $address_parts2);
 		$coords = sportsmanagementHelper::resolveLocation($address);
-		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
+//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts2<br><pre>'.print_r($address_parts2,true).'</pre>' ),'');
+//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
         }    
         
         if ( $coords )
@@ -344,6 +346,7 @@ class sportsmanagementModelclub extends JModelAdmin
 		{
 		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
 		}
+        
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);
 		
@@ -351,10 +354,12 @@ class sportsmanagementModelclub extends JModelAdmin
         
         $data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
+        
         foreach( $coords as $key => $value )
 		{
         $post['extended'][$key] = $value;
-        }    
+        }
+            
         }
         
        if (isset($post['extended']) && is_array($post['extended'])) 
