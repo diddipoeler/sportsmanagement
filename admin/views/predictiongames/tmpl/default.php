@@ -274,7 +274,14 @@ JHtml::_('behavior.modal');
 							<td style='text-align:center; '><?php
 								if ( $pred_project['joker'] == '1' )
 								{
-									if ($pred_project['joker_limit']==0){$maxJ=JText::_('UNLIMITED');}else{$maxJ=$pred_project['joker_limit'];}
+									if ($pred_project['joker_limit']==0)
+										{
+											$maxJ = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNLIMITED_JOKER');
+										}
+									else
+										{
+											$maxJ = $pred_project['joker_limit'];
+										}
 									$imageTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MAX_JOKER', $maxJ );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 								}
