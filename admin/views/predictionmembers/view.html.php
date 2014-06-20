@@ -182,7 +182,7 @@ $mainframe = JFactory::getApplication();
 
         //build the html select list for prediction games
         $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
