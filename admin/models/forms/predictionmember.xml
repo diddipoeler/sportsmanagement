@@ -29,7 +29,7 @@
 			type="radio"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER">
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
@@ -38,7 +38,7 @@
 			type="radio"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT">
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
@@ -47,7 +47,7 @@
 			type="radio"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE">
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
@@ -56,7 +56,7 @@
 			type="radio"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP">
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
@@ -65,7 +65,7 @@
 			type="radio"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED">
+			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	

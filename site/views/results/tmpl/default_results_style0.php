@@ -392,13 +392,13 @@ $link = "javascript:void(0);";
 				?>
 			</td>
 			<td width='20'>
-				<?php echo $this->getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
 			<td width='5'>
 			-
 			</td>
 			<td width='20'>
-				<?php echo $this->getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
 			<td class='t-left'>
 				<?php
@@ -410,7 +410,7 @@ $link = "javascript:void(0);";
 			<td width='5' class='score' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
-					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
+					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
 					echo '&nbsp;';
 				?>
 			</td>
