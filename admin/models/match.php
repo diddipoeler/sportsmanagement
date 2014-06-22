@@ -593,10 +593,12 @@ class sportsmanagementModelMatch extends JModelAdmin
         $data['team1_bonus'] = $post['team1_bonus'];
         $data['team2_bonus'] = $post['team2_bonus'];
         $data['match_result_detail'] = $post['match_result_detail'];
+        $data['count_result'] = $post['count_result'];
         $data['alt_decision'] = $post['alt_decision'];
         $data['team1_result_decision'] = $post['team1_result_decision'];
         $data['team2_result_decision'] = $post['team2_result_decision'];
         $data['decision_info'] = $post['decision_info'];
+        $data['team_won'] = $post['team_won'];
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
