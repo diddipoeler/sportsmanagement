@@ -238,7 +238,6 @@ fieldset button {
 							</td>
 							<td class="left"  nowrap="nowrap">
 
-
 								<input ondblclick="copyValue('match_time')" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_time<?php echo $row->id; ?>"
 										value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3" class="inputbox" />
 
@@ -397,7 +396,20 @@ fieldset button {
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
 															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
 									?>
-								</a><br />
+								</a>
+                                
+                                <?PHP
+                                if ( $this->$row->alt_decision == 1 )
+                                {
+                                    echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',
+															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
+															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC').'"');
+
+                                }
+                                ?>
+                                
+                                
+                                <br />
 								<span id="part<?php echo $row->id; ?>" style="display: none">
 									<br />
 									<?php
