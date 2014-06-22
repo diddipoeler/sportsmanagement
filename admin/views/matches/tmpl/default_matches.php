@@ -399,7 +399,7 @@ fieldset button {
 								</a>
                                 
                                 <?PHP
-                                if ( $this->$row->alt_decision == 1 )
+                                if ( $row->alt_decision == 1 )
                                 {
                                     echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',
 															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
