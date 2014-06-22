@@ -576,6 +576,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $post = JRequest::get('post');
+       
+       $data['id'] = $post['id'];
 
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
