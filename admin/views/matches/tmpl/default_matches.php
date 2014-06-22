@@ -173,7 +173,7 @@ fieldset button {
 							</td>
 							<td class="center" nowrap="nowrap">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.edit&id=<?php echo $row->id; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
@@ -182,7 +182,7 @@ fieldset button {
 									?>
 								</a>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&task=match.picture&id=<?php echo $row->id; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id=<?php echo $row->id; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',

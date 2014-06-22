@@ -56,7 +56,21 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllermatch extends JControllerForm
 {
 
+/**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
 
+		// Map the apply task to the save method.
+		$this->registerTask('apply', 'save');
+	}
+    
 	/**
 	 * sportsmanagementControllermatch::insertgooglecalendar()
 	 * 
@@ -121,6 +135,47 @@ class sportsmanagementControllermatch extends JControllerForm
 		$this->setRedirect($link,$msg);
 	}
     
+    
+    /**
+     * sportsmanagementControllermatch::save()
+     * 
+     * @return void
+     */
+    function save()
+	{
+	// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Initialise variables.
+		$app = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $id	= JRequest::getInt('id');
+//        $tmpl = JRequest::getVar('tmpl');
+		$model = $this->getModel('match');
+        $data = JRequest::getVar('jform', array(), 'post', 'array');
+//        $createTeam = JRequest::getVar('createTeam');
+        $return = $model->save($data);   
+       
+       // Set the redirect based on the task.
+		switch ($this->getTask())
+		{
+			case 'apply':
+				$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+
+				$this->setRedirect('index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id='.$id, $message);
+
+				break;
+
+			case 'save':
+			default:
+
+				$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
+
+				break;
+		}
+        
+       
+    }   
     
     
     /**

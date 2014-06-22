@@ -55,7 +55,7 @@ $params = $this->form->getFieldsets('params');
 ?>
 <div id="matchdetails">
 	
-    <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="component-form" method="post" name="adminForm" >
+    <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
 		<!-- Score Table START -->
 		<?php
 		//save and close 
@@ -73,7 +73,7 @@ $params = $this->form->getFieldsets('params');
 				<div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('match.apply', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
-					<button type="button" onclick="$('close').value=1; Joomla.submitform('match.save', this.form);">
+					<button type="button" onclick="Joomla.submitform('match.save', this.form);">
 						<?php echo JText::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
