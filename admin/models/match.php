@@ -76,7 +76,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$mainframe = JFactory::getApplication();
         $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
         
-        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
         
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -575,10 +575,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
-       $post=JRequest::get('post');
-       
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       $post = JRequest::get('post');
+
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -588,7 +588,15 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        $data['team1_bonus'] = $post['team1_bonus'];
+        $data['team2_bonus'] = $post['team2_bonus'];
+        $data['match_result_detail'] = $post['match_result_detail'];
+        $data['alt_decision'] = $post['alt_decision'];
+        $data['team1_result_decision'] = $post['team1_result_decision'];
+        $data['team2_result_decision'] = $post['team2_result_decision'];
+        $data['decision_info'] = $post['decision_info'];
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
