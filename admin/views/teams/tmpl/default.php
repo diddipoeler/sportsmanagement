@@ -113,6 +113,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CLUBNAME','c.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    <th class="left">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','c.country',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEAMS_WEBSITE','t.website',$this->sortDirection,$this->sortColumn);
@@ -156,7 +161,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan='6'>
             <?php echo $this->pagination->getResultsCounter();?>
             </td>
@@ -197,7 +202,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo (empty($row->clubname)) ? '<span style="color:red;">'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB').'</span>' : $row->clubname; ?></td>
-						<td>
+						
+                        <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
+                        
+                        <td>
 							<?php
 							if ($row->website != '')
 							{
