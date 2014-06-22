@@ -553,6 +553,20 @@ $this->assignRef('csvstaff',$model->csv_staff);
 															'value','text');
 		}
         
+        // build the html select booleanlist for count match result
+        $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$match->count_result);
+        
+        // build the html select booleanlist which team got the won
+        $myoptions = array();
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
+        $myoptions[] = JHtml::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
+        $myoptions[] = JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
+        $myoptions[] = JHtml::_('select.option','3',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
+        $myoptions[] = JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
+        $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$match->team_won);
+        
+        
+        
         $this->assignRef('positions',$projectpositions);
 		$this->assignRef('staffpositions',$staffpositions);
 		$this->assignRef('substitutions',$substitutions[$tid]);
