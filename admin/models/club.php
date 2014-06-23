@@ -253,7 +253,7 @@ class sportsmanagementModelclub extends JModelAdmin
         }
         else
         {
-            $founded_year = NULL;
+            $founded_year = $data['founded_year'];
         }
         
         if ( $data['dissolved'] != '0000-00-00' )
@@ -262,18 +262,18 @@ class sportsmanagementModelclub extends JModelAdmin
         }
         else
         {
-            $dissolved_year = NULL;
+            $dissolved_year = $data['dissolved_year'];
         }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' founded_year<br><pre>'.print_r($founded_year,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dissolved_year<br><pre>'.print_r($dissolved_year,true).'</pre>'),'');
         
-        if ( $founded_year != '0000' )
+        if ( !$founded_year )
         {
             $data['founded_year'] = $founded_year;
             $post['founded_year'] = $founded_year;
         }
-        if ( $dissolved_year != '0000' )
+        if ( !$dissolved_year )
         {
             $data['dissolved_year'] = $dissolved_year;
             $post['dissolved_year'] = $dissolved_year;
