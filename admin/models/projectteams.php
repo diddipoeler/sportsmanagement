@@ -586,7 +586,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         else
         {    
         // Select some fields
-		$query->select('st.id AS value,t.name AS text,t.notes, pt.info');
+		$query->select('pt.id AS value,t.name AS text,t.notes, pt.info');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
@@ -598,8 +598,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$db->setQuery( $query );
 		if ( !$result = $db->loadObjectList() )
 		{
-			
-            //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Error');
             $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
