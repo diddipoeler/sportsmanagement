@@ -249,35 +249,37 @@ class sportsmanagementModelclub extends JModelAdmin
        // wurden jahre mitgegeben ?
        if ( $data['founded'] != '0000-00-00' )
         {
-        $founded_year = date('Y',strtotime($data['founded']));
+        $data['founded_year'] = date('Y',strtotime($data['founded']));
+        $post['founded_year'] = date('Y',strtotime($data['founded']));
         }
         else
         {
-            $founded_year = $data['founded_year'];
+            //$founded_year = $data['founded_year'];
         }
         
         if ( $data['dissolved'] != '0000-00-00' )
         {
-        $dissolved_year = date('Y',strtotime($data['dissolved']));
+        $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
+        $post['dissolved_year'] = date('Y',strtotime($data['dissolved']));
         }
         else
         {
-            $dissolved_year = $data['dissolved_year'];
+            //$dissolved_year = $data['dissolved_year'];
         }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' founded_year<br><pre>'.print_r($founded_year,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dissolved_year<br><pre>'.print_r($dissolved_year,true).'</pre>'),'');
         
-        if ( !$founded_year )
-        {
-            $data['founded_year'] = $founded_year;
-            $post['founded_year'] = $founded_year;
-        }
-        if ( !$dissolved_year )
-        {
-            $data['dissolved_year'] = $dissolved_year;
-            $post['dissolved_year'] = $dissolved_year;
-        }
+//        if ( !$founded_year )
+//        {
+//            $data['founded_year'] = $founded_year;
+//            $post['founded_year'] = $founded_year;
+//        }
+//        if ( !$dissolved_year )
+//        {
+//            $data['dissolved_year'] = $dissolved_year;
+//            $post['dissolved_year'] = $dissolved_year;
+//        }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         
