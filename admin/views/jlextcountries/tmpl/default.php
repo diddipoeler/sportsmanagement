@@ -208,8 +208,8 @@ function searchPerson(val)
 						<td><?php echo $row->name; ?></td>
 						<td>
                         <?php 
-                        //echo JHtml::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
-                        echo JSMCountries::getCountryFlag($row->alpha3);
+                        echo JHtml::_('image',$row->picture,JText::_($row->name),'title= "'.JText::_($row->name).'"'); 
+                        //echo JSMCountries::getCountryFlag($row->alpha3);
                         ?>
                         </td>
                         
