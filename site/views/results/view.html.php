@@ -286,6 +286,29 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs);
 			}
 		}
+        
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && JFile::exists($team->logo_big) )
+		{
+			//$image = JSMCountries::getCountryFlag($team->country);
+			if (empty($image))
+			{
+				//$image = JHtml::image($team->logo_big,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
+                $attribs = array_merge(array('width' => '20',$attribs));
+                $image="<a href=\"".JURI::root().$team->logo_big."\" title=\"".$title."\" class=\"modal\">";
+				$image.=JHtml::image($team->logo_big,$title,$attribs);
+				$image.="</a>";
+                $image.=' '.JSMCountries::getCountryFlag($team->country);
+			}
+		}
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !JFile::exists($team->logo_big) )
+		{
+			//$image = JSMCountries::getCountryFlag($team->country);
+			if (empty($image))
+			{
+				$image = JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
+			}
+		}
+        
         elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && JFile::exists($team->logo_small) )
 		{
 			//$image = JSMCountries::getCountryFlag($team->country);
