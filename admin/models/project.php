@@ -515,8 +515,12 @@ class sportsmanagementModelProject extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $address_parts = array();
        $post = JRequest::get('post');
+       $date = time();    // aktuelles Datum
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+       
+       $data['modified'] = date('Y-m-d H:i:s', $date);
+       $post['modified'] = date('Y-m-d H:i:s', $date);
        
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
