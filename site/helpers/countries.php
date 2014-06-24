@@ -41,8 +41,22 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
+/**
+ * JSMCountries
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class JSMCountries
 {
+	/**
+	 * JSMCountries::Countries()
+	 * 
+	 * @return void
+	 */
 	function Countries() {
 //      $lang = JFactory::getLanguage();
 //		$extension = "com_sportsmanagement_countries";
@@ -62,11 +76,23 @@ class JSMCountries
 	// http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 	// http://en.wikipedia.org/wiki/ISO_3166-1_numeric
 	//
+	/**
+	 * JSMCountries::getCountries()
+	 * 
+	 * @return void
+	 */
 	public static function getCountries()
 	{
 
 	}
 
+	/**
+	 * JSMCountries::getCountryOptions()
+	 * 
+	 * @param string $value_tag
+	 * @param string $text_tag
+	 * @return
+	 */
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
 		$mainframe = JFactory::getApplication();
@@ -102,6 +128,12 @@ $query = $db->getQuery(true);
 		return $options;
 	}
 
+	/**
+	 * JSMCountries::convertIso2to3()
+	 * 
+	 * @param mixed $iso_code_2
+	 * @return
+	 */
 	public static function convertIso2to3($iso_code_2)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -130,6 +162,12 @@ $query = $db->getQuery(true);
 		return null;
 	}
 
+	/**
+	 * JSMCountries::convertIso3to2()
+	 * 
+	 * @param mixed $iso_code_3
+	 * @return
+	 */
 	public static function convertIso3to2($iso_code_3)
 	{
 	    $mainframe = JFactory::getApplication();
@@ -161,6 +199,12 @@ $query = $db->getQuery(true);
 		return null;
 	}
 
+	/**
+	 * JSMCountries::getIso3Flag()
+	 * 
+	 * @param mixed $iso_code_3
+	 * @return
+	 */
 	public static function getIso3Flag($iso_code_3)
 	{
 		$iso2 = self::convertIso3to2($iso_code_3);
@@ -185,8 +229,29 @@ $query = $db->getQuery(true);
 	 */
 	public static function getCountryFlag($countrycode,$attributes='')
 	{
-		$src = self::getIso3Flag($countrycode);
-		if (!$src){return '';}
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();
+
+        $src = self::getIso3Flag($countrycode);
+		if (!$src)
+        {
+            //return '';
+            // welche tabelle soll genutzt werden
+        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        $database_table	= $params->get( 'cfg_which_database_table' );
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        // Select some fields
+		$query->select('picture');
+        // From table
+		$query->from('#__'.$database_table.'_countries');
+        $query->where('alpha3 LIKE \''.$countrycode.'\'');
+		$db->setQuery($query);
+		$src = $db->loadResult();
+        }
+        
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
 		$html .= 'title="'.self::getCountryName($countrycode).'" '.$attributes.' />';
 		return $html;
@@ -257,6 +322,18 @@ $query = $db->getQuery(true);
 	return $result;
 	}
 
+	/**
+	 * JSMCountries::convertAddressString()
+	 * 
+	 * @param string $name
+	 * @param string $address
+	 * @param string $state
+	 * @param string $zipcode
+	 * @param string $location
+	 * @param string $country
+	 * @param string $addressString
+	 * @return
+	 */
 	public static function convertAddressString(	$name='',
 									$address='',
 									$state='',
@@ -290,6 +367,19 @@ $query = $db->getQuery(true);
 		return $resultString;
 	}
 	
+	/**
+	 * JSMCountries::removeEmptyFields()
+	 * 
+	 * @param string $name
+	 * @param string $address
+	 * @param string $state
+	 * @param string $zipcode
+	 * @param string $location
+	 * @param string $flag
+	 * @param string $country
+	 * @param mixed $address
+	 * @return
+	 */
 	public static function removeEmptyFields(	$name='',
 									$address='',
 									$state='',
@@ -310,6 +400,14 @@ $query = $db->getQuery(true);
 		return $address;
 	}
 
+	/**
+	 * JSMCountries::checkAddressString()
+	 * 
+	 * @param mixed $find
+	 * @param mixed $replace
+	 * @param mixed $string
+	 * @return
+	 */
 	public static function checkAddressString($find, $replace, $string)
 	{
 	
