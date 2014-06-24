@@ -232,7 +232,7 @@ class modJSMRankingHelper
 		}
 		else if ($type == 2 && !empty($item->team->country))
 		{
-			return Countries::getCountryFlag($item->team->country, 'class="teamcountry"');
+			return JSMCountries::getCountryFlag($item->team->country, 'class="teamcountry"');
 		}
 
 		return '';

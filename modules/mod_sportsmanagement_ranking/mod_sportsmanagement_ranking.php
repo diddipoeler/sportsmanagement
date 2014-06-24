@@ -47,6 +47,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
 
