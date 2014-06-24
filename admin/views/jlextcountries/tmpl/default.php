@@ -165,9 +165,7 @@ function searchPerson(val)
 			</thead>
 			<tfoot>
             <tr>
-            <td colspan="12"><?php echo $this->pagination->getListFooter(); ?>
-            
-           
+            <td colspan="13"><?php echo $this->pagination->getListFooter(); ?>
             <td colspan="4"><?php echo $this->pagination->getResultsCounter(); ?>
             
             </td>
