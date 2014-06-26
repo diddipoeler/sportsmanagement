@@ -205,6 +205,11 @@ class sportsmanagementModelround extends JModelAdmin
 			$tblRound->name	= $post['name'.$pks[$x]];
             $tblRound->round_date_first	= sportsmanagementHelper::convertDate($post['round_date_first'.$pks[$x]], 0);
             $tblRound->round_date_last	= sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
+            
+            if ( $tblRound->round_date_last == '0000-00-00' && $tblRound->round_date_first != '0000-00-00'  )
+            {
+                $tblRound->round_date_last = $tblRound->round_date_first;
+            }
 
 			if(!$tblRound->store()) 
             {
@@ -216,6 +221,11 @@ class sportsmanagementModelround extends JModelAdmin
 	}
     
 	
+    /**
+     * sportsmanagementModelround::massadd()
+     * 
+     * @return
+     */
     function massadd()
 	{
 	$option = JRequest::getCmd('option');
@@ -293,6 +303,12 @@ class sportsmanagementModelround extends JModelAdmin
     
    
    
+   /**
+    * sportsmanagementModelround::getRoundcode()
+    * 
+    * @param mixed $round_id
+    * @return
+    */
    function getRoundcode($round_id)
    {
     // Get a db connection.

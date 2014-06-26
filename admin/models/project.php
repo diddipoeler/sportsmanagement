@@ -502,7 +502,51 @@ class sportsmanagementModelProject extends JModelAdmin
         }    
    return true;     
    } 
-   
+
+    /**
+	 * Method to update checked project rounds
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	public function saveshort()
+	{
+		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        if ( !$pks )
+        {
+            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE_NO_SELECT');
+        }
+        $post = JRequest::get('post');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
+        
+        //$result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblProject = & $this->getTable();
+			$tblProject->id = $pks[$x];
+            $tblProject->project_type	= $post['project_type'.$pks[$x]];
+
+			if(!$tblProject->store()) 
+            {
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
+			}
+		}
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
+	}
+       
    /**
 	 * Method to save the form data.
 	 *

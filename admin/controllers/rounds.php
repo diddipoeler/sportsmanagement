@@ -116,7 +116,6 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-
     function saveshort()
 	{
 	   $model = $this->getModel();
