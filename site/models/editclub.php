@@ -31,6 +31,8 @@ class sportsmanagementModelEditClub extends JModelForm
 
 		$this->projectid = JRequest::getInt( 'p', 0 );
 		$this->clubid = JRequest::getInt( 'cid', 0 );
+        $this->name = 'club';
+        
 	}
     
   function getClub()

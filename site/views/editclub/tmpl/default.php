@@ -8,6 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 //JHTML::_('behavior.modal');
 //jimport('joomla.html.pane');
 
+//echo 'form<pre>'.print_r($this->form , true).'</pre><br>';
 //echo 'club<pre>'.print_r($this->club , true).'</pre><br>';
 
 ?>
@@ -29,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('editclub.save');">
 						<?php echo JText::_('JAPPLY');?></button>
-					<button type="button" onclick="$('close').value=1; Joomla.submitform('editclub.save');">
+					<button type="button" onclick="Joomla.submitform('editclub.save');">
 						<?php echo JText::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
