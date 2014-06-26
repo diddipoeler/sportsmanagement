@@ -113,6 +113,9 @@ class sportsmanagementModelProjects extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
         
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_type', 'filter_project_type', '');
+		$this->setState('filter.project_type', $temp_user_request);
+        
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
@@ -141,11 +144,12 @@ class sportsmanagementModelProjects extends JModelList
         $option = JRequest::getCmd('option');
         
         $search	= $this->getState('filter.search');
-        $search_league	= $this->getState('filter.league');
+        $search_league = $this->getState('filter.league');
         $search_sports_type	= $this->getState('filter.sports_type');
-        $search_season	= $this->getState('filter.season');
+        $search_season = $this->getState('filter.season');
         $filter_state = $this->getState('filter.state');
-        $search_nation	= $this->getState('filter.search_nation');
+        $search_nation = $this->getState('filter.search_nation');
+        $search_project_type = $this->getState('filter.project_type');
         
         // Create a new query object.
         $db = JFactory::getDBO();
@@ -173,7 +177,7 @@ class sportsmanagementModelProjects extends JModelList
   
   
 
-if ($search)
+        if ($search)
 		{
         $query->where('LOWER(p.name) LIKE ' . $db->Quote( '%' . $search . '%' ));
         }
@@ -196,6 +200,11 @@ if ($search)
         if ($search_nation)
 		{
         $query->where("l.country = '".$search_nation."'");
+        }
+        
+        if ($search_project_type)
+		{
+        $query->where('p.project_type LIKE ' . $db->Quote( '' . $search_project_type . '' ));
         }
      
      $query->order($db->escape($this->getState('list.ordering', 'p.name')).' '.

@@ -148,12 +148,20 @@ class sportsmanagementViewProjects extends JView
 																'text',
 																$this->state->get('filter.search_nation'));
         $myoptions = array();
+        $myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER' ) );
 		$myoptions[] = JHtml::_( 'select.option', 'SIMPLE_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_SIMPLE_LEAGUE' ) );
 		$myoptions[] = JHtml::_( 'select.option', 'DIVISIONS_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_DIVISIONS_LEAGUE' ) );
         $myoptions[] = JHtml::_( 'select.option', 'TOURNAMENT_MODE', JText::_( 'COM_SPORTSMANAGEMENT_TOURNAMENT_MODE' ) );
         $myoptions[] = JHtml::_( 'select.option', 'FRIENDLY_MATCHES', JText::_( 'COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES' ) );
 		$lists['project_type'] = $myoptions;	
         
+        $lists['project_types'] = JHtml::_( 'select.genericList',
+									$myoptions,
+									'filter_project_type',
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+									'id',
+									'name',
+									$this->state->get('filter.project_type'));
         unset($myoptions);
       
 		$user = JFactory::getUser();
