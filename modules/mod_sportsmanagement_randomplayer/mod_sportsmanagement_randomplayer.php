@@ -41,7 +41,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+if ( !defined('JSM_PATH') )
+{
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
