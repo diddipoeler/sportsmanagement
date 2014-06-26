@@ -1,5 +1,9 @@
-<?php defined('_JEXEC') or die('Restricted access');
-JFactory::getLanguage()->load('com_joomleague', JPATH_ADMINISTRATOR);
+<?php 
+
+defined('_JEXEC') or die('Restricted access');
+
+//JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
+
 //JHTML::_('behavior.tooltip');
 //JHTML::_('behavior.modal');
 //jimport('joomla.html.pane');
@@ -32,7 +36,7 @@ JFactory::getLanguage()->load('com_joomleague', JPATH_ADMINISTRATOR);
 				</div>
 			<legend>
       <?php 
-      echo JText::sprintf('COM_JOOMLEAGUE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->club->name.'</i>'); 
+      echo JText::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->club->name.'</i>'); 
       ?>
       </legend>
 </fieldset>
@@ -44,22 +48,22 @@ JFactory::getLanguage()->load('com_joomleague', JPATH_ADMINISTRATOR);
 
 
 echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));    
-echo JHTML::_('tabs.panel',JText::_('COM_JOOMLEAGUE_TABS_DETAILS'), 'panel1');
+echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
 echo $this->loadTemplate('details');
 
 
-echo JHTML::_('tabs.panel',JText::_('COM_JOOMLEAGUE_TABS_PICTURE'), 'panel2');
+echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
 echo $this->loadTemplate('picture');
 
 
-echo JHTML::_('tabs.panel',JText::_('COM_JOOMLEAGUE_TABS_EXTENDED'), 'panel3');
+echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
 echo $this->loadTemplate('extended');
 
 echo JHTML::_('tabs.end');
 
 ?>
 	<div class="clr"></div>
-	<input type="hidden" name="option" value="com_joomleague" />
+	<input type="hidden" name="option" value="com_sportsmanagement" />
     <input type="hidden" name="close" id="close" value="0"/>
 	<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
     <input type="hidden" name="task" value="editclub.save" />	
