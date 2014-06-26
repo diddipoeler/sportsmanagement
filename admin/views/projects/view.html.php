@@ -159,8 +159,8 @@ class sportsmanagementViewProjects extends JView
 									$myoptions,
 									'filter_project_type',
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'id',
-									'name',
+									'value',
+									'text',
 									$this->state->get('filter.project_type'));
         unset($myoptions);
       
