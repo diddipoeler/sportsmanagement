@@ -147,8 +147,15 @@ class sportsmanagementViewProjects extends JView
 																'value',
 																'text',
 																$this->state->get('filter.search_nation'));
+        $myoptions = array();
+		$myoptions[] = JHtml::_( 'select.option', 'SIMPLE_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_SIMPLE_LEAGUE' ) );
+		$myoptions[] = JHtml::_( 'select.option', 'DIVISIONS_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_DIVISIONS_LEAGUE' ) );
+        $myoptions[] = JHtml::_( 'select.option', 'TOURNAMENT_MODE', JText::_( 'COM_SPORTSMANAGEMENT_TOURNAMENT_MODE' ) );
+        $myoptions[] = JHtml::_( 'select.option', 'FRIENDLY_MATCHES', JText::_( 'COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES' ) );
+		$lists['project_type'] = $myoptions;	
         
-        
+        unset($myoptions);
+      
 		$user = JFactory::getUser();
 		$this->assignRef('user',  $user);
 		$this->assignRef('lists', $lists);
@@ -178,6 +185,8 @@ class sportsmanagementViewProjects extends JView
 		JToolBarHelper::unpublishList('project.unpublish');
 		JToolBarHelper::divider();
 		
+        JToolBarHelper::apply('projects.saveshort');
+        
 		JToolBarHelper::addNew('project.add');
 		JToolBarHelper::editList('project.edit');
 		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);

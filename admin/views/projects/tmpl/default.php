@@ -208,9 +208,27 @@ JHtml::_('behavior.modal');
 						<td><?php echo $row->league; ?></td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="center"><?php echo $row->season; ?></td>
-						<td class="center"><?php echo JText::_($row->sportstype); ?></td>
+                        
+						<td class="center">
+                        <?php 
+                        echo JText::_($row->sportstype); 
+                        ?>
+                        </td>
+                        
                         <td class="center"><?php echo JText::_($row->agegroup); ?></td>
-						<td class="center"><?php echo JText::_($row->project_type); ?></td>
+						<td class="center">
+                        <?php 
+                        $inputappend='';
+                        $append=' style="background-color:#bbffff"';
+									echo JHtml::_(	'select.genericlist',
+													$this->lists['project_type'],
+													'project_type'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->project_type);
+                        //echo JText::_($row->project_type); 
+                        ?>
+                        </td>
 						
                         <td class="center">
 								<?php
