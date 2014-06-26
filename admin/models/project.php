@@ -504,7 +504,7 @@ class sportsmanagementModelProject extends JModelAdmin
    } 
 
     /**
-	 * Method to update checked project rounds
+	 * Method to update checked project
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
@@ -521,7 +521,7 @@ class sportsmanagementModelProject extends JModelAdmin
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE_NO_SELECT');
+            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
         $post = JRequest::get('post');
         
@@ -544,7 +544,7 @@ class sportsmanagementModelProject extends JModelAdmin
 				return false;
 			}
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}
        
    /**
