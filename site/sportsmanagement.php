@@ -48,6 +48,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'imageselect.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'predictionroute.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'pagination.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
