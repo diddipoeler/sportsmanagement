@@ -63,10 +63,10 @@ $modalwidth = JComponentHelper::getParams('COM_SPORTSMANAGEMENT')->get('modal_po
                     */
                  ?>   
 	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=COM_SPORTSMANAGEMENT&tmpl=component&view=editclub&cid=<?php echo $this->club->id; ?>"
+									href="index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid=<?php echo $this->club->id; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','administrator/components/COM_SPORTSMANAGEMENT/assets/images/edit.png',
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS').'"');
 									?>
