@@ -7,9 +7,7 @@ jimport('joomla.application.component.view');
 // import Joomla html for use with stylesheets
 jimport('joomla.html.html');
 
-/**
- * HTML View class for the UpdHelloWorld Component
- */
+
 class sportsmanagementViewUpdsportsmanagement extends JView
 {
 	// Overwriting JView display method

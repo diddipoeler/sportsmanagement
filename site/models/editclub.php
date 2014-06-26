@@ -26,6 +26,7 @@ class sportsmanagementModelEditClub extends JModelForm
   
   function __construct()
 	{
+	   $mainframe = JFactory::getApplication();
 		parent::__construct();
 
 		$this->projectid = JRequest::getInt( 'p', 0 );
@@ -34,6 +35,7 @@ class sportsmanagementModelEditClub extends JModelForm
     
   function getClub()
 	{
+	   $mainframe = JFactory::getApplication();
 		if ( is_null( $this->club  ) )
 		{
 			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
@@ -50,8 +52,11 @@ class sportsmanagementModelEditClub extends JModelForm
         {
  
         $app = JFactory::getApplication('site');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
  
         // Get the form.
+        JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
+        JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
@@ -70,6 +75,7 @@ class sportsmanagementModelEditClub extends JModelForm
 	 */
 	protected function loadFormData()
 	{
+	   $mainframe = JFactory::getApplication();
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
