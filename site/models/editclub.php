@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +50,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modelform');
 
 
+/**
+ * sportsmanagementModelEditClub
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEditClub extends JModelForm
 {
 	
@@ -24,6 +69,11 @@ class sportsmanagementModelEditClub extends JModelForm
 	var $clubid = 0;
 	var $club = null;
   
+  /**
+   * sportsmanagementModelEditClub::__construct()
+   * 
+   * @return void
+   */
   function __construct()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -35,6 +85,11 @@ class sportsmanagementModelEditClub extends JModelForm
         
 	}
     
+  /**
+   * sportsmanagementModelEditClub::getClub()
+   * 
+   * @return
+   */
   function getClub()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -117,151 +172,6 @@ class sportsmanagementModelEditClub extends JModelForm
 		return $data;
 	}		
 
-	
-	
-	
-	
-//	/**
-//	 * Fetch google map data refere to
-//	 * http://code.google.com/apis/maps/documentation/geocoding/#Geocoding	 
-//	 */	 	
-//	public function getAddressData($address)
-//	{
-//
-//		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address='.urlencode($address) .'&sensor=false&language=de';
-//		$content = $this->getContent($url);
-//		
-//		$status = null;	
-//		if(!empty($content))
-//		{
-//			$json = new Services_JSON();
-//			$status = $json->decode($content);
-//		}
-//
-//		return $status;
-//	}
-	
-//	public function resolveLocation($address)
-//	{
-//		$mainframe = JFactory::getApplication();
-//    $coords = array();
-//		$data = $this->getAddressData($address);
-//		//$mainframe->enqueueMessage(JText::_('google -> '.'<pre>'.print_r($data,true).'</pre>' ),'');
-//		if($data){
-//			if($data->status == 'OK')
-//			{
-//				$this->latitude  = $data->results[0]->geometry->location->lat;
-//				$coords['latitude'] = $data->results[0]->geometry->location->lat; 
-//				$this->longitude = $data->results[0]->geometry->location->lng;
-//				$coords['longitude'] = $data->results[0]->geometry->location->lng;
-//				
-//				for ($a=0; $a < sizeof($data->results[0]->address_components); $a++ )
-//				{
-//        switch($data->results[0]->address_components[$a]->types[0])
-//        {
-//        case 'administrative_area_level_1':
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-//        break;
-//        
-//        case 'administrative_area_level_2':
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-//        break;
-//        
-//        case 'administrative_area_level_3':
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-//        $coords['COM_JOOMLEAGUE_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-//        break;
-//
-//        case 'locality':
-//        $coords['COM_JOOMLEAGUE_LOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-//        break;
-//        
-//        case 'sublocality':
-//        $coords['COM_JOOMLEAGUE_SUBLOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-//        break;
-//                        
-//        }
-//                
-//        
-//        }
-//				
-//				
-//				return $coords;
-//			}
-//		}
-//	}
-	
-//		// Return content of the given url
-//	static public function getContent($url , $raw = false , $headerOnly = false)
-//	{
-//		if (!$url)
-//			return false;
-//		
-//		if (function_exists('curl_init'))
-//		{
-//			$ch			= curl_init();
-//			curl_setopt($ch, CURLOPT_URL, $url);
-//			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//			curl_setopt($ch, CURLOPT_HEADER, true );
-//			
-//			if($raw){
-//				curl_setopt($ch, CURLOPT_BINARYTRANSFER, true );
-//			}
-//
-//			$response	= curl_exec($ch);
-//			
-//			$curl_errno	= curl_errno($ch);
-//			$curl_error	= curl_error($ch);
-//			
-//			if ($curl_errno!=0)
-//			{
-//				$mainframe	= JFactory::getApplication();
-//				$err		= 'CURL error : '.$curl_errno.' '.$curl_error;
-//				$mainframe->enqueueMessage($err, 'error');
-//			}
-//			
-//			$code		= curl_getinfo( $ch , CURLINFO_HTTP_CODE );
-//
-//			// For redirects, we need to handle this properly instead of using CURLOPT_FOLLOWLOCATION
-//			// as it doesn't work with safe_mode or openbase_dir set.
-//			if( $code == 301 || $code == 302 )
-//			{
-//				list( $headers , $body ) = explode( "\r\n\r\n" , $response , 2 );
-//				
-//				preg_match( "/(Location:|URI:)(.*?)\n/" , $headers , $matches );
-//				
-//				if( !empty( $matches ) && isset( $matches[2] ) )
-//				{
-//					$url	= JString::trim( $matches[2] );
-//					curl_setopt( $ch , CURLOPT_URL , $url );
-//					curl_setopt( $ch , CURLOPT_RETURNTRANSFER, 1);
-//					curl_setopt( $ch , CURLOPT_HEADER, true );
-//					$response	= curl_exec( $ch );
-//				}
-//			}
-//			
-//			
-//			if(!$raw){
-//				list( $headers , $body )	= explode( "\r\n\r\n" , $response , 2 );
-//			}
-//			
-//			$ret	= $raw ? $response : $body;
-//			$ret	= $headerOnly ? $headers : $ret;
-//			
-//			curl_close($ch);
-//			return $ret;
-//		}
-//	
-//		// CURL unavailable on this install
-//		return false;
-//	}
-	
-	
-	
-	
-	
 	
 }
 ?>
