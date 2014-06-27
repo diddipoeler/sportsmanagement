@@ -5,11 +5,14 @@ defined('_JEXEC') or die('Restricted access');
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
 //JHTML::_('behavior.tooltip');
-//JHTML::_('behavior.modal');
-//jimport('joomla.html.pane');
+JHtml::_('behavior.modal');
+jimport('joomla.html.pane');
 
 //echo 'form<pre>'.print_r($this->form , true).'</pre><br>';
 //echo 'club<pre>'.print_r($this->club , true).'</pre><br>';
+
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 
 ?>
 <form name="adminForm" id="adminForm" method="post" action="index.php">
@@ -46,21 +49,35 @@ defined('_JEXEC') or die('Restricted access');
               
 
 <?php
+echo JHtml::_('sliders.start');
+foreach ($fieldsets as $fieldset) :
+if ($fieldset->name == 'details')
+{
+    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo $this->loadTemplate('details');
+}
+if ($fieldset->name == 'picture')
+{
+    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo $this->loadTemplate('picture');
+}
+if ($fieldset->name == 'extended')
+{
+    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo $this->loadTemplate('extended');
+}
+endforeach;
+echo JHtml::_('sliders.end');
 
+//echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));    
+//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
+//echo $this->loadTemplate('details');
+//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
+//echo $this->loadTemplate('picture');
+//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
+//echo $this->loadTemplate('extended');
+//echo JHtml::_('tabs.end');
 
-echo JHTML::_('tabs.start','tabs', array('useCookie'=>1));    
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
-echo $this->loadTemplate('details');
-
-
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
-echo $this->loadTemplate('picture');
-
-
-echo JHTML::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
-echo $this->loadTemplate('extended');
-
-echo JHTML::_('tabs.end');
 
 ?>
 	<div class="clr"></div>
@@ -69,6 +86,6 @@ echo JHTML::_('tabs.end');
 	<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
     <input type="hidden" name="task" value="editclub.save" />	
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 	
 </form>
