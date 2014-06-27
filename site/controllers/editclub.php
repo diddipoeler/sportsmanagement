@@ -103,7 +103,8 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 			$address_parts[] = JSMCountries::getShortCountryName($post['country']);
 		}
 		$address = implode(', ', $address_parts);
-		$coords = $model->resolveLocation($address);
+		//$coords = $model->resolveLocation($address);
+        $coords = sportsmanagementHelper::resolveLocation($address);
 		
 		//$mainframe->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
 		
