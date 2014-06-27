@@ -135,7 +135,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		
     //$mainframe->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 		
-		if ($model->store($post))
+		if ($model->save($post))
 		{
 			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
 			$createTeam=JRequest::getVar('createTeam');
@@ -148,7 +148,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 				$tpost['name']= $team_name;
 				$tpost['short_name']= $team_short_name ;
 				$tpost['club_id']= $teammodel->getDbo()->insertid();
-				$teammodel->store($tpost);
+				$teammodel->save($tpost);
 			}
             $type='message';
 		}
