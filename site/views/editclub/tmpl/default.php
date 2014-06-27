@@ -32,7 +32,7 @@ $fieldsets = $this->form->getFieldsets();
 		?>
         <fieldset>
         <div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editclub.save');">
+					<button type="button" onclick="Joomla.submitform('editclub.apply');">
 						<?php echo JText::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('editclub.save');">
 						<?php echo JText::_('JSAVE');?></button>

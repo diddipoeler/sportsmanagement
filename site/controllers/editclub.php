@@ -13,7 +13,20 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerEditClub extends JControllerForm
 {
 
+/**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
 
+		// Map the apply task to the save method.
+		$this->registerTask('apply', 'save');
+	}
 
 public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
         {
@@ -160,21 +173,24 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		
         // Check the table in so it can be edited.... we are done with it anyway
 		$model->checkin();
-		/*
+        
+		
         if ($this->getTask()=='save')
 		{
-			$link='index.php?option=com_joomleague&view=editclub';
+			//$link='index.php?option=com_joomleague&view=editclub';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 		}
 		else
 		{
-			$link='index.php?option=com_joomleague&view=editclub&cid='.$post['id'];
+			//$link='index.php?option=com_joomleague&view=editclub&cid='.$post['id'];
+            $this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
 		}
-        */
+        
         
         //$link = JoomleagueHelperRoute::getClubInfoRoute( $project_id, $post['id'] );
 		//$this->setRedirect($link,$msg);
         
-        $this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
+        //$this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
         
 	}
 
