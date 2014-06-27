@@ -113,7 +113,7 @@ echo $this->loadTemplate('picture');
 
 echo JHtml::_('tabs.panel', JText::_('PANEL_3_TITLE'), 'panel_3_id');
 //echo 'Panel 3 content can go here.';
-echo $this->loadTemplate('extended');
+//echo $this->loadTemplate('extended');
  
 echo JHtml::_('tabs.end');
 
