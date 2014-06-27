@@ -7,6 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 //JHTML::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 jimport('joomla.html.pane');
+jimport('joomla.html.html.tabs' );
 
 //echo 'form<pre>'.print_r($this->form , true).'</pre><br>';
 //echo 'club<pre>'.print_r($this->club , true).'</pre><br>';
@@ -49,6 +50,33 @@ $fieldsets = $this->form->getFieldsets();
               
 
 <?php
+
+$options = array(
+    'onActive' => 'function(title, description){
+        description.setStyle("display", "block");
+        title.addClass("open").removeClass("closed");
+    }',
+    'onBackground' => 'function(title, description){
+        description.setStyle("display", "none");
+        title.addClass("closed").removeClass("open");
+    }',
+    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
+    'useCookie' => true, // this must not be a string. Don't use quotes.
+);
+ 
+echo JHtml::_('tabs.start', 'tab_group_id', $options);
+ 
+echo JHtml::_('tabs.panel', JText::_('PANEL_1_TITLE'), 'panel_1_id');
+echo 'Panel 1 content can go here.';
+echo $this->loadTemplate('details');
+ 
+echo JHtml::_('tabs.panel', JText::_('PANEL_2_TITLE'), 'panel_2_id');
+echo 'Panel 2 content can go here.';
+echo $this->loadTemplate('picture');
+ 
+echo JHtml::_('tabs.end');
+
+/*
 echo JHtml::_('sliders.start');
 foreach ($fieldsets as $fieldset) :
 if ($fieldset->name == 'details')
@@ -68,6 +96,7 @@ if ($fieldset->name == 'extended')
 }
 endforeach;
 echo JHtml::_('sliders.end');
+*/
 
 //echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));    
 //echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');

@@ -100,7 +100,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		}
 		if (!empty($post['country']))
 		{
-			$address_parts[] = Countries::getShortCountryName($post['country']);
+			$address_parts[] = JSMCountries::getShortCountryName($post['country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = $model->resolveLocation($address);
