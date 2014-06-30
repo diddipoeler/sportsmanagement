@@ -156,11 +156,11 @@ class sportsmanagementViewMatches extends JView
             
             if ( $this->project_art_id == 3 )
             {
-                $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON'));
+                $teams[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON'));
             }
             else
             {
-                $teams[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+                $teams[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
             }
             
 			$divhomeid = 0;
@@ -173,7 +173,7 @@ class sportsmanagementViewMatches extends JView
 				$row->divawayid =0;
 			}
 			if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id,$divhomeid)){
-				$teams=array_merge($teams,$projectteams);
+				$teams = array_merge($teams,$projectteams);
 			}
 			$lists['teams_'+$divhomeid] = $teams;
 			unset($teams);

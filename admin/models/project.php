@@ -323,18 +323,13 @@ class sportsmanagementModelProject extends JModelAdmin
         {
             // Select some fields
 		    $query->select('pt.id AS value');
-            $query->select('CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text');
+            //$query->select('CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text');
+            $query->select('t.name AS text');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
             $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
             $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         }
-/*
-		$query = ' SELECT	pt.id AS value, '
-		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
-		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
-		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
-		. ' WHERE pt.project_id = ' . $project_id;
-*/		
+		
         $query->where('pt.project_id = ' . $project_id);
         
         if( $iDivisionId > 0 )  
