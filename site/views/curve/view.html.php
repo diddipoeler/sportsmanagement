@@ -91,7 +91,7 @@ class sportsmanagementViewCurve extends JView
 				foreach ($divisions as $d)
 				{
 					$options = array();
-					$teams = $model->getTeams($d->id);
+					$teams = sportsmanagementModelProject::getTeams($d->id);
 					$i=0;
 					foreach ((array) $teams as $t) {
 						$options[] = JHtml::_( 'select.option', $t->id, $t->name );
