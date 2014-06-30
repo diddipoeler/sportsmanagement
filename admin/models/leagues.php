@@ -149,7 +149,7 @@ class sportsmanagementModelLeagues extends JModelList
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = obj.agegroup_id');
         
         $query->select('fed.name AS fedname');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations AS fed ON fed.id = obj.federation');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS fed ON fed.id = obj.associations');
         
         if ($search)
 		{
