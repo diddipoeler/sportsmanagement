@@ -91,7 +91,10 @@ class sportsmanagementViewEditClub extends JView
 		$this->assignRef( 'extended', $extended );
 */        
 
-		$this->assignRef('lists',$lists);
+		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
+		$this->assignRef( 'extended', $extended );
+        
+        $this->assignRef('lists',$lists);
 
 
         $this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
