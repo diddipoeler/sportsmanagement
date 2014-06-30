@@ -805,7 +805,7 @@ class sportsmanagementModelProject extends JModel
 		if ($division != 0)
 		{
 			$divids = self::getDivisionTreeIds($division);
-			foreach ((array)$this->_getTeams() as $t)
+			foreach ((array)self::_getTeams() as $t)
 			{
 				if (in_array($t->division_id,$divids))
 				{
