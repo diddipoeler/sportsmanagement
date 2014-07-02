@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="search" method="upgrade">
-	<name>Search - SportsManagement Suche</name>
+	<name>PLG_SEARCH_SPORTSMANAGEMENT_XML</name>
 	<creationDate>2014</creationDate>
 	<author>JSM Developers</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
