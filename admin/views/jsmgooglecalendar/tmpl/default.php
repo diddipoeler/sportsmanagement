@@ -3,13 +3,20 @@
 
 defined('_JEXEC') or die();
 
-JFactory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');
+JFactory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
+JHtml::_('behavior.tooltip');
+
+//JHtml::_('behavior.modal');
+JHtml::_('behavior.modal', 'a.modal');
+
+$templatesToLoad = array('footer');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div style="width:500px;">
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_WELCOME'); ?></h2>
 <p>
 <?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_INTRO'); ?>
-</p>
+</p> 
 <br>
 
 <div id="cpanel" style="float:left">
@@ -37,3 +44,8 @@ JFactory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/js
     </div>
 </div>
 </div>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?> 

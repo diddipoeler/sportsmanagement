@@ -53,7 +53,8 @@ display:block;
 	float: left;
 	margin-bottom: 5px;
 	border:none;
-  height:135px
+  height:135px;
+  font-size: 1.0em;
 }
 
 #cpanel div.icon a, .cpanel div.icon a{
@@ -68,6 +69,11 @@ display:block;
 	vertical-align: middle;
 	text-decoration: none;
 	border:none;
+  border-radius:0px;
+  box-shadow:none;
+  transition-duration:0.0s;
+  transition-property:none;
+  padding:0px;
 }
 #cpanel div.icon img, .cpanel div.icon img{
 background:#eee;
