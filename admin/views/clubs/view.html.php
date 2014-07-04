@@ -90,6 +90,22 @@ class sportsmanagementViewClubs extends JView
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        //build the html select list for seasons
+		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
+        $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
+		$allSeasons = $mdlSeasons->getSeasons();
+		$seasons = array_merge($seasons,$allSeasons);
+        
+		$lists['seasons'] = JHtml::_( 'select.genericList',
+									$seasons,
+									'filter_season',
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+									'id',
+									'name',
+									$this->state->get('filter.season'));
+
+		unset($seasons);
 
 //		// state filter
 //		$lists['state'] = JHtml::_('grid.state',$filter_state);

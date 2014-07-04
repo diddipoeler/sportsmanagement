@@ -110,6 +110,8 @@ class sportsmanagementModelClubs extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.season', 'filter_season', '');
+		$this->setState('filter.season', $temp_user_request);
         
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
@@ -133,6 +135,7 @@ class sportsmanagementModelClubs extends JModelList
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
+        $search_season = $this->getState('filter.season');
 
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -150,6 +153,13 @@ class sportsmanagementModelClubs extends JModelList
         if ($search_nation)
 		{
         $query->where("a.country = '".$search_nation."'");
+        }
+        
+        if ($search_season)
+		{
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON c.id = t.club_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON t.id = st.team_id ');
+        $query->where('st.season_id = '.$search_season);
         }
         
         
