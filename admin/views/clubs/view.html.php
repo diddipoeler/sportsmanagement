@@ -133,6 +133,9 @@ class sportsmanagementViewClubs extends JView
         
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE'),'clubs');
+        JToolBarHelper::apply('clubs.saveshort');
+        
+        JToolBarHelper::divider();
 		JToolBarHelper::addNew('club.add');
 		JToolBarHelper::editList('club.edit');
 		JToolBarHelper::custom('club.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

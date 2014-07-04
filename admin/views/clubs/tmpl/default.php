@@ -128,8 +128,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 					
                     <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE','a.zipcode',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    <th width="">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CITY','a.location',$this->sortDirection,$this->sortColumn); ?>
 					</th>
+                    <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS','a.address',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+                    
+                    
+                    
                     <th width="">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE','a.latitude',$this->sortDirection,$this->sortColumn); ?>
 					</th>
@@ -321,8 +330,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							}
 							?>
 						</td>
-						
+						<td class=""><?php echo $row->zipcode; ?></td>
                         <td class=""><?php echo $row->location; ?></td>
+                        <td class=""><?php echo $row->address; ?></td>
                         <td class=""><?php echo $row->latitude; ?></td>
                         <td class=""><?php echo $row->longitude; ?></td>
                         
