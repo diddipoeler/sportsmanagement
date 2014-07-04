@@ -157,7 +157,7 @@ class sportsmanagementModelClubs extends JModelList
         
         if ($search_season)
 		{
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON c.id = t.club_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON a.id = t.club_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON t.id = st.team_id ');
         $query->where('st.season_id = '.$search_season);
         }
