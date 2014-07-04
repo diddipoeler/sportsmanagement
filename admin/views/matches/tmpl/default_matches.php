@@ -486,8 +486,9 @@ fieldset button {
 								?>
 								<td>
 									<?php
+                                    $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 									echo JHtml::_(	'select.genericlist',$this->lists['match_result_type'],
-													'match_result_type'.$row->id,'class="inputbox" size="1"','value','text',
+													'match_result_type'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
 													$row->match_result_type);
 									?>
 								</td>
