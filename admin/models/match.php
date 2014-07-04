@@ -443,6 +443,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
             $tblMatch->match_date = $post['match_date'.$pks[$x]];
             $tblMatch->result_type = $post['result_type'.$pks[$x]];
+            $tblMatch->match_result_type = $post['match_result_type'.$pks[$x]];
             $tblMatch->crowd = $post['crowd'.$pks[$x]];
             $tblMatch->round_id	= $post['round_id'.$pks[$x]];
             $tblMatch->division_id	= $post['division_id'.$pks[$x]];
@@ -488,12 +489,22 @@ class sportsmanagementModelMatch extends JModelAdmin
             
             if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
             {    
-                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post['team1_result'.$pks[$x]], true).'</pre><br>','Notice');
-                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post['team2_result'.$pks[$x]], true).'</pre><br>','Notice');
-                
             $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
             $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
             }
+            
+            if ( $post['team1_result_ot'.$pks[$x]] != '' && $post['team2_result_ot'.$pks[$x]] != '' )    
+            {    
+            $tblMatch->team1_result_ot	= $post['team1_result_ot'.$pks[$x]];
+            $tblMatch->team2_result_ot	= $post['team2_result_ot'.$pks[$x]];
+            }
+            
+            if ( $post['team1_result_so'.$pks[$x]] != '' && $post['team2_result_so'.$pks[$x]] != '' )    
+            {    
+            $tblMatch->team1_result_so	= $post['team1_result_so'.$pks[$x]];
+            $tblMatch->team2_result_so	= $post['team2_result_so'.$pks[$x]];
+            }
+            
                 
             }
             
