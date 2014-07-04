@@ -66,8 +66,8 @@ class sportsmanagementViewClubs extends JView
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-		$uri	= JFactory::getURI();
-        $model	= $this->getModel();
+		$uri = JFactory::getURI();
+        $model = $this->getModel();
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -88,17 +88,17 @@ class sportsmanagementViewClubs extends JView
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$total		= $this->get('Total');
+		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
 //		// state filter
 //		$lists['state'] = JHtml::_('grid.state',$filter_state);
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
 		
-        $lists['nation']=$nation;
+        $lists['nation'] = $nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',

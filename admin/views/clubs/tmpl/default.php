@@ -148,11 +148,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     
                     
                     
-                    
-                    <th width="20">
+                    <th width="">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','a.country',$this->sortDirection,$this->sortColumn); ?>
 					</th>
-					<th width="10%">
+                    <th width="">
+						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY','a.country',$this->sortDirection,$this->sortColumn); ?>
+					</th>
+					<th width="">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','a.ordering',$this->sortDirection,$this->sortColumn);
 						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'clubs.saveorder');
@@ -163,7 +165,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan='6'>
             <?php echo $this->pagination->getResultsCounter();?>
             </td>
@@ -171,6 +173,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			<tbody>
 				<?php
 				$k=0;
+                
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
@@ -328,14 +331,42 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 							}
-							?>
+						
+/*
+<td class=""><?php echo $row->zipcode; ?></td>
+<td class=""><?php echo $row->location; ?></td>
+<td class=""><?php echo $row->address; ?></td>
+*/                        
+                        	?>
 						</td>
-						<td class=""><?php echo $row->zipcode; ?></td>
-                        <td class=""><?php echo $row->location; ?></td>
-                        <td class=""><?php echo $row->address; ?></td>
+                        <td class="">
+								<input<?php echo $inputappend; ?>	type="text" size="10" class="inputbox"
+																	name="zipcode<?php echo $row->id; ?>"
+																	value="<?php echo $row->zipcode; ?>"
+																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+							</td>
+						<td class="">
+								<input<?php echo $inputappend; ?>	type="text" size="50" class="inputbox"
+																	name="location<?php echo $row->id; ?>"
+																	value="<?php echo $row->location; ?>"
+																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+							</td>
+                        <td class="">
+								<input<?php echo $inputappend; ?>	type="text" size="50" class="inputbox"
+																	name="address<?php echo $row->id; ?>"
+																	value="<?php echo $row->address; ?>"
+																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+							</td>
+                            
                         <td class=""><?php echo $row->latitude; ?></td>
                         <td class=""><?php echo $row->longitude; ?></td>
-                        
+                        <td class="center">
+                        <?php 
+                        $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        echo JHtml::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
+												'class="inputbox" size="1"'.$append,'value','text',$row->country); 
+                        ?>
+                        </td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="order">
 							<span>

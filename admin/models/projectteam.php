@@ -177,7 +177,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	}
     
     /**
-	 * Method to update checked project referees
+	 * Method to update checked project teams
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
@@ -187,12 +187,12 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	{
 		$mainframe =& JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        if ( $show_debug_info )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -222,8 +222,9 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 			$tblProjectteam->diffgoals_finally = $post['diffgoals_finally' . $pks[$x]];
 
 			if(!$tblProjectteam->store()) {
-				$this->setError($this->_db->getErrorMsg());
-				$result=false;
+				//$this->setError($this->_db->getErrorMsg());
+                $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
 			}
 		}
 		return $result;

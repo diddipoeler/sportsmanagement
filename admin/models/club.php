@@ -230,6 +230,84 @@ class sportsmanagementModelclub extends JModelAdmin
 	}
     
     /**
+	 * Method to update checked project teams
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort()
+	{
+		$mainframe =& JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
+        
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+		  $address_parts = array();
+          $address_parts2 = array();
+			$tblClub = & $this->getTable();
+            
+            
+			$tblClub->id	= $pks[$x];
+            $tblClub->zipcode = $post['zipcode' . $pks[$x]];
+			$tblClub->location = $post['location' .$pks[$x]];
+            $tblClub->address = $post['address' .$pks[$x]];
+            $tblClub->country = $post['country' .$pks[$x]];
+            
+            if (!empty($tblClub->address))
+		{
+			$address_parts[] = $tblClub->address;
+		}
+		
+		if (!empty($tblClub->location))
+		{
+			if (!empty($tblClub->zipcode))
+			{
+				$address_parts[] = $tblClub->zipcode. ' ' .$tblClub->location;
+                $address_parts2[] = $tblClub->zipcode. ' ' .$tblClub->location;
+			}
+			else
+			{
+				$address_parts[] = $tblClub->location;
+                $address_parts2[] = $tblClub->location;
+			}
+		}
+		if (!empty($tblClub->country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($tblClub->country);
+            $address_parts2[] = JSMCountries::getShortCountryName($tblClub->country);
+		}
+		$address = implode(', ', $address_parts);
+		$coords = sportsmanagementHelper::resolveLocation($address);
+        
+        if ( $coords )
+        {
+		$tblClub->latitude = $coords['latitude'];
+		$tblClub->longitude = $coords['longitude'];
+        }
+
+			if(!$tblClub->store()) 
+            {
+				//$this->setError($this->_db->getErrorMsg());
+                $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
+			}
+		}
+		return $result;
+	}
+    
+    /**
 	 * Method to save the form data.
 	 *
 	 * @param	array	The form data.
