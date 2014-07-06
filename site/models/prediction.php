@@ -1755,6 +1755,8 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         
         // Select some fields
     $query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
+    // normale spielzeit
+    $query->select('m.team1_result_split AS homeResultSplit,m.team2_result_split AS awayResultSplit');
     // verlaengerung
     $query->select('m.team1_result_ot AS homeResultOT,m.team2_result_ot AS awayResultOT');
     // elfmeter

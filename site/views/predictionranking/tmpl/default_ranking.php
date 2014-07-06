@@ -315,6 +315,19 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                                 {
                                     case 0:
                                     // normale spielzeit wird benutzt 
+                                    // wenn aber die verlängerung oder das elfmeterergebnis eingetragen wurde,
+                                    // dann den endstand der regulaeren spielzeit nehmen.
+                                    if ( !is_null($memberPredictionPoint->homeResultOT) || !is_null($memberPredictionPoint->awayResultOT) || 
+                                    !is_null($memberPredictionPoint->homeResultSO) || !is_null($memberPredictionPoint->awayResultSO)
+                                    )
+                                    {
+                                    $partresults1 = explode(";",$memberPredictionPoint->homeResultSplit);
+		                            $partresults2 = explode(";",$memberPredictionPoint->awayResultSplit);
+                                    $memberPredictionPoint->homeResult = array_pop($partresults1);;
+                                    $memberPredictionPoint->awayResult = array_pop($partresults2);;
+                                    }    
+                                    
+                                    
                                     break;
                                     case 1:
                                     // verlaengerung
