@@ -176,17 +176,15 @@ class sportsmanagementModelPrediction extends JModel
   
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
-	echo '<br />getChampionPoints predictionGameID <pre>~' . print_r($this->predictionGameID,true) . '~</pre><br />';
-	echo '<br />getChampionPoints pjID <pre>~' . print_r($this->pjID,true) . '~</pre><br />';
-	
-  echo '<br />getChampionPoints champion-id <pre>~' . print_r($resultchamp,true) . '~</pre><br />';
-	echo '<br />getChampionPoints champion-points <pre>~' . print_r($resultchamppoints,true) . '~</pre><br />';
-	echo '<br />getChampionPoints champ_tipp <pre>~' . print_r($champ_tipp,true) . '~</pre><br />';
-	
-	echo '<br />getChampionPoints sChampTeamsList <pre>~' . print_r($sChampTeamsList,true) . '~</pre><br />';
-	echo '<br />getChampionPoints dChampTeamsList <pre>~' . print_r($dChampTeamsList,true) . '~</pre><br />';
-	echo '<br />getChampionPoints champTeamsList <pre>~' . print_r($champTeamsList,true) . '~</pre><br />';
-	
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r($this->pjID,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamp<br><pre>'.print_r($resultchamp,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamppoints<br><pre>'.print_r($resultchamppoints,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champ_tipp<br><pre>'.print_r($champ_tipp,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList<br><pre>'.print_r($sChampTeamsList,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dChampTeamsList<br><pre>'.print_r($dChampTeamsList,true).'</pre>'),'');
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champTeamsList<br><pre>'.print_r($champTeamsList,true).'</pre>'),'');
+
   }
 				
 				
@@ -499,7 +497,7 @@ class sportsmanagementModelPrediction extends JModel
           $query->where('p.id = '.$db->Quote(self::$predictionGameID));
 
 		$db->setQuery($query);
-		if (!$result=$db->loadResult())
+		if ( !$result = $db->loadResult() )
 		{
 			if (isset($this->predictionGame) && ($this->predictionGame->master_template))
 			{
@@ -508,7 +506,7 @@ class sportsmanagementModelPrediction extends JModel
              $query->where('p.id = '.$db->Quote($this->predictionGame->master_template));
 
 				$db->setQuery($query);
-				if (!$result=$db->loadResult())
+				if ( !$result = $db->loadResult() )
 				{
 					JError::raiseNotice(500,JText::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE',$template,$predictionGame->master_template));
 					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'));
@@ -564,22 +562,22 @@ class sportsmanagementModelPrediction extends JModel
 	{
 		if ($date <> '')
 		{
-			$datum=split("-| |:",$date);
+			$datum = split("-| |:",$date);
 		}
 		else
 		{
-			$datum=preg_split("/-| |:/",JHTML::_('date',date('Y-m-d H:i:s',time()),"%Y-%m-%d %H:%M:%S"));
+			$datum = preg_split("/-| |:/",JHTML::_('date',date('Y-m-d H:i:s',time()),"%Y-%m-%d %H:%M:%S"));
 		}
 		if ($offset)
 		{
-			$serveroffset=explode(':',$offset);
-			$timestampoffset=($serveroffset[0] * 3600) + ($serveroffset[1] * 60);
+			$serveroffset = explode(':',$offset);
+			$timestampoffset = ($serveroffset[0] * 3600) + ($serveroffset[1] * 60);
 		}
 		else
 		{
-			$timestampoffset=0;
+			$timestampoffset = 0;
 		}
-		$result=mktime($datum[3],$datum[4],$datum[5],$datum[1],$datum[2],$datum[0]) + $timestampoffset;
+		$result = mktime($datum[3],$datum[4],$datum[5],$datum[1],$datum[2],$datum[0]) + $timestampoffset;
 		return $result;
 	}
 
@@ -651,7 +649,7 @@ class sportsmanagementModelPrediction extends JModel
 		$query = $db->getQuery(true);
         
 	//$teamName='name';
-		if ($teamID==0)
+		if ( $teamID==0 )
         {
             return '#Error1 teamID==0 in '.__METHOD__;
         }
@@ -665,7 +663,7 @@ class sportsmanagementModelPrediction extends JModel
 
 		$db->setQuery($query);
 		$db->query();
-		if ($object = $db->loadObject())
+		if ( $object = $db->loadObject() )
 		{
 			return $object->name;
 		}
@@ -687,7 +685,7 @@ class sportsmanagementModelPrediction extends JModel
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-		if ($teamID == 0) 
+		if ( $teamID == 0 ) 
         { 
             return '#Error1 in '.__METHOD__; 
         }
@@ -701,7 +699,7 @@ class sportsmanagementModelPrediction extends JModel
                     
 		$db->setQuery($query);
 		$db->query();
-		if ($object=$db->loadObject())
+		if ( $object = $db->loadObject() )
 		{
 			return $object->logo_small;
 		}

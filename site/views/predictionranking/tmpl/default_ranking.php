@@ -299,6 +299,7 @@ echo $this->pagination->getListFooter();
 					$totalDiff = 0;
 					$totalTend = 0;
 					$totalJoker = 0;
+                    
 					if (!empty($memberPredictionPoints))
 					{
 						foreach ($memberPredictionPoints AS $memberPredictionPoint)
@@ -317,46 +318,60 @@ echo $this->pagination->getListFooter();
 																				$memberPredictionPoint->prJoker,
 																				$memberPredictionPoint->homeDecision,
 																				$memberPredictionPoint->awayDecision);
+                                // neue punkte berechnen
 								$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+                                
 								//if (!is_null($memberPredictionPoint->prPoints))
 								{
-									$points=$memberPredictionPoint->prPoints;
-									if ($newPoints!=$points)
+									$points = $memberPredictionPoint->prPoints;
+									if ( $newPoints != $points )
 									{
 										// this check also should be done if the result is not displayed
 										$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(	$memberPredictionPoint,
 																									$predictionProject,
 																									true);
-										$points=$newPoints;
+										$points = $newPoints;
 									}
-									$totalPoints=$totalPoints+$points;
+									$totalPoints = $totalPoints + $points;
 								}
-								if (!is_null($memberPredictionPoint->prJoker)){$totalJoker=$totalJoker+$memberPredictionPoint->prJoker;}
-								if (!is_null($memberPredictionPoint->prTop)){$totalTop=$totalTop+$memberPredictionPoint->prTop;}
-								if (!is_null($memberPredictionPoint->prDiff)){$totalDiff=$totalDiff+$memberPredictionPoint->prDiff;}
-								if (!is_null($memberPredictionPoint->prTend)){$totalTend=$totalTend+$memberPredictionPoint->prTend;}
+								if (!is_null($memberPredictionPoint->prJoker))
+                                {
+                                    $totalJoker = $totalJoker + $memberPredictionPoint->prJoker;
+                                }
+								if (!is_null($memberPredictionPoint->prTop))
+                                {
+                                    $totalTop = $totalTop + $memberPredictionPoint->prTop;
+                                }
+								if (!is_null($memberPredictionPoint->prDiff))
+                                {
+                                    $totalDiff = $totalDiff + $memberPredictionPoint->prDiff;
+                                }
+								if (!is_null($memberPredictionPoint->prTend))
+                                {
+                                    $totalTend = $totalTend + $memberPredictionPoint->prTend;
+                                }
 							}
 						}
 					}
 
           $ChampPoints = sportsmanagementModelPrediction::getChampionPoints($member->champ_tipp);
           
-					$membersResultsArray[$member->pmID]['pg_group_name']				= $member->pg_group_name;
-                    $membersResultsArray[$member->pmID]['pg_group_id']				= $member->pg_group_id;
-                    $membersResultsArray[$member->pmID]['rank']				= 0;
-					$membersResultsArray[$member->pmID]['predictionsCount']	= $predictionsCount;
-					$membersResultsArray[$member->pmID]['totalPoints']		= $totalPoints + $ChampPoints;
-					$membersResultsArray[$member->pmID]['totalTop']			= $totalTop;
-					$membersResultsArray[$member->pmID]['totalDiff']		= $totalDiff;
-					$membersResultsArray[$member->pmID]['totalTend']		= $totalTend;
-					$membersResultsArray[$member->pmID]['totalJoker']		= $totalJoker;
+					$membersResultsArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
+                    $membersResultsArray[$member->pmID]['pg_group_id'] = $member->pg_group_id;
+                    $membersResultsArray[$member->pmID]['rank'] = 0;
+					$membersResultsArray[$member->pmID]['predictionsCount'] = $predictionsCount;
+					$membersResultsArray[$member->pmID]['totalPoints'] = $totalPoints + $ChampPoints;
+					$membersResultsArray[$member->pmID]['totalTop'] = $totalTop;
+					$membersResultsArray[$member->pmID]['totalDiff'] = $totalDiff;
+					$membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
+					$membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
                     
                     if ( $this->model->pggrouprank )
                     {
                     // für die gruppentabelle
-                    $groupmembersResultsArray[$member->pg_group_id]['pg_group_id']			= $member->pg_group_id;
+                    $groupmembersResultsArray[$member->pg_group_id]['pg_group_id'] = $member->pg_group_id;
                     $groupmembersResultsArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
-                    $groupmembersResultsArray[$member->pg_group_id]['rank']				= 0;
+                    $groupmembersResultsArray[$member->pg_group_id]['rank'] = 0;
 					$groupmembersResultsArray[$member->pg_group_id]['predictionsCount']	+= $predictionsCount;
 					$groupmembersResultsArray[$member->pg_group_id]['totalPoints']		+= $totalPoints + $ChampPoints;
 					$groupmembersResultsArray[$member->pg_group_id]['totalTop']			+= $totalTop;

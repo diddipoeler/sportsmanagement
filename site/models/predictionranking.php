@@ -252,7 +252,7 @@ function getPagination()
 	foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]]=$value[1];}    
     
     $projectteamid = $champTeamsList[$ProjectID];  
-    $teaminfo = JoomleagueModelProject::getTeaminfo($projectteamid);
+    $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid);
 
     return $teaminfo;
       
