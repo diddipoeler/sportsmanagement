@@ -274,10 +274,10 @@ echo $this->pagination->getListFooter();
 				foreach ($memberList AS $member)
 				{
 
-					if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-          {
-          echo '<br />this->model->page<pre>~' . print_r($this->model->page,true) . '~</pre><br />';
-          }
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo '<br />this->model->page<pre>~' . print_r($this->model->page,true) . '~</pre><br />';
+}
                               
 					$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$showProjectID,
 																								sportsmanagementModelPrediction::$from,
@@ -285,10 +285,10 @@ echo $this->pagination->getListFooter();
 																								$member->user_id,
 																								sportsmanagementModelPrediction::$type);
 																								
-					if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-          {																			
-					echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
-					}
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{																			
+echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
+}
 					
 					
 					
@@ -310,6 +310,30 @@ echo $this->pagination->getListFooter();
 								(!is_null($memberPredictionPoint->awayDecision)))
 							{
 								$predictionsCount++;
+                                
+                                switch ( $this->config['use_match_result'] )
+                                {
+                                    case 0:
+                                    // normale spielzeit wird benutzt 
+                                    break;
+                                    case 1:
+                                    // verlaengerung
+                                    if ( !is_null($memberPredictionPoint->homeResultOT) || !is_null($memberPredictionPoint->awayResultOT) )
+                                    {
+                                        $memberPredictionPoint->homeResult = $memberPredictionPoint->homeResultOT;
+                                        $memberPredictionPoint->awayResult = $memberPredictionPoint->awayResultOT;
+                                    }
+                                    break;
+                                    case 2:
+                                    // elfmeter
+                                    if ( !is_null($memberPredictionPoint->homeResultSO) || !is_null($memberPredictionPoint->awayResultSO) )
+                                    {
+                                        $memberPredictionPoint->homeResult = $memberPredictionPoint->homeResultSO;
+                                        $memberPredictionPoint->awayResult = $memberPredictionPoint->awayResultSO;
+                                    }
+                                    break;
+                                }
+                                
 								$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
 																				$memberPredictionPoint->awayResult,
 																				$memberPredictionPoint->prTipp,

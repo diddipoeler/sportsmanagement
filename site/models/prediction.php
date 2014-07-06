@@ -1755,6 +1755,10 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         
         // Select some fields
     $query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
+    // verlaengerung
+    $query->select('m.team1_result_ot AS homeResultOT,m.team2_result_ot AS awayResultOT');
+    // elfmeter
+    $query->select('m.team1_result_so AS homeResultSO,m.team2_result_so AS awayResultSO');
     $query->select('pr.id AS prID,pr.user_id AS prUserID,pr.tipp AS prTipp,pr.tipp_home AS prHomeTipp,pr.tipp_away AS prAwayTipp,pr.joker AS prJoker,pr.points AS prPoints,pr.top AS prTop,pr.diff AS prDiff,pr.tend AS prTend');
     $query->select('pm.id AS pmID');
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
