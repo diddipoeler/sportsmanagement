@@ -256,13 +256,13 @@ class sportsmanagementViewprojectteams extends JView
         {
             JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE'),'projectpersons');
         }
+        
+        JToolBarHelper::custom('projectteams.setseasonid','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'),true);
 		JToolBarHelper::custom('projectteams.matchgroups','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'),true);
         JToolBarHelper::deleteList('', 'projectteams.delete');
 
 		JToolBarHelper::apply('projectteams.saveshort');
-		//JToolBarHelper::custom('projectteam.changeteams','move.png','move_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'),false);
         sportsmanagementHelper::ToolbarButton('changeteams','move',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
-		//JToolBarHelper::custom('projectteam.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'),false);
 		sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
         JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('JTOOLBAR_DUPLICATE'), true);
 		JToolBarHelper::divider();

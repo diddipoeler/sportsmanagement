@@ -87,6 +87,19 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
     
+    
+    /**
+     * sportsmanagementControllerprojectteams::setseasonid()
+     * 
+     * @return void
+     */
+    function setseasonid()
+	{
+	   $model = $this->getModel();
+       $model->setseasonid();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    } 
+    
   /**
 	 * Method to update checked projectteams
 	 *

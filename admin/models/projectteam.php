@@ -231,6 +231,33 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	}
     
     
+    
+    /**
+     * sportsmanagementModelprojectteam::setseasonid()
+     * 
+     * @return void
+     */
+    function setseasonid()
+    {
+        $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $post = JRequest::get('post');
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        
+        for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+        
+        
+        
+        }
+        
+    }
+        
     /**
      * sportsmanagementModelprojectteam::matchgroups()
      * 
