@@ -49,12 +49,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	<tr class="nextmatch">
 		<td class="teamlogo"><?php
 			$pic = $this->config['show_picture'];
-/**
- * 			echo sportsmanagementHelper::getPictureThumb($this->teams[0]->$pic, 
- * 								$this->teams[0]->name,
- * 								$this->config['team_picture_width'],
- * 								$this->config['team_picture_height'],1);
- */
         
         $picture = $this->teams[0]->$pic;
         if ( !JFile::exists(JPATH_SITE.DS.$picture) )
@@ -69,13 +63,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         </td>
 		<td class="vs">&nbsp;</td>
 		<td class="teamlogo"><?php
-			
-/**
- *             echo sportsmanagementHelper::getPictureThumb($this->teams[1]->$pic, 
- * 								$this->teams[1]->name,
- * 								$this->config['team_picture_width'],
- * 								$this->config['team_picture_height'],1);
- */
+
         $picture = $this->teams[1]->$pic;
         if ( !JFile::exists(JPATH_SITE.DS.$picture) )
         {

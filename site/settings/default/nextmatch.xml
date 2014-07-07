@@ -243,12 +243,15 @@
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 
+<!--
 		<field 	name="team_picture_height" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
+-->
 			
-	</fieldset>		
+	</fieldset>
+  		
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 
@@ -257,5 +260,6 @@
 				description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_EXPIRY_TIME">
 		</field>
 		
-	</fieldset>			
+	</fieldset>
+  			
 </form>
