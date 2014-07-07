@@ -559,6 +559,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 	</div>
 	<input type="hidden" name="task" value="" />
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
+    <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />

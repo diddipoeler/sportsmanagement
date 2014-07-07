@@ -245,8 +245,12 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $db = JFactory::getDbo();
         $post = JRequest::get('post');
         $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $project_id = $post['pid'];
+        $season_id = $post['season_id'];
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id , true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id , true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         for ($x=0; $x < count($pks); $x++)
 		{
@@ -272,7 +276,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $post = JRequest::get('post');
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         for ($x=0; $x < count($pks); $x++)
 		{
@@ -333,7 +337,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $post = JRequest::get('post');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
