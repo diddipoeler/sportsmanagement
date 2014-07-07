@@ -256,7 +256,15 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 		{
 		$projectteam_id	= $pks[$x];
         
+        $proTeam = JTable::getInstance( 'Projectteam', 'sportsmanagementTable' );
+		$proTeam->load( $projectteam_id );
         
+        // Create and populate an object.
+        $object = new stdClass();
+        $object->id = $proTeam->team_id;
+        $object->season_id = $season_id;
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id', $object, 'id');
         
         }
         
