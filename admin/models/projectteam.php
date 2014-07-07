@@ -266,6 +266,11 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         // Update their details in the table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id', $object, 'id');
         
+        if ( !$result )
+		{
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        
         }
         
     }
