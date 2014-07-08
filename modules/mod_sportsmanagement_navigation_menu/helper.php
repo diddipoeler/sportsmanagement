@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //jimport('joomla.application.component.model');
-//JModel::addIncludePath(JPATH_SITE.'/components/com_sportsmanagement/models', 'sportsmanagementModelAjax');
+//JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_sportsmanagement/models', 'sportsmanagementModelAjax');
 
 /**
  * modsportsmanagementNavigationMenuHelper

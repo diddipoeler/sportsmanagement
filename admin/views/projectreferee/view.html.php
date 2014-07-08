@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewProjectReferee extends JView
+class sportsmanagementViewProjectReferee extends JViewLegacy
 {
 
 	/**
@@ -91,12 +91,12 @@ class sportsmanagementViewProjectReferee extends JView
 		$this->script = $script;
         
         $this->project_id	= $this->item->project_id;
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         
         $person_id	= $this->item->person_id;;
-        $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
+        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
                       

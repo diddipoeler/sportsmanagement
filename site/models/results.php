@@ -52,7 +52,7 @@ JHtml::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelResults extends JModel
+class sportsmanagementModelResults extends JModelLegacy
 {
 	var $projectid	= 0;
 	var $divisionid	= 0;

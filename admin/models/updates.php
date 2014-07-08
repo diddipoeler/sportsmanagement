@@ -55,7 +55,7 @@ jimport('joomla.filesystem.folder');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelUpdates extends JModel
+class sportsmanagementModelUpdates extends JModelLegacy
 {
 
 	/**

@@ -53,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllercurrentseason extends JController
+class sportsmanagementControllercurrentseason extends JControllerLegacy
 {
 	protected $view_list = 'currentseasons';
     

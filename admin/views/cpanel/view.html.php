@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewcpanel extends JView
+class sportsmanagementViewcpanel extends JViewLegacy
 {
 	/**
 	 *  view display method
@@ -69,7 +69,7 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         $my_text = '';
         
-        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         // für den import die jl tabellen lesen

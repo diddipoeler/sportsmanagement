@@ -83,7 +83,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextsisimport extends JModel
+class sportsmanagementModeljlextsisimport extends JModelLegacy
 {
 
 var $_datas=array();

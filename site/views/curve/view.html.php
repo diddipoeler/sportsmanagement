@@ -51,7 +51,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS."assets".DS."classes".DS."open-flash-char
  * @version 2014
  * @access public
  */
-class sportsmanagementViewCurve extends JView
+class sportsmanagementViewCurve extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewCurve::display()

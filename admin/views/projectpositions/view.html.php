@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewprojectpositions extends JView
+class sportsmanagementViewprojectpositions extends JViewLegacy
 {
 
 	/**
@@ -94,7 +94,7 @@ class sportsmanagementViewprojectpositions extends JView
                 
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
 
 //		// table ordering
@@ -159,7 +159,7 @@ class sportsmanagementViewprojectpositions extends JView
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id); 
         
         if ($ress1 = $model->getSubPositions($project->sports_type_id))

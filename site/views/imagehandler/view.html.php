@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 
-class sportsmanagementViewImagehandler extends JView  {
+class sportsmanagementViewImagehandler extends JViewLegacy  {
 
 	/**
 	 * Image selection List

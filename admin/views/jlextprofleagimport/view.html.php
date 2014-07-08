@@ -44,7 +44,7 @@ jimport( 'joomla.application.component.view' );
 
 
 
-class sportsmanagementViewjlextprofleagimport extends JView
+class sportsmanagementViewjlextprofleagimport extends JViewLegacy
 {
 	function display($tpl=null)
 	{

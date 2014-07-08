@@ -53,7 +53,7 @@ jimport('joomla.application.component.model');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelcpanel extends JModel
+class sportsmanagementModelcpanel extends JModelLegacy
 {
 
 var $_success_text = '';

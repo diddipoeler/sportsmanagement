@@ -50,7 +50,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubPlan extends JView
+class sportsmanagementViewClubPlan extends JViewLegacy
 {
 	function display($tpl=null)
 	{

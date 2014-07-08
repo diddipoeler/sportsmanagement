@@ -55,7 +55,7 @@ JHtml::_('behavior.mootools');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatch extends JView
+class sportsmanagementViewMatch extends JViewLegacy
 {
 
 
@@ -80,7 +80,7 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('project_id',$project_id);
         $default_name_format = '';
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         $this->assignRef('eventsprojecttime',$projectws->game_regular_time);
         
@@ -99,7 +99,7 @@ class sportsmanagementViewMatch extends JView
 		}
         
         /*
-        $mdlPlaygrounds = JModel::getInstance("Playgrounds", "sportsmanagementModel");
+        $mdlPlaygrounds = JModelLegacy::getInstance("Playgrounds", "sportsmanagementModel");
         
         //build the html select list for playgrounds
 		$playgrounds[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
@@ -783,7 +783,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         //$model = $this->getModel();
-        //$model = JModel::getInstance('match', 'sportsmanagementmodel');
+        //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
 		//$project_id = $mainframe->getUserState('com_joomleagueproject');
         //$match_id	= $this->item->id;
         //$project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -853,7 +853,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
         
         // diddipoeler
         $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        //$mdlMatchProject = JModel::getInstance('project','JoomleagueModel');
+        //$mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
         //$this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
         
 
@@ -1158,7 +1158,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
         
         // diddipoeler
         $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        $mdlMatchProject = JModel::getInstance('project','JoomleagueModel');
+        $mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
         $this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
         
     $this->assignRef('starters',			$starters);

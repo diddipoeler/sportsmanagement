@@ -313,7 +313,7 @@ class sportsmanagementModelteam extends JModelAdmin
 		}  
           
           }
-		//$mdl = JModel::getInstance("seasonteam", "sportsmanagementModel");
+		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
 		}
         
        if (isset($post['extended']) && is_array($post['extended'])) 

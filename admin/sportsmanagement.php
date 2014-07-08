@@ -39,7 +39,9 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
 {
@@ -170,12 +172,12 @@ if($app->isAdmin())
 jimport('joomla.application.component.controller');
 	try
 	{
-		$controller = JController::getInstance(ucfirst($extension), $params);
+		$controller = JControllerLegacy::getInstance(ucfirst($extension), $params);
 	}
 	catch (Exception $exc)
 	{
 		//fallback if no extensions controller has been initialized
-		$controller	= JController::getInstance('sportsmanagement');
+		$controller	= JControllerLegacy::getInstance('sportsmanagement');
 	}
      
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
@@ -195,9 +197,9 @@ jimport('joomla.application.component.controller');
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
-if(is_null($controller) && !($controller instanceof JController)) {
+if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	//fallback if no extensions controller has been initialized
-	$controller	= JController::getInstance('sportsmanagement');
+	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
 
 foreach ($model_pathes as $path)
@@ -226,7 +228,7 @@ foreach ($template_pathes as $path)
         $view = $controller->getView( $extensionname, "html", "sportsmanagementView"); 
         $view->addTemplatePath($path); 
         
-//	   $view = new JView;
+//	   $view = new JViewLegacy;
 //		$view->addTemplatePath($path);
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}

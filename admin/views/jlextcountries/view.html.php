@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextcountries extends JView
+class sportsmanagementViewjlextcountries extends JViewLegacy
 {
 	function display($tpl=null)
 	{

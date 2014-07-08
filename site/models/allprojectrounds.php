@@ -57,7 +57,7 @@ jimport('joomla.utilities.arrayhelper') ;
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallprojectrounds extends JModel
+class sportsmanagementModelallprojectrounds extends JModelLegacy
 {
 	var $projectid = 0;
 	var $project_ids = 0;

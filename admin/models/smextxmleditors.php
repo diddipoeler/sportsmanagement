@@ -12,7 +12,7 @@ jimport('joomla.filesystem.file');
 
 
 
-class sportsmanagementModelsmextxmleditors extends JModel
+class sportsmanagementModelsmextxmleditors extends JModelLegacy
 {
 
 function getXMLFiles()

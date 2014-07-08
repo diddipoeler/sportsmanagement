@@ -21,7 +21,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmquotestxt extends JModel
+class sportsmanagementModelsmquotestxt extends JModelLegacy
 {
 
 function getTXTFiles()

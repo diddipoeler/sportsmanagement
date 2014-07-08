@@ -62,7 +62,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionRanking extends JModel
+class sportsmanagementModelPredictionRanking extends JModelLegacy
 {
 	var $_roundNames = null;
     var $predictionGameID = 0;

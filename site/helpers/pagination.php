@@ -54,7 +54,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPagination extends JModel
+class sportsmanagementModelPagination extends JModelLegacy
 {
     public static $nextlink = '';
     public static $prevlink = '';
@@ -109,8 +109,8 @@ class sportsmanagementModelPagination extends JModel
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
         
-		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
-		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
+		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
+		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
 		//sportsmanagementModelRounds::setProjectId($project->id);
 
 		$firstRound			= sportsmanagementModelRounds::getFirstRound($project->id);

@@ -79,7 +79,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextprofleagimport extends JModel
+class sportsmanagementModeljlextprofleagimport extends JModelLegacy
 {
   var $_datas=array();
 	var $_league_id=0;

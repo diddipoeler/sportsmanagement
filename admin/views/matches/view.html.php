@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatches extends JView
+class sportsmanagementViewMatches extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewMatches::display()
@@ -107,7 +107,7 @@ class sportsmanagementViewMatches extends JView
         {
             $this->rid	= $mainframe->getUserState( "$option.rid", '0' );
         }
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -115,7 +115,7 @@ class sportsmanagementViewMatches extends JView
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         }
         
-        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+        $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($this->rid);;
         
         //build the html selectlist for rounds
@@ -199,7 +199,7 @@ class sportsmanagementViewMatches extends JView
         
         //build the html options for divisions
 		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-		$mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id)){
 			$divisions = array_merge($divisions,$res);
 		}

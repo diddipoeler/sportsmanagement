@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewagegroups extends JView
+class sportsmanagementViewagegroups extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewagegroups::display()
@@ -67,7 +67,7 @@ class sportsmanagementViewagegroups extends JView
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
-        $mdlSportsType = JModel::getInstance('SportsType', 'sportsmanagementModel');
+        $mdlSportsType = JModelLegacy::getInstance('SportsType', 'sportsmanagementModel');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -89,7 +89,7 @@ class sportsmanagementViewagegroups extends JView
         
         //build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
-		$mdlSportsTypes = JModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes=array_merge($sportstypes,$allSportstypes);
 		$lists['sportstypes']=JHtml::_( 'select.genericList',
@@ -123,7 +123,7 @@ class sportsmanagementViewagegroups extends JView
         
         if ( count($items)  == 0 )
         {
-            $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+            $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
         $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
         }

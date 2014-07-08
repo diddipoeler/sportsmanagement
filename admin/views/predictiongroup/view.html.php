@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewpredictiongroup extends JView
+class sportsmanagementViewpredictiongroup extends JViewLegacy
 {
 
 	/**

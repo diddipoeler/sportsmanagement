@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewDivisions extends JView
+class sportsmanagementViewDivisions extends JViewLegacy
 {
 
 	/**
@@ -75,7 +75,7 @@ class sportsmanagementViewDivisions extends JView
 
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
 

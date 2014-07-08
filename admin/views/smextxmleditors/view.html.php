@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewsmextxmleditors extends JView
+class sportsmanagementViewsmextxmleditors extends JViewLegacy
 {
 	function display($tpl=null)
 	{

@@ -51,7 +51,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatrix extends JModel
+class sportsmanagementModelMatrix extends JModelLegacy
 {
 	
     var $divisionid= 0;

@@ -52,7 +52,7 @@ jimport( 'joomla.filesystem.file' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResults extends JView
+class sportsmanagementViewResults extends JViewLegacy
 {
 
 	/**
@@ -83,7 +83,7 @@ class sportsmanagementViewResults extends JView
 		$project = sportsmanagementModelProject::getProject();
         
         sportsmanagementModelPagination::pagenav($project);
-		$mdlPagination = JModel::getInstance("Pagination","sportsmanagementModel");
+		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');

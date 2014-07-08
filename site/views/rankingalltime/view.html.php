@@ -54,7 +54,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewRankingAllTime extends JView
+class sportsmanagementViewRankingAllTime extends JViewLegacy
 {
 
     /**

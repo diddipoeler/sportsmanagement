@@ -27,7 +27,7 @@ JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZe
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewEvent extends JView 
+class sportsmanagementViewEvent extends JViewLegacy 
 {
     public function display($tpl = null) 
     {

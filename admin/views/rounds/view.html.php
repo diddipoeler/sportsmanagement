@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRounds extends JView
+class sportsmanagementViewRounds extends JViewLegacy
 {
 
 	/**
@@ -96,7 +96,7 @@ class sportsmanagementViewRounds extends JView
 		$uri = JFactory::getURI();
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         parent::display($tpl);
@@ -132,7 +132,7 @@ class sportsmanagementViewRounds extends JView
         //$project_id	= JRequest::getVar('pid');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
 		//$projectws =& $this->get('Data','projectws');

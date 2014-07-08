@@ -57,7 +57,7 @@ jimport('joomla.html.pane');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResultsranking extends JView 
+class sportsmanagementViewResultsranking extends JViewLegacy 
 {
 
 	/**
@@ -99,13 +99,13 @@ class sportsmanagementViewResultsranking extends JView
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking');
 		$rankingmodel->computeRanking();
         
-        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
         
 		// add the results model		
 		$resultsmodel	= new sportsmanagementModelResults();
 		// add the results config file
 
-		$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel->round);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
@@ -226,7 +226,7 @@ class sportsmanagementViewResultsranking extends JView
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 		*/
-		JView::display($tpl);
+		JViewLegacy::display($tpl);
 	}
 	
 	/**

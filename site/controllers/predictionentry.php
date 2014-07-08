@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.controller' );
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionEntry extends JController
+class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 {
 	
 	/**
@@ -122,7 +122,7 @@ class sportsmanagementControllerPredictionEntry extends JController
 		
 		
 		$model		= $this->getModel('Prediction');
-        $mdlPredictionEntry = JModel::getInstance("PredictionEntry", "sportsmanagementModel");
+        $mdlPredictionEntry = JModelLegacy::getInstance("PredictionEntry", "sportsmanagementModel");
 		$user		= JFactory::getUser();
 		$isMember	= $model->checkPredictionMembership();
 

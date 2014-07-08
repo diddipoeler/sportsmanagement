@@ -54,7 +54,7 @@ require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' 
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionUser extends JView
+class sportsmanagementViewPredictionUser extends JViewLegacy
 {
 
 	/**
@@ -78,7 +78,7 @@ class sportsmanagementViewPredictionUser extends JView
 		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
 		$model		= $this->getModel();
-    $mdlPredUsers = JModel::getInstance("predictionusers", "sportsmanagementModel");
+    $mdlPredUsers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
     
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
 

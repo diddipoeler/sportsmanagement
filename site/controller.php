@@ -53,7 +53,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-//class sportsmanagementController extends JController
+//class sportsmanagementController extends JControllerLegacy
 class sportsmanagementController extends JControllerLegacy
 {
     

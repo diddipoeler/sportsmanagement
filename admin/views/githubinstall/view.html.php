@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewgithubinstall extends JView
+class sportsmanagementViewgithubinstall extends JViewLegacy
 {
 	/**
 	 * display method of Hello view

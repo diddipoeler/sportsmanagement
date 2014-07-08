@@ -53,7 +53,7 @@ jimport('joomla.form.form');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewPredictionTemplate extends JView
+class sportsmanagementViewPredictionTemplate extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionTemplate::display()

@@ -47,7 +47,7 @@ jimport('joomla.application.component.view');
  * @package		Joomla.Administrator
  * @subpackage	com_config
  */
-class sportsmanagementViewClose extends JView
+class sportsmanagementViewClose extends JViewLegacy
 {
 	/**
 	 * Display the view

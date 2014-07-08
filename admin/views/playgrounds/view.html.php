@@ -49,7 +49,7 @@ jimport('joomla.application.component.view');
  * @package	Sportsmanagement
  * @since	0.1
  */
-class sportsmanagementViewPlaygrounds extends JView
+class sportsmanagementViewPlaygrounds extends JViewLegacy
 {
 
 	function display($tpl=null)

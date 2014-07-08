@@ -18,7 +18,7 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelgithubinstall extends JModel
+class sportsmanagementModelgithubinstall extends JModelLegacy
 {
 
     var $storeFailedColor = 'red';

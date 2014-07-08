@@ -248,7 +248,7 @@ class sportsmanagementModelposition extends JModelAdmin
 		if ( $data['id'] )
         {
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition post position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
-        $mdl = JModel::getInstance("positioneventtype", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
         $mdl->store($post,$data['id']);
             
         }

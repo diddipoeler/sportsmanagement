@@ -8,7 +8,7 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 
-class sportsmanagementModelImagehandler extends JModel
+class sportsmanagementModelImagehandler extends JModelLegacy
 {
 	/**
 	 * Pagination object

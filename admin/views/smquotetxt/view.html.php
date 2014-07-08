@@ -44,7 +44,7 @@ jimport('joomla.application.component.view');
 
 
 
-class sportsmanagementViewsmquotetxt extends JView
+class sportsmanagementViewsmquotetxt extends JViewLegacy
 {
 	function display($tpl=null)
 	{

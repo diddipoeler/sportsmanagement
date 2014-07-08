@@ -123,8 +123,8 @@ class modJSMRandomplayerHelper
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
 		}
 
-		$mdlPerson 	= JModel::getInstance('Person', 'sportsmanagementModel');
-        $mdlPlayer 	= JModel::getInstance('Player', 'sportsmanagementModel');
+		$mdlPerson 	= JModelLegacy::getInstance('Person', 'sportsmanagementModel');
+        $mdlPlayer 	= JModelLegacy::getInstance('Player', 'sportsmanagementModel');
 
 		$person 	= $mdlPerson->getPerson();
 		$project	= sportsmanagementModelProject::getProject();

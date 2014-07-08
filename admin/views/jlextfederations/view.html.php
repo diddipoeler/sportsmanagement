@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextfederations extends JView
+class sportsmanagementViewjlextfederations extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewjlextfederations::display()

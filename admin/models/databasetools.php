@@ -12,7 +12,7 @@ jimport('joomla.filesystem.file');
 
 
 
-class sportsmanagementModelDatabaseTools extends JModel
+class sportsmanagementModelDatabaseTools extends JModelLegacy
 {
 	
 

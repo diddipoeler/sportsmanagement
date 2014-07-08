@@ -317,14 +317,14 @@ class sportsmanagementModelperson extends JModelAdmin
     $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
     $cid = $post['cid'];
           
-    $mdlPerson = JModel::getInstance("person", "sportsmanagementModel");
+    $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons storeAssign post<br><pre>'.print_r($post,true).'</pre>'),'');    
     
     switch ($post['type'])
             {
                 case 0:
-                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -348,7 +348,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		        }
                 break;
                 case 1:
-                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -373,7 +373,7 @@ class sportsmanagementModelperson extends JModelAdmin
                 break;
                 /*
                 case 2:
-                $mdl = JModel::getInstance("seasonteamperson", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -509,7 +509,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		}  
           
           }
-		//$mdl = JModel::getInstance("seasonperson", "sportsmanagementModel");
+		//$mdl = JModelLegacy::getInstance("seasonperson", "sportsmanagementModel");
 		}
        
        if (!empty($data['address']))

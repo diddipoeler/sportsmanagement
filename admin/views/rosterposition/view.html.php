@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewrosterposition extends JView
+class sportsmanagementViewrosterposition extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewrosterposition::display()
@@ -144,7 +144,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         $extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
 		$this->assignRef( 'extended', $extended );
         
-        $mdlRosterpositions = JModel::getInstance("rosterpositions", "sportsmanagementModel");
+        $mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
         //$bildpositionenhome = $mdlRosterpositions->getRosterHome();
 //        $bildpositionenaway = $mdlRosterpositions->getRosterAway();
      

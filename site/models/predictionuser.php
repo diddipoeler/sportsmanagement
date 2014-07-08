@@ -92,7 +92,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
 
 		$this->page  				= JRequest::getInt('page',	1);
         
-        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        //$prediction = JModelLegacy::getInstance("Prediction","sportsmanagementModel");
         $prediction = new sportsmanagementModelPrediction();  
         //$prediction->predictionGameID = $this->predictionGameID	;
         sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;

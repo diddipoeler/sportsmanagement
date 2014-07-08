@@ -53,7 +53,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeamPlan extends JModel
+class sportsmanagementModelTeamPlan extends JModelLegacy
 {
 	var $projectid = 0;
 	var $teamid = 0;
@@ -286,7 +286,7 @@ class sportsmanagementModelTeamPlan extends JModel
         
         // $this->projectteamid
         
-		//$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 		$joomleague = sportsmanagementModelProject::getProject();
 
@@ -412,7 +412,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query = $db->getQuery(true);
         $starttime = microtime();
         
-		//$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 
 		$joomleague = sportsmanagementModelProject::getProject();

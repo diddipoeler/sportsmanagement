@@ -50,7 +50,7 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamInfo extends JView
+class sportsmanagementViewTeamInfo extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewTeamInfo::display()

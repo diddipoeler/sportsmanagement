@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewsmimageimports extends JView
+class sportsmanagementViewsmimageimports extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewsmimageimports::display()

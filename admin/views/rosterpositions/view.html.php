@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewrosterpositions extends JView
+class sportsmanagementViewrosterpositions extends JViewLegacy
 {
 	function display($tpl=null)
 	{

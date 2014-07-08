@@ -4,7 +4,7 @@
 
 jimport( 'joomla.application.component.view');
 
-class sportsmanagementViewjlxmlexports extends JView
+class sportsmanagementViewjlxmlexports extends JViewLegacy
 {
 	function display( $tpl = null )
 	{

@@ -53,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeams extends JView
+class sportsmanagementViewTeams extends JViewLegacy
 {
 
 	/**

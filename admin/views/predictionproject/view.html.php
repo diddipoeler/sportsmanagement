@@ -44,7 +44,7 @@ jimport('joomla.application.component.view');
 
 
 
-class sportsmanagementViewpredictionproject extends JView
+class sportsmanagementViewpredictionproject extends JViewLegacy
 {
 	function display($tpl=null)
 	{

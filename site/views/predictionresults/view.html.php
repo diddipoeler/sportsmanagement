@@ -56,7 +56,7 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionResults extends JView
+class sportsmanagementViewPredictionResults extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionResults::display()

@@ -24,7 +24,7 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
  * @package	JoomLeague
  * @since	1.5.100627
  */
-class JoomleagueViewPredictionResults extends JView
+class JoomleagueViewPredictionResults extends JViewLegacy
 {
 	function display($tpl=null)
 	{

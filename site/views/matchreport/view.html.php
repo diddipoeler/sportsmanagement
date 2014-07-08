@@ -55,7 +55,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatchReport extends JView
+class sportsmanagementViewMatchReport extends JViewLegacy
 {
 
 	/**

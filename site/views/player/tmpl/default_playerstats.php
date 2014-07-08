@@ -141,7 +141,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			$career['started'] = 0;
 			$career['in'] = 0;
 			$career['out'] = 0;
-			$player = JModel::getInstance("Person","sportsmanagementModel");
+			$player = JModelLegacy::getInstance("Person","sportsmanagementModel");
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
