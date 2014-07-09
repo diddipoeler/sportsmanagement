@@ -127,6 +127,17 @@ JHtml::_('behavior.modal');
 						?>
 					</th>
                     
+                    <th width="" class="title">
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
+						?>
+					</th>
+                    
                     <th class="title">
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
@@ -151,7 +162,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='10'><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot><tr><td colspan='12'><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
                         </td>
             </tr></tfoot>
@@ -267,8 +278,10 @@ JHtml::_('behavior.modal');
 						</td>
 						<td class="center">
                         <a href="<?php echo $link2teams; ?>"><?php echo $row->proteams; ?></a>
-                        
                         </td>
+                        
+                        <td class="center"><?php echo $this->modelround->getRoundsCount($row->id) ?></td>
+                        <td class="center"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id) ?></td>
                         
                         <td class="center"><?php echo $published; ?></td>
 						<td class="order">

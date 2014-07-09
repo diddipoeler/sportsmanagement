@@ -163,12 +163,17 @@ class sportsmanagementViewProjects extends JView
 									'text',
 									$this->state->get('filter.project_type'));
         unset($myoptions);
+        
+        $mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+        $mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
       
 		$user = JFactory::getUser();
-		$this->assignRef('user',  $user);
-		$this->assignRef('lists', $lists);
-		$this->assignRef('items', $items);
-		$this->assignRef('pagination', $pagination);
+        $this->assignRef('modeldivision',$mdlProjectDivisions);
+        $this->assignRef('modelround',$mdlRounds);
+		$this->assignRef('user',$user);
+		$this->assignRef('lists',$lists);
+		$this->assignRef('items',$items);
+		$this->assignRef('pagination',$pagination);
 		$url=$uri->toString();
 		$this->assignRef('request_url',$url);
 		$this->addToolbar();
