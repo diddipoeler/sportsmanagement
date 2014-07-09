@@ -126,7 +126,11 @@ JHtml::_('behavior.modal');
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
 						?>
 					</th>
-                    
+                    <th class="title">
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
+						?>
+					</th>
                     <th width="" class="title">
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
@@ -138,11 +142,7 @@ JHtml::_('behavior.modal');
 						?>
 					</th>
                     
-                    <th class="title">
-						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
-						?>
-					</th>
+                    
                     
 					<th width="5%" class="title">
 						<?php
@@ -177,6 +177,9 @@ JHtml::_('behavior.modal');
 					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
 					$link2panel = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
                     $link2teams = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
+                    
+                    $link2rounds = JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
+                    $link2divisions = JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
 
 					$checked = JHtml::_('grid.checkedout',$row,$i);
 					$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
@@ -280,8 +283,13 @@ JHtml::_('behavior.modal');
                         <a href="<?php echo $link2teams; ?>"><?php echo $row->proteams; ?></a>
                         </td>
                         
-                        <td class="center"><?php echo $this->modelround->getRoundsCount($row->id) ?></td>
-                        <td class="center"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id) ?></td>
+                        <td class="center">
+                        <a href="<?php echo $link2rounds; ?>"><?php echo $this->modelround->getRoundsCount($row->id); ?></a>
+                        </td>
+                        
+                        <td class="center">
+                        <a href="<?php echo $link2divisions; ?>"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id); ?></a>
+                        </td>
                         
                         <td class="center"><?php echo $published; ?></td>
 						<td class="order">
