@@ -176,7 +176,7 @@ echo $this->pagination->getListFooter();
       // nur bestimmte mannschaften tippen ?
       if ( $this->config['use_pred_select_proteams'] )
         {
-        $proteams_ids = $this->config['predictionproteamsid'];
+        $proteams_ids = $this->config['predictionproteamid'];
         }
         
       
