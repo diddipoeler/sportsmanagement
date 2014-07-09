@@ -162,17 +162,26 @@ echo $this->pagination->getListFooter();
 				// holen wir uns die spiele
 				$match_ids = NULL;
                 $round_ids = NULL;
-				if ( $this->config['use_pred_select_matches'] )
+                
+        // nur spiele zum tippen ?
+		if ( $this->config['use_pred_select_matches'] )
         {
         $match_ids = $this->config['predictionmatchid'];
-        //echo '<br />predictionmatchid<pre>~' . print_r($this->config['predictionmatchid'],true) . '~</pre><br />';
         }
-        if ( $this->config['use_pred_select_rounds'] )
+        // nur spieltage tippen ?
+      if ( $this->config['use_pred_select_rounds'] )
       {
       $round_ids = $this->config['predictionroundid'];
       }  
+      // nur bestimmte mannschaften tippen ?
+      if ( $this->config['use_pred_select_proteams'] )
+        {
+        $proteams_ids = $this->config['predictionproteamsid'];
+        }
         
-				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids);
+      
+        // hier holen wir uns die spiele zu dem projekt und der runde
+				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids);
 				
 				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
 				
@@ -184,7 +193,7 @@ echo $this->pagination->getListFooter();
           // clublogo oder vereinsflagge
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogo,$match->homeName).'<br />';
+                            echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeShortName.'<br />';
@@ -200,13 +209,13 @@ echo $this->pagination->getListFooter();
                             echo $match->homeCountry.'<br />';
                         }
                         }
-            $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
+                        $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
 						$outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
 						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
 						?><span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span><?php
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogo,$match->awayName).'<br />';
+                            echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayShortName.'<br />';

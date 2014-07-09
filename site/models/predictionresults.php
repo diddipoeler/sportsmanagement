@@ -192,20 +192,30 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
   }
 
   
+	
 	/**
 	 * sportsmanagementModelPredictionResults::getMatches()
 	 * 
 	 * @param mixed $roundID
 	 * @param mixed $project_id
 	 * @param mixed $match_ids
+	 * @param mixed $round_ids
+	 * @param mixed $proteams_ids
 	 * @return
 	 */
-	function getMatches($roundID,$project_id,$match_ids)
+	function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids)
 	{
 	  //global $mainframe, $option;
       $option = JRequest::getCmd('option'); 
     $document	= JFactory::getDocument();
     $mainframe	= JFactory::getApplication();
+    
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_ids<br><pre>'.print_r($round_ids,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' proteams_ids<br><pre>'.print_r($proteams_ids,true).'</pre>'),'');
+    
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -214,11 +224,17 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
         {
 			$roundID=1;
 		}
+        
         $query->select('m.id AS mID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
         $query->select('t1.name AS homeName,t1.short_name AS homeShortName');
         $query->select('t2.name AS awayName,t2.short_name AS awayShortName');
         $query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
         $query->select('c2.logo_small AS awayLogo,c2.country AS awayCountry');
+        
+        // das grosse logo muss auch noch selektiert werden
+        $query->select('c1.logo_big AS homeLogobig');
+        $query->select('c2.logo_big AS awayLogobig');
+        
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
         
@@ -235,18 +251,30 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
         
         
         $query->where('r.project_id = '.$project_id);
-        $query->where('r.id = '.$roundID);
+        //$query->where('r.id = '.$roundID);
         
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
         $query->where('m.published = 1');
     
+    // bestimmte mannschaften selektieren
+    if ( $proteams_ids )
+    {
+    $query->where('( m.projectteam1_id IN (' . implode(',', $proteams_ids) . ')'.' OR '.'m.projectteam2_id IN (' . implode(',', $proteams_ids) . ') )' );    
+    }
+    
+    // bestimmte runden selektieren
+    if ( $round_ids )
+    {
+    $query->where('r.id IN (' . implode(',', $round_ids) . ')');    
+    }
+    else
+    {
+    $query->where('r.id = '.$roundID);
+    }
+        
+    // bestimmte spiele selektieren
     if ( $match_ids )
     {
-//    $convert = array (
-//      '|' => ','
-//        );
-//    $match_ids = str_replace(array_keys($convert), array_values($convert), $match_ids );
-//    $query->where("AND m.id IN (" . $match_ids . ")");  
     $query->where('m.id IN (' . implode(',', $match_ids) . ')');    
     }
     
@@ -267,8 +295,8 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
 	function showClubLogo($clubLogo,$teamName)
 	{
 	  $mainframe = JFactory::getApplication();
-		$document	=& JFactory::getDocument();
-		$uri = JFactory :: getURI();
+		$document	= JFactory::getDocument();
+		$uri = JFactory::getURI();
     $option = JRequest::getCmd('option');
     
 		$output = '';
@@ -277,7 +305,7 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
 			$clubLogo='images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
 		}
 		$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF',$teamName);
-		$output .= JHTML::image($clubLogo,$imgTitle,array(' height' => 17, ' title' => $imgTitle));
+		$output .= JHTML::image($clubLogo,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
 		return $output;
 	}
 

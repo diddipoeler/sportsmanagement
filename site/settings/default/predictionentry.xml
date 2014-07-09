@@ -108,6 +108,25 @@
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_SELECT_ROUND_LABEL"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_SELECT_ROUND_DESCR">
 	</field>
+
+
+<field	name="use_pred_select_proteams" 
+  type="radio" 
+  default="0"
+				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_PROTEAM_LABEL"
+				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_PROTEAM_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	<field name="predictionproteamid" 
+  type="predictionproteamid" 
+  depends="preproteamid" 
+  task="preproteamoptions" 
+				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_SELECT_PROTEAM_LABEL"
+				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_SELECT_PROTEAM_DESCR">
+	</field>
+
   			
   </fieldset>
 
