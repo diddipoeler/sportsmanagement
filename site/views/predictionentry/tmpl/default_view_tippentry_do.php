@@ -90,20 +90,27 @@ else
 
       $match_ids = NULL;
       $round_ids = NULL;
+      $proteams_ids = NULL;
+      // nur spiele zum tippen ?
       if ( $this->config['use_pred_select_matches'] )
       {
-      //echo '<br />predictionmatchid<pre>~' . print_r($this->config['predictionmatchid'],true) . '~</pre><br />';
       $match_ids = $this->config['predictionmatchid'];
       }
+      // nur spieltage tippen ?
       if ( $this->config['use_pred_select_rounds'] )
       {
       $round_ids = $this->config['predictionroundid'];
       }  
-      
+      // nur bestimmte mannschaften tippen ?
+      if ( $this->config['use_pred_select_proteams'] )
+        {
+        $proteams_ids = $this->config['predictionproteamid'];
+        }
+        
 			$roundResults = $this->model->getMatchesDataForPredictionEntry(	$this->model->predictionGameID,
 																			$predictionProject->project_id,
 																			$this->model->roundID,
-																			$this->predictionMember->user_id,$match_ids,$round_ids);
+																			$this->predictionMember->user_id,$match_ids,$round_ids,$proteams_ids);
 
 			//$roundResults = null;
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -356,7 +363,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 										$logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
 									}
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
-									echo JHTML::image($logo_home,$imgTitle,array(' title' => $imgTitle));
+									echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
 									echo ' ';
 								}
                 if ( $this->config['show_logo_small'] == 2 )
@@ -383,7 +390,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 									}
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
 									echo ' ';
-									echo JHTML::image($logo_away,$imgTitle,array(' title' => $imgTitle));
+									echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
 								}
                 if ( $this->config['show_logo_small'] == 2 )
 								{

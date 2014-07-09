@@ -159,9 +159,9 @@ echo $this->pagination->getListFooter();
 					?><td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></td><?php
 				}
                 
-				// holen wir uns die spiele
 				$match_ids = NULL;
                 $round_ids = NULL;
+                $proteams_ids = NULL;
                 
         // nur spiele zum tippen ?
 		if ( $this->config['use_pred_select_matches'] )

@@ -318,7 +318,7 @@ public $_predictionGame		= null;
 	 * @param mixed $match_ids
 	 * @return
 	 */
-	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL)
+	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
 	{
 		    $option = JRequest::getCmd('option');    
     $mainframe = JFactory::getApplication();
@@ -341,10 +341,17 @@ public $_predictionGame		= null;
         $query->where('m.published = 1');
         $query->where('m.match_date <> \'0000-00-00 00:00:00\'');
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');   
-        				
+		
+        // bestimmte spiele selektieren
 		if ( $match_ids )
     {
     $query->where('m.id IN (' . implode(',', $match_ids) . ')');   
+    }
+    
+    // bestimmte mannschaften selektieren
+    if ( $proteams_ids )
+    {
+    $query->where('( m.projectteam1_id IN (' . implode(',', $proteams_ids) . ')'.' OR '.'m.projectteam2_id IN (' . implode(',', $proteams_ids) . ') )' );    
     }
 
 //    if ( $round_ids )

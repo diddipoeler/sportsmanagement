@@ -677,7 +677,7 @@ class sportsmanagementModelPrediction extends JModel
 	 * @param integer $teamID
 	 * @return
 	 */
-	function getMatchTeamClubLogo($teamID=0)
+	function getMatchTeamClubLogo($teamID=0,$which_logo = 'logo_big')
 	{
 	   $option = JRequest::getCmd('option');    
     $mainframe = JFactory::getApplication();
@@ -690,7 +690,7 @@ class sportsmanagementModelPrediction extends JModel
             return '#Error1 in '.__METHOD__; 
         }
          // Select some fields
-        $query->select('c.logo_small');
+        $query->select('c.'.$which_logo);
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on t.club_id = c.id');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
@@ -701,7 +701,7 @@ class sportsmanagementModelPrediction extends JModel
 		$db->query();
 		if ( $object = $db->loadObject() )
 		{
-			return $object->logo_small;
+			return $object->$which_logo;
 		}
 		return '#Error2 in '.__METHOD__;
 
