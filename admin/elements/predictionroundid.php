@@ -63,7 +63,6 @@ class JFormFieldpredictionroundid extends JFormField
 		$db = JFactory::getDBO();
     $mainframe			= JFactory::getApplication();
 		$option				= 'com_sportsmanagement';
-		//$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
         
         $prediction_id = $mainframe->getUserState( "$option.predid", '0' );
         
@@ -76,14 +75,7 @@ class JFormFieldpredictionroundid extends JFormField
     $query->from('#__'.$database_table.'_match AS m');
     $query->join('INNER', '#__'.$database_table.'_round AS r ON r.id = m.round_id');
     $query->join('INNER', '#__'.$database_table.'_prediction_project as prepro on prepro.project_id = r.project_id');
-//    $query->join('LEFT', '#__'.$database_table.'_project_team AS tt1 ON m.projectteam1_id = tt1.id');
-//    $query->join('LEFT', '#__'.$database_table.'_project_team AS tt2 ON m.projectteam2_id = tt2.id');
-//    
-//    $query->join('LEFT','#__'.$database_table.'_season_team_id AS st1 ON st1.id = tt1.team_id ');
-//    $query->join('LEFT','#__'.$database_table.'_season_team_id AS st2 ON st2.id = tt2.team_id ');
-//        
-//    $query->join('LEFT', '#__'.$database_table.'_team AS t1 ON t1.id = st1.team_id');
-//    $query->join('LEFT', '#__'.$database_table.'_team AS t2 ON t2.id = st2.team_id');
+
     
     $query->where('prepro.prediction_id = '. $prediction_id);
     $query->group('r.id');
@@ -91,8 +83,6 @@ class JFormFieldpredictionroundid extends JFormField
 //$mainframe->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
 
 
-
-		//$query = 'SELECT t.id, t.name FROM #__joomleague_team t ORDER BY name';
 		$db->setQuery( $query );
         
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -103,13 +93,9 @@ class JFormFieldpredictionroundid extends JFormField
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
-        
+  
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 
-//$mainframe->enqueueMessage(JText::_('teams -> <pre> '.print_r($teams,true).'</pre><br>' ),'Notice');
-		
-    //$mitems = array(JHTML::_('select.option', '-1', '- '.JText::_('Do not use').' -'));
     $mitems = array();
     
 		foreach ( $teams as $team ) {
