@@ -363,7 +363,14 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 										$logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
 									}
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
-									echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
+									//echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
+                                    ?>                                    
+                                    <a href="<?php echo JURI::root().$logo_home;?>" title="<?php echo $imgTitle;?>" class="modal">
+                                    <img src="<?php echo JURI::root().$logo_home;?>" alt="<?php echo $imgTitle;?>" width="20" />
+                                    </a>
+                                    <?PHP 
+                                    
+                                    
 									echo ' ';
 								}
                 if ( $this->config['show_logo_small'] == 2 )
@@ -390,7 +397,12 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 									}
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
 									echo ' ';
-									echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
+                                    ?>                                    
+                                    <a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" class="modal">
+                                    <img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="20" />
+                                    </a>
+                                    <?PHP
+									//echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
 								}
                 if ( $this->config['show_logo_small'] == 2 )
 								{

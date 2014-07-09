@@ -193,7 +193,12 @@ echo $this->pagination->getListFooter();
           // clublogo oder vereinsflagge
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
+                            ?>                                    
+                            <a href="<?php echo JURI::root().$match->homeLogobig;?>" title="<?php echo $match->homeName;?>" class="modal">
+                            <img src="<?php echo JURI::root().$match->homeLogobig;?>" alt="<?php echo $match->homeName;?>" width="20" />
+                            </a>
+                            <?PHP
+                            //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeShortName.'<br />';
@@ -215,7 +220,12 @@ echo $this->pagination->getListFooter();
 						?><span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span><?php
 						if ( $this->config['show_logo_small_overview'] == 1 )
                         {
-                            echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
+                            ?>                                    
+                            <a href="<?php echo JURI::root().$match->awayLogobig;?>" title="<?php echo $match->awayName;?>" class="modal">
+                            <img src="<?php echo JURI::root().$match->awayLogobig;?>" alt="<?php echo $match->awayName;?>" width="20" />
+                            </a>
+                            <?PHP
+                            //echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayShortName.'<br />';
