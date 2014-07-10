@@ -42,7 +42,7 @@ class JFormFieldColor extends JFormFieldText
 	public function getInput()
 	{
 		$document = &JFactory::getDocument();
-		$document->addScript(JURI::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
+		$document->addScript(JUri::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
 		return parent::getInput();
 	}
 

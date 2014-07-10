@@ -24,11 +24,11 @@ defined('_JEXEC') or die();
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'maps' => true, 'bootstrap' => true, 'gcalendar' => true));
 
 $document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
-$document->addScript(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
+$document->addStyleSheet(JUri::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
+$document->addScript(JUri::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
 
 if (JRequest::getCmd('tmpl', '') == 'component') {
-	$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
+	$document->addStyleSheet(JUri::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
 }
 
 $dispatcher = JDispatcher::getInstance();

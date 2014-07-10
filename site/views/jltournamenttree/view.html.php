@@ -51,7 +51,7 @@ jimport( 'joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjltournamenttree extends JView
+class sportsmanagementViewjltournamenttree extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewjltournamenttree::display()
@@ -66,7 +66,7 @@ class sportsmanagementViewjltournamenttree extends JView
 	$document = JFactory::getDocument();
 	$uri = JFactory::getURI();		
 	$mainframe = JFactory::getApplication();		
-//	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+//	$js ="registerhome('".JUri::base()."','Tournament Tree Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //  $document->addScriptDeclaration( $js );	
     
     //$model =& $this->getModel( 'jlxmlexports' ); 
@@ -109,21 +109,21 @@ class sportsmanagementViewjltournamenttree extends JView
    //$this->assign( 'jl_tree_jquery_version',		$model->getWhichJQuery() );
    
 // Add Script
-//$document->addScript(JURI::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/js/jquery-1.7.2.min.js');
+//$document->addScript(JUri::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/js/jquery-1.7.2.min.js');
 
 //$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/'.$this->jl_tree_jquery_version.'/jquery.min.js');
 //$document->addScript('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js');
 
-//$document->addScript(JURI::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/js/jquery-ui-1.8.21.custom.min.js');
-$document->addScript(JURI::base().'components/'.$option.'/assets/js/jquery.json-2.3.min.js');
-$document->addScript(JURI::base().'components/'.$option.'/assets/js/jquery.bracket-3.js');
+//$document->addScript(JUri::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/js/jquery-ui-1.8.21.custom.min.js');
+$document->addScript(JUri::base().'components/'.$option.'/assets/js/jquery.json-2.3.min.js');
+$document->addScript(JUri::base().'components/'.$option.'/assets/js/jquery.bracket-3.js');
 
 // Add customstyles
-$stylelink = '<link rel="stylesheet" href="'.JURI::base().'components/'.$option.'/assets/css/jquery.bracket-3.css'.'" type="text/css" />' ."\n";
+$stylelink = '<link rel="stylesheet" href="'.JUri::base().'components/'.$option.'/assets/css/jquery.bracket-3.css'.'" type="text/css" />' ."\n";
 $document->addCustomTag($stylelink);
-//$stylelink = '<link rel="stylesheet" href="'.JURI::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/css/jquery-ui-1.8.16.custom.css'.'" type="text/css" />' ."\n";
+//$stylelink = '<link rel="stylesheet" href="'.JUri::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/css/jquery-ui-1.8.16.custom.css'.'" type="text/css" />' ."\n";
 //$document->addCustomTag($stylelink);
-$stylelink = '<link rel="stylesheet" href="'.JURI::base().'components/'.$option.'/assets/css/jquery.bracket-site.css'.'" type="text/css" />' ."\n";
+$stylelink = '<link rel="stylesheet" href="'.JUri::base().'components/'.$option.'/assets/css/jquery.bracket-site.css'.'" type="text/css" />' ."\n";
 $document->addCustomTag($stylelink);
 
 

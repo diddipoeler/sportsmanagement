@@ -53,7 +53,7 @@ jimport('joomla.form.form');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTemplate extends JView
+class sportsmanagementViewTemplate extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewTemplate::display()
@@ -104,7 +104,7 @@ class sportsmanagementViewTemplate extends JView
 		}
 		
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         
@@ -128,7 +128,7 @@ class sportsmanagementViewTemplate extends JView
         switch ( $this->form->getName() )
         {
             case 'ranking':
-            $mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+            $mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
 	        $iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
             $this->assignRef('teamscount',$iProjectTeamsCount);
             $this->form->setFieldAttribute('colors_ranking','rankingteams' , $iProjectTeamsCount);
@@ -195,7 +195,7 @@ class sportsmanagementViewTemplate extends JView
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		
         JRequest::setVar('hidemainmenu', true);
@@ -256,10 +256,10 @@ class sportsmanagementViewTemplate extends JView
 		$isNew = $this->template->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-        //$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
-        $document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        //$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
+        $document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/assets/js/jscolor/jscolor.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     		

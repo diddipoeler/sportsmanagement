@@ -49,7 +49,7 @@ jimport( 'joomla.application.component.view' );
  * @package	Joomleague
  * @since	1.5.0a
  */
-class sportsmanagementViewDatabaseTools extends JView
+class sportsmanagementViewDatabaseTools extends JViewLegacy
 {
 	function display( $tpl = null )
 	{
@@ -71,7 +71,7 @@ class sportsmanagementViewDatabaseTools extends JView
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page

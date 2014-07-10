@@ -341,7 +341,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				if ( $this->config['player_number_picture'] )
 				{
 					$posnumber = $this->teamPlayer->jerseynumber;
-					echo JHtml::image( JURI::root().'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber,
+					echo JHtml::image( JUri::root().'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber,
 					$posnumber,
 					array( 'title' => $posnumber ) );
 				}

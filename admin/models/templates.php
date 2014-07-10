@@ -202,7 +202,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 //		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
 
 		$db->setQuery($query);
-		$records = $db->loadResultArray();
+		$records = $db->loadColumn();
 		if (empty($records)) { $records=array(); }
 		
 		// add default folder
@@ -273,7 +273,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 							$defaultvalues = $jRegistry->toString('ini');
 							
                             $parameter = new JRegistry;
-			                $ini = $parameter->loadINI($defaultvalues);
+			                $ini = $parameter->loadString($defaultvalues);
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	
@@ -341,7 +341,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
-		$current = $db->loadResultArray();
+		$current = $db->loadColumn();
         
         $query->clear();
         

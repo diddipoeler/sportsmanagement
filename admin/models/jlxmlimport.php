@@ -48,7 +48,7 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'data
  * @version 2013
  * @access public
  */
-class sportsmanagementModelJLXMLImport extends JModel
+class sportsmanagementModelJLXMLImport extends JModelLegacy
 {
 	var $_datas=array();
 	var $_league_id=0;
@@ -94,7 +94,7 @@ class sportsmanagementModelJLXMLImport extends JModel
     
     if ( $project_id )
     {
-    $model = JModel::getInstance('project', 'sportsmanagementmodel');
+    $model = JModelLegacy::getInstance('project', 'sportsmanagementmodel');
     $update_project = $model->getProject($project_id);  
     //$update_project = JTable::getInstance('Project','Table');
     //$update_project->load($project_id);
@@ -1340,7 +1340,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			else
 			{
 				
-                $mdl = JModel::getInstance("sportstype", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
                 $p_sportstype = $mdl->getTable();
             
 				$p_sportstype->set('name',trim($this->_sportstype_new));
@@ -1395,7 +1395,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			else
 			{
 				
-                $mdl = JModel::getInstance("league", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("league", "sportsmanagementModel");
                 $p_league = $mdl->getTable();
                 
 				$p_league->set('name',trim($this->_league_new));
@@ -1457,7 +1457,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			else
 			{
 				
-                $mdl = JModel::getInstance("season", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("season", "sportsmanagementModel");
                 $p_season = $mdl->getTable();
                 
 				$p_season->set('name',trim($this->_season_new));
@@ -1520,7 +1520,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			foreach ($this->_neweventsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("eventtype", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("eventtype", "sportsmanagementModel");
                 $p_eventtype = $mdl->getTable();
                 
 				$import_event=$this->_datas['event'][$key];
@@ -1603,7 +1603,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			foreach ($this->_newstatisticsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("statistic", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("statistic", "sportsmanagementModel");
                 $p_statistic = $mdl->getTable();
                 
 				$import_statistic=$this->_datas['statistic'][$key];
@@ -1696,7 +1696,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			foreach ($this->_newparentpositionsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("position", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
                 $p_position = $mdl->getTable();
                 
 				$import_position=$this->_datas['parentposition'][$key];
@@ -1792,7 +1792,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			foreach ($this->_newpositionsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("position", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
                 $p_position = $mdl->getTable();
                 
 				$import_position = $this->_datas['position'][$key];
@@ -1879,7 +1879,7 @@ class sportsmanagementModelJLXMLImport extends JModel
 			$import_positioneventtype=$this->_datas['positioneventtype'][$key];
 			$oldID=$this->_getDataFromObject($import_positioneventtype,'id');
 			
-            $mdl = JModel::getInstance("positioneventtype", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
             $p_positioneventtype = $mdl->getTable();
                 
 			$oldEventID=$this->_getDataFromObject($import_positioneventtype,'eventtype_id');
@@ -1966,7 +1966,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 			foreach ($this->_newplaygroundid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("playground", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("playground", "sportsmanagementModel");
                 $p_playground = $mdl->getTable();
                 
 				$import_playground = $this->_datas['playground'][$key];
@@ -2177,7 +2177,7 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
 			foreach ($this->_newclubsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("club", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("club", "sportsmanagementModel");
                 $p_club = $mdl->getTable();
                 
                 //$this->dump_variable("p_club", $p_club);
@@ -2507,7 +2507,7 @@ $this->dump_variable("newteams", $this->_newteams);
 			foreach ($this->_newteams AS $key => $value)
 			{
 				
-                $mdl = JModel::getInstance("team", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("team", "sportsmanagementModel");
                 $p_team = $mdl->getTable();
             
 				$import_team=$this->_datas['team'][$key];
@@ -2625,7 +2625,7 @@ $this->dump_variable("import_team", $import_team);
 											'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
 				$my_text .= '<br />';
                 
-                $mdl = JModel::getInstance("person", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("person", "sportsmanagementModel");
                 $update_person = $mdl->getTable();
                 
                 $update_person->load($id);
@@ -2643,7 +2643,7 @@ $this->dump_variable("import_team", $import_team);
 			foreach ($this->_newpersonsid AS $key => $id)
 			{
 				
-                $mdl = JModel::getInstance("person", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("person", "sportsmanagementModel");
                 $p_person = $mdl->getTable();
                 
 				$import_person=$this->_datas['person'][$key];
@@ -2798,7 +2798,7 @@ $this->dump_variable("import_team", $import_team);
 	{
 		$my_text='';
 		
-        $mdl = JModel::getInstance("project", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $p_project = $mdl->getTable();
         
 		$p_project->set('name',trim($this->_name));
@@ -2887,7 +2887,7 @@ $this->dump_variable("import_team", $import_team);
 		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$project_id;
 
 		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
+		$records=$this->_db->loadColumn();
 		if (empty($records)){$records=array();}
 
 		// first check extension template folder if template is not default
@@ -2975,7 +2975,7 @@ $this->dump_variable("import_team", $import_team);
 		{
 			$query_template='SELECT id,master_template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.$this->_template_id;
 			$this->_db->setQuery($query_template);
-			$template_row=$this->_db->loadAssoc();
+			$template_row=$this->_db->loadColumn();
 			if ($template_row['master_template']==0)
 			{
 				$this->_master_template=$template_row['id'];
@@ -2990,7 +2990,7 @@ $this->dump_variable("import_team", $import_team);
 			foreach ($rows AS $row)
 			{
 				
-                $mdl = JModel::getInstance("template", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("template", "sportsmanagementModel");
                 $p_template = $mdl->getTable();
                 
 				$p_template->load($row->id);
@@ -3020,7 +3020,7 @@ $this->dump_variable("import_team", $import_team);
 				foreach ($this->_datas['template'] as $value)
 				{
 					
-                    $mdl = JModel::getInstance("template", "sportsmanagementModel");
+                    $mdl = JModelLegacy::getInstance("template", "sportsmanagementModel");
                     $p_template = $mdl->getTable();
                     
 					$template=$this->_getDataFromObject($value,'template');
@@ -3034,7 +3034,7 @@ $this->dump_variable("import_team", $import_team);
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
 					$parameter = new JRegistry;
-			$ini = $parameter->loadINI($defaultvalues[0]);
+			$ini = $parameter->loadString($defaultvalues[0]);
 			$ini = $parameter->toArray($ini);
 			$t_params = json_encode( $ini );		
 					$p_template->set('params',$t_params);
@@ -3095,7 +3095,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			foreach ($this->_datas['division'] as $key => $division)
 			{
 				
-                $mdl = JModel::getInstance("division", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("division", "sportsmanagementModel");
                 $p_division = $mdl->getTable();
                 
 				$oldId = (int)$division->id;
@@ -3159,7 +3159,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
 			
-            $mdl = JModel::getInstance("projectteam", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
             $p_projectteam = $mdl->getTable();
                 
 			$import_projectteam = $this->_datas['projectteam'][$key];
@@ -3305,7 +3305,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$import_projectreferee=$this->_datas['projectreferee'][$key];
 			$oldID=$this->_getDataFromObject($import_projectreferee,'id');
 			
-            $mdl = JModel::getInstance("projectreferee", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("projectreferee", "sportsmanagementModel");
             $p_projectreferee = $mdl->getTable();
 
 			$p_projectreferee->set('project_id',$this->_project_id);
@@ -3359,7 +3359,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 //$this->dump_variable("import_projectposition", $import_projectposition);
 			$oldID=$this->_getDataFromObject($import_projectposition,'id');
 			
-            $mdl = JModel::getInstance("projectposition", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("projectposition", "sportsmanagementModel");
             $p_projectposition = $mdl->getTable();
             
 			$p_projectposition->set('project_id',$this->_project_id);
@@ -3414,7 +3414,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		foreach ($this->_datas['teamplayer'] as $key => $teamplayer)
 		{
 			
-            $mdl = JModel::getInstance("teamplayer", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("teamplayer", "sportsmanagementModel");
             $p_teamplayer = $mdl->getTable();
             
 			$import_teamplayer=$this->_datas['teamplayer'][$key];
@@ -3524,7 +3524,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		foreach ($this->_datas['teamstaff'] as $key => $teamstaff)
 		{
 			
-            $mdl = JModel::getInstance("teamstaff", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("teamstaff", "sportsmanagementModel");
             $p_teamstaff = $mdl->getTable();
             
 			$import_teamstaff=$this->_datas['teamstaff'][$key];
@@ -3627,7 +3627,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		foreach ($this->_datas['teamtraining'] as $key => $teamtraining)
 		{
 			
-            $mdl = JModel::getInstance("trainingdata", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("trainingdata", "sportsmanagementModel");
             $p_teamtraining = $mdl->getTable();
             
 			$import_teamtraining=$this->_datas['teamtraining'][$key];
@@ -3673,7 +3673,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		foreach ($this->_datas['round'] as $key => $round)
 		{
 			
-            $mdl = JModel::getInstance("round", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
             $p_round = $mdl->getTable();
             
 			$oldId=(int)$round->id;
@@ -3739,7 +3739,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		{
 //$this->dump_variable("match", $match);
 			
-            $mdl = JModel::getInstance("match", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
             $p_match = $mdl->getTable();
             
 			$oldId=(int)$match->id;
@@ -4026,7 +4026,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 //$this->dump_variable("import_matchplayer", $import_matchplayer);
 			$oldID=$this->_getDataFromObject($import_matchplayer,'id');
 			
-            $mdl = JModel::getInstance("matchplayer", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchplayer", "sportsmanagementModel");
             $p_matchplayer = $mdl->getTable();
             
 			$oldMatchID=$this->_getDataFromObject($import_matchplayer,'match_id');
@@ -4109,7 +4109,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 //$this->dump_variable("import_matchstaff", $import_matchstaff);
 			$oldID=$this->_getDataFromObject($import_matchstaff,'id');
 			
-            $mdl = JModel::getInstance("matchstaff", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchstaff", "sportsmanagementModel");
             $p_matchstaff = $mdl->getTable();
             
 			$oldMatchID=$this->_getDataFromObject($import_matchstaff,'match_id');
@@ -4180,7 +4180,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 //$this->dump_variable("import_matchreferee", $import_matchreferee);
 			$oldID=$this->_getDataFromObject($import_matchreferee,'id');
 			
-            $mdl = JModel::getInstance("matchreferee", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchreferee", "sportsmanagementModel");
             $p_matchreferee = $mdl->getTable();
             
 			$oldMatchID=$this->_getDataFromObject($import_matchreferee,'match_id');
@@ -4250,7 +4250,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$oldID=$this->_getDataFromObject($import_matchevent,'id');
 
 			
-            $mdl = JModel::getInstance("matchevent", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchevent", "sportsmanagementModel");
             $p_matchevent = $mdl->getTable();
 
 			$p_matchevent->set('match_id',$this->_convertMatchID[$this->_getDataFromObject($import_matchevent,'match_id')]);
@@ -4340,7 +4340,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$oldID=$this->_getDataFromObject($import_positionstatistic,'id');
 
 			
-            $mdl = JModel::getInstance("positionstatistic", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
             $p_positionstatistic = $mdl->getTable();
 
 			$p_positionstatistic->set('position_id',$this->_convertPositionID[$this->_getDataFromObject($import_positionstatistic,'position_id')]);
@@ -4431,7 +4431,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$oldID=$this->_getDataFromObject($import_matchstaffstatistic,'id');
 
 			
-            $mdl = JModel::getInstance("matchstaffstatistic", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchstaffstatistic", "sportsmanagementModel");
             $p_matchstaffstatistic = $mdl->getTable();
 
 			$p_matchstaffstatistic->set('match_id',$this->_convertMatchID[$this->_getDataFromObject($import_matchstaffstatistic,'match_id')]);
@@ -4515,7 +4515,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$oldID=$this->_getDataFromObject($import_matchstatistic,'id');
 
 			
-            $mdl = JModel::getInstance("matchstatistic", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("matchstatistic", "sportsmanagementModel");
             $p_matchstatistic = $mdl->getTable();
 
 			$p_matchstatistic->set('match_id',$this->_convertMatchID[$this->_getDataFromObject($import_matchstatistic,'match_id')]);
@@ -4561,7 +4561,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			foreach ($this->_datas['treeto'] as $key => $treeto)
 			{
 				
-                $mdl = JModel::getInstance("treeto", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("treeto", "sportsmanagementModel");
                 $p_treeto = $mdl->getTable();
             
 				$oldId=(int)$treeto->id;
@@ -4622,7 +4622,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			foreach ($this->_datas['treetonode'] as $key => $treetonode)
 			{
 				
-                $mdl = JModel::getInstance("treetonode", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("treetonode", "sportsmanagementModel");
                 $p_treetonode = $mdl->getTable();
             
 				$oldId=(int)$treetonode->id;
@@ -4674,7 +4674,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			foreach ($this->_datas['treetomatch'] as $key => $treetomatch)
 			{
 				
-                $mdl = JModel::getInstance("treetomatch", "sportsmanagementModel");
+                $mdl = JModelLegacy::getInstance("treetomatch", "sportsmanagementModel");
                 $p_treetomatch = $mdl->getTable();
                 
 				$oldId=(int)$treetomatch->id;
@@ -5571,7 +5571,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
             if ( $new_team_id )
             {
             
-            $mdl = JModel::getInstance("projectteam", "sportsmanagementModel");
+            $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
             $row = $mdl->getTable();
             $row->load($proteam->id);
             $row->team_id = $new_team_id;
@@ -5887,7 +5887,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
         
         // zum schluss den inhalt der alten tabellen löschen
         // wegen speicherplatz
-        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
         

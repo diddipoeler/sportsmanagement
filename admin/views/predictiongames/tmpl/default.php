@@ -169,7 +169,7 @@ JHtml::_('behavior.modal');
 						else
 						{
 							?><a href='<?php echo $link; ?>'>
-									<img	src='<?php echo JURI::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
+									<img	src='<?php echo JUri::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
 											border='0'
 											alt='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'
 											title='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'>

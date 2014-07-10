@@ -55,7 +55,7 @@ JHtml::_('behavior.mootools');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatch extends JView
+class sportsmanagementViewMatch extends JViewLegacy
 {
 
 
@@ -80,7 +80,7 @@ class sportsmanagementViewMatch extends JView
         $this->assignRef('project_id',$project_id);
         $default_name_format = '';
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         $this->assignRef('eventsprojecttime',$projectws->game_regular_time);
         
@@ -99,7 +99,7 @@ class sportsmanagementViewMatch extends JView
 		}
         
         /*
-        $mdlPlaygrounds = JModel::getInstance("Playgrounds", "sportsmanagementModel");
+        $mdlPlaygrounds = JModelLegacy::getInstance("Playgrounds", "sportsmanagementModel");
         
         //build the html select list for playgrounds
 		$playgrounds[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
@@ -189,8 +189,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
         // layout editreferees
         if ( $this->getLayout() == 'editreferees' )
 		{
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/startinglineup.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/startinglineup.js');
         // projekt schiedsrichter
 		$allreferees = array();
 		//$allreferees = $model->getRefereeRoster(0,$this->item->id);
@@ -279,10 +279,10 @@ $this->assignRef('csvstaff',$model->csv_staff);
         // layout editevents
         if ( $this->getLayout() == 'editevents' )
 		{
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_editevents.js');
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
-        $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_functions.js');
+        //$document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_editevents.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/diddioeler.js');
+        $document->addStyleSheet(JUri::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
         $javascript = "\n";
         $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JUtility::getToken()."=1';" . "\n";
@@ -344,8 +344,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
         // layout editstats
         if ( $this->getLayout() == 'editstats' )
 		{
-		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/editmatchstats.js');
+		$document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
         
         $positions = $model->getProjectPositionsOptions(0, 1,$project_id);
@@ -392,10 +392,10 @@ $this->assignRef('csvstaff',$model->csv_staff);
         // layout editlineup
         if ( $this->getLayout() == 'editlineup' )
 		{
-		$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');  
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editlineup.js');
+		$document->addStyleSheet(JUri::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_functions.js');  
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/diddioeler.js');
+        //$document->addScript(JUri::base().'components/'.$option.'/assets/js/editlineup.js');
         $tid = JRequest::getVar('team','0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
@@ -627,8 +627,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $this->assignRef ( 'config', $config );
         
 //$mainframe->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
-//    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
-//    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
+//    $document->addScript(JUri::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
+//    $document->addScript(JUri::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
 $model = $this->getModel();
 $csv_file = $model->getPressebericht(); 
 $this->assignRef('csv',$csv_file); 
@@ -698,7 +698,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		//add the js script
 		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/startinglineup.js');
+		$document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/startinglineup.js');
 
 		//$model = $this->getModel();
 		//$match =& $this->get('data');
@@ -783,7 +783,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         //$model = $this->getModel();
-        //$model = JModel::getInstance('match', 'sportsmanagementmodel');
+        //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
 		//$project_id = $mainframe->getUserState('com_joomleagueproject');
         //$match_id	= $this->item->id;
         //$project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -799,7 +799,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		//add the js script
 		//$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/editevents.js');
+		$document->addScript(JUri::base().'components/com_joomleague/assets/js/editevents.js');
 
 		
 		$teams = $model->getMatchTeams($this->item->id);
@@ -853,7 +853,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
         
         // diddipoeler
         $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        //$mdlMatchProject = JModel::getInstance('project','JoomleagueModel');
+        //$mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
         //$this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
         
 
@@ -929,7 +929,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		//add the js script
 		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/editmatchstats.js?v='.$version);
+		$document->addScript(JUri::base().'components/com_joomleague/assets/js/editmatchstats.js?v='.$version);
 
 		$model = $this->getModel();
 		$match =& $this->get('data');
@@ -988,7 +988,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		//add the js script
 		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
+		$document->addScript(JUri::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
 
 		$model = $this->getModel();
 		$match =& $model->getMatchTeams();
@@ -1158,7 +1158,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
         
         // diddipoeler
         $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        $mdlMatchProject = JModel::getInstance('project','JoomleagueModel');
+        $mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
         $this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
         
     $this->assignRef('starters',			$starters);
@@ -1178,8 +1178,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     
@@ -1191,7 +1191,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		JRequest::setVar('hidemainmenu', true);

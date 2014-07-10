@@ -117,7 +117,7 @@ class com_sportsmanagementInstallerScript
 	 */
 	function postflight($type, $parent) 
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
     //echo JHtml::_('sliders.start','steps',array(
@@ -135,11 +135,11 @@ class com_sportsmanagementInstallerScript
 //$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
+$xmlfile = JPATH_ADMINISTRATOR. '/components/com_sportsmanagement/config.xml';  
 $jRegistry = new JRegistry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 //$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
+$form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
 $form->bind($jRegistry);
 $newparams = array();
 foreach($form->getFieldset($fieldset->name) as $field)
@@ -203,7 +203,7 @@ echo JHtml::_('sliders.end');
     public function createImagesFolder()
 	{
 		$mainframe = JFactory::getApplication();
-  $db = JFactory::getDBO();
+  $db = JFactory::getDbo();
   
         //echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
@@ -282,7 +282,7 @@ echo JHtml::_('sliders.end');
     function setParams($param_array) 
     {
         
-        $mainframe =& JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo();
         /*
         if ( count($param_array) > 0 )
@@ -375,13 +375,13 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         {
             // plugin ist nicht vorhanden
             // also installieren
-            $path = $src.DS.'plugins'.DS.$name;
+            $path = $src. '/plugins/'.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);    
         }    
         break;
         default:    
-        $path = $src.DS.'plugins'.DS.$name;
+        $path = $src.'/plugins/'.$name;
         $installer = new JInstaller;
         $result = $installer->install($path);
         break;
@@ -436,7 +436,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
             {
                 $client = 'site';
             }
-            $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$name : $src.DS.'modules'.DS.$name;
+            $path = $client == 'administrator' ? $src. '/admin/modules/'.$name : $src.'/modules/'.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);
             

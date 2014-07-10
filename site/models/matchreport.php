@@ -53,7 +53,7 @@ jimport( 'joomla.filesystem.folder' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatchReport extends JModel
+class sportsmanagementModelMatchReport extends JModelLegacy
 {
 
 	var $matchid = 0;
@@ -133,7 +133,7 @@ class sportsmanagementModelMatchReport extends JModel
 	function getClubinfo($clubid)
 	{
 		//$this->club =& $this->getTable('Club','Table');
-        $mdl = JModel::getInstance("club", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("club", "sportsmanagementModel");
         $this->club = $mdl->getTable();
 		$this->club->load($clubid);
 
@@ -152,7 +152,7 @@ class sportsmanagementModelMatchReport extends JModel
 
 		//$round =& $this->getTable('Round','sportsmanagementTable');
 		//$round->load($match->round_id);
-        $mdl = JModel::getInstance("round", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
         $round = $mdl->getTable();
         $round->load($match->round_id);
 
@@ -680,7 +680,7 @@ class sportsmanagementModelMatchReport extends JModel
 //	function getPlayground($pgid)
 //	{
 //		//$this->playground =& $this->getTable('Playground','Table');
-//        $mdl = JModel::getInstance("Playground", "sportsmanagementModel");
+//        $mdl = JModelLegacy::getInstance("Playground", "sportsmanagementModel");
 //        $this->playground = $mdl->getTable();
 //		$this->playground->load($pgid);
 //
@@ -973,7 +973,7 @@ class sportsmanagementModelMatchReport extends JModel
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($res, 'ini');
-		$jRegistry->loadJSON($res);
+		$jRegistry->loadString($res);
     
     for($a=0; $a < 11; $a++)
     {
@@ -1020,7 +1020,7 @@ class sportsmanagementModelMatchReport extends JModel
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($res, 'ini');
-		$jRegistry->loadJSON($res);
+		$jRegistry->loadString($res);
     
     for($a=0; $a < 11; $a++)
     {

@@ -65,7 +65,7 @@ class com_sportsmanagementInstallerScript
 	 */
 	function postflight($type, $parent) 
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
         // $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
@@ -166,7 +166,7 @@ switch ($type)
     function setParams($param_array) 
     {
         
-        $mainframe =& JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo();
                      
                                 

@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
+$this->kmlpath = JUri::root().'tmp'.DS.$this->playground->id.'-playground.kml';
 $this->kmlfile = $this->playground->id.'-playground.kml';
 
 ?>

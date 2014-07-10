@@ -8,9 +8,9 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HelloWorld Component
  */
-class sportsmanagementViewsportsmanagement extends JView
+class sportsmanagementViewsportsmanagement extends JViewLegacy
 {
-	// Overwriting JView display method
+	// Overwriting JViewLegacy display method
 	function display($tpl = null) 
 	{
 		// Assign data to the view

@@ -51,7 +51,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayer extends JModel
+class sportsmanagementModelPlayer extends JModelLegacy
 {
 	
     var $projectid		= 0;
@@ -494,7 +494,7 @@ class sportsmanagementModelPlayer extends JModel
         $query->order('round_date_first');
                     
 		$db->setQuery($query);
-		$rows = $db->loadResultArray();
+		$rows = $db->loadColumn();
 		$rounds = array();
 		if (count($rows) > 0)
 		{

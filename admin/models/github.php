@@ -48,7 +48,7 @@ jimport('joomla.application.component.model');
 require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'object.php');
 require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'issues.php');
 
-class sportsmanagementModelgithub extends JModel
+class sportsmanagementModelgithub extends JModelLegacy
 {
     var $client = '';
     

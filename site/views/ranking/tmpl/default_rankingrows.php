@@ -194,8 +194,8 @@ foreach( $current as $ptid => $team )
 //					$config['team_picture_height'],3);
 		
 ?>                                    
-<a href="<?php echo JURI::root().$team->team->$pic;?>" title="<?php echo $team->team->name;?>" class="modal">
-<img src="<?php echo JURI::root().$team->team->$pic;?>" alt="<?php echo $team->team->name;?>" width="20" />
+<a href="<?php echo JUri::root().$team->team->$pic;?>" title="<?php echo $team->team->name;?>" class="modal">
+<img src="<?php echo JUri::root().$team->team->$pic;?>" alt="<?php echo $team->team->name;?>" width="20" />
 </a>
 <?PHP        
         }

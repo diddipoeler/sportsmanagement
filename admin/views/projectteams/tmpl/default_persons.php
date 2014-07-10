@@ -55,7 +55,7 @@ $mainframe = JFactory::getApplication();
 		}
 	}
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
+	var quickaddsearchurl = '<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
 
 </script>
 <fieldset class="adminform">
@@ -64,7 +64,7 @@ $mainframe = JFactory::getApplication();
 	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_TEAM');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JRoute::_(JURI::root().'administrator/index.php?option=com_sportsmanagement&task=quickadd.addteam'); ?>" method="post">
+	<form id="quickaddForm" action="<?php echo JRoute::_(JUri::root().'administrator/index.php?option=com_sportsmanagement&task=quickadd.addteam'); ?>" method="post">
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $this->projectws->id; ?>" />
 	<input type="hidden" id="cteamid" name="cteamid" value="">
 	<table>

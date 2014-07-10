@@ -82,7 +82,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextdfbnetplayerimport extends JModel
+class sportsmanagementModeljlextdfbnetplayerimport extends JModelLegacy
 {
 
 var $_datas=array();
@@ -244,7 +244,7 @@ function getUpdateData()
   
   foreach ( $updatedata as $row)
   {
-  $mdl = JModel::getInstance("match", "sportsmanagementModel");
+  $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
   $p_match = $mdl->getTable();
   
   
@@ -1166,7 +1166,7 @@ Array
   
   $teamid = 1;
   
-$this->fileName = JFile::read($file);
+$this->fileName = file_get_contents($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {

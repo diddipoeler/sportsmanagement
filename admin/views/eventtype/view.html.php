@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementVieweventtype extends JView
+class sportsmanagementVieweventtype extends JViewLegacy
 {
 	
 	/**
@@ -104,7 +104,7 @@ class sportsmanagementVieweventtype extends JView
         $document  = JFactory::getDocument();
         $option = JRequest::getCmd('option');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
@@ -160,8 +160,8 @@ class sportsmanagementVieweventtype extends JView
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_EVENTTYPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_EVENTTYPE_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

@@ -50,7 +50,7 @@ jimport('joomla.filesystem.file');
  * @packag	JoomLeague
  * @since	1.5.0a
  */
-class sportsmanagementViewEventtypes extends JView
+class sportsmanagementViewEventtypes extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewEventtypes::display()
@@ -85,7 +85,7 @@ class sportsmanagementViewEventtypes extends JView
 		//build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
-		$allSportstypes = JModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
+		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
 		$sportstypes=array_merge($sportstypes,$allSportstypes);
 		
@@ -119,7 +119,7 @@ class sportsmanagementViewEventtypes extends JView
           // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page

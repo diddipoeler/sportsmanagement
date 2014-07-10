@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRounds extends JView
+class sportsmanagementViewRounds extends JViewLegacy
 {
 
 	/**
@@ -96,7 +96,7 @@ class sportsmanagementViewRounds extends JView
 		$uri = JFactory::getURI();
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         parent::display($tpl);
@@ -132,7 +132,7 @@ class sportsmanagementViewRounds extends JView
         //$project_id	= JRequest::getVar('pid');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
 		//$projectws =& $this->get('Data','projectws');
@@ -209,7 +209,7 @@ class sportsmanagementViewRounds extends JView
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE'),'matchdays');

@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionGame extends JView
+class sportsmanagementViewPredictionGame extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionGame::display()
@@ -161,8 +161,8 @@ class sportsmanagementViewPredictionGame extends JView
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDGAME_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDGAME_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     

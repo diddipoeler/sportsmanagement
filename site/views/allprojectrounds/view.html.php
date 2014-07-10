@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallprojectrounds extends JView
+class sportsmanagementViewallprojectrounds extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewallprojectrounds::display()
@@ -77,7 +77,7 @@ class sportsmanagementViewallprojectrounds extends JView
 		
 		$this->assignRef('project', $project);
 		
-//     $mdlProject = JModel::getInstance("Project", "JoomleagueModel");
+//     $mdlProject = JModelLegacy::getInstance("Project", "JoomleagueModel");
 		
     $this->assignRef('projectid', $this->project->id );
     

@@ -53,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubs extends JView
+class sportsmanagementViewClubs extends JViewLegacy
 {
 
 	/**
@@ -93,7 +93,7 @@ class sportsmanagementViewClubs extends JView
         
         //build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-        $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
+        $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons,$allSeasons);
         
@@ -144,7 +144,7 @@ class sportsmanagementViewClubs extends JView
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page

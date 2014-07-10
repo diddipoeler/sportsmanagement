@@ -51,7 +51,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRanking extends JView 
+class sportsmanagementViewRanking extends JViewLegacy 
 {
 	
 	/**
@@ -74,10 +74,10 @@ class sportsmanagementViewRanking extends JView
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        $mdlDivisions = JModel::getInstance("Divisions", "sportsmanagementModel");
-        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
-        $mdlTeams = JModel::getInstance("Teams", "sportsmanagementModel");
+        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
@@ -341,15 +341,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
         
-    //echo JURI::root().'<br>';
+    //echo JUri::root().'<br>';
     						
 		if ( $row->logo_big )
     {
-    $path = JURI::root().$row->logo_big;
+    $path = JUri::root().$row->logo_big;
     }
     else
     {
-    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
+    $path = JUri::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
     }
     
     //echo $path.'<br>';
@@ -375,7 +375,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$document->setTitle( $pageTitle );
 		$view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         //$document->addCustomTag($stylelink);
 		parent :: display($tpl);
 	}

@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionHeading extends JView
+class sportsmanagementViewPredictionHeading extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionHeading::display()
@@ -62,7 +62,7 @@ class sportsmanagementViewPredictionHeading extends JView
 	{
 		$document =  JFactory::getDocument();
         $mainframe = JFactory::getApplication();		
-//	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+//	$js ="registerhome('".JUri::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
     
         parent::display($tpl);

@@ -50,7 +50,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubPlan extends JView
+class sportsmanagementViewClubPlan extends JViewLegacy
 {
 	function display($tpl=null)
 	{
@@ -182,7 +182,7 @@ class sportsmanagementViewClubPlan extends JView
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		parent::display($tpl);

@@ -1,5 +1,5 @@
 <?php 
-$css = JURI::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
+$css = JUri::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
  $document = JFactory::getDocument();
  $document->addStyleSheet($css); 
  

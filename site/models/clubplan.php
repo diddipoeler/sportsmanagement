@@ -51,7 +51,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelClubPlan extends JModel
+class sportsmanagementModelClubPlan extends JModelLegacy
 {
 	var $clubid = 0;
 	var $project_id = 0;

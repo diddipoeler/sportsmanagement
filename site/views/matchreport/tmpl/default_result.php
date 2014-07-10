@@ -69,8 +69,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 //                echo JHtml::image($this->team1->$pic, $this->team1->name, array('title' => $this->team1->name,'width' => $this->config['team_picture_width'] ))                            
                 ?>
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->team1->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->team1->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $this->team1->name;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $this->team1->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>
                 
 		</td>
@@ -99,8 +99,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			*/
     //  echo JHtml::image($this->team2->$pic, $this->team2->name, array('title' => $this->team2->name,'width' => $this->config['team_picture_width'] ))							
 		?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->team2->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->team2->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $this->team2->name;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $this->team2->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>        
 		</td>
 	</tr>

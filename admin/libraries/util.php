@@ -418,9 +418,9 @@ class jsmGCalendarUtil
 			if (isset($libraries['jquery'])) {
 				if (!JFactory::getApplication()->get('jquery', false)) {
 					JFactory::getApplication()->set('jquery', true);
-					$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/jquery.min.js');
+					$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/jquery.min.js');
 				}
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
+				$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
 			}
 
 			if (isset($libraries['jqueryui'])) {
@@ -431,25 +431,25 @@ class jsmGCalendarUtil
 				if ($theme == 'bootstrap') {
 					$libraries['bootstrap'] = true;
 				}
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
+				$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
+				$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
 			}
 
 			if (isset($libraries['bootstrap'])) {
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+				$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
 				if ($libraries['bootstrap'] == 'javscript') {
-					$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+					$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 				}
 			}
 
 			if (isset($libraries['chosen'])) {
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.min.js');
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.css');
+				$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.min.js');
+				$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.css');
 			}
 		} else {
 			if (isset($libraries['jquery'])) {
 				JHtml::_('jquery.framework');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
+				$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
 			}
 
 			if (isset($libraries['jqueryui'])) {
@@ -459,8 +459,8 @@ class jsmGCalendarUtil
 				} else {
 					$libraries['bootstrap'] = true;
 				}
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
+				$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
+				$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
 			}
 
 			if (isset($libraries['bootstrap'])) {
@@ -473,8 +473,8 @@ class jsmGCalendarUtil
 		}
 
 		if (isset($libraries['gcalendar'])) {
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.css');
+			$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.js');
+			$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.css');
 		}
 
 		if (isset($libraries['maps'])) {
@@ -482,12 +482,12 @@ class jsmGCalendarUtil
 		}
 
 		if (isset($libraries['fullcalendar'])) {
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css');
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/fancybox/jquery.fancybox-1.3.4.css');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/tipTip.css');
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.tipTip.minified.js');
+			$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js');
+			$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css');
+			$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js');
+			$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/jquery/fancybox/jquery.fancybox-1.3.4.css');
+			$document->addStyleSheet(JUri::root().'components/com_sportsmanagement/libraries/jquery/ext/tipTip.css');
+			$document->addScript(JUri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.tipTip.minified.js');
 		}
 	}
 

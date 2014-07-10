@@ -250,13 +250,13 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         
 	$db->setQuery($query);
     
-    if ( $predresult = $db->loadResultArray() )
+    if ( $predresult = $db->loadColumn() )
     {
         // Select some fields
         $query->clear();
         $query->select('id AS value, name AS text');
         $query->from('#__users ');
-        $query->where('id not in (' . implode(",", $this->_db->loadResultArray() ) .')');
+        $query->where('id not in (' . implode(",", $this->_db->loadColumn() ) .')');
         $query->order('name');
         
 

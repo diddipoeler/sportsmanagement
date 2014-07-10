@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjoomleagueimport extends JView
+class sportsmanagementViewjoomleagueimport extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewjoomleagueimport::display()
@@ -78,7 +78,7 @@ class sportsmanagementViewjoomleagueimport extends JView
             $this->step = 0;
         }
         
-//        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+//        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         //$this->assign('totals',$model->gettotals() );
         
         if ( $this->step <= $this->totals )
@@ -147,7 +147,7 @@ $document->addScriptDeclaration( $javascript );
         
         
         // Load our Javascript
-        $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
+        $document->addStylesheet(JUri::base().'components/'.$option.'/assets/css/progressbar.css');
         JToolBarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		parent::display($tpl);
@@ -162,7 +162,7 @@ $document->addScriptDeclaration( $javascript );
 //	{
 //		// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page

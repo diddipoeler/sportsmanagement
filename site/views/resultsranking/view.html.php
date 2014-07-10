@@ -57,7 +57,7 @@ jimport('joomla.html.pane');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResultsranking extends JView 
+class sportsmanagementViewResultsranking extends JViewLegacy 
 {
 
 	/**
@@ -89,7 +89,7 @@ class sportsmanagementViewResultsranking extends JView
         /*
 		// add some javascript
 		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version);
+		$document->addScript( JUri::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version);
         */
         
 		// add the ranking model
@@ -99,13 +99,13 @@ class sportsmanagementViewResultsranking extends JView
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking');
 		$rankingmodel->computeRanking();
         
-        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
         
 		// add the results model		
 		$resultsmodel	= new sportsmanagementModelResults();
 		// add the results config file
 
-		$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel->round);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
@@ -175,7 +175,7 @@ class sportsmanagementViewResultsranking extends JView
 		$document->setTitle($pageTitle);
         
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         // diddipoeler
@@ -226,7 +226,7 @@ class sportsmanagementViewResultsranking extends JView
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 		*/
-		JView::display($tpl);
+		JViewLegacy::display($tpl);
 	}
 	
 	/**

@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeamStats extends JModel
+class sportsmanagementModelTeamStats extends JModelLegacy
 {
 	var $projectid = 0;
 	var $teamid = 0;
@@ -543,7 +543,7 @@ class sportsmanagementModelTeamStats extends JModel
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-    		$this->attendanceranking = $db->loadResultArray();
+    		$this->attendanceranking = $db->loadColumn();
     	}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -635,7 +635,7 @@ class sportsmanagementModelTeamStats extends JModel
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS teams ON clubs.id = teams.club_id ');
         $query->where('teams.id = '.$this->teamid);
     	$db->setQuery( $query );
-    	$logo = JURI::root().$db->loadResult();
+    	$logo = JUri::root().$db->loadResult();
 
 		return $logo;
 	}

@@ -54,7 +54,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionRules extends JModel
+class sportsmanagementModelPredictionRules extends JModelLegacy
 {
 	/**
 	 * sportsmanagementModelPredictionRules::__construct()

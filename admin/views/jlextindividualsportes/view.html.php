@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextindividualsportes extends JView
+class sportsmanagementViewjlextindividualsportes extends JViewLegacy
 {
 	function display($tpl=null)
 	{
@@ -89,9 +89,9 @@ $this->state = $this->get('State');
 		$projectteam1_id		= JRequest::getvar('team1', 0);
 		$projectteam2_id		= JRequest::getvar('team2', 0);
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($project_id);
-        $mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+        $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($rid);
         
         //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');

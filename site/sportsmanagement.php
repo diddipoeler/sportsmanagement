@@ -39,7 +39,9 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 //require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
@@ -101,11 +103,11 @@ $config = JFactory::getConfig();
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
 
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+$document->addScript(JUri::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 // meta daten der komponente setzen
 $meta_keys = array();
-$meta_keys[] = $config->getValue( 'config.MetaKeys' );
+$meta_keys[] = $config->get( 'config.MetaKeys' );
 $project_id = JRequest::getInt( "p") ;
 
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
@@ -159,13 +161,13 @@ if ( $mainframe->isAdmin() )
 {
 if($task == '' && $option == 'com_sportsmanagement') 
 {
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+$js ="registerhome('".JUri::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
 $document->addScriptDeclaration( $js );
 }
 }
 else
 {
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+$js ="registerhome('".JUri::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
 $document->addScriptDeclaration( $js );    
 }
 
@@ -174,9 +176,9 @@ require_once( JPATH_SITE.DS.JSM_PATH.DS. 'controller.php' );
 // Component Helper
 jimport( 'joomla.application.component.helper' );
 $controller = null;
-if(is_null($controller) && !($controller instanceof JController)) {
+if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	//fallback if no extensions controller has been initialized
-	$controller	= JController::getInstance('sportsmanagement');
+	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

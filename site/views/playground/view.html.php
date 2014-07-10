@@ -50,7 +50,7 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPlayground extends JView
+class sportsmanagementViewPlayground extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPlayground::display()
@@ -115,7 +115,7 @@ class sportsmanagementViewPlayground extends JView
 		$document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );
         
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		parent::display( $tpl );

@@ -2084,13 +2084,13 @@ if (!$db->query())
         // get settings from com_issuetracker parameters
         $params = JComponentHelper::getParams($option);
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdl = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdl->getProject($this->project_id);
         
         //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
         //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers user<br><pre>'.print_r($user, true).'</pre><br>','Notice');
         
-        $mdl = JModel::getInstance("TeamPlayers", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("TeamPlayers", "sportsmanagementModel");
 	    $teamplayer = $mdl->getProjectTeamplayers($project->fav_team);
         
         //$mainframe->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers teamplayer<br><pre>'.print_r($teamplayer, true).'</pre><br>','Notice');

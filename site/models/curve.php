@@ -55,7 +55,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelCurve extends JModel
+class sportsmanagementModelCurve extends JModelLegacy
 {
 	var $project = null;
 	var $projectid = 0;
@@ -341,7 +341,7 @@ class sportsmanagementModelCurve extends JModel
         	
 		$rankinghelper = JSMRanking::getInstance($project);
 		$rankinghelper->setProjectId( $project->id );
-		//$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 		//$mdlRounds->setProjectId($project->id);
         sportsmanagementModelRounds::$_project_id = $project->id;
 		$firstRound = sportsmanagementModelRounds::getFirstRound($project->id);

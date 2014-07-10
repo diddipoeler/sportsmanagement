@@ -128,7 +128,7 @@ else
 			<?php 
             if ( isset($this->clubassoc->name) )
             {
-            echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
+            echo JHtml::image(JUri::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
             }
             ?>
       <br />

@@ -24,7 +24,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 function updateEventIcon(path) {
 	var icon = $('image');
-	icon.src = '<?php echo JURI::root(); ?>' + path;
+	icon.src = '<?php echo JUri::root(); ?>' + path;
 	icon.alt = path;
 	icon.value = path;
 	var logovalue = $('icon');

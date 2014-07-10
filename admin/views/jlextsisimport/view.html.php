@@ -44,7 +44,7 @@ jimport ( 'joomla.application.component.view' );
 
 
 
-class sportsmanagementViewjlextsisimport extends JView 
+class sportsmanagementViewjlextsisimport extends JViewLegacy 
 {
 	function display($tpl = null) 
     {
@@ -175,7 +175,7 @@ class sportsmanagementViewjlextsisimport extends JView
         
         
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page

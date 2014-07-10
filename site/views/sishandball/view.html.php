@@ -40,7 +40,7 @@
 
 jimport( 'joomla.application.component.view');
 
-class sportsmanagementViewsishandball extends JView 
+class sportsmanagementViewsishandball extends JViewLegacy 
 { 
 
 	function display($tpl = null) 

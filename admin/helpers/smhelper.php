@@ -502,7 +502,7 @@ class sportsmanagementHelper
 					$ret .='" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 			} else {
-				$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
+				$picture = JUri::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
 				$title = $alttext;
 				//height and width set, let the browser resize it
 				$bUseHighslide = $params->get('use_highslide', false);

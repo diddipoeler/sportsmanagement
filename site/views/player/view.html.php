@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPlayer extends JView
+class sportsmanagementViewPlayer extends JViewLegacy
 {
 
 	/**
@@ -226,7 +226,7 @@ class sportsmanagementViewPlayer extends JView
 		$this->assignRef('playername', $name);
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
 		parent::display($tpl);

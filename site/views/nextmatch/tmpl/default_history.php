@@ -112,7 +112,7 @@ if ( $this->games )
 				<td class="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = JHtml::image( JUri::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					JText::_( 'Match Report' ),
 					array( "title" => JText::_( 'Match Report' ) ) );
 					echo JHtml::link( $report_link, $desc);

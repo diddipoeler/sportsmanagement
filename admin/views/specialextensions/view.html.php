@@ -46,7 +46,7 @@ jimport('joomla.application.component.view');
 /**
  *  View
  */
-class sportsmanagementViewspecialextensions extends JView
+class sportsmanagementViewspecialextensions extends JViewLegacy
 {
 	/**
 	 *  view display method
@@ -86,7 +86,7 @@ class sportsmanagementViewspecialextensions extends JView
 	$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		$canDo = sportsmanagementHelper::getActions();

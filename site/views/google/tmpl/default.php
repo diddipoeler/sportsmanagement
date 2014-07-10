@@ -106,22 +106,22 @@ foreach($this->calendars as $calendar) {
 $calendar_list .="</table></div>\n";
 if($params->get('show_selection')==1 || $params->get('show_selection') == 3){
 	$document = JFactory::getDocument();
-	$document->addScript(JURI::base(). 'components/com_gcalendar/views/google/tmpl/gcalendar.js' );
-	$document->addStyleSheet(JURI::base().'components/com_gcalendar/views/google/tmpl/gcalendar.css');
+	$document->addScript(JUri::base(). 'components/com_gcalendar/views/google/tmpl/gcalendar.js' );
+	$document->addStyleSheet(JUri::base().'components/com_gcalendar/views/google/tmpl/gcalendar.css');
 	if($params->get('show_selection', 1) == 1) {
 		$document->addScriptDeclaration("gcjQuery(document).ready(function() {gcjQuery('#gc_google_view_list').hide();});");
 	}
 	echo $calendar_list;
 	echo "<div align=\"center\" style=\"text-align:center\">\n";
 	echo "<a id=\"gc_google_view_toggle\" name=\"gc_google_view_toggle\" href=\"#\">\n";
-	$image = JURI::base().'media/com_gcalendar/images/down.png';
-	if($params->get('show_selection', 1) == 3) $image = JURI::base().'media/com_gcalendar/images/up.png';
+	$image = JUri::base().'media/com_gcalendar/images/down.png';
+	if($params->get('show_selection', 1) == 3) $image = JUri::base().'media/com_gcalendar/images/up.png';
 	echo "<img id=\"gc_google_view_toggle_status\" name=\"gc_google_view_toggle_status\" src=\"".$image."\" alt=\"".JText::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\" title=\"".JText::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\"/>\n";
 	echo "</a></div>\n";
 }
 $calendar_url="";
 if ($params->get('use_custom_css')) {
-	$calendar_url= JURI::base().'components/com_gcalendar/libraries/restylegc/restylegc.php'.$variables;
+	$calendar_url= JUri::base().'components/com_gcalendar/libraries/restylegc/restylegc.php'.$variables;
 } else {
 	$calendar_url=$domain.$variables;
 }

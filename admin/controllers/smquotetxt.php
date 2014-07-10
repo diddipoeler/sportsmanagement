@@ -60,7 +60,7 @@ class sportsmanagementControllersmquotetxt extends JControllerForm
 	 * Constructor.
 	 *
 	 * @param	array An optional associative array of configuration settings.
-	 * @see		JController
+	 * @see		JControllerLegacy
 	 */
 	public function __construct($config = array())
 	{

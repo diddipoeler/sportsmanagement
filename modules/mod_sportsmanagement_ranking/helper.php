@@ -69,7 +69,7 @@ class modJSMRankingHelper
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
 		}
-		//$model = JModel::getInstance('project', 'sportsmanagementModel');
+		//$model = JModelLegacy::getInstance('project', 'sportsmanagementModel');
 		sportsmanagementModelProject::setProjectId($params->get('p'));
 
 		$project = sportsmanagementModelProject::getProject();
@@ -93,7 +93,7 @@ class modJSMRankingHelper
 		}
 		$colors = array();
 		if ($params->get('show_rank_colors', 0)) {
-//			$mdlRanking = JModel::getInstance("Ranking", "sportsmanagementModel");
+//			$mdlRanking = JModelLegacy::getInstance("Ranking", "sportsmanagementModel");
 //			$mdlRanking->setProjectid($params->get('p'));
 			sportsmanagementModelRanking::$projectid = $params->get('p');
             $config = sportsmanagementModelProject::getTemplateConfig("ranking");

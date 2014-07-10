@@ -53,7 +53,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionUsers extends JController
+class sportsmanagementControllerPredictionUsers extends JControllerLegacy
 {
 
 	/**
@@ -116,8 +116,8 @@ class sportsmanagementControllerPredictionUsers extends JController
 		$joomlaUserID		= JRequest::getVar('user_id',		'','post','int');
 
 		//$model			= $this->getModel('predictionusers');
-        $modelusers = JModel::getInstance("predictionusers", "sportsmanagementModel");
-        $model = JModel::getInstance("prediction", "sportsmanagementModel");
+        $modelusers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
+        $model = JModelLegacy::getInstance("prediction", "sportsmanagementModel");
 		$user			= JFactory::getUser();
 		$isMember		= $model->checkPredictionMembership();
 		$allowedAdmin	= $model->getAllowed();

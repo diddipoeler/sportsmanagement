@@ -53,7 +53,7 @@ jimport('joomla.form.form');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewPredictionTemplate extends JView
+class sportsmanagementViewPredictionTemplate extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionTemplate::display()
@@ -91,7 +91,7 @@ class sportsmanagementViewPredictionTemplate extends JView
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
         
-        //$jRegistry->loadJSON($item->params);
+        //$jRegistry->loadString($item->params);
         //$item->params = $jRegistry->toArray($item->params);
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
         
@@ -119,7 +119,7 @@ $this->addToolbar();
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		
         

@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModel
+class sportsmanagementModelAjax extends JModelLegacy
 {
         /**
          * sportsmanagementModelAjax::addGlobalSelectElement()

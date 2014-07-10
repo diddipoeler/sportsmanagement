@@ -79,8 +79,8 @@ function newstructur($step,$count=5)
     $jsm_table = $mainframe->getUserState( "$option.jsm_table", '' );
     
     // felder für den import auslesen
-    $jl_fields = $db->getTableFields($jl_table);
-    $jsm_fields = $db->getTableFields($jsm_table);
+    $jl_fields = $db->getTableColumns($jl_table);
+    $jsm_fields = $db->getTableColumns($jsm_table);
     
     if ( preg_match("/project_team/i", $jsm_table) )
     {
@@ -324,8 +324,8 @@ order by s.name DESC
                 $result_mp = $db->loadObjectList();
                 
                 // wir brauchen noch die felder der tabellen
-                $jl_fields = $db->getTableFields('#__joomleague_match_player');
-                $jsm_fields = $db->getTableFields('#__sportsmanagement_match_player');
+                $jl_fields = $db->getTableColumns('#__joomleague_match_player');
+                $jsm_fields = $db->getTableColumns('#__sportsmanagement_match_player');
                 
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');
@@ -377,8 +377,8 @@ order by s.name DESC
                 $result_mp = $db->loadObjectList();
                 
                 // wir brauchen noch die felder der tabellen
-                $jl_fields = $db->getTableFields('#__joomleague_match_event');
-                $jsm_fields = $db->getTableFields('#__sportsmanagement_match_event');
+                $jl_fields = $db->getTableColumns('#__joomleague_match_event');
+                $jsm_fields = $db->getTableColumns('#__sportsmanagement_match_event');
                 
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
                 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');

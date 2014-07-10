@@ -65,7 +65,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 		}
 	}
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
+	var quickaddsearchurl = '<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
 
 </script>
 <fieldset class="adminform">
@@ -74,7 +74,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_TEAM');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JRoute::_(JURI::root().'administrator/index.php?option=com_sportsmanagement&task=quickadd.addteam'); ?>" method="post">
+	<form id="quickaddForm" action="<?php echo JRoute::_(JUri::root().'administrator/index.php?option=com_sportsmanagement&task=quickadd.addteam'); ?>" method="post">
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $this->projectws->id; ?>" />
 	<input type="hidden" id="cteamid" name="cteamid" value="">
 	<table>
@@ -279,8 +279,8 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
+<a href="<?php echo JUri::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
 <?PHP
 
@@ -311,8 +311,8 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
+<a href="<?php echo JUri::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
 <?PHP 
 // die möglichkeit bieten, das vereinslogo zu aktualisieren
@@ -427,8 +427,8 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 														$imageTitle,'title= "'.$imageTitle.'"');
 								
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
 </a>
 <?PHP                                 
                                 
@@ -440,8 +440,8 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30" />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30" />
 </a>
 <?PHP                                                     
 								} else {

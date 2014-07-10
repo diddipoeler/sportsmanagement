@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTemplates extends JView
+class sportsmanagementViewTemplates extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewTemplates::display()
@@ -86,7 +86,7 @@ class sportsmanagementViewTemplates extends JView
         
 		//$projectws =& $this->get('Data','projectws');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
 		
 		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($project,true).'</pre>'),'');
@@ -139,7 +139,7 @@ class sportsmanagementViewTemplates extends JView
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE'),'templates');

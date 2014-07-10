@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewcpanel extends JView
+class sportsmanagementViewcpanel extends JViewLegacy
 {
 	/**
 	 *  view display method
@@ -69,7 +69,7 @@ class sportsmanagementViewcpanel extends JView
         $model	= $this->getModel();
         $my_text = '';
         
-        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         // für den import die jl tabellen lesen
@@ -222,8 +222,8 @@ class sportsmanagementViewcpanel extends JView
         }
         
 		jimport('joomla.html.pane');
-		$pane	= JPane::getInstance('sliders');
-		$this->assignRef( 'pane' , $pane );
+//		$pane	= JPane::getInstance('sliders');
+//		$this->assignRef( 'pane' , $pane );
         $this->assignRef( 'sporttypes' , $sporttypes );
         $this->assign( 'version', $model->getVersion() );
         
@@ -272,21 +272,21 @@ class sportsmanagementViewcpanel extends JView
         $option = JRequest::getCmd('option');
         $task = JRequest::getCmd('task');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(JUri::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         
         if ( $mainframe->isAdmin() )
         {
         if($task == '' && $option == 'com_sportsmanagement') 
         {
-        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+        $js ="registerhome('".JUri::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
         $document->addScriptDeclaration( $js );
         }
         }
         else
         {
-        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+        $js ="registerhome('".JUri::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
         $document->addScriptDeclaration( $js );    
         }
         

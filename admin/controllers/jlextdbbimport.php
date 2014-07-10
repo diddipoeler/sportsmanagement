@@ -62,7 +62,7 @@ jimport( 'joomla.application.component.controller' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdbbimport extends JController
+class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 {
 
 

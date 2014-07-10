@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
+require_once(JPATH_ROOT. '/components/com_sportsmanagement/helpers/countries.php');
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 

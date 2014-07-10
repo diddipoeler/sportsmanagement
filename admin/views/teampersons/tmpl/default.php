@@ -76,7 +76,7 @@ JHtml::_('behavior.modal');
 </style>
 
 <script>
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
+	var quickaddsearchurl = '<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
         var s= document.getElementById("filter_search");
@@ -91,7 +91,7 @@ JHtml::_('behavior.modal');
 	echo JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYERS_QUICKADD_PLAYER");
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addplayer" method="post">
+	<form id="quickaddForm" action="<?php echo JUri::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addplayer" method="post">
 	<input type="hidden" name="projectteam_id" id="projectteam_id" value="<?php echo $this->teamws->id; ?>" />
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
@@ -299,8 +299,8 @@ JHtml::_('behavior.modal');
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
 </a>
 <?PHP   								
                                 }
@@ -309,8 +309,8 @@ JHtml::_('behavior.modal');
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
 </a>
 <?PHP 								
                                 

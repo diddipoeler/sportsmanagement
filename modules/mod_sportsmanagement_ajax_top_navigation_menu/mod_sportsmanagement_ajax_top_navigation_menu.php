@@ -288,12 +288,12 @@ $document->addScriptDeclaration(';
       ');
       
 if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
-	$document->addScript( JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/mod_sportsmanagement_ajax_top_navigation_menu.js' );
+	$document->addScript( JUri::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/mod_sportsmanagement_ajax_top_navigation_menu.js' );
 	$document->addScriptDeclaration(';
-    var ajaxmenu_baseurl=\''. JURI::base() . '\';
+    var ajaxmenu_baseurl=\''. JUri::base() . '\';
       ');
-	$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css');
-	$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
+	$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css');
+	$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 

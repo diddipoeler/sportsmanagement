@@ -51,7 +51,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JController
+class sportsmanagementControllerAjax extends JControllerLegacy
 {
     /**
      * sportsmanagementControllerAjax::__construct()

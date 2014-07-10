@@ -54,7 +54,7 @@ $mainframe = JFactory::getApplication();
 $config = array();
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css');
 
 $pg_id = $params->get('pg');
 
@@ -105,7 +105,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 //JRequest::setVar('prediction_id', $pg_id);
 
 // das model laden
-$modelpg = JModel::getInstance('PredictionRanking', 'sportsmanagementModel');
+$modelpg = JModelLegacy::getInstance('PredictionRanking', 'sportsmanagementModel');
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 // jetzt nach das overall template nachladen

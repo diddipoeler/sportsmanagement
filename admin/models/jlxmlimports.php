@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	JoomLeague
  * @since	2.0
 */
-class sportsmanagementModelJLXMLImports extends JModel
+class sportsmanagementModelJLXMLImports extends JModelLegacy
 {
 }
 

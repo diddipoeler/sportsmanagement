@@ -60,7 +60,7 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	 * Constructor.
 	 *
 	 * @param	array An optional associative array of configuration settings.
-	 * @see		JController
+	 * @see		JControllerLegacy
 	 * @since	1.6
 	 */
 	public function __construct($config = array())

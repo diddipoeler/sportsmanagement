@@ -466,7 +466,7 @@ class sportsmanagementHelperHtml
 	{
 		if ( isset( $previous[$ptid]->rank ) )
 		{
-			$imgsrc = JURI::root() . 'media/com_sportsmanagement/jl_images/';
+			$imgsrc = JUri::root() . 'media/com_sportsmanagement/jl_images/';
 			if ( ( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" ) )
 			{
 				$imgsrc .= "same.png";
@@ -536,7 +536,7 @@ class sportsmanagementHelperHtml
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}
-			$query = JURI::buildQuery( $params );
+			$query = JUri::buildQuery( $params );
 			echo JHtml::link(
 			JRoute::_( "index.php?".$query ),
 			JText::_($columnTitle),
@@ -584,7 +584,7 @@ class sportsmanagementHelperHtml
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}
-			$query = JURI::buildQuery( $params );
+			$query = JUri::buildQuery( $params );
 			echo JHtml::link(
 			JRoute::_( "index.php?".$query ),
 			JText::_($columnTitle),
@@ -630,13 +630,13 @@ class sportsmanagementHelperHtml
 		echo '<td style="width: 10%; text-align: left;" nowrap="nowrap">';
 		if ( $limitstart > 0 )
 		{
-			$query = JURI::buildQuery(
+			$query = JUri::buildQuery(
 			array(
 					"limit" => $limit,
 					"limitstart" => 0 ) );
 			echo JHtml::link( $url.$query, '&lt;&lt;&lt;' );
 			echo '&nbsp;&nbsp;&nbsp';
-			$query = JURI::buildQuery(
+			$query = JUri::buildQuery(
 			array(
 					"limit" => $limit,
 					"limitstart" => $latestlimitstart ) );
@@ -656,13 +656,13 @@ class sportsmanagementHelperHtml
 		if ( $nextlimitstart > 0 )
 		{
 			echo '&nbsp;&nbsp;&nbsp;';
-			$query = JURI::buildQuery(
+			$query = JUri::buildQuery(
 			array(
 					"limit" => $limit,
 					"limitstart" => $nextlimitstart ) );
 			echo JHtml::link( $url.$query, '&gt;&gt;' );
 			echo '&nbsp;&nbsp;&nbsp';
-			$query = JURI::buildQuery(
+			$query = JUri::buildQuery(
 			array(
 					"limit" => $limit,
 					"limitstart" => $lastlimitstart ) );

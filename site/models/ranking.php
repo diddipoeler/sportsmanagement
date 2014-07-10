@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRanking extends JModel
+class sportsmanagementModelRanking extends JModelLegacy
 {
 	static $projectid = 0;
 	var $round = 0;
@@ -348,9 +348,9 @@ class sportsmanagementModelRanking extends JModel
 	{
 		$mainframe	= JFactory::getApplication();
         
-        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        //$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
-		//$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        //$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
         
 		$project = sportsmanagementModelProject::getProject();
 
@@ -549,7 +549,7 @@ class sportsmanagementModelRanking extends JModel
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$res = $db->loadResultArray();
+		$res = $db->loadColumn();
 		
 		if (!$res) {
 			return $round_id;

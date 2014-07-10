@@ -56,5 +56,5 @@ $display_add_box = 0;
 
 <script>
 	var turtushout_update_timeout = <?php echo $update_timeout * 1000; ?>;
-	var turtushout_server_url = '<?php echo JURI::root(); ?>';
+	var turtushout_server_url = '<?php echo JUri::root(); ?>';
 </script>

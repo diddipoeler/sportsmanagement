@@ -28,16 +28,16 @@ $params = $this->params;
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 
-<link rel='stylesheet' type='text/css' href='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css' />
-<link rel='stylesheet' type='text/css' href='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.print.css' media='print' />
-<link rel='stylesheet' type='text/css' href='<?php echo JURI::base()?>components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.css' />
+<link rel='stylesheet' type='text/css' href='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.print.css' media='print' />
+<link rel='stylesheet' type='text/css' href='<?php echo JUri::base()?>components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.css' />
 
 <?php
 $theme = $params->get('theme', '');
 if(!empty($theme) && $theme > 0){?>
-	<link rel='stylesheet' type='text/css' href='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/jquery/themes/<?php echo $theme?>/jquery-ui.custom.css' />
+	<link rel='stylesheet' type='text/css' href='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/jquery/themes/<?php echo $theme?>/jquery-ui.custom.css' />
 <?php }else{?>
-	<link rel='stylesheet' type='text/css' href='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/jquery/themes/aristo/jquery-ui.custom.css' />
+	<link rel='stylesheet' type='text/css' href='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/jquery/themes/aristo/jquery-ui.custom.css' />
 <?php }?>
 <style type='text/css'>
 body {
@@ -52,12 +52,12 @@ body {
 }
 </style>
 
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/jquery/jquery.min.js'></script>
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js'></script>
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.js'></script>
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js'></script>
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js'></script>
-<script type='text/javascript' src='<?php echo JURI::base()?>components/com_gcalendar/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/jquery/jquery.min.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js'></script>
+<script type='text/javascript' src='<?php echo JUri::base()?>components/com_gcalendar/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js'></script>
 
 <style type='text/css'>
 <?php
@@ -244,8 +244,8 @@ if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) =
 	$calendar_list .="</table></div>\n";
 	echo $calendar_list;
 	echo "<div align=\"center\" style=\"text-align:center\">\n";
-	$image = JURI::base().'components/com_sportsmanagement/assets/images/down.png';
-	if($params->get('show_selection', 1) == 3) $image = JURI::base().'components/com_sportsmanagement/assets/images/up.png';
+	$image = JUri::base().'components/com_sportsmanagement/assets/images/down.png';
+	if($params->get('show_selection', 1) == 3) $image = JUri::base().'components/com_sportsmanagement/assets/images/up.png';
 	echo "<img id=\"gc_gcalendar_view_toggle_status\" name=\"gc_gcalendar_view_toggle_status\" src=\"".$image."\" alt=\"".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\" title=\"".JText::_('COM_GCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\"/>\n";
 	echo "</div>\n";
 }

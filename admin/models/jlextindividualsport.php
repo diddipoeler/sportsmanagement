@@ -647,7 +647,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 		$option='com_joomleague';
 		$mainframe	=& JFactory::getApplication();
 		$datatable[0]='#__joomleague_match_single';
-		$fields = $this->_db->getTableFields($datatable);
+		$fields = $this->_db->getTableColumns($datatable);
 		
     $sporttype = $mainframe->getUserState( $option . 'sporttype' );
     $defaultvalues = array();
@@ -1033,7 +1033,7 @@ $temp = implode( "\n", $defaultvalues );
   FROM #__joomleague_match_single AS m
 	WHERE m.match_id='.(int) $match_id .' AND m.published = 1';
 	$this->_db->setQuery($query);		
-	$row = $this->_db->loadAssoc();
+	$row = $this->_db->loadColumn();
 
 $row['team1_result_split'] = array();
 $row['team2_result_split'] = array();

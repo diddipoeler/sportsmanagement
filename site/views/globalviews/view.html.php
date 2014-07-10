@@ -51,7 +51,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewglobalviews extends JView
+class sportsmanagementViewglobalviews extends JViewLegacy
 {
 	function display( $tpl = null )
 	{

@@ -55,7 +55,7 @@ jimport('joomla.filesystem.archive');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextprofleagimport extends JController
+class sportsmanagementControllerjlextprofleagimport extends JControllerLegacy
 {
 	
 	/**
@@ -181,7 +181,7 @@ $convert = array (
   
 
       
-$source	= JFile::read($importFile);
+$source	= file_get_contents($importFile);
 $source = str_replace(array_keys($convert), array_values($convert), $source  );
 $return = JFile::write($importFile,$source );
 

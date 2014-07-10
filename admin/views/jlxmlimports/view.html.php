@@ -53,7 +53,7 @@ jimport('joomla.html.parameter.element.timezones');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewJLXMLImports extends JView
+class sportsmanagementViewJLXMLImports extends JViewLegacy
 {
 	function display($tpl=null)
 	{
@@ -61,7 +61,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$mainframe = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $model = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
 
 		if ($this->getLayout()=='form')
@@ -90,7 +90,7 @@ class sportsmanagementViewJLXMLImports extends JView
 
 		
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
@@ -119,7 +119,7 @@ class sportsmanagementViewJLXMLImports extends JView
        $option = JRequest::getCmd('option');
        //$project_id = (int) $mainframe->getUserState($option.'project', 0);
        //$mainframe->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
-       $model = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+       $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 	   $data = $model->getData();
        $update_matches = $model->getDataUpdate(); 
        $this->assignRef('xml', $data);
@@ -130,7 +130,7 @@ class sportsmanagementViewJLXMLImports extends JView
        // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
@@ -155,7 +155,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$document		= JFactory::getDocument();
 		$db				= JFactory::getDBO();
 		$uri			= JFactory::getURI();
-		$model			= JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+		$model			= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$data			= $model->getData();
 		$uploadArray	= $mainframe->getUserState($option.'uploadArray',array());
 		// TODO: import timezone
@@ -185,41 +185,41 @@ class sportsmanagementViewJLXMLImports extends JView
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('xml', $data);
         // diddi
-        $mdl = JModel::getInstance("leagues", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("leagues", "sportsmanagementModel");
 		$this->assign('leagues',$mdl->getLeagues());
         // diddi
-        $mdl = JModel::getInstance("seasons", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("seasons", "sportsmanagementModel");
 		$this->assign('seasons',$mdl->getSeasons());
         // diddi
-        $mdl = JModel::getInstance("sportstypes", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("sportstypes", "sportsmanagementModel");
 		$this->assign('sportstypes',$mdl->getSportsTypes());
         
 		$this->assign('admins',$model->getUserList(false));
 		$this->assign('editors',$model->getUserList(false));
 		$this->assign('templates',$model->getTemplateList());
         // diddi
-        $mdl = JModel::getInstance("teams", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("teams", "sportsmanagementModel");
 		$this->assign('teams',$mdl->getTeamListSelect());
         // diddi
-        $mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("clubs", "sportsmanagementModel");
 		$this->assign('clubs',$mdl->getClubListSelect());
         // diddi
-        $mdl = JModel::getInstance("eventtypes", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("eventtypes", "sportsmanagementModel");
 		$this->assign('events',$mdl->getEventList());
         // diddi
-        $mdl = JModel::getInstance("positions", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("positions", "sportsmanagementModel");
 		$this->assign('positions',$mdl->getPositionListSelect());
 		$this->assign('parentpositions',$mdl->getParentsPositions());
         // diddi
-        $mdl = JModel::getInstance("playgrounds", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("playgrounds", "sportsmanagementModel");
 		$this->assign('playgrounds',$mdl->getPlaygroundListSelect());
         
-        $mdl = JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $mdl = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         // diddi
-        $mdl = JModel::getInstance("persons", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("persons", "sportsmanagementModel");
 		$this->assign('persons',$mdl->getPersonListSelect());
         // diddi
-        $mdl = JModel::getInstance("statistics", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("statistics", "sportsmanagementModel");
 		$this->assign('statistics',$mdl->getStatisticListSelect());
         
 		$this->assign('OldCountries',$model->getCountryByOldid());
@@ -231,7 +231,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3'),'xmlimport');
@@ -254,13 +254,13 @@ class sportsmanagementViewJLXMLImports extends JView
 		$mtime		= explode(" ",$mtime);
 		$mtime		= $mtime[1] + $mtime[0];
 		$starttime	= $mtime;
-		$model 		= JModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$post		= JRequest::get('post');
 		
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'xmlimport');
@@ -286,7 +286,7 @@ class sportsmanagementViewJLXMLImports extends JView
 		$document 	= JFactory::getDocument();
 		$db 		= JFactory::getDBO();
 		$uri 		= JFactory::getURI();
-		$model 		= JModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
+		$model 		= JModelLegacy::getInstance('JLXMLImport', 'sportsmanagementmodel');
 		$lists 		= array();
 
 		$this->assignRef('request_url',$uri->toString());
@@ -315,7 +315,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						}
 						break;
 			case '8':	{ // Select Statistics
-						$mdl = JModel::getInstance("statistics", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("statistics", "sportsmanagementModel");
                         $this->assignRef('statistics',$mdl->getStatisticListSelect());
 						$statisticlist=array();
 						$statisticlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
@@ -326,7 +326,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '7':	{ // Select ParentPosition
-						$mdl = JModel::getInstance("positions", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("positions", "sportsmanagementModel");
                         $this->assignRef('parentpositions',$mdl->getParentsPositions());
 						$parentpositionlist=array();
 						$parentpositionlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
@@ -337,7 +337,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '6':	{ // Select Position
-						$mdl = JModel::getInstance("positions", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("positions", "sportsmanagementModel");
                         $this->assignRef('positions',$mdl->getPositionListSelect());
 						$positionlist=array();
 						$positionlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
@@ -348,7 +348,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '5':	{ // Select Event
-						$mdl = JModel::getInstance("eventtypes", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("eventtypes", "sportsmanagementModel");
                         $this->assignRef('events',$mdl->getEventList());
 						$eventlist=array();
 						$eventlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
@@ -359,7 +359,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '4':	{ // Select Playground
-						$mdl = JModel::getInstance("playgrounds", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("playgrounds", "sportsmanagementModel");
                         $this->assignRef('playgrounds',$mdl->getPlaygroundListSelect());
 						$playgroundlist=array();
 						$playgroundlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
@@ -370,7 +370,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '3':	{ // Select Person
-                        $mdl = JModel::getInstance("persons", "sportsmanagementModel");
+                        $mdl = JModelLegacy::getInstance("persons", "sportsmanagementModel");
 						$this->assignRef('persons',$mdl->getPersonListSelect());
 						$personlist=array();
 						$personlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));
@@ -381,7 +381,7 @@ class sportsmanagementViewJLXMLImports extends JView
 						break;
 
 			case '2':	{ // Select Club
-						$mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+						$mdl = JModelLegacy::getInstance("clubs", "sportsmanagementModel");
                         $this->assignRef('clubs',$mdl->getClubListSelect());
 						$clublist=array();
 						$clublist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
@@ -393,9 +393,9 @@ class sportsmanagementViewJLXMLImports extends JView
 
 			case '1':
 			default:	{ // Select Team
-                        $mdl = JModel::getInstance("teams", "sportsmanagementModel");
+                        $mdl = JModelLegacy::getInstance("teams", "sportsmanagementModel");
 						$this->assignRef('teams',$mdl->getTeamListSelect());
-                        $mdl = JModel::getInstance("clubs", "sportsmanagementModel");
+                        $mdl = JModelLegacy::getInstance("clubs", "sportsmanagementModel");
 						$this->assignRef('clubs',$mdl->getClubListSelect());
 						$teamlist=array();
 						$teamlist[]=JHtml::_('select.option',0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_TEAM'));

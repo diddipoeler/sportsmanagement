@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class sportsmanagementViewReferee extends JView
+class sportsmanagementViewReferee extends JViewLegacy
 {
 
 	function display($tpl=null)
@@ -87,7 +87,7 @@ class sportsmanagementViewReferee extends JView
 
 		$document->setTitle($titleStr);
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );

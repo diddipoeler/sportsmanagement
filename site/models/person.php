@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPerson extends JModel
+class sportsmanagementModelPerson extends JModelLegacy
 {
 
 	var $projectid		= 0;
@@ -319,7 +319,7 @@ class sportsmanagementModelPerson extends JModel
 //				ORDER BY round_date_first";
 //
 //		$this->_db->setQuery( $query );
-//		$rows = $this->_db->loadResultArray();
+//		$rows = $this->_db->loadColumn();
 //
 //		$rounds = array();
 //		if ( count( $rows ) > 0 )
@@ -453,7 +453,7 @@ class sportsmanagementModelPerson extends JModel
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
 
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -608,7 +608,7 @@ class sportsmanagementModelPerson extends JModel
         }
         
 		$projectTeamIds = array();
-		$projectTeamIds = $db->loadResultArray();
+		$projectTeamIds = $db->loadColumn();
         
         
 		// team_staff
@@ -626,7 +626,7 @@ class sportsmanagementModelPerson extends JModel
             $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
-		$projectTeamIds = array_merge($projectTeamIds,$db->loadResultArray());
+		$projectTeamIds = array_merge($projectTeamIds,$db->loadColumn());
 		return $projectTeamIds;
 	}
 

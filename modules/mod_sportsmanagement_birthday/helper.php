@@ -101,7 +101,7 @@ if ($params->get('use_fav')==1)
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
-	$temp = $database->loadResultArray();
+	$temp = $database->loadColumn();
     
     if ( !$temp )
     {
@@ -176,7 +176,7 @@ if ($params->get('use_which') <= 1)
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
-	$players = $database->loadAssocList();
+	$players = $database->loadColumn();
 }
 
 //get staff info, we have to make a function for this
@@ -238,6 +238,6 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
 	//echo("<hr>".$database->getQuery($query));
-	$crew = $database->loadAssocList();
+	$crew = $database->loadColumn();
 }
 ?>

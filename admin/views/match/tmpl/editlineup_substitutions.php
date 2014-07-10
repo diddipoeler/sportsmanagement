@@ -21,7 +21,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 <script type="text/javascript">
 <!--
 // url for ajax
-var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
+var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
 var teamid=<?php echo $this->tid; ?>;
 var matchid=<?php echo $this->item->id; ?>;
 

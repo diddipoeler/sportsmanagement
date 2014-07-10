@@ -372,7 +372,7 @@ abstract class sportsmanagementHelper
 		
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
-        $jRegistry->loadJSON($data);
+        $jRegistry->loadString($data);
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
@@ -420,7 +420,7 @@ abstract class sportsmanagementHelper
         {
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
-        $jRegistry->loadJSON($data);
+        $jRegistry->loadString($data);
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
@@ -942,7 +942,7 @@ abstract class sportsmanagementHelper
 					$ret .='" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 			} else {
-				$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
+				$picture = JUri::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
 				$title = $alttext;
 				//height and width set, let the browser resize it
 				$bUseHighslide = $params->get('use_highslide', false);
@@ -1679,7 +1679,7 @@ abstract class sportsmanagementHelper
     $layout= JRequest::getVar( "layout") ;
     $view = ucfirst(strtolower($view));
     $layout = ucfirst(strtolower($layout));
-    $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+    $document->addScript(JUri::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
     $window_width = '<script>alert($(window).width()); </script>';
     $window_height = '<script>alert(window.screen.height); </script>';
     

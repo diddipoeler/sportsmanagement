@@ -83,7 +83,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextdbbimport extends JModel
+class sportsmanagementModeljlextdbbimport extends JModelLegacy
 {
 
 var $_datas=array();
@@ -1227,7 +1227,7 @@ Array
   
 $teamid = 1;
   
-$this->fileName = JFile::read($file);
+$this->fileName = file_get_contents($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {

@@ -167,8 +167,8 @@ if (count($this->stafflist) > 0)
 
       ?>
                                     
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
       
         

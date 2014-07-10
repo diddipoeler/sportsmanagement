@@ -55,7 +55,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatchReport extends JView
+class sportsmanagementViewMatchReport extends JViewLegacy
 {
 
 	/**
@@ -79,7 +79,7 @@ class sportsmanagementViewMatchReport extends JView
         $document->addStyleSheet($css);
         $css = 'components/com_sportsmanagement/assets/css/jquery-easy-tooltip.css';
         $document->addStyleSheet($css);
-        $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
+        $document->addScript( JUri::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
 		$model = $this->getModel();
         $model->matchid = JRequest::getInt('mid',0);
@@ -190,7 +190,7 @@ if ( $this->config['show_pictures'] == 1 )
 		}
 		$document->setTitle( $pageTitle );
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
 
@@ -784,8 +784,8 @@ if ( $this->config['show_pictures'] == 1 )
 	function getHtmlImageForTips($picture,$width=0,$height=0)
 	{
 		// diddipoeler
-    //$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
-		$picture = JURI::root().$picture;
+    //$picture = JUri::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
+		$picture = JUri::root().$picture;
 		if($width > 0 && $height==0) {
 			return '&lt;img src=&quot;'.$picture.'&quot; width=&quot;'.$width.'&quot; /&gt;';
 		}

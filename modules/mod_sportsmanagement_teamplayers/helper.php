@@ -98,7 +98,7 @@ class modSportsmanagementTeamPlayersHelper
         
         //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
-		$result = $db->loadRow();
+		$result = $db->loadColumn();
 		$projectteamid = $result[0];
 		$team_name     = $result[1];
 		$season_id     = $result[2];
@@ -111,7 +111,7 @@ class modSportsmanagementTeamPlayersHelper
         {
 			require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'roster.php');
 		}
-		$model 	= JModel::getInstance('Roster', 'sportsmanagementModel');
+		$model 	= JModelLegacy::getInstance('Roster', 'sportsmanagementModel');
 		sportsmanagementModelProject::$projectid= $p;
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;

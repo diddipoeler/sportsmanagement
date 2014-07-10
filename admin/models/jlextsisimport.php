@@ -83,7 +83,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextsisimport extends JModel
+class sportsmanagementModeljlextsisimport extends JModelLegacy
 {
 
 var $_datas=array();
@@ -856,7 +856,7 @@ else
     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
-					$doc = DOMDocument::loadXML($content);
+					$doc = DOMDocument::loadString($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
@@ -895,7 +895,7 @@ else
             //$mainframe->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
-			$doc = DOMDocument::loadXML($content);
+			$doc = DOMDocument::loadString($content);
             //$mainframe->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');

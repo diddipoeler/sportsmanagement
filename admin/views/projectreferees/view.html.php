@@ -49,7 +49,7 @@ jimport('joomla.application.component.view');
  * @package	Sportsmanagement
  * @since	0.1
  */
-class sportsmanagementViewprojectreferees extends JView
+class sportsmanagementViewprojectreferees extends JViewLegacy
 {
 
 	function display($tpl=null)
@@ -74,12 +74,12 @@ class sportsmanagementViewprojectreferees extends JView
             $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
         }
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         //build the html options for position
 		$position_id[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
-        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+        $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
         if ( $project_ref_positions )
         {
@@ -115,7 +115,7 @@ class sportsmanagementViewprojectreferees extends JView
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE'),'projectreferees');

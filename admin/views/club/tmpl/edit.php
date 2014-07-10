@@ -131,8 +131,8 @@ if ( $this->tmpl )
                 //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
                 //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }

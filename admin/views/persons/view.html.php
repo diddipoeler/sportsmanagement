@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPersons extends JView
+class sportsmanagementViewPersons extends JViewLegacy
 {
 
 	function display($tpl=null)
@@ -92,7 +92,7 @@ $starttime = microtime();
 
 		//build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
+		$positions=JModelLegacy::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);
@@ -147,12 +147,12 @@ $starttime = microtime();
         
 		//$project_id = $mainframe->getUserState($option.'project');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-		$mdlProject = JModel::getInstance("project", "sportsmanagementModel");
+		$mdlProject = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
 		$project_name = $project->name;
 		$project_team_id = $mainframe->getUserState($option.'project_team_id');
 		$team_name = $model->getProjectTeamName($project_team_id);
-		//$mdlQuickAdd = JModel::getInstance('Quickadd','sportsmanagementModel');
+		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
         $items = $this->get('Items');
 		$total = $this->get('Total');
@@ -193,7 +193,7 @@ $starttime = microtime();
         
         //build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
+		$positions=JModelLegacy::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);
@@ -249,7 +249,7 @@ $starttime = microtime();
     	});});');
 		$html='';
 		$html .= '<input onchange="document.getElementById(\'cb'.$i.'\').checked=true" type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value,ENT_COMPAT,'UTF-8').'" '.$attribs.' />'.
-				 '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
+				 '<img class="calendar" src="'.JUri::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
 		return $html;
 	}
 	
@@ -264,7 +264,7 @@ $starttime = microtime();
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		//$user		= JFactory::getUser();

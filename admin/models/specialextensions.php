@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelspecialextensions extends JModel
+class sportsmanagementModelspecialextensions extends JModelLegacy
 {
     
     /**

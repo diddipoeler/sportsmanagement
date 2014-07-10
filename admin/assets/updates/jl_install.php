@@ -63,7 +63,7 @@ function _checkVersionTable()
 {
 	$db = Jfactory::getDBO();
 
-	$res = $db->getTableFields('#__joomleague_version');
+	$res = $db->getTableColumns('#__joomleague_version');
 	$cols = array_keys(reset($res));
 
 	if (!in_array('major', $cols))
@@ -94,7 +94,7 @@ function updateVersion($versionData)
 
 	if (JFile::exists($updateVersionFile))
 	{
-		$fileContent=JFile::read($updateVersionFile);
+		$fileContent=file_get_contents($updateVersionFile);
 	}
 	else
 	{

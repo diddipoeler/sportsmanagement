@@ -54,7 +54,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionUsers extends JModel
+class sportsmanagementModelPredictionUsers extends JModelLegacy
 {
 
 	/**
@@ -83,7 +83,7 @@ class sportsmanagementModelPredictionUsers extends JModel
 
 		$this->page  				= JRequest::getInt('page',	1);
         
-        //$prediction = JModel::getInstance("Prediction","sportsmanagementModel");
+        //$prediction = JModelLegacy::getInstance("Prediction","sportsmanagementModel");
         $prediction = new sportsmanagementModelPrediction();  
         //$prediction->predictionGameID = $this->predictionGameID	;
         sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;

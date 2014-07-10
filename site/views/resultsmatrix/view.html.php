@@ -57,7 +57,7 @@ jimport('joomla.html.pane');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResultsmatrix extends JView  
+class sportsmanagementViewResultsmatrix extends JViewLegacy  
 {
 
 	/**
@@ -96,13 +96,13 @@ class sportsmanagementViewResultsmatrix extends JView
         /*
 		// add some javascript
 		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version );
+		$document->addScript( JUri::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version );
         */
         
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results');
 		
-		$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($resultsmodel->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
@@ -159,7 +159,7 @@ class sportsmanagementViewResultsmatrix extends JView
 		$document->setTitle($pageTitle);
         
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		/*
@@ -170,7 +170,7 @@ class sportsmanagementViewResultsmatrix extends JView
 		 // add the links
 		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 		 */
-		JView::display($tpl);
+		JViewLegacy::display($tpl);
 	}
 
 	/**

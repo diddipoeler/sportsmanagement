@@ -88,7 +88,7 @@ class modJSMClubiconsHelper
 		
         if ( $project_id )
         {
-        //$model = JModel::getInstance('project', 'sportsmanagementModel');
+        //$model = JModelLegacy::getInstance('project', 'sportsmanagementModel');
 		sportsmanagementModelProject::setProjectId($project_id);
 
 		$this->project = sportsmanagementModelProject::getProject();

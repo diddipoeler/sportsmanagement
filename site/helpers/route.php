@@ -1203,7 +1203,7 @@ class sportsmanagementHelperRoute
 			}
 		}
 
-		return JURI::buildQuery( $parts );
+		return JUri::buildQuery( $parts );
 	}
 
 	

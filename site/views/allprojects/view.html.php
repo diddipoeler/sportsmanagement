@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallprojects extends JView
+class sportsmanagementViewallprojects extends JViewLegacy
 {
     protected $state = null;
 	protected $item = null;

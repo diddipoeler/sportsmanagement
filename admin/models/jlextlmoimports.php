@@ -73,7 +73,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextlmoimports extends JModel
+class sportsmanagementModeljlextlmoimports extends JModelLegacy
 {
   var $_datas=array();
 	var $_league_id=0;
@@ -122,8 +122,8 @@ if( !JFile::exists($fileextension) )
 {
 $to = 'diddipoeler@gmx.de';
 $subject = 'LMO-Import Extension';
-$message = 'LMO-Import Extension wurde auf der Seite : '.JURI::base().' gestartet.';
-JUtility::sendMail( '', JURI::base(), $to, $subject, $message );
+$message = 'LMO-Import Extension wurde auf der Seite : '.JUri::base().' gestartet.';
+JUtility::sendMail( '', JUri::base(), $to, $subject, $message );
 
 $xmlfile = $xmlfile.$message;
 JFile::write($fileextension, $xmlfile);
@@ -266,7 +266,7 @@ echo $this->pane->startPane('pane');
 FROM #__joomleague_project as pro
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
-$row = $this->_db->loadAssoc();
+$row = $this->_db->loadColumn();
 $tempprovorschlag = $row['name'];
 $mainframe->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
 
@@ -277,7 +277,7 @@ inner join #__joomleague_project as pro
 on se.id = pro.season_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
-$row = $this->_db->loadAssoc();
+$row = $this->_db->loadColumn();
   
   $temp = new stdClass();
   $temp->id = $row['id'];
@@ -297,7 +297,7 @@ inner join #__joomleague_project as pro
 on le.id = pro.league_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
-$row = $this->_db->loadAssoc();
+$row = $this->_db->loadColumn();
 
   $temp = new stdClass();
   $temp->id = $row['id'];
@@ -327,7 +327,7 @@ inner join #__joomleague_project as pro
 on st.id = pro.sports_type_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
-$row = $this->_db->loadAssoc();
+$row = $this->_db->loadColumn();
   $temp = new stdClass();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
@@ -1213,7 +1213,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 		$query='SELECT template FROM #__joomleague_template_config WHERE project_id='.(int)$project_id;
 
 		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
+		$records=$this->_db->loadColumn();
 		if (empty($records)){$records=array();}
 
 		// first check extension template folder if template is not default

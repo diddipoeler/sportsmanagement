@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamPerson extends JView
+class sportsmanagementViewTeamPerson extends JViewLegacy
 {
 
 	/**
@@ -95,7 +95,7 @@ class sportsmanagementViewTeamPerson extends JView
         //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         
@@ -103,7 +103,7 @@ class sportsmanagementViewTeamPerson extends JView
         $this->assignRef('project_team',$project_team);
         
         $person_id	= $this->item->person_id;
-        $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
+        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson($person_id);
         $this->assignRef('project_person',$project_person);
         
@@ -133,7 +133,7 @@ class sportsmanagementViewTeamPerson extends JView
         
         $projectpositions = array();
 		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+        $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
         if ( $project_ref_positions )
         {
@@ -186,7 +186,7 @@ class sportsmanagementViewTeamPerson extends JView
 	   // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 	   
 		JRequest::setVar('hidemainmenu', true);
@@ -260,8 +260,8 @@ class sportsmanagementViewTeamPerson extends JView
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     

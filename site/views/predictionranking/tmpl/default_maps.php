@@ -44,8 +44,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
 }
 
-//$kmlpath = JURI::root().'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'ranking'.DS.'tmpl'.DS.'default_genkml3.php';
-$kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+//$kmlpath = JUri::root().'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'ranking'.DS.'tmpl'.DS.'default_genkml3.php';
+$kmlpath = JUri::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
 
 //echo $kmlpath.'<br>';
 

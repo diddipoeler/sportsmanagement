@@ -44,7 +44,7 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 
 
 if (!defined('_JLMATCHLISTMODPATH')) { define('_JLMATCHLISTMODPATH', dirname( __FILE__ ));}
-if (!defined('_JLMATCHLISTMODURL')) { define('_JLMATCHLISTMODURL', JURI::base().'modules/mod_sportsmanagement_matches/');}
+if (!defined('_JLMATCHLISTMODURL')) { define('_JLMATCHLISTMODURL', JUri::base().'modules/mod_sportsmanagement_matches/');}
 require_once (_JLMATCHLISTMODPATH.DS.'helper.php');
 require_once (_JLMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 

@@ -137,7 +137,7 @@ function Update_Tables($updates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[ $tables[0] ]));
 
 	foreach ($updates[$tablename] as $update)
@@ -179,7 +179,7 @@ function Change_Table_Columns($updates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[ $tables[0] ]));
 
 	foreach ($updates[$tablename] as $update)
@@ -206,7 +206,7 @@ function Delete_Table_Columns($dUpdates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[$tables[0]]));
 	foreach ($dUpdates[$tablename] as $update)
 	{

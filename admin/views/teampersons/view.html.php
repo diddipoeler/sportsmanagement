@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewteampersons extends JView
+class sportsmanagementViewteampersons extends JViewLegacy
 {
 
 	function display( $tpl = null )
@@ -71,7 +71,7 @@ class sportsmanagementViewteampersons extends JView
         //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state, true).'</pre><br>','Notice');
 
 /*	
-		$baseurl    = JURI::root();
+		$baseurl    = JUri::root();
 		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Autocompleter.js');
 		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Autocompleter.Request.js');
 		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Observer.js');
@@ -99,7 +99,7 @@ class sportsmanagementViewteampersons extends JView
             $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
         }
         
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         $this->project_team_id	= JRequest::getVar('project_team_id');
@@ -122,12 +122,12 @@ class sportsmanagementViewteampersons extends JView
         $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id, true).'</pre><br>','Notice');
         }
         
-        $mdlProjectTeam = JModel::getInstance("ProjectTeam", "sportsmanagementModel");
+        $mdlProjectTeam = JModelLegacy::getInstance("ProjectTeam", "sportsmanagementModel");
 	    $project_team = $mdlProjectTeam->getProjectTeam($this->team_id);
         
         //build the html options for position
 		$position_id[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
-        $mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+        $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
         
         if ( $this->_persontype == 1 )
         {
@@ -176,7 +176,7 @@ class sportsmanagementViewteampersons extends JView
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');

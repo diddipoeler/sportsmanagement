@@ -79,8 +79,8 @@ foreach ( $this->rows as $position_id => $players ): ?>
 				//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 				
 ?>                                    
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
 <?PHP
 

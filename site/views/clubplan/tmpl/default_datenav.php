@@ -75,8 +75,8 @@ defined('_JEXEC') or die('Restricted access');
 				$picture=$this->club->logo_big;
 
 ?>                                    
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
 </a>
 <?PHP            
             }

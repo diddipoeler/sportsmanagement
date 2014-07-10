@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewprojectteams extends JView
+class sportsmanagementViewprojectteams extends JViewLegacy
 {
 
 	/**
@@ -79,7 +79,7 @@ class sportsmanagementViewprojectteams extends JView
         $this->project_id = $mainframe->getUserState( "$option.pid", '0' );
         }
        
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         $this->project_art_id = $project->project_art_id;
@@ -110,7 +110,7 @@ class sportsmanagementViewprojectteams extends JView
         
         
         
-        $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+        $mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
@@ -243,9 +243,9 @@ class sportsmanagementViewprojectteams extends JView
 	{
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
         if ( $this->project_art_id != 3 )

@@ -74,7 +74,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRankingAllTime extends JModel
+class sportsmanagementModelRankingAllTime extends JModelLegacy
 {
 
     var $teams = array();
@@ -763,7 +763,7 @@ $query->group('st.team_id' );
   where league_id = ' . $league . ' order by name ';
         $this->_db->setQuery($query);
         //$result = $this->_db->loadObjectList();
-        $result = $this->_db->loadResultArray();
+        $result = $this->_db->loadColumn();
         $this->project_ids = implode(",", $result);
         $this->project_ids_array = $result;
         

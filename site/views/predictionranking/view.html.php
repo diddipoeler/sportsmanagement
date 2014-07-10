@@ -55,7 +55,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionRanking extends JView
+class sportsmanagementViewPredictionRanking extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewPredictionRanking::display()
@@ -69,7 +69,7 @@ class sportsmanagementViewPredictionRanking extends JView
     $mainframe = JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$uri = JFactory :: getURI();
-//		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+//		$js ="registerhome('".JUri::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
 		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
@@ -96,7 +96,7 @@ class sportsmanagementViewPredictionRanking extends JView
     $this->assignRef('limitend',$limitend);
 */
     
-//     $mdlProject = JModel::getInstance("Project", "JoomleagueModel");
+//     $mdlProject = JModelLegacy::getInstance("Project", "JoomleagueModel");
 //     $mdlProject->setProjectId($project->id);
 //     $map_config		= $mdlProject->getMapConfig();
 // 		$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
@@ -142,7 +142,7 @@ class sportsmanagementViewPredictionRanking extends JView
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
-			$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+			$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 			foreach ( $this->predictionProjectS as $project )
 			{
       $mdlProject->setProjectId($project->project_id);

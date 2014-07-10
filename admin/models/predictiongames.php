@@ -199,9 +199,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
 		if ( $all )
 		{
-			return $db->loadResultArray();
+			return $db->loadColumn();
 		}
-		return $db->loadAssocList( 'id' );
+		return $db->loadColumn( 'id' );
 	}
 
 	/**
@@ -237,7 +237,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		}
 		else
 		{
-			return $db->loadResultArray();
+			return $db->loadColumn();
 		}
 	}
 

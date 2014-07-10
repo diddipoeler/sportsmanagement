@@ -55,7 +55,7 @@ jimport('joomla.filesystem.folder');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelUpdates extends JModel
+class sportsmanagementModelUpdates extends JModelLegacy
 {
 
 	/**
@@ -226,7 +226,7 @@ class sportsmanagementModelUpdates extends JModel
 			{
 				$filepath=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
 			}
-			if ($fileContent=JFile::read($filepath))
+			if ($fileContent=file_get_contents($filepath))
 			{
 				$version='';
 				$updateDescription='';

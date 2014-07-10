@@ -52,7 +52,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionRanking extends JController
+class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 {
 	/**
 	 * sportsmanagementControllerPredictionRanking::display()

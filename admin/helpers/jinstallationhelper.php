@@ -119,7 +119,7 @@ class JInstallationHelper
 		$query = "SHOW TABLES FROM `$DBname`";
 		$db->setQuery($query);
 		$errors = array ();
-		if ($tables = $db->loadResultArray())
+		if ($tables = $db->loadColumn())
 		{
 			foreach ($tables as $table)
 			{
@@ -156,7 +156,7 @@ class JInstallationHelper
 		$query = "SHOW TABLES FROM `$DBname`";
 		$db->setQuery($query);
 		$errors = array ();
-		if ($tables = $db->loadResultArray())
+		if ($tables = $db->loadColumn())
 		{
 			foreach ($tables as $table)
 			{
@@ -914,7 +914,7 @@ class JInstallationHelper
 			$parts = ceil($tfilesize / $maxread);
 			file_put_contents( $newFile, '' ); // cleanse the file first
 			for($i = 0; $i < $parts; $i++) {
-				$buffer = JFile::read($scriptName, false, $maxread, $maxread,($i * $maxread));
+				$buffer = file_get_contents($scriptName, false, $maxread, $maxread,($i * $maxread));
 				// Lets try and read a portion of the file
 				JInstallationHelper::replaceBuffer($buffer, $oldPrefix, $newPrefix, $srcEncoding);
 				JInstallationHelper::appendFile($buffer, $newFile);
@@ -1215,7 +1215,7 @@ class JInstallationHelper
 		JInstallationHelper::getDBErrors($errors, $db );
 		$query = 'SELECT DISTINCT `option` FROM '.$newPrefix.'components WHERE `option` != ""';
 		$db->setQuery( $query );
-		$lookup = $db->loadResultArray();
+		$lookup = $db->loadColumn();
 		JInstallationHelper::getDBErrors($errors, $db );
 		$lookup[] = 'com_user&';
 
@@ -1274,7 +1274,7 @@ class JInstallationHelper
 		$query = 'SELECT DISTINCT `menutype` FROM '.$newPrefix.'menu WHERE 1';
 		$db->setQuery( $query );
 		JInstallationHelper::getDBErrors($errors, $db );
-		$menuTypes = $db->loadResultArray();
+		$menuTypes = $db->loadColumn();
 		$query = 'TRUNCATE TABLE '.$newPrefix.'menu_types';
 		$db->setQuery($query);
 
@@ -1294,7 +1294,7 @@ class JInstallationHelper
 		 */
 		$query = 'SELECT id FROM '.$newPrefix.'modules_migration WHERE client_id = 0 ';
 		$db->setQuery( $query );
-		$lookup = $db->loadResultArray();
+		$lookup = $db->loadColumn();
 		JInstallationHelper::getDBErrors($errors, $db );
 
 		$query = 'SELECT MAX(id) FROM '.$newPrefix.'modules ';

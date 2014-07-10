@@ -14,7 +14,7 @@ jimport('joomla.application.component.controller');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerallpersons extends JController
+class sportsmanagementControllerallpersons extends JControllerLegacy
 {
 
 //function __construct()

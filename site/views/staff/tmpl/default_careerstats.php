@@ -68,7 +68,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				$k=0;
 				$career=array();
 				$career['played']=0;
-				$mod = JModel::getInstance('Staff','sportsmanagementModel');
+				$mod = JModelLegacy::getInstance('Staff','sportsmanagementModel');
 				if (count($this->history) > 0)
 				{
 					foreach ($this->history as $player_hist)

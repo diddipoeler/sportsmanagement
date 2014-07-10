@@ -214,8 +214,8 @@ function import()
         
         foreach ( $cid as $key => $value )
         {
-            $jl_fields = $db->getTableFields($jl[$value]);
-            $jsm_fields = $db->getTableFields($jsm[$value]);
+            $jl_fields = $db->getTableColumns($jl[$value]);
+            $jsm_fields = $db->getTableColumns($jsm[$value]);
             
             $jsm_table = $jsm[$value];
             $jl_table = $jl[$value];

@@ -49,7 +49,7 @@ $document = JFactory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_birthday/css/mod_sportsmanagement_birthday.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_birthday/css/mod_sportsmanagement_birthday.css');
 
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 $persons = array_merge((array)$players, (array)$crew);
@@ -109,7 +109,7 @@ if(count($persons) > 0) {
 			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') {
 				$thispic = $person['default_picture'];
 			}
-			echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
+			echo '<img src="'.JUri::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
 			if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
 			echo ' /><br />';
 

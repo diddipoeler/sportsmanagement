@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewPosition extends JView
+class sportsmanagementViewPosition extends JViewLegacy
 {
 	
 	/**
@@ -106,7 +106,7 @@ class sportsmanagementViewPosition extends JView
         
         //build the html options for parent position
 		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
-		$mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
@@ -120,7 +120,7 @@ class sportsmanagementViewPosition extends JView
         
 		unset($parent_id);
         
-        $mdlEventtypes = JModel::getInstance("Eventtypes", "sportsmanagementModel");
+        $mdlEventtypes = JModelLegacy::getInstance("Eventtypes", "sportsmanagementModel");
         
         //build the html select list for events
 		$res = array();
@@ -171,7 +171,7 @@ class sportsmanagementViewPosition extends JView
 		unset($notusedevents);
         
         // position statistics
-        $mdlStatistics = JModel::getInstance("Statistics", "sportsmanagementModel");
+        $mdlStatistics = JModelLegacy::getInstance("Statistics", "sportsmanagementModel");
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
 		$lists['position_statistic']=JHtml::_(	'select.genericlist',$position_stats,'position_statistic[]',
 							' style="width:250px; height:300px;" class="inputbox" id="position_statistic" multiple="true" size="'.max(10,count($position_stats)).'"',
@@ -182,7 +182,7 @@ class sportsmanagementViewPosition extends JView
 						'value','text');
                         
                         
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         
         $this->assignRef('lists',$lists);
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
@@ -205,7 +205,7 @@ class sportsmanagementViewPosition extends JView
 	// Get a refrence of the page instance in joomla
 	$document =& JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JRequest::setVar('hidemainmenu', true);
@@ -262,8 +262,8 @@ class sportsmanagementViewPosition extends JView
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW') : JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

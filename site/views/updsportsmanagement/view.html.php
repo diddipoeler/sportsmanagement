@@ -8,9 +8,9 @@ jimport('joomla.application.component.view');
 jimport('joomla.html.html');
 
 
-class sportsmanagementViewUpdsportsmanagement extends JView
+class sportsmanagementViewUpdsportsmanagement extends JViewLegacy
 {
-	// Overwriting JView display method
+	// Overwriting JViewLegacy display method
 	function display($tpl = null) 
 	{
 		$app		= JFactory::getApplication();

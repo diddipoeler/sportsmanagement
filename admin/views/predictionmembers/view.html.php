@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionMembers extends JView
+class sportsmanagementViewPredictionMembers extends JViewLegacy
 {
 
   /**
@@ -108,7 +108,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
     $this->assignRef( 'optiontext',			$optiontext );
     
-//     $baseurl    = JURI::root();
+//     $baseurl    = JUri::root();
 // 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.js');
 // 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.Request.js');
 // 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Observer.js');
@@ -181,7 +181,7 @@ $mainframe = JFactory::getApplication();
 		$pagination = $this->get('Pagination');
 
         //build the html select list for prediction games
-        $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
+        $mdlPredGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
 		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 
@@ -221,7 +221,7 @@ $mainframe = JFactory::getApplication();
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
 		

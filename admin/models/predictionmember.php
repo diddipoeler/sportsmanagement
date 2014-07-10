@@ -194,7 +194,7 @@ if ( $send !== true ) {
 						ORDER BY u.email';
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -217,7 +217,7 @@ if ( $send !== true ) {
 						ORDER BY u.email';
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -237,7 +237,7 @@ if ( $send !== true ) {
 						WHERE	id IN (' . $cids . ')';
 		//echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		if ( !$cids = $this->_db->loadResultArray() ) { return false; }
+		if ( !$cids = $this->_db->loadColumn() ) { return false; }
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 
 		JArrayHelper::toInteger( $cids );
@@ -250,7 +250,7 @@ if ( $send !== true ) {
 						ORDER BY u.email';
 		//echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -513,7 +513,7 @@ if ( $send !== true ) {
 			$this->_db->setQuery($query);
 			$this->_db->query();
 
-			if (!$result = $this->_db->loadResultArray())
+			if (!$result = $this->_db->loadColumn())
 			{
 				return true;
 			}

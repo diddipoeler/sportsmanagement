@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewDivision extends JView
+class sportsmanagementViewDivision extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewDivision::display()
@@ -98,7 +98,7 @@ class sportsmanagementViewDivision extends JView
 		$this->script = $script;
         
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         //$this->item->project_id = $this->project_id;
@@ -250,14 +250,14 @@ class sportsmanagementViewDivision extends JView
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW') : JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT'),'divison');
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}	
 

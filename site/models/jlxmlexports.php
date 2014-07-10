@@ -10,7 +10,7 @@ jimport( 'joomla.utilities.array' );
 jimport( 'joomla.utilities.arrayhelper' ) ;
 
 
-class sportsmanagementModelJLXMLExports extends JModel
+class sportsmanagementModelJLXMLExports extends JModelLegacy
 {
 	/**
 	 * @var int
@@ -559,7 +559,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['exportRoutine']=$exportRoutine;
 			$result[0]['exportDate']=date('Y-m-d');
 			$result[0]['exportTime']=date('H:i:s');
@@ -587,7 +587,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'JoomLeague15';
 			$this->_project = $result;
 			return $result;
@@ -622,7 +622,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'Template';
 
 			return $result;
@@ -647,7 +647,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'League';
 
 			return $result;
@@ -672,7 +672,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'SportsType';
 
 			return $result;
@@ -697,7 +697,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'Season';
 
 			return $result;
@@ -722,7 +722,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'LeagueDivision';
 
 			return $result;
@@ -747,7 +747,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -772,7 +772,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'ProjectPosition';
 			$this->_projectposition =& $result;
 			return $result;
@@ -797,7 +797,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'ProjectReferee';
 			$this->_projectreferee =& $result;
 			return $result;
@@ -828,7 +828,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'JL_Team';
 				$this->_team =& $result;
 				return $result;
@@ -867,7 +867,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'Club';
 				$this->_club = $result;
 				return $result;
@@ -894,7 +894,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'Round';
 
 			return $result;
@@ -919,7 +919,7 @@ $xmlfile = $xmlfile.$output;
 		$this->_db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $this->_db->loadColumn();
 			$result[0]['object'] = 'Match';
 			$this->_match = $result;
 			return $result;
@@ -957,7 +957,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'Playground';
 				$this->_playground = $result;
 				return $result;
@@ -990,7 +990,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'TeamPlayer';
 				$this->_teamplayer = $result;
 
@@ -1024,7 +1024,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'TeamTraining';
 				$this->_teamtrainingdata = $result;
 				return $result;
@@ -1057,7 +1057,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'TeamStaff';
 				$this->_teamstaff = $result;
 
@@ -1092,7 +1092,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchPlayer';
 				$this->_matchplayer = $result;
 
@@ -1126,7 +1126,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchStaff';
 				$this->_matchstaff = $result;
 
@@ -1160,7 +1160,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchReferee';
 				$this->_matchreferee = $result;
 
@@ -1194,7 +1194,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'Position';
 				$this->_position = $result;
 
@@ -1228,7 +1228,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'ParentPosition';
 				$this->_parentposition = $result;
 
@@ -1270,7 +1270,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'Person';
 				$this->_person = $result;
 
@@ -1304,7 +1304,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchEvent';
 				$this->_matchevent = $result;
 				return $result;
@@ -1337,7 +1337,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'EventType';
 				$this->_eventtype = $result;
 				return $result;
@@ -1372,7 +1372,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'PositionEventType';
 				return $result;
 			}
@@ -1404,7 +1404,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'PositionStatistic';
 				$this->_positionstatistic = $result;
 				return $result;
@@ -1437,7 +1437,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 				return $result;
@@ -1470,7 +1470,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 				return $result;
@@ -1511,7 +1511,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->_db->loadColumn();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
 

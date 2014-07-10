@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 //require_once(JPATH_COMPONENT . DS . 'models' . DS . 'results.php');
-class sportsmanagementViewNextMatch extends JView
+class sportsmanagementViewNextMatch extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -131,7 +131,7 @@ class sportsmanagementViewNextMatch extends JView
 		}
 		$document->setTitle( $pageTitle );
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
 		parent::display( $tpl );

@@ -52,7 +52,7 @@ JHtml::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelResults extends JModel
+class sportsmanagementModelResults extends JModelLegacy
 {
 	var $projectid	= 0;
 	var $divisionid	= 0;
@@ -604,7 +604,7 @@ class sportsmanagementModelResults extends JModel
 	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
 	{
 		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
-		$fields=$this->_db->getTableFields($datatable);
+		$fields=$this->_db->getTableColumns($datatable);
 
 		foreach($fields as $field)
 		{

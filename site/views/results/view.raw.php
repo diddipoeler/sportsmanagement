@@ -5,7 +5,7 @@ jimport( 'joomla.filesystem.file' );
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
-class sportsmanagementViewResults extends JView
+class sportsmanagementViewResults extends JViewLegacy
 {
 
 	public function display($tpl = null)
@@ -30,9 +30,9 @@ class sportsmanagementViewResults extends JView
 		
 		$config	= $model->getTemplateConfig($this->getName());
 		$project = $model->getProject();
-		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
+		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
 		//$roundcode = $mdlRound->getRoundcode($model->roundid);
-		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
+		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
 		//$rounds = $mdlRounds->getRoundsOptions($project->id);
 		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
@@ -160,7 +160,7 @@ class sportsmanagementViewResults extends JView
 			}
 			else
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
+				$image=JHtml::image(JUri::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -168,7 +168,7 @@ class sportsmanagementViewResults extends JView
 			$image=JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image=JHtml::image(JURI::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
+				$image=JHtml::image(JUri::root().sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 			}
 		}
 		else
@@ -216,7 +216,7 @@ class sportsmanagementViewResults extends JView
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
 		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
-		$desc=JHtml::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
+		$desc=JHtml::image(	JUri::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
 		echo JHtml::link($link,$desc,$params);
 
@@ -434,7 +434,7 @@ class sportsmanagementViewResults extends JView
 		$attribs=array(	"title" => $imgTitle,
 		 		"id" => 'events-'. $match_id,
 		 		"class" => "eventstoggle");
-		$img=JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png',$imgTitle,$attribs);
+		$img=JHtml::image(JUri::root().'media/com_sportsmanagement/jl_images/events.png',$imgTitle,$attribs);
 		return $img;
 	}
 
@@ -472,7 +472,7 @@ class sportsmanagementViewResults extends JView
 			<!-- Referee tooltip -->
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
-				src="<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
+				src="<?php echo JUri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
 				alt="" title="" /> </span>
 			
 				<?php
@@ -505,7 +505,7 @@ class sportsmanagementViewResults extends JView
 			}
 			$output .= JHtml::_(	'link',
 			$report_link,
-			JHtml::image(JURI::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
+			JHtml::image(JUri::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
 			array("title" => $imgTitle));
 		}
 		else
@@ -552,7 +552,7 @@ class sportsmanagementViewResults extends JView
 				}
 				if($cnt==0){continue;}
 				// I think its better to show the event name,the the event image(gives some probs with tabs)
-				$pic_tab	= JURI::root().$event->icon;
+				$pic_tab	= JUri::root().$event->icon;
 				$imgTitle	= JText::_($event->name); $imgTitle2=array(' title' => $imgTitle);
 				$txt_tab	= JHtml::image($pic_tab,$imgTitle,$imgTitle2);
 
@@ -589,10 +589,10 @@ class sportsmanagementViewResults extends JView
 
 			if (!empty($substitutions))
 			{
-				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-				$pic_tab	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
+				$pic_time	= JUri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= JUri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+				$pic_in		= JUri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+				$pic_tab	= JUri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
 
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_IN_OUT'); $imgTitle2=array(' title' => $imgTitle);
 				$txt_tab	= JHtml::image($pic_tab,$imgTitle,$imgTitle2);
@@ -638,7 +638,7 @@ class sportsmanagementViewResults extends JView
 				{
 				    if ($this->config['show_events_with_icons'] == 1 ) 
 				    { 
-				    	$event_icon = JURI::root().$projectevents[$me->event_type_id]->icon;
+				    	$event_icon = JUri::root().$projectevents[$me->event_type_id]->icon;
 					
 					$backgroundStyle="background: url(".$event_icon.") no-repeat transparent";
 					if(empty($event_icon)) { $backgroundStyle="";}
@@ -692,7 +692,7 @@ class sportsmanagementViewResults extends JView
 				{
 				    if ($this->config['show_events_with_icons'] == 1 ) 
 				    { 
-				    	$event_icon = JURI::root().$projectevents[$me->event_type_id]->icon;
+				    	$event_icon = JUri::root().$projectevents[$me->event_type_id]->icon;
 					
 					$backgroundStyle="background: url(".$event_icon.") no-repeat transparent";
 					if(empty($event_icon)) { $backgroundStyle="";}
