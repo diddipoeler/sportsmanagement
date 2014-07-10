@@ -952,7 +952,7 @@ class JSMRanking
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
-			$res = $db->loadResultArray();
+			$res = $db->loadColumn();
 			$res[] = $this->_division;
 			$this->_divisions = $res;
 		}
@@ -1055,7 +1055,7 @@ class JSMRanking
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$this->_roundcodes = $db->loadAssocList('id');
+			$this->_roundcodes = $db->loadColumn('id');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

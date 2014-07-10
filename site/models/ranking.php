@@ -549,7 +549,7 @@ class sportsmanagementModelRanking extends JModelLegacy
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$res = $db->loadResultArray();
+		$res = $db->loadColumn();
 		
 		if (!$res) {
 			return $round_id;

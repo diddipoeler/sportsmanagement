@@ -77,7 +77,7 @@ $visible = 'hidden';
 				{
 					$imgTitle=JText::_($event->name);
 					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-					$txt_tab=JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+					$txt_tab=JHtml::image(JUri::root().$pic_tab,$imgTitle,$imgTitle2);
 				}
 
 				echo $result->startPanel($txt_tab,$event->id);

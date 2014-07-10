@@ -45,12 +45,12 @@ class plgContentJw_ts extends JPlugin {
 
 		// Assign paths
 		$sitePath = JPATH_SITE;
-		$siteUrl  = JURI::root(true);
+		$siteUrl  = JUri::root(true);
 
 		if(version_compare(JVERSION,'1.6.0','ge')) {
-			$pluginLivePath = JURI::root(true).'/plugins/content/'.$this->plg_name.'/'.$this->plg_name;
+			$pluginLivePath = JUri::root(true).'/plugins/content/'.$this->plg_name.'/'.$this->plg_name;
 		} else {
-			$pluginLivePath = JURI::root(true).'/plugins/content/'.$this->plg_name;
+			$pluginLivePath = JUri::root(true).'/plugins/content/'.$this->plg_name;
 		}
 
 		// Simple performance checks to determine whether plugin should process further

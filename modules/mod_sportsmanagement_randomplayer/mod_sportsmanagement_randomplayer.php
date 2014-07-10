@@ -78,6 +78,6 @@ $list = modJSMRandomplayerHelper::getData($params);
 
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
 
 require(JModuleHelper::getLayoutPath('mod_sportsmanagement_randomplayer'));

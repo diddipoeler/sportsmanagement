@@ -106,10 +106,10 @@ class modMatchesHelper {
 				$result = $db->loadObject($key);
 				break;
 			case 'arr' :
-				$result = $db->loadResultArray($key);
+				$result = $db->loadColumn($key);
 				break;
 			case 'assc' :
-				$result = $db->loadAssocList($key);
+				$result = $db->loadColumn($key);
 				break;
 			default :
 				$result = $db->loadObjectList($key);
@@ -344,8 +344,8 @@ class modMatchesHelper {
 				$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
 				elseif ($this->params->get('ysize') > 0) $appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
 			}
-			$pic['src'] = (trim($matchpart_pic) != "" && file_exists(JPATH_ROOT . DS . trim($matchpart_pic))) ? JURI :: root(true) .
-			'/' . $matchpart_pic : JURI :: root(true) . '/' . $defaultlogos[$pt];
+			$pic['src'] = (trim($matchpart_pic) != "" && file_exists(JPATH_ROOT . DS . trim($matchpart_pic))) ? JUri :: root(true) .
+			'/' . $matchpart_pic : JUri :: root(true) . '/' . $defaultlogos[$pt];
 			$pic['alt'] = $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
 		}
 		$pic['append'] = $appendimage;

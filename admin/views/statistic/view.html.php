@@ -94,7 +94,7 @@ class sportsmanagementViewstatistic extends JViewLegacy
         $xmlfile = $templatepath.DS.$item->class.'.xml';
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
-        //$jRegistry->loadJSON($this->item->params);
+        //$jRegistry->loadString($this->item->params);
         $jRegistry->loadArray($this->item->params);
         
         $mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
@@ -136,7 +136,7 @@ class sportsmanagementViewstatistic extends JViewLegacy
         $document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
@@ -191,8 +191,8 @@ class sportsmanagementViewstatistic extends JViewLegacy
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW') : JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

@@ -119,7 +119,7 @@ class JFormFieldDependSQL extends JFormField
 		if ($depends)
 		{
 			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
+			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);

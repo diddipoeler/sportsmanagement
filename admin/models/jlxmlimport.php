@@ -2887,7 +2887,7 @@ $this->dump_variable("import_team", $import_team);
 		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$project_id;
 
 		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
+		$records=$this->_db->loadColumn();
 		if (empty($records)){$records=array();}
 
 		// first check extension template folder if template is not default
@@ -2975,7 +2975,7 @@ $this->dump_variable("import_team", $import_team);
 		{
 			$query_template='SELECT id,master_template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.$this->_template_id;
 			$this->_db->setQuery($query_template);
-			$template_row=$this->_db->loadAssoc();
+			$template_row=$this->_db->loadColumn();
 			if ($template_row['master_template']==0)
 			{
 				$this->_master_template=$template_row['id'];
@@ -3034,7 +3034,7 @@ $this->dump_variable("import_team", $import_team);
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
 					$parameter = new JRegistry;
-			$ini = $parameter->loadINI($defaultvalues[0]);
+			$ini = $parameter->loadString($defaultvalues[0]);
 			$ini = $parameter->toArray($ini);
 			$t_params = json_encode( $ini );		
 					$p_template->set('params',$t_params);

@@ -153,7 +153,7 @@ $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
 	//echo("<hr>".$database->getQuery($query));
-	//$clubs = $database->loadAssocList();
+	//$clubs = $database->loadColumn();
     $result = $database->loadObjectList();
 	return $result;
 }

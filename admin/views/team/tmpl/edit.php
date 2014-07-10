@@ -75,8 +75,8 @@ $fieldsets = $this->form->getFieldsets();
                 //echo JHtml::image($picture, 'Club', array('title' => 'Club','width' => '50' )); 
                 //echo JHtml::_('image', $picture, 'Club',array('title' => 'Club','width' => '50px' ));
                 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Club';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Club';?>" width="50" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo 'Club';?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo 'Club';?>" width="50" />
 </a>
 <?PHP   
                 }

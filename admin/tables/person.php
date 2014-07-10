@@ -115,7 +115,7 @@ class sportsmanagementTablePerson extends JTable
 //			//$parameter->loadArray($array['extended']);
 //			//$array['extended'] = (string)$parameter;
 //            
-//            $parameter->loadJSON($array['extended']);
+//            $parameter->loadString($array['extended']);
 //			$array['extended'] = $parameter->toArray($array['extended']);;
 //		}
         
@@ -151,7 +151,7 @@ class sportsmanagementTablePerson extends JTable
 //		{
 //			// Convert the params field to a registry.
 //			$params = new JRegistry;
-//			$params->loadJSON($this->extended);
+//			$params->loadString($this->extended);
 //			//$params->toArray($this->extended);
 //            $this->extended = $params->toArray($this->extended);
 //            

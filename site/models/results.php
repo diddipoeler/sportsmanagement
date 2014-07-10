@@ -604,7 +604,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
 	{
 		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
-		$fields=$this->_db->getTableFields($datatable);
+		$fields=$this->_db->getTableColumns($datatable);
 
 		foreach($fields as $field)
 		{

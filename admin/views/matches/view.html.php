@@ -70,7 +70,7 @@ class sportsmanagementViewMatches extends JViewLegacy
         $document = JFactory::getDocument();
         $view = JRequest::getVar( "view") ;
         $_db = JFactory::getDBO(); // the method is contextual so we must have a DBO
-        $table_info = $_db->getTableFields('#__sportsmanagement_match');
+        $table_info = $_db->getTableColumns('#__sportsmanagement_match');
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
 
@@ -206,7 +206,7 @@ class sportsmanagementViewMatches extends JViewLegacy
 		$lists['divisions'] = $divisions;
 		unset($divisions);
         
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/matches.js');
         
         foreach ($table_info['#__sportsmanagement_match'] as $field => $value )
         {
@@ -253,7 +253,7 @@ class sportsmanagementViewMatches extends JViewLegacy
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		$mainframe	= JFactory::getApplication();

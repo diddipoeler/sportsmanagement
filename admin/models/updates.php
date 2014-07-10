@@ -226,7 +226,7 @@ class sportsmanagementModelUpdates extends JModelLegacy
 			{
 				$filepath=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
 			}
-			if ($fileContent=JFile::read($filepath))
+			if ($fileContent=file_get_contents($filepath))
 			{
 				$version='';
 				$updateDescription='';

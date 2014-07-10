@@ -10,7 +10,7 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 $document = JFactory::getDocument();
 JHtml::_('behavior.mootools');
 $version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
+$document->addScript(JUri::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
 ?>
 <div style="overflow:auto;">
 	<a name="jl_top" id="jl_top"></a>

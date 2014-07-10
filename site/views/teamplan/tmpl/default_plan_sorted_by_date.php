@@ -548,7 +548,7 @@ $teamid=JRequest::getInt('tid');
 				{
 				?> 
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
+					<img src='<?php echo JUri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
 				<?php
 				}
 			}
@@ -593,7 +593,7 @@ $teamid=JRequest::getInt('tid');
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
 		<img
-			src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
+			src='<?php echo JUri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
 			alt='' title='' /> </span> <?php
 				}
 			}

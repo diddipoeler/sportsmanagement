@@ -145,7 +145,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $option = JRequest::getCmd('option');
         $query="SHOW TABLES LIKE '%_".COM_SPORTSMANAGEMENT_TABLE."%'";
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
     }
     
     
@@ -181,7 +181,7 @@ $prefix.'joomleague_' => ''
             $jsmtable = str_replace(array_keys($convert), array_values($convert), $value->name  );
             $query = "SHOW TABLES LIKE '%".$jsmtable."%'";
 		    $db->setQuery($query);
-            $result = $db->loadResultArray();
+            $result = $db->loadColumn();
             
             if ( $result )
             {
@@ -277,7 +277,7 @@ $prefix.'joomleague_' => ''
         $option = JRequest::getCmd('option');
         $query="SHOW TABLES LIKE '%_joomleague%'";
 		$db->setQuery($query);
-        $result = $db->loadResultArray();
+        $result = $db->loadColumn();
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
@@ -337,7 +337,7 @@ $prefix.'joomleague_' => ''
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();   
-        $xml = JFactory::getXMLParser( 'Simple' );
+        $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
         
         foreach ( $sm_quotes as $key => $type )
         {
@@ -355,7 +355,7 @@ $prefix.'joomleague_' => ''
             $db->setQuery($query);
             $result = $db->query();
     
-            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+//            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
             foreach( $xml->document->version as $version ) 
             {
             $quote_version = $version->data();
@@ -442,7 +442,7 @@ $prefix.'joomleague_' => ''
     $sport_type_name = strtolower(array_pop($temp));
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
-    $filename = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
+//    $filename = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
     
     if (!JFile::exists($filename)) 
     {
@@ -461,8 +461,8 @@ $prefix.'joomleague_' => ''
 					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
 					$this->my_text .= JText::sprintf('Die Datei %1$s ist vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
                     
-        $xml = JFactory::getXMLParser( 'Simple' );
-       $xml->loadFile($filename); 
+        $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml');
+//       $xml->loadFile($filename); 
        
        // schleife altersgruppen anfang
        foreach( $xml->document->agegroups as $agegroup ) 
@@ -537,8 +537,8 @@ $prefix.'joomleague_' => ''
     $option = JRequest::getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
-    $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
     
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml')) 
     {
@@ -560,7 +560,7 @@ $prefix.'joomleague_' => ''
     $query = $db->getQuery(true);
     $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations')->where('country NOT IN ('.$country_assoc_del.')'  );
     $db->setQuery($query);
-    $result = $db->query();
+    $result = $db->execute();
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
      
@@ -706,11 +706,11 @@ $prefix.'joomleague_' => ''
     $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
     //$db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.txt';    
-    //$fileContent = JFile::read($db_table);    
+    //$fileContent = file_get_contents($db_table);    
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
     
-    $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
     
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml')) 
     {
@@ -839,7 +839,7 @@ foreach( $xml->document->events as $event )
     $db = JFactory::getDBO();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/countries.sql';
 // echo '<br>'.$db_table.'<br>';
-// $fileContent = JFile::read($db_table);
+// $fileContent = file_get_contents($db_table);
 // $sql_teil = explode(";",$fileContent);
 
     $cols = $db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');

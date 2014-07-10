@@ -232,7 +232,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
         $query->where('prediction_id = ' . $prediction_id);
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 //	/**
@@ -643,7 +643,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
         $query->where('pp.prediction_id = ' . (int) $predictonID);
 
 			$db->setQuery($query);
-			if ($predictionProjectIDList = $db->loadResultArray())
+			if ($predictionProjectIDList = $db->loadColumn())
 			{
 				foreach ($predictionProjectIDList AS $predictionProjectID)
 				{

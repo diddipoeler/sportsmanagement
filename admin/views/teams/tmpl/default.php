@@ -236,8 +236,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 				  								$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP                                                 
 							} else {
@@ -246,8 +246,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP                                                     
 								} else {

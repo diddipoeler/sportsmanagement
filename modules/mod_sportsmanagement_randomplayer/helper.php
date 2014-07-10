@@ -97,7 +97,7 @@ class modJSMRandomplayerHelper
         $query->setLimit('1');
         
         $db->setQuery( $query );
-		$res = $db->loadRow();
+		$res = $db->loadColumn();
         
         if ( !$res )
         {

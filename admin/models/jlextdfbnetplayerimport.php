@@ -1166,7 +1166,7 @@ Array
   
   $teamid = 1;
   
-$this->fileName = JFile::read($file);
+$this->fileName = file_get_contents($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {

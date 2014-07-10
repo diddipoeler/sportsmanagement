@@ -543,7 +543,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-    		$this->attendanceranking = $db->loadResultArray();
+    		$this->attendanceranking = $db->loadColumn();
     	}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -635,7 +635,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS teams ON clubs.id = teams.club_id ');
         $query->where('teams.id = '.$this->teamid);
     	$db->setQuery( $query );
-    	$logo = JURI::root().$db->loadResult();
+    	$logo = JUri::root().$db->loadResult();
 
 		return $logo;
 	}

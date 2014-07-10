@@ -135,7 +135,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 			$params['prediction_id']= $prediction_id;
 		}
 		
-		$query = JURI::buildQuery($params);
+		$query = JUri::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query);
 		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id);
 		$forward = sportsmanagementModelRound::getRoundId($currentRoundcode+1, $project->id);
@@ -143,7 +143,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 		if ($firstRound['id'] != $roundid)
 		{
 			$params['r'] = $backward;
-			$query = JURI::buildQuery($params);
+			$query = JUri::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
@@ -154,7 +154,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             }
 
 			$params['r'] = $firstRound['id'];
-			$query = JURI::buildQuery($params);
+			$query = JUri::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
@@ -167,7 +167,7 @@ class sportsmanagementModelPagination extends JModelLegacy
         if ($lastRound['id'] != $roundid)
 		{
 			$params['r'] = $forward;
-			$query = JURI::buildQuery($params);
+			$query = JUri::buildQuery($params);
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
@@ -180,7 +180,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
 			$params['r'] = $lastRound['id'];
-			$query = JURI::buildQuery($params);
+			$query = JUri::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
@@ -209,7 +209,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 				if ($round->id != $roundid)
 				{
 					$params['r']= $round->id;
-					$query		= JURI::buildQuery($params);
+					$query		= JUri::buildQuery($params);
 					$link		= JRoute::_('index.php?' . $query . '#'.$option.'_top');
 					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);
 				}
@@ -266,7 +266,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 			if ($counter <= $rlimit)
 			{
 				$params['r'] = $counter;
-				$query = JURI::buildQuery($params);
+				$query = JUri::buildQuery($params);
 				$link  = JRoute::_('index.php?' . $query);
 
 				$pageNav2 .= "<option value='".$link."'";

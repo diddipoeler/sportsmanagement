@@ -63,7 +63,7 @@ $script =	'
 			';
 
 $document->addScriptDeclaration($script);
-$document->addScript(JURI::root().'includes/js/joomla.javascript.js');
+$document->addScript(JUri::root().'includes/js/joomla.javascript.js');
 ?>
 <form name='adminForm' id='adminForm' method='post' >
 	<table width='100%'><tr><td class='sectiontableheader'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?></td></tr></table>

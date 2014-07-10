@@ -70,7 +70,7 @@ class JFormFieldJLGColor extends JFormField
 	{
 		$mainframe = JFactory::getApplication();
         $document = JFactory::getDocument();
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/301a.js');
+		$document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/301a.js');
 		
 		// Initialize some field attributes.
 		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';

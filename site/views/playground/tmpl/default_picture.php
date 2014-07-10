@@ -50,13 +50,13 @@ if ( ( $this->playground->picture ) )
                 if (($this->playground->picture)) 
                 {
                 
-                  $picture = JURI::root() . $this->playground->picture;
+                  $picture = JUri::root() . $this->playground->picture;
                 
                 } 
                 else 
                 {
                 
-$picture = JURI::root() . sportsmanagementHelper::getDefaultPlaceholder("team");
+$picture = JUri::root() . sportsmanagementHelper::getDefaultPlaceholder("team");
                 
                 }
                 

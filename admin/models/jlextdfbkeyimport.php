@@ -252,7 +252,7 @@ $country = $this->_db->loadResult();
   where project_id = ' . (int) $projectid . '';
 	
 	$this->_db->setQuery( $query );
-	$result = $this->_db->loadResultArray();
+	$result = $this->_db->loadColumn();
 	
 	$rounds = implode(",",$result);
 	$query = 'select count(*)

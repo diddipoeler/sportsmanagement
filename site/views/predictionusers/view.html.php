@@ -73,8 +73,8 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 
 		$mainframe = JFactory::getApplication();
 		
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
+		$document->addScript(JUri::root().'components/com_sportsmanagement/assets/js/json2.js');
+		$document->addScript(JUri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
 		$model		= $this->getModel();
 

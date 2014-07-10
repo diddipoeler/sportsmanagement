@@ -149,8 +149,8 @@ $document->addScriptDeclaration( $javascript );
 		//JHtml::_('behavior.framework', true);
         
         // Load our Javascript
-        $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/progressbar.js');
+        $document->addStylesheet(JUri::base().'components/'.$option.'/assets/css/progressbar.css');
+        //$document->addScript(JUri::base().'components/'.$option.'/assets/js/progressbar.js');
 
 /*        
         // Load our Javascript
@@ -175,7 +175,7 @@ $document->addScriptDeclaration( $javascript );
   		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page

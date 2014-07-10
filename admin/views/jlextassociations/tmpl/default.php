@@ -174,7 +174,7 @@ function searchPerson(val)
 						<td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td style="text-align:center; ">
             <?php
-//            $path = JURI::root().$row->assocflag;
+//            $path = JUri::root().$row->assocflag;
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
@@ -187,8 +187,8 @@ if (empty($row->assocflag) || !JFile::exists(JPATH_SITE.DS.$row->assocflag))
 else
 {
 ?>                                    
-<a href="<?php echo JURI::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo JUri::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JUri::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP
 }					
@@ -196,7 +196,7 @@ else
             </td>
 			<td style="text-align:center; ">
             <?php
-//            $path = JURI::root().$row->assocflag;
+//            $path = JUri::root().$row->assocflag;
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
@@ -209,8 +209,8 @@ if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 else
 {
 ?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo JUri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JUri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP					
 }

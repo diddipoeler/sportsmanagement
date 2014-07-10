@@ -300,7 +300,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         $query->where('parent_id = '.(int)$this->divisionid);
 
 			$db->setquery($query);
-			$div_for_teams = $db->loadResultArray();
+			$div_for_teams = $db->loadColumn();
 			$div_for_teams[] = self::getDivision()->id;
 		}
 

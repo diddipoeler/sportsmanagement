@@ -214,7 +214,7 @@ jimport('joomla.filesystem.file');
 
 		$path= JPATH_BASE."/modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/$filename";
 		$cleanpath=JPATH::clean($path);
-		$contents=JFile::read($cleanpath);
+		$contents=file_get_contents($cleanpath);
 		$lines=explode("\n", $contents);
 		$count=count($lines);
 		$rows=explode("\n", $contents);
@@ -234,7 +234,7 @@ function getTextFile2(&$params,$filename)
 	$num=($today-1);
 	$path= JPATH_BASE."/modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/$filename";
 	$cleanpath=JPATH::clean($path);
-	$contents=JFile::read($cleanpath);
+	$contents=file_get_contents($cleanpath);
 	$lines=explode("\n", $contents);
 	$count=count($lines);
 	$rows=explode("\n", $contents);
@@ -264,7 +264,7 @@ $xx= count($category);
 	$no_of_quotes=$db->loadResult();
 	$query="SELECT * FROM #__rquote_meta WHERE id='1'";
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row=$db->loadColumn();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -322,7 +322,7 @@ $xx= count($category);
 	$no_of_quotes=$db->loadResult();
 	$query="SELECT * FROM #__rquote_meta where ID='2'";
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row=$db->loadColumn();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -380,7 +380,7 @@ $xx= count($category);
 	$no_of_quotes=$db->loadResult();
 	$query="SELECT * FROM #__rquote_meta where ID='3'";
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row=$db->loadColumn();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -438,7 +438,7 @@ $xx= count($category);
 	$no_of_quotes=$db->loadResult();
 	$query="SELECT * FROM #__rquote_meta where ID='4'";
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row=$db->loadColumn();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];

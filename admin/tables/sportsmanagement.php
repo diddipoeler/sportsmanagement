@@ -98,7 +98,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 		{
 			// Convert the params field to a registry.
 			$params = new JRegistry;
-			$params->loadJSON($this->params);
+			$params->loadString($this->params);
 			$this->params = $params;
 			return true;
 		}

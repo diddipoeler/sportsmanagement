@@ -113,7 +113,7 @@ $query = $db->getQuery(true);
         //$query->from('#__SPORTSMANAGEMENT_countries');
         // Reset the query using our newly populated query object.
 		$db->setQuery($query);
-		$countries = $db->loadAssocList();
+		$countries = $db->loadColumn();
 		
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($countries,true).'</pre>'),'');
         
@@ -210,10 +210,10 @@ $query = $db->getQuery(true);
 		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			$path = JURI::root().'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+			$path = JUri::root().'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
             if ( !JFile::exists(JPATH_SITE.DS.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
 			{
-                $path = JURI::root().'administrator/components/com_sportsmanagement/assets/images/delete.png';
+                $path = JUri::root().'administrator/components/com_sportsmanagement/assets/images/delete.png';
             }    
 			return $path;
 		}

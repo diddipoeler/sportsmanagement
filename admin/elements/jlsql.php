@@ -82,7 +82,7 @@ class JFormFieldJLSQL extends JFormField
 				var combo = $('".$control_name.$this->name."');
 				var value = combo.options[combo.selectedIndex].value;
 				var postStr  = '';
-				var url = '".JURI::base()."' + 'index.php?option=com_sportsmanagement&view=".$view."&format=raw&".$this->name."='+value;
+				var url = '".JUri::base()."' + 'index.php?option=com_sportsmanagement&view=".$view."&format=raw&".$this->name."='+value;
 				var theAjax = new Ajax(url, {
 					method: 'post',
 					postBody : postStr

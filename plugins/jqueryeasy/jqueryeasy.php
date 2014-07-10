@@ -92,7 +92,7 @@ class plgSystemJqueryeasy extends JPlugin {
 		$includedPaths = trim( (string) $this->params->get('enableonlyin'.$suffix, ''));
 		if ($includedPaths) {
 			$paths = array_map('trim', (array) explode("\n", $includedPaths));
-			$current_uri_string = JURI::getInstance()->toString();
+			$current_uri_string = JUri::getInstance()->toString();
 			
 			//if ($this->_showreport) {
 			//	$this->_verbose_array[] = JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_ENABLEPLUGININPAGES');
@@ -115,7 +115,7 @@ class plgSystemJqueryeasy extends JPlugin {
 			$excludedPaths = trim( (string) $this->params->get('disablein'.$suffix, ''));
 			if ($excludedPaths) {
 				$paths = array_map('trim', (array) explode("\n", $excludedPaths));
-				$current_uri_string = JURI::getInstance()->toString();
+				$current_uri_string = JUri::getInstance()->toString();
 			
 				//if ($this->_showreport) {
 				//	$this->_verbose_array[] = JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_DISABLEPLUGININPAGES');
@@ -198,8 +198,8 @@ class plgSystemJqueryeasy extends JPlugin {
         	$localVersionPath = trim($this->params->get('localversion'.$suffix, ''));
         	if ($localVersionPath) {         		
         		if (JFile::exists(JPATH_ROOT.$localVersionPath)) {
-        		//if (JFile::exists($_SERVER['DOCUMENT_ROOT'].JURI::root(true).$localVersionPath)) {
-        			$this->_jqpath = JURI::root(true).$localVersionPath;
+        		//if (JFile::exists($_SERVER['DOCUMENT_ROOT'].JUri::root(true).$localVersionPath)) {
+        			$this->_jqpath = JUri::root(true).$localVersionPath;
         		} else {
         			if ($this->_showreport) {
         				$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localVersionPath);
@@ -228,7 +228,7 @@ class plgSystemJqueryeasy extends JPlugin {
 				$localPathMigrate = trim($this->params->get('localpathmigrate'.$suffix, ''));		
 				if ($localPathMigrate) {
 					if (JFile::exists(JPATH_ROOT.$localPathMigrate)) {
-						$this->_jqmigratepath = JURI::root(true).$localPathMigrate;
+						$this->_jqmigratepath = JUri::root(true).$localPathMigrate;
 					} else {
 						if ($this->_showreport) {
 							$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localPathMigrate);
@@ -242,7 +242,7 @@ class plgSystemJqueryeasy extends JPlugin {
 	        	$localPathMigrate = trim($this->params->get('localpathmigrate'.$suffix, ''));
 	        	if ($localPathMigrate) {
 	        		if (JFile::exists(JPATH_ROOT.$localPathMigrate)) {
-	        			$this->_jqmigratepath = JURI::root(true).$localPathMigrate;
+	        			$this->_jqmigratepath = JUri::root(true).$localPathMigrate;
 	        		} else {
 	        			if ($this->_showreport) {
 	        				$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localPathMigrate);
@@ -269,7 +269,7 @@ class plgSystemJqueryeasy extends JPlugin {
         	$doc->addScriptDeclaration("JQEASY_JQNOCONFLICT");
 		} else if ($addjQueryNoConflict == 2) {
 			$doc->addScript("JQEASY_JQNOCONFLICT");
-        	$this->_jqnoconflictpath = JURI::root(true)."/plugins/system/jqueryeasy/jquerynoconflict.js";
+        	$this->_jqnoconflictpath = JUri::root(true)."/plugins/system/jqueryeasy/jquerynoconflict.js";
 		}
 		
 		$time_end = microtime(true);
@@ -294,7 +294,7 @@ class plgSystemJqueryeasy extends JPlugin {
 			$localVersionPath = trim($this->params->get('localuiversion'.$suffix, ''));
 			if ($localVersionPath) {
 				if (JFile::exists(JPATH_ROOT.$localVersionPath)) {
-					$this->_jquipath = JURI::root(true).$localVersionPath;
+					$this->_jquipath = JUri::root(true).$localVersionPath;
 				} else {
 					if ($this->_showreport) {
 						$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localVersionPath);
@@ -320,7 +320,7 @@ class plgSystemJqueryeasy extends JPlugin {
 				$localVersionPath = trim($this->params->get('jqueryuithemecustom'.$suffix, ''));
 				if ($localVersionPath) {
 					if (JFile::exists(JPATH_ROOT.$localVersionPath)) {
-						$this->_jquicsspath = JURI::root(true).$localVersionPath;
+						$this->_jquicsspath = JUri::root(true).$localVersionPath;
 					} else {
 						if ($this->_showreport) {
 							$this->_verbose_array[] = JText::sprintf('PLG_SYSTEM_JQUERYEASY_VERBOSE_COULDNOTFINDFILE', JPATH_ROOT.$localVersionPath);
@@ -441,7 +441,7 @@ class plgSystemJqueryeasy extends JPlugin {
 					$exceptPaths = trim( (string) $this->params->get('keepmootoolsin', ''));
 					if ($exceptPaths) {
 						$this->_exceptpaths = array_map('trim', (array) explode("\n", $exceptPaths));
-						$current_uri_string = JURI::getInstance()->toString();
+						$current_uri_string = JUri::getInstance()->toString();
 			
 						//if ($this->_showreport) {
 						//	$this->_verbose_array[] = JText::_('PLG_SYSTEM_JQUERYEASY_VERBOSE_DISABLEMOOTOOLSINPAGES');
@@ -932,11 +932,11 @@ class plgSystemJqueryeasy extends JPlugin {
 			}				
 		} else if (!$first_pos && $last_pos && !$use_backward_compatibility) { // any URL starting with $path
 			$path = rtrim($path, '*');		
-			if (stripos($uri, JURI::root().ltrim($path, '/')) !== false) {
+			if (stripos($uri, JUri::root().ltrim($path, '/')) !== false) {
 				return true;
 			}
 		} else {
-			if (strcasecmp($uri, JURI::root().ltrim($path, '/')) == 0) { // case-insensitive string comparison
+			if (strcasecmp($uri, JUri::root().ltrim($path, '/')) == 0) { // case-insensitive string comparison
 				return true;
 			}
 		}

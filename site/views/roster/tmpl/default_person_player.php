@@ -74,8 +74,8 @@ if ($this->config['show_player_icon'])
       ?>
 
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
 
 
@@ -99,7 +99,7 @@ if ($this->config['show_player_numbers'])
 				<span class="jl_rosterperson_position_number">
 				<?php
 				$playerNumber = ($this->config['player_numbers_pictures'] AND function_exists('imagecreatefrompng')) ? 
-					JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr)) 
+					JHtml::image(JUri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr)) 
 					: $pnr;
 					echo $playerNumber;
 				

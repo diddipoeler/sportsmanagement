@@ -78,7 +78,7 @@ class sportsmanagementTableTeamPerson extends JTable
  * 			$this->$k = intval( $oid );
  * 		}
 
- * 		$query = 'DELETE FROM '.$this->getDbo()->nameQuote( $this->_tbl ).
+ * 		$query = 'DELETE FROM '.$this->getDbo()->quoteName( $this->_tbl ).
  * 				' WHERE '.$this->_tbl_key.' = '. $this->getDbo()->Quote($this->$k);
  * 		$this->getDbo()->setQuery( $query );
 

@@ -156,15 +156,15 @@ $kml[] = ' <Style id="' . $id . 'Style">';
 $kml[] = ' <IconStyle id="' . $id . 'Icon">';
 $kml[] = ' <Icon>';
 
-//$picturepath = JURI::root().$row->logo_big;
+//$picturepath = JUri::root().$row->logo_big;
 $picturepath = JPATH_SITE.DS.$picture;
 if ( !file_exists($picturepath) || !$picture  )
 {
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+$kml[] = ' <href>' . JUri::root().$ph_logo_big . '</href>';    
 }
 else
 {
-$kml[] = ' <href>' . JURI::root().$picture . '</href>';    
+$kml[] = ' <href>' . JUri::root().$picture . '</href>';    
 }
 
 $kml[] = ' </Icon>';
@@ -573,11 +573,11 @@ echo 'writekml3prediction avatar<br><pre>';
 
 if ( !file_exists($picturepath) || empty($row->avatar) )
 {
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+$kml[] = ' <href>' . JUri::root().$ph_logo_big . '</href>';    
 }
 else
 {
-$kml[] = ' <href>' . JURI::root().$row->avatar . '</href>';    
+$kml[] = ' <href>' . JUri::root().$row->avatar . '</href>';    
 }
 
 $kml[] = ' </Icon>';
@@ -657,15 +657,15 @@ $kml[] = ' <Style id="' . $row->team_id . 'Style">';
 $kml[] = ' <IconStyle id="' . $row->team_id . 'Icon">';
 $kml[] = ' <Icon>';
 
-//$picturepath = JURI::root().$row->logo_big;
+//$picturepath = JUri::root().$row->logo_big;
 $picturepath = JPATH_SITE.DS.$row->logo_big;
 if ( !file_exists($picturepath) )
 {
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+$kml[] = ' <href>' . JUri::root().$ph_logo_big . '</href>';    
 }
 else
 {
-$kml[] = ' <href>' . JURI::root().$row->logo_big . '</href>';    
+$kml[] = ' <href>' . JUri::root().$row->logo_big . '</href>';    
 }
 
 $kml[] = ' </Icon>';

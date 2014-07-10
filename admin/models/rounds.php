@@ -215,7 +215,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					WHERE project_id=".$projectid."
 					ORDER BY roundcode ASC, id ASC ";
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList ())
+		if (!$result=$db->loadColumn ())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
@@ -237,7 +237,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					WHERE project_id=".$projectid."
 					ORDER BY roundcode DESC, id DESC ";
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
+		if (!$result=$db->loadColumn())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
@@ -260,7 +260,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					WHERE project_id=".$projectid."
 					ORDER BY id ASC ";
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
+		if (!$result=$db->loadColumn())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
@@ -289,7 +289,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					WHERE project_id=".$projectid."
 					ORDER BY id ASC ";
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
+		if (!$result=$db->loadColumn())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
@@ -321,7 +321,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		       . ' ORDER BY r.round_date_first ASC '
 		            ;
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
+		if (!$result=$db->loadColumn())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;

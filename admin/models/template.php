@@ -234,7 +234,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
         $query1->where('project_id='.$project_id);
         $db->setQuery($query1);
-		$current = $db->loadResultArray();
+		$current = $db->loadColumn();
         $current = implode("','",$current);
         // Select some fields
 		$query2->select('id as value, title as text');

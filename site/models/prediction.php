@@ -524,7 +524,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		}
 
 		$jRegistry = new JRegistry;
-        $jRegistry->loadJSON($result);
+        $jRegistry->loadString($result);
         $configvalues = $jRegistry->toArray(); 
 
         // check some defaults and init data for quicker access
@@ -957,7 +957,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -983,7 +983,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -1005,7 +1005,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->where('prediction_id = '.$predictionID);
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -1041,7 +1041,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 
@@ -1169,7 +1169,7 @@ if	(($logo_home == '') || (!file_exists($logo_home)))
 $logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
 }
 $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
-$body .=  JHTML::image(JURI::root().$logo_home,$imgTitle,array(' title' => $imgTitle));
+$body .=  JHTML::image(JUri::root().$logo_home,$imgTitle,array(' title' => $imgTitle));
 $body .=  ' ';
 }
 if ( $configprediction['show_logo_small'] == 2 )
@@ -1194,7 +1194,7 @@ $logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_smal
 }
 $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
 $body .=  ' ';
-$body .=  JHTML::image(JURI::root().$logo_away,$imgTitle,array(' title' => $imgTitle));
+$body .=  JHTML::image(JUri::root().$logo_away,$imgTitle,array(' title' => $imgTitle));
 }
 if ( $configprediction['show_logo_small'] == 2 )
 {

@@ -76,7 +76,7 @@ class sportsmanagementViewsmquotetxt extends JViewLegacy
 		JRequest::setVar('hidemainmenu', true);
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
         // Set toolbar items for the page

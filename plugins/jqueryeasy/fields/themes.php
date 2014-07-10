@@ -25,7 +25,7 @@ class JFormFieldThemes extends JFormField {
 		
 		// Add the script to the document head.
 		$doc = JFactory::getDocument();
-		$doc->addStylesheet(JURI::root(true).'/plugins/system/jqueryeasy/fields/themes/css/themes.css');
+		$doc->addStylesheet(JUri::root(true).'/plugins/system/jqueryeasy/fields/themes/css/themes.css');
 		
 		$type = strtolower($this->type);
 		

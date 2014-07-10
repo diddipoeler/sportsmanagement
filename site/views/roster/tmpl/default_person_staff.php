@@ -65,8 +65,8 @@ if ($this->config['show_staff_icon']==1)
 <?php
 
       ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
     <?php
       	

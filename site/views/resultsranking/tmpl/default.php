@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlpath = JUri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>

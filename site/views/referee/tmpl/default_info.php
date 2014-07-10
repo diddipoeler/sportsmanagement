@@ -69,8 +69,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
  */
                                                         
 				?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
+<a href="<?php echo JUri::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
 </a>			
             </td>
 			<?php

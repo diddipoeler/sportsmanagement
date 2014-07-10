@@ -54,7 +54,7 @@ $mainframe = JFactory::getApplication();
 $config = array();
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css');
 
 $pg_id = $params->get('pg');
 

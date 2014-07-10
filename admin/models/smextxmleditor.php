@@ -112,7 +112,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 
 				//$item->extension_id	= $this->getState('extension.id');
 				$item->filename		= JRequest::getVar('file_name');
-				$item->source		= JFile::read($filePath);
+				$item->source		= file_get_contents($filePath);
 			} else {
 				$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}

@@ -83,9 +83,9 @@ class plgSystemPlugin_googlemap3_helper
 		$this->id = explode(":", $this->id);
 		$this->id = $this->id[0];
 		// What is the url of website without / at the end
-		$this->url = preg_replace('/\/$/', '', JURI::base());
+		$this->url = preg_replace('/\/$/', '', JUri::base());
 		$this->_debug_log("url base(): ".$this->url);			
-		$this->base = JURI::base(true);
+		$this->base = JUri::base(true);
 		$this->_debug_log("url base(true): ".$this->base);			
 		// Protocol not working with maps.google.com only with enterprise account
 		if ($_SERVER['SERVER_PORT'] == 443)

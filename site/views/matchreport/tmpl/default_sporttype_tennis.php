@@ -116,8 +116,8 @@ if ( $this->project->use_tie_break )
                 echo '<td>';
                 echo $player->firstname.' '.$player->lastname;
                 ?>
-                <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo '</td>';
@@ -150,8 +150,8 @@ if ( $this->project->use_tie_break )
                 echo '<td>';
                 echo $player->firstname.' '.$player->lastname;
                 ?>
-                <a href="<?php echo JURI::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture;?>" title="<?php echo $player->lastname;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo '</td>';
@@ -307,15 +307,15 @@ if ( $this->project->use_tie_break )
                 echo '<td>';
                 echo $matchplayer1;
                 ?>
-                <a href="<?php echo JURI::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo ' / <br>';
                 echo $matchplayer2;
                 ?>
-                <a href="<?php echo JURI::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo '</td>';
@@ -362,15 +362,15 @@ if ( $this->project->use_tie_break )
                 echo '<td>';
                 echo $matchplayer1;
                 ?>
-                <a href="<?php echo JURI::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture1;?>" title="<?php echo $matchplayer1;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture1;?>" alt="<?php echo $matchplayer1;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo ' / <br>';
                 echo $matchplayer2;
                 ?>
-                <a href="<?php echo JURI::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
-                <img src="<?php echo JURI::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+                <a href="<?php echo JUri::root().$picture2;?>" title="<?php echo $matchplayer2;?>" class="modal">
+                <img src="<?php echo JUri::root().$picture2;?>" alt="<?php echo $matchplayer2;?>" width="<?php echo $this->config['player_picture_width'];?>" />
                 </a>
                 <?PHP
                 echo '</td>';

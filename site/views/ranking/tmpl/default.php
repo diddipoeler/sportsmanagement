@@ -47,7 +47,7 @@ JHtml::_( 'behavior.modal' );
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlpath = JUri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>

@@ -281,7 +281,7 @@ class sportsmanagementViewprojectpositions extends JViewLegacy
 		$this->assignRef('request_url',$uri->toString());
 */
 		
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         $this->assign('request_url',$uri->toString());
         $this->assign('user',JFactory::getUser());
         $this->assignRef('project',$project);
@@ -301,7 +301,7 @@ class sportsmanagementViewprojectpositions extends JViewLegacy
 	// Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'projectpositions');

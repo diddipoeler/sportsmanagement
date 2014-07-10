@@ -973,7 +973,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($res, 'ini');
-		$jRegistry->loadJSON($res);
+		$jRegistry->loadString($res);
     
     for($a=0; $a < 11; $a++)
     {
@@ -1020,7 +1020,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($res, 'ini');
-		$jRegistry->loadJSON($res);
+		$jRegistry->loadString($res);
     
     for($a=0; $a < 11; $a++)
     {

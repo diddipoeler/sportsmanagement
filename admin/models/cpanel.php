@@ -158,7 +158,7 @@ $paramsdata = JComponentHelper::getParams($option);
     {
         $mainframe = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
-        $xml = JFactory::getXMLParser( 'Simple' );
+        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         $return = 0;
         $version = sportsmanagementHelper::getVersion() ;
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
@@ -222,7 +222,7 @@ else
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
         
-        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+//        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
         foreach( $xml->document->version as $version ) 
             {

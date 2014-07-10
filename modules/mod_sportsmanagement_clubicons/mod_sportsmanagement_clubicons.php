@@ -79,7 +79,7 @@ $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperr
 
 JHTML::_('behavior.mootools');
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::base() . 'modules/mod_sportsmanagement_clubicons/css/style.css');
+$doc->addStyleSheet(JUri::base() . 'modules/mod_sportsmanagement_clubicons/css/style.css');
 $css = 'img.smstarticon { width:25px;}';
 if ($params->get('max_width', 800) > 0 AND $cnt <= 20) $css .= 'table.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}
 div.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}';
@@ -112,7 +112,7 @@ window.addEvent('resize', function(){
 ";
 $mv = JFactory::getApplication()->get('MooToolsVersion');
 $script =  'script';
-$doc->addScript( JURI::base() . 'modules/mod_sportsmanagement_clubicons/js/'.$script.'.js');
+$doc->addScript( JUri::base() . 'modules/mod_sportsmanagement_clubicons/js/'.$script.'.js');
 $doc->addScriptDeclaration($initjs);
 require(JModuleHelper::getLayoutPath('mod_sportsmanagement_clubicons', $tpl));
 }

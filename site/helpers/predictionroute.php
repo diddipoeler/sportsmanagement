@@ -232,7 +232,7 @@ public static function buildQuery($parts)
 			}
 		}
 
-		return JURI::buildQuery( $parts );
+		return JUri::buildQuery( $parts );
 	}
   
   	

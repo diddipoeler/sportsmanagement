@@ -51,7 +51,7 @@ class JFormFieldGoogleColorChooser extends JFormFieldText
 	public function getInput()
 	{
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::base(). 'components/com_sportsmanagement/libraries/jscolor/jscolor.js' );
+		$document->addScript(JUri::base(). 'components/com_sportsmanagement/libraries/jscolor/jscolor.js' );
 
 		$buffer = "<input type=\"text\" name=\"".$this->name."\" id=\"".$this->id."\" readonly=\"readonly\" class=\"inputbox\" \n";
 		$buffer .= "size=\"100%\" value=\"".$this->value."\" style=\"background-color: ".jsmGCalendarUtil::getFadedColor($this->value)."\" />\n";

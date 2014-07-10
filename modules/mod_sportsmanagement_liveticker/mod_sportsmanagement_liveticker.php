@@ -44,7 +44,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 /*
 // No conflict
 $document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
+$document->addScript(JUri::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
 $jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
@@ -305,7 +305,7 @@ foreach ( $listcomment[$list[$i]->match_id] as $key => $value )
 {
 $list_html .= "<tr>" ;
 $list_html .= "<td width=\"10%\">" . $value->event_time  . "</td>";
-$list_html .= "<td width=\"10%\">" . JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
+$list_html .= "<td width=\"10%\">" . JHTML::image( JUri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
 $list_html .= "<td width=\"80%\">" . $value->notes  . "</td>";    
 $list_html .= "</tr>" ;
 }

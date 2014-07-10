@@ -41,7 +41,7 @@ $preview_msg_tmpl = JText::_('PLG_SYSTEM_JQUERYEASY_FIELD_PREVIEWTHEME_LABEL').'
 	<?php foreach($themes as $theme): ?>
 		<div class="theme">
 			<a href="<?php echo $theme[2] ?>" target="_blank">
-				<img src="<?php echo JURI::root(true) ?>/plugins/system/jqueryeasy/fields/themes/images/<?php echo $theme[0] ?>.png" title="<?php echo str_replace('%theme%', $theme[1], $preview_msg_tmpl) ?>" />
+				<img src="<?php echo JUri::root(true) ?>/plugins/system/jqueryeasy/fields/themes/images/<?php echo $theme[0] ?>.png" title="<?php echo str_replace('%theme%', $theme[1], $preview_msg_tmpl) ?>" />
 				<span><?php echo $theme[1] ?></span>
 			</a>
 		</div>

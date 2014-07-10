@@ -494,7 +494,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $query->order('round_date_first');
                     
 		$db->setQuery($query);
-		$rows = $db->loadResultArray();
+		$rows = $db->loadColumn();
 		$rounds = array();
 		if (count($rows) > 0)
 		{

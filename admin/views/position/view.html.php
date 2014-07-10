@@ -182,7 +182,7 @@ class sportsmanagementViewPosition extends JViewLegacy
 						'value','text');
                         
                         
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         
         $this->assignRef('lists',$lists);
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
@@ -205,7 +205,7 @@ class sportsmanagementViewPosition extends JViewLegacy
 	// Get a refrence of the page instance in joomla
 	$document =& JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JRequest::setVar('hidemainmenu', true);
@@ -262,8 +262,8 @@ class sportsmanagementViewPosition extends JViewLegacy
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW') : JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

@@ -46,7 +46,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 
 if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
-if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', JURI::base().'modules/mod_sportsmanagement_matchesslider/');}
+if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', JUri::base().'modules/mod_sportsmanagement_matchesslider/');}
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 

@@ -79,6 +79,6 @@ $list = modSportsmanagementTeamPlayersHelper::getData($params);
 
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_teamplayers/css/mod_sportsmanagement_teamplayers.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_teamplayers/css/mod_sportsmanagement_teamplayers.css');
 
 require(JModuleHelper::getLayoutPath('mod_sportsmanagement_teamplayers'));

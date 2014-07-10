@@ -131,7 +131,7 @@ class sportsmanagementTablePlayground extends JTable
 		{
 			// Convert the params field to a registry.
 			$params = new JRegistry;
-			$params->loadJSON($this->extended);
+			$params->loadString($this->extended);
 			//$params->toArray($this->extended);
             $this->extended = $params->toArray($this->extended);
             

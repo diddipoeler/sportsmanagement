@@ -152,7 +152,7 @@ class sportsmanagementViewMatrix extends JViewLegacy
 		}
 		$document->setTitle( $pageTitle );
 		$view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		parent::display( $tpl );

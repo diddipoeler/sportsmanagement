@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		var data_ranking_chart = <?php echo $this->rankingchartdata->toPrettyString(); ?>;
 		return JSON.stringify(data_ranking_chart);
 	}
-	swfobject.embedSWF("<?php echo JURI::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
+	swfobject.embedSWF("<?php echo JUri::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
 			"ranking_chart", "100%", "200", "9.0.0", false, {"get-data": "ranking_chart"} );
 </script>
 

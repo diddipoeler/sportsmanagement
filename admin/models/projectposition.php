@@ -244,7 +244,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		//copy positions
 		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$old_id;
 		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadAssocList())
+		if ($results=$this->_db->loadColumn())
 		{
 			foreach($results as $result)
 			{

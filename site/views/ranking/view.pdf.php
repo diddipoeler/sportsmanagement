@@ -341,15 +341,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
         
-    //echo JURI::root().'<br>';
+    //echo JUri::root().'<br>';
     						
 		if ( $row->logo_big )
     {
-    $path = JURI::root().$row->logo_big;
+    $path = JUri::root().$row->logo_big;
     }
     else
     {
-    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
+    $path = JUri::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
     }
     
     //echo $path.'<br>';
@@ -375,7 +375,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$document->setTitle( $pageTitle );
 		$view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         //$document->addCustomTag($stylelink);
 		parent :: display($tpl);
 	}

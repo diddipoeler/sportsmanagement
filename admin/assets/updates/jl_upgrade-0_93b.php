@@ -751,7 +751,7 @@ function Update_Tables($updates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[ $tables[0] ]));
 
 	foreach ($updates[$tablename] as $update)
@@ -794,7 +794,7 @@ function Change_Table_Columns($updates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[ $tables[0] ]));
 
 	foreach ($updates[$tablename] as $update)
@@ -821,7 +821,7 @@ function Delete_Table_Columns($dUpdates,$tablename)
 
 	echo JText::sprintf('Updating table [%s]','<b>'.$tables[0].'</b>');
 
-	$fields=$db->getTableFields($tables);
+	$fields=$db->getTableColumns($tables);
 	$fieldlist=implode(",",array_keys($fields[$tables[0]]));
 	foreach ($dUpdates[$tablename] as $update)
 	{
@@ -1252,7 +1252,7 @@ function updateVersion($version,$updatefilename)
 
 	if (JFile::exists($updateVersionFile))
 	{
-		$fileContent=JFile::read($updateVersionFile);
+		$fileContent=file_get_contents($updateVersionFile);
 	}
 	else
 	{
@@ -4000,9 +4000,9 @@ function PlayertoolToTeamplayer()
 		//echo '<pre>~'.print_r($playertools,true).'~</pre>';
 		//$query='SELECT id,tmp_old_pos_id,name FROM #__joomleague_position WHERE parent_id > 0 AND persontype=1'; $db->setQuery($query);
         $query='SELECT id,tmp_old_pos_id,name FROM #__joomleague_position WHERE persontype=1'; $db->setQuery($query);
-		$dPositions=$db->loadAssocList('tmp_old_pos_id');
+		$dPositions=$db->loadColumn('tmp_old_pos_id');
 		$query='SELECT id,tmp_old_player_id,firstname,lastname FROM #__joomleague_person'; $db->setQuery($query);
-		$dPersons=$db->loadAssocList('tmp_old_player_id');
+		$dPersons=$db->loadColumn('tmp_old_player_id');
 		foreach ($playertools as $playertool)
 		{
 			$query="	SELECT id
@@ -4267,12 +4267,12 @@ where tsp.position_id = 0
     //$query='SELECT id,tmp_old_pos_id FROM #__joomleague_position WHERE parent_id > 0 AND persontype=2 and tmp_old_pos_id > 0'; 
     $query='SELECT id,tmp_old_pos_id FROM #__joomleague_position WHERE persontype=2 and tmp_old_pos_id > 0';
     $db->setQuery($query);
-		$dPositions=$db->loadAssocList('tmp_old_pos_id');
+		$dPositions=$db->loadColumn('tmp_old_pos_id');
     
 
 		$query='SELECT id,tmp_old_player_id,firstname,lastname FROM #__joomleague_person'; 
     $db->setQuery($query);
-		$dPersons=$db->loadAssocList('tmp_old_player_id');
+		$dPersons=$db->loadColumn('tmp_old_player_id');
     		
     foreach ($stafftools as $stafftool)
 		{
@@ -4460,11 +4460,11 @@ function MatchesToMatch()
 	{
 		$totalOldMatchesCount=count($matches);
 		$query='SELECT id,name,tmp_old_team_id FROM #__joomleague_team'; $db->setQuery($query);
-		$teams=$db->loadAssocList('tmp_old_team_id');
+		$teams=$db->loadColumn('tmp_old_team_id');
 		$query='SELECT id,tmp_old_round_id FROM #__joomleague_round'; $db->setQuery($query);
-		$rounds=$db->loadAssocList('tmp_old_round_id');
+		$rounds=$db->loadColumn('tmp_old_round_id');
 		$query='SELECT id,tmp_old_id FROM #__joomleague_playground'; $db->setQuery($query);
-		$playgrounds=$db->loadAssocList('tmp_old_id');
+		$playgrounds=$db->loadColumn('tmp_old_id');
 		foreach ($matches as $match)
 		{
 			if ($oldProjectID!=$match->project_id)
@@ -4798,11 +4798,11 @@ function MatcheventsToMatchevent()
 	if ($matchevents=$db->loadObjectList()) // get old matchevents...
 	{
 		$query='SELECT id,tmp_old_team_id FROM #__joomleague_team'; $db->setQuery($query);
-		$teams=$db->loadAssocList('tmp_old_team_id');
+		$teams=$db->loadColumn('tmp_old_team_id');
 		$query='SELECT id,tmp_old_player_id FROM #__joomleague_person'; $db->setQuery($query);
-		$persons=$db->loadAssocList('tmp_old_player_id');
+		$persons=$db->loadColumn('tmp_old_player_id');
 		$query='SELECT id,tmp_old_match_id FROM #__joomleague_match'; $db->setQuery($query);
-		$matches=$db->loadAssocList('tmp_old_match_id');
+		$matches=$db->loadColumn('tmp_old_match_id');
 		foreach ($matchevents as $matchevent)
 		{
 			if ($oldEventID==$matchevent->event_id){continue;}
@@ -4943,13 +4943,13 @@ function MatchplayersToMatchplayer()
 	if ($matchplayers=$db->loadObjectList()) // get old matchplayers...
 	{
 		$query='SELECT id,tmp_old_match_id,tmp_old_project_id FROM #__joomleague_match'; $db->setQuery($query);
-		$matches=$db->loadAssocList('tmp_old_match_id');
+		$matches=$db->loadColumn('tmp_old_match_id');
 		$query='SELECT id,tmp_old_player_id FROM #__joomleague_person WHERE tmp_old_player_id > 0'; $db->setQuery($query);
-		$persons=$db->loadAssocList('tmp_old_player_id');
+		$persons=$db->loadColumn('tmp_old_player_id');
 		$query='SELECT id,tmp_old_pos_id,name FROM #__joomleague_position'; $db->setQuery($query);
-		$positions=$db->loadAssocList('tmp_old_pos_id');
+		$positions=$db->loadColumn('tmp_old_pos_id');
 		$query='SELECT id,name,tmp_old_pid FROM #__joomleague_project'; $db->setQuery($query);
-		$projects=$db->loadAssocList('tmp_old_pid');
+		$projects=$db->loadColumn('tmp_old_pid');
 
 		foreach ($matchplayers as $matchplayer)
 		{
@@ -4969,7 +4969,7 @@ function MatchplayersToMatchplayer()
 						$project_id=$projects[$tmpOldProjectID]['id'];
 						echo '<br />'.JText::sprintf('Copying substitutions in project [%1$s] - ','<b>'.$projectName.'</b>').$project_id.'<br /><br />';
 						$query='SELECT id,position_id FROM #__joomleague_project_position WHERE project_id='.$project_id; $db->setQuery($query);
-						$projectPositions=$db->loadAssocList('position_id');
+						$projectPositions=$db->loadColumn('position_id');
 					}
 					echo JText::sprintf('MatchID %1$s - ','<b>'.$matches[$matchplayer->match_id]['id'].'</b>').$matchplayer->match_id.'<br />';
 					$i++;
@@ -5107,9 +5107,9 @@ function MatchrefereesToMatchrefereeAndProjectReferee()
 	if ($matches=$db->loadObjectList()) // get old matches which have a referee_id > 0...
 	{
 		$query='SELECT id,tmp_old_match_id FROM #__joomleague_match'; $db->setQuery($query);
-		$dMatches=$db->loadAssocList('tmp_old_match_id');
+		$dMatches=$db->loadColumn('tmp_old_match_id');
 		$query='SELECT id,tmp_old_referee_id FROM #__joomleague_person WHERE tmp_old_referee_id > 0'; $db->setQuery($query);
-		$persons=$db->loadAssocList('tmp_old_referee_id');
+		$persons=$db->loadColumn('tmp_old_referee_id');
 		if(count($matches) > 0)
 		{
 			foreach ($matches as $match)
@@ -5667,12 +5667,12 @@ function TipResultsToPredictionResults()
 	if ($predictiongametipresults=$db->loadObjectList()) // get old predictiongame_tip_results...
 	{
 		$query='SELECT prediction_id,tmp_old_pid FROM #__joomleague_prediction_project'; $db->setQuery($query);
-		$dPredProject=$db->loadAssocList('tmp_old_pid');
+		$dPredProject=$db->loadColumn('tmp_old_pid');
 		//echo '<pre>~'.print_r($dPredProject,true).'~</pre>';
 		$query='SELECT id,tmp_old_pid FROM #__joomleague_project'; $db->setQuery($query);
-		$dProjects=$db->loadAssocList('tmp_old_pid');
+		$dProjects=$db->loadColumn('tmp_old_pid');
 		$query='SELECT id,tmp_old_match_id FROM #__joomleague_match'; $db->setQuery($query);
-		$dMatches=$db->loadAssocList('tmp_old_match_id');
+		$dMatches=$db->loadColumn('tmp_old_match_id');
 		foreach ($predictiongametipresults as $predictiongametipresult)
 		{
 			if (isset($dPredProject[$predictiongametipresult->project_id]))
@@ -5819,7 +5819,7 @@ function checklistPredictionTemplates()
 			$query='SELECT template FROM #__joomleague_prediction_template WHERE prediction_id='.(int) $prediction_id;
 
 			$db->setQuery($query);
-			$records=$db->loadResultArray();
+			$records=$db->loadColumn();
 			if (empty($records)){$records=array();}
 
 			// first check extension template folder if template is not default

@@ -54,7 +54,7 @@ $document = JFactory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 
 $mode = $params->def("mode");
 $results = $params->get('limit');
@@ -100,11 +100,11 @@ $tickerpause = $params->def("tickerpause");
 			break;
 		case 'V':
 			include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
-			$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+			$document->addScript(JUri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
 			break;
 		case 'H':
 			include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
-			$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+			$document->addScript(JUri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
 			break;
 	}
     

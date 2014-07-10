@@ -40,7 +40,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit'
 $db =& JFactory::getDBO();
 $db_table = JPATH_ADMINISTRATOR.'/components/com_joomleague/sql/rosterposition.sql';
 // echo '<br>'.$db_table.'<br>';
-// $fileContent = JFile::read($db_table);
+// $fileContent = file_get_contents($db_table);
 // $sql_teil = explode(";",$fileContent);
 
 $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);

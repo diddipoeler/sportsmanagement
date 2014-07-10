@@ -225,7 +225,7 @@ else
 }
 
 					//Parsen
-					$doc = DOMDocument::loadXML($content);
+					$doc = DOMDocument::loadString($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
@@ -264,7 +264,7 @@ else
             //$mainframe->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
-			$doc = DOMDocument::loadXML($content);
+			$doc = DOMDocument::loadString($content);
             //$mainframe->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');

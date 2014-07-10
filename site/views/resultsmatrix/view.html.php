@@ -96,7 +96,7 @@ class sportsmanagementViewResultsmatrix extends JViewLegacy
         /*
 		// add some javascript
 		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version );
+		$document->addScript( JUri::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version );
         */
         
 		// add the results config file
@@ -159,7 +159,7 @@ class sportsmanagementViewResultsmatrix extends JViewLegacy
 		$document->setTitle($pageTitle);
         
         $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		/*

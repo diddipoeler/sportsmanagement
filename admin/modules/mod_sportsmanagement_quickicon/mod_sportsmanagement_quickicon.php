@@ -22,7 +22,7 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK')?>" href="index.php?option=com_sportsmanagement">               
-        <img src="<?php echo JURI::base( false ) ?>/components/com_sportsmanagement/assets/icons/transparent_schrift_48.png">               
+        <img src="<?php echo JUri::base( false ) ?>/components/com_sportsmanagement/assets/icons/transparent_schrift_48.png">               
         <span>            
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LABEL')?>               
         </span></a>		        
@@ -31,7 +31,7 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK')?>" href="index.php?option=com_sportsmanagement&view=extensions">               
-        <img src="<?php echo JURI::base( false ) ?>/components/com_sportsmanagement/assets/icons/extensions.png">               
+        <img src="<?php echo JUri::base( false ) ?>/components/com_sportsmanagement/assets/icons/extensions.png">               
         <span>            
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LABEL')?>               
         </span></a>		        
@@ -40,7 +40,7 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK')?>" href="index.php?option=com_sportsmanagement&view=projects">               
-        <img src="<?php echo JURI::base( false ) ?>/components/com_sportsmanagement/assets/icons/projekte.png">               
+        <img src="<?php echo JUri::base( false ) ?>/components/com_sportsmanagement/assets/icons/projekte.png">               
         <span>            
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LABEL')?>               
         </span></a>		        
@@ -49,7 +49,7 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK')?>" href="index.php?option=com_sportsmanagement&view=predictions">               
-        <img src="<?php echo JURI::base( false ) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">               
+        <img src="<?php echo JUri::base( false ) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">               
         <span>            
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LABEL')?>               
         </span></a>		        
@@ -58,7 +58,7 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK')?>" href="index.php?option=com_sportsmanagement&view=currentseasons">               
-        <img src="<?php echo JURI::base( false ) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">               
+        <img src="<?php echo JUri::base( false ) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">               
         <span>            
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LABEL')?>               
         </span></a>		        

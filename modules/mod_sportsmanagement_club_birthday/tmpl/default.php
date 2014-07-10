@@ -117,7 +117,7 @@ foreach ($clubs AS $club)
             {
 				$thispic = $club->default_picture;
 			}
-			$birthdaytext .= '<div style="width:100%"><center><img style="" src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
+			$birthdaytext .= '<div style="width:100%"><center><img style="" src="'.JUri::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
 			if ($params->get('picture_width') != '') $birthdaytext .= ' width="'.$params->get('picture_width').'"';
 			$birthdaytext .= ' /></center></div><br />';
 

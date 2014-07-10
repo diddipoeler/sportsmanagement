@@ -162,7 +162,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($this->item->extended, 'ini');
-        $jRegistry->loadJSON($this->item->extended);
+        $jRegistry->loadString($this->item->extended);
     
     if ( !$this->item->extended )
     {
@@ -321,9 +321,9 @@ $javascript .= "\n";
         $document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.JUri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+        $document->addScript(JUri::base().'components/'.$option.'/assets/js/sm_functions.js');
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
@@ -380,8 +380,8 @@ $javascript .= "\n";
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(JUri::root() . $this->script);
+		$document->addScript(JUri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     

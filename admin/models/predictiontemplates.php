@@ -212,7 +212,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					WHERE prediction_id = ' . (int) $prediction_id;
 
 		$this->_db->setQuery($query);
-		$records = $this->_db->loadResultArray();
+		$records = $this->_db->loadColumn();
 		if (empty($records)){$records=array();}
     
 		// add default folder
@@ -280,7 +280,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
                             $defaultvalues = $jRegistry->toString('ini');
                             
                             $parameter = new JRegistry;
-			                $ini = $parameter->loadINI($defaultvalues);
+			                $ini = $parameter->loadString($defaultvalues);
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	

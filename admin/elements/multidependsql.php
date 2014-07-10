@@ -130,7 +130,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		if ($depends)
 		{
 			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
+			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		// Render the HTML SELECT list.

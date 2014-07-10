@@ -131,7 +131,7 @@ class sportsmanagementModelProjectReferees extends JModelList
 				WHERE r.project_id='.$this->_db->Quote($this->_project_id).'
 						AND pt.published = 1';
 		$this->_db->setQuery($query);
-		$current=$this->_db->loadResultArray();
+		$current=$this->_db->loadColumn();
 		$added=0;
 		foreach ($cid AS $pid)
 		{

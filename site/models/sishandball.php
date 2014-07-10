@@ -122,7 +122,7 @@ else
 }
 
 					//Parsen
-					$doc = DOMDocument::loadXML($content);
+					$doc = DOMDocument::loadString($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
@@ -150,7 +150,7 @@ else
     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
-			$doc = DOMDocument::loadXML($content);
+			$doc = DOMDocument::loadString($content);
 			//Speichern
 			$doc->save($filepath.'tab_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}
@@ -203,7 +203,7 @@ else
 }
 
 					//Parsen
-					$doc = DOMDocument::loadXML($content);
+					$doc = DOMDocument::loadString($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
@@ -231,7 +231,7 @@ else
     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
-			$doc = DOMDocument::loadXML($content);
+			$doc = DOMDocument::loadString($content);
 			//Speichern
 			$doc->save($filepath.'stat_'.$liganummer.'.xml');
 		}
@@ -285,7 +285,7 @@ else
     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
-					$doc = DOMDocument::loadXML($content);
+					$doc = DOMDocument::loadString($content);
 					//Altes File löschen
 					unlink($datei);
 					//Speichern
@@ -313,7 +313,7 @@ else
     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
-			$doc = DOMDocument::loadXML($content);
+			$doc = DOMDocument::loadString($content);
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}

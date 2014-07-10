@@ -491,7 +491,7 @@ class sportsmanagementModelProject extends JModelLegacy
 		}
         $query->order('ordering');
 		$db->setQuery($query);
-		$res = $db->loadResultArray();
+		$res = $db->loadColumn();
 		if(count($res) == 0) {
 			echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
@@ -1172,7 +1172,7 @@ $starttime = microtime();
 		
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($result, 'ini');
-        $jRegistry->loadJSON($result);
+        $jRegistry->loadString($result);
         
 /*        
         $extended = JForm::getInstance('extended', $xmlfile,
@@ -1405,7 +1405,7 @@ $starttime = microtime();
 //			}
 
 
-			$image = "<a href=\"".JURI::root().$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
+			$image = "<a href=\"".JUri::root().$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
 			$image.=JHtml::image($team->$club_icon,$title,$params);
 			$image.="</a>";
                 

@@ -98,7 +98,7 @@ class modSportsmanagementTeamPlayersHelper
         
         //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
-		$result = $db->loadRow();
+		$result = $db->loadColumn();
 		$projectteamid = $result[0];
 		$team_name     = $result[1];
 		$season_id     = $result[2];

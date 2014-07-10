@@ -69,7 +69,7 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
     $mainframe = JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$uri = JFactory :: getURI();
-//		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+//		$js ="registerhome('".JUri::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
 		$model		= $this->getModel();
     $option = JRequest::getCmd('option');

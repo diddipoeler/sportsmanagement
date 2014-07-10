@@ -72,7 +72,7 @@ SqueezeBox.open(url, {
       <br />      
       
               <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target= "_blank" href="http://www.fussballineuropa.de">
-                <img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>            
+                <img src= "<?php echo JUri::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>            
       <br />
       <?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
       <br />      

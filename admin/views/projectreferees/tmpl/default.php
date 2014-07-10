@@ -69,7 +69,7 @@ JHtml::_('behavior.mootools');
 </style>
 <script>
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
+	var quickaddsearchurl = '<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
 
 	function searchPlayer(val)
 	{
@@ -79,7 +79,7 @@ JHtml::_('behavior.mootools');
 	}
 </script>
 <?php
-$uri=JURI::root();
+$uri=JUri::root();
 ?>
 <fieldset class="adminform">
 	<legend>
@@ -87,7 +87,7 @@ $uri=JURI::root();
 	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
+	<form id="quickaddForm" action="<?php echo JUri::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>

@@ -37,8 +37,8 @@ if (empty($theme) || $theme == -1) {
 }
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'jqueryui' => $theme, 'bootstrap' => true, 'gcalendar' => true, 'fullcalendar' => true));
 
-$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.css');
-$document->addScript(JURI::base().'components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.js');
+$document->addStyleSheet(JUri::base().'components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.css');
+$document->addScript(JUri::base().'components/com_sportsmanagement/views/gcalendar/tmpl/gcalendar.js');
 
 
 $calendarids = $this->calendarids;
@@ -304,15 +304,15 @@ if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) =
 <?php }?>
 </dl>
 <?php
-$image = JURI::base().'components/com_sportsmanagement/assets/images/down.png';
-if($params->get('show_selection', 1) == 3) $image = JURI::base().'components/com_sportsmanagement/assets/images/up.png';?>
+$image = JUri::base().'components/com_sportsmanagement/assets/images/down.png';
+if($params->get('show_selection', 1) == 3) $image = JUri::base().'components/com_sportsmanagement/assets/images/up.png';?>
 <div style="text-align:center">
 <img id="gcalendar_view_toggle_status" src="<?php echo $image?>" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>"/>
 </div>
 <?php }?>
 
 <div id='gcalendar_component_loading' style="text-align: center;<?php if (empty($allCalendars)) echo 'visibility:hidden';?>">
-	<img src="<?php echo JURI::base()?>components/com_sportsmanagement/assets/images/ajax-loader.gif"  alt="loader" />
+	<img src="<?php echo JUri::base()?>components/com_sportsmanagement/assets/images/ajax-loader.gif"  alt="loader" />
 </div>
 <div id="gcalendar_component"></div>
 <div id='gcalendar_component_popup' style="visibility:hidden" ></div>

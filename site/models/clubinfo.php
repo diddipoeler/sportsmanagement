@@ -642,7 +642,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 
   $cat_link = '';
   
-  $script .= "d" .$root_catid. " = new dTree('d" .$root_catid. "','".JURI::base()."/components/".$option."/assets/img/standard2/');"."\n";
+  $script .= "d" .$root_catid. " = new dTree('d" .$root_catid. "','".JUri::base()."/components/".$option."/assets/img/standard2/');"."\n";
   $script .= "d" .$root_catid. ".add(" . "0" . ", " . "-1" . ", ";
   $script .= "'" . $cat_name . "', ";
   $script .= "'" . $cat_link . "', ";
@@ -660,7 +660,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   $script .= "'" . $row->name . "', ";
   $script .= "'" . $row->link . "', ";
   //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-  $script .= "'','" . $row->name . "','','".JURI::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
+  $script .= "'','" . $row->name . "','','".JUri::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
   }
   else
   {
@@ -668,7 +668,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   $script .= "'" . $row->name . "', ";
   $script .= "'" . $row->link . "', ";
   //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-  $script .= "'','" . $row->name . "','','".JURI::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
+  $script .= "'','" . $row->name . "','','".JUri::base()."/components/".$option."/assets/img/standard2/" . $row->icon . "');" ."\n";
   }
   
   }
