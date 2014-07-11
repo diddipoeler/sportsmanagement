@@ -218,6 +218,10 @@ foreach ($view_pathes as $path)
 	}
 }
 
+for ($e = 0; $e < count($arrExtensions); $e++)
+{
+$extension = $arrExtensions[$e];
+$extensionname = $arrExtensions[$e];
 foreach ($template_pathes as $path)
 {
 	if(!empty($path))
@@ -231,7 +235,7 @@ foreach ($template_pathes as $path)
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
-
+}
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
 
