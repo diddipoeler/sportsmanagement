@@ -207,7 +207,16 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						</th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="<?php echo $cell_count; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+				<tfoot>
+                <tr>
+                <td colspan="<?php echo $cell_count - 4; ?>">
+                <?php echo $this->pagination->getListFooter(); ?>
+                </td>
+                <td colspan="4">
+                <?php echo $this->pagination->getResultsCounter(); ?>
+                </td>
+                </tr>
+                </tfoot>
 				<tbody>
 					<?php
 					$k=0;
