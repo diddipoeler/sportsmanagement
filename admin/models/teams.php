@@ -253,7 +253,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->where('pt.standard_playground = '.(int)$playground->id);
+        $query->where('pt.standard_playground = '.(int)$playground_id);
         
         $starttime = microtime(); 
 
