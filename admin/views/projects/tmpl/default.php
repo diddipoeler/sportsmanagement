@@ -141,7 +141,11 @@ JHtml::_('behavior.modal');
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
 						?>
 					</th>
-                    
+                    <th width="" class="title">
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USER_FIELD');
+						?>
+					</th>
                     
                     
 					<th width="5%" class="title">
@@ -290,6 +294,8 @@ JHtml::_('behavior.modal');
                         <td class="center">
                         <a href="<?php echo $link2divisions; ?>"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id); ?></a>
                         </td>
+                        
+                        <td class="center"><?php echo $row->user_field; ?></td>
                         
                         <td class="center"><?php echo $published; ?></td>
 						<td class="order">

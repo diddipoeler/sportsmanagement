@@ -154,19 +154,28 @@ class sportsmanagementModelProjects extends JModelList
         // Create a new query object.
         $db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-        $subQuery= $db->getQuery(true);
+        $subQuery = $db->getQuery(true);
+        $subQuery2 = $db->getQuery(true);
         
         $subQuery->select('count(pt.id)');
         $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
         $subQuery->where('pt.project_id = p.id');
         
+        $subQuery2->select('ef.name');
+        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
+        $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
+        $subQuery2->where('ev.jl_id = p.id');
+        $subQuery2->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
+        $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
+
         $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
         $query->select('l.name AS league,l.country');
         $query->select('u.name AS editor');
         $query->select('ag.name AS agegroup');
-        $query->select('(' . $subQuery . ') AS proteams'); 
+        $query->select('(' . $subQuery . ') AS proteams');
+        $query->select('(' . $subQuery2 . ') AS user_field');  
         
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
