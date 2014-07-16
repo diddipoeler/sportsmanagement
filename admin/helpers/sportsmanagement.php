@@ -680,17 +680,26 @@ abstract class sportsmanagementHelper
 	 */
 	public static function getExtensions()
 	{
-		$option='com_sportsmanagement';
+		$mainframe = JFactory::getApplication();
+        $option = 'com_sportsmanagement';
+        $view = JRequest::getVar('view');
 		$arrExtensions = array();
 		$excludeExtension = array();
 		
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
+        
 		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
 			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
 													'.', false, false, $excludeExtension);
 			if($folderExtensions !== false) {
 				foreach ($folderExtensions as $ext)
 				{
-					$arrExtensions[] = $ext;
+					//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
+                    
+                    if ( $ext == $view )
+                    {
+                    $arrExtensions[] = $ext;
+                    }
 				}
 			}
 		}
