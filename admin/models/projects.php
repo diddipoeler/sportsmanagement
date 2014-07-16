@@ -165,7 +165,7 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
         $subQuery->where('pt.project_id = p.id');
         
-        $subQuery2->select('ef.name');
+        $subQuery2->select('max(ef.name)');
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
         $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
         $subQuery2->where('ev.jl_id = p.id');

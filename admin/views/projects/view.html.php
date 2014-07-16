@@ -81,9 +81,13 @@ class sportsmanagementViewProjects extends JView
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		
+        
         $total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
 
 
 
