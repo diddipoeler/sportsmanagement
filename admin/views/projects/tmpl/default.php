@@ -166,7 +166,7 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='12'><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot><tr><td colspan='13'><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
                         </td>
             </tr></tfoot>
