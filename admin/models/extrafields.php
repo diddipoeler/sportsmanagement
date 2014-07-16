@@ -161,6 +161,39 @@ class sportsmanagementModelextrafields extends JModelList
 	}
 
 
+/**
+ * sportsmanagementModelextrafields::getExtraFields()
+ * 
+ * @param string $template_backend
+ * @param string $template_frontend
+ * @return
+ */
+function getExtraFields($template_backend = '', $template_frontend = '')
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        // Select some fields
+		$query->select('id,name');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields');
+        if ($template_backend)
+		{
+        $query->where('template_backend LIKE '.$db->Quote(''.$template_backend.''));
+        }
+        if ($template_frontend)
+		{
+        $query->where('template_frontend LIKE '.$db->Quote(''.$template_frontend.''));
+        }
+        $query->order('name ASC');
+
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        return $result;
+}        
 
 
 

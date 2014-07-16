@@ -87,7 +87,21 @@ class sportsmanagementViewProjects extends JView
 
 
 
-		//build the html select list for leagues
+		//build the html select list for userfields
+		$userfields[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),'id','name');
+		$mdluserfields = JModel::getInstance('extrafields','sportsmanagementModel');
+		$alluserfields = $mdluserfields->getExtraFields('project');
+		$userfields = array_merge($userfields,$alluserfields);
+		$lists['userfields'] = JHtml::_( 'select.genericList',
+									$userfields,
+									'filter_userfields',
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+									'id',
+									'name',
+									$this->state->get('filter.userfields'));
+		unset($leagues);
+        
+        //build the html select list for leagues
 		$leagues[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
 		$mdlLeagues = JModel::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();

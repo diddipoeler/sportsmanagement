@@ -116,6 +116,9 @@ class sportsmanagementModelProjects extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_type', 'filter_project_type', '');
 		$this->setState('filter.project_type', $temp_user_request);
         
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.userfields', 'filter_userfields', '');
+		$this->setState('filter.userfields', $temp_user_request);
+        
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
@@ -150,6 +153,7 @@ class sportsmanagementModelProjects extends JModelList
         $filter_state = $this->getState('filter.state');
         $search_nation = $this->getState('filter.search_nation');
         $search_project_type = $this->getState('filter.project_type');
+        $search_userfields = $this->getState('filter.userfields');
         
         // Create a new query object.
         $db = JFactory::getDBO();
@@ -167,6 +171,10 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2->where('ev.jl_id = p.id');
         $subQuery2->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
+        if ($search_userfields)
+		{
+        $subQuery2->where('ef.name LIKE ' . $db->Quote( '' . $search_userfields . '' ));
+        }
 
         $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
