@@ -171,10 +171,7 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2->where('ev.jl_id = p.id');
         $subQuery2->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
-        if ($search_userfields)
-		{
-        $subQuery2->where('ef.name LIKE ' . $db->Quote( '' . $search_userfields . '' ));
-        }
+        
 
         $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
@@ -192,6 +189,13 @@ class sportsmanagementModelProjects extends JModelList
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = p.agegroup_id');
     $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
+  if ($search_userfields)
+		{
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ev.jl_id = p.id');  
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');  
+        //$query->where('ef.id LIKE ' . $db->Quote( '' . $search_userfields . '' ));
+        $query->where('ef.id = ' . $search_userfields );
+        }
   
 
         if ($search)
