@@ -348,6 +348,25 @@ return $teamsofclub;
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
        
+       // gibt es vereinsnamen zum ändern ?
+       if (isset($post['team_id']) && is_array($post['team_id'])) 
+       {
+        foreach ( $post['team_id'] as $key => $value )
+        {
+        $team_id = $post['team_id'][$key];  
+        $team_name = $post['team_value_id'][$key];  
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = $team_id;
+        $object->name = $team_name;
+        $object->alias = JFilterOutput::stringURLSafe( $team_name );
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', $object, 'id');
+        }
+        
+       }
+       
        // wurden jahre mitgegeben ?
        if ( $data['founded'] != '0000-00-00' )
         {

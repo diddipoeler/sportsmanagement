@@ -95,17 +95,26 @@ class sportsmanagementTableTeam extends JTable
 		}
 	
 		// setting alias
-		if ( empty( $this->alias ) )
-		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
-		}
-		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
-		}
+        $this->alias = JFilterOutput::stringURLSafe( $this->name );
+        
+//		if ( empty( $this->alias ) )
+//		{
+//			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+//		}
+//		else {
+//			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+//		}
 		
 		return true;
 	}
 	
+    /**
+     * sportsmanagementTableTeam::bind()
+     * 
+     * @param mixed $array
+     * @param string $ignore
+     * @return
+     */
     public function bind($array, $ignore = '')
    {
       $mainframe = JFactory::getApplication();
