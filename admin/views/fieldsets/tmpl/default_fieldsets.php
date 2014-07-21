@@ -114,8 +114,8 @@ foreach ( $this->teamsofclub as $team )
 ?>
 			<tr>
 				<td>
-					<input type="text" name="team_id[]" value="<?php echo $team->id;?>" />
-                    <input type="text" name="team_value_id[]" value="<?php echo $team->name;?>" />
+					<input type="hidden" name="team_id[]" value="<?php echo $team->id;?>" />
+                    <input type="text" name="team_value_id[]" size='50' maxlength='100' value="<?php echo $team->name;?>" />
 				</td>
 			</tr>
 			<?php    
