@@ -245,7 +245,12 @@
   <fieldset name="maps"
   label="COM_SPORTSMANAGEMENT_TABS_MAP"
   description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
-  </fieldset>	
+  </fieldset>
+  
+  <fieldset name="teamsofclub"
+  label="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB"
+  description="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB_DESC">
+  </fieldset>		
   
 	<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"

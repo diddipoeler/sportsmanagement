@@ -99,6 +99,36 @@ case 'training':
 break;
 
 
+// für mannschaften des vereines
+case 'teamsofclub':
+if ( isset($this->teamsofclub) )
+{
+   
+   
+?>
+<fieldset class="adminform">
+<table>
+<?php
+foreach ( $this->teamsofclub as $team )
+{
+?>
+			<tr>
+				<td>
+					<input type="text" name="team_id[]" value="<?php echo $team->id;?>" />
+                    <input type="text" name="team_value_id[]" value="<?php echo $team->name;?>" />
+				</td>
+			</tr>
+			<?php    
+    
+}
+?>
+</table>
+</fieldset>
+<?PHP
+} 
+break;
+
+
 // für extra felder
 case 'extra_fields':
 ?>

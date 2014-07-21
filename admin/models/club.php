@@ -307,6 +307,30 @@ class sportsmanagementModelclub extends JModelAdmin
 		return $result;
 	}
     
+    
+    /**
+     * sportsmanagementModelclub::teamsofclub()
+     * 
+     * @param mixed $club_id
+     * @return void
+     */
+    function teamsofclub($club_id)
+    {
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->clear();
+$query->select('t.id,t.name');
+$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+$query->where('t.club_id = '.$club_id);
+$db->setQuery( $query );
+$teamsofclub = $db->loadObjectList();
+return $teamsofclub; 
+        
+    }
+    
     /**
 	 * Method to save the form data.
 	 *

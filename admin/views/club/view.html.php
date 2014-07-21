@@ -130,6 +130,13 @@ class sportsmanagementViewClub extends JView
             //$mainframe->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
+        // die mannschaften zum verein
+        if ( $this->item->id )
+        {
+            $teamsofclub = $model->teamsofclub($this->item->id);
+            $this->assignRef( 'teamsofclub', $teamsofclub );
+        }
+        
         $this->assignRef( 'lists', $lists );
 
  
