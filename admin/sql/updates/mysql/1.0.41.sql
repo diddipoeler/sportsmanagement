@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
 ALTER TABLE  `#__sportsmanagement_confidential` CHANGE  `nummer`  `nummer` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE  `#__sportsmanagement_user_extra_fields_values` CHANGE  `fieldvalue`  `fieldvalue` VARCHAR( 300 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
-ALTER TABLE  `#__sportsmanagement_confidential` ADD UNIQUE  `schluessel2` (  `name` ( 150 ) ,  `nummer` ( 50 ) ) COMMENT  '';
+ALTER TABLE  `#__sportsmanagement_confidential` ADD UNIQUE  `schluessel2` (  `name` ( 150 ) ,  `nummer` ( 50 ) ) ;
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
 (NULL, '2014-07-28', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2014_07_28', '1.0.41');
