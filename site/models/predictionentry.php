@@ -125,10 +125,75 @@ public $_predictionGame		= null;
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
        
+       self::checkRoundID($this->pjID,$this->roundID);
+       
 		parent::__construct();
 	}
 
   
+/**
+ * sportsmanagementModelPredictionEntry::checkRoundID()
+ * 
+ * @param mixed $project_id
+ * @param mixed $roundID
+ * @return void
+ */
+function checkRoundID($project_id,$roundID)
+{
+ $option = JRequest::getCmd('option'); 
+    $document	= JFactory::getDocument();
+    $mainframe	= JFactory::getApplication();
+// Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);    
+
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+
+$query->select('roundcode');
+$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+$query->where('project_id = '.$project_id);
+$query->where('id = '.$roundID);
+$db->setQuery( $query );
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+$results = $db->loadResult();
+		
+if ( !$results )
+{
+$tblproject = JTable::getInstance("project", "sportsmanagementTable");
+$tblproject->load($project_id);
+$roundIDnew= $tblproject->current_round;
+$this->roundID=$roundIDnew;
+sportsmanagementModelPrediction::$roundID = $roundIDnew;
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+
+}
+
+if ( $roundID == 0 )
+{
+$tblproject = JTable::getInstance("project", "sportsmanagementTable");
+$tblproject->load($project_id);
+$roundIDnew= $tblproject->current_round;
+$this->roundID=$roundIDnew;
+sportsmanagementModelPrediction::$roundID = $roundIDnew;
+
+
+
+}
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
+		
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+    
+}
   
 	/**
 	 * sportsmanagementModelPredictionEntry::newMemberCheck()
