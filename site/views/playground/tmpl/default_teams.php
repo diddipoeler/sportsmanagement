@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			$teaminfo = $value->teaminfo[0][0];
 			$link = sportsmanagementHelperRoute :: getTeamInfoRoute($team->project_id, $team->team_id);	
 			?>
-			<h4><?php echo $projectname . " - " . JHTML :: link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
+			<h4><?php echo $projectname . " - " . JHtml :: link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
 			<div class="clubteaminfo">
         	<?php
         	$description = $teaminfo->notes;
