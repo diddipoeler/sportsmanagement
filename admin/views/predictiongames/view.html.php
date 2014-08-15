@@ -65,12 +65,12 @@ class sportsmanagementViewPredictionGames extends JView
 	{
 		$mainframe = JFactory::getApplication();
     $model = $this->getModel();
-    $starttime = microtime(); 
+    $starttime = microtime();
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     $uri = JFactory::getURI();
     
-    $this->state = $this->get('State'); 
+    $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
     
@@ -102,16 +102,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( !$items )
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');    
+        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');
         }
         
 
 
 		//build the html select list for prediction games
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select Prediction Game' ) . ' -', 'value', 'text' );
-		if ( $res = $model->getPredictionGames() ) 
+		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
+		if ( $res = $model->getPredictionGames() )
         { 
-            $predictions = array_merge( $predictions, $res ); 
+            $predictions = array_merge( $predictions, $res );
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
