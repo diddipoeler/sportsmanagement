@@ -1,4 +1,5 @@
 		<!-- round selector START -->
+		<div style="width: 75%; margin-bottom: 14px;">
 		<form name="roundForm" id="roundForm" method="post">
 			
 			<input type="hidden" name="act" value="" id="short_act" />
@@ -44,4 +45,5 @@
 				?>
 				</div>
 		</form>
+		</div>
 		<!-- round selector END -->
