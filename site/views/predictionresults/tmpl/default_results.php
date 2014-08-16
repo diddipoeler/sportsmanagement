@@ -191,11 +191,11 @@ echo $this->pagination->getListFooter();
 					<td <?php echo $tdClassStr; ?> >
           <?php
           // clublogo oder vereinsflagge
-						if ( $this->config['show_logo_small_overview'] == 1 )
+						if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
                         {
                             ?>                                    
-                            <a href="<?php echo JURI::root().$match->homeLogobig;?>" title="<?php echo $match->homeName;?>" class="modal">
-                            <img src="<?php echo JURI::root().$match->homeLogobig;?>" alt="<?php echo $match->homeName;?>" width="20" />
+                            <a href="<?php echo JURI::root().$match->homeLogo;?>" title="<?php echo $match->homeName;?>" class="modal">
+                            <img src="<?php echo JURI::root().$match->homeLogo;?>" alt="<?php echo $match->homeName;?>" width="20" />
                             </a>
                             <?PHP
                             //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
@@ -218,11 +218,11 @@ echo $this->pagination->getListFooter();
 						$outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
 						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
 						?><span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span><?php
-						if ( $this->config['show_logo_small_overview'] == 1 )
+						if ( $this->config['show_logo_small_overview'] == 1 )//wir nehmen das kleine logo!
                         {
                             ?>                                    
-                            <a href="<?php echo JURI::root().$match->awayLogobig;?>" title="<?php echo $match->awayName;?>" class="modal">
-                            <img src="<?php echo JURI::root().$match->awayLogobig;?>" alt="<?php echo $match->awayName;?>" width="20" />
+                            <a href="<?php echo JURI::root().$match->awayLogo;?>" title="<?php echo $match->awayName;?>" class="modal">
+                            <img src="<?php echo JURI::root().$match->awayLogo;?>" alt="<?php echo $match->awayName;?>" width="20" />
                             </a>
                             <?PHP
                             //echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
