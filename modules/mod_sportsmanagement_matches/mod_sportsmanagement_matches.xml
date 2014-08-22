@@ -470,6 +470,13 @@
 					<option value="short_name">Short names</option>
 					<option value="name">Names</option>
 				</field>
+				
+				<field	 name="show_spectators" type="radio" default="0" 
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_DESCR">
+					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+				</field>
 
 				<field 	name="show_act_report_link" type="radio" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCH_REPORT_TITLE"

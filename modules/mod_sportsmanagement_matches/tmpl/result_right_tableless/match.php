@@ -1,7 +1,7 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
+* @version         1.0.41
+* @file                match.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
@@ -123,7 +123,7 @@ if ($heading != $lastheading) {
   if (isset($match['referee']) OR isset($match['crowd'])) { ?>
     <div style="width:100%;display:block;clear:both;">
       <?php 
-      echo $match['referee'] . ' '. $match['spectators'];;
+      echo $match['referee'] . ' '. $match['spectators'];
       ?>
     </div>
 <?php

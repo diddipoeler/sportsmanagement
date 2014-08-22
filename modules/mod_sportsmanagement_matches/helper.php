@@ -1,9 +1,9 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
+* @version         1.0.41
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: © 2014 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -276,7 +276,7 @@ class modMatchesHelper {
 	public function addteamicon($which) {
 		$path = ($this->iconpath) ? $this->iconpath . 'teamlinks/' : false;
 		if ($path) {
-			return JHTML :: _('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
+			return JHtml :: _('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
 		} else {
 			return $this->params->get($which . '_text') . '<br />';
 		}
@@ -444,22 +444,22 @@ class modMatchesHelper {
 		$row['notice'] = ($match->match_result_detail != '' AND $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 		if ($this->params->get('show_referee', 1) == 1 AND $match->refname != '') {
 			$row['referee'] = '<span style="float:right;">';
-			$row['referee'] .= ($this->iconpath) ? JHTML :: _('image', $this->iconpath . 'referee.png', 'Referee', array (
-				'title' => 'Referee',
+			$row['referee'] .= ($this->iconpath) ? JHtml :: _('image', $this->iconpath . 'referee.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array (
+				'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
 				'height' => '16',
 				'width' => '16'
-				)) : 'Referee: ';
+				)) : JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE').': ';
 				$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
 		} else {
 			$row['referee'] = '';
 		}
 		if ($this->params->get('show_spectators', 1) == 1 AND $match->crowd > 0) {
 			$row['spectators'] = '<span style="float:left;">';
-			$row['spectators'] .= ($this->iconpath) ? JHTML :: _('image', $this->iconpath . 'spectators.png', 'Spectators', array (
-				'title' => 'Spectators',
+			$row['spectators'] .= ($this->iconpath) ? JHtml :: _('image', $this->iconpath . 'spectators.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'), array (
+				'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'),
 				'height' => '16',
 				'width' => '16'
-				)) : 'Spectators: ';
+				)) : JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS').': ';
 				$row['spectators'] .= number_format($match->crowd, 0, ',', '.') . '</span>';
 				;
 		} else {
@@ -490,7 +490,7 @@ class modMatchesHelper {
 		$hteam = false;
 		$ateam = false;
 		foreach ((array) $matches AS $key => $match) {
-			//echo 'NOW(): '.JHTML::_('date', $match->currenttime, $this->params->get('dateformat').' '.$this->params->get('timeformat'),0).'<br />';
+			//echo 'NOW(): '.JHtml::_('date', $match->currenttime, $this->params->get('dateformat').' '.$this->params->get('timeformat'),0).'<br />';
 			if ($match->projectteam1_id) {
 				$hteam = $teams[$match->projectteam1_id];
 			}
@@ -516,20 +516,20 @@ class modMatchesHelper {
 					}
 				}
 			}
-			$rows[$match->match_id]['date'] = JHTML::_('date', $match->match_date, $this->params->get('dateformat'), null);
+			$rows[$match->match_id]['date'] = JHtml::_('date', $match->match_date, $this->params->get('dateformat'), null);
 			if ($useicons) {
-				$rows[$match->match_id]['date'] = JHTML::_('image', $this->iconpath . 'date.png', 'Datum', array (
-						'title' => 'Datum',
+				$rows[$match->match_id]['date'] = JHtml::_('image', $this->iconpath . 'date.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array (
+						'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
 						'height' => '16',
 						'width' => '16'
 				)) .
 				' ' . $rows[$match->match_id]['date'];
 			}
-			$rows[$match->match_id]['time'] = JHTML :: _('date', $match->match_date, $this->params->get('timeformat'), null);
+			$rows[$match->match_id]['time'] = JHtml :: _('date', $match->match_date, $this->params->get('timeformat'), null);
 
 			if ($useicons) {
-				$rows[$match->match_id]['time'] = JHTML :: _('image', $this->iconpath . 'time.png', 'Beginn', array (
-						'title' => 'Beginn',
+				$rows[$match->match_id]['time'] = JHtml :: _('image', $this->iconpath . 'time.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'), array (
+						'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'),
 						'height' => '16',
 						'width' => '16'
 				)) .
@@ -537,10 +537,10 @@ class modMatchesHelper {
 			}
 
 			if (isset ($match->meeting)) {
-				$rows[$match->match_id]['meeting'] = JHTML :: _('date', $match->meetingtime, $this->params->get('timeformat'), null);
+				$rows[$match->match_id]['meeting'] = JHtml :: _('date', $match->meetingtime, $this->params->get('timeformat'), null);
 				if ($useicons) {
-					$rows[$match->match_id]['meeting'] = JHTML :: _('image', $this->iconpath . 'time_go.png', 'Treffpunkt', array (
-							'title' => 'Treffpunkt',
+					$rows[$match->match_id]['meeting'] = JHtml :: _('image', $this->iconpath . 'time_go.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'), array (
+							'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'),
 							'height' => '16',
 							'width' => '16'
 					)) .
@@ -626,7 +626,7 @@ class modMatchesHelper {
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->lasthome, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHTML :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
+					$temp .= JHtml :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -636,7 +636,7 @@ class modMatchesHelper {
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->nexthome, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHTML :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
+					$temp .= JHtml :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -650,7 +650,7 @@ class modMatchesHelper {
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->lastaway, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHTML :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
+					$temp .= JHtml :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -660,7 +660,7 @@ class modMatchesHelper {
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->nextaway, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHTML :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
+					$temp .= JHtml :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -673,7 +673,7 @@ class modMatchesHelper {
 				$tmp['onclick'] = sprintf($jsfunc, '0', $origin, $origin);
 				$alt = $tmp['title'];
 				if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-				$temp .= JHTML :: _('image', $this->iconpath . 'page_reset.png', $alt, $tmp);
+				$temp .= JHtml :: _('image', $this->iconpath . 'page_reset.png', $alt, $tmp);
 				else
 				$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('reset_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				$temp .= '</span>';
