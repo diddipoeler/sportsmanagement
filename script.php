@@ -394,7 +394,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         $object->id = $plugin_id;
         $object->enabled = 1;
         // Update their details in the users table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'id');  
+        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         
         }    
 
