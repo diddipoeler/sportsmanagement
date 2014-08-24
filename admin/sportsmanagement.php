@@ -39,6 +39,11 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
  
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
