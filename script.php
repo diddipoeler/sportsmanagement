@@ -391,7 +391,7 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
-        $object->id = $plugin_id;
+        $object->extension_id = $plugin_id;
         $object->enabled = 1;
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
