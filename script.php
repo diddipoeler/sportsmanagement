@@ -134,28 +134,28 @@ class com_sportsmanagementInstallerScript
 
 //$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
-$jRegistry = new JRegistry;
-$jRegistry->loadString($params->toString('ini'), 'ini');
-//$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
-$form->bind($jRegistry);
-$newparams = array();
-foreach($form->getFieldset($fieldset->name) as $field)
-        {
-//         echo 'name -> '. $field->name.'<br>';
-//         echo 'type -> '. $field->type.'<br>';
-//         echo 'input -> '. $field->input.'<br>';
-//         echo 'value -> '. $field->value.'<br>';
-        $newparams[$field->name] = $field->value;
-        
-        }
+//$params = JComponentHelper::getParams('com_sportsmanagement');
+//$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
+//$jRegistry = new JRegistry;
+//$jRegistry->loadString($params->toString('ini'), 'ini');
+////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
+//$form =& JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
+//$form->bind($jRegistry);
+//$newparams = array();
+//foreach($form->getFieldset($fieldset->name) as $field)
+//        {
+////         echo 'name -> '. $field->name.'<br>';
+////         echo 'type -> '. $field->type.'<br>';
+////         echo 'input -> '. $field->input.'<br>';
+////         echo 'value -> '. $field->value.'<br>';
+//        $newparams[$field->name] = $field->value;
+//        
+//        }
 
 switch ($type)        
     {
     case "install":
-    self::setParams($newparams);
+//    self::setParams($newparams);
 //    self::installComponentLanguages();
 $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
@@ -182,7 +182,7 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
 //    self::migratePicturePath();
-      self::setParams($newparams);
+//      self::setParams($newparams);
 //    self::deleteInstallFolders();
 //    self::sendInfoMail();
     break;

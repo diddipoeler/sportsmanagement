@@ -1779,6 +1779,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
  `team_id` INT( 11 ) NOT NULL DEFAULT  '0',
  `club_id` INT( 11 ) NOT NULL DEFAULT  '0',
  `person_id` INT( 11 ) NOT NULL DEFAULT  '0',
+ `clublink` VARCHAR( 250 ) NULL DEFAULT NULL ,
+ `clubnummer` VARCHAR( 100 ) NULL DEFAULT NULL,
 PRIMARY KEY (  `id` ),
   UNIQUE KEY `schluessel` (`name`(150),`link`(150)),
   UNIQUE KEY `schluessel2` (`name`(150),`nummer`(50)) 
