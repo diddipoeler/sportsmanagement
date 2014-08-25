@@ -435,7 +435,7 @@ $prefix.'joomleague_' => ''
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
     
-    $mdl = JModel::getInstance("sportstype", "sportsmanagementModel");
+    $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
     $p_sportstype = $mdl->getTable();
     $p_sportstype->load((int) $filter_sports_type);
     $temp = explode("_",$p_sportstype->name);
