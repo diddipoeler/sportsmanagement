@@ -105,7 +105,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
+		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -113,7 +113,7 @@ $starttime = microtime();
         }
         
         
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -138,7 +138,7 @@ $starttime = microtime();
 		JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

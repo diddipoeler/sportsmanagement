@@ -52,7 +52,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 *  view display method
 	 * @return void
 	 */
-	function display($tpl = null) 
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -62,14 +62,14 @@ class sportsmanagementViewextensions extends sportsmanagementView
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->sporttypes,true).'</pre>'),'');
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**
@@ -90,8 +90,9 @@ class sportsmanagementViewextensions extends sportsmanagementView
 		{
 			JToolBarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+			//JToolBarHelper::preferences($option);
 		}
+        parent::addToolbar();
 	}
 	/**
 	 * Method to set up the document properties
@@ -104,6 +105,15 @@ class sportsmanagementViewextensions extends sportsmanagementView
 		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
 	}
 	
+	/**
+	 * sportsmanagementViewextensions::addIcon()
+	 * 
+	 * @param mixed $image
+	 * @param mixed $url
+	 * @param mixed $text
+	 * @param bool $newWindow
+	 * @return void
+	 */
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
 		$lang		= JFactory::getLanguage();

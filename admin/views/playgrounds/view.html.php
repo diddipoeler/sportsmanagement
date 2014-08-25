@@ -90,8 +90,8 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		//$this->addToolbar();
+//		parent::display($tpl);
 	}
 
 	/**
@@ -116,7 +116,7 @@ $starttime = microtime();
 		JToolBarHelper::divider();
 
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

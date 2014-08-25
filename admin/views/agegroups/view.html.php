@@ -135,8 +135,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		//$this->addToolbar();
+//		parent::display($tpl);
 	}
 	
 	/**
@@ -161,7 +161,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		JToolBarHelper::deleteList('', 'agegroups.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

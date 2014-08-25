@@ -91,14 +91,14 @@ class sportsmanagementViewJlextfederation extends sportsmanagementView
         
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**

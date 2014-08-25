@@ -104,8 +104,8 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		//$this->addToolbar();
+//		parent::display($tpl);
 	}
 	
 	/**
@@ -138,7 +138,8 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        //JToolBarHelper::preferences($option);
+        parent::addToolbar();
 	}
 }
 ?>

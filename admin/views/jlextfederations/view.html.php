@@ -105,9 +105,9 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        $this->addToolbar();
-
-		parent::display($tpl);
+       // $this->addToolbar();
+//
+//		parent::display($tpl);
 	}
     
     /**

@@ -124,8 +124,8 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',JFactory::getURI()->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+	//	$this->addToolbar();
+//		parent::display($tpl);
 	}
 
 	/**
@@ -286,7 +286,7 @@ $starttime = microtime();
 		JToolBarHelper::deleteList('','persons.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

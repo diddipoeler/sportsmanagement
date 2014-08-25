@@ -60,7 +60,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display( $tpl = null )
+	public function init ()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -105,13 +105,13 @@ class sportsmanagementViewDivision extends sportsmanagementView
         
         
         
-        $this->addToolbar();
-        
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewDivision item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
-        		
-		parent::display($tpl);
-        // Set the document
-		$this->setDocument();
+//        $this->addToolbar();
+//        
+//        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewDivision item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
+//        		
+//		parent::display($tpl);
+//        // Set the document
+//		$this->setDocument();
 
 		
 	}
@@ -185,8 +185,8 @@ class sportsmanagementViewDivision extends sportsmanagementView
 		//$extended = $this->getExtended($projectreferee->extended, 'division');
 		//$this->assignRef( 'extended', $extended );
 
-		$this->addToolbar();		
-		parent::display( $tpl );
+//		$this->addToolbar();		
+//		parent::display( $tpl );
 	}
 	
 	/**
@@ -238,6 +238,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
 			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CLOSE');
 		}
     sportsmanagementHelper::ToolbarButtonOnlineHelp();
+    parent::addToolbar();
 	}	
     
     /**

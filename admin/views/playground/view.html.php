@@ -102,16 +102,16 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->assignRef( 'extended', $extended );
         //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
 
-		// Set the toolbar
-		$this->addToolBar();
-		
-//		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+//		
+////		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**
@@ -166,7 +166,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		}
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        parent::addToolbar();
 	}
     
 	/**

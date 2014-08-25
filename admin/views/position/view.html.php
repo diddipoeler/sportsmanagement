@@ -187,14 +187,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
         $this->assignRef('lists',$lists);
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+	
 	}
  
 	/**
@@ -203,7 +196,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	// Get a refrence of the page instance in joomla
-	$document =& JFactory::getDocument();
+	$document = JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -249,7 +242,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
 		JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+		parent::addToolbar();
         
 	}
 	/**

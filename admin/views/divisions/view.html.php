@@ -61,7 +61,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
@@ -96,8 +96,8 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		//$this->addToolbar();
+//		parent::display($tpl);
 	}
 	
 	/**
@@ -127,7 +127,8 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+		//JToolBarHelper::preferences($option);
+        parent::addToolbar();
 	}
 }
 ?>

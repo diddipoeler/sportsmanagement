@@ -59,18 +59,18 @@ class sportsmanagementViewpredictions extends sportsmanagementView
 	 *  view display method
 	 * @return void
 	 */
-	function display($tpl = null) 
+	public function init ()
 	{
 		
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**
@@ -91,8 +91,9 @@ class sportsmanagementViewpredictions extends sportsmanagementView
 		{
 			JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        //JToolBarHelper::preferences($option);
 		}
+        parent::addToolbar();
 	}
 	/**
 	 * Method to set up the document properties

@@ -166,14 +166,14 @@ class sportsmanagementViewPerson extends sportsmanagementView
     //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'Notice');
 
     
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**
@@ -229,7 +229,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
         
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        parent::addToolbar();
         
 	}
     
