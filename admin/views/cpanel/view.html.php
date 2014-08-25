@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla view library
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
  
 // zur unterscheidung von joomla 2.5 und 3
 //JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
@@ -62,7 +62,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	 *  view display method
 	 * @return void
 	 */
-	function display($tpl = null) 
+	public function init ()
 	{
 		$document=JFactory::getDocument();
         $option = JRequest::getCmd('option');
@@ -262,14 +262,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$this->items = $items;
 		$this->pagination = $pagination;
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+
 	}
  
 	/**
@@ -324,9 +317,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             //{
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
             //}
-            JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+            
+            parent::addToolbar();
 		}
 	}
     
