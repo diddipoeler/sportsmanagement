@@ -56,7 +56,7 @@ require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewProject extends JView
+class sportsmanagementViewProject extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewProject::display()
@@ -64,7 +64,7 @@ class sportsmanagementViewProject extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -170,26 +170,26 @@ class sportsmanagementViewProject extends JView
     
        
 	$iProjectDivisionsCount = 0;
-	$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+	$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->project->id);
 	
     if ( $this->project->project_art_id != 3 )
     {	
 	$iProjectPositionsCount = 0;
-	$mdlProjectPositions = JModel::getInstance("Projectpositions", "sportsmanagementModel");
+	$mdlProjectPositions = JModelLegacy::getInstance("Projectpositions", "sportsmanagementModel");
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->project->id);
 	}
     	
 	$iProjectRefereesCount = 0;
-	$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
+	$mdlProjectReferees = JModelLegacy::getInstance("Projectreferees", "sportsmanagementModel");
 	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->project->id);
 		
 	$iProjectTeamsCount = 0;
-	$mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+	$mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
 	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project->id);
 		
 	$iMatchDaysCount = 0;
-	$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->project->id);
 		
 	$this->assignRef('project',$this->project);

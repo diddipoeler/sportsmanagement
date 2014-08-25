@@ -49,7 +49,7 @@ jimport( 'joomla.application.component.view' );
  * @package	Joomleague
  * @since	1.5.0a
  */
-class sportsmanagementViewDatabaseTools extends JView
+class sportsmanagementViewDatabaseTools extends sportsmanagementView
 {
 	function display( $tpl = null )
 	{

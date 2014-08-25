@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRound extends JView
+class sportsmanagementViewRound extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewRound::display()
@@ -61,7 +61,7 @@ class sportsmanagementViewRound extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -84,7 +84,7 @@ class sportsmanagementViewRound extends JView
 		}
         
         //$project_id	= $this->item->project_id;
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$this->project_id);
         

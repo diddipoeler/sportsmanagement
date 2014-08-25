@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewProjectteam extends JView
+class sportsmanagementViewProjectteam extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewProjectteam::display()
@@ -80,11 +80,11 @@ class sportsmanagementViewProjectteam extends JView
 		$this->script = $script;
         
         $project_id	= $this->item->project_id;;
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
         $team_id	= $this->item->team_id;;
-        $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam(0,$team_id);
         $trainingdata = $mdlTeam->getTrainigData(0,$team_id);
         

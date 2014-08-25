@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionGame extends JView
+class sportsmanagementViewPredictionGame extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewPredictionGame::display()
@@ -59,7 +59,7 @@ class sportsmanagementViewPredictionGame extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();

@@ -52,9 +52,9 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewSeasons extends JView
+class sportsmanagementViewSeasons extends sportsmanagementView
 {
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();

@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionMembers extends JView
+class sportsmanagementViewPredictionMembers extends sportsmanagementView
 {
 
   /**
@@ -181,7 +181,7 @@ $mainframe = JFactory::getApplication();
 		$pagination = $this->get('Pagination');
 
         //build the html select list for prediction games
-        $mdlPredGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
+        $mdlPredGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
 		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 

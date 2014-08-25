@@ -53,6 +53,29 @@ abstract class sportsmanagementHelper
 {
 	
     /**
+     * sportsmanagementHelper::isJoomlaVersion()
+     * 
+     * @param mixed $version
+     * @return
+     */
+    public static function isJoomlaVersion ($version = '2.5')
+	{
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        
+		$j = new JVersion();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
+        if (! defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION'))
+        {
+        DEFINE( 'COM_SPORTSMANAGEMENT_JOOMLAVERSION',$j->RELEASE );
+        }
+        
+		return substr($j->RELEASE, 0, strlen($version)) == $version;
+	}
+    
+    /**
 	 * Add data to the xml
 	 *
 	 * @param array $data data what we want to add in the xml

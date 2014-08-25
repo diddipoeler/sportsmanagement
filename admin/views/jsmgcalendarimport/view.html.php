@@ -23,7 +23,7 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.view');
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewjsmgcalendarImport extends JView 
+class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView 
 {
     
     function display( $tpl = null )

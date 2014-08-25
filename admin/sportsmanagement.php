@@ -54,12 +54,18 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
 // require helper file
 JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+
+// zur unterscheidung von joomla 2.5 und 3
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
  
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'JSON.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
+
+// welche joomla version ?
+sportsmanagementHelper::isJoomlaVersion('2.5');
 
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -77,7 +83,16 @@ DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+
+if ( $database_table )
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );    
+}
+
 DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
 
 if ( $database_table == 'sportsmanagement' )		
@@ -95,6 +110,7 @@ $command = JRequest::getVar('task', 'display');
 $view = JRequest::getVar('view');
 $lang = JFactory::getLanguage();
 $app = JFactory::getApplication();
+$controller = '';
 $type = '';
 $arrExtensions = sportsmanagementHelper::getExtensions();
 $model_pathes[]	= array();
@@ -175,12 +191,14 @@ if($app->isAdmin())
 jimport('joomla.application.component.controller');
 	try
 	{
-		$controller = JController::getInstance(ucfirst($extension), $params);
+	   //$controller = JController::getInstance(ucfirst($extension), $params);
+	   $controller = JControllerLegacy::getInstance(ucfirst($extension), $params);
 	}
 	catch (Exception $exc)
 	{
 		//fallback if no extensions controller has been initialized
-		$controller	= JController::getInstance('sportsmanagement');
+		//$controller	= JController::getInstance('sportsmanagement');
+        $controller	= JControllerLegacy::getInstance('sportsmanagement');
 	}
      
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
@@ -199,10 +217,15 @@ jimport('joomla.application.component.controller');
 
 // import joomla controller library
 jimport('joomla.application.component.controller');
+$controller	= JControllerLegacy::getInstance('sportsmanagement');
 
-if(is_null($controller) && !($controller instanceof JController)) {
+//if(is_null($controller) && !($controller instanceof JController)) {
+//	//fallback if no extensions controller has been initialized
+//	$controller	= JController::getInstance('sportsmanagement');
+//}
+if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	//fallback if no extensions controller has been initialized
-	$controller	= JController::getInstance('sportsmanagement');
+	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
 
 foreach ($model_pathes as $path)

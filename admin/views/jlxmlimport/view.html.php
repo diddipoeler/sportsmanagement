@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewJLXMLImport extends JView
+class sportsmanagementViewJLXMLImport extends sportsmanagementView
 {
 	function display( $tpl = null )
 	{

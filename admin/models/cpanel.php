@@ -41,8 +41,8 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.model');
- 
+//jimport('joomla.application.component.model');
+jimport('joomla.application.component.modeladmin'); 
 
 /**
  * sportsmanagementModelcpanel
@@ -53,7 +53,8 @@ jimport('joomla.application.component.model');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelcpanel extends JModel
+//class sportsmanagementModelcpanel extends JModel
+class sportsmanagementModelcpanel extends JModelLegacy
 {
 
 var $_success_text = '';
@@ -158,7 +159,7 @@ $paramsdata = JComponentHelper::getParams($option);
     {
         $mainframe = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
-        $xml = JFactory::getXMLParser( 'Simple' );
+        //$xml = JFactory::getXMLParser( 'Simple' );
         $return = 0;
         $version = sportsmanagementHelper::getVersion() ;
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
@@ -222,7 +223,17 @@ else
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
         
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        {
+        $xml = JFactory::getXMLParser( 'Simple' );
         $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+            
+        }
+        else
+        {
+        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        }
+        
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
         foreach( $xml->document->version as $version ) 
             {

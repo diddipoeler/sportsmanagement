@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjsmgcalendar extends JView  
+class sportsmanagementViewjsmgcalendar extends sportsmanagementView  
 {
 
 /**

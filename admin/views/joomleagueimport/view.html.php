@@ -51,7 +51,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjoomleagueimport extends JView
+class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewjoomleagueimport::display()
@@ -59,7 +59,7 @@ class sportsmanagementViewjoomleagueimport extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -78,7 +78,7 @@ class sportsmanagementViewjoomleagueimport extends JView
             $this->step = 0;
         }
         
-//        $databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+//        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         //$this->assign('totals',$model->gettotals() );
         
         if ( $this->step <= $this->totals )

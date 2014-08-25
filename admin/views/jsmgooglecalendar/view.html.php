@@ -7,7 +7,7 @@ JLoader::import( 'joomla.application.component.view' );
 
 class sportsmanagementViewjsmgooglecalendar extends JViewLegacy {
 
-	public function display($tpl = null) 
+	public function init ()
     {
 //		JToolBarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
 //

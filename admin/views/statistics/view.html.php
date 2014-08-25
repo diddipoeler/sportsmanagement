@@ -53,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewStatistics extends JView
+class sportsmanagementViewStatistics extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewStatistics::display()
@@ -61,7 +61,7 @@ class sportsmanagementViewStatistics extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -89,7 +89,7 @@ $starttime = microtime();
 				//build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
-		$allSportstypes = JModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();		
+		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();		
 		
 		$sportstypes=array_merge($sportstypes,$allSportstypes);
 		$lists['sportstypes']=JHtml::_( 'select.genericList',

@@ -2,6 +2,15 @@
 
 defined('_JEXEC') or die();
 
+/**
+ * sportsmanagementView
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementView extends JViewLegacy
 {
 
@@ -9,6 +18,12 @@ class sportsmanagementView extends JViewLegacy
 
 	protected $title = '';
 
+	/**
+	 * sportsmanagementView::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return
+	 */
 	public function display ($tpl = null)
 	{
 		if (count($errors = $this->get('Errors')))
@@ -19,7 +34,10 @@ class sportsmanagementView extends JViewLegacy
 
 		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
 		{
-			$this->setLayout($this->getLayout() . '_25');
+			// wir lassen das layout so wie es ist, dann müssen
+            // nicht so viele dateien umbenannt werden
+            //$this->setLayout($this->getLayout() . '_25');
+            $this->setLayout($this->getLayout() );
 		}
 		if (sportsmanagementHelper::isJoomlaVersion('3'))
 		{
@@ -32,6 +50,11 @@ class sportsmanagementView extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementView::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar ()
 	{
 		$canDo = sportsmanagementHelper::getActions();
@@ -57,6 +80,11 @@ class sportsmanagementView extends JViewLegacy
 		}
 	}
 
+	/**
+	 * sportsmanagementView::init()
+	 * 
+	 * @return void
+	 */
 	protected function init ()
 	{
 	}

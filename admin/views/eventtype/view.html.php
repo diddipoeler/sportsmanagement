@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementVieweventtype extends JView
+class sportsmanagementVieweventtype extends sportsmanagementView
 {
 	
 	/**
@@ -62,7 +62,7 @@ class sportsmanagementVieweventtype extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	public function display($tpl = null) 
+	public function init ()
 	{
 		// get the Data
 		$form = $this->get('Form');

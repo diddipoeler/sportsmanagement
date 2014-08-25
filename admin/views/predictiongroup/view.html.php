@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewpredictiongroup extends JView
+class sportsmanagementViewpredictiongroup extends sportsmanagementView
 {
 
 	/**
@@ -61,7 +61,7 @@ class sportsmanagementViewpredictiongroup extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
 

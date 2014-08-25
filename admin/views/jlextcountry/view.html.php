@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla view library
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
  
 
 /**
@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewJlextcountry extends JView
+class sportsmanagementViewJlextcountry extends sportsmanagementView
 {
 
 	/**
@@ -62,7 +62,8 @@ class sportsmanagementViewJlextcountry extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	public function display($tpl = null) 
+	//public function init ()
+    public function init ()
 	{
 		// get the Data
 		$form = $this->get('Form');
@@ -85,14 +86,14 @@ class sportsmanagementViewJlextcountry extends JView
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+//		// Set the toolbar
+//		$this->addToolBar();
+// 
+//		// Display the template
+//		parent::display($tpl);
+// 
+//		// Set the document
+//		$this->setDocument();
 	}
  
 	/**
@@ -146,7 +147,8 @@ class sportsmanagementViewJlextcountry extends JView
 		}
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
     
 	/**

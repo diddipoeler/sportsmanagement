@@ -44,9 +44,9 @@ jimport('joomla.application.component.view');
 
 
 
-class sportsmanagementViewsmquotetxt extends JView
+class sportsmanagementViewsmquotetxt extends sportsmanagementView
 {
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();

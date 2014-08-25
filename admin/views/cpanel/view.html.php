@@ -72,9 +72,12 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $model	= $this->getModel();
         $my_text = '';
         
-        //$databasetool = JModel::getInstance("databasetool", "sportsmanagementModel");
+        //$databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
+        
+        sportsmanagementHelper::isJoomlaVersion('2.5');
+        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
         
         // für den import die jl tabellen lesen
         $jl_table_import = $databasetool->getJoomleagueTables();
@@ -225,9 +228,13 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $model->_success_text['Länder:'] .= $insert_countries;   
         }
         
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        {
 		jimport('joomla.html.pane');
-		$pane	= JPane::getInstance('sliders');
+		$pane = JPane::getInstance('sliders');
 		$this->assignRef( 'pane' , $pane );
+        }
+        
         $this->assignRef( 'sporttypes' , $sporttypes );
         $this->assign( 'version', $model->getVersion() );
         

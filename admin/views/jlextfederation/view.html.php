@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewJlextfederation extends JView
+class sportsmanagementViewJlextfederation extends sportsmanagementView
 {
 	
 	/**
@@ -62,7 +62,7 @@ class sportsmanagementViewJlextfederation extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	public function display($tpl = null) 
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();

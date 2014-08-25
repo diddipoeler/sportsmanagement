@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionTemplates extends JView
+class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewPredictionTemplates::display()
@@ -96,9 +96,9 @@ class sportsmanagementViewPredictionTemplates extends JView
 		
 		
         //$this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
-        $mdlPredictionGame = JModel::getInstance("PredictionGame", "sportsmanagementModel");
-        $mdlPredictionGames = JModel::getInstance("PredictionGames", "sportsmanagementModel");
-        $mdlPredictionTemplates = JModel::getInstance("PredictionTemplates", "sportsmanagementModel");
+        $mdlPredictionGame = JModelLegacy::getInstance("PredictionGame", "sportsmanagementModel");
+        $mdlPredictionGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
+        $mdlPredictionTemplates = JModelLegacy::getInstance("PredictionTemplates", "sportsmanagementModel");
         
         
         

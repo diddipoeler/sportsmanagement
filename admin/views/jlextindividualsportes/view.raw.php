@@ -17,7 +17,7 @@ class JoomleagueViewMatches extends JLGView
 	* view AJAX display method
 	* @return void
 	**/
-	function display($tpl=null)
+	public function init ()
 	{
 		// Get some data from the model
 		$db =& JFactory::getDBO();

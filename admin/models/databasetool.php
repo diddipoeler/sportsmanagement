@@ -537,8 +537,16 @@ $prefix.'joomleague_' => ''
     $option = JRequest::getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
+
+if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        {
     $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+    }
+    else
+    {
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');    
+    }
     
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml')) 
     {
@@ -557,10 +565,13 @@ $prefix.'joomleague_' => ''
     
    
     /* Ein JDatabaseQuery Objekt beziehen */
+    if ( $country_assoc_del )
+   {
     $query = $db->getQuery(true);
     $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations')->where('country NOT IN ('.$country_assoc_del.')'  );
     $db->setQuery($query);
     $result = $db->query();
+    }
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
      

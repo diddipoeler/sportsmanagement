@@ -53,7 +53,7 @@ jimport('joomla.application.component.view');
  * @version 2013
  * @access public
  */
-class sportsmanagementViewPosition extends JView
+class sportsmanagementViewPosition extends sportsmanagementView
 {
 	
 	/**
@@ -62,7 +62,7 @@ class sportsmanagementViewPosition extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	public function display($tpl = null) 
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -106,7 +106,7 @@ class sportsmanagementViewPosition extends JView
         
         //build the html options for parent position
 		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
-		$mdlPositions = JModel::getInstance("Positions", "sportsmanagementModel");
+		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
@@ -120,7 +120,7 @@ class sportsmanagementViewPosition extends JView
         
 		unset($parent_id);
         
-        $mdlEventtypes = JModel::getInstance("Eventtypes", "sportsmanagementModel");
+        $mdlEventtypes = JModelLegacy::getInstance("Eventtypes", "sportsmanagementModel");
         
         //build the html select list for events
 		$res = array();
@@ -171,7 +171,7 @@ class sportsmanagementViewPosition extends JView
 		unset($notusedevents);
         
         // position statistics
-        $mdlStatistics = JModel::getInstance("Statistics", "sportsmanagementModel");
+        $mdlStatistics = JModelLegacy::getInstance("Statistics", "sportsmanagementModel");
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
 		$lists['position_statistic']=JHtml::_(	'select.genericlist',$position_stats,'position_statistic[]',
 							' style="width:250px; height:300px;" class="inputbox" id="position_statistic" multiple="true" size="'.max(10,count($position_stats)).'"',

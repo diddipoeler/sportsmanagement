@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 <?php
 
-$mdlProject = JModel::getInstance("Projectteams", "sportsmanagementModel");
+$mdlProject = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
 $teams= $mdlProject->getProjectTeams($this->project_id);
 $matrix ='';
 

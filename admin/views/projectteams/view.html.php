@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewprojectteams extends JView
+class sportsmanagementViewprojectteams extends sportsmanagementView
 {
 
 	/**
@@ -61,7 +61,7 @@ class sportsmanagementViewprojectteams extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -79,7 +79,7 @@ class sportsmanagementViewprojectteams extends JView
         $this->project_id = $mainframe->getUserState( "$option.pid", '0' );
         }
        
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         $this->project_art_id = $project->project_art_id;
@@ -110,7 +110,7 @@ class sportsmanagementViewprojectteams extends JView
         
         
         
-        $mdlDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+        $mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         

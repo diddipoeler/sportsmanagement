@@ -44,7 +44,7 @@ jimport ( 'joomla.application.component.view' );
 
 
 
-class sportsmanagementViewjlextsisimport extends JView 
+class sportsmanagementViewjlextsisimport extends sportsmanagementView 
 {
 	function display($tpl = null) 
     {

@@ -44,9 +44,9 @@ jimport('joomla.application.component.view');
 
 
 
-class sportsmanagementViewpredictionproject extends JView
+class sportsmanagementViewpredictionproject extends sportsmanagementView
 {
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();

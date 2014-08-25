@@ -53,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubs extends JView
+class sportsmanagementViewClubs extends sportsmanagementView
 {
 
 	/**
@@ -62,7 +62,7 @@ class sportsmanagementViewClubs extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -93,7 +93,7 @@ class sportsmanagementViewClubs extends JView
         
         //build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-        $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
+        $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons,$allSeasons);
         

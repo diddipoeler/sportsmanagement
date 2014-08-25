@@ -46,7 +46,7 @@ jimport('joomla.application.component.view');
 /**
  *  View
  */
-class sportsmanagementViewextensions extends JView
+class sportsmanagementViewextensions extends sportsmanagementView
 {
 	/**
 	 *  view display method

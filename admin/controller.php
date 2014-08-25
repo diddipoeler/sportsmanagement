@@ -8,7 +8,7 @@ jimport('joomla.application.component.controller');
 /**
  * General Controller of SportsManagement component
  */
-class SportsManagementController extends JController
+class SportsManagementController extends JControllerLegacy
 {
 	/**
 	 * display task

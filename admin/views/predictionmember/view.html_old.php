@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionMember extends JView
+class sportsmanagementViewPredictionMember extends sportsmanagementView
 {
 	function display( $tpl = null )
 	{

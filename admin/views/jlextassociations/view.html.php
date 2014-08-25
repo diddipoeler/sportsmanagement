@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextassociations extends JView
+class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewjlextassociations::display()
@@ -60,7 +60,7 @@ class sportsmanagementViewjlextassociations extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		
 		$mainframe = JFactory::getApplication();

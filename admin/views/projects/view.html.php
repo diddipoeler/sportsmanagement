@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewProjects extends JView
+class sportsmanagementViewProjects extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewProjects::display()
@@ -60,7 +60,7 @@ class sportsmanagementViewProjects extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option 	= JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
@@ -93,7 +93,7 @@ class sportsmanagementViewProjects extends JView
 
 		//build the html select list for userfields
 		$userfields[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),'id','name');
-		$mdluserfields = JModel::getInstance('extrafields','sportsmanagementModel');
+		$mdluserfields = JModelLegacy::getInstance('extrafields','sportsmanagementModel');
 		$alluserfields = $mdluserfields->getExtraFields('project');
 		$userfields = array_merge($userfields,$alluserfields);
 		$lists['userfields'] = JHtml::_( 'select.genericList',
@@ -107,7 +107,7 @@ class sportsmanagementViewProjects extends JView
         
         //build the html select list for leagues
 		$leagues[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
-		$mdlLeagues = JModel::getInstance('Leagues','sportsmanagementModel');
+		$mdlLeagues = JModelLegacy::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
 		$leagues = array_merge($leagues,$allLeagues);
 		$lists['leagues'] = JHtml::_( 'select.genericList',
@@ -122,7 +122,7 @@ class sportsmanagementViewProjects extends JView
 		
 		//build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
-		$mdlSportsTypes = JModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes,$allSportstypes);
 		$lists['sportstypes'] = JHtml::_( 'select.genericList',
@@ -137,7 +137,7 @@ class sportsmanagementViewProjects extends JView
 		
 		//build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-        $mdlSeasons = JModel::getInstance('Seasons','sportsmanagementModel');
+        $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons,$allSeasons);
         
@@ -182,8 +182,8 @@ class sportsmanagementViewProjects extends JView
 									$this->state->get('filter.project_type'));
         unset($myoptions);
         
-        $mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
-        $mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+        $mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+        $mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
       
 		$user = JFactory::getUser();
         $this->assignRef('modeldivision',$mdlProjectDivisions);
@@ -194,8 +194,8 @@ class sportsmanagementViewProjects extends JView
 		$this->assignRef('pagination',$pagination);
 		$url=$uri->toString();
 		$this->assignRef('request_url',$url);
-		$this->addToolbar();
-		parent::display($tpl);
+//		$this->addToolbar();
+//		parent::display($tpl);
 	}
 
 	/**
@@ -227,7 +227,8 @@ class sportsmanagementViewProjects extends JView
 		JToolBarHelper::divider();
 		
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+		//JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

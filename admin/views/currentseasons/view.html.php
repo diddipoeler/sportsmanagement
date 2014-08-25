@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewCurrentseasons extends JView
+class sportsmanagementViewCurrentseasons extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewCurrentseasons::display()
@@ -60,7 +60,7 @@ class sportsmanagementViewCurrentseasons extends JView
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option 	= JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
@@ -74,23 +74,23 @@ class sportsmanagementViewCurrentseasons extends JView
         foreach ($this->items as $item)
 	{
 	   $item->count_projectdivisions = 0;
-		$mdlProjectDivisions = JModel::getInstance("divisions", "sportsmanagementModel");
+		$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 		$item->count_projectdivisions = $mdlProjectDivisions->getProjectDivisionsCount($item->id);
 		
 		$item->count_projectpositions = 0;
-		$mdlProjectPositions = JModel::getInstance("Projectposition", "sportsmanagementModel");
+		$mdlProjectPositions = JModelLegacy::getInstance("Projectposition", "sportsmanagementModel");
 		$item->count_projectpositions = $mdlProjectPositions->getProjectPositionsCount($item->id);
 		
 		$item->count_projectreferees = 0;
-		$mdlProjectReferees = JModel::getInstance("Projectreferees", "sportsmanagementModel");
+		$mdlProjectReferees = JModelLegacy::getInstance("Projectreferees", "sportsmanagementModel");
 		$item->count_projectreferees = $mdlProjectReferees->getProjectRefereesCount($item->id);
 		
 		$item->count_projectteams = 0;
-		$mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+		$mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
 		$item->count_projectteams = $mdlProjecteams->getProjectTeamsCount($item->id);
         
         $item->count_matchdays = 0;
-		$mdlRounds = JModel::getInstance("Rounds", "sportsmanagementModel");
+		$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 		$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 	   
        }

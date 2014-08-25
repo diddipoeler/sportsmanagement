@@ -52,9 +52,9 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewrosterpositions extends JView
+class sportsmanagementViewrosterpositions extends sportsmanagementView
 {
-	function display($tpl=null)
+	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
     $db = JFactory::getDBO();

@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.view' );
  * @version 2013
  * @access public
  */
-class sportsmanagementViewjlextdfbkeyimport extends JView
+class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 {
 	function display( $tpl = null )
 	{

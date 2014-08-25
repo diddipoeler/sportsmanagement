@@ -53,7 +53,7 @@ jimport('joomla.form.form');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTemplate extends JView
+class sportsmanagementViewTemplate extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewTemplate::display()
@@ -61,7 +61,7 @@ class sportsmanagementViewTemplate extends JView
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
@@ -104,7 +104,7 @@ class sportsmanagementViewTemplate extends JView
 		}
 		
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
         
@@ -128,7 +128,7 @@ class sportsmanagementViewTemplate extends JView
         switch ( $this->form->getName() )
         {
             case 'ranking':
-            $mdlProjecteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
+            $mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
 	        $iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
             $this->assignRef('teamscount',$iProjectTeamsCount);
             $this->form->setFieldAttribute('colors_ranking','rankingteams' , $iProjectTeamsCount);

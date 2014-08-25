@@ -46,13 +46,13 @@ jimport('joomla.application.component.view');
 /**
  * SportsManagement View
  */
-class sportsmanagementViewsportsmanagement extends JView
+class sportsmanagementViewsportsmanagement extends sportsmanagementView
 {
 	/**
 	 * display method of Hello view
 	 * @return void
 	 */
-	public function display($tpl = null) 
+	public function init ()
 	{
 		// get the Data
 		$form = $this->get('Form');

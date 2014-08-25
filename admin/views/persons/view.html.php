@@ -52,10 +52,10 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPersons extends JView
+class sportsmanagementViewPersons extends sportsmanagementView
 {
 
-	function display($tpl=null)
+	public function init ()
 	{
 		if ($this->getLayout() == 'assignplayers')
 		{
@@ -92,7 +92,7 @@ $starttime = microtime();
 
 		//build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
+		$positions=JModelLegacy::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);
@@ -147,12 +147,12 @@ $starttime = microtime();
         
 		//$project_id = $mainframe->getUserState($option.'project');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-		$mdlProject = JModel::getInstance("project", "sportsmanagementModel");
+		$mdlProject = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
 		$project_name = $project->name;
 		$project_team_id = $mainframe->getUserState($option.'project_team_id');
 		$team_name = $model->getProjectTeamName($project_team_id);
-		//$mdlQuickAdd = JModel::getInstance('Quickadd','sportsmanagementModel');
+		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
         $items = $this->get('Items');
 		$total = $this->get('Total');
@@ -193,7 +193,7 @@ $starttime = microtime();
         
         //build the html select list for positions
 		$positionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModel::getInstance('positions','sportsmanagementmodel')->getAllPositions();
+		$positions=JModelLegacy::getInstance('positions','sportsmanagementmodel')->getAllPositions();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);

@@ -49,10 +49,10 @@ jimport('joomla.application.component.view');
  * @package	Sportsmanagement
  * @since	0.1
  */
-class sportsmanagementViewPlaygrounds extends JView
+class sportsmanagementViewPlaygrounds extends sportsmanagementView
 {
 
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();

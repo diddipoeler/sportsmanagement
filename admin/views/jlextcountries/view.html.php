@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 
 /**
@@ -52,15 +52,25 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextcountries extends JView
+class sportsmanagementViewjlextcountries extends sportsmanagementView
 {
-	function display($tpl=null)
+	/**
+	 * sportsmanagementViewjlextcountries::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
+	//public function init ()
+    public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
+        
+        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        $mainframe->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -97,8 +107,8 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+//		$this->addToolbar();
+//		parent::display($tpl);
 	}
 	
 	/**
@@ -123,7 +133,9 @@ $starttime = microtime();
 		JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+        parent::addToolbar();
 	}
 }
 ?>

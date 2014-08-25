@@ -49,9 +49,9 @@ jimport('joomla.application.component.view');
  * @package	Sportsmanagement
  * @since	1.5.0a
  */
-class sportsmanagementViewPositions extends JView
+class sportsmanagementViewPositions extends sportsmanagementView
 {
-	function display($tpl=null)
+	public function init ()
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -88,7 +88,7 @@ $starttime = microtime();
 		//build the html select list for sportstypes
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& sportsmanagementModelSportsTypes::getSportsTypes();
-		$allSportstypes = JModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
+		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
 		$sportstypes=array_merge($sportstypes,$allSportstypes);
 		$lists['sportstypes']=JHtml::_( 'select.genericList',
 										$sportstypes,

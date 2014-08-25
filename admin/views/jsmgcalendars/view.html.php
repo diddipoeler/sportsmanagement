@@ -7,11 +7,11 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.view');
 
 //class sportsmanagemantViewjsmgcalendars extends GCalendarView
-class sportsmanagementViewjsmgcalendars extends JView 
+class sportsmanagementViewjsmgcalendars extends sportsmanagementView 
 {
 
 
-function display($tpl=null)
+public function init ()
 	{
 		$option 	= JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();

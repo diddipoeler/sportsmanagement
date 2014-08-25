@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view' );
 
 
-class sportsmanagementViewgithub extends JView
+class sportsmanagementViewgithub extends sportsmanagementView
 {
 	
 	function display( $tpl = null )
