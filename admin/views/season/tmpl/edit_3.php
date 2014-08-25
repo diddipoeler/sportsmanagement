@@ -35,24 +35,20 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/ 
-
+*/
+// No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-
-
+JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
-
-
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-
-<div class="width-100 fltlft">
+ 
+<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
@@ -60,7 +56,7 @@ $fieldsets = $this->form->getFieldsets();
 				<li><?php echo $field->label; ?>
 				<?php echo $field->input; 
                 
-                $suchmuster = array ("jform[","]");
+               $suchmuster = array ("jform[","]");
                 $ersetzen = array ('', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                 
@@ -83,24 +79,39 @@ $fieldsets = $this->form->getFieldsets();
                 <?PHP
                 break;
                 }
-               
                 
                 ?></li>
 			<?php endforeach; ?>
 			</ul>
 		</fieldset>
-	</div>	
-	
-		<div class="clr"></div>
-		
-		<div>
-		<input type="hidden" name="user_id" value="0" />
-		<input type="hidden" name="project_id" value="0" />
-		<input type="hidden" name="prediction_id" value="<?php echo $this->item->id; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-		<input type="hidden" name="task" value="predictiongame.edit" />
 	</div>
-<?php echo JHtml::_('form.token')."\n"; ?>
+
+<div class="width-40 fltrt">
+		<?php
+		echo JHtml::_('sliders.start');
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'details') :
+				continue;
+			endif;
+			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+		if (isset($fieldset->description) && !empty($fieldset->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+			endif;
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
+		endforeach; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
+
+	
+	</div>    
+ 
+	
+ 
+	<div>
+		<input type="hidden" name="task" value="season.edit" />
+		<?php echo JHtml::_('form.token'); ?>
+	</div>
 </form>
 <?PHP
 echo "<div>";

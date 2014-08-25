@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -54,10 +54,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewextrafields extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewextrafields::display()
+	 * sportsmanagementViewextrafields::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -91,8 +91,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		//$this->addToolbar();
-//		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -115,9 +114,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'extrafields.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+		
         parent::addToolbar();
 	}
 }

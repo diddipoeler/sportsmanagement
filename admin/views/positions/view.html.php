@@ -40,17 +40,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
+
 
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	1.5.0a
+ * sportsmanagementViewPositions
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewPositions extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewPositions::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -135,8 +143,7 @@ $starttime = microtime();
 		JToolBarHelper::archiveList('position.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','position.delete');
 
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		
         parent::addToolbar();
 	}
 }

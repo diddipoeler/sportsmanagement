@@ -52,10 +52,10 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewEventtypes extends sportsmanagementView
 {
+
 	/**
-	 * sportsmanagementViewEventtypes::display()
+	 * sportsmanagementViewEventtypes::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -104,8 +104,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		//$this->addToolbar();
-//		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -136,9 +135,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        //JToolBarHelper::preferences($option);
+		
         parent::addToolbar();
 	}
 }

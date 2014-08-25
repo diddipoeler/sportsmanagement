@@ -40,13 +40,27 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-jimport ( 'joomla.application.component.view' );
 
 
 
+
+/**
+ * sportsmanagementViewjlextsisimport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewjlextsisimport extends sportsmanagementView 
 {
-	function display($tpl = null) 
+	/**
+	 * sportsmanagementViewjlextsisimport::init()
+	 * 
+	 * @return
+	 */
+	public function init ()
     {
 		//global $mainframe;
 		
@@ -92,11 +106,17 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->assignRef ( 'revisionDate', $revisionDate );
 		
-		parent::display ( $tpl );
+		
 	}
 	
     
     
+	/**
+	 * sportsmanagementViewjlextsisimport::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefault($tpl) 
     {
 		//global $option;
@@ -130,15 +150,20 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$import_version = 'NEW';
 		$this->assignRef ( 'import_version', $import_version );
 		
-		$this->addToolbar ();
-		parent::display ( $tpl );
+	
 	}
     
     
+	/**
+	 * sportsmanagementViewjlextsisimport::_displayDefaultUpdate()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $mainframe, $option;
-		$mainframe = & JFactory::getApplication ();
+		$mainframe = JFactory::getApplication ();
 		$option = JRequest::getCmd ( 'option' );
 		
 		$db = JFactory::getDBO ();
@@ -159,30 +184,34 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		
 		$this->assignRef ( 'importData', $model->getUpdateData () );
 		
-		// $this->assignRef('xml',$model->getData());
-		
-		parent::display ( $tpl );
+
 	}
     
     
     
+	/**
+	 * sportsmanagementViewjlextsisimport::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar() 
     {
          // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
-		
+
         
-        
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
-        JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//        // Set toolbar items for the page
+//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
+//        JToolBarHelper::divider();
+//            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//			JToolBarHelper::preferences($option);
+            
+parent::addToolbar();            
 
 	}
 }

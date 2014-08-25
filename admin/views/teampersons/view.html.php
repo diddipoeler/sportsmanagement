@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+
 
 
 /**
@@ -55,7 +55,12 @@ jimport( 'joomla.application.component.view' );
 class sportsmanagementViewteampersons extends sportsmanagementView
 {
 
-	function display( $tpl = null )
+	/**
+	 * sportsmanagementViewteampersons::init()
+	 * 
+	 * @return void
+	 */
+	public function init ()
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -160,8 +165,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
-		$this->addToolbar();
-		parent::display($tpl);
+		
         
         
 	}
@@ -173,11 +177,12 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//	// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+        
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // store the variable that we would like to keep for next time
@@ -208,10 +213,8 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		JToolBarHelper::divider();
 
 		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );
-		JToolBarHelper::divider();
-
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+		parent::addToolbar();  
 	}
 }
 ?>

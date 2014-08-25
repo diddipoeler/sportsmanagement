@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewsmquotes
  * 
@@ -54,10 +51,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewsmquotes extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewsmquotes::display()
+	 * sportsmanagementViewsmquotes::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -99,8 +96,7 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -129,9 +125,8 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
         
 		JToolBarHelper::archiveList('smquote.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'smquotes.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+		parent::addToolbar();
 	}
 }
 ?>

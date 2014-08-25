@@ -56,10 +56,10 @@ jimport( 'joomla.application.component.view' );
 class sportsmanagementViewPredictionMembers extends sportsmanagementView
 {
 
+  
   /**
-   * sportsmanagementViewPredictionMembers::display()
+   * sportsmanagementViewPredictionMembers::init()
    * 
-   * @param mixed $tpl
    * @return
    */
   public function init ()
@@ -80,7 +80,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
 			return;
 		}
     
-    //parent::display($tpl);
+    
 		
 	}
 

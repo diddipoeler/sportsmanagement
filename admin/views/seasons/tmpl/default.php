@@ -44,7 +44,7 @@ $ordering=($this->sortColumn == 's.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-JHtml::_('behavior.mootools');
+//JHtml::_('behavior.mootools');
 $modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer');

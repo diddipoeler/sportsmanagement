@@ -35,30 +35,47 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/ 
-
+*/
+ 
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+JHtml::_('behavior.formvalidation');
 
-
-$params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-
-<div class="width-100 fltlft">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
+<fieldset class="adminform">
+			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DESC','<i>'.$this->item->name.'</i>'); ?></legend>
+	
+<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('details') as $field) :?>
 				<li><?php echo $field->label; ?>
 				<?php echo $field->input; 
+                
+                if ( $field->name == 'jform[country]' || $field->name == 'jform[address_country]' )
+                {
+                echo JSMCountries::getCountryFlag($field->value);    
+                }
+                
+                if ( $field->name == 'jform[website]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                if ( $field->name == 'jform[twitter]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                if ( $field->name == 'jform[facebook]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
                 
                 $suchmuster = array ("jform[","]");
                 $ersetzen = array ('', '');
@@ -83,25 +100,44 @@ $fieldsets = $this->form->getFieldsets();
                 <?PHP
                 break;
                 }
-               
                 
                 ?></li>
 			<?php endforeach; ?>
 			</ul>
 		</fieldset>
-	</div>	
-	
-		<div class="clr"></div>
-		
-		<div>
-		<input type="hidden" name="user_id" value="0" />
-		<input type="hidden" name="project_id" value="0" />
-		<input type="hidden" name="prediction_id" value="<?php echo $this->item->id; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-		<input type="hidden" name="task" value="predictiongame.edit" />
 	</div>
-<?php echo JHtml::_('form.token')."\n"; ?>
+        
+ <div class="width-40 fltrt">
+		<?php
+		echo JHtml::_('sliders.start');
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'details') :
+				continue;
+			endif;
+			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+		if (isset($fieldset->description) && !empty($fieldset->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+			endif;
+		//echo $this->loadTemplate($fieldset->name);
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
+		endforeach; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
+
+	
+	</div>
+       
+	<div class="clr"></div>
+	<div>
+	<input type="hidden" name="task" value="project.edit" /> 
+	<input type="hidden"name="oldseason" value="<?php echo $this->item->season_id; ?>" />
+	<input type="hidden" name="oldleague" value="<?php echo $this->item->league_id; ?>" /> 
+	<input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
+	<?php echo JHtml::_('form.token')."\n"; ?>
+	</div>
+	</fieldset>
 </form>
+
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

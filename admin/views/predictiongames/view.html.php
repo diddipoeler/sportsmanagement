@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+
 
 
 
@@ -55,13 +55,13 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewPredictionGames extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewPredictionGames::display()
+	 * sportsmanagementViewPredictionGames::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
     $model = $this->getModel();
@@ -140,8 +140,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
     
 		$this->assign('request_url',$uri->toString());
-    $this->addToolbar();
-		parent::display( $tpl );
+    
 	}
     
     /**
@@ -152,14 +151,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	protected function addToolbar()
 	{ 
 		
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        // Set toolbar items for the page
-        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'pred-cpanel' );
+        //// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//        // Set toolbar items for the page
+//        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'pred-cpanel' );
         JToolBarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
@@ -170,9 +169,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		JToolBarHelper::archiveList('predictiongame.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','predictiongames.delete', 'JTOOLBAR_DELETE');
         
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+		parent::addToolbar();  
         
         
 		

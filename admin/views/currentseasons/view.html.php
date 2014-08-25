@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -54,10 +54,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewCurrentseasons extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewCurrentseasons::display()
+	 * sportsmanagementViewCurrentseasons::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -95,8 +95,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	   
        }
 
-$this->addToolbar();
-		parent::display($tpl);
+
 	}
 
 	/**
@@ -106,18 +105,20 @@ $this->addToolbar();
 	*/
 	protected function addToolbar()
 	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//  		// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//	// Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'currentseason');
+//		JToolBarHelper::divider();
+//		
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//		JToolBarHelper::preferences(JRequest::getCmd('option'));
         
-	// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'currentseason');
-		JToolBarHelper::divider();
-		
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

@@ -40,11 +40,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+
+
 /**
- *  View
+ * sportsmanagementViewspecialextensions
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewspecialextensions extends sportsmanagementView
 {
@@ -60,21 +65,7 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
         
         $this->Extensions = $model->getSpecialExtensions();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Extensions<br><pre>'.print_r($this->Extensions,true).'</pre>'),'');
-        
-        //$params = JComponentHelper::getParams( $option );
-        //$this->sporttypes = $params->get( 'cfg_sport_types' );
-        
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->sporttypes,true).'</pre>'),'');
- 
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+
 	}
  
 	/**
@@ -82,33 +73,30 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{ 
-  		// Get a refrence of the page instance in joomla
-	$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//  		// Get a refrence of the page instance in joomla
+//	$document	= JFactory::getDocument();
+//    $option = JRequest::getCmd('option');
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//		$canDo = sportsmanagementHelper::getActions();
+		
+	parent::addToolbar();  	
         
-		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
-		if ($canDo->get('core.admin')) 
-		{
-			JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
-		}
-	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
 	}
 	
+   
+	
+	/**
+	 * sportsmanagementViewspecialextensions::addIcon()
+	 * 
+	 * @param mixed $image
+	 * @param mixed $url
+	 * @param mixed $text
+	 * @param bool $newWindow
+	 * @return void
+	 */
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
 		$lang		= JFactory::getLanguage();

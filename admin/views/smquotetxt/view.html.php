@@ -40,12 +40,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
 
 
 
+/**
+ * sportsmanagementViewsmquotetxt
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewsmquotetxt extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewsmquotetxt::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -62,8 +75,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
         $this->assignRef('option',$option);
-        $this->addToolbar();
-		parent::display($tpl);
+        
 	}
     
     /**
@@ -74,25 +86,27 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-
-        // Set toolbar items for the page
-        JToolBarHelper::title($this->file_name,'txt-edit');
         
-        JToolBarHelper::apply('smquotetxt.apply');
-        JToolBarHelper::save('smquotetxt.save');
-        JToolBarHelper::cancel('smquotetxt.cancel', 'JTOOLBAR_CANCEL');
+//        // Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//
+//        // Set toolbar items for the page
+//        JToolBarHelper::title($this->file_name,'txt-edit');
+//        
+//        JToolBarHelper::apply('smquotetxt.apply');
+//        JToolBarHelper::save('smquotetxt.save');
+//        JToolBarHelper::cancel('smquotetxt.cancel', 'JTOOLBAR_CANCEL');
         
         
         
         
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
         
+        parent::addToolbar();
     }    
     
     

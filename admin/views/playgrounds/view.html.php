@@ -42,16 +42,24 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * sportsmanagementViewPlaygrounds
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewPlaygrounds extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewPlaygrounds::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -90,8 +98,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		//$this->addToolbar();
-//		parent::display($tpl);
+		
 	}
 
 	/**
@@ -115,7 +122,6 @@ $starttime = microtime();
 		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
 		JToolBarHelper::divider();
 
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
         parent::addToolbar();
 	}
 }

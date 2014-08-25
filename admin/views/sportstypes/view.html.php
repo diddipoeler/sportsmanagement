@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewSportsTypes
  * 
@@ -55,10 +52,10 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewSportsTypes extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewSportsTypes::display()
+	 * sportsmanagementViewSportsTypes::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -97,8 +94,7 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 		
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -116,14 +112,13 @@ $starttime = microtime();
         
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE'),'sporttypes');
-		JToolBarHelper::addNewX('sportstype.add');
-		JToolBarHelper::editListX('sportstype.edit');
+		JToolBarHelper::addNew('sportstype.add');
+		JToolBarHelper::editList('sportstype.edit');
 		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','sportstypes.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+		
+        parent::addToolbar();
 	}
 }
 ?>

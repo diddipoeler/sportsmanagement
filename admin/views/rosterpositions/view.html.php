@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -54,6 +54,11 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewrosterpositions extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewrosterpositions::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
@@ -79,8 +84,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
     
     	/**
@@ -90,14 +94,14 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	//// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
 // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE'),'rosterpositions');
+		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE'),'rosterpositions');
         	JToolBarHelper::custom('rosterpositions.addhome','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'),false);
 		JToolBarHelper::custom('rosterpositions.addaway','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'),false);
 		JToolBarHelper::editList('rosterposition.edit');
@@ -105,9 +109,8 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		//JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
 		
 		JToolBarHelper::deleteList('', 'rosterpositions.delete');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        
+		parent::addToolbar();  
        
        
        

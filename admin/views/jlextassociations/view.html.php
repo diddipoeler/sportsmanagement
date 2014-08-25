@@ -54,10 +54,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewjlextassociations::display()
+	 * sportsmanagementViewjlextassociations::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -104,10 +104,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-        
- //       $this->addToolbar();
-//
-//		parent::display($tpl);
+
 	}
     
     /**
@@ -135,9 +132,7 @@ $starttime = microtime();
 		//JToolBarHelper::deleteList();
 		JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
 		
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        parent::addToolbar();
 	}
     
     

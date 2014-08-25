@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewPersons
@@ -55,6 +53,11 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewPersons extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewPersons::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		if ($this->getLayout() == 'assignplayers')
@@ -124,8 +127,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',JFactory::getURI()->toString());
-	//	$this->addToolbar();
-//		parent::display($tpl);
+
 	}
 
 	/**
@@ -284,8 +286,7 @@ $starttime = microtime();
 		JToolBarHelper::custom('person.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('person.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','persons.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		
         parent::addToolbar();
 	}
 }

@@ -39,10 +39,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
 
 /**
  * sportsmanagementViewagegroup
@@ -56,10 +52,11 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewagegroup extends sportsmanagementView
 {
 	
+	
+    
 	/**
-	 * sportsmanagementViewagegroup::display()
+	 * sportsmanagementViewagegroup::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -82,34 +79,23 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
 		
-        /*
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'agegroup');
-		$this->assignRef( 'extended', $extended );
-        */
         
-//		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
- 
-//		// Set the toolbar
-//		$this->addToolBar();
-// 
-//		// Display the template
-//		parent::display($tpl);
-// 
-//		// Set the document
-//		$this->setDocument();
 	}
  
+	
 	/**
-	 * Setting the toolbar
+	 * sportsmanagementViewagegroup::addToolBar()
+	 * 
+	 * @return void
 	 */
 	protected function addToolBar() 
 	{ 
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
 		JRequest::setVar('hidemainmenu', true);
 		$user = JFactory::getUser();
@@ -149,23 +135,8 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 			}
 			JToolBarHelper::cancel('agegroup.cancel', 'JTOOLBAR_CLOSE');
 		}
-        		JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		//JToolBarHelper::preferences($option);
+        		
         parent::addToolbar();
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
+	
 }

@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+
 
 
 /**
@@ -54,10 +54,10 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewDivision extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewDivision::display()
+	 * sportsmanagementViewDivision::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -101,17 +101,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
-        //$this->item->project_id = $this->project_id;
-        
-        
-        
-//        $this->addToolbar();
-//        
-//        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewDivision item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
-//        		
-//		parent::display($tpl);
-//        // Set the document
-//		$this->setDocument();
+       
 
 		
 	}
@@ -198,69 +188,51 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	{	
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->project_id);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-        
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW') : JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT'), 'helloworld');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			$this->item->project_id = $this->project_id;
-            // For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('division.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CLOSE');
-		}
-    sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//		$user = JFactory::getUser();
+//		$userId = $user->id;
+//		$isNew = $this->item->id == 0;
+//        
+//		$canDo = sportsmanagementHelper::getActions($this->item->id);
+//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW') : JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT'), 'helloworld');
+//		// Built the actions for new and existing records.
+//		if ($isNew) 
+//		{
+//			$this->item->project_id = $this->project_id;
+//            // For new records, check the create permission.
+//			if ($canDo->get('core.create')) 
+//			{
+//				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
+//				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
+//				JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+//			}
+//			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CANCEL');
+//		}
+//		else
+//		{
+//			if ($canDo->get('core.edit'))
+//			{
+//				// We can save the new record
+//				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
+//				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
+// 
+//				// We can save this record, but check the create permission to see if we can return to make a new one.
+//				if ($canDo->get('core.create')) 
+//				{
+//					JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+//				}
+//			}
+//			if ($canDo->get('core.create')) 
+//			{
+//				JToolBarHelper::custom('division.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+//			}
+//			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CLOSE');
+//		}
+//    sportsmanagementHelper::ToolbarButtonOnlineHelp();
+    
     parent::addToolbar();
 	}	
     
-    /**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW') : JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT'),'divison');
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}	
+    
 
 }
 ?>

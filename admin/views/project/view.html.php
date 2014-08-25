@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 jimport('joomla.html.parameter.element.timezones');
 
 require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
@@ -58,10 +58,10 @@ require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
  */
 class sportsmanagementViewProject extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewProject::display()
+	 * sportsmanagementViewProject::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -134,14 +134,7 @@ class sportsmanagementViewProject extends sportsmanagementView
         
         $this->assignRef('lists',$lists);
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+
 	}
 	
 	
@@ -221,12 +214,13 @@ class sportsmanagementViewProject extends sportsmanagementView
         break;
     }
     
-        
-    JToolBarHelper::divider();
-	sportsmanagementHelper::ToolbarButtonOnlineHelp();
-	JToolBarHelper::preferences(JRequest::getCmd('option'));
-           
-    parent::display($tpl);   
+    parent::addToolbar();    
+    
+//    JToolBarHelper::divider();
+//	sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//	JToolBarHelper::preferences(JRequest::getCmd('option'));
+//           
+//    parent::display($tpl);   
     }
        
     /**
@@ -298,21 +292,10 @@ class sportsmanagementViewProject extends sportsmanagementView
         break;
     }
         
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
     
-    /**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
-	}
+    
     
 }
 ?>

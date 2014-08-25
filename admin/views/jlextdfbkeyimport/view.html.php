@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+
 
 
 /**
@@ -54,7 +54,13 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 {
-	function display( $tpl = null )
+    
+	/**
+	 * sportsmanagementViewjlextdfbkeyimport::init()
+	 * 
+	 * @return
+	 */
+	public function init ()
 	{
 		//global $mainframe;
 
@@ -97,9 +103,15 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		
 		
 		
-		parent::display( $tpl );
+		
 	}
 
+	/**
+	 * sportsmanagementViewjlextdfbkeyimport::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefault( $tpl )
 	{
 		$option = JRequest::getCmd('option');
@@ -194,10 +206,16 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     
     }
 
-		parent::display( $tpl );
+		
 	}
 
 
+  /**
+   * sportsmanagementViewjlextdfbkeyimport::_displayDefaultCreatedays()
+   * 
+   * @param mixed $tpl
+   * @return void
+   */
   function _displayDefaultCreatedays( $tpl )
 	{
 		$option = JRequest::getCmd('option');
@@ -251,9 +269,15 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         
 		
 
-		parent::display( $tpl );
+		
 	}
   
+  /**
+   * sportsmanagementViewjlextdfbkeyimport::_displayDefaultFirstMatchday()
+   * 
+   * @param mixed $tpl
+   * @return void
+   */
   function _displayDefaultFirstMatchday( $tpl )
 	{
 		$option = JRequest::getCmd('option');
@@ -301,9 +325,15 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
 			JToolBarHelper::preferences($option);
         
-		parent::display( $tpl );
+		
 	}
   
+  /**
+   * sportsmanagementViewjlextdfbkeyimport::_displayDefaultSaveMatchdays()
+   * 
+   * @param mixed $tpl
+   * @return void
+   */
   function _displayDefaultSaveMatchdays( $tpl )
 	{
 		$option = JRequest::getCmd('option');
@@ -334,7 +364,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
 			JToolBarHelper::preferences($option);
         	
-  	parent::display( $tpl );
+  	
 	}
   	
 }

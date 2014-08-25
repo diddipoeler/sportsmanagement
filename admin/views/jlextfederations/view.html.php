@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewjlextfederations
@@ -54,10 +52,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewjlextfederations extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewjlextfederations::display()
+	 * sportsmanagementViewjlextfederations::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -105,9 +103,7 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-       // $this->addToolbar();
-//
-//		parent::display($tpl);
+       
 	}
     
     /**
@@ -135,9 +131,7 @@ $starttime = microtime();
 		//JToolBarHelper::deleteList();
 		JToolBarHelper::deleteList('', 'jlextfederation.delete', 'JTOOLBAR_DELETE');
 		
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+        parent::addToolbar();
 	}
     
     

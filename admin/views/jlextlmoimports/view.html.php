@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.view' );
+
 
 
 /**
@@ -54,6 +54,11 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewjlextlmoimports::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -81,11 +86,14 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$this->assignRef('countries',$lists['countries']);
     
 
-    //$this->assignRef('form',  $this->get('form'));
-    $this->addToolbar ();
-		parent::display($tpl);
+    
 	}
     
+    /**
+     * sportsmanagementViewjlextlmoimports::addToolbar()
+     * 
+     * @return void
+     */
     protected function addToolbar() 
     {
         // Get a refrence of the page instance in joomla
@@ -93,17 +101,13 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
         $option = JRequest::getCmd('option');
 		
         
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//        // Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
-        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1'),'lmo-cpanel');
-        JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+        parent::addToolbar();
 
 	}
     

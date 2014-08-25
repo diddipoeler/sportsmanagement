@@ -36,6 +36,7 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */ 
+
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -49,7 +50,7 @@ $fieldsets = $this->form->getFieldsets();
 
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
 
 <div class="width-100 fltlft">
 		<fieldset class="adminform">

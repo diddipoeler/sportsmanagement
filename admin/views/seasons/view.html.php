@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewSeasons
@@ -54,6 +52,11 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewSeasons extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewSeasons::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -101,8 +104,7 @@ $starttime = microtime();
         
         $this->assignRef('season_id',$season_id);
         
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -134,12 +136,7 @@ $starttime = microtime();
 			JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');
 		}
         
-        //sportsmanagementHelper::ToolbarButton('assignteams','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'));
-        //sportsmanagementHelper::ToolbarButton('assignpersons','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'));
-        
-		JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
         
 		
 	}

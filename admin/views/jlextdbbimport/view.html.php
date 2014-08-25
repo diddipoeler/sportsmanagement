@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-jimport ( 'joomla.application.component.view' );
+
 
 
 
@@ -55,13 +55,13 @@ jimport ( 'joomla.application.component.view' );
  */
 class sportsmanagementViewjlextdbbimport extends sportsmanagementView 
 {
+	
 	/**
-	 * sportsmanagementViewjlextdbbimport::display()
+	 * sportsmanagementViewjlextdbbimport::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl = null) 
+	public function init ()
     {
 		//global $mainframe;
 		
@@ -107,7 +107,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->assignRef ( 'revisionDate', $revisionDate );
 		
-		parent::display ( $tpl );
+		
 	}
 	
    
@@ -143,8 +143,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$import_version = 'NEW';
 		$this->assignRef ( 'import_version', $import_version );
 		
-		$this->addToolbar ();
-		parent::display ( $tpl );
+		
 	}
     
     
@@ -180,7 +179,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		
 		// $this->assignRef('xml',$model->getData());
 		
-		parent::display ( $tpl );
+		//parent::display ( $tpl );
 	}
     
    
@@ -204,10 +203,8 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
         
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
-        JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
         
+        parent::addToolbar();
 
 	}
 }

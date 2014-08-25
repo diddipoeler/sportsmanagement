@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewjlextcountries
  * 
@@ -54,13 +51,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewjlextcountries extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewjlextcountries::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	//public function init ()
+	
+    /**
+     * sportsmanagementViewjlextcountries::init()
+     * 
+     * @return void
+     */
     public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -107,8 +103,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-//		$this->addToolbar();
-//		parent::display($tpl);
+
 	}
 	
 	/**
@@ -131,9 +126,7 @@ $starttime = microtime();
 		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+	
         
         parent::addToolbar();
 	}

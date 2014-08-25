@@ -39,10 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-//jimport('joomla.application.component.view');
- 
+
 
 /**
  * sportsmanagementViewJlextcountry
@@ -56,13 +53,12 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementViewJlextcountry extends sportsmanagementView
 {
 
-	/**
-	 * sportsmanagementViewJlextcountry::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	//public function init ()
+
+    /**
+     * sportsmanagementViewJlextcountry::init()
+     * 
+     * @return
+     */
     public function init ()
 	{
 		// get the Data
@@ -80,20 +76,8 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
-//		$this->assignRef( 'extended', $extended );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
- 
-//		// Set the toolbar
-//		$this->addToolBar();
-// 
-//		// Display the template
-//		parent::display($tpl);
-// 
-//		// Set the document
-//		$this->setDocument();
+	
+
 	}
  
 	/**
@@ -149,18 +133,5 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
         parent::addToolbar();
 	}
     
-	///**
-//	 * Method to set up the document properties
-//	 *
-//	 * @return void
-//	 */
-//	protected function setDocument() 
-//	{
-//		$isNew = $this->item->id == 0;
-//		$document = JFactory::getDocument();
-//		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_COUNTRY_NEW') : JText::_('COM_SPORTSMANAGEMENT_COUNTRY_EDIT'));
-//		$document->addScript(JURI::root() . $this->script);
-//		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-//		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-//	}
+
 }

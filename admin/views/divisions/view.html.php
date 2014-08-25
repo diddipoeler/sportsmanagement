@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
-
 
 /**
  * sportsmanagementViewDivisions
@@ -55,10 +53,10 @@ jimport( 'joomla.application.component.view' );
 class sportsmanagementViewDivisions extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewDivisions::display()
+	 * sportsmanagementViewDivisions::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -96,8 +94,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		//$this->addToolbar();
-//		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -125,9 +122,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 		JToolBarHelper::addNew('division.add');
 		JToolBarHelper::editList('division.edit');
         JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		//JToolBarHelper::preferences($option);
+		
         parent::addToolbar();
 	}
 }

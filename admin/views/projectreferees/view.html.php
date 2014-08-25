@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 /**
  * HTML View class for the Sportsmanagement Component
@@ -52,6 +52,11 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewprojectreferees extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewprojectreferees::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -97,8 +102,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
-		$this->addToolbar();
-		parent::display($tpl);
+	
 	}
 
 	/**
@@ -112,11 +116,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 	 $mainframe->setUserState( "$option.persontype", $this->_persontype );	
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        //// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE'),'projectreferees');
 		
@@ -125,10 +129,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
         sportsmanagementHelper::ToolbarButton('assignplayers','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',2);
 		//JToolBarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
         JToolBarHelper::deleteList('', 'projectreferees.delete');
-		JToolBarHelper::divider();
-		
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+		parent::addToolbar();  
         
 
 	}

@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -54,10 +54,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewProjects extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewProjects::display()
+	 * sportsmanagementViewProjects::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -194,8 +194,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$url=$uri->toString();
 		$this->assignRef('request_url',$url);
-//		$this->addToolbar();
-//		parent::display($tpl);
+
 	}
 
 	/**
@@ -224,10 +223,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
 		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
 		JToolBarHelper::deleteList('', 'projects.delete');
-		JToolBarHelper::divider();
 		
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		//JToolBarHelper::preferences(JRequest::getCmd('option'));
         parent::addToolbar();
 	}
 }

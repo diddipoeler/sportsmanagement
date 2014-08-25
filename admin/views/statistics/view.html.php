@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 jimport('joomla.filesystem.file');
 
 
@@ -55,10 +55,10 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewStatistics extends sportsmanagementView
 {
+
 	/**
-	 * sportsmanagementViewStatistics::display()
+	 * sportsmanagementViewStatistics::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -107,8 +107,7 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -134,11 +133,8 @@ $starttime = microtime();
 		JToolBarHelper::addNew('statistic.add');
 		JToolBarHelper::custom('statistic.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('statistic.export',JText::_('JTOOLBAR_EXPORT'));
-		//JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_DELETE_WARNING'),'statistic.fulldelete',JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_FULL_DELETE'));
-		JToolBarHelper::divider();
 		
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 	}
 }
 ?>

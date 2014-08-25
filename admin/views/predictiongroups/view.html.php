@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewpredictiongroups
  * 
@@ -54,10 +51,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewpredictiongroups extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewpredictiongroups::display()
+	 * sportsmanagementViewpredictiongroups::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -89,8 +86,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
 	
 	/**
@@ -100,13 +96,13 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{ 
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'),'predgroups');
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//        // Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'),'predgroups');
 		
         
 		JToolBarHelper::addNew('predictiongroup.add');
@@ -114,9 +110,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+	parent::addToolbar();  
         
         
 		

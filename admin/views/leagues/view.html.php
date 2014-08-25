@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewLeagues
@@ -54,10 +52,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewLeagues extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewLeagues::display()
+	 * sportsmanagementViewLeagues::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -136,8 +134,7 @@ $starttime = microtime();
 		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		
         parent::addToolbar();
 	}
 }

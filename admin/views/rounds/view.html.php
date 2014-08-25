@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -55,10 +55,10 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewRounds extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewRounds::display()
+	 * sportsmanagementViewRounds::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -79,7 +79,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 			$this->_displayMassadd($tpl);
 			return;
 		}
-		parent::display($tpl);
+		
 	}
     
     /**
@@ -99,7 +99,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
-        parent::display($tpl);
+        
     }    
 
 	/**
@@ -152,8 +152,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 
-		$this->addToolbar();		
-		parent::display($tpl);
+		
 	}
 
 	/**
@@ -196,7 +195,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->assignRef('lists',            $lists);
 		
 		$this->addToolbar_Populate();		
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 	
 	/**
@@ -239,9 +238,12 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		{
 			JToolBarHelper::custom('round.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'),false);
 		}
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+        //JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//		JToolBarHelper::preferences(JRequest::getCmd('option'));
+
+parent::addToolbar();  
+
 	}	
 	/**
 	* Add the page title and toolbar.

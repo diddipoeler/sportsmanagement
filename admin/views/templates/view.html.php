@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewTemplates
  * 
@@ -54,10 +51,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewTemplates extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewTemplates::display()
+	 * sportsmanagementViewTemplates::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -126,9 +123,9 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$this->assign('request_url',$uri->toString());
 		
 		
-		$this->addToolbar();			
-		parent::display($tpl);
+		
 	}
+    
 	/**
 	* Add the page title and toolbar.
 	*
@@ -154,9 +151,8 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		{
 			JToolBarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
 		}
-		JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences(JRequest::getCmd('option'));
+		
+        parent::addToolbar();
 	}	
 }
 ?>

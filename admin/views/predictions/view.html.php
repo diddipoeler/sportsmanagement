@@ -40,9 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
 
 /**
  * sportsmanagementViewpredictions
@@ -73,39 +70,38 @@ class sportsmanagementViewpredictions extends sportsmanagementView
 //		$this->setDocument();
 	}
  
+	
 	/**
-	 * Setting the toolbar
+	 * sportsmanagementViewpredictions::addToolBar()
+	 * 
+	 * @return void
 	 */
 	protected function addToolBar() 
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'pred-cpanel');
+	//// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//		$canDo = sportsmanagementHelper::getActions();
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'pred-cpanel');
 		
-		if ($canDo->get('core.admin')) 
-		{
-			JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        //JToolBarHelper::preferences($option);
-		}
+		
         parent::addToolbar();
 	}
+    
+	
+	
 	/**
-	 * Method to set up the document properties
-	 *
+	 * sportsmanagementViewpredictions::addIcon()
+	 * 
+	 * @param mixed $image
+	 * @param mixed $url
+	 * @param mixed $text
+	 * @param bool $newWindow
 	 * @return void
 	 */
-	protected function setDocument() 
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
-	}
-	
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
 		$lang		= JFactory::getLanguage();

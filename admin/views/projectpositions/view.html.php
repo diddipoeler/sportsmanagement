@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -55,10 +55,10 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewprojectpositions extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewprojectpositions::display()
+	 * sportsmanagementViewprojectpositions::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -108,8 +108,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
-		$this->addToolbar();
-		parent::display($tpl);
+		
 	}
     
     /**
@@ -287,7 +286,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('lists',$lists);
         $this->addToolbar_Editlist();		
-		parent::display($tpl);
+		
 	}
     
 
@@ -298,21 +297,17 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'projectpositions');
+	//// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//		// Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE'),'projectpositions');
         
         sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 
-		//JToolBarHelper::custom('projectposition.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'),false);
-		JToolBarHelper::divider();
-
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+		parent::addToolbar();  
 
 	}
     
@@ -326,7 +321,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE'),'Positions');
 		JToolBarHelper::save('projectposition.save_positionslist');
 		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		parent::addToolbar();  
 	}
     
 }

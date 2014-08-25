@@ -36,6 +36,7 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
@@ -46,7 +47,7 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
  
 <div class="width-60 fltlft">
 		<fieldset class="adminform">

@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view' );
+
 jimport('joomla.html.parameter.element.timezones');
 
 
@@ -55,6 +55,11 @@ jimport('joomla.html.parameter.element.timezones');
  */
 class sportsmanagementViewJLXMLImports extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewJLXMLImports::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -105,11 +110,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->assignRef('config',$config);
         $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
         
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 	
@@ -136,11 +139,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
         
-	   parent::display($tpl);
+	   //parent::display($tpl);
     }  
     
      
@@ -239,11 +240,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 	private function _displayInfo($tpl)
@@ -273,10 +272,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
                 
         JToolBarHelper::divider();
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
-
-		parent::display($tpl);
+		
+        parent::addToolbar();
+		
+        //parent::display($tpl);
 	}
 
 	private function _displaySelectpage($tpl)
@@ -411,7 +410,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE');
 		$document->setTitle($pageTitle);
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }
