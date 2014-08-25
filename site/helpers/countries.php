@@ -98,8 +98,8 @@ class JSMCountries
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' );
+//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $params->get( 'cfg_which_database_table' );
 
         // Get a db connection.
 $db = JFactory::getDbo();
@@ -109,7 +109,7 @@ $query = $db->getQuery(true);
         // Select some fields
 		$query->select('alpha3,name');
         // From table
-		$query->from('#__'.$database_table.'_countries');
+		$query->from('#__sportsmanagement_countries');
         //$query->from('#__SPORTSMANAGEMENT_countries');
         // Reset the query using our newly populated query object.
 		$db->setQuery($query);
@@ -139,8 +139,8 @@ $query = $db->getQuery(true);
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' );
+//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $params->get( 'cfg_which_database_table' );
 
 	// Get a db connection.
 $db = JFactory::getDbo();
@@ -149,7 +149,7 @@ $query = $db->getQuery(true);
 	  // Select some fields
 		$query->select('alpha3');
         // From table
-		$query->from('#__'.$database_table.'_countries');
+		$query->from('#__sportsmanagement_countries');
         $query->where('alpha2 LIKE \''.$iso_code_2.'\'');
         
     
@@ -173,8 +173,8 @@ $query = $db->getQuery(true);
 	    $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' );
+//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
 $db = JFactory::getDbo();
 // Create a new query object.
@@ -182,7 +182,7 @@ $query = $db->getQuery(true);
 // Select some fields
 		$query->select('alpha2');
         // From table
-		$query->from('#__'.$database_table.'_countries');
+		$query->from('#__sportsmanagement_countries');
         $query->where('alpha3 LIKE \''.$iso_code_3.'\'');
         
 	  
@@ -239,14 +239,14 @@ $query = $db->getQuery(true);
         {
             //return '';
             // welche tabelle soll genutzt werden
-        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
-        $database_table	= $params->get( 'cfg_which_database_table' );
+        //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        //$database_table	= $params->get( 'cfg_which_database_table' );
         // Create a new query object.
         $query = $db->getQuery(true);
         // Select some fields
 		$query->select('picture');
         // From table
-		$query->from('#__'.$database_table.'_countries');
+		$query->from('#__sportsmanagement_countries');
         $query->where('alpha3 LIKE \''.$countrycode.'\'');
 		$db->setQuery($query);
 		$src = $db->loadResult();
@@ -266,8 +266,8 @@ $query = $db->getQuery(true);
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' );
+//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
 $db = JFactory::getDbo();
 // Create a new query object.
@@ -275,7 +275,7 @@ $query = $db->getQuery(true);
 // Select some fields
 		$query->select('name');
         // From table
-		$query->from('#__'.$database_table.'_countries');
+		$query->from('#__sportsmanagement_countries');
         $query->where('alpha3 LIKE \''.$iso3.'\'');
         		
 		

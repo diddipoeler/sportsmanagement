@@ -61,7 +61,7 @@ class sportsmanagementView extends JViewLegacy
 
 		if (empty($this->title))
 		{
-			$this->title = 'COM_SPORTSMANAGEMENT_MANAGER_' . strtoupper($this->getName());
+			$this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName());
 		}
 		if (empty($this->icon))
 		{

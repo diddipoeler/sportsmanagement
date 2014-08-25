@@ -62,7 +62,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
    * @param mixed $tpl
    * @return
    */
-  function display( $tpl = null )
+  public function init ()
 	{
 	   
        $mainframe = JFactory::getApplication();
@@ -80,7 +80,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
 			return;
 		}
     
-    parent::display($tpl);
+    //parent::display($tpl);
 		
 	}
 
@@ -205,8 +205,8 @@ $mainframe = JFactory::getApplication();
         $this->assignRef( 'pagination',		$pagination );
         $this->assignRef( 'items',			$items );
         $this->assign('request_url',$uri->toString());
-        $this->addToolbar();
-		parent::display( $tpl );
+        //$this->addToolbar();
+//		parent::display( $tpl );
 	}
     
     /**
@@ -238,17 +238,9 @@ $mainframe = JFactory::getApplication();
           JToolBarHelper::deleteList( '','predictionmembers.remove' );  
         }
 		
-     /*   
-		JToolBarHelper::addNew('predictiongroup.add');
-		JToolBarHelper::editList('predictiongroup.edit');
-		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
-        */
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+
         
+        parent::addToolbar();
         
 		
 	}

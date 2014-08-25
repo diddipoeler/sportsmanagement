@@ -67,7 +67,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'); ?>
           </legend>        
         </div>
-        <br>        
+        <br>    
+            
         <div class="cpanel">          
           <div class="icon-wrapper">            
             <div id="icon">              
