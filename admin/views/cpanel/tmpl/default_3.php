@@ -44,55 +44,27 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" border="0">
 	<tr>
 		<td width="100%" valign="top">
-<div class="cpanel">          
-          <div class="icon-wrapper">            
-            <div id="icon">              
+<div id="cpanel">          
+                     
               <?php echo $this->addIcon('sportarten.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
-            </div>          
-          </div>        
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('saisons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>            
-            </div>          
-          </div>          
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('ligen.png','index.php?option=com_sportsmanagement&view=leagues', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>            
-            </div>          
-          </div>          
-          
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('federation.png','index.php?option=com_sportsmanagement&view=jlextfederations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'));?>            
-            </div>          
-          </div>
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('laender.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>            
-            </div>          
-          </div>
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('landesverbaende.png','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>            
-            </div>          
-          </div>          
-                    
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('positionen.png','index.php?option=com_sportsmanagement&view=positions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'));?>            
-            </div>          
-          </div>          
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('ereignisse.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>            
-            </div>          
-          </div>          
-          <div class="icon-wrapper">            
-            <div id="icon">              
+                        
               <?php echo $this->addIcon('altersklassen.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?>            
             </div>          
-          </div>        
-        </div>
+
 </td>
 		
 	</tr>

@@ -145,24 +145,22 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 			}
 			JToolBarHelper::cancel('jlextcountry.cancel', 'JTOOLBAR_CLOSE');
 		}
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        //JToolBarHelper::preferences(JRequest::getCmd('option'));
+
         parent::addToolbar();
 	}
     
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_COUNTRY_NEW') : JText::_('COM_SPORTSMANAGEMENT_COUNTRY_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
+	///**
+//	 * Method to set up the document properties
+//	 *
+//	 * @return void
+//	 */
+//	protected function setDocument() 
+//	{
+//		$isNew = $this->item->id == 0;
+//		$document = JFactory::getDocument();
+//		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_COUNTRY_NEW') : JText::_('COM_SPORTSMANAGEMENT_COUNTRY_EDIT'));
+//		$document->addScript(JURI::root() . $this->script);
+//		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+//		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+//	}
 }
