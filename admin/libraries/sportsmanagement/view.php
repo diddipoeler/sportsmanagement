@@ -78,6 +78,7 @@ class sportsmanagementView extends JViewLegacy
 			JToolBarHelper::preferences('com_sportsmanagement');
 			JToolBarHelper::divider();
 		}
+        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 	}
 
 	/**
