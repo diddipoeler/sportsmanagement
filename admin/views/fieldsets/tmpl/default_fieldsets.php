@@ -136,6 +136,8 @@ case 'extra_fields':
 	
 	<table>
     <?php
+    if ( $this->lists )
+    {
 	for($p=0;$p<count($this->lists['ext_fields']);$p++)
             {
 			?>
@@ -151,6 +153,7 @@ case 'extra_fields':
 			</tr>
 			<?php	
 			}
+            }
 	?>
     </table>
 	</fieldset>
@@ -222,8 +225,24 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 	
 	foreach ($fields as $field)
 	{
+	   if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        {
 		echo $field->label;
        	echo $field->input;
+        }
+        else
+        {
+            ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php
+        }
 	}
 	?>
 	</fieldset>

@@ -37,81 +37,81 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
+// No direct access
 defined('_JEXEC') or die('Restricted access');
- 
+$templatesToLoad = array('footer','fieldsets');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+jimport('joomla.html.pane');
+$params = $this->form->getFieldsets('params');
 
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
+//echo '<br><pre>'.print_r($fieldsets,true).'</pre>';
 
-/**
- * sportsmanagementViewspecialextensions
- * 
- * @package 
- * @author diddi
- * @copyright 2014
- * @version $Id$
- * @access public
- */
-class sportsmanagementViewspecialextensions extends sportsmanagementView
-{
-	
-	/**
-	 * sportsmanagementViewspecialextensions::init()
-	 * 
-	 * @return void
-	 */
-	public function init ()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $model	= $this->getModel();
-        
-        $this->Extensions = $model->getSpecialExtensions();
-        
-
-	}
- 
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar() 
-	{ 
-//  		// Get a refrence of the page instance in joomla
-//	$document	= JFactory::getDocument();
-//    $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//		$canDo = sportsmanagementHelper::getActions();
-		
-	parent::addToolbar();  	
-        
-	}
-	
-   
-	
-	/**
-	 * sportsmanagementViewspecialextensions::addIcon()
-	 * 
-	 * @param mixed $image
-	 * @param mixed $url
-	 * @param mixed $text
-	 * @param bool $newWindow
-	 * @return void
-	 */
-	public function addIcon( $image , $url , $text , $newWindow = false )
-	{
-		$lang		= JFactory::getLanguage();
-		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
 ?>
-		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-			<div class="icon">
-				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-					<?php echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image , NULL, NULL ); ?>
-					<span><?php echo $text; ?></span></a>
-			</div>
-		</div>
-<?php
-	}
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+ 
 	
-}
+<div class="form-horizontal">
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+
+<?PHP    
+foreach ($fieldsets as $fieldset) 
+{
+echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+
+switch ($fieldset->name)
+{
+    case 'details':
+    ?>
+    <div class="row-fluid">
+			<div class="span9">
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+    <?PHP
+    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    {
+        ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php
+
+    }
+    ?>
+    </div>
+				</div>
+			</div>
+            </div>
+    <?PHP
+    break;
+    default:
+    $this->fieldset = $fieldset->name;
+    echo $this->loadTemplate('fieldsets');
+    break;
+}    
+echo JHtml::_('bootstrap.endTab');    
+}    
+
+?>    
+	
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</div> 
+
+	<div>
+		<input type="hidden" name="task" value="playground.edit" />
+		<?php echo JHtml::_('form.token'); ?>
+	</div>
+</form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   

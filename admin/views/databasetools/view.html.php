@@ -42,44 +42,56 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @author	Kurt Norgaz
- * @package	Joomleague
- * @since	1.5.0a
+ * sportsmanagementViewDatabaseTools
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewDatabaseTools extends sportsmanagementView
 {
-	function display( $tpl = null )
+	/**
+	 * sportsmanagementViewDatabaseTools::init()
+	 * 
+	 * @return void
+	 */
+	public function init ()
 	{
 		$db		= JFactory::getDBO();
 		$uri	= JFactory::getURI();
 
 		$this->assign( 'request_url',	$uri->toString() );
 
-		$this->addToolbar();		
-		parent::display( $tpl );
+		
 	}
+    
+	
 	/**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
+	 * sportsmanagementViewDatabaseTools::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar()
 	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//  		// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//		// Set toolbar items for the page
+//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'databases' );
+//		JToolBarHelper::back();
+//		JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
         
-		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'databases' );
-		JToolBarHelper::back();
-		JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();  
+        
 	}	
 	
 }
