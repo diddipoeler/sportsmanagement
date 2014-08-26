@@ -35,7 +35,9 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/ 
+*/
+
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -44,11 +46,13 @@ JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+
+//echo COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE;
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-	
-    
- <div class="form-horizontal">
+ 
+<div class="form-horizontal">
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
@@ -98,12 +102,17 @@ echo JHtml::_('bootstrap.endTab');
 	
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
 </div> 
+
+
+
+
     
-    
-		<div class="clr"></div>
-		<div>
-        <input type="hidden" name="task" value="division.edit" />
-		<?php echo JHtml::_( 'form.token' ); ?>
+ <div class="clr"></div>
+	
+ 
+	<div>
+		<input type="hidden" name="task" value="agegroup.edit" />
+		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
 <?PHP

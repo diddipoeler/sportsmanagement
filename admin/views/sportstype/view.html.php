@@ -40,9 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
 
 /**
  * sportsmanagementViewSportsType
@@ -56,10 +53,10 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewSportsType extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewSportsType::display()
+	 * sportsmanagementViewSportsType::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -83,17 +80,7 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewSportsType item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
- 
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
-        // Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+
 	}
  
 	/**
@@ -101,66 +88,9 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	
 		JRequest::setVar('hidemainmenu', true);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT'), 'sporttype');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('sportstype.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('sportstype.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('sportstype.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('sportstype.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('sportstype.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('sportstype.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('sportstype.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('sportstype.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			JToolBarHelper::cancel('sportstype.cancel', 'JTOOLBAR_CLOSE');
-		}
-        JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+	parent::addToolbar();
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW') : JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
+
 }

@@ -51,63 +51,58 @@ $fieldsets = $this->form->getFieldsets();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
  
-<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
-			<ul class="adminformlist">
-			<?php foreach($this->form->getFieldset('details') as $field) :?>
-				<li><?php echo $field->label; ?>
-				<?php echo $field->input; 
-                
-                $suchmuster = array ("jform[","]");
-                $ersetzen = array ('', '');
-                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
-                switch ($var_onlinehelp)
-                {
-                    case 'id':
-                    break;
-                    default:
-                ?>
-                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
-									?>
-								</a>
-                
-                <?PHP
-                break;
-                }
-                
-                ?></li>
-			<?php endforeach; ?>
-			</ul>
-		</fieldset>
-	</div>
 
-<div class="width-40 fltrt">
-		<?php
-		echo JHtml::_('sliders.start');
-		foreach ($fieldsets as $fieldset) :
-			if ($fieldset->name == 'details') :
-				continue;
-			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
-		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
-			endif;
-		//echo $this->loadTemplate($fieldset->name);
-        $this->fieldset = $fieldset->name;
-        echo $this->loadTemplate('fieldsets');
-		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
 
+<div class="form-horizontal">
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+
+<?PHP    
+foreach ($fieldsets as $fieldset) 
+{
+echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+
+switch ($fieldset->name)
+{
+    case 'details':
+    ?>
+    <div class="row-fluid">
+			<div class="span9">
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+    <?PHP
+    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    {
+        ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php
+
+    }
+    ?>
+    </div>
+				</div>
+			</div>
+            </div>
+    <?PHP
+    break;
+    default:
+    $this->fieldset = $fieldset->name;
+    echo $this->loadTemplate('fieldsets');
+    break;
+}    
+echo JHtml::_('bootstrap.endTab');    
+}    
+
+?>    
 	
-	</div>    
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</div> 
     
     
 	
