@@ -450,7 +450,14 @@ abstract class sportsmanagementHelper
         {
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        {
         $jRegistry->loadJSON($data);
+        }
+        else
+        {
+        $jRegistry->loadString($data);    
+        }
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');

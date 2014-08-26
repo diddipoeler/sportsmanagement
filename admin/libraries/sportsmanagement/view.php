@@ -63,6 +63,9 @@ class sportsmanagementView extends JViewLegacy
 	 */
 	public function display ($tpl = null)
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
@@ -96,6 +99,9 @@ class sportsmanagementView extends JViewLegacy
 	 */
 	protected function addToolbar ()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
 		$canDo = sportsmanagementHelper::getActions();
         
         if ( $this->layout == 'edit')
@@ -159,21 +165,40 @@ class sportsmanagementView extends JViewLegacy
         
         }
 		
+        
+        
         if (empty($this->icon))
 		{
 			$this->icon = strtolower($this->getName());
 		}
 		
-        JToolBarHelper::title(JText::_($this->title), $this->icon);
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
+        
+        //JToolBarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
-		$document->addStyleDeclaration(
-				'.icon-48-' . $this->icon . ' {background-image: url(../media/com_sportsmanagement/images/admin/48-' . $this->icon .
-						 '.png);background-repeat: no-repeat;}');
-
-		
-        $document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+//		$document->addStyleDeclaration(
+//				'.icon-48-' . $this->icon . ' {background-image: url(../media/com_sportsmanagement/images/admin/48-' . $this->icon .
+//						 '.png);background-repeat: no-repeat;}');
+
+		if ( $this->layout == 'edit')
+        {
+        if ($isNew) 
+		{
+        JToolBarHelper::title(JText::_($this->title), $this->icon);
+        }
+        else
+        {
+        JToolBarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
+        }
+        }
+        else
+        {
+        JToolBarHelper::title(JText::_($this->title), $this->icon);    
+        }
         
         if ($canDo->get('core.admin'))
 		{

@@ -290,41 +290,27 @@ echo JHtml::_('sliders.end');
         
         $mainframe =& JFactory::getApplication();
         $db = JFactory::getDbo();
-        /*
-        if ( count($param_array) > 0 )
-        {
-            // store the combined new and existing values back as a JSON string
-                        $paramsString = json_encode( $param_array );
-
-echo '<pre>' . print_r($paramsString,true). '</pre><br>';
-                        
-                        $db->setQuery('UPDATE #__extensions SET params = ' .
-                                $db->quote( $paramsString ) .
-                                ' WHERE name = "com_sportsmanagement" and type ="component"' );
-                                $db->query();
-        $mainframe->enqueueMessage(JText::_('Sportsmanagement Konfiguration gesichert'),'');
-        }
-        */                
                                 
-                if ( count($param_array) > 0 ) {
-                        // read the existing component value(s)
-                        $db = JFactory::getDbo();
-                        $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
-                        $params = json_decode( $db->loadResult(), true );
-                        //$mainframe->enqueueMessage(JText::_('setParams params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-                        //$mainframe->enqueueMessage(JText::_('setParams params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        // add the new variable(s) to the existing one(s)
-                        foreach ( $param_array as $name => $value ) {
-                                $params[ (string) $name ] = (string) $value;
-                        }
-                        //$mainframe->enqueueMessage(JText::_('setParams params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        // store the combined new and existing values back as a JSON string
-                        $paramsString = json_encode( $params );
-                        $db->setQuery('UPDATE #__extensions SET params = ' .
-                                $db->quote( $paramsString ) .
-                                ' WHERE name = "com_sportsmanagement"' );
-                                $db->query();
-                }
+//                if ( count($param_array) > 0 ) 
+//                {
+//                        // read the existing component value(s)
+//                        $db = JFactory::getDbo();
+//                        $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
+//                        $params = json_decode( $db->loadResult(), true );
+//                        //$mainframe->enqueueMessage(JText::_('setParams params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+//                        //$mainframe->enqueueMessage(JText::_('setParams params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
+//                        // add the new variable(s) to the existing one(s)
+//                        foreach ( $param_array as $name => $value ) {
+//                                $params[ (string) $name ] = (string) $value;
+//                        }
+//                        //$mainframe->enqueueMessage(JText::_('setParams params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
+//                        // store the combined new and existing values back as a JSON string
+//                        $paramsString = json_encode( $params );
+//                        $db->setQuery('UPDATE #__extensions SET params = ' .
+//                                $db->quote( $paramsString ) .
+//                                ' WHERE name = "com_sportsmanagement"' );
+//                                $db->query();
+//                }
                 
         }
         
@@ -340,11 +326,14 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
   $src = $parent->getParent()->getPath('source');
   $manifest = $parent->getParent()->manifest;
   $db = JFactory::getDBO();
+  $j = new JVersion();
+  $joomla_version = $j->RELEASE;
   
   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
   
   $plugins = $manifest->xpath('plugins/plugin');
+  $plugins3 = $manifest->xpath('plugins3/plugin');
   foreach ($plugins as $plugin)
         {
         $name = (string)$plugin->attributes()->plugin;
@@ -402,6 +391,71 @@ echo '<pre>' . print_r($paramsString,true). '</pre><br>';
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         
+        }
+        
+        // plugin joomla 3
+        if ( $joomla_version == '3' )
+        {
+        
+        foreach ($plugins3 as $plugin)
+        {
+        $name = (string)$plugin->attributes()->plugin;
+        $group = (string)$plugin->attributes()->group;
+        
+        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
+        
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
+        
+        // Select some fields
+        $query = $db->getQuery(true);
+        $query->clear();
+		$query->select('extension_id');
+        // From table
+        $query->from('#__extensions');
+        $query->where("type = 'plugin' ");
+        $query->where("element = '".$name."' ");
+        $query->where("folder = '".$group."' ");
+        $db->setQuery($query);
+        $plugin_id = $db->loadResult();
+
+        switch ( $name )
+        {
+        case 'jqueryeasy_3';
+        if ( $plugin_id )
+        {
+            // plugin ist vorhanden
+            // wurde vielleicht schon aktualisiert
+            $path = $src.DS.'plugins'.DS.$name;
+            $installer = new JInstaller;
+            $result = $installer->install($path);   
+        }
+        else
+        {
+            // plugin ist nicht vorhanden
+            // also installieren
+            $path = $src.DS.'plugins'.DS.$name;
+            $installer = new JInstaller;
+            $result = $installer->install($path);    
+        }    
+        break;
+        default:    
+        $path = $src.DS.'plugins'.DS.$name;
+        $installer = new JInstaller;
+        $result = $installer->install($path);
+        break;
+        }
+        
+        // auf alle faelle einschalten        
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->extension_id = $plugin_id;
+        $object->enabled = 1;
+        // Update their details in the users table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
+        
+        }
         }    
 
     

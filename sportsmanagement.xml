@@ -22,11 +22,13 @@
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
+	
 	<uninstall> <!-- Runs on uninstall -->
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
+	
 	<update> <!-- Runs on update; New in 1.6 -->
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
@@ -158,7 +160,6 @@
 <module module="mod_sportsmanagement_top_tipper" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_ajax_top_navigation_menu" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
-
 <module module="mod_sportsmanagement_gcalendar" client="site"  position="" published=""/>
 </modules>
 
@@ -166,10 +167,12 @@
 <plugin plugin="jqueryeasy" group="system" />	
 <plugin plugin="jw_ts" group="content" />
 <plugin plugin="plugin_googlemap3" group="system" />
-
 <plugin plugin="jsm_siscron" group="system" />	
 <plugin plugin="jsm_search" group="search" />	
-
 </plugins>
+
+<plugins3>
+<plugin plugin="jqueryeasy_3" group="system" />	
+</plugins3>
      
 </extension>
