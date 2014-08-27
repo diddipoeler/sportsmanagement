@@ -223,16 +223,22 @@ else
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $xml = JFactory::getXMLParser( 'Simple' );
-        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
-            
+        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
         }
         else
         {
-        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
-        }
+        $xml = JFactory::getXMLParser( 'Simple' );
+        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
+        }    
+
+//        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+//        {
+//        }
+//        else
+//        {
+//        }
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
         foreach( $xml->document->version as $version ) 

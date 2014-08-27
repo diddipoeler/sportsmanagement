@@ -105,12 +105,22 @@ class com_sportsmanagementInstallerScript
 	 */
 	function preflight($type, $parent) 
 	{
+	   if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            echo JHtml::_('bootstrap.startTabSet', 'JSMTab', array('active' => 'Component'));
+            $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
+            echo JHtml::_('bootstrap.addTab', 'JSMTab', 'Component', JText::_(' Component', true)); 
+             
+            }
+            else
+            {
 	   echo JHtml::_('sliders.start','steps',array(
 						'allowAllClose' => true,
 						'startTransition' => true,
 						true));
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
-		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');                      
+		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
+        }                      
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		
@@ -133,6 +143,11 @@ class com_sportsmanagementInstallerScript
             <br />
          <?php       
         echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+        
+        
+        
+        
+        
 	}
  
 	/**
@@ -145,6 +160,67 @@ class com_sportsmanagementInstallerScript
 	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+            echo JHtml::_('bootstrap.endTab'); 
+            switch ($type)        
+    {
+    case "install":
+//    self::setParams($newparams);
+//    self::installComponentLanguages();
+
+echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Modules', JText::_(' Modules', true));  
+$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+    self::installModules($parent);
+    echo JHtml::_('bootstrap.endTab'); 
+    
+    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Plugins', JText::_(' Plugins', true));  
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+    self::installPlugins($parent);
+    echo JHtml::_('bootstrap.endTab'); 
+    
+    echo JHtml::_('bootstrap.addTab', 'JSMTab', $fieldset->name, JText::_($fieldset->label, true));  
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+    self::createImagesFolder();
+    echo JHtml::_('bootstrap.endTab'); 
+    
+//    self::migratePicturePath();
+//    self::deleteInstallFolders();
+//    self::sendInfoMail();
+    break;
+    case "update":
+//    self::installComponentLanguages();
+echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Modules', JText::_(' Modules', true));  
+$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+    self::installModules($parent);
+    echo JHtml::_('bootstrap.endTab'); 
+    
+    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Plugins', JText::_(' Plugins', true));  
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+    self::installPlugins($parent);
+    echo JHtml::_('bootstrap.endTab'); 
+    
+    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Create/Update Images Folders', JText::_(' Create/Update Images Folders', true));  
+    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+    self::createImagesFolder();
+    echo JHtml::_('bootstrap.endTab'); 
+    
+//    self::migratePicturePath();
+//      self::setParams($newparams);
+//    self::deleteInstallFolders();
+//    self::sendInfoMail();
+    break;
+    case "discover_install":
+    break;
+        
+    }
+            
+            
+            echo JHtml::_('bootstrap.endTabSet');
+            }
+            else
+            {
 //    echo JHtml::_('sliders.start','steps',array(
 //						'allowAllClose' => true,
 //						'startTransition' => true,
@@ -225,6 +301,9 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 
 echo JHtml::_('sliders.end');
 echo self::getFxInitJSCode('steps');
+
+}
+
 	}
     
     

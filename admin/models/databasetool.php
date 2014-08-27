@@ -337,7 +337,7 @@ $prefix.'joomleague_' => ''
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();   
-        $xml = JFactory::getXMLParser( 'Simple' );
+        //$xml = JFactory::getXMLParser( 'Simple' );
         
         foreach ( $sm_quotes as $key => $type )
         {
@@ -354,8 +354,19 @@ $prefix.'joomleague_' => ''
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote')->where('daily_number = '.$temp[1].''  );
             $db->setQuery($query);
             $result = $db->query();
+            
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');        
+            }
+            else
+            {
+                $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            }
     
-            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            //$xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            
             foreach( $xml->document->version as $version ) 
             {
             $quote_version = $version->data();
@@ -461,8 +472,17 @@ $prefix.'joomleague_' => ''
 					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
 					$this->my_text .= JText::sprintf('Die Datei %1$s ist vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
                     
-        $xml = JFactory::getXMLParser( 'Simple' );
-       $xml->loadFile($filename); 
+                    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+    $xml = JFactory::getXML($filename);        
+            }
+            else
+            {
+                $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile($filename);
+            }
+//        $xml = JFactory::getXMLParser( 'Simple' );
+//       $xml->loadFile($filename); 
        
        // schleife altersgruppen anfang
        foreach( $xml->document->agegroups as $agegroup ) 
@@ -537,16 +557,17 @@ $prefix.'joomleague_' => ''
     $option = JRequest::getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
-
-if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+    
+    if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXMLParser( 'Simple' );
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');        
+            }
+            else
+            {
+                $xml = JFactory::getXMLParser( 'Simple' );
     $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
-    }
-    else
-    {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');    
-    }
+            }
+
     
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml')) 
     {
@@ -720,9 +741,19 @@ if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
     //$fileContent = JFile::read($db_table);    
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
     
-    $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+//    $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
     
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');        
+            }
+            else
+            {
+                $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+            }
+            
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml')) 
     {
         return false;

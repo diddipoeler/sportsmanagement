@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-	<fieldset name="details">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
 			name="id"
 			type="hidden"
