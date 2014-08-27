@@ -416,7 +416,17 @@ $prefix.'joomleague_' => ''
             else
             {
             
-            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');        
+            }
+            else
+            {
+                $xml = JFactory::getXMLParser( 'Simple' );
+    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+            }
+            
+//            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
             foreach( $xml->document->version as $version ) 
             {
             $quote_version = $version->data();
