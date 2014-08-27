@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+
 
 
 /**
@@ -54,10 +54,10 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewUpdates extends JView
 {
+	
 	/**
-	 * sportsmanagementViewUpdates::display()
+	 * sportsmanagementViewUpdates::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
 	public function init ()
@@ -105,8 +105,14 @@ class sportsmanagementViewUpdates extends JView
 		$this->assign('request_url',$uri->toString());
 		$this->assignRef('lists',$lists);
         $this->assignRef('option',$option);
-        $this->addToolbar();
-		parent::display($tpl);
+        
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
+        
+//        $this->addToolbar();
+//		parent::display($tpl);
 	}
     
     /**

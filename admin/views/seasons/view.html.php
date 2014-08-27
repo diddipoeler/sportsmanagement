@@ -104,6 +104,11 @@ $starttime = microtime();
         
         $this->assignRef('season_id',$season_id);
         
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
+        
 		
 	}
 	

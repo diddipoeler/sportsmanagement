@@ -68,6 +68,11 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
        
         $this->assignRef('option',$option);
         
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
+        
 	}
     
     /**

@@ -73,22 +73,45 @@ class sportsmanagementView extends JViewLegacy
 		}
         
         $this->layout = $this->getLayout();
-
-		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
-		{
-			// wir lassen das layout so wie es ist, dann müssen
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $this->setLayout($this->getLayout() . '_3');
+        }
+        else
+        {
+            // wir lassen das layout so wie es ist, dann müssen
             // nicht so viele dateien umbenannt werden
             //$this->setLayout($this->getLayout() . '_25');
             $this->setLayout($this->getLayout() );
-		}
-		if (sportsmanagementHelper::isJoomlaVersion('3'))
-		{
-			$this->setLayout($this->getLayout() . '_3');
-		}
+        }
+        
+        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+
+//		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
+//		{
+//			// wir lassen das layout so wie es ist, dann müssen
+//            // nicht so viele dateien umbenannt werden
+//            //$this->setLayout($this->getLayout() . '_25');
+//            $this->setLayout($this->getLayout() );
+//		}
+//		if (sportsmanagementHelper::isJoomlaVersion('3'))
+//		{
+//			$this->setLayout($this->getLayout() . '_3');
+//		}
 
 		$this->init();
 
 		$this->addToolbar();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        sportsmanagementHelper::addSubmenu('menu');    
+        $this->sidebar = JHtmlSidebar::render();
+        }
+        
 		parent::display($tpl);
 	}
 
@@ -103,6 +126,64 @@ class sportsmanagementView extends JViewLegacy
 		$mainframe = JFactory::getApplication();
         
 		$canDo = sportsmanagementHelper::getActions();
+        
+        // in der joomla 3 version kann man die filter setzen
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        JHtmlSidebar::setAction('index.php?option=sportsmanagement');   
+        
+        if ( isset($this->federation) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
+			'filter_federation',
+			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
+		);
+        }
+        if ( isset($this->search_nation) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
+			'filter_search_nation',
+			JHtml::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
+		);
+        }
+        
+        if ( isset($this->userfields) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
+			'filter_userfields',
+			JHtml::_('select.options', $this->userfields, 'value', 'text', $this->state->get('filter.userfields'), true)
+		);
+        }
+        if ( isset($this->league) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
+			'filter_league',
+			JHtml::_('select.options', $this->league, 'value', 'text', $this->state->get('filter.league'), true)
+		);
+        }
+        if ( isset($this->sports_type) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
+			'filter_sports_type',
+			JHtml::_('select.options', $this->sports_type, 'value', 'text', $this->state->get('filter.sports_type'), true)
+		);
+        }
+        if ( isset($this->season) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
+			'filter_season',
+			JHtml::_('select.options', $this->season, 'value', 'text', $this->state->get('filter.season'), true)
+		);
+        }
+         
+        }    
+        
         
         if ( $this->layout == 'edit')
         {
@@ -172,7 +253,7 @@ class sportsmanagementView extends JViewLegacy
 			$this->icon = strtolower($this->getName());
 		}
 		
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
         //JToolBarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();

@@ -80,55 +80,18 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 
 	}
  
+	
 	/**
-	 * Setting the toolbar
+	 * sportsmanagementViewJlextcountry::addToolBar()
+	 * 
+	 * @return void
 	 */
 	protected function addToolBar() 
 	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+  	
         
 		JRequest::setVar('hidemainmenu', true);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_COUNTRY_NEW') : JText::_('COM_SPORTSMANAGEMENT_COUNTRY_EDIT'), 'country');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('jlextcountry.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('jlextcountry.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('jlextcountry.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('jlextcountry.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('jlextcountry.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('jlextcountry.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('jlextcountry.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('jlextcountry.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			JToolBarHelper::cancel('jlextcountry.cancel', 'JTOOLBAR_CLOSE');
-		}
+	
 
         parent::addToolbar();
 	}

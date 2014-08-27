@@ -166,7 +166,10 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
 		
-        
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
         
 	}
     

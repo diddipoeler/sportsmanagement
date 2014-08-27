@@ -96,6 +96,9 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$mdluserfields = JModelLegacy::getInstance('extrafields','sportsmanagementModel');
 		$alluserfields = $mdluserfields->getExtraFields('project');
 		$userfields = array_merge($userfields,$alluserfields);
+        
+        $this->assignRef('userfields',$alluserfields);
+        
 		$lists['userfields'] = JHtml::_( 'select.genericList',
 									$userfields,
 									'filter_userfields',
@@ -110,6 +113,9 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$mdlLeagues = JModelLegacy::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
 		$leagues = array_merge($leagues,$allLeagues);
+        
+        $this->assignRef('league',$allLeagues);
+        
 		$lists['leagues'] = JHtml::_( 'select.genericList',
 									$leagues,
 									'filter_league',
@@ -125,6 +131,9 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes,$allSportstypes);
+        
+        $this->assignRef('sports_type',$allSportstypes);
+        
 		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
@@ -141,6 +150,8 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons,$allSeasons);
         
+        $this->assignRef('season',$allSeasons);
+        
 		$lists['seasons'] = JHtml::_( 'select.genericList',
 									$seasons,
 									'filter_season',
@@ -156,6 +167,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
+            $this->assignRef('search_nation',$res);
         }
         
         $lists['nation'] = $nation;
@@ -194,6 +206,8 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$url=$uri->toString();
 		$this->assignRef('request_url',$url);
+        
+
 
 	}
 
@@ -204,13 +218,13 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'projects');
+	//// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//		// Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'projects');
 		JToolBarHelper::publishList('project.publish');
 		JToolBarHelper::unpublishList('project.unpublish');
 		JToolBarHelper::divider();

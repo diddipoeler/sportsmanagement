@@ -152,7 +152,11 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
     $this->assignRef( 'lists',			$lists );
     $this->assignRef('request_url',$uri->toString());
     
-		parent::display( $tpl );
+		if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
+        
 	}	
 
 	
@@ -205,6 +209,12 @@ $mainframe = JFactory::getApplication();
         $this->assignRef( 'pagination',		$pagination );
         $this->assignRef( 'items',			$items );
         $this->assign('request_url',$uri->toString());
+        
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
+        
         //$this->addToolbar();
 //		parent::display( $tpl );
 	}

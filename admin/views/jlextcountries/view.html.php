@@ -65,13 +65,13 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
         $model	= $this->getModel();
         $inputappend = '';
         
-        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
-        $mainframe->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
+        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$mainframe->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
-$starttime = microtime(); 
+        $starttime = microtime(); 
 		$items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -87,9 +87,11 @@ $starttime = microtime();
 		if ($res = $this->get('Federation') )
         {
             $nation = array_merge($nation,$res);
+            $this->assignRef('federation',$res);
+        
+
         }
 		
-        //$lists['nation'] = $nation;
         $lists['federation']= JHtmlSelect::genericlist(	$nation,
 																'filter_federation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -104,6 +106,8 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 
+
+
 	}
 	
 	/**
@@ -113,14 +117,20 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		
+//        if(version_compare(JVERSION,'3.0.0','ge')) 
+//        {
+//        JHtmlSidebar::setAction('index.php?option=sportsmanagement');   
+//        JHtmlSidebar::addFilter(
+//			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
+//			'filter_federation',
+//			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
+//		);
+//        
+//         
+//        }    
         
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRIES_TITLE'),'countries');
 		JToolBarHelper::addNew('jlextcountry.add');
 		JToolBarHelper::editList('jlextcountry.edit');
 		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

@@ -94,6 +94,11 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 		$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 	   
        }
+       
+       if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
 
 
 	}

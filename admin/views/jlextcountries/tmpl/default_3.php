@@ -39,11 +39,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+//echo 'sidebar -><pre>'.print_r($this->sidebar,true).'</pre>';
+
 ?>
 <script language="javascript" type="text/javascript">
 
@@ -55,9 +57,20 @@ function searchPerson(val)
 	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
+
 	<table>
 		<tr>
-			<td align="left" width="100%">
+			<td align="left" width="">
 				<?php
 				echo JText::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
@@ -71,8 +84,8 @@ function searchPerson(val)
 					?>
 				</button>
                 </td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['federation'].'&nbsp;&nbsp;'; ?>
-            <td align="center" colspan="4">
+            
+            <td align="left" >
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
 		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');

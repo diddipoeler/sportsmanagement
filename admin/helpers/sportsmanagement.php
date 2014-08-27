@@ -40,13 +40,14 @@
 defined('_JEXEC') or die;
  
 
+
 /**
  * sportsmanagementHelper
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
  * @access public
  */
 abstract class sportsmanagementHelper
@@ -65,11 +66,12 @@ abstract class sportsmanagementHelper
         
 		$j = new JVersion();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
+        
         if (! defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION'))
         {
-        DEFINE( 'COM_SPORTSMANAGEMENT_JOOMLAVERSION',$j->RELEASE );
+        DEFINE( 'COM_SPORTSMANAGEMENT_JOOMLAVERSION',substr($j->RELEASE, 0, strlen($version)) );
         }
         
 		return substr($j->RELEASE, 0, strlen($version)) == $version;
@@ -248,6 +250,7 @@ abstract class sportsmanagementHelper
     
     
     
+	
 	/**
 	 * sportsmanagementHelper::addSubmenu()
 	 * 
@@ -256,9 +259,9 @@ abstract class sportsmanagementHelper
 	 */
 	public static function addSubmenu($submenu) 
 	{
-	   $mainframe	= JFactory::getApplication();
+	   $mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $document=JFactory::getDocument();
+        $document = JFactory::getDocument();
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
         // the specified default value will be returned.
@@ -278,8 +281,27 @@ abstract class sportsmanagementHelper
             $mainframe->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
             $mainframe->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
         }
+        
         //$mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-		
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_MENU'),
+			'index.php?option=com_sportsmanagement',
+			$submenu == 'menu'
+		);
+        
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'),
+			'index.php?option=com_sportsmanagement&view=projects',
+			$submenu == 'projects'
+		);
+            
+        }
+        else
+        {    
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
 		
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
@@ -292,9 +314,6 @@ abstract class sportsmanagementHelper
         }
         else
         {
-//         $menu = JToolBar::getInstance('submenu');
-//         $menu->appendButton(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), '', false);    
-        //JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=', false );
         }
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');
@@ -312,6 +331,7 @@ abstract class sportsmanagementHelper
 		{
 			$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
 		}
+        }
 	}
     
 	/**
@@ -395,13 +415,15 @@ abstract class sportsmanagementHelper
 		
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $jRegistry->loadJSON($data);
+        
+        $jRegistry->loadString($data); 
         }
         else
         {
-        $jRegistry->loadString($data);    
+        $jRegistry->loadJSON($data);   
         }
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -450,13 +472,14 @@ abstract class sportsmanagementHelper
         {
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $jRegistry->loadJSON($data);
+        
+        $jRegistry->loadString($data);
         }
         else
         {
-        $jRegistry->loadString($data);    
+        $jRegistry->loadJSON($data);    
         }
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');

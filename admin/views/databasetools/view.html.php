@@ -66,6 +66,10 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView
 
 		$this->assign( 'request_url',	$uri->toString() );
 
+if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
 		
 	}
     

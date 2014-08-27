@@ -157,10 +157,15 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$this->assignRef( 'predictiongame',	$predictiongame );
 		$this->assign('request_url',$uri->toString());
         
-        // Set the toolbar
-		$this->addToolBar();
+        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+        sportsmanagementHelper::addSubmenu('menu');
+        }
         
-        parent::display( $tpl );
+//        // Set the toolbar
+//		$this->addToolBar();
+//        
+//        parent::display( $tpl );
         
 	}
     

@@ -77,7 +77,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         sportsmanagementHelper::isJoomlaVersion('2.5');
-        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
         
         // für den import die jl tabellen lesen
         $jl_table_import = $databasetool->getJoomleagueTables();
@@ -261,6 +261,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		// Assign data to the view
 		$this->items = $items;
 		$this->pagination = $pagination;
+        
+        
  
 
 	}
@@ -318,6 +320,10 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
             //}
             
+            if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
+        {
+            JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
+         }   
             parent::addToolbar();
 		}
 	}

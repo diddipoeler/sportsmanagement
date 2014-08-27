@@ -38,23 +38,22 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
 ?>
-<script language="javascript" type="text/javascript">
-
-function searchPerson(val)
-	{
-        var s= document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-	}
-</script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
 	<table>
 		<tr>
 			<td align="left" width="100%">
@@ -70,35 +69,26 @@ function searchPerson(val)
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
-                </td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['federation'].'&nbsp;&nbsp;'; ?>
-            <td align="center" colspan="4">
-				<?php
-                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
-		for ($i=$startRange; $i <= $endRange; $i++)
-		{
-			
-            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
-            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
-			}
-				
-				?>
 			</td>
-            </td>
-			</td>
+            
+			<td class="nowrap" align="right"><select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php 
+                echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                ?>
+			</select></td>
 		</tr>
 	</table>
-    
+
 <?PHP
 echo $this->loadTemplate('data');
 ?>   
-
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	
+	<input type="hidden" name="task"				value="" />
+	<input type="hidden" name="boxchecked"			value="0" />
+	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
+	<input type="hidden" name="filter_order_Dir"	value="" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";
