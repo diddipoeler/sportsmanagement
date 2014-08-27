@@ -88,7 +88,11 @@ $starttime = microtime();
         
         //build the html options for nation
 		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		if ($res = JSMCountries::getCountryOptions())
+        {
+            $nation=array_merge($nation,$res);
+            $this->assignRef('search_nation',$res);
+            }
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
@@ -105,10 +109,7 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
 
 	}
     
@@ -119,15 +120,15 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+  		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
 	// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'associations');
+		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'associations');
 // 		JToolBarHelper::addNewX();
 // 		JToolBarHelper::editListX();
 		JToolBarHelper::addNew('jlextassociation.add');
