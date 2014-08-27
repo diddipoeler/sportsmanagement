@@ -40,15 +40,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
+
 /**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @packag	JoomLeague
- * @since	1.5.0a
+ * sportsmanagementViewEventtypes
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewEventtypes extends sportsmanagementView
 {
@@ -87,8 +89,9 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
-		$sportstypes=array_merge($sportstypes,$allSportstypes);
-		
+		$sportstypes = array_merge($sportstypes,$allSportstypes);
+		$this->assignRef('sports_type',$allSportstypes);
+        
 		$lists['sportstypes']=JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
@@ -105,10 +108,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
 		
 	}
 	
@@ -120,14 +120,14 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	protected function addToolbar()
 	{
   		$option = JRequest::getCmd('option');
-          // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE'),'events');
+//          // Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//		// Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE'),'events');
 
 // 		JToolBarHelper::publishList('eventtype.publish');
 // 		JToolBarHelper::unpublishList('eventtype.unpublish');
