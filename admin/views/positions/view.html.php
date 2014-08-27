@@ -97,8 +97,11 @@ $starttime = microtime();
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'),'id','name');
 		//$allSportstypes =& sportsmanagementModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
-		$sportstypes=array_merge($sportstypes,$allSportstypes);
-		$lists['sportstypes']=JHtml::_( 'select.genericList',
+		$sportstypes = array_merge($sportstypes,$allSportstypes);
+        
+        $this->assignRef('sports_type',$allSportstypes);
+        
+		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -113,10 +116,7 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
 		
 	}
 	
@@ -127,13 +127,13 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE'),'positions');
+//	// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//		// Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE'),'positions');
 
 // 		JToolBarHelper::publishList('position.publish');
 // 		JToolBarHelper::unpublishList('position.unpublish');
