@@ -84,6 +84,7 @@ $starttime = microtime();
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
+            $this->assignRef('search_nation',$res);
         }
 		
         $lists['nation'] = $nation;
@@ -104,10 +105,7 @@ $starttime = microtime();
         
         $this->assignRef('season_id',$season_id);
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
         
 		
 	}
@@ -119,11 +117,11 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{ 
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page

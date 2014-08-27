@@ -93,12 +93,8 @@ $starttime = microtime();
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-        
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
-		
+      
+	
 		
 	}
 	
@@ -109,11 +105,11 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE'),'sporttypes');
