@@ -113,7 +113,26 @@ class com_sportsmanagementInstallerScript
 		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');                      
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+		
+        
+        echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+        ?>
+		
+		<img
+			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
+			alt="JoomLeague" title="JoomLeague" width="180"/>
+		<?php
+        echo '<h1>' . sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'),'') .'</h1>';
+        ?>
+        <img
+			src="../media/com_sportsmanagement/jl_images/compat_25.png"
+			alt="JoomLeague" title="JoomLeague" width="auto"/>
+        <img
+			src="../media/com_sportsmanagement/jl_images/compat_30.png"
+			alt="JoomLeague" title="JoomLeague" width="auto"/>
+            <br />
+         <?php       
+        echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
 	}
  
 	/**
@@ -123,9 +142,16 @@ class com_sportsmanagementInstallerScript
 	 */
 	function postflight($type, $parent) 
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
+//    echo JHtml::_('sliders.start','steps',array(
+//						'allowAllClose' => true,
+//						'startTransition' => true,
+//						true));
+//       $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
+//		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
+             
     //echo JHtml::_('sliders.start','steps',array(
 //						'allowAllClose' => true,
 //						'startTransition' => true,
@@ -198,8 +224,57 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     }
 
 echo JHtml::_('sliders.end');
+echo self::getFxInitJSCode('steps');
 	}
     
+    
+    /**
+     * com_sportsmanagementInstallerScript::getFxInitJSCode()
+     * 
+     * @param mixed $group
+     * @return
+     */
+    private function getFxInitJSCode ($group) 
+    {
+		$params = array();
+		$params['allowAllClose'] = 'true';
+		$display = (isset($params['startOffset']) && isset($params['startTransition']) && $params['startTransition'])
+		? (int) $params['startOffset'] : null;
+		$show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
+		? (int) $params['startOffset'] : null;
+		$options = '{';
+		$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
+				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_"
+				. $group . "',$$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
+		$opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
+				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($$('div#"
+				. $group . ".pane-sliders > .panel > h3').length==$$('div#" . $group
+				. ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
+		$opt['duration'] = (isset($params['duration'])) ? (int) $params['duration'] : 300;
+		$opt['display'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $display, 'cookie')
+		: $display;
+		$opt['show'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
+		$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
+		$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
+		foreach ($opt as $k => $v)
+		{
+			if ($v)
+			{
+				$options .= $k . ': ' . $v . ',';
+			}
+		}
+		if (substr($options, -1) == ',')
+		{
+			$options = substr($options, 0, -1);
+		}
+		$options .= '}';
+		
+		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
+		. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options
+		. "); });";
+		
+		return '<script>'.$js.'</script>';
+	}
     
     /**
      * com_sportsmanagementInstallerScript::createImagesFolder()

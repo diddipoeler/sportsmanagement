@@ -290,7 +290,7 @@ abstract class sportsmanagementHelper
         JHtmlSidebar::addEntry(
 			JText::_('COM_SPORTSMANAGEMENT_MENU'),
 			'index.php?option=com_sportsmanagement',
-			$submenu == 'menu'
+			$submenu == 'cpanel'
 		);
         
         JHtmlSidebar::addEntry(
@@ -298,9 +298,7 @@ abstract class sportsmanagementHelper
 			'index.php?option=com_sportsmanagement&view=projects',
 			$submenu == 'projects'
 		);
-            
-        
-        
+
         JHtmlSidebar::addEntry(
 			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'),
 			'index.php?option=com_sportsmanagement&view=predictions',
@@ -327,7 +325,7 @@ abstract class sportsmanagementHelper
         }
         else
         {    
-        JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'menu');
+        JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel');
 		
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
         

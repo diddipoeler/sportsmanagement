@@ -66,6 +66,8 @@ class sportsmanagementView extends JViewLegacy
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         
+        $view = JRequest::getCmd('view', 'cpanel');
+        
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
@@ -108,7 +110,19 @@ class sportsmanagementView extends JViewLegacy
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        sportsmanagementHelper::addSubmenu('menu');    
+            switch ( $view )
+            {
+                case 'projects';
+                sportsmanagementHelper::addSubmenu('projects');
+                break;
+                case 'predictions';
+                sportsmanagementHelper::addSubmenu('predictions');
+                break;
+                default:
+                sportsmanagementHelper::addSubmenu('cpanel');
+                break;
+            }
+            
         $this->sidebar = JHtmlSidebar::render();
         }
         

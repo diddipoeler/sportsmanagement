@@ -44,6 +44,16 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
 <table width="100%" border="0">
 	<tr>
 		<td width="100%" valign="top">
