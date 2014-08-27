@@ -54,6 +54,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
 	<table>
 		<tr>
 			<td align="left" width="100%">
@@ -70,7 +80,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 				</button>
 			</td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+
 			<td align="center" colspan="4">
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
