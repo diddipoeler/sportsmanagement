@@ -89,7 +89,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes=array_merge($sportstypes,$allSportstypes);
+		$sportstypes = array_merge($sportstypes,$allSportstypes);
+        $this->assignRef('sports_type',$allSportstypes);
 		$lists['sportstypes']=JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
@@ -101,7 +102,11 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         
         //build the html options for nation
 		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
+		if ($res = JSMCountries::getCountryOptions())
+        {
+            $nation = array_merge($nation,$res);
+            $this->assignRef('search_nation',$res);
+            }
 		
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
@@ -134,10 +139,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+       
 		
 	}
 	
@@ -148,14 +150,14 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE'),'agegroups');
+	//	// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//        // Set toolbar items for the page
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE'),'agegroups');
 		JToolBarHelper::addNew('agegroup.add');
 		JToolBarHelper::editList('agegroup.edit');
 		JToolBarHelper::custom('agegroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
