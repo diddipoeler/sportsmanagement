@@ -62,6 +62,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
 	<table>
 		<tr>
 			<td align="left" width="100%">
@@ -95,7 +105,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?PHP
 echo $this->loadTemplate('data');
 ?>	
-
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
