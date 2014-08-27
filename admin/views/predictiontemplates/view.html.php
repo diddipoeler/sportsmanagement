@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+
 
 
 
@@ -55,13 +55,13 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewPredictionTemplates::display()
+	 * sportsmanagementViewPredictionTemplates::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	public function init ()
 	{
 		$mainframe			= JFactory::getApplication();
     // Get a refrence of the page instance in joomla
@@ -132,6 +132,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
+            $this->assignRef('prediction_id_select',$res);
             }
             //$this->prediction_id = 0;
 
@@ -157,15 +158,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$this->assignRef( 'predictiongame',	$predictiongame );
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
         
-//        // Set the toolbar
-//		$this->addToolBar();
-//        
-//        parent::display( $tpl );
         
 	}
     
@@ -174,15 +167,16 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	   // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES'),'templates');
-        
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences($option);
+	   //// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//        
+//        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES'),'templates');
+//        
+//        JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences($option);
+parent::addToolbar();
        
     }   
 

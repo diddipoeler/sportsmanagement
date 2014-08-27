@@ -42,15 +42,17 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.tooltip' );
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	<table width='100%'>
-		<tr>
-			<td nowrap='nowrap' style='text-align: right; '>
-				<?php
-				echo $this->lists['predictions'] . '&nbsp;&nbsp;';
-				?>
-			</td>
-		</tr>
-	</table>
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
+	
 
 <?PHP
 echo $this->loadTemplate('data');

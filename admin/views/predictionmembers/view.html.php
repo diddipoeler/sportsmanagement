@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
-
-
 
 /**
  * sportsmanagementViewPredictionMembers
@@ -92,13 +89,13 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
    */
   function _editlist( $tpl = null )
 	{
-		$mainframe			=& JFactory::getApplication();
-    $db					=& JFactory::getDBO();
-		$uri				=& JFactory::getURI();
+		$mainframe			= JFactory::getApplication();
+    $db					= JFactory::getDBO();
+		$uri				= JFactory::getURI();
 		//$document =& JFactory::getDocument();
 		//$model				=& $this->getModel();
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
     
      $this->state = $this->get('State'); 
@@ -118,10 +115,10 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
 
     		
 		$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-		$prediction_name =& $this->getModel()->getPredictionProjectName($prediction_id);
+		$prediction_name = $this->getModel()->getPredictionProjectName($prediction_id);
 		$this->assignRef( 'prediction_name',			$prediction_name );
 		
-    $res_prediction_members =& $this->getModel()->getPredictionMembers($prediction_id);
+    $res_prediction_members = $this->getModel()->getPredictionMembers($prediction_id);
     
     if ( $res_prediction_members )
     {
@@ -152,10 +149,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>
     $this->assignRef( 'lists',			$lists );
     $this->assignRef('request_url',$uri->toString());
     
-		if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+		
         
 	}	
 
@@ -190,6 +184,7 @@ $mainframe = JFactory::getApplication();
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
+            $this->assignRef('prediction_id',$res);
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
@@ -210,10 +205,7 @@ $mainframe = JFactory::getApplication();
         $this->assignRef( 'items',			$items );
         $this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
         
         //$this->addToolbar();
 //		parent::display( $tpl );
@@ -226,16 +218,16 @@ $mainframe = JFactory::getApplication();
 	*/
 	protected function addToolbar()
 	{
-	   $mainframe = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-		// Set toolbar items for the page
-		
-        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'predmembers' );
+	  // $mainframe = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//	// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//		// Set toolbar items for the page
+//		
+//        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'predmembers' );
         
         JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
 		JToolBarHelper::divider();
