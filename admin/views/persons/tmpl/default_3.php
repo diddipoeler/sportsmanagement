@@ -53,6 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         Joomla.submitform('', this.form)
 	}
 </script>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 
 <?php if (!empty( $this->sidebar)) : ?>
@@ -64,24 +65,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<div id="j-main-container">
 <?php endif;?>
 
-	<table>
-		<tr>
-			<td align="left" width="100%">
-				<?php
-				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
-								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-								class="text_area" onchange="$('adminForm').submit(); " />
-                                
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
-					?>
-				</button>
-			</td>
-
-			<td align="center" colspan="4">
+<div id="filter-bar" class="btn-toolbar">
+			<div class="filter-search btn-group pull-left">
+				<label for="filter_search" class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></label>
+				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('COM_WEBLINKS_SEARCH_IN_TITLE'); ?>" />
+			</div>
+			<div class="btn-group pull-left">
+				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
 		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
@@ -93,9 +84,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 				
 				?>
-			</td>
-		</tr>
-	</table>
+            
+            </div>
+			<div class="btn-group pull-right hidden-phone">
+				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+				<?php echo $this->pagination->getLimitBox(); ?>
+			</div>
+			
+			
+		</div>
+
+
 <?PHP
 echo $this->loadTemplate('data');
 ?>	

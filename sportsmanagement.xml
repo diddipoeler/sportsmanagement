@@ -172,7 +172,7 @@
 </plugins>
 
 <plugins3>
-<plugin plugin="jqueryeasy_3" group="system" />	
+<plugin plugin="jqueryeasy" group="system" />	
 </plugins3>
      
 </extension>
