@@ -84,7 +84,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 			</td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+
 			
             <td align="center" colspan="4">
 				<?php

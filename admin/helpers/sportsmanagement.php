@@ -299,6 +299,31 @@ abstract class sportsmanagementHelper
 			$submenu == 'projects'
 		);
             
+        
+        
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'),
+			'index.php?option=com_sportsmanagement&view=predictions',
+			$submenu == 'predictions'
+		);
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'),
+			'index.php?option=com_sportsmanagement&view=currentseasons',
+			$submenu == 'currentseasons'
+		);
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'),
+			'index.php?option=com_sportsmanagement&view=jsmgooglecalendar',
+			$submenu == 'googlecalendar'
+		);
+        JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'),
+			'index.php?option=com_sportsmanagement&view=specialextensions',
+			$submenu == 'specialextensions'
+		);
+        
+        
+        
         }
         else
         {    
