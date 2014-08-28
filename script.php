@@ -166,7 +166,8 @@ class com_sportsmanagementInstallerScript
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
 			alt="JoomLeague" title="JoomLeague" width="180"/>
 		<?php
-        echo '<h1>' . sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'),'') .'</h1>';
+        $j = new JVersion();
+        echo '<h1>' . sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
         ?>
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
