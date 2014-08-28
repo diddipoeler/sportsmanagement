@@ -73,9 +73,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			<div class="btn-group pull-left">
 				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
 				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-				<?php
+			           
+            </div>
+            	<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
 		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+   
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
 			
@@ -84,8 +87,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 				
 				?>
-            
-            </div>
 			<div class="btn-group pull-right hidden-phone">
 				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
 				<?php echo $this->pagination->getLimitBox(); ?>
@@ -96,6 +97,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 <?PHP
+
+//echo 'von '.$startRange.'<br>';
+//echo 'bis '.$endRange.'<br>';
+
 echo $this->loadTemplate('data');
 ?>	
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
