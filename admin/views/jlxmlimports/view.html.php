@@ -55,12 +55,14 @@ jimport('joomla.html.parameter.element.timezones');
  */
 class sportsmanagementViewJLXMLImports extends sportsmanagementView
 {
+	
 	/**
 	 * sportsmanagementViewJLXMLImports::init()
 	 * 
+	 * @param mixed $tpl
 	 * @return
 	 */
-	public function init ()
+	public function init ($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -68,26 +70,28 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$document	= JFactory::getDocument();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
-		if ($this->getLayout()=='form')
+		if ( $this->getLayout()=='form' || $this->getLayout()=='form_3' )
 		{
 			$this->_displayForm($tpl);
 			return;
 		}
         
-        if ($this->getLayout()=='update')
+        if ( $this->getLayout()=='update' || $this->getLayout()=='update_3' )
 		{
 			$this->_displayUpdate($tpl);
 			return;
 		}
 
-		if ($this->getLayout()=='info')
+		if ( $this->getLayout()=='info' || $this->getLayout()=='info_3' )
 		{
 			$this->_displayInfo($tpl);
 			return;
 		}
 
-		if ($this->getLayout()=='selectpage')
+		if ( $this->getLayout()=='selectpage' || $this->getLayout()=='selectpage_3' )
 		{
 			$this->_displaySelectpage($tpl);
 			return;
@@ -253,6 +257,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
         parent::addToolbar();
+        
+        $this->setLayout('form');
 
 		//parent::display($tpl);
 	}

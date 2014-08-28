@@ -1,9 +1,11 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+
+defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-if ( $this->show_debug_info )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';
 }
@@ -12,6 +14,7 @@ else
 $visible = 'hidden';
 }
 
+echo ' xml <br><pre>'.print_r($this->xml,true).'</pre>';
 
 if (isset($this->xml) && is_array($this->xml))
 {

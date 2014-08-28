@@ -82,11 +82,24 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
     var $_league_new_country = '';
     var $_import_project_id = 0;
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_getXml()
+	 * 
+	 * @return
+	 */
 	private function _getXml()
 	{
 		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg'))
 		{
-			if (function_exists('simplexml_load_file'))
+			
+            if(version_compare(JVERSION,'3.0.0','ge'))
+            {
+            $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg');    
+            }
+            else
+            {
+            
+            if (function_exists('simplexml_load_file'))
 			{
 				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
@@ -94,6 +107,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			{
 				JError::raiseWarning(500,JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
 			}
+            
+            }
 		}
 		else
 		{
@@ -103,6 +118,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	}
     
     
+    /**
+     * sportsmanagementModelJLXMLImport::getDataUpdateImportID()
+     * 
+     * @return
+     */
     public function getDataUpdateImportID()
     {
     $mainframe = JFactory::getApplication();
@@ -196,17 +216,24 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         //$mainframe->enqueueMessage(JText::_('getData _import_project_id<br><pre>'.print_r($this->_import_project_id ,true).'</pre>'),'');
         
         libxml_use_internal_errors(true);
-		if (!$xmlData=$this->_getXml())
+		if ( !$xmlData = $this->_getXml() )
 		{
-			$errorFound=false;
-			echo JText::_('Load of the importfile failed:').'<br />';
+			$errorFound = false;
+			//echo JText::_('Load of the importfile failed:').'<br />';
+            JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
 			foreach(libxml_get_errors() as $error)
 			{
-				echo "<br>",$error->message;
-				$errorFound=true;
+				//echo "<br>",$error->message;
+                JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
+				$errorFound = true;
 			}
-			if (!$errorFound){echo ' '.JText::_('Unknown error :-(');}
+			if (!$errorFound)
+            {
+                //echo ' '.JText::_('Unknown error :-(');
+                JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
+            }
 		}
+        
 		$i=0;
 		$j=0;
 		$k=0;
@@ -238,7 +265,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$ttn=0;
 		$ttm=0;
 		$tt=0;
-
+        
+        // ist die xmldatei gelesen machen wir weiter
 		if ((isset($xmlData->record)) && (is_object($xmlData->record)))
 		{
 			foreach ($xmlData->record as $value)
