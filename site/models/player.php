@@ -51,7 +51,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayer extends JModel
+class sportsmanagementModelPlayer extends JModelLegacy
 {
 	
     var $projectid		= 0;

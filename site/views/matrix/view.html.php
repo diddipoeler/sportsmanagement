@@ -50,7 +50,7 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatrix extends JView
+class sportsmanagementViewMatrix extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewMatrix::display()

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -40,7 +40,7 @@
 
 jimport( 'joomla.application.component.view');
 
-class sportsmanagementViewsishandball extends JView 
+class sportsmanagementViewsishandball extends JViewLegacy 
 { 
 
 	function display($tpl = null) 

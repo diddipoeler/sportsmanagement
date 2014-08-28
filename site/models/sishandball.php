@@ -54,7 +54,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsishandball extends JModel 
+class sportsmanagementModelsishandball extends JModelLegacy 
 {
 
 

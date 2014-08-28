@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHtml::_('behavior.tooltip');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();

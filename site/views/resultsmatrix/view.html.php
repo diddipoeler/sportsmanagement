@@ -57,7 +57,7 @@ jimport('joomla.html.pane');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResultsmatrix extends JView  
+class sportsmanagementViewResultsmatrix extends JViewLegacy  
 {
 
 	/**
@@ -102,7 +102,7 @@ class sportsmanagementViewResultsmatrix extends JView
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results');
 		
-		$mdlRound = JModel::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($resultsmodel->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
@@ -170,7 +170,7 @@ class sportsmanagementViewResultsmatrix extends JView
 		 // add the links
 		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 		 */
-		JView::display($tpl);
+		JViewLegacy::display($tpl);
 	}
 
 	/**

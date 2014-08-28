@@ -23,7 +23,8 @@ defined('_JEXEC') or die();
 
 JLoader::import( 'joomla.application.component.model' );
 
-class sportsmanagementModelJSONFeed extends JModelLegacy {
+class sportsmanagementModelJSONFeed extends JModelLegacy 
+{
 
 	public function getGoogleCalendarFeeds() 
     {

@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 //require_once(JPATH_COMPONENT . DS . 'models' . DS . 'results.php');
-class sportsmanagementViewNextMatch extends JView
+class sportsmanagementViewNextMatch extends JViewLegacy
 {
 	function display($tpl = null)
 	{

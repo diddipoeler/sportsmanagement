@@ -51,7 +51,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRanking extends JView 
+class sportsmanagementViewRanking extends JViewLegacy 
 {
 	
 	/**
@@ -75,10 +75,10 @@ class sportsmanagementViewRanking extends JView
 
 		$model = $this->getModel();
         sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
-        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
-        $mdlDivisions = JModel::getInstance("Divisions", "sportsmanagementModel");
-        $mdlProjectteams = JModel::getInstance("Projectteams", "sportsmanagementModel");
-        $mdlTeams = JModel::getInstance("Teams", "sportsmanagementModel");
+        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();

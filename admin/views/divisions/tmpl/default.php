@@ -38,12 +38,12 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 //Ordering allowed ?
 $ordering=($this->sortColumn == 'dv.ordering');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>

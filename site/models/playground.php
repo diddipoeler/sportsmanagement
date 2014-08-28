@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayground extends JModel
+class sportsmanagementModelPlayground extends JModelLegacy
 {
     var $playgroundid = 0;
     var $playground = null;

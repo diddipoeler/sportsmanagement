@@ -43,7 +43,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">

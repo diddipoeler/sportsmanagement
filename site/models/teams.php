@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelTeams extends JModel
+class sportsmanagementModelTeams extends JModelLegacy
 {
 	var $projectid = 0;
 	var $divisionid = 0;

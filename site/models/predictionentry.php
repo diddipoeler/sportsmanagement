@@ -53,7 +53,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionEntry extends JModel
+class sportsmanagementModelPredictionEntry extends JModelLegacy
 {
 
 public $_predictionGame		= null;

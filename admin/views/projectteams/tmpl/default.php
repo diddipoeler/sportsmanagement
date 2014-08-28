@@ -41,7 +41,7 @@ jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $mainframe = JFactory::getApplication();
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if ( $this->project_art_id != 3 )

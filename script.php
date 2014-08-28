@@ -47,7 +47,11 @@ if (! defined('DS'))
 
 jimport('joomla.installer.installer');
  
-
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+jimport('joomla.html.html.bootstrap');
+}
+        
 /**
  * com_sportsmanagementInstallerScript
  * 

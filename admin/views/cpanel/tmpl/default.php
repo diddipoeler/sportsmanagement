@@ -44,7 +44,7 @@ JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.modal');
 JHtml::_('behavior.modal', 'a.modal');
 
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //$option = JRequest::getCmd('option');

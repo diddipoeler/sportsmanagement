@@ -42,7 +42,7 @@ jimport('joomla.filesystem.file');
 JHtml::_('behavior.modal');
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
@@ -54,39 +54,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	<table>
-		<tr>
-			<td align="left" width="100%">
-				<?php
-				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
-								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-								class="text_area" onchange="$('adminForm').submit(); " />
-                                
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
-					?>
-				</button>
-			</td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
-			<td align="center" colspan="4">
-				<?php
-                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
-		for ($i=$startRange; $i <= $endRange; $i++)
-		{
-			
-            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
-            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
-			}
-				
-				?>
-			</td>
-		</tr>
-	</table>
+
+	
 <?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
 echo $this->loadTemplate('data');
 ?>	
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />

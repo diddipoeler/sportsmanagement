@@ -51,7 +51,7 @@ jimport( 'joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjltournamenttree extends JView
+class sportsmanagementViewjltournamenttree extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewjltournamenttree::display()

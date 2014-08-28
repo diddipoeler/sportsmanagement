@@ -51,8 +51,8 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif;?>
 
 <table width="100%" border="0">
-	<tr>
-		<td width="100%" valign="top">
+<tr>
+<td width="100%" valign="top">
 <div id="cpanel">          
 <?php echo $this->addIcon('sportarten.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
 <?php echo $this->addIcon('saisons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>            
@@ -64,15 +64,13 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $this->addIcon('ereignisse.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>            
 <?php echo $this->addIcon('altersklassen.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?>            
 </div>          
-
 </td>
-		
-	</tr>
+</tr>
 	
     
     
 <tr>
-		<td width="100%" valign="top">
+<td width="100%" valign="top">
 <div id="cpanel">    
 <?php echo $this->addIcon('vereine.png','index.php?option=com_sportsmanagement&view=clubs', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>            
 <?php echo $this->addIcon('mannschaften.png','index.php?option=com_sportsmanagement&view=teams', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS'));?>            
@@ -80,22 +78,25 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $this->addIcon('spielorte.png','index.php?option=com_sportsmanagement&view=playgrounds', JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES'));?>            
 <?php echo $this->addIcon('spielfeldpositionen.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>    
 </div>          
-
 </td>
-		
-	</tr>    
+</tr>    
     
     
 <tr>
-		<td width="100%" valign="top">
+<td width="100%" valign="top">
 <div id="cpanel">    
 <?php echo $this->addIcon('zitate.png','index.php?option=com_sportsmanagement&view=smquotes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES'));?>    
 </div>          
-
 </td>
-		
-	</tr>    
+</tr>    
     
+<tr>
+<td width="100%" valign="top">
+<div id="cpanel">    
+<?php echo $this->addIcon('xmlimport.png','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>    
+</div>          
+</td>
+</tr>
     
     
 </table>        

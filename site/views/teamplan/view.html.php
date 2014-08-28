@@ -61,7 +61,7 @@ JHtml::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamPlan extends JView
+class sportsmanagementViewTeamPlan extends JViewLegacy
 {
 	/**
 	 * sportsmanagementViewTeamPlan::display()
@@ -79,7 +79,7 @@ class sportsmanagementViewTeamPlan extends JView
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
-        //$mdlProject = JModel::getInstance("Project", "sportsmanagementModel");
+        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
 		$project = sportsmanagementModelProject::getProject();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());

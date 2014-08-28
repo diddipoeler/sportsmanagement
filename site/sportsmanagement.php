@@ -47,6 +47,11 @@ if (! defined('DS'))
 
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
+/*
+// zur unterscheidung von joomla 2.5 und 3
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
+*/
+
 //require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
@@ -110,7 +115,16 @@ $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanag
 
 // meta daten der komponente setzen
 $meta_keys = array();
-$meta_keys[] = $config->getValue( 'config.MetaKeys' );
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$meta_keys[] = $config->get( 'config.MetaKeys' );
+}
+else
+{
+$meta_keys[] = $config->getValue( 'config.MetaKeys' );    
+}
+
 $project_id = JRequest::getInt( "p") ;
 
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');

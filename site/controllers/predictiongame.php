@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -52,7 +52,7 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.ph
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictiongame extends JController
+class sportsmanagementControllerPredictiongame extends JControllerLegacy
 {
 	/**
 	 * sportsmanagementControllerPredictiongame::__construct()

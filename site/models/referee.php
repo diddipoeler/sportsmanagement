@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 //require_once('person.php');
 
-class sportsmanagementModelReferee extends JModel
+class sportsmanagementModelReferee extends JModelLegacy
 {
 	/**
 	 * cache for data query

@@ -41,7 +41,7 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <table width="100%" border="0">

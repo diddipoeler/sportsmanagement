@@ -45,7 +45,7 @@ $ordering=($this->sortColumn == 'objassoc.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>

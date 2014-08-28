@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $massadd=JRequest::getInt('massadd',0);
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //echo 'selectlist <br><pre>'.print_r($this->selectlist,true).'</pre>';

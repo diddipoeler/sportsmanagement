@@ -10,7 +10,7 @@ jimport( 'joomla.utilities.array' );
 jimport( 'joomla.utilities.arrayhelper' ) ;
 
 
-class sportsmanagementModelJLXMLExports extends JModel
+class sportsmanagementModelJLXMLExports extends JModelLegacy
 {
 	/**
 	 * @var int

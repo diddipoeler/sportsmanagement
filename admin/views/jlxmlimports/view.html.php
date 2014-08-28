@@ -116,6 +116,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 	}
 
 	
+    /**
+     * sportsmanagementViewJLXMLImports::_displayUpdate()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     private function _displayUpdate($tpl)
 	{
 	   $mainframe = JFactory::getApplication();
@@ -145,6 +151,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
     }  
     
      
+    /**
+     * sportsmanagementViewJLXMLImports::_displayForm()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     private function _displayForm($tpl)
 	{
 		$mtime			= microtime();
@@ -245,6 +257,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		//parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewJLXMLImports::_displayInfo()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	private function _displayInfo($tpl)
 	{
 		$option = JRequest::getCmd('option');
@@ -278,6 +296,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         //parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewJLXMLImports::_displaySelectpage()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	private function _displaySelectpage($tpl)
 	{
 		$option = JRequest::getCmd('option');

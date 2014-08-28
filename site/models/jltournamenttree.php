@@ -56,7 +56,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljltournamenttree extends JModel
+class sportsmanagementModeljltournamenttree extends JModelLegacy
 {
 var $projectid = 0;
 var $project_art_id = 0;

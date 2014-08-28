@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+$view = JRequest::getCmd('view', 'cpanel');
 ?>
 
 <table>
@@ -57,20 +57,45 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 				</button>
 			</td>
-            <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+            
+            <?PHP
+            if ( isset($this->lists) )
+            {
+            foreach ( $this->lists as $key  => $value)
+            {
+            if ( !is_array($value) )
+            {    
+            ?>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists[$key].'&nbsp;&nbsp;'; ?></td>
+            <?PHP
+            }
+            }
+            }
+            ?>
+            
+            <?PHP
+            switch ($view)
+            {
+                case 'leagues':
+            ?>
 			<td align="center" colspan="4">
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
 		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
-			
-            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
 				
 				?>
 			</td>
+            <?PHP
+            break;
+            
+            default:
+            break;
+            }
+            ?>
 		</tr>
 	</table>
     

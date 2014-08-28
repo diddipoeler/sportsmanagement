@@ -2,7 +2,7 @@
 
 jimport('joomla.application.component.controller');
 
-class sportsmanagementControllerjlxmlexports extends JController
+class sportsmanagementControllerjlxmlexports extends JControllerLegacy
 {
     function display( )
     {

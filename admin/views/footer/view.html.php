@@ -39,7 +39,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
 
 /**
  * sportsmanagementViewFooter
@@ -52,19 +51,19 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewFooter extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewFooter::display()
+	 * sportsmanagementViewFooter::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	public function init ()
 	{
 //	   // Get a refrence of the page instance in joomla
 //	   $document	= JFactory::getDocument();
 //       $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 	
-		parent::display( $tpl );
+		
 	}
 
 }

@@ -53,7 +53,7 @@ jimport('joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelAbout extends JModel
+class sportsmanagementModelAbout extends JModelLegacy
 {
 	/**
 	 * sportsmanagementModelAbout::getAbout()

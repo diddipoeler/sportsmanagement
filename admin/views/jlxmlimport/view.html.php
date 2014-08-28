@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
-#require_once ('libraries/joomla/factory.php');
-
-
 /**
  * sportsmanagementViewJLXMLImport
  * 
@@ -55,35 +51,40 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewJLXMLImport extends sportsmanagementView
 {
-	function display( $tpl = null )
+	/**
+	 * sportsmanagementViewJLXMLImport::init()
+	 * 
+	 * @return void
+	 */
+	public function init ()
 	{
-  		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
-		JToolBarHelper::back();
-		
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+  		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//        
+//		// Set toolbar items for the page
+//		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
+//		JToolBarHelper::back();
+//		
+//        JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 		$db		= JFactory::getDBO();
 		$uri	= JFactory::getURI();
 
 		#$user = JFactory::getUser();
 		#$config = JFactory::getConfig();
-		$config =& JComponentHelper::getParams('com_media');
+		$config = JComponentHelper::getParams('com_media');
 
 		#$this->assignRef( 'user',			JFactory::getUser() );
 		$this->assignRef( 'request_url',	$uri->toString() );
 		#$this->assignRef( 'user',		$user);
 		$this->assignRef( 'config',		$config);
 
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 }
 ?>

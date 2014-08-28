@@ -74,7 +74,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRankingAllTime extends JModel
+class sportsmanagementModelRankingAllTime extends JModelLegacy
 {
 
     var $teams = array();

@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewStaff extends JView
+class sportsmanagementViewStaff extends JViewLegacy
 {
 
 	/**
@@ -67,7 +67,7 @@ class sportsmanagementViewStaff extends JView
         $mainframe = JFactory::getApplication();
 
 		$model = $this->getModel();
-//        $mdlPerson = JModel::getInstance("Person", "sportsmanagementModel");
+//        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
         $model->projectid = JRequest::getInt( 'p', 0 );
 		$model->personid = JRequest::getInt( 'pid', 0 );
 		$model->teamplayerid = JRequest::getInt( 'pt', 0 );

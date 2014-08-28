@@ -5,7 +5,7 @@ jimport( 'joomla.filesystem.file' );
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
-class sportsmanagementViewResults extends JView
+class sportsmanagementViewResults extends JViewLegacy
 {
 
 	public function display($tpl = null)
@@ -30,9 +30,9 @@ class sportsmanagementViewResults extends JView
 		
 		$config	= $model->getTemplateConfig($this->getName());
 		$project = $model->getProject();
-		//$mdlRound = JModel::getInstance("Round", "JoomleagueModel");
+		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
 		//$roundcode = $mdlRound->getRoundcode($model->roundid);
-		//$mdlRounds = JModel::getInstance("Rounds", "JoomleagueModel");
+		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
 		//$rounds = $mdlRounds->getRoundsOptions($project->id);
 		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);

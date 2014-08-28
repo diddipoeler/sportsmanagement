@@ -42,7 +42,7 @@ jimport('joomla.filesystem.file');
 JHtml::_('behavior.modal');
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 	<div id="editcell">

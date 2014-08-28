@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class sportsmanagementViewReferee extends JView
+class sportsmanagementViewReferee extends JViewLegacy
 {
 
 	function display($tpl=null)

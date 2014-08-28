@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'jlgcolor.php');
 
-$templatesToLoad = array('footer');
+$templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');

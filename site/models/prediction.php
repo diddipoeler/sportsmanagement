@@ -59,7 +59,7 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPrediction extends JModel
+class sportsmanagementModelPrediction extends JModelLegacy
 {
 	static $_predictionGame		= null;
 	static $predictionGameID		= 0;

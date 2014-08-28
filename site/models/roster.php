@@ -53,7 +53,7 @@ require_once('player.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRoster extends JModel
+class sportsmanagementModelRoster extends JModelLegacy
 {
 	var $projectid = 0;
 	var $projectteamid = 0;
