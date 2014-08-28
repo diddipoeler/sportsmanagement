@@ -111,9 +111,38 @@ class com_sportsmanagementInstallerScript
 	{
 	   if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            echo JHtml::_('bootstrap.startTabSet', 'JSMTab', array('active' => 'Component'));
-            $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
-            echo JHtml::_('bootstrap.addTab', 'JSMTab', 'Component', JText::_(' Component', true)); 
+            // Define tabs options for version of Joomla! 3.0
+        $tabsOptions = array(
+            "active" => "tab1_id" // It is the ID of the active tab.
+        );  
+            $image1 = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
+            $image2 = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+            $image3 = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+            $image4 = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+            ?>
+            <!-- This is a list with tabs names. -->
+    	<ul class="nav nav-tabs" id="ID-Tabs-Group">
+        	<li class="active">
+        		<a data-toggle="tab" href="#tab1_id"><?php echo $image1.JText::_(' Component'); ?></a>
+        	</li>
+        	<li>
+        		<a data-toggle="tab" href="#tab2_id"><?php echo $image2.JText::_(' Modules'); ?></a>
+    		</li>
+            <li>
+        		<a data-toggle="tab" href="#tab3_id"><?php echo $image3.JText::_(' Plugins'); ?></a>
+    		</li>
+            <li>
+        		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.JText::_(' Create/Update Images Folders'); ?></a>
+    		</li>
+            
+        </ul>
+            
+            <?PHP
+            echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
+            echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab1_id'); 
+            echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+            echo JHtml::_('bootstrap.endPanel');
+ 
              
             }
             else
@@ -124,12 +153,13 @@ class com_sportsmanagementInstallerScript
 						true));
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
 		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
+        echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
         }                      
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 		
         
-        echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+        
         ?>
 		
 		<img
@@ -164,30 +194,32 @@ class com_sportsmanagementInstallerScript
 	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
+    
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
+
             echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
-            echo JHtml::_('bootstrap.endTab'); 
+            //echo JHtml::_('bootstrap.endTab'); 
             switch ($type)        
     {
     case "install":
 //    self::setParams($newparams);
 //    self::installComponentLanguages();
 
-echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Modules', JText::_(' Modules', true));  
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id'); 
+
     self::installModules($parent);
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel'); 
     
-    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Plugins', JText::_(' Plugins', true));  
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id'); 
+
     self::installPlugins($parent);
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel');
     
-    echo JHtml::_('bootstrap.addTab', 'JSMTab', $fieldset->name, JText::_($fieldset->label, true));  
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
+
     self::createImagesFolder();
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel'); 
     
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -195,20 +227,20 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     break;
     case "update":
 //    self::installComponentLanguages();
-echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Modules', JText::_(' Modules', true));  
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
+
     self::installModules($parent);
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel'); 
     
-    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Plugins', JText::_(' Plugins', true));  
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id');  
+
     self::installPlugins($parent);
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel'); 
     
-    echo JHtml::_('bootstrap.addTab', 'JSMTab', ' Create/Update Images Folders', JText::_(' Create/Update Images Folders', true));  
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
+
     self::createImagesFolder();
-    echo JHtml::_('bootstrap.endTab'); 
+    echo JHtml::_('bootstrap.endPanel');
     
 //    self::migratePicturePath();
 //      self::setParams($newparams);
@@ -221,7 +253,7 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     }
             
             
-            echo JHtml::_('bootstrap.endTabSet');
+            echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');
             }
             else
             {

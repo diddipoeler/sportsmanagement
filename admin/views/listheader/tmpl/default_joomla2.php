@@ -71,12 +71,52 @@ $view = JRequest::getCmd('view', 'cpanel');
             }
             }
             }
+            
+            switch ($view)
+            {
+            case 'projects':
+            case 'persons':
+            case 'predictiongames':
+            ?>
+            <td nowrap='nowrap' align='right'>
+            <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php 
+                echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                ?>
+			</select>
+            </td>
+            <?PHP
+            break;    
+            case 'smquotes':
+            ?>
+            <td nowrap='nowrap' align='right'>
+            <select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<?php 
+                echo JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
+                ?>
+			</select>
+            </td>
+            <td nowrap='nowrap' align='right'>
+            <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php 
+                echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                ?>
+			</select>
+            </td>
+            <?PHP
+            break;
+            }
+            
             ?>
             
             <?PHP
             switch ($view)
             {
                 case 'leagues':
+                case 'jlextcountries':
             ?>
 			<td align="center" colspan="4">
 				<?php
@@ -95,6 +135,9 @@ $view = JRequest::getCmd('view', 'cpanel');
             default:
             break;
             }
+            
+            
+            
             ?>
 		</tr>
 	</table>

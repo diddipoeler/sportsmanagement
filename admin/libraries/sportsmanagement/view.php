@@ -138,13 +138,39 @@ class sportsmanagementView extends JViewLegacy
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        
+        $view = JRequest::getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        JHtmlSidebar::setAction('index.php?option=sportsmanagement');   
+        JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');   
+        
+        switch ($view)
+        {
+        case 'projects':
+        case 'persons':
+        case 'predictiongames':
+        JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_state',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+		);
+        break;    
+        case 'smquotes':
+        JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_state',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+		);
+        JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_CATEGORY'),
+			'filter_category_id',
+			JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
+		);        
+        break;
+        }
+        
         
         if ( isset($this->federation) )
         {

@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+$view = JRequest::getCmd('view', 'cpanel');
 
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
@@ -70,6 +71,10 @@ defined('_JEXEC') or die('Restricted access');
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
 				
+                
+                
+                
+                
 				?>
 			<div class="btn-group pull-right hidden-phone">
 				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
