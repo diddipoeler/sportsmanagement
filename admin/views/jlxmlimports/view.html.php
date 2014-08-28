@@ -71,7 +71,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
 		if ( $this->getLayout()=='form' || $this->getLayout()=='form_3' )
 		{
