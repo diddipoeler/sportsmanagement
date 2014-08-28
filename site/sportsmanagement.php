@@ -40,6 +40,11 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 //require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
@@ -174,9 +179,9 @@ require_once( JPATH_SITE.DS.JSM_PATH.DS. 'controller.php' );
 // Component Helper
 jimport( 'joomla.application.component.helper' );
 $controller = null;
-if(is_null($controller) && !($controller instanceof JController)) {
+if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	//fallback if no extensions controller has been initialized
-	$controller	= JController::getInstance('sportsmanagement');
+	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
