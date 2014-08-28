@@ -42,17 +42,18 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.tooltip' );
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	<table width='100%'>
-		<tr>
-			<td nowrap='nowrap' style='text-align: right; '>
-				<?php
-				echo $this->lists['predictions'] . '&nbsp;&nbsp;';
-				?>
-			</td>
-		</tr>
-	</table>
+	
 
 <?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
 echo $this->loadTemplate('data');
 ?>	
   

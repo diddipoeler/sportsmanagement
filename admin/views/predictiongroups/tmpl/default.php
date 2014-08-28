@@ -45,22 +45,17 @@ $ordering=($this->sortColumn == 's.ordering');
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	<table>
-		<tr>
-			<td align="left" width="100%">
-				<?php
-				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
-								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-								class="text_area" onchange="$('adminForm').submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
-				</button>
-			</td>
-		</tr>
-	</table>
+	
 <?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
 echo $this->loadTemplate('data');
 ?>	
 	<input type="hidden" name="task" value="" />
