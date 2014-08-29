@@ -311,7 +311,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <td class=""><?php echo $row->longitude; ?></td>
                         <td class="center">
                         <?php 
-                        $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo JHtml::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
 												'class="inputbox" size="1"'.$append,'value','text',$row->country); 
                         ?>

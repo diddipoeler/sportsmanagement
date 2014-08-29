@@ -66,6 +66,24 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
     
+    
+    function runJoomlaQuery()
+    {
+       // // Get a db connection.
+//        $db = JFactory::getDbo();
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            return JFactory::getDbo()->execute();
+        }
+        else
+        {
+            return JFactory::getDbo()->query();
+        }    
+    }
+
+
     /**
 	 * Method to get the record form.
 	 *
@@ -143,9 +161,33 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $query="SHOW TABLES LIKE '%_".COM_SPORTSMANAGEMENT_TABLE."%'";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+        $db = JFactory::getDbo();
+        $jsmtables = array();
+        
+        $result = $db->getTableList();
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        
+        foreach ( $result as $key => $value )
+        {
+        if ( preg_match("/sportsmanagement/i", $value ) )
+        {
+        $jsmtables[] = $value;
+        }   
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
+        
+//        $query = "SHOW TABLES LIKE '%_sportsmanagement%'";
+//		$db->setQuery($query);
+//        if(version_compare(JVERSION,'3.0.0','ge')) 
+//        {
+//        $db->execute();
+//        }
+//        else
+//        {
+//        $db->query();
+//        }
+		return $jsmtables;
     }
     
     

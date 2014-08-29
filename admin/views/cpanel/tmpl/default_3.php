@@ -50,53 +50,130 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="j-main-container">
 <?php endif;?>
 
-<table width="100%" border="0">
-<tr>
-<td width="100%" valign="top">
-<div id="cpanel">          
-<?php echo $this->addIcon('sportarten.png','index.php?option=com_sportsmanagement&view=sportstypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'));?>
-<?php echo $this->addIcon('saisons.png','index.php?option=com_sportsmanagement&view=seasons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'));?>            
-<?php echo $this->addIcon('ligen.png','index.php?option=com_sportsmanagement&view=leagues', JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'));?>            
-<?php echo $this->addIcon('federation.png','index.php?option=com_sportsmanagement&view=jlextfederations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'));?>            
-<?php echo $this->addIcon('laender.png','index.php?option=com_sportsmanagement&view=jlextcountries', JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'));?>            
-<?php echo $this->addIcon('landesverbaende.png','index.php?option=com_sportsmanagement&view=jlextassociations', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'));?>            
-<?php echo $this->addIcon('positionen.png','index.php?option=com_sportsmanagement&view=positions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'));?>            
-<?php echo $this->addIcon('ereignisse.png','index.php?option=com_sportsmanagement&view=eventtypes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'));?>            
-<?php echo $this->addIcon('altersklassen.png','index.php?option=com_sportsmanagement&view=agegroups', JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'));?>            
-</div>          
-</td>
-</tr>
-	
-    
-    
-<tr>
-<td width="100%" valign="top">
-<div id="cpanel">    
-<?php echo $this->addIcon('vereine.png','index.php?option=com_sportsmanagement&view=clubs', JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS'));?>            
-<?php echo $this->addIcon('mannschaften.png','index.php?option=com_sportsmanagement&view=teams', JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS'));?>            
-<?php echo $this->addIcon('personen.png','index.php?option=com_sportsmanagement&view=persons', JText::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS'));?>            
-<?php echo $this->addIcon('spielorte.png','index.php?option=com_sportsmanagement&view=playgrounds', JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES'));?>            
-<?php echo $this->addIcon('spielfeldpositionen.png','index.php?option=com_sportsmanagement&view=rosterpositions', JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION'));?>    
-</div>          
-</td>
-</tr>    
-    
-    
-<tr>
-<td width="100%" valign="top">
-<div id="cpanel">    
-<?php echo $this->addIcon('zitate.png','index.php?option=com_sportsmanagement&view=smquotes', JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES'));?>    
-</div>          
-</td>
-</tr>    
-    
-<tr>
-<td width="100%" valign="top">
-<div id="cpanel">    
-<?php echo $this->addIcon('xmlimport.png','index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'));?>    
-</div>          
-</td>
-</tr>
-    
-    
-</table>        
+<div id="jsm" class="admin override">
+
+<div id="j-main-container" class="span10">
+<section class="content-block" role="main">
+
+<div class="row-fluid">
+<div class="span7">
+<div class="well well-small">        
+<div id="dashboard-icons" class="btn-group">
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=sportstypes">
+<img src="components/com_sportsmanagement/assets/icons/sportarten.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=seasons">
+<img src="components/com_sportsmanagement/assets/icons/saisons.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=leagues">
+<img src="components/com_sportsmanagement/assets/icons/ligen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextfederations">
+<img src="components/com_sportsmanagement/assets/icons/federation.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextcountries">
+<img src="components/com_sportsmanagement/assets/icons/laender.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextassociations">
+<img src="components/com_sportsmanagement/assets/icons/landesverbaende.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=positions">
+<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=eventtypes">
+<img src="components/com_sportsmanagement/assets/icons/ereignisse.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=agegroups">
+<img src="components/com_sportsmanagement/assets/icons/altersklassen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?></span>
+</a>     
+        
+</div>        
+</div>
+</div>
+</div>
+
+
+<div class="row-fluid">
+<div class="span7">
+<div class="well well-small">        
+<div id="dashboard-icons" class="btn-group">
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=clubs">
+<img src="components/com_sportsmanagement/assets/icons/vereine.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=teams">
+<img src="components/com_sportsmanagement/assets/icons/mannschaften.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=persons">
+<img src="components/com_sportsmanagement/assets/icons/personen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=playgrounds">
+<img src="components/com_sportsmanagement/assets/icons/spielorte.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=rosterpositions">
+<img src="components/com_sportsmanagement/assets/icons/spielfeldpositionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?></span>
+</a>
+        
+</div>        
+</div>
+</div>
+</div>
+
+
+<div class="row-fluid">
+<div class="span7">
+<div class="well well-small">        
+<div id="dashboard-icons" class="btn-group">
+
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=databasetools">
+<img src="components/com_sportsmanagement/assets/icons/datenbanktools.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS') ?></span>
+</a>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=smquotes">
+<img src="components/com_sportsmanagement/assets/icons/zitate.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES') ?></span>
+</a>
+        
+</div>        
+</div>
+</div>
+</div>
+
+
+<div class="row-fluid">
+<div class="span7">
+<div class="well well-small">        
+<div id="dashboard-icons" class="btn-group">
+
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default">
+<img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
+</a>
+
+        
+</div>        
+</div>
+</div>
+</div>
+
+
+</section>
+</div>
+</div>

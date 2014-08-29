@@ -121,7 +121,15 @@ class sportsmanagementModelsportsmanagement extends JModelItem
 			{
 				// Load the JSON string
 				$params = new JRegistry;
+				if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $params->loadString($this->item->params);
+        }
+        else
+        {
 				$params->loadJSON($this->item->params);
+				}
+				
 				$this->item->params = $params;
  
 				// Merge global params with item params

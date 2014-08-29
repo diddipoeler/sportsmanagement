@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewProjectteam
@@ -54,13 +52,13 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewProjectteam extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewProjectteam::display()
+	 * sportsmanagementViewProjectteam::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl = null)
+	public function init ()
 	{
 		// get the Data
 		$form = $this->get('Form');
@@ -83,10 +81,10 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($project_id);
         $this->assignRef('project',$project);
-        $team_id	= $this->item->team_id;;
+        $team_id	= $this->item->team_id;
         $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
 	    $project_team = $mdlTeam->getTeam(0,$team_id);
-        $trainingdata = $mdlTeam->getTrainigData(0,$team_id);
+        $trainingdata = $mdlTeam->getTrainigData(0,$this->item->id);
         
         $daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
 			1 => JText::_('MONDAY'),
@@ -116,14 +114,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
         $this->assignRef('trainingData',$trainingdata);
 		
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+	
 	}
     
 	/**
@@ -133,73 +124,75 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	//// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
 		
         JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->item->project_id);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'), 'projectteam');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('projectteam.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CLOSE');
-		}
-    
-    JToolBarHelper::divider();
-    sportsmanagementHelper::ToolbarButtonOnlineHelp();    
-    JToolBarHelper::preferences(JRequest::getCmd('option'));
+		
+        //$user = JFactory::getUser();
+//		$userId = $user->id;
+//		$isNew = $this->item->id == 0;
+//		$canDo = sportsmanagementHelper::getActions($this->item->id);
+//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'), 'projectteam');
+//		// Built the actions for new and existing records.
+//		if ($isNew) 
+//		{
+//			// For new records, check the create permission.
+//			if ($canDo->get('core.create')) 
+//			{
+//				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
+//				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
+//				JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+//			}
+//			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CANCEL');
+//		}
+//		else
+//		{
+//			if ($canDo->get('core.edit'))
+//			{
+//				// We can save the new record
+//				JToolBarHelper::apply('projectteam.apply', 'JTOOLBAR_APPLY');
+//				JToolBarHelper::save('projectteam.save', 'JTOOLBAR_SAVE');
+// 
+//				// We can save this record, but check the create permission to see if we can return to make a new one.
+//				if ($canDo->get('core.create')) 
+//				{
+//					JToolBarHelper::custom('projectteam.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+//				}
+//			}
+//			if ($canDo->get('core.create')) 
+//			{
+//				JToolBarHelper::custom('projectteam.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+//			}
+//			JToolBarHelper::cancel('projectteam.cancel', 'JTOOLBAR_CLOSE');
+//		}
+//    
+//    JToolBarHelper::divider();
+//    sportsmanagementHelper::ToolbarButtonOnlineHelp();    
+//    JToolBarHelper::preferences(JRequest::getCmd('option'));
         
+        parent::addToolbar();
 
 	}
     
-    /**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
+    ///**
+//	 * Method to set up the document properties
+//	 *
+//	 * @return void
+//	 */
+//	protected function setDocument() 
+//	{
+//		$isNew = $this->item->id == 0;
+//		$document = JFactory::getDocument();
+//		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT'));
+//		$document->addScript(JURI::root() . $this->script);
+//		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+//		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+//	}
     
 }
 ?>

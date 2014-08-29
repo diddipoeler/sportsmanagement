@@ -303,6 +303,7 @@
 				
 	</fieldset>
 
+<!-- register 4 -->
 <fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
@@ -314,12 +315,56 @@
 		
 </fieldset>
 
-<!-- register 4 -->	
+<!-- register 5 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 		
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	
+<field name="backend_xmlimport_step" type="list" default="1000"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_XMLIMPORT_STEPS" description="COM_SPORTSMANAGEMENT_SETTINGS_XMLIMPORT_STEPS_DESC">
+			<option value="1">sports-type</option>
+			<option value="2">league</option>
+			<option value="3">season</option>
+			<option value="4">event</option>
+			<option value="5">statistic</option>
+			<option value="6">parent-position</option>
+			<option value="7">position</option>
+			<option value="8">position-eventtype</option>
+			<option value="9">playground</option>
+			<option value="10">club</option>
+			<option value="11">conversion of playground club-id</option>
+			<option value="12">team</option>
+			<option value="13">person</option>
+			<option value="14">project</option>
+			<option value="15">template</option>
+			<option value="16">division</option>
+			<option value="17">projectpositions</option>
+			<option value="18">projectreferees</option>
+			<option value="19">projectteam</option>
+
+			<option value="21">teamplayer</option>
+			<option value="22">teamstaff</option>
+			<option value="23">teamtraining</option>
+			<option value="24">round</option>
+			<option value="25">match</option>
+			<option value="26">matchplayer</option>
+			<option value="27">matchstaff</option>
+			<option value="28">matchreferee</option>
+			<option value="29">matchevent</option>
+			<option value="30">positionstatistic</option>
+			<option value="31">matchstaffstatistic</option>
+			<option value="32">matchstatistic</option>
+			<option value="33">treeto</option>
+			<option value="34">treetonode</option>
+			<option value="35">treetomatch</option>
+			
+			<option value="1000">alles importieren</option>
+		</field>
+    
+    
+    	
 <field name="current_season" 
 type="actseason" 
 multiple="true"  
@@ -446,6 +491,7 @@ multiple="true"
           		
 	</fieldset>
   
+<!-- register 6 -->  
 	<fieldset
 		name="googleapi"
 		label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API"
@@ -491,6 +537,7 @@ label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY"
 description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />	
 	</fieldset>
 
+<!-- register 7 -->
 	<fieldset
 		name="gcalendar"
 		label="COM_SPORTSMANAGEMENT_SETTINGS_GCALENDAR"

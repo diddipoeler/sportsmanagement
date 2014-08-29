@@ -81,6 +81,9 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
+	   $mainframe = JFactory::getApplication();
+       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+       
 		switch ($this->getTask())
 		{
 			case 'edit':

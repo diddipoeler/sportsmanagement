@@ -40,8 +40,9 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//echo $this->task.'<br>';
-//echo '<pre>'.print_r($this->sm_tables,true).'</pre><br>';
+
+//echo 'task -> '.$this->task.'<br>';
+//echo 'sm_tables -><pre>'.print_r($this->sm_tables,true).'</pre><br>';
 
 ?>
 

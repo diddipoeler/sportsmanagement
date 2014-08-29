@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+//jimport( 'joomla.application.component.view' );
 
 
 /**
@@ -54,13 +54,14 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewDatabaseTool extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewDatabaseTool::display()
+	 * sportsmanagementViewDatabaseTool::init()
 	 * 
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	public function init ($tpl = null)
 	{
 		$db		= JFactory::getDBO();
 		$uri	= JFactory::getURI();
@@ -162,7 +163,7 @@ $document->addScriptDeclaration( $javascript );
         JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
 */
 		//$this->addToolbar();		
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
     
 	/**

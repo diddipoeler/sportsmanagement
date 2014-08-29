@@ -1172,7 +1172,14 @@ $starttime = microtime();
 		
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($result, 'ini');
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $jRegistry->loadString($data); 
+        }
+        else
+        {
         $jRegistry->loadJSON($result);
+        }
         
 /*        
         $extended = JForm::getInstance('extended', $xmlfile,

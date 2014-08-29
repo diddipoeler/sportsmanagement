@@ -446,8 +446,8 @@ if (!$db->query())
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
-        $db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+        //$db		= $this->getDbo();
+		$query	= JFactory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('tt.*');
         // From table
@@ -459,21 +459,19 @@ if (!$db->query())
         }
         else
         {
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tt.team_id');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');   
-        $query->where('st.id = '.$pro_team_id); 
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tt.team_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');   
+        $query->where('pt.id = '.$pro_team_id); 
         }
         
         
         $query->order('dayofweek ASC');
-        $db->setQuery($query);
+        JFactory::getDbo()->setQuery($query);
 		
-		if (!$result = $db->loadObjectList())
+		if (!$result = JFactory::getDbo()->loadObjectList())
 		{
 			$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'),'Notice');
-            
-            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam getTrainigData<br><pre>'.print_r($query,true).'</pre>'),'Error');
-            //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam getTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 			return false;
 		}
 		return $result;

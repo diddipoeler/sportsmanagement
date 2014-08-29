@@ -71,7 +71,18 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
+		$uri = JFactory::getURI();
+		$config = JComponentHelper::getParams('com_media');
+        $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
+		$post = JRequest::get('post');
+		$files = JRequest::get('files');
+		$this->assign('request_url',$uri->toString());
+		$this->assignRef('upload_maxsize',$upload_maxsize);
+        $this->assignRef('config',$config);
+        $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
 
 		if ( $this->getLayout()=='form' || $this->getLayout()=='form_3' )
 		{
@@ -98,23 +109,26 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		}
 
 		
+        //// Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
-		
-
-		$uri = JFactory::getURI();
-		$config = JComponentHelper::getParams('com_media');
-		$post=JRequest::get('post');
-		$files=JRequest::get('files');
-
-		$this->assign('request_url',$uri->toString());
-		$this->assignRef('config',$config);
-        $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
         
-        parent::addToolbar();
+//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
+//		
+//
+//		$uri = JFactory::getURI();
+//		$config = JComponentHelper::getParams('com_media');
+//        $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
+//		$post = JRequest::get('post');
+//		$files = JRequest::get('files');
+//
+//		$this->assign('request_url',$uri->toString());
+//		$this->assignRef('upload_maxsize',$upload_maxsize);
+//        $this->assignRef('config',$config);
+//        $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
+        
+        //parent::addToolbar();
 
 		//parent::display($tpl);
 	}
@@ -149,7 +163,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
-        parent::addToolbar();
+        //parent::addToolbar();
         
 	   //parent::display($tpl);
     }  
@@ -256,7 +270,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::custom('jlxmlimport.insert','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
-        parent::addToolbar();
+        //parent::addToolbar();
         
         $this->setLayout('form');
 
@@ -280,11 +294,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$post		= JRequest::get('post');
 		
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3'),'xmlimport');
 			
@@ -297,7 +311,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         JToolBarHelper::divider();
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
 		
-        parent::addToolbar();
+        //parent::addToolbar();
 		
         //parent::display($tpl);
 	}

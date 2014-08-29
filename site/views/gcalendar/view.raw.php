@@ -26,7 +26,7 @@ JLoader::import('joomla.application.component.view');
 JLoader::import('components.com_sportsmanagement.libraries.fullcalendar.fullcalendar', JPATH_BASE);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewGcalendar extends JViewLegacyLegacy 
+class sportsmanagementViewGcalendar extends JViewLegacy 
 {
 
 	public function display($tpl = null) 

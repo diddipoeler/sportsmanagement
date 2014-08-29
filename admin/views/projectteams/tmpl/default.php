@@ -43,7 +43,11 @@ JHtml::_('behavior.modal');
 $mainframe = JFactory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+?>
 
+
+
+<?PHP
 if ( $this->project_art_id != 3 )
 {
 //Ordering allowed ?

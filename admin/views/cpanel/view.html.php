@@ -228,7 +228,10 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $model->_success_text['Länder:'] .= $insert_countries;   
         }
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+        if(version_compare(JVERSION,'3.0.0','ge'))
+        {
+        }
+        else
         {
 		jimport('joomla.html.pane');
 		$pane = JPane::getInstance('sliders');

@@ -49,8 +49,15 @@ JHtml::_('behavior.modal');
 JHtml::_('behavior.formvalidation');
 //JHtml::_('behavior.colorpicker');
 $params = $this->form->getFieldsets('params');
+$fieldsets = $this->form->getFieldsets();
+
+JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME'), 'template');
 
 $i    = 1;
+
+//echo ' params -><br><pre>'.print_r($params,true).'</pre>';
+//echo ' fieldSets -><br><pre>'.print_r($fieldsets,true).'</pre>';
+
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.(int) $this->template->id); ?>" method="post" id="adminForm" name="adminForm" >
@@ -63,139 +70,50 @@ $i    = 1;
 		?><input type="hidden" name="master_id" value="<?php echo $this->template->project_id; ?>"/><?php
 	}
 	?>
-	<fieldset class="adminform">
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->project->name . '</i>'); ?></legend>
-		<fieldset class="adminform">
-			<?php
-			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
-            //echo '<br>'.strtoupper($this->form->getName()).'<br>';
-			?>
-		</fieldset>
 
-		<?php
-		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
-        $fieldSets = $this->form->getFieldsets();
-        foreach ($fieldSets as $name => $fieldSet) :
-            $label = $fieldSet->name;
-            echo JHtml::_('tabs.panel',JText::_($label), 'panel'.$i++);
-			?>
-			<fieldset class="panelform">
+<div class="form-horizontal">
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS')); ?>
+
+<?PHP    
+foreach ($fieldsets as $fieldset) 
+{
+echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+
+
+    ?>
+    <div class="row-fluid">
+			<div class="span9">
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+    <?PHP
+    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    {
+        ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
 				<?php
-				if (isset($fieldSet->description) && !empty($fieldSet->description)) :
-					echo '<fieldset class="adminform">'.JText::_($fieldSet->description).'</fieldset>';
-				endif;
-				?>
-				<!-- <ul class="config-option-list"> -->
-                <table>
-				<?php 
-                foreach ($this->form->getFieldset($name) as $field): 
-                
-                $suchmuster = array ("params[","]","[");
-                $ersetzen = array ('', '', '');
-                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
-                if ( $var_onlinehelp != 'colors' )
-                {
-                    //echo '<li>';
-                }    
-                ?>
-				<tr>	
-					<?php if (!$field->hidden) : ?>
-                    <td>
-					<?php echo $field->label; ?>
-                    </td>
-					<?php endif; ?>
-                    <td>
-					<?php echo $field->input; 
-                    ?>
-                    </td>
-                    <?php
-                    
-                  
-                    //echo ' <br><pre>'.print_r($field->name,true).'</pre>';
-                    
-                    //if ($fieldSet->customselbox)
-                    //{
-                    //echo '<br>customselbox<br>'.$field->customselbox.'<br>';
-                    //}
-                    
-//                    $suchmuster = array ("params[","]","[");
-//                $ersetzen = array ('', '', '');
-//                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-               
-                    
-                if ( $var_onlinehelp == 'ordered_columns_new_select' )
-                {
-                ?>
-                <td>
-                <input  type="button" class="inputbox"
-						onclick="move_list_items('params_ordered_columns_new_select','params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
-						value="&gt;&gt;" />
-				<br /><br />
-                </td>
-                <?PHP    
-                }    
-                if ( $var_onlinehelp == 'ordered_columns_new' )
-                {
-                ?>
-                <td>
-                <input  type="button" class="inputbox"
-						onclick="move_list_items('params_ordered_columns_new','params_ordered_columns_new_select');jQuery('#params_ordered_columns_new option').prop('selected', true);"
-						value="&lt;&lt;" />
-                <input  type="button" class="inputbox"
-						onclick="move_up('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
-						value="<?php echo JText::_('JLIB_HTML_MOVE_UP'); ?>" />
-                        <br />
-                <input type="button" class="inputbox"
-					   onclick="move_down('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
-					   value="<?php echo JText::_('JLIB_HTML_MOVE_DOWN'); ?>" />  
-                       </td>          
-                <?PHP    
-                }
-                switch ($var_onlinehelp)
-                {
-                    case 'id':
-                    case 'colors':
-                    break;
-                    default:
-                ?>
-                <td>
-                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Templateparameter:'.$var_onlinehelp; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
-									?>
-								</a>
-                </td>
-                <?PHP
-                break;
-                }
-                
-                if ( $var_onlinehelp != 'colors' )
-                {
-                    //echo '</li>';
-                }  
-                
-                ?>
-			</tr>
-				<?php 
-                endforeach; 
-                ?>
-				<!-- </ul> -->
-                </table>
-                </fieldset>
-                <?PHP
-                
-                ?>
 
-    <div class="clr"></div>
-    <?php endforeach; ?>
-    <?php echo JHtml::_('tabs.end'); ?>
+    }
+    ?>
+    </div>
+				</div>
+			</div>
+            </div>
+    <?PHP
 
-</fieldset>
+echo JHtml::_('bootstrap.endTab');    
+}    
+
+?>    
+	
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</div> 	
 
 	<div>		
 		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>

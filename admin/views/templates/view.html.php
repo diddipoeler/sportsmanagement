@@ -122,10 +122,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 		
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
 		
 		
 	}

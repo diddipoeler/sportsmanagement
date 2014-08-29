@@ -194,7 +194,7 @@ class sportsmanagementView extends JViewLegacy
         JHtmlSidebar::addFilter(
 			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
 			'filter_userfields',
-			JHtml::_('select.options', $this->userfields, 'value', 'text', $this->state->get('filter.userfields'), true)
+			JHtml::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 		);
         }
         if ( isset($this->league) )
@@ -202,7 +202,7 @@ class sportsmanagementView extends JViewLegacy
         JHtmlSidebar::addFilter(
 			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
 			'filter_league',
-			JHtml::_('select.options', $this->league, 'value', 'text', $this->state->get('filter.league'), true)
+			JHtml::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 		);
         }
         if ( isset($this->sports_type) )
@@ -210,7 +210,7 @@ class sportsmanagementView extends JViewLegacy
         JHtmlSidebar::addFilter(
 			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
 			'filter_sports_type',
-			JHtml::_('select.options', $this->sports_type, 'value', 'text', $this->state->get('filter.sports_type'), true)
+			JHtml::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
 		);
         }
         if ( isset($this->season) )
@@ -218,7 +218,7 @@ class sportsmanagementView extends JViewLegacy
         JHtmlSidebar::addFilter(
 			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
 			'filter_season',
-			JHtml::_('select.options', $this->season, 'value', 'text', $this->state->get('filter.season'), true)
+			JHtml::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
 		);
         }
         
