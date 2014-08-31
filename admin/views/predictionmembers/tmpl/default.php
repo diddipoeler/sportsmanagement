@@ -39,8 +39,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-$ordering = ( $this->sortColumn == 'pre.ordering' );
+////Ordering allowed ?
+//$ordering = ( $this->sortColumn == 'pre.ordering' );
+$templatesToLoad = array('footer','listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 JHtml::_( 'behavior.tooltip' );
 ?>

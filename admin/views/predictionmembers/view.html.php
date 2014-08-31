@@ -63,15 +63,15 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	{
 	   
        $mainframe = JFactory::getApplication();
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
-    if ( $this->getLayout() == 'default')
+    if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
 			$this->_display( $tpl );
 			return;
 		}
 		
-		if ( $this->getLayout() == 'editlist')
+		if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' )
 		{
 			$this->_editlist( $tpl );
 			return;

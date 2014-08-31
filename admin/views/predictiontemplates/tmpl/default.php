@@ -38,6 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer','listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 JHtml::_( 'behavior.tooltip' );
 ?>
