@@ -108,6 +108,7 @@ class sportsmanagementView extends JViewLegacy
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
         
+        // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             switch ( $view )
@@ -116,6 +117,10 @@ class sportsmanagementView extends JViewLegacy
                 sportsmanagementHelper::addSubmenu('projects');
                 break;
                 case 'predictions';
+                case 'predictiongames';
+                case 'predictiongroups';
+                case 'predictionmembers';
+                case 'predictiontemplates';
                 sportsmanagementHelper::addSubmenu('predictions');
                 break;
                 default:
@@ -239,6 +244,15 @@ class sportsmanagementView extends JViewLegacy
 			JHtml::_('select.options', $this->prediction_id_select, 'value', 'text', $this->state->get('filter.prediction_id_select'), true)
 		);
         }
+        
+        if ( isset($this->project_position_id) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
+			'filter_project_position_id',
+			JHtml::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
+		);
+        }
          
         }    
         
@@ -316,7 +330,14 @@ class sportsmanagementView extends JViewLegacy
         //JToolBarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
         $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
+        }
+        else
+        {    
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        }
         $document->addCustomTag($stylelink);
         
 //		$document->addStyleDeclaration(
