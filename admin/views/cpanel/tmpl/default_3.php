@@ -41,6 +41,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?> 
+<div id="jsm" class="admin override">
+
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -50,14 +52,19 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="j-main-container">
 <?php endif;?>
 
-<div id="jsm" class="admin override">
 
-<div id="j-main-container" class="span10">
+
+
 <section class="content-block" role="main">
 
 <div class="row-fluid">
 <div class="span7">
-<div class="well well-small">        
+<div class="well well-small">  
+
+<div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
+</div>
+<hr class="hr-condensed">      
+
 <div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=sportstypes">
@@ -97,15 +104,12 @@ defined('_JEXEC') or die('Restricted access');
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?></span>
 </a>     
         
-</div>        
-</div>
-</div>
-</div>
+</div> 
 
-
-<div class="row-fluid">
-<div class="span7">
-<div class="well well-small">        
+<hr class="hr-condensed"> 
+<div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_PERSONAL_DATA') ?>
+</div>
+<hr class="hr-condensed">    
 <div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=clubs">
@@ -128,18 +132,28 @@ defined('_JEXEC') or die('Restricted access');
 <img src="components/com_sportsmanagement/assets/icons/spielfeldpositionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?></span>
 </a>
-        
-</div>        
-</div>
-</div>
-</div>
 
+</div> 
 
-<div class="row-fluid">
-<div class="span7">
-<div class="well well-small">        
+<hr class="hr-condensed"> 
+<div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_IMPORT_EXPORT_FUNCTION') ?>
+</div>
+<hr class="hr-condensed">    
 <div id="dashboard-icons" class="btn-group">
 
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default">
+<img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
+</a>
+
+
+</div> 
+
+<hr class="hr-condensed"> 
+<div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
+</div>
+<hr class="hr-condensed">    
+<div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=databasetools">
 <img src="components/com_sportsmanagement/assets/icons/datenbanktools.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS') ?>" /><br />
@@ -149,31 +163,52 @@ defined('_JEXEC') or die('Restricted access');
 <img src="components/com_sportsmanagement/assets/icons/zitate.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_QUOTES') ?></span>
 </a>
-        
-</div>        
-</div>
-</div>
-</div>
+
+</div> 
 
 
-<div class="row-fluid">
-<div class="span7">
-<div class="well well-small">        
-<div id="dashboard-icons" class="btn-group">
 
 
-<a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default">
-<img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
-</a>
 
-        
-</div>        
-</div>
+
+
+      
 </div>
 </div>
 
+<div class="span5">
+					<div class="well well-small">
+						<div class="center">
+							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
+						</div>
+						<hr class="hr-condensed">
+						<dl class="dl-horizontal">
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
+							<dd><?php echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
+                            
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
+							<dd><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
 
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
+							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
+							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
+							<dd>GNU General Public License</dd>
+						</dl>
+					</div>
+
+					
+
+				</div>
+                
+</div>
+
+
+                
 </section>
 </div>
 </div>
