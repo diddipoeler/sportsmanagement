@@ -1,0 +1,81 @@
+/**
+ * JSM Component
+ * @package 
+ *
+ * @copyright (C) 2014 jsm Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.fussballineuropa.de
+ **/
+
+#jsm.admin.override {
+    font-size: 13px;
+}
+
+#jsm.admin.override select,
+#jsm.admin.override input[type="file"] {
+    height: auto;
+    line-height: 30px;
+}
+
+#jsm.admin.override li {
+    line-height: 20px;
+}
+
+#jsm.admin.override fieldset input,
+#jsm.admin.override fieldset textarea,
+#jsm.admin.override fieldset select,
+#kunena.admin.override fieldset img,
+#jsm.admin.override fieldset button {
+    float: none;
+    margin: 0;
+}
+
+#jsm.admin.override label {
+    display: inline !important;
+}
+
+#jsm.admin.override .center {
+    float: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#jsm.admin.override .select-filter {
+    margin-bottom: 0;
+    width: auto;
+}
+
+#jsm.admin.override .input-filter {
+     margin-bottom: 0;
+ }
+
+#jsm.admin.override #dashboard-icons.btn-group {
+    white-space: normal;
+}
+
+#jsm.admin.override #dashboard-icons .btn {
+    border-radius: 3px;
+    min-height: 64px;
+    min-width: 72px;
+    overflow: hidden;
+}
+
+/*All wells in tables should not have margin*/
+#jsm.admin.override table .well {
+    margin-bottom: 0;
+}
+
+#jsm.admin.override .filter-state {
+    font-size: 150%;
+}
+
+#jsm.admin.override .filter-state .btn {
+    padding: 0 6px;
+    vertical-align: inherit;
+    font-size: inherit;
+    line-height: 150%
+}
+/* Fix span1 width isis */
+#adminForm > fieldset > table > tbody > tr:nth-child(2) > td:nth-child(2) > div {
+	display:inline !important;
+}

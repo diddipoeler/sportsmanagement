@@ -1,0 +1,20 @@
+/**
+ * JSM Component
+ * @package 
+ *
+ * @copyright (C) 2014 jsm Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.fussballineuropa.de
+ **/
+
+@CHARSET "UTF-8";
+
+/*.well {
+	background-color: white !important;
+}*/
+
+#jsm.admin.override #dashboard-icons .btn {
+    background-image: none;
+    border-color: transparent;
+    box-shadow: none;
+}
