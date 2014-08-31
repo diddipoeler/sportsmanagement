@@ -163,6 +163,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4'),'xmlimport');
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
+        $this->setLayout('update');
         //parent::addToolbar();
         
 	   //parent::display($tpl);
@@ -294,6 +295,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$post		= JRequest::get('post');
 		
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -311,6 +314,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         JToolBarHelper::divider();
         JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');
 		
+        $this->setLayout('info');
+        
         //parent::addToolbar();
 		
         //parent::display($tpl);
@@ -453,6 +458,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		// Set page title
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE');
 		$document->setTitle($pageTitle);
+        
+        $this->setLayout('selectpage');
 
 		//parent::display($tpl);
 	}

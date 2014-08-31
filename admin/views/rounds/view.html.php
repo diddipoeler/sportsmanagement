@@ -64,7 +64,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
-		if ($this->getLayout()=='default')
+		if ($this->getLayout()=='default' || $this->getLayout()=='default_3')
 		{
 			$this->_displayDefault($tpl);
 			return;

@@ -102,6 +102,37 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </div>        
 </div>
 </div>
+
+<div class="span5">
+					<div class="well well-small">
+						<div class="center">
+							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
+						</div>
+						<hr class="hr-condensed">
+						<dl class="dl-horizontal">
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
+							<dd><?php echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
+                            
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
+							<dd><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
+
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
+							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
+							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
+							<dd>GNU General Public License</dd>
+						</dl>
+					</div>
+
+					
+
+				</div>
+                
+
 </div>
 </section>
 </div>

@@ -83,12 +83,13 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	    $project = $mdlProject->getProject($this->project_id);
         
         //build the html options for position
-		$position_id[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
+		$position_id[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    $project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
         if ( $project_ref_positions )
         {
         $position_id = array_merge($position_id,$project_ref_positions);
+        $this->assignRef('project_position_id',$project_ref_positions);
         }
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
@@ -103,10 +104,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+       
 	
 	}
 

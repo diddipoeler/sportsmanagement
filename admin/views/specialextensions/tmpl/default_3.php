@@ -36,28 +36,86 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
+
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
-<table width="100%" border="0">
-	<tr>
-		<td width="100%" valign="top">
-			<div id="cpanel">
-				<?php 
-                foreach ( $this->Extensions as $key => $value )
-                {
-                        echo $this->addIcon('extensions.png','index.php?option=com_sportsmanagement&view='.$value.'', JText::_($value));
-                }
-                ?>
 
-			</div>
-		</td>
-	</tr>
-</table>
+<div id="jsm" class="admin override">
+
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
+<section class="content-block" role="main">
+
+<div class="row-fluid">
+<div class="span7">
+<div class="well well-small">        
+<div id="dashboard-icons" class="btn-group">
+
+<?php 
+foreach ( $this->Extensions as $key => $value )
+{
+?>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=<?php echo JText::_($value) ?>">
+<img src="components/com_sportsmanagement/assets/icons/extensions.png" alt="<?php echo JText::_($value) ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT') ?></span>
+</a>
+<?php 
+}
+?>
+       		
+</div>
+</div>
+</div>
+
+<div class="span5">
+					<div class="well well-small">
+						<div class="center">
+							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
+						</div>
+						<hr class="hr-condensed">
+						<dl class="dl-horizontal">
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
+							<dd><?php echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
+                            
+							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
+							<dd><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
+
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
+							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
+							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
+							
+                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
+							<dd>GNU General Public License</dd>
+						</dl>
+					</div>
+
+					
+
+				</div>
+
+
+</div>
+</section>
+
+</div>
+</div>                
+
+
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

@@ -262,7 +262,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         $mainframe->setUserState( "$option.rid", $this->rid );
         $mainframe->setUserState( "$option.pid", $this->project_id );
         
-        $massadd=JRequest::getInt('massadd',0);
+        $massadd = JRequest::getInt('massadd',0);
 
 		// Set toolbar items for the page
 		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'),'matches');
@@ -282,7 +282,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			JToolBarHelper::divider();
 
 			JToolBarHelper::custom('match.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'),false);
-			JToolBarHelper::addNewX('match.addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
+			JToolBarHelper::addNew('match.addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
 			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
 			JToolBarHelper::divider();
 

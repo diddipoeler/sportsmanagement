@@ -36,8 +36,6 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
-
-
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -52,7 +50,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 
                 foreach ( $this->sporttypes as $key => $value )
                 {
-                    //echo $value . '<br>';
                     switch ($value)
                     {
                         case 'soccer':
@@ -69,24 +66,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         break;
                         default:
                         break;
-                        
                     }
-                    
-                    
-                    
                 }
-                
-                
-                
-                
                 ?>
-        		
-                
+
 			</div>
 		</td>
-		
 	</tr>
-	
 </table>
 <?PHP
 echo "<div>";

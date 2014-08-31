@@ -40,83 +40,16 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.mootools');
+//JHtml::_('behavior.mootools');
 ?>
-<style>
-.search-item {
-    font:normal 11px tahoma,arial,helvetica,sans-serif;
-    padding:3px 10px 3px 10px;
-    border:1px solid #fff;
-    border-bottom:1px solid #eeeeee;
-    white-space:normal;
-    color:#555;
-}
-.search-item h3 {
-    display:block;
-    font:inherit;
-    font-weight:bold;
-    color:#222;
-}
 
-.search-item h3 span {
-    float: right;
-    font-weight:normal;
-    margin:0 0 5px 5px;
-    width:100px;
-    display:block;
-    clear:none;
-}
-</style>
-<script>
-
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
-
-	function searchPlayer(val)
-	{
-        var s= document.getElementById("search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-	}
-</script>
-<?php
-$uri=JURI::root();
-?>
 	<fieldset class="adminform">
 		<legend>
 			<?php
 			echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->project->name.'</i>');
 			?>
 		</legend>
-		<table>
-			<tr>
-				<td align="left" width="100%">
-					<?php
-					echo JText::_('JSEARCH_FILTER_LABEL');
-					?>
-					<input	type="text" name="search" id="search"
-							value="<?php echo $this->lists['search']; ?>" class="text_area"
-							onchange="document.getElementById('search_mode').value=''; $('adminForm').submit(); " />
-					<button onclick="document.getElementById('search_mode').value=''; this.form.submit(); ">
-						<?php
-						echo JText::_('JSEARCH_FILTER_SUBMIT');
-						?>
-					</button>
-					<button onclick="document.getElementById('search').value=''; document.getElementById('search_mode').value=''; this.form.submit(); ">
-						<?php
-						echo JText::_('JSEARCH_FILTER_CLEAR');
-						?>
-					</button>
-				</td>
-				<td align="center" colspan="4">
-					<?php
-					for ($i=65; $i < 91; $i++)
-					{
-						printf("<a href=\"javascript:searchPlayer('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
-					}
-					?>
-				 </td>
-			</tr>
-		</table>
+		
 		<div id="editcell">
 			<table class="adminlist">
 				<thead>

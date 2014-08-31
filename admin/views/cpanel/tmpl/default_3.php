@@ -73,19 +73,19 @@ defined('_JEXEC') or die('Restricted access');
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=seasons">
 <img src="components/com_sportsmanagement/assets/icons/saisons.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=leagues">
 <img src="components/com_sportsmanagement/assets/icons/ligen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextfederations">
 <img src="components/com_sportsmanagement/assets/icons/federation.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextcountries">
 <img src="components/com_sportsmanagement/assets/icons/laender.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextassociations">
 <img src="components/com_sportsmanagement/assets/icons/landesverbaende.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS') ?>" /><br />

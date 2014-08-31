@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.mootools');
+//JHtml::_('behavior.mootools');
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
