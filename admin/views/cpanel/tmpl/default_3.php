@@ -39,7 +39,7 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+jimport('joomla.html.html.bootstrap');
 ?> 
 <div id="jsm" class="admin override">
 
@@ -166,10 +166,7 @@ defined('_JEXEC') or die('Restricted access');
 
 </div> 
 
-
-
-
-
+<hr class="hr-condensed">  
 
 
       
@@ -179,7 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="span5">
 					<div class="well well-small">
 						<div class="center">
-							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
+							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" width="200"/>
 						</div>
 						<hr class="hr-condensed">
 						<dl class="dl-horizontal">
@@ -199,7 +196,51 @@ defined('_JEXEC') or die('Restricted access');
                             <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
 							<dd>GNU General Public License</dd>
 						</dl>
-					</div>
+                        
+<div class="center">
+
+
+<?PHP
+$start = 1;
+// Define slides options
+$slidesOptions = array(
+            "active" => "slide1_id" // It is the ID of the active tab.
+        );
+// Define tabs options for version of Joomla! 3.0
+$tabsOptions = array(
+            "active" => "tab1_id" // It is the ID of the active tab.
+        );  
+
+echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+                   
+
+if (is_array($this->importData))
+	{
+		foreach ($this->importData as $key => $value)
+		{
+		  echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide'.$start.'_id');
+            echo $value;
+            echo JHtml::_('bootstrap.endSlide'); 
+            $start++;
+		}
+	}
+if (is_array($this->importData2))
+	{
+		foreach ($this->importData2 as $key => $value)
+		{
+			 echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide'.$start.'_id');
+            echo $value;
+            echo JHtml::_('bootstrap.endSlide'); 
+            $start++;
+		}
+	}
+echo JHtml::_('bootstrap.endAccordion');
+?>
+</div>                         
+                        
+     </div>                   
+                        
+					
 
 					
 
@@ -207,35 +248,7 @@ defined('_JEXEC') or die('Restricted access');
                 
 </div>
 
-<?PHP
-if (is_array($this->importData))
-	{
-		foreach ($this->importData as $key => $value)
-		{
-			?>
-			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
-			</fieldset>
-			<?php
-		}
-	}
-    if (is_array($this->importData2))
-	{
-		foreach ($this->importData2 as $key => $value)
-		{
-			?>
-			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
-			</fieldset>
-			<?php
-		}
-	}
 
-
-
-?>
                 
 </section>
 </div>

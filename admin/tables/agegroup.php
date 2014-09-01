@@ -126,7 +126,15 @@ class sportsmanagementTableagegroup extends JTable
 		{
 			// Convert the params field to a registry.
 			$params = new JRegistry;
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        
+        $params->loadString($this->extended); 
+        }
+        else
+        {
 			$params->loadJSON($this->extended);
+            }
 			//$params->toArray($this->extended);
             $this->extended = $params->toArray($this->extended);
             

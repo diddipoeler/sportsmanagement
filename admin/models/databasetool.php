@@ -625,47 +625,65 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             }
             else
             {
-                $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile($filename);
+//                $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile($filename);
+    $xml = JFactory::getXML($filename); 
             }
 //        $xml = JFactory::getXMLParser( 'Simple' );
 //       $xml->loadFile($filename); 
        
+       if ( $xml )
+       {
+       
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
+        
        // schleife altersgruppen anfang
-       foreach( $xml->document->agegroups as $agegroup ) 
+       foreach( $xml->agegroups as $agegroups ) 
 {
-   $name = $agegroup->getElementByPath('agegroup');
-   $attributes = $name->attributes();
+   
+//   $name = $agegroup->getElementByPath('agegroup');
+//   $attributes = $name->attributes();
    
    //$mainframe->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
-   $agegroup = $name->data();
-   $info = $attributes['info'];
-   $picture = 'images/com_sportsmanagement/database/agegroups/'.$attributes['picture'];
+   $agegroup = (string)$agegroups->agegroup;
+   $info = (string)$agegroups->agegroup->attributes()->info;
+   $picture = 'images/com_sportsmanagement/database/agegroups/'.(string)$agegroups->agegroup->attributes()->picture;
    
-   $query="SELECT id
-            FROM #__".COM_SPORTSMANAGEMENT_TABLE."_agegroup where name like '".$agegroup."' and country like '".$search_nation."' and sportstype_id = ".$filter_sports_type;
-		    $this->_db->setQuery($query);
+   $query = JFactory::getDbo()->getQuery(true);
+   // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($agegroup)).''));
+        $query->where('country LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($search_nation)).''));
+        $query->where('sportstype_id = '.$filter_sports_type);
+        
+//   $query="SELECT id
+//            FROM #__".COM_SPORTSMANAGEMENT_TABLE."_agegroup where name like '".$agegroup."' and country like '".$search_nation."' and sportstype_id = ".$filter_sports_type;
+		    
+            
+            JFactory::getDbo()->setQuery($query);
 		    // altersgruppe nicht vorhanden ?
-            if ( !$this->_db->loadResult() )
+            if ( !JFactory::getDbo()->loadResult() )
             {
-   // Get a db connection.
-        $db = JFactory::getDbo();
+//   // Get a db connection.
+//        $db = JFactory::getDbo();
         // Create a new query object.
-        $query = $db->getQuery(true);
+        $query = JFactory::getDbo()->getQuery(true);
         // Insert columns.
         $columns = array('name','picture','info','sportstype_id','country');
         // Insert values.
         $values = array('\''.$agegroup.'\'','\''.$picture.'\'' ,'\''.$info.'\'' ,'\''.$filter_sports_type.'\'' ,'\''.$search_nation.'\''  );
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup'))
-            ->columns($db->quoteName($columns))
+            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup'))
+            ->columns(JFactory::getDbo()->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
+        JFactory::getDbo()->setQuery($query);
         
-        if (!$db->query())
+        if (!self::runJoomlaQuery())
 		{
 			
             //$mainframe->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -683,7 +701,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    
    }
    // schleife altersgruppen ende    
-       
+      } 
        
        
     return $this->my_text;   

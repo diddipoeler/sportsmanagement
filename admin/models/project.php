@@ -362,7 +362,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     $success = $this->deleteProjectsData($pks);  
     
@@ -383,11 +383,11 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	function deleteProjectsData($pk=array())
 	{
-	$mainframe =& JFactory::getApplication();
-    /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();
+	$mainframe = JFactory::getApplication();
+//    /* Ein Datenbankobjekt beziehen */
+//    $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
-    $query = $db->getQuery(true);
+    $query = JFactory::getDbo()->getQuery(true);
     
 	$result = false;
     if (count($pk))
@@ -396,7 +396,7 @@ class sportsmanagementModelProject extends JModelAdmin
 			$cids = implode(',',$pk);
             // wir l�schen mit join
             
-            $query = 'DELETE QUICK t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
+            $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
             ON t1.project_id = p.id   
@@ -486,11 +486,11 @@ class sportsmanagementModelProject extends JModelAdmin
             ON t20.treeto_id = t18.id
             WHERE p.id IN ('.$cids.')';
             */
-            $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            JFactory::getDbo()->setQuery($query);
+            //JFactory::getDbo()->query();
+            if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 
             {
-                $mainframe->enqueueMessage(JText::_('deleteProjectsData getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $mainframe->enqueueMessage(JText::_('deleteProjectsData getErrorMsg<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
