@@ -1497,14 +1497,29 @@ abstract class sportsmanagementHelper
 		return $ret;
 	}
 
+	/**
+	 * sportsmanagementHelper::getVersion()
+	 * 
+	 * @return
+	 */
 	public function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
-       $db = JFactory::getDBO();
-	   $db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
-       $manifest_cache = json_decode( $db->loadResult(), true );
-	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
+       //$db = JFactory::getDBO();
+       $query = JFactory::getDbo()->getQuery(true);
+       // Select some fields
+        $query->select('manifest_cache');
+		// From the table
+		$query->from('#__extensions');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.''));
+        JFactory::getDbo()->setQuery( $query );
+        
+//	   $query->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
+       $manifest_cache = json_decode( JFactory::getDbo()->loadResult(), true );
+	   
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' manifest_cache -><br><pre>'.print_r($manifest_cache,true).'</pre>'),'');
+       
        return $manifest_cache['version'];	
 	}
 

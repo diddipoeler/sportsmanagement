@@ -399,8 +399,6 @@ $prefix.'joomleague_' => ''
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote');
         $query->where('daily_number = '.$temp[1]);
-//            $query='SELECT count(*) AS count
-//            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote where daily_number = '.$temp[1];
             
 		    JFactory::getDbo()->setQuery($query);
 		    // sind zitate vorhanden ?
@@ -709,12 +707,15 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');        
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml'); 
+    $document = 'associations';         
             }
             else
             {
-                $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+//                $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/associations.xml');
+    $document = 'associations';
             }
 
     
@@ -737,21 +738,24 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     /* Ein JDatabaseQuery Objekt beziehen */
     if ( $country_assoc_del )
    {
-    $query = $db->getQuery(true);
+    $query = JFactory::getDbo()->getQuery(true);
     $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations')->where('country NOT IN ('.$country_assoc_del.')'  );
-    $db->setQuery($query);
-    $result = $db->query();
+    JFactory::getDbo()->setQuery($query);
+    $result = self::runJoomlaQuery();
     }
     
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
      
     $image_path = '/images/'.$option.'/database/associations/';
     
-    foreach( $xml->document->associations as $association ) 
+    // schleife
+    foreach( $xml->$document as $association ) 
 {
-   $name = $association->getElementByPath('assocname');
-   $attributes = $name->attributes();
-   $country = $attributes['country'];
+   //$name = $association->getElementByPath('assocname');
+   //$attributes = $name->attributes();
+   //$country = $attributes['country'];
+   $country = (string)$association->assocname->attributes()->country;
+   
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
@@ -763,18 +767,27 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    if ( $value == $country  ) 
    {
    //$country = $attributes['country'];
-   $main = $attributes['main'];
-   $parentmain = $attributes['parentmain'];
+   $main = (string)$association->assocname->attributes()->main;
+   $parentmain = (string)$association->assocname->attributes()->parentmain;
    
-   $icon = $image_path.$attributes['icon'];
-   $flag = $attributes['flag'];
-   $website = $attributes['website'];
-   $shortname = $attributes['shortname'];
+   $icon = $image_path.(string)$association->assocname->attributes()->icon;
+   $flag = (string)$association->assocname->attributes()->flag;
+   $website = (string)$association->assocname->attributes()->website;
+   $shortname = (string)$association->assocname->attributes()->shortname;
    
-   $assocname = $name->data();
-   $query1 = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_associations WHERE country LIKE '" . $country ."' and name LIKE '".$assocname."'";
-    $this->_db->setQuery( $query1 );
-	$result = $this->_db->loadResult();
+   $assocname = (string)$association->assocname;
+   
+   $query1 = JFactory::getDbo()->getQuery(true);
+   // Select some fields
+        $query1->select('id');
+		// From the table
+		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations');
+        $query1->where('country LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($country)).''));
+        $query1->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($assocname)).''));
+        
+//   $query1 = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_associations WHERE country LIKE '" . $country ."' and name LIKE '".$assocname."'";
+    JFactory::getDbo()->setQuery( $query1 );
+	$result = JFactory::getDbo()->loadResult();
    
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query1,true).'</pre>'),'Notice');
    
@@ -784,28 +797,28 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    if ( empty($parentmain) )
    {
    // Create a new query object.
-                $insertquery = $db->getQuery(true);
+                $insertquery = JFactory::getDbo()->getQuery(true);
                 // Insert columns.
                 $columns = array('country','name','picture','assocflag','website','short_name');
                 // Insert values.
                 $values = array('\''.$country.'\'','\''.$assocname.'\'','\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
-                ->columns($db->quoteName($columns))
+                ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->columns(JFactory::getDbo()->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
-                $db->setQuery($insertquery);
+                JFactory::getDbo()->setQuery($insertquery);
                 
-	            if (!$db->query())
+	            if (!self::runJoomlaQuery())
 			    {
 			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
                 }
 			    else
 			    {
 			    $temp = new stdClass();
-                $temp->id = $db->insertid();
+                $temp->id = JFactory::getDbo()->insertid();
                 $export[] = $temp;
                 $this->_assoclist[$country][$main] = array_merge($export); 
 			    } 
@@ -815,28 +828,28 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    $parent_id = $this->_assoclist[$country][$parentmain];
    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
     // Create a new query object.
-                $insertquery = $db->getQuery(true);
+                $insertquery = JFactory::getDbo()->getQuery(true);
                 // Insert columns.
                 $columns = array('country','name','parent_id','picture','assocflag','website','short_name');
                 // Insert values.
                 $values = array('\''.$country.'\'','\''.$assocname.'\'',$parent_id[0]->id,'\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
-                ->columns($db->quoteName($columns))
+                ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->columns(JFactory::getDbo()->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
-                $db->setQuery($insertquery);
+                JFactory::getDbo()->setQuery($insertquery);
                 
-	            if (!$db->query())
+	            if (!self::runJoomlaQuery())
 			    {
 			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__); 
+                self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
 			    {
 			    $temp = new stdClass();
-                $temp->id = $db->insertid();
+                $temp->id = JFactory::getDbo()->insertid();
                 $export[] = $temp;
                 $this->_assoclist[$country][$main] = array_merge($export); 
 			    } 
@@ -852,17 +865,17 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    $this->_assoclist[$country][$main] = array_merge($export); 
    
    // Fields to update.
-                $query = $db->getQuery(true);
+                $query = JFactory::getDbo()->getQuery(true);
                 $fields = array(
-                $db->quoteName('picture') . '=' . '\''.$icon.'\''
+                JFactory::getDbo()->quoteName('picture') . '=' . '\''.$icon.'\''
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                $db->quoteName('id') . '=' . $result
+                JFactory::getDbo()->quoteName('id') . '=' . $result
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))->set($fields)->where($conditions);
-                $db->setQuery($query);
-                $result = $db->query(); 
+                $query->update(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))->set($fields)->where($conditions);
+                JFactory::getDbo()->setQuery($query);
+                $result = self::runJoomlaQuery(); 
    
    
     
@@ -899,8 +912,9 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             }
             else
             {
-                $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+//                $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
             }
             
     if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml')) 
@@ -912,19 +926,22 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     
     
     // We can now step through each element of the file
- if ( isset($xml->document->events) )
+ if ( isset($xml->events) )
     {    
-foreach( $xml->document->events as $event ) 
+foreach( $xml->events as $event ) 
 {
-   $name = $event->getElementByPath('name');
-   $attributes = $name->attributes();
+   //$name = $event->getElementByPath('name');
+//   $attributes = $name->attributes();
+   
+   //$main = (string)$association->assocname->attributes()->main;
+   
    //$icon = $event->getElementByPath('icon');
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    $temp = new stdClass();
-   $temp->name = strtoupper($option).'_'.strtoupper($type).'_E_'.strtoupper($name->data());
-    $temp->icon = 'images/'.$option.'/database/events/'.$type.'/'.strtolower($attributes['icon']);
+   $temp->name = strtoupper($option).'_'.strtoupper($type).'_E_'.strtoupper((string)$event->name);
+    $temp->icon = 'images/'.$option.'/database/events/'.$type.'/'.strtolower((string)$event->name->attributes()->icon );
     $export[] = $temp;
     $this->_sport_types_events[$type] = array_merge($export);
    }
@@ -933,12 +950,14 @@ foreach( $xml->document->events as $event )
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
    
    unset ($export); 
- if ( isset($xml->document->mainpositions) )
+   
+   
+ if ( isset($xml->mainpositions) )
     {   
-    foreach( $xml->document->mainpositions as $position ) 
+    foreach( $xml->mainpositions as $position ) 
 {
-   $name = $position->getElementByPath('mainname');
-   $attributes = $name->attributes();
+   //$name = $position->getElementByPath('mainname');
+//   $attributes = $name->attributes();
    
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
    
@@ -950,10 +969,10 @@ foreach( $xml->document->events as $event )
    
    
         $temp = new stdClass();
-        $temp->name = strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper($name->data());
-        $temp->switch = strtolower($attributes['switch']);
-        $temp->parent = $attributes['parent'];
-        $temp->content = $attributes['content'];
+        $temp->name = strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper((string)$position->mainname);
+        $temp->switch = strtolower((string)$position->mainname->attributes()->switch);
+        $temp->parent = (string)$position->mainname->attributes()->parent ;
+        $temp->content = (string)$position->mainname->attributes()->content;
         $export[] = $temp;
         $this->_sport_types_position[$type] = array_merge($export);
    }
@@ -964,12 +983,12 @@ foreach( $xml->document->events as $event )
     //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
     
     unset ($export); 
-    if ( isset($xml->document->parentpositions) )
+    if ( isset($xml->parentpositions) )
     {
-    foreach( $xml->document->parentpositions as $parent ) 
+    foreach( $xml->parentpositions as $parent ) 
 {
-   $name = $parent->getElementByPath('parentname');
-   $attributes = $name->attributes();
+   //$name = $parent->getElementByPath('parentname');
+//   $attributes = $name->attributes();
    
    
    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
@@ -994,14 +1013,14 @@ foreach( $xml->document->events as $event )
    
   
         $temp = new stdClass();
-        $temp->name = strtoupper($option).'_'.strtoupper($type).'_'.strtoupper($attributes['art']).'_'.strtoupper($name->data());
-        $temp->switch = strtolower($attributes['switch']);
-        $temp->parent = $attributes['parent'];
-        $temp->content = $attributes['content'];
-        $temp->events = $attributes['events'];
+        $temp->name = strtoupper($option).'_'.strtoupper($type).'_'.strtoupper((string)$parent->parentname->attributes()->art).'_'.strtoupper((string)$parent->parentname);
+        $temp->switch = strtolower((string)$parent->parentname->attributes()->switch);
+        $temp->parent = (string)$parent->parentname->attributes()->parent;
+        $temp->content = (string)$parent->parentname->attributes()->content;
+        $temp->events = (string)$parent->parentname->attributes()->events;
         //$export = array();
         $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper($attributes['main'])] = array_merge($export);
+        $this->_sport_types_position_parent[strtoupper($option).'_'.strtoupper($type).'_F_'.strtoupper((string)$parent->parentname->attributes()->main)] = array_merge($export);
         
    }
     
@@ -1161,7 +1180,7 @@ foreach( $xml->document->events as $event )
     $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
-        $db = JFactory::getDbo();
+        //$db = JFactory::getDbo();
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
@@ -1184,19 +1203,19 @@ foreach( $xml->document->events as $event )
     {
     foreach ( $this->_sport_types_events[$type] as $event )
     {
-        $query = self::build_SelectQuery('eventtypes',$event->name,$id); 
-        $db->setQuery($query);
+        $query = self::build_SelectQuery('eventtype',$event->name,$id); 
+        JFactory::getDbo()->setQuery($query);
         
-        if ( !$object = $db->loadObject() )
+        if ( !$object = JFactory::getDbo()->loadObject() )
 		{
         $query				= self::build_InsertQuery_Event('eventtype',$event->name,$event->icon,$id,2);
-         $db->setQuery($query);
-			$result				= $db->query();
-			$events_player[$i]	= $db->insertid();
-			$events_staff[$i]		= $db->insertid();
-			$events_clubstaff[$i]	= $db->insertid();
-			$events_referees[$i]	= $db->insertid();
-            $event->tableid = $db->insertid();
+         JFactory::getDbo()->setQuery($query);
+			$result				= JFactory::getDbo()->query();
+			$events_player[$i]	= JFactory::getDbo()->insertid();
+			$events_staff[$i]		= JFactory::getDbo()->insertid();
+			$events_clubstaff[$i]	= JFactory::getDbo()->insertid();
+			$events_referees[$i]	= JFactory::getDbo()->insertid();
+            $event->tableid = JFactory::getDbo()->insertid();
             }
             else
 		{
@@ -1224,14 +1243,14 @@ foreach( $xml->document->events as $event )
     foreach ( $this->_sport_types_position[$type] as $position )
     {
     $query = self::build_SelectQuery('position',$position->name,$id); 
-    $db->setQuery($query);    
-    if (!$dbresult=$db->loadObject())
+    JFactory::getDbo()->setQuery($query);    
+    if (!$dbresult=JFactory::getDbo()->loadObject())
 			{
 				$query					= self::build_InsertQuery_Position('position',$position->name,$position->switch,$position->parent,$position->content,$id,1); 
-                $db->setQuery($query);
-				$result					= $db->query();
-				$ParentID				= $db->insertid();
-				$PlayersPositions[$i]	= $db->insertid();
+                JFactory::getDbo()->setQuery($query);
+				$result					= JFactory::getDbo()->query();
+				$ParentID				= JFactory::getDbo()->insertid();
+				$PlayersPositions[$i]	= JFactory::getDbo()->insertid();
 			}
 			else
 			{
@@ -1252,14 +1271,14 @@ foreach( $xml->document->events as $event )
         foreach ( $this->_sport_types_position_parent[$position->name] as $parent )
         {
             $query = self::build_SelectQuery('position',$parent->name,$id); 
-            $db->setQuery($query);
-            if (!$object=$db->loadObject())
+            JFactory::getDbo()->setQuery($query);
+            if (!$object=JFactory::getDbo()->loadObject())
 				{
 					$query					= self::build_InsertQuery_Position('position',$parent->name,$parent->switch,$ParentID,$parent->content,$id,2); 
-                    $db->setQuery($query);
-					$result					= $db->query();
-					$PlayersPositions[$j]	= $db->insertid();
-                    $parent->tableid = $db->insertid();
+                    JFactory::getDbo()->setQuery($query);
+					$result					= self::runJoomlaQuery();
+					$PlayersPositions[$j]	= JFactory::getDbo()->insertid();
+                    $parent->tableid = JFactory::getDbo()->insertid();
 				}
 				else
 				{
@@ -1269,25 +1288,33 @@ foreach( $xml->document->events as $event )
                 
                 if ( $parent->events )
                 {
-                foreach ( $this->_sport_types_events[$type] as $event )
-                {
-                $query	= self::build_InsertQuery_PositionEventType($parent->tableid,$event->tableid);
-                $db->setQuery($query);
-				$result = $db->query(); 
-                if ( !$update )
-        {
-                if ( $result )
-                {
-                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
-                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
-                }   
-                else
-                {
-                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
-                }
-                }
-                }
+//                foreach ( $this->_sport_types_events[$type] as $event )
+//                {
+//                $query	= self::build_InsertQuery_PositionEventType($parent->tableid,$event->tableid);
+//                JFactory::getDbo()->setQuery($query);
+//				$result = self::runJoomlaQuery(); 
+//                if ( !$result )
+//                {
+//                
+//                }
+//                else
+//                {    
+//                if ( !$update )
+//                {
+//                if ( $result )
+//                {
+//                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+//                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+//		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
+//                }   
+//                else
+//                {
+//                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
+//                }
+//                }
+//                }
+//                }
+                
                 }
                 
             $j++;

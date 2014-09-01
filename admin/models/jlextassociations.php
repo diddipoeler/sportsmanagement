@@ -69,7 +69,9 @@ class sportsmanagementModeljlextassociations extends JModelList
                         'objassoc.id',
                         'objassoc.ordering',
                         'objassoc.checked_out',
-                        'objassoc.checked_out_time'
+                        'objassoc.checked_out_time',
+                        'objassoc.assocflag',
+                        'objassoc.picture'
                         );
                 parent::__construct($config);
         }

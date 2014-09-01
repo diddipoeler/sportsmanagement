@@ -234,8 +234,9 @@ else
         }
         else
         {
-        $xml = JFactory::getXMLParser( 'Simple' );
-        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
+//        $xml = JFactory::getXMLParser( 'Simple' );
+//        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
+        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         }    
 
 //        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
@@ -247,35 +248,46 @@ else
         
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
         
-        foreach( $xml->document->version as $version ) 
-            {
-            $github_version = $version->data();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
-            }
+        $github_version = (string)$xml->version;
+        
+//        foreach( $xml->document->version as $version ) 
+//            {
+//            $github_version = $version->data();
+//            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+//            }
                      
-            $temp2 = explode(".",$github_version);  
+            //$temp2 = explode(".",$github_version);  
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
         
-            if ( $github_version !== $version )
-            {
-                $return =  false;
-            }
-            else
-            {
-                $return =  true;
-            }
+        if(version_compare($github_version,$version,'gt')) 
+        {
+        $return =  false;    
+        }
+        else
+        {
+        $return =  true;    
+        }    
+//            if ( $github_version !== $version )
+//            {
+//                $return =  false;
+//            }
+//            else
+//            {
+//                $return =  true;
+//            }
             
-            foreach( $temp as $key => $value )
-            {
-            if ( (int)$temp[$key] !== (int)$temp2[$key] )
-            {
-                $return = $temp[$key];
-                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
-                break;
-            }    
-            }
+//            foreach( $temp as $key => $value )
+//            {
+//            if ( (int)$temp[$key] !== (int)$temp2[$key] )
+//            {
+//                $return = $temp[$key];
+//                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
+//                break;
+//            }    
+//            }
             
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
             
@@ -285,7 +297,7 @@ else
             //$return = strcmp (trim($github_version), trim($version));
             //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
             
-            return $return;
+//            return $return;
                     
     }
     

@@ -119,7 +119,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td style="text-align:center; ">
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_EDIT_DETAILS');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -139,7 +139,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //					echo $html;
 if (empty($row->assocflag) || !JFile::exists(JPATH_SITE.DS.$row->assocflag))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

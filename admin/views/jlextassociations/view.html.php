@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
-
 /**
  * sportsmanagementViewjlextassociations
  * 
@@ -97,7 +94,7 @@ $starttime = microtime();
         $lists['nation']=$nation;
         $lists['nation2']= JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
 																$this->state->get('filter.search_nation'));

@@ -2123,8 +2123,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newpositionsid<br><pre>'.print_r($this->_newpositionsid,true).'</pre>'),'');
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbpositionsid<br><pre>'.print_r($this->_dbpositionsid,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newpositionsid<br><pre>'.print_r($this->_newpositionsid,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbpositionsid<br><pre>'.print_r($this->_dbpositionsid,true).'</pre>'),'');
        
        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'),'');
        
@@ -3494,9 +3494,9 @@ $this->dump_variable("import_team", $import_team);
 			$t_params = json_encode( $ini );		
 					$p_template->set('params',$t_params);
                     
-//$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' p_template -> '.'<pre>'.print_r($p_template,true).'</pre>'),'');                    
-$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
-$mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
+                  
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
                     
 					if	((strtolower(substr($template,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) &&
 						($template!='do_tipsl') &&
@@ -4404,7 +4404,11 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
                 $p_match->set('import_match_id',$this->_getDataFromObject($match,'id'));
                 // das ist falsch
                 //$p_match->set('division_id',$this->_getDataFromObject($match,'division_id'));
+                
+                if ( $this->_convertDivisionID )
+                {
                 $p_match->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')]);
+                }
                 
                 
 			}
