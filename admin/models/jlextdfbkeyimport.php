@@ -58,7 +58,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextDfbkeyimport extends JModel
+class sportsmanagementModeljlextDfbkeyimport extends JModelLegacy
 {
 
 function _loadData()

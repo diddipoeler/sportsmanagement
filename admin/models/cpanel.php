@@ -225,7 +225,12 @@ else
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
+        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
+        //$xml = JFactory::getFeedParser(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+        //if (function_exists('simplexml_load_file'))
+//			{
+//				$xml =  @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml','SimpleXMLElement',LIBXML_NOCDATA);
+//			}  
         }
         else
         {
@@ -240,7 +245,10 @@ else
 //        {
 //        }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($xml,true).'</pre>'),'');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
+        
         foreach( $xml->document->version as $version ) 
             {
             $github_version = $version->data();

@@ -315,11 +315,15 @@ abstract class sportsmanagementHelper
 			$submenu == 'googlecalendar'
 		);
         JHtmlSidebar::addEntry(
+			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'),
+			'index.php?option=com_sportsmanagement&view=extensions',
+			$submenu == 'extensions'
+		);
+        JHtmlSidebar::addEntry(
 			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'),
 			'index.php?option=com_sportsmanagement&view=specialextensions',
 			$submenu == 'specialextensions'
 		);
-        
         
         
         }

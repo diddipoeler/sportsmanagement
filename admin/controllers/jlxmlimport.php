@@ -82,7 +82,8 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 	   $mainframe = JFactory::getApplication();
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+       
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
        
 		switch ($this->getTask())
 		{
@@ -281,9 +282,10 @@ $mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worde
 		$post=JRequest::get('post');
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
-		echo $link;
+		//echo $link;
+        //$this->setRedirect('index.php?option=com_sportsmanagement&task=jlxmlimport.display');
 
-		#$this->setRedirect($link);
+		$this->setRedirect($link);
 	}
 
 	/**

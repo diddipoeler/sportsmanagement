@@ -71,7 +71,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
         JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
 		$uri = JFactory::getURI();
@@ -295,7 +295,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$post		= JRequest::get('post');
 		
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();

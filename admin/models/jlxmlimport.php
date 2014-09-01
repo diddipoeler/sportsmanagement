@@ -231,7 +231,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
         $post = JRequest::get('post');
+        
+        $result = NULL;
+        
         $this->_import_project_id = $mainframe->getUserState($option.'projectidimport'); ;
         
         //$mainframe->enqueueMessage(JText::_('getData post<br><pre>'.print_r($post ,true).'</pre>'),'');
@@ -828,6 +832,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getUserList($is_admin=false)
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query='SELECT id,username FROM #__users';
 		if ($is_admin==true)
 		{
@@ -840,6 +847,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getTemplateList()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE master_template=0 ORDER BY name ASC';
 		JFactory::getDbo()->setQuery($query);
 		return JFactory::getDbo()->loadObjectList();
@@ -854,6 +864,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getNewClubList()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query='SELECT id,name,country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name ASC';
 		JFactory::getDbo()->setQuery($query);
 		return JFactory::getDbo()->loadObjectList();
@@ -861,6 +874,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getNewClubListSelect()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query='SELECT id AS value, name AS text, country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
 		JFactory::getDbo()->setQuery($query);
 		if ($results=JFactory::getDbo()->loadObjectList())
@@ -872,6 +888,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getClubAndTeamList()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query  = ' SELECT id, c.name AS club_name, t.name AS team_name, c.country'
 				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club'
 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id=c.id'
@@ -882,6 +901,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 	public function getClubAndTeamListSelect()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$query  = ' SELECT t.id AS value, CONCAT(c.name, " - ", t.name , " (", t.info , ")" ) AS text, t.club_id, c.name AS club_name, t.name AS team_name, c.country'
 				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c'
 				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id=c.id'
@@ -1505,37 +1527,99 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		return $country;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_checkProject()
+	 * 
+	 * @return
+	 */
 	private function _checkProject()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		/*
 		TO BE FIXED again
 		$query="	SELECT id
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 					WHERE name='$this->_name' AND league_id='$this->_league_id' AND season_id='$this->_season_id'";
 		*/
-		$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project WHERE name='".addslashes(stripslashes($this->_name))."'";
-		JFactory::getDbo()->setQuery($query);
-		sportsmanagementModeldatabasetool::runJoomlaQuery();
-		if (JFactory::getDbo()->getNumRows() > 0){return false;}
+        $query->clear();
+          // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_name)).''));
+        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
+			JFactory::getDbo()->setQuery($query);
+            
+
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
+        
+//		$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project WHERE name='".addslashes(stripslashes($this->_name))."'";
+//		JFactory::getDbo()->setQuery($query);
+//		sportsmanagementModeldatabasetool::runJoomlaQuery();
+		if (JFactory::getDbo()->getNumRows() > 0)
+        {
+            return false;
+        }
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_getObjectName()
+	 * 
+	 * @param mixed $tableName
+	 * @param mixed $id
+	 * @param string $usedFieldName
+	 * @return
+	 */
 	private function _getObjectName($tableName,$id,$usedFieldName='')
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$fieldName=($usedFieldName=='') ? 'name' : $usedFieldName;
-		$query="SELECT $fieldName FROM #__".COM_SPORTSMANAGEMENT_TABLE."_$tableName WHERE id=$id";
+        $query->clear();
+          // Select some fields
+        $query->select($fieldName);
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$tableName);
+        $query->where('id = '.$id);
+//		$query="SELECT $fieldName FROM #__".COM_SPORTSMANAGEMENT_TABLE."_$tableName WHERE id=$id";
 		JFactory::getDbo()->setQuery($query);
-		if ($result=JFactory::getDbo()->loadResult()){return $result;}
+		if ($result=JFactory::getDbo()->loadResult())
+        {
+            return $result;
+        }
 		return JText::sprintf('Item with ID [%1$s] not found inside [#__'.COM_SPORTSMANAGEMENT_TABLE.'_%2$s]',$id,$tableName);
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importSportsType()
+	 * 
+	 * @return
+	 */
 	private function _importSportsType()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$my_text='';
 		if (!empty($this->_sportstype_new))
 		{
-			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type WHERE name='".addslashes(stripslashes($this->_sportstype_new))."'";
+		  $query->clear();
+          // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_sportstype_new)).''));
+        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			JFactory::getDbo()->setQuery($query);
+            
+
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
+//			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type WHERE name='".addslashes(stripslashes($this->_sportstype_new))."'";
+//			JFactory::getDbo()->setQuery($query);
 			if ($sportstypeObject=JFactory::getDbo()->loadObject())
 			{
 				$this->_sportstype_id = $sportstypeObject->id;
@@ -1554,11 +1638,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($p_sportstype->store()===false)
 				{
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::_('Error in function _importSportsType').'</strong></span><br />';
+					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Sportstypename: %1$s',JText::_($this->_sportstype_new)).'<br />';
 					//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 					//$my_text .= '<pre>'.print_r($p_sportstype,true).'</pre>';
-					$this->_success_text['Importing sportstype data:']=$my_text;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -1579,17 +1663,37 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 										'</span><strong>'.JText::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text['Importing sportstype data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importLeague()
+	 * 
+	 * @return
+	 */
 	private function _importLeague()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$my_text='';
 		if (!empty($this->_league_new))
 		{
-			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_league WHERE name='".addslashes(stripslashes($this->_league_new))."'";
+		  $query->clear();
+          // Select some fields
+        $query->select('id,name,country');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_league_new)).''));
+        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			JFactory::getDbo()->setQuery($query);
+            
+
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
+                
+//			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_league WHERE name='".addslashes(stripslashes($this->_league_new))."'";
+//			JFactory::getDbo()->setQuery($query);
 
 			if ($leagueObject=JFactory::getDbo()->loadObject())
 			{
@@ -1616,11 +1720,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($p_league->store()===false)
 				{
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::_('Error in function _importLeague').'</strong></span><br />';
+					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
 					//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 					//$my_text .= '<pre>'.print_r($p_league,true).'</pre>';
-					$this->_success_text['Importing league data:']=$my_text;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 					//return false;
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -1641,17 +1745,36 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 										'</span><strong>'.$this->_getObjectName('league',$this->_league_id).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text['Importing league data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importSeason()
+	 * 
+	 * @return
+	 */
 	private function _importSeason()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$my_text='';
 		if (!empty($this->_season_new))
 		{
-			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_season WHERE name='".addslashes(stripslashes($this->_season_new))."'";
+		  $query->clear();
+          // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_season_new)).''));
+        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			JFactory::getDbo()->setQuery($query);
+            
+
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
+//			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_season WHERE name='".addslashes(stripslashes($this->_season_new))."'";
+//			JFactory::getDbo()->setQuery($query);
 
 			if ($seasonObject=JFactory::getDbo()->loadObject())
 			{
@@ -1672,12 +1795,12 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($p_season->store()===false)
 				{
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::_('Error in function _importSeason').'</strong></span><br />';
+					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
 					//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 					//$my_text .= '<pre>'.print_r($p_season,true).'</pre>';
-					$this->_success_text['Importing season data:']=$my_text;
-					//return false;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+					//return false; 
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
@@ -1697,12 +1820,19 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 										'</span><strong>'.$this->_getObjectName('season',$this->_season_id).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text['Importing season data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importEvents()
+	 * 
+	 * @return
+	 */
 	private function _importEvents()
 	{
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
 //$this->dump_header("function _importEvents");
 		$my_text='';
 		if (!isset($this->_datas['event']) || count($this->_datas['event'])==0){return true;}
@@ -1747,8 +1877,16 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$p_eventtype->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_eventtype,'name')));
 				}
-				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype WHERE name='".addslashes(stripslashes($p_eventtype->name))."'";
-				JFactory::getDbo()->setQuery($query); sportsmanagementModeldatabasetool::runJoomlaQuery();
+                
+                $query->clear();
+          // Select some fields
+        $query->select('id,name');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_eventtype->name)).''));
+        
+				JFactory::getDbo()->setQuery($query); 
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ($object=JFactory::getDbo()->loadObject())
 				{
 					$this->_convertEventID[$oldID]=$object->id;
@@ -1763,7 +1901,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 						$my_text .= 'error on event import: ';
 						$my_text .= $oldID;
 						//$my_text .= "<br />Error: _importEvents<br />#$my_text#<br />#<pre>".print_r($p_eventtype,true).'</pre>#';
-						$this->_success_text['Importing general event data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -1779,7 +1917,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			}
 		}
 //$this->dump_variable("this->_convertEventID", $this->_convertEventID);
-		$this->_success_text['Importing general event data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -1878,8 +2016,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newparentpositionsid<br><pre>'.print_r($this->_newparentpositionsid,true).'</pre>'),'');
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbparentpositionsid<br><pre>'.print_r($this->_dbparentpositionsid,true).'</pre>'),'');
+       //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newparentpositionsid<br><pre>'.print_r($this->_newparentpositionsid,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbparentpositionsid<br><pre>'.print_r($this->_dbparentpositionsid,true).'</pre>'),'');
        
        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
        
@@ -1936,10 +2074,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
         $query->where('parent_id = 0');
-			
-            //    $query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=0";
-				
-                
+        
                 JFactory::getDbo()->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if (JFactory::getDbo()->getAffectedRows())
@@ -1957,7 +2092,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 						$my_text .= 'error on parent-position import: ';
 						$my_text .= $oldID;
 						//$my_text .= "<br />Error: _importParentPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
-						$this->_success_text['Importing general parent-position data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -1974,7 +2109,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			}
 		}
 //$this->dump_variable("this->_convertParentPositionID", $this->_convertParentPositionID);
-		$this->_success_text['Importing general parent-position data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2055,8 +2190,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
         $query->where('parent_id = '.$p_position->parent_id);
-        
-                //$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position WHERE name='".addslashes(stripslashes($p_position->name))."' AND parent_id=$p_position->parent_id";
 				
                 JFactory::getDbo()->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery();
@@ -2079,7 +2212,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 						$my_text .= 'error on position import: ';
 						$my_text .= $oldID;
 						//$my_text .= "<br />Error: _importPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
-						$this->_success_text['Importing general position data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -2096,10 +2229,15 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			}
 		}
 //$this->dump_variable("this->_convertPositionID", $this->_convertPositionID);
-		$this->_success_text['Importing general position data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importPositionEventType()
+	 * 
+	 * @return
+	 */
 	private function _importPositionEventType()
 	{
 		$my_text='';
@@ -2155,7 +2293,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 					$my_text .= 'error on PositionEventType import: ';
 					$my_text .= '#'.$oldID.'#';
 					//$my_text .= "<br />Error: _importPositionEventType<br />#$my_text#<br />#<pre>".print_r($p_positioneventtype,true).'</pre>#';
-					$this->_success_text['Importing positioneventtype data:']=$my_text;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -2169,12 +2307,15 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				}
 			}
 		}
-		$this->_success_text['Importing positioneventtype data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
 	private function _importPlayground()
 	{
+	   $mainframe = JFactory::getApplication();
+	   $query = JFactory::getDbo()->getQuery(true);
+       
 if ( $this->show_debug_info )
 {	   
 $this->dump_header("function _importPlayground");
@@ -2277,8 +2418,17 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 						$p_playground->set('club_id',$this->_getDataFromObject($import_playground,'club_id'));
 					}
 				}
-				$query="SELECT id,name FROM #__".COM_SPORTSMANAGEMENT_TABLE."_playground WHERE name='".addslashes(stripslashes($p_playground->name))."'";
-				JFactory::getDbo()->setQuery($query); sportsmanagementModeldatabasetool::runJoomlaQuery();
+                
+                $query->clear();
+          // Select some fields
+        $query->select('id,name,country');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
+        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_playground->country.''));
+			JFactory::getDbo()->setQuery($query);
+ 
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ($object=JFactory::getDbo()->loadObject())
 				{
 					$this->_convertPlaygroundID[$oldID]=$object->id;
@@ -2291,11 +2441,11 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 					if ($p_playground->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::_('Error in function _importPlayground').'</strong></span><br />';
+						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 						$my_text .= JText::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
 						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 						//$my_text .= '<pre>'.print_r($p_playground,true).'</pre>';
-						$this->_success_text['Importing general playground data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -2310,7 +2460,7 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 				}
 			}
 		}
-		$this->_success_text['Importing general playground data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -2352,7 +2502,6 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
         $query->group('id');
         
-//			$query='SELECT id,name,standard_playground,country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club GROUP BY id';
 			JFactory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
 			$dbClubs = JFactory::getDbo()->loadObjectList('id');
@@ -2377,7 +2526,7 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
 }                    
                     
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML_IMPORT_CLUBS_1',
+					$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
 												'</span><strong>'.$dbClubs[$id]->name.'</strong>',
 												''.$dbClubs[$id]->id.''
 												);
@@ -2512,13 +2661,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
         $query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			JFactory::getDbo()->setQuery($query);
             
-//                $query="SELECT	id,
-//						name,
-//						country
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_club
-//					WHERE	name='".addslashes(stripslashes($p_club->name))."' AND
-//						country='$p_club->country'";
-				//JFactory::getDbo()->setQuery($query); 
+
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ( $object = JFactory::getDbo()->loadObject())
 				{
@@ -2532,12 +2675,12 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 					if ($p_club->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::_('Error in function importClubs').'</strong></span><br />';
+						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 						$my_text .= JText::sprintf('Clubname: %1$s',$p_club->name).'<br />';
 						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 						//$my_text .= '<pre>'.print_r($p_club,true).'</pre>';
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_CLUBS_0')] = $my_text;
-						//return false;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+						//return false; 
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
 					else
@@ -2566,10 +2709,15 @@ if ( $this->show_debug_info )
 $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 }
 
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_CLUBS_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_convertNewPlaygroundIDs()
+	 * 
+	 * @return
+	 */
 	private function _convertNewPlaygroundIDs()
 	{
     $mainframe = JFactory::getApplication();   
@@ -2698,12 +2846,10 @@ $this->dump_header("Function _importTeams");
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
         $query->group('id');
         
-//			$query='SELECT id,name,standard_playground,country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club GROUP BY id';
 			JFactory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
             
-//			$query='SELECT id,name,club_id,short_name,middle_name,info FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team GROUP BY id';
-//			JFactory::getDbo()->setQuery($query);
+
 			$dbTeams = JFactory::getDbo()->loadObjectList('id');
 
 			foreach ($this->_dbteamsid AS $key => $id)
@@ -2816,17 +2962,7 @@ $this->dump_variable("import_team", $import_team);
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->name)).''));
         $query->where('middle_name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->middle_name)).''));
         $query->where('info LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->info)).''));
-        
-				//$query="SELECT	id,
-//								name,
-//								short_name,
-//								middle_name,
-//								info, club_id
-//						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team
-//						WHERE	name='".addslashes(stripslashes($p_team->name))."' AND
-//								middle_name='".addslashes(stripslashes($p_team->middle_name))."' AND
-//								info='".addslashes(stripslashes($p_team->info))."' ";
-                                
+
 				JFactory::getDbo()->setQuery($query); 
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ( $object = JFactory::getDbo()->loadObject())
@@ -2841,11 +2977,11 @@ $this->dump_variable("import_team", $import_team);
 					if ($p_team->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::_('Error in function _importTeams').'</strong></span><br />';
+						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 						$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
 						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 						//$my_text .= '<pre>'.print_r($p_team,true).'</pre>';
-						$this->_success_text['Importing general team data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -2866,16 +3002,22 @@ $this->dump_variable("import_team", $import_team);
 				}
 			}
 		}
-		$this->_success_text['Importing general team data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importPersons()
+	 * 
+	 * @return
+	 */
 	private function _importPersons()
 	{
 	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
        
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertPositionID<br><pre>'.print_r($this->_convertPositionID,true).'</pre>'),'');
-       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertParentPositionID<br><pre>'.print_r($this->_convertParentPositionID,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertPositionID<br><pre>'.print_r($this->_convertPositionID,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _convertParentPositionID<br><pre>'.print_r($this->_convertParentPositionID,true).'</pre>'),'');
        
 		if (!isset($this->_datas['person']) || count($this->_datas['person'])==0){return true;}
 		if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) &&
@@ -3003,12 +3145,22 @@ $this->dump_variable("import_team", $import_team);
 				}
                 
                 //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' person<br><pre>'.print_r($p_person,true).'</pre>'),'');
-                
-				$query="	SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
-							WHERE	firstname='".addslashes(stripslashes($p_person->firstname))."' AND
-									lastname='".addslashes(stripslashes($p_person->lastname))."' AND
-									nickname='".addslashes(stripslashes($p_person->nickname))."' AND
-									birthday='$p_person->birthday'";
+                $query->clear();
+          // Select some fields
+        $query->select('*');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_person->firstname)).''));
+        $query->where('lastname LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_person->lastname)).''));
+        $query->where('nickname LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_person->nickname)).''));
+        $query->where('birthday = '.JFactory::getDbo()->Quote(''.$p_person->birthday.''));
+			
+            
+//				$query="	SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person
+//							WHERE	firstname='".addslashes(stripslashes($p_person->firstname))."' AND
+//									lastname='".addslashes(stripslashes($p_person->lastname))."' AND
+//									nickname='".addslashes(stripslashes($p_person->nickname))."' AND
+//									birthday='$p_person->birthday'";
 				JFactory::getDbo()->setQuery($query); 
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ($object=JFactory::getDbo()->loadObject())
@@ -3033,7 +3185,7 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= $p_person->nickname.'-';
 						$my_text .= $p_person->birthday;
 						//$my_text .= "<br />Error: _importPersons<br />#$my_text#<br />#<pre>".print_r($p_person,true).'</pre>#';
-						$this->_success_text['Importing general person data:']=$my_text;
+						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -3058,10 +3210,15 @@ $this->dump_variable("import_team", $import_team);
 				}
 			}
 		}
-		$this->_success_text['Importing general person data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importProject()
+	 * 
+	 * @return
+	 */
 	private function _importProject()
 	{
 		$my_text='';
@@ -3107,11 +3264,11 @@ $this->dump_variable("import_team", $import_team);
 		if ($p_project->store()===false)
 		{
 			$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-			$my_text .= JText::_('Error in function _importProject').'</strong></span><br />';
+			$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 			$my_text .= JText::sprintf('Projectname: %1$s',$p_project->name).'<br />';
 			//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 			//$my_text .= '<pre>'.print_r($p_project,true).'</pre>';
-			$this->_success_text['Importing general project data:']=$my_text;
+			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 			//return false;
             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 		}
@@ -3122,7 +3279,7 @@ $this->dump_variable("import_team", $import_team);
 			$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 			$my_text .= JText::sprintf('Created new project data: %1$s',"</span><strong>$this->_name</strong>");
 			$my_text .= '<br />';
-			$this->_success_text['Importing general project data:']=$my_text;
+			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 			return true;
 		}
 	}
@@ -3235,15 +3392,28 @@ $this->dump_variable("import_team", $import_team);
 		}
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importTemplate()
+	 * 
+	 * @return
+	 */
 	private function _importTemplate()
 	{
 	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDbo()->getQuery(true);
+       
 		$my_text='';
 		if ($this->_template_id > 0) // Uses a master template
 		{
-			$query_template='SELECT id,master_template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.$this->_template_id;
-			JFactory::getDbo()->setQuery($query_template);
-			$template_row=JFactory::getDbo()->loadAssoc();
+		  $query->clear();
+          // Select some fields
+        $query->select('id,master_template');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->where('id = '.$this->_template_id);
+        
+			JFactory::getDbo()->setQuery($query);
+			$template_row = JFactory::getDbo()->loadAssoc();
 			if ($template_row['master_template']==0)
 			{
 				$this->_master_template=$template_row['id'];
@@ -3252,9 +3422,17 @@ $this->dump_variable("import_team", $import_team);
 			{
 				$this->_master_template=$template_row['master_template'];
 			}
-			$query="SELECT id,template FROM #__".COM_SPORTSMANAGEMENT_TABLE."_template_config WHERE project_id=".$this->_master_template;
+            
+            $query->clear();
+          // Select some fields
+        $query->select('id,master_template');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->where('project_id = '.$this->_master_template);
+        
 			JFactory::getDbo()->setQuery($query);
-			$rows=JFactory::getDbo()->loadObjectList();
+            sportsmanagementModeldatabasetool::runJoomlaQuery();
+			$rows = JFactory::getDbo()->loadObjectList();
 			foreach ($rows AS $row)
 			{
 				
@@ -3267,7 +3445,7 @@ $this->dump_variable("import_team", $import_team);
 				{
 					$my_text .= 'error on master template import: ';
 					//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
-					$this->_success_text['Importing template data:']=$my_text;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -3302,6 +3480,7 @@ $this->dump_variable("import_team", $import_team);
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
 					$parameter = new JRegistry;
+                    
      if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $ini = $parameter->loadString($defaultvalues[0]);
@@ -3331,7 +3510,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 						{
 							$my_text .= 'error on own template import: ';
 							//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
-							$this->_success_text['Importing template data:']=$my_text;
+							$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 							//return false;
                             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 						}
@@ -3346,10 +3525,20 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				}
 			}
 		}
-		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
-		JFactory::getDbo()->setQuery($query);
-		sportsmanagementModeldatabasetool::runJoomlaQuery();
-		$this->_success_text['Importing template data:']=$my_text;
+        
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = $this->_project_id;
+        $object->master_template = $this->_master_template;
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');
+        
+//		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
+//        JFactory::getDbo()->setQuery($query);
+//		sportsmanagementModeldatabasetool::runJoomlaQuery();
+        
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		if ( $this->_master_template == 0 )
 		{
 			// check and create missing templates if needed
@@ -3357,11 +3546,16 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$my_text='<span style="color:green">';
 			$my_text .= JText::_('Checked and created missing template data if needed');
 			$my_text .= '</span><br />';
-			$this->_success_text['Importing template data:'] .= $my_text;
+			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] .= $my_text;
 		}
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importDivisions()
+	 * 
+	 * @return
+	 */
 	private function _importDivisions()
 	{
 		$my_text='';
@@ -3397,7 +3591,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 					$my_text .= 'error on division import: ';
 					$my_text .= '#'.$oldID.'#';
 					//$my_text .= "<br />Error: _importDivisions<br />#$my_text#<br />#<pre>".print_r($p_division,true).'</pre>#';
-					$this->_success_text['Importing division data:']=$my_text;
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -3410,11 +3604,16 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$insertID = JFactory::getDbo()->insertid();
 				$this->_convertDivisionID[$oldId] = $insertID;
 			}
-			$this->_success_text['Importing division data:']=$my_text;
+			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 			return true;
 		}
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importProjectTeam()
+	 * 
+	 * @return
+	 */
 	private function _importProjectTeam()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -3546,7 +3745,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on projectteam import: ';
 				$my_text .= $oldID;
 				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
-				$this->_success_text['Importing projectteam data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -3567,10 +3766,15 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 
 //$this->dump_variable(__FUNCTION__." this->_convertProjectTeamID", $this->_convertProjectTeamID);
 
-		$this->_success_text['Importing projectteam data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importProjectReferees()
+	 * 
+	 * @return
+	 */
 	private function _importProjectReferees()
 	{
 		$my_text='';
@@ -3602,7 +3806,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on projectreferee import: ';
 				$my_text .= $oldID;
 				$my_text .= '<br />Error: _importProjectReferees<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectreferee,true).'</pre>~';
-				$this->_success_text['Importing projectreferee data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				return false;
 			}
 			else
@@ -3616,10 +3820,15 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$this->_convertProjectRefereeID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertProjectRefereeID", $this->_convertProjectRefereeID);
-		$this->_success_text['Importing projectreferee data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importProjectPositions()
+	 * 
+	 * @return
+	 */
 	private function _importProjectPositions()
 	{
 //$this->dump_header("function _importProjectPositions");
@@ -3658,7 +3867,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on ProjectPosition import: ';
 				$my_text .= '#'.$oldID.'#';
 				//$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
-				$this->_success_text['Importing projectposition data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -3675,10 +3884,15 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$this->_convertProjectPositionID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertProjectPositionID", $this->_convertProjectPositionID);
-		$this->_success_text['Importing projectposition data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importTeamPlayer()
+	 * 
+	 * @return
+	 */
 	private function _importTeamPlayer()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -3749,7 +3963,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on teamplayer import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importTeamPlayer<br />#$my_text#<br />#<pre>".print_r($p_teamplayer,true).'</pre>#';
-				$this->_success_text['Importing teamplayer data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -3786,10 +4000,15 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$this->_convertTeamPlayerID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertTeamPlayerID", $this->_convertTeamPlayerID);
-		$this->_success_text['Importing teamplayer data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importTeamStaff()
+	 * 
+	 * @return
+	 */
 	private function _importTeamStaff()
 	{
 //$this->dump_header("function _importTeamStaff");
@@ -3858,7 +4077,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on teamstaff import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importTeamStaff<br />#$my_text#<br />#<pre>".print_r($p_teamstaff,true).'</pre>#';
-				$this->_success_text['Importing teamstaff data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -3898,7 +4117,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$this->_convertTeamStaffID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertTeamStaffID", $this->_convertTeamStaffID);
-		$this->_success_text['Importing teamstaff data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -3970,7 +4189,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= '<br />';
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_TEAMTRAINING_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4028,7 +4247,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on round import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importRounds<br />#$my_text#<br />#<pre>".print_r($p_round,true).'</pre>#';
-				$this->_success_text['Importing round data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4041,10 +4260,15 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$insertID=JFactory::getDbo()->insertid();
 			$this->_convertRoundID[$oldId]=$insertID;
 		}
-		$this->_success_text['Importing round data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importMatches()
+	 * 
+	 * @return
+	 */
 	private function _importMatches()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -4265,7 +4489,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on match import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatches<br />#$my_text#<br />#<pre>".print_r($p_match,true).'</pre>#';
-				$this->_success_text['Importing match data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4336,7 +4560,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			$this->_convertMatchID[$oldId]=$insertID;
 		}
 //$this->dump_variable("this->_convertMatchID", $this->_convertMatchID);
-		$this->_success_text['Importing match data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4416,7 +4640,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on matchplayer import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchPlayer<br />#$my_text#<br />#<pre>".print_r($p_matchplayer,true).'</pre>#';
-				$this->_success_text['Importing matchplayer data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4436,7 +4660,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			}
 //$this->dump_variable("p_matchplayer", $p_matchplayer);
 		}
-		$this->_success_text['Importing matchplayer data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4504,7 +4728,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on matchstaff import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchStaff<br />#$my_text#<br />#<pre>".print_r($p_matchstaff,true).'</pre>#';
-				$this->_success_text['Importing matchstaff data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4524,7 +4748,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			}
 //$this->dump_variable("p_matchstaff", $p_matchstaff);
 		}
-		$this->_success_text['Importing matchstaff data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4592,7 +4816,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on matchreferee import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchReferee<br />#$my_text#<br />#<pre>".print_r($p_matchreferee,true).'</pre>#';
-				$this->_success_text['Importing matchreferee data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4612,7 +4836,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 			}
 //$this->dump_variable("p_matchreferee", $p_matchreferee);
 		}
-		$this->_success_text['Importing matchreferee data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4689,7 +4913,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= 'error on matchevent import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchEvent<br />#$my_text#<br />#<pre>".print_r($p_matchevent,true).'</pre>#';
-				$this->_success_text['Importing matchevent data:']=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4709,7 +4933,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 				$my_text .= '<br />';
 			}
 		}
-		$this->_success_text['Importing matchevent data:']=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4777,11 +5001,7 @@ $mainframe->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' params -> '.
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic');
         $query->where('position_id = '.(int)$p_positionstatistic->position_id);
         $query->where('statistic_id = '.(int)$p_positionstatistic->statistic_id);
-        
-           // $query ="SELECT id
-//				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic
-//				WHERE	position_id='$p_positionstatistic->position_id' AND
-//					statistic_id='$p_positionstatistic->statistic_id'";
+
 			JFactory::getDbo()->setQuery($query); 
             sportsmanagementModeldatabasetool::runJoomlaQuery();
 			if ($object=JFactory::getDbo()->loadObject())

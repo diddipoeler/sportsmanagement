@@ -67,6 +67,11 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	var $existingInDbColor = 'orange';
     
     
+    /**
+     * sportsmanagementModeldatabasetool::runJoomlaQuery()
+     * 
+     * @return
+     */
     function runJoomlaQuery()
     {
        // // Get a db connection.
@@ -315,14 +320,17 @@ $prefix.'joomleague_' => ''
     function getJoomleagueTables()
     {
         $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();  
+        $query = JFactory::getDbo()->getQuery(true);
+        //$db = JFactory::getDbo();  
         $option = JRequest::getCmd('option');
-        $query="SHOW TABLES LIKE '%_joomleague%'";
-		$db->setQuery($query);
-        $result = $db->loadResultArray();
+        $query = "SHOW TABLES LIKE '%_joomleague%'";
+		JFactory::getDbo()->setQuery($query);
+        $result = JFactory::getDbo()->loadResultArray();
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
+        if ( $result )
+        {
         foreach ( $result as $key => $value )
         {
         // Create and populate an object.
@@ -341,7 +349,7 @@ $prefix.'joomleague_' => ''
                     
                 }    
         }
-            
+        }    
 		return $result;
     }
     
@@ -378,101 +386,190 @@ $prefix.'joomleague_' => ''
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $db = JFactory::getDbo();   
+        //$db = JFactory::getDbo();   
         //$xml = JFactory::getXMLParser( 'Simple' );
         
         foreach ( $sm_quotes as $key => $type )
         {
             $temp = explode(",",$type);
+            $query = JFactory::getDbo()->getQuery(true);
             
-            $query='SELECT count(*) AS count
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote where daily_number = '.$temp[1];
-		    $this->_db->setQuery($query);
+            // Select some fields
+        $query->select('count(*) AS count');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote');
+        $query->where('daily_number = '.$temp[1]);
+//            $query='SELECT count(*) AS count
+//            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote where daily_number = '.$temp[1];
+            
+		    JFactory::getDbo()->setQuery($query);
 		    // sind zitate vorhanden ?
-            if ( !$this->_db->loadResult() )
+            if ( !JFactory::getDbo()->loadResult() )
             {
             /* Ein JDatabaseQuery Objekt beziehen */
-            $query = $db->getQuery(true);
+            $query = JFactory::getDbo()->getQuery(true);
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote')->where('daily_number = '.$temp[1].''  );
-            $db->setQuery($query);
-            $result = $db->query();
+            JFactory::getDbo()->setQuery($query);
+            $result = self::runJoomlaQuery();
             
+            // joomla versionen
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');        
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true); 
+    $document = 'version';   
+    $quotes = 'children()';     
             }
             else
             {
-                $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+//                $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true);
+    $document = 'version';
+    //$quotes = 'document->quotes'; 
+    $quotes = 'children()'; 
             }
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
             //$xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
             
-            foreach( $xml->document->version as $version ) 
-            {
-            $quote_version = $version->data();
-            //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
-            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-					$this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
-					$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
-            }
+            $quote_version = (string)$xml->$document;
             
-            foreach( $xml->document->quotes as $quote ) 
+//            // joomla versionen
+//            if(version_compare(JVERSION,'3.0.0','ge')) 
+//        {
+//    $quote_version = (string)$xml->$document;
+//            }
+//            else
+//            {
+//            foreach( $xml->$document as $version ) 
+//            {
+//            $quote_version = $version->data();
+//            //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+////            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+////		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
+////			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
+//            }
+//            }
+            
+            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
+			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($quotes,true).'</pre>'),'Notice');
+            
+            foreach( $xml->children() as $quote ) 
             {
-            $author = '';
-            $zitat = '';
-            $name = $quote->getElementByPath('quote');
-            $attributes = $name->attributes();
-            $author = $attributes['author'];
-            $notes = $attributes['notes'];
-            $author = str_replace("\\", "\\\\", $author);
-            $zitat = $name->data();
-
-            $insertquery = $db->getQuery(true);
+            
+            $author = str_replace("\\", "\\\\", (string)$quote->quote->attributes()->author );
+            $notes = (string)$quote->quote->attributes()->notes;
+            $daily_number = (string)$quote->quote->attributes()->daily_number;
+            $zitat = (string)$quote->quote;
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
+            
+            if ( $zitat )
+            {
+            $insertquery = JFactory::getDbo()->getQuery(true);
             // Insert columns.
             $columns = array('daily_number','author','quote','notes');
             // Insert values.
             $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'','\''.$notes.'\'');
             // Prepare the insert query.
             $insertquery
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
-            ->columns($db->quoteName($columns))
+            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
+            ->columns(JFactory::getDbo()->quoteName($columns))
             ->values(implode(',', $values));
             // Set the query using our newly populated query object and execute it.
-            $db->setQuery($insertquery);
+            JFactory::getDbo()->setQuery($insertquery);
                 
-	        if (!$db->query())
+	        if (!self::runJoomlaQuery())
 			{
-			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
             }
 			else
 			{
     	    } 
             
-            
+            }
             
             }
+            
+//            foreach( $xml->$quotes as $quote ) 
+//            {
+//                
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+//                
+//            $author = '';
+//            $zitat = '';
+//            $name = $quote->getElementByPath('quote');
+//            $attributes = $name->attributes();
+//            $author = $attributes['author'];
+//            $notes = $attributes['notes'];
+//            $author = str_replace("\\", "\\\\", $author);
+//            $zitat = $name->data();
+//
+//            $insertquery = $db->getQuery(true);
+//            // Insert columns.
+//            $columns = array('daily_number','author','quote','notes');
+//            // Insert values.
+//            $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'','\''.$notes.'\'');
+//            // Prepare the insert query.
+//            $insertquery
+//            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
+//            ->columns($db->quoteName($columns))
+//            ->values(implode(',', $values));
+//            // Set the query using our newly populated query object and execute it.
+//            $db->setQuery($insertquery);
+//                
+//	        if (!$db->query())
+//			{
+//			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+//            }
+//			else
+//			{
+//    	    } 
+//            
+//            
+//            
+//            }
             
             }
             else
             {
             
+            // joomla versionen
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');        
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
+    $document = 'version';         
             }
             else
             {
-                $xml = JFactory::getXMLParser( 'Simple' );
-    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+//                $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+    $document = 'version';
             }
             
-//            $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
-            foreach( $xml->document->version as $version ) 
-            {
-            $quote_version = $version->data();
-            }
+            $quote_version = (string)$xml->$document;
+            
+//// joomla versionen
+//            if(version_compare(JVERSION,'3.0.0','ge')) 
+//        {
+//    $quote_version = (string)$xml->$document;
+//            }
+//            else
+//            {
+//            foreach( $xml->$document as $version ) 
+//            {
+//            $quote_version = $version->data();
+//            }
+//            }
             
             $this->my_text .= '<span style="color:'.$this->existingInDbColor.'"><strong>';
 					$this->my_text .= JText::_('Installierte Zitate').'</strong></span><br />';

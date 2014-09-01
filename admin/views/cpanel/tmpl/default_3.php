@@ -207,7 +207,35 @@ defined('_JEXEC') or die('Restricted access');
                 
 </div>
 
+<?PHP
+if (is_array($this->importData))
+	{
+		foreach ($this->importData as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}
+	}
+    if (is_array($this->importData2))
+	{
+		foreach ($this->importData2 as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}
+	}
 
+
+
+?>
                 
 </section>
 </div>
