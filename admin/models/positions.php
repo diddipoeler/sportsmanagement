@@ -233,7 +233,7 @@ class sportsmanagementModelPositions extends JModelList
         $query->select('ppos.id AS value, pos.name AS text');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pos.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id');
         $query->where('ppos.project_id = '.(int)$project_id);  
         $query->where('pos.persontype = '.(int)$persontype);  
         $query->order('pos.ordering');  
@@ -244,6 +244,9 @@ class sportsmanagementModelPositions extends JModelList
 //					WHERE ppos.project_id=$project_id AND pos.persontype=2
 //					ORDER BY ordering ";
 		JFactory::getDbo()->setQuery($query);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);

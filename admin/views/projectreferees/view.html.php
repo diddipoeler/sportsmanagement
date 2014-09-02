@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-
 /**
  * HTML View class for the Sportsmanagement Component
  *
@@ -73,7 +71,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-         $this->_persontype = JRequest::getVar('persontype');
+        
+        $this->_persontype = JRequest::getVar('persontype');
         if ( empty($this->_persontype) )
         {
             $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );

@@ -118,7 +118,7 @@ JHtml::_( 'behavior.mootools' );
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 						$row =& $this->items[$i];
-						$link=JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id);
+						$link=JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id.'&person_id='.$row->person_id  );
 						$checked=JHtml::_('grid.checkedout',$row,$i);
 						$inputappend='';
 						?>

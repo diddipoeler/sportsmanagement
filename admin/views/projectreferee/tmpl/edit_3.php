@@ -59,6 +59,9 @@ echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->
 switch ($fieldset->name)
 {
     case 'details':
+    case 'description':
+    case 'picture':
+    case 'extended':
     ?>
     <div class="row-fluid">
 			<div class="span9">
@@ -87,8 +90,7 @@ switch ($fieldset->name)
     <?PHP
     break;
     default:
-    $this->fieldset = $fieldset->name;
-    echo $this->loadTemplate('fieldsets');
+
     break;
 }    
 echo JHtml::_('bootstrap.endTab');    

@@ -451,51 +451,7 @@ class sportsmanagementModelProject extends JModelAdmin
             WHERE p.id IN ('.$cids.')';
             
             
-            /*
-            $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
-            ON t1.project_id = p.id   
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as t2
-            ON t2.project_id = p.id   
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as t3
-            ON t3.round_id = t1.id  
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary as t4
-            ON t4.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as t5
-            ON t5.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as t6
-            ON t6.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as t7
-            ON t7.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as t8
-            ON t8.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as t9
-            ON t9.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as t10
-            ON t10.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as t11
-            ON t11.project_id = p.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as t12
-            ON t12.project_id = p.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as t13
-            ON t13.project_id = p.id    
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as t14
-            ON t14.projectteam_id = t13.id    
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as t15
-            ON t15.projectteam_id = t13.id    
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata as t16
-            ON t16.project_id = p.id    
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t17
-            ON t17.project_id = p.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto as t18
-            ON t18.project_id = p.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_match as t19
-            ON t19.match_id = t3.id
-            JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
-            ON t20.treeto_id = t18.id
-            WHERE p.id IN ('.$cids.')';
-            */
+            
             JFactory::getDbo()->setQuery($query);
             //JFactory::getDbo()->query();
             if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 

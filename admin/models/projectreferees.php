@@ -168,7 +168,7 @@ public function __construct($config = array())
         // Create a new query object.
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		$query->select(implode(",",$this->filter_fields).',tp.person_id as person_id');
         // From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp on tp.person_id = p.id');
@@ -214,7 +214,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
         
@@ -264,15 +264,15 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 //		{
 //			if ($search_mode)
 //			{
-//				$where[] =	'(LOWER(p.lastname) LIKE '.$this->_db->Quote($search.'%') .
-//				'OR LOWER(p.firstname) LIKE '.$this->_db->Quote($search.'%') .
-//				'OR LOWER(p.nickname) LIKE '.$this->_db->Quote($search.'%').')';
+//				$where[] =	'(LOWER(p.lastname) LIKE '.JFactory::getDbo()->Quote($search.'%') .
+//				'OR LOWER(p.firstname) LIKE '.JFactory::getDbo()->Quote($search.'%') .
+//				'OR LOWER(p.nickname) LIKE '.JFactory::getDbo()->Quote($search.'%').')';
 //			}
 //			else
 //			{
-//				$where[] =	'(LOWER(p.lastname) LIKE '.$this->_db->Quote('%'.$search.'%').
-//				'OR LOWER(p.firstname) LIKE '.$this->_db->Quote('%'.$search.'%') .
-//				'OR LOWER(p.nickname) LIKE '.$this->_db->Quote('%'.$search.'%').')';
+//				$where[] =	'(LOWER(p.lastname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%').
+//				'OR LOWER(p.firstname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%') .
+//				'OR LOWER(p.nickname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%').')';
 //			}
 //		}
 //		$where=(count($where) ? ''.implode(' AND ',$where) : '');
@@ -295,16 +295,16 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 		$query='	SELECT	pt.id
 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt
 				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id=pt.id
-				WHERE r.project_id='.$this->_db->Quote($this->_project_id).'
+				WHERE r.project_id='.JFactory::getDbo()->Quote($this->_project_id).'
 						AND pt.published = 1';
-		$this->_db->setQuery($query);
-		$current=$this->_db->loadResultArray();
+		JFactory::getDbo()->setQuery($query);
+		$current=JFactory::getDbo()->loadResultArray();
 		$added=0;
 		foreach ($cid AS $pid)
 		{
 			if ((!isset($current)) || (!in_array($pid,$current)))
 			{
-				$new =& JTable::getInstance('ProjectReferee','Table');
+				$new = JTable::getInstance('ProjectReferee','Table');
 				$new->person_id=$pid;
 				$new->project_id=$this->_project_id;
 				if (!$new->check())
@@ -314,8 +314,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 				}
 				//Get data from person
 				$query="SELECT picture FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
-				$this->_db->setQuery($query);
-				$player=$this->_db->loadObject();
+				JFactory::getDbo()->setQuery($query);
+				$player=JFactory::getDbo()->loadObject();
 				if ($player)
 				{
 					$new->picture=$player->picture;
@@ -346,10 +346,10 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 		for ($x=0; $x < count($cid); $x++)
 		{
 			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee WHERE id='.$cid[$x];
-			$this->_db->setQuery($query);
-			if(!$this->_db->query())
+			JFactory::getDbo()->setQuery($query);
+			if(!JFactory::getDbo()->query())
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				continue;
 			}
 			$removed++;
@@ -369,8 +369,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
 				JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id
 				WHERE p.id='.$project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		JFactory::getDbo()->setQuery($query);
+		return JFactory::getDbo()->loadResult();
 	}
 
 

@@ -74,11 +74,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_FES') ?></span>
 </a>
 
+<?php
+if ( $this->project->project_art_id != 3 )
+{
+?>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=projectpositions&pid=<?PHP echo $this->project->id; ?>">
+<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS') ?></span>
+</a>
+<?PHP
+}
+?>
 
-
-
-
-<a class="btn" href="index.php?option=com_sportsmanagement&view=projectreferees&pid=<?PHP echo $this->project->id; ?>">
+<a class="btn" href="index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid=<?PHP echo $this->project->id; ?>">
 <img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES') ?></span>
 </a>

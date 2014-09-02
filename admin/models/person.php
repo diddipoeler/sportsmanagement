@@ -242,35 +242,38 @@ class sportsmanagementModelperson extends JModelAdmin
 		return $data;
 	}
 	
-	
-  
-  
-  
-	
-	
     /**
 	 * return 
 	 *
 	 * @param int person_id
 	 * @return int
 	 */
-	function getPerson($person_id)
+	function getPerson($person_id=0,$season_person_id=0)
 	{
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('id = '.$person_id);
+        //// Create a new query object.
+//		$db		= $this->getDbo();
+		$query	= JFactory::getDbo()->getQuery(true);
+        $query->select('p.*');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p');
+        if ( $person_id )
+        {
+        $query->where('p.id = '.$person_id);
+        }
+        if ( $season_person_id )
+        {
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp on tp.person_id = p.id');
+        $query->where('tp.id = '.$season_person_id);
+        }
+        
         
 //		$query='SELECT *
 //				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
 //				  WHERE id='.$person_id;
 		
-        $db->setQuery($query);
-		return $db->loadObject();
+        JFactory::getDbo()->setQuery($query);
+		return JFactory::getDbo()->loadObject();
 	}
     
     

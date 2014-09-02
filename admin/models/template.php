@@ -203,7 +203,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
             $data['params'] = $paramsString;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeltemplate save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

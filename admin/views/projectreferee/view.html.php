@@ -52,10 +52,10 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementViewProjectReferee extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewProjectReferee::display()
+	 * sportsmanagementViewProjectReferee::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -87,14 +87,24 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
+        $this->_persontype = JRequest::getVar('persontype');
+        if ( empty($this->_persontype) )
+        {
+            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
+        }
+        
         $this->project_id	= $this->item->project_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
         
-        $person_id	= $this->item->person_id;;
+        $person_id	= $this->item->person_id;
+        //$person_id	= JRequest::getVar('person_id');
         $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
-	    $project_person = $mdlPerson->getPerson($person_id);
+	    $project_person = $mdlPerson->getPerson(0,$person_id);
+        // name für den titel setzen
+        $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
+        
         $this->assignRef('project_person',$project_person);
                       
         
@@ -119,6 +129,9 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        
 //	// Get a refrence of the page instance in joomla
 //        $document = JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -126,7 +139,10 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 	
     	JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->item->project_id);
+        
+
+        $mainframe->setUserState( "$option.pid", $this->item->project_id );
+        $mainframe->setUserState( "$option.persontype", $this->_persontype );	
         
 		//$user = JFactory::getUser();
 //		$userId = $user->id;

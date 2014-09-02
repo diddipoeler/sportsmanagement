@@ -143,7 +143,7 @@ class sportsmanagementModelTemplates extends JModelList
         
         if ($search)
 		{
-        $query->where('LOWER(tmpl.title) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where(' ( LOWER(tmpl.title) LIKE '.$db->Quote('%'.$search.'%') .' OR '.' LOWER(tmpl.template) LIKE '.$db->Quote('%'.$search.'%').' )'  );
         }
 
 

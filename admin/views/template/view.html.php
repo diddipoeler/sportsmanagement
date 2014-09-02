@@ -172,7 +172,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         
         
         
-        $this->assignRef('templatename',$this->form->getName());
+        $this->assign('templatename',$this->form->getName());
 		$this->assignRef('project',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('user',$user);
