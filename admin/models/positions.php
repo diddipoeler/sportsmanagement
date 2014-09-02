@@ -113,6 +113,11 @@ class sportsmanagementModelPositions extends JModelList
 		parent::populateState('po.name', 'asc');
 	}
 	
+	/**
+	 * sportsmanagementModelPositions::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$option = JRequest::getCmd('option');
@@ -176,84 +181,137 @@ class sportsmanagementModelPositions extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
 		//$project_id=$mainframe->getUserState($option.'project');
+        
 		//get positions already in project for parents list
 		//support only 2 sublevel, so parent must not have parents themselves
-		$query='	SELECT pos.id, pos.name,	
-        pos.id AS value,
-							pos.name AS text,
-                            pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-					WHERE pos.parent_id=0
-					ORDER BY pos.ordering ASC 
-					';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+        
+        // Select some fields
+        $query->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
+        $query->where('pos.parent_id = 0');  
+        $query->order('pos.ordering ASC ');  
+        
+//		$query='	SELECT pos.id, pos.name,	
+//        pos.id AS value,
+//							pos.name AS text,
+//                            pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id 
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+//					WHERE pos.parent_id=0
+//					ORDER BY pos.ordering ASC 
+//					';
+		JFactory::getDbo()->setQuery($query);
+		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
 	}
+    
+    
     
     
     /**
-	 * Method to return a positions array (id,position)
-		*
-		* @access  public
-		* @return  array
-		* @since 0.1
-		*/
-	function getStaffPositions($project_id)
+     * sportsmanagementModelPositions::getProjectPositions()
+     * 
+     * @param mixed $project_id
+     * @param integer $persontype
+     * @return
+     */
+    function getProjectPositions($project_id,$persontype=1)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
 		//$project_id=$mainframe->getUserState($option.'project');
-		$query="	SELECT ppos.id AS value, pos.name AS text
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
-					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
-					WHERE ppos.project_id=$project_id AND pos.persontype=2
-					ORDER BY ordering ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+        
+        // Select some fields
+        $query->select('ppos.id AS value, pos.name AS text');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pos.id');
+        $query->where('ppos.project_id = '.(int)$project_id);  
+        $query->where('pos.persontype = '.(int)$persontype);  
+        $query->order('pos.ordering');  
+        
+		//$query="	SELECT ppos.id AS value, pos.name AS text
+//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
+//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
+//					WHERE ppos.project_id=$project_id AND pos.persontype=2
+//					ORDER BY ordering ";
+		JFactory::getDbo()->setQuery($query);
+		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
-		foreach ($result as $position){
-			$position->text=JText::_($position->text);
+		foreach ($result as $position)
+        {
+			$position->text = JText::_($position->text);
 		}
 		return $result;
 	}
-
     
-    /**
-	 * Method to return a positions array (id,position)
-		*
-		* @access  public
-		* @return  array
-		* @since 0.1
-		*/
-	function getPlayerPositions($project_id)
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$project_id=$mainframe->getUserState($option.'project');
-
-		$query="	SELECT pp.id AS value,name AS text
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
-					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS pp ON pp.position_id=p.id
-					WHERE pp.project_id=$project_id AND p.persontype=1
-					ORDER BY ordering ";
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		foreach ($result as $position){$position->text=JText::_($position->text);}
-		return $result;
-	}
+//    /**
+//	 * Method to return a positions array (id,position)
+//		*
+//		* @access  public
+//		* @return  array
+//		* @since 0.1
+//		*/
+//	function getStaffPositions($project_id)
+//	{
+//		$option = JRequest::getCmd('option');
+//		$mainframe = JFactory::getApplication();
+//		//$project_id=$mainframe->getUserState($option.'project');
+//		$query="	SELECT ppos.id AS value, pos.name AS text
+//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
+//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
+//					WHERE ppos.project_id=$project_id AND pos.persontype=2
+//					ORDER BY ordering ";
+//		JFactory::getDbo()->setQuery($query);
+//		if (!$result=JFactory::getDbo()->loadObjectList())
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//		foreach ($result as $position){
+//			$position->text=JText::_($position->text);
+//		}
+//		return $result;
+//	}
+    
+//    /**
+//	 * Method to return a positions array (id,position)
+//		*
+//		* @access  public
+//		* @return  array
+//		* @since 0.1
+//		*/
+//	function getPlayerPositions($project_id)
+//	{
+//		$option = JRequest::getCmd('option');
+//		$mainframe = JFactory::getApplication();
+//		//$project_id=$mainframe->getUserState($option.'project');
+//
+//		$query="	SELECT pp.id AS value,name AS text
+//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
+//					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS pp ON pp.position_id=p.id
+//					WHERE pp.project_id=$project_id AND p.persontype=1
+//					ORDER BY ordering ";
+//		JFactory::getDbo()->setQuery($query);
+//		if (!$result=JFactory::getDbo()->loadObjectList())
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//		foreach ($result as $position){$position->text=JText::_($position->text);}
+//		return $result;
+//	}
 
 
     /**
@@ -267,17 +325,28 @@ class sportsmanagementModelPositions extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
 		//$project_id=$mainframe->getUserState($option.'project');
-		$query='SELECT	pp.id AS value,
-				name AS text
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
-				WHERE pp.project_id='.$project_id.'
-						ORDER BY ordering ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+        
+        // Select some fields
+        $query->select('pp.id AS value,name AS text');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id = p.id');
+        $query->where('pp.project_id = '.$project_id);  
+        $query->order('p.ordering');  
+        
+		//$query='SELECT	pp.id AS value,
+//				name AS text
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
+//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
+//				WHERE pp.project_id='.$project_id.'
+//						ORDER BY ordering ';
+		JFactory::getDbo()->setQuery($query);
+		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -298,65 +367,85 @@ class sportsmanagementModelPositions extends JModelList
 	 */
 	function getAllPositions()
 	{
-		$query='	SELECT	pos.id AS value,
-							pos.name AS posName,
-							s.name AS sName
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pos
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id=pos.sports_type_id
-					WHERE pos.published=1
-					ORDER BY pos.ordering,pos.name';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
+        // Select some fields
+        $query->select('pos.id AS value, pos.name AS posName,s.name AS sName');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id = pos.sports_type_id');
+        $query->where('pos.published = 1');  
+        $query->order('pos.ordering,pos.name');  
+        
+		//$query='	SELECT	pos.id AS value,
+//							pos.name AS posName,
+//							s.name AS sName
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pos
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id=pos.sports_type_id
+//					WHERE pos.published=1
+//					ORDER BY pos.ordering,pos.name';
+		JFactory::getDbo()->setQuery($query);
+		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
 		{
-			foreach ($result as $position){$position->text=JText::_($position->posName).' ('.JText::_($position->sName).')';}
+			foreach ($result as $position)
+            {
+                $position->text=JText::_($position->posName).' ('.JText::_($position->sName).')';
+            }
 			return $result;
 		}
 	}
     
 
-/**
-	 * Method to return a positions array of referees (id,position)
-	 *
-	 * @access	public
-	 * @return	array
-	 *
-	 */
-
-	function getRefereePositions($project_id)
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$project_id=$mainframe->getUserState($option.'project');
-		$query='SELECT	ppos.id AS value,
-				pos.name AS text
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-				WHERE ppos.project_id='. $this->_db->Quote($project_id).' AND pos.persontype=3';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		else
-		{
-			foreach ($result as $position) {
-				$position->text=JText::_($position->text);
-			}
-			return $result;
-		}
-	}
+///**
+//	 * Method to return a positions array of referees (id,position)
+//	 *
+//	 * @access	public
+//	 * @return	array
+//	 *
+//	 */
+//
+//	function getRefereePositions($project_id)
+//	{
+//		$option = JRequest::getCmd('option');
+//		$mainframe = JFactory::getApplication();
+//		//$project_id=$mainframe->getUserState($option.'project');
+//		$query='SELECT	ppos.id AS value,
+//				pos.name AS text
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
+//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
+//				WHERE ppos.project_id='. JFactory::getDbo()->Quote($project_id).' AND pos.persontype=3';
+//		JFactory::getDbo()->setQuery($query);
+//		if (!$result=JFactory::getDbo()->loadObjectList())
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//		else
+//		{
+//			foreach ($result as $position) {
+//				$position->text=JText::_($position->text);
+//			}
+//			return $result;
+//		}
+//	}
     
+    /**
+     * sportsmanagementModelPositions::getPositionListSelect()
+     * 
+     * @return
+     */
     public function getPositionListSelect()
 	{
 		$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
-		$this->_db->setQuery($query);
-		$result=$this->_db->loadObjectList();
+		JFactory::getDbo()->setQuery($query);
+		$result=JFactory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
             $position->text=JText::_($position->text);

@@ -95,6 +95,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
+        // name für den titel setzen
+        $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
+        
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);

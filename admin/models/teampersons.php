@@ -113,9 +113,33 @@ class sportsmanagementModelTeamPersons extends JModelList
 		$this->setState('list.start', $value);
         
         //$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.team_id', JRequest::getVar('team_id') );
-        $this->setState('filter.persontype', JRequest::getVar('persontype') );
-        $this->setState('filter.project_team_id', JRequest::getVar('project_team_id') );
+        
+        if ( JRequest::getVar('team_id') )
+        {
+        $this->setState('filter.team_id', JRequest::getVar('team_id') );    
+        }
+        else
+        {
+		$this->setState('filter.team_id', $mainframe->getUserState( "$option.team_id", '0' ) );
+        }
+        
+        if ( JRequest::getVar('persontype') )
+        {
+        $this->setState('filter.persontype', JRequest::getVar('persontype') );    
+        }
+        else
+        {
+        $this->setState('filter.persontype', $mainframe->getUserState( "$option.persontype", '0' ) );
+        }
+        
+        if ( JRequest::getVar('project_team_id') )
+        {
+        $this->setState('filter.project_team_id', JRequest::getVar('project_team_id') );    
+        }
+        else
+        {
+        $this->setState('filter.project_team_id', $mainframe->getUserState( "$option.project_team_id", '0' ) );
+        }
         
         $this->setState('filter.pid', $mainframe->getUserState( "$option.pid", '0' ) );
         $this->setState('filter.season_id', $mainframe->getUserState( "$option.season_id", '0' ) );

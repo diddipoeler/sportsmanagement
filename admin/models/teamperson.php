@@ -248,7 +248,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
@@ -301,10 +301,10 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        $season_id = $mainframe->getUserState( "$option.season_id");
-       $post=JRequest::get('post');
-       $db		= $this->getDbo();
-	   $query	= $db->getQuery(true);
-       $query2	= $db->getQuery(true);
+       $post = JRequest::get('post');
+       $db = $this->getDbo();
+	   $query = $db->getQuery(true);
+       $query2 = $db->getQuery(true);
         
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -339,7 +339,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
      $db->setQuery($query);   
  
   
- if (!$db->query())
+ if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
@@ -359,7 +359,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
      $query2->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))->set($fields)->where($conditions);
      $db->setQuery($query2);   
  
- if (!$db->query())
+ if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 		    $mainframe->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}

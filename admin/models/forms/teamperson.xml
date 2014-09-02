@@ -21,6 +21,7 @@
 		<field
 			name="project_position_id"
 			type="positionlist"
+			targettable="person"
 			class="inputbox"
 			default="0"
 			size="1"

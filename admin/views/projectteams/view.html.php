@@ -83,6 +83,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	    $project = $mdlProject->getProject($this->project_id);
         
         $this->project_art_id = $project->project_art_id;
+        $this->season_id = $project->season_id;
+        $this->sports_type_id = $project->sports_type_id;
+        
         $mainframe->setUserState( "$option.pid", $project->id );
         $mainframe->setUserState( "$option.season_id", $project->season_id );
         $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
@@ -242,13 +245,23 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
+        
 	//// Get a refrence of the page instance in joomla
 //        $document = JFactory::getDocument();
 //        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-		// Set toolbar items for the page
+
+		$mainframe->setUserState( "$option.pid", $this->project_id );
+        $mainframe->setUserState( "$option.season_id", $this->season_id );
+        $mainframe->setUserState( "$option.project_art_id", $this->project_art_id );
+        $mainframe->setUserState( "$option.sports_type_id", $this->sports_type_id );
+        
+        // Set toolbar items for the page
         if ( $this->project_art_id != 3 )
         {
             JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'),'projectteams');

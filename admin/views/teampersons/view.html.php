@@ -99,6 +99,9 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         
         $this->_persontype = JRequest::getVar('persontype');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+        
         if ( empty($this->_persontype) )
         {
             $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
@@ -106,6 +109,13 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
+        
+        $this->season_id = $project->season_id;
+        
+        $mainframe->setUserState( "$option.pid", $project->id );
+        $mainframe->setUserState( "$option.season_id", $project->season_id );
+        $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
+        $mainframe->setUserState( "$option.sports_type_id", $project->sports_type_id );
         
         $this->project_team_id	= JRequest::getVar('project_team_id');
         $this->team_id	= JRequest::getVar('team_id');
@@ -120,11 +130,15 @@ class sportsmanagementViewteampersons extends sportsmanagementView
             $this->project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
         }
         
+        
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id, true).'</pre><br>','Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
         }
         
         $mdlProjectTeam = JModelLegacy::getInstance("ProjectTeam", "sportsmanagementModel");
@@ -136,11 +150,13 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         if ( $this->_persontype == 1 )
         {
-	    $project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
+	    //$project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
+	    $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,$this->_persontype);
         }
         elseif ( $this->_persontype == 2 )
         {
-	    $project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
+	    //$project_ref_positions = $mdlPositions->getStaffPositions($this->project_id);
+	    $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,$this->_persontype);
         }
         
         if ( $project_ref_positions )
@@ -166,10 +182,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
 		
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+        
         
 	}
     
@@ -193,6 +206,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $mainframe->setUserState( "$option.project_team_id", $this->project_team_id );
         $mainframe->setUserState( "$option.team_id", $this->team_id );
         $mainframe->setUserState( "$option.persontype", $this->_persontype );
+        $mainframe->setUserState( "$option.season_id", $this->season_id );
         
         // Set toolbar items for the page
         if ( $this->_persontype == 1 )

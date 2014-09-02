@@ -116,6 +116,7 @@ class sportsmanagementView extends JViewLegacy
                 case 'projects';
                 case 'projectteams';
                 case 'rounds';
+                case 'teampersons';
                 sportsmanagementHelper::addSubmenu('projects');
                 break;
                 case 'predictions';
