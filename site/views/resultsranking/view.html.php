@@ -68,7 +68,15 @@ class sportsmanagementViewResultsranking extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		JHTML::_('behavior.mootools');
+		// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$params = $mainframe->getParams();

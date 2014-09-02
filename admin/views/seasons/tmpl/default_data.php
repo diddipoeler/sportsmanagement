@@ -44,7 +44,15 @@ $ordering=($this->sortColumn == 's.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-//JHtml::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 $modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer','listheader');

@@ -5,7 +5,15 @@ JHtml::_('behavior.tooltip');
 
 //        L O A D   M O O T O O L S
 
-JHtml::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 
 //        L O A D   C A L E N D A R
 

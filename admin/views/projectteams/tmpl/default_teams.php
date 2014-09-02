@@ -53,41 +53,6 @@ $modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->g
 $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;
 
 ?>
-<script language="javascript">
-
-	function searchTeam(val,key)
-	{
-		var f= $('adminForm');
-		if(f) {
-			f.elements['search'].value=val;
-			f.elements['search_mode'].value= 'matchfirst';
-			f.submit();
-		}
-	}
-
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchteam&project_id=<?php echo $this->projectws->id; ?>';
-
-</script>
-<fieldset class="adminform">
-	<legend>
-	<?php
-	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_TEAM');
-	?>
-	</legend>
-	<form id="quickaddForm" action="<?php echo JRoute::_(JURI::root().'administrator/index.php?option=com_sportsmanagement&task=quickadd.addteam'); ?>" method="post">
-	<input type="hidden" name="project_id" id="project_id" value="<?php echo $this->projectws->id; ?>" />
-	<input type="hidden" id="cteamid" name="cteamid" value="">
-	<table>
-		<tr>
-			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESC'); ?></td>
-			<td><input type="text" name="quickadd" id="quickadd" size="50" /></td>
-			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /></td>
-		</tr>
-	</table>
-	<?php echo JHtml::_('form.token')."\n"; ?>
-	</form>
-</fieldset>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
@@ -566,15 +531,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 			</table>
 		</fieldset>
 	</div>
-	<input type="hidden" name="task" value="" />
-    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
-    <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-</form>
+	
 <?PHP
 
 ?>   

@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModel
+class sportsmanagementModelAjax extends JModelLegacy
 {
         /**
          * sportsmanagementModelAjax::addGlobalSelectElement()
@@ -70,6 +70,13 @@ class sportsmanagementModelAjax extends JModel
         }
         
         
+        /**
+         * sportsmanagementModelAjax::getpersonpositionoptions()
+         * 
+         * @param mixed $sports_type_id
+         * @param bool $required
+         * @return
+         */
         function getpersonpositionoptions($sports_type_id, $required = false)
         {
             $option = JRequest::getCmd('option');
@@ -94,6 +101,13 @@ class sportsmanagementModelAjax extends JModel
         return $this->addGlobalSelectElement($result, $required);
         }
         
+        /**
+         * sportsmanagementModelAjax::getpersonagegroupoptions()
+         * 
+         * @param mixed $sports_type_id
+         * @param bool $required
+         * @return
+         */
         function getpersonagegroupoptions($sports_type_id, $required = false)
         {
             $option = JRequest::getCmd('option');

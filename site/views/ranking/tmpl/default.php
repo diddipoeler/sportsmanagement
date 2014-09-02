@@ -41,7 +41,9 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.switcher');
 JHtml::_( 'behavior.modal' );
+
 //echo ' config<br><pre>'.print_r($this->config,true).'</pre>';   
+//echo ' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>';
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view

@@ -40,7 +40,15 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">

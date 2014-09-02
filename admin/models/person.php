@@ -196,9 +196,12 @@ class sportsmanagementModelperson extends JModelAdmin
 	{
   $mainframe = JFactory::getApplication();
   $option = JRequest::getCmd('option');
-        // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+  
+  if ( is_numeric($age) )
+  {
+//        // Create a new query object.
+//		$db		= $this->getDbo();
+		$query	= JFactory::getDbo()->getQuery(true);
         $query->select('id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup ');
         $query->where($age." >= age_from and ".$age." <= age_to");
@@ -209,8 +212,13 @@ class sportsmanagementModelperson extends JModelAdmin
 		
     //$mainframe->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
 		
-		$db->setQuery($query);
-			$person_range = $db->loadResult();
+		JFactory::getDbo()->setQuery($query);
+			$person_range = JFactory::getDbo()->loadResult();
+            }
+            else
+            {
+            $person_range = 0;    
+            }
             return $person_range;
 	}
     

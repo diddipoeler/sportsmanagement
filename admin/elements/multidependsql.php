@@ -39,7 +39,15 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
-JHtml::_( 'behavior.mootools' );
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 
 /**
  * Renders a Dynamic SQL element

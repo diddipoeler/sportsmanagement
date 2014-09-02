@@ -52,7 +52,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JController
+class sportsmanagementControllerAjax extends JControllerLegacy
 {
 
         /**
@@ -66,6 +66,11 @@ class sportsmanagementControllerAjax extends JController
         }
         
         
+        /**
+         * sportsmanagementControllerAjax::personlistoptions()
+         * 
+         * @return void
+         */
         public function personlistoptions()
         {
                 $model = $this->getModel('ajax');
@@ -75,6 +80,11 @@ class sportsmanagementControllerAjax extends JController
                 JFactory::getApplication()->close();
         }
         
+        /**
+         * sportsmanagementControllerAjax::personpositionoptions()
+         * 
+         * @return void
+         */
         public function personpositionoptions()
         {
                 $model = $this->getModel('ajax');
@@ -84,6 +94,11 @@ class sportsmanagementControllerAjax extends JController
                 JFactory::getApplication()->close();
         }
         
+        /**
+         * sportsmanagementControllerAjax::personagegroupoptions()
+         * 
+         * @return void
+         */
         public function personagegroupoptions()
         {
                 $model = $this->getModel('ajax');

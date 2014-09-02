@@ -121,6 +121,7 @@ class sportsmanagementModelTemplates extends JModelList
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+        $search	= $this->getState('filter.search');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -139,6 +140,11 @@ class sportsmanagementModelTemplates extends JModelList
 		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
         
         $query->where("tmpl.template NOT IN ('".$oldTemplates."')");
+        
+        if ($search)
+		{
+        $query->where('LOWER(tmpl.title) LIKE '.$db->Quote('%'.$search.'%'));
+        }
 
 
 
@@ -150,7 +156,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
 	}

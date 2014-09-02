@@ -8,7 +8,15 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 
 // load javascripts
 $document = JFactory::getDocument();
-JHtml::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 $version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
 ?>

@@ -121,6 +121,7 @@ class sportsmanagementModelRanking extends JModelLegacy
         sportsmanagementModelProject::$_round_from = $this->from; 
         sportsmanagementModelProject::$_round_to = $this->round;
         
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round<br><pre>'.print_r($this->current_round,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');

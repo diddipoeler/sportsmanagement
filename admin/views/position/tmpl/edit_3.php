@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -37,47 +37,63 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-//Ordering allowed ?
-$ordering=($this->sortColumn == 's.ordering');
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
-$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
+jimport('joomla.html.html.bootstrap');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
 
+// Define tabs options for version of Joomla! 3.0
+$tabsOptions = array(
+            "active" => "tab1_id" // It is the ID of the active tab.
+        );  
+        
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	
-<?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
 
-echo $this->loadTemplate('data');
-?>
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+ 
+<!-- This is a list with tabs names. -->
+    	<ul class="nav nav-tabs" id="ID-Tabs-Group">
+        	<li class="active">
+        		<a data-toggle="tab" href="#tab1_id"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></a>
+        	</li>
+        	<li>
+        		<a data-toggle="tab" href="#tab2_id"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_EVENTS'); ?></a>
+    		</li>
+            <li>
+        		<a data-toggle="tab" href="#tab3_id"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS'); ?></a>
+    		</li>
+
+            
+        </ul>	
+ 
+
+<?php
+echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
+
+echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab1_id'); 
+echo $this->loadTemplate('details');
+echo JHtml::_('bootstrap.endPanel');
+
+echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id'); 
+echo $this->loadTemplate('events');
+echo JHtml::_('bootstrap.endPanel');
+
+echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id'); 
+echo $this->loadTemplate('statistics');
+echo JHtml::_('bootstrap.endPanel');
+
+echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');
+
+?>	
+
+	<div>
+		<input type="hidden" name="task" value="position.edit" />
+		<?php echo JHtml::_('form.token'); ?>
+	</div>
 </form>
 <?PHP
 echo "<div>";

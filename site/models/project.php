@@ -1174,7 +1174,7 @@ $starttime = microtime();
 		//$jRegistry->loadString($result, 'ini');
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $jRegistry->loadString($data); 
+        $jRegistry->loadString($result); 
         }
         else
         {
@@ -1188,10 +1188,14 @@ $starttime = microtime();
 		$extended->bind($jRegistry);
 */        
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'');
+        
 		$configvalues = $jRegistry->toArray(); 
 
 		//merge and overwrite standard settings with individual view settings
 		$settings = array_merge($arrStandardSettings,$configvalues);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' settings<br><pre>'.print_r($settings,true).'</pre>'),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

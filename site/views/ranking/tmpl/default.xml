@@ -11,16 +11,20 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 
-			<field	name="p" type="project"
+			<field	name="p" 
+      type="project"
+      sections="1"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="true">
 			</field>
+			
 			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false">
 			</field>
+			
 			<field	name="type" type="list" default="0" 
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_FILTER_LABEL" 
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_FILTER_DESCR">
@@ -28,16 +32,19 @@
 				<option value="1">COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_HOME_RANKING</option>
 				<option value="2">COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_AWAY_RANKING</option>
 			</field>
+			
 			<field	name="r" type="dependsql" depends="p" task="roundsoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_DESCR"
 					required="false">
 			</field>
+			
 			<field	name="from" type="dependsql" depends="p" task="roundsoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDFROM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDFROM_DESCR"
 					required="false">
 			</field>
+			
 			<field	name="to" type="dependsql" depends="p" task="roundsoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDTO_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDTO_DESCR"

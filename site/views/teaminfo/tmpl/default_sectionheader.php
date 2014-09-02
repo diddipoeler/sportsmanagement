@@ -39,7 +39,15 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-JHtml::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 $modalheight = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900);
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -35,50 +35,83 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/
+*/ 
 
 defined('_JEXEC') or die('Restricted access');
-
-//Ordering allowed ?
-$ordering=($this->sortColumn == 's.ordering');
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
-$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
 	
-<?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
+<div class="form-horizontal">
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-echo $this->loadTemplate('data');
-?>
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+<?PHP    
+foreach ($fieldsets as $fieldset) 
+{
+echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+
+switch ($fieldset->name)
+{
+    case 'details':
+    ?>
+    <div class="row-fluid">
+			<div class="span9">
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+    <?PHP
+    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    {
+        ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php
+
+    }
+    ?>
+    </div>
+				</div>
+			</div>
+            </div>
+    <?PHP
+    break;
+    default:
+    $this->fieldset = $fieldset->name;
+    echo $this->loadTemplate('fieldsets');
+    break;
+}    
+echo JHtml::_('bootstrap.endTab');    
+}    
+
+?>    
+	
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</div> 
+
+
+    		
+<div class="clr"></div>
+  	
+ 
+	<div>		
+        <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
+	    <input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
+		<input type="hidden" name="task"   value="projectreferee.edit" />
+	</div>
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

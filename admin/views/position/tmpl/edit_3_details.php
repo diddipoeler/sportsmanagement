@@ -36,60 +36,36 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
-defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
-$templatesToLoad = array('footer','listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
 
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->project_art_id != 3 )
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.name');
-echo $this->loadTemplate('teams');    
-
-}
-else
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.lastname');    
-echo $this->loadTemplate('persons');    
-}
-
-?>
-<input type="hidden" name="task" value="" />
-    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
-    <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-</form>
-<?PHP
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo "</div>";
-}
-
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>		
+<fieldset class="adminform">
+	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_DETAILS_LEGEND'); ?>
+	</legend>
+	<table class="admintable">
+		<tr>
+			<td class="key"><?php echo $this->form->getLabel('name'); ?></td>
+			<td><?php echo $this->form->getInput('name'); ?></td>
+		</tr>
+		<tr>
+			<td class="key"><?php echo $this->form->getLabel('alias'); ?></td>
+			<td><?php echo $this->form->getInput('alias'); ?></td>
+		</tr>	
+		<tr>
+			<td class="key"><?php echo $this->form->getLabel('sports_type_id'); ?></td>
+			<td><?php echo $this->form->getInput('sports_type_id'); ?></td>
+		</tr>	
+		<tr>
+			<td class="key"><?php echo $this->form->getLabel('published'); ?></td>
+			<td><?php echo $this->form->getInput('published'); ?></td>
+		</tr>			
+		<tr>
+			<td class="key"><?php echo $this->form->getLabel('persontype'); ?></td>
+			<td><?php echo $this->form->getInput('persontype'); ?></td>
+		</tr>	
+				<tr>
+					<td class="key"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_P_POSITION'); ?></td>
+					<td><?php echo $this->lists['parents']; ?></td>
+				</tr>		
+	</table>
+</fieldset>	

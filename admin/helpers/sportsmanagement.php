@@ -1715,7 +1715,7 @@ abstract class sportsmanagementHelper
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
 			// checks template image directory for image, if non found default are loaded
 			if ($config['show_icons'] == 1 ) {
-				$image = JHtml::_('image.site', 'printButton.png', 'media/com_sportsmanagement/jl_images/', NULL, NULL, JText::_( 'Print' ));
+				$image = JHtml::image('media/com_sportsmanagement/jl_images/printButton.png', JText::_( 'Print' ));
 			} else {
 				$image = JText::_( 'Print' );
 			}
@@ -1726,7 +1726,15 @@ abstract class sportsmanagementHelper
 				//button in view
 				$overlib = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP' );
 				$text = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT' );
+                // welche joomla version
+                if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $sef = JFactory::getConfig()->get('config.sef', false);
+            }
+            else
+            {
 				$sef = JFactory::getConfig()->getValue('config.sef', false);
+                }
 				$print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
 				if(is_null($print_link)) {

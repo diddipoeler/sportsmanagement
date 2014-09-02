@@ -36,60 +36,27 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
-$templatesToLoad = array('footer','listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+foreach ($this->extended->getFieldsets() as $fieldset)
+{
+	?>
+	<fieldset class="adminform">
+	<legend><?php echo JText::_($fieldset->name); ?></legend>
+	<?php
+	$fields = $this->extended->getFieldset($fieldset->name);
+	
+	if(!count($fields)) {
+		echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+	}
+	
+	foreach ($fields as $field)
+	{
+		echo $field->label;
+       	echo $field->input;
+	}
+	?>
+	</fieldset>
+	<?php
+}
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->project_art_id != 3 )
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.name');
-echo $this->loadTemplate('teams');    
-
-}
-else
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.lastname');    
-echo $this->loadTemplate('persons');    
-}
-
-?>
-<input type="hidden" name="task" value="" />
-    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
-    <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-</form>
-<?PHP
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo "</div>";
-}
-
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   

@@ -45,7 +45,15 @@ $ordering = ( $this->sortColumn == 'ppl.ordering' );
 
 //$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
-JHtml::_('behavior.mootools');
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 JHtml::_('behavior.modal');
 
 ?>

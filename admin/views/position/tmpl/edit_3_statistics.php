@@ -36,60 +36,38 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
-$templatesToLoad = array('footer','listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->project_art_id != 3 )
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.name');
-echo $this->loadTemplate('teams');    
-
-}
-else
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.lastname');    
-echo $this->loadTemplate('persons');    
-}
-
-?>
-<input type="hidden" name="task" value="" />
-    <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
-    <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-</form>
-<?PHP
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo "</div>";
-}
-
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   
+<fieldset class="adminform">
+	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_STATISTICS_LEGEND'); ?></legend>
+	<table class="admintable">
+		<tr>
+			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EXISTING_STATISTICS'); ?></b><br /><?php echo $this->lists['statistic']; ?></td>
+			<td style="width:auto;">
+				<input  type="button" class="inputbox"
+						onclick="move_list_items('statistic','position_statistic');"
+						value="&gt;&gt;" />
+				<br /><br />
+				<input  type="button" class="inputbox"
+						onclick="move_list_items('position_statistic','statistic');"
+						value="&lt;&lt;" />
+			</td>
+			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_ASSIGNED_STATS_TO_POS'); ?></b><br /><?php echo $this->lists['position_statistic']; ?></td>
+			<td align='center' style="width:auto;">
+				<input  type="button" class="inputbox"
+						onclick="$('statschanges_check').value=1;moveOptionUp('position_statistic');"
+						value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" />
+				<br /><br />
+				<input type="button" class="inputbox"
+					   onclick="$('statschanges_check').value=1;moveOptionDown('position_statistic');"
+					   value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
+			</td>
+			<td style="width:auto;">
+			<fieldset class="adminform">
+					<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_STATS_HINT'); ?>
+			</fieldset>
+			</td>			
+		</tr>
+	</table>
+</fieldset>
