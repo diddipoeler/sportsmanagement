@@ -43,6 +43,7 @@
 		<filename>index.html</filename>
 		<filename>sportsmanagement.php</filename>
 		<filename>controller.php</filename>
+		<filename>router.php</filename>
 		<folder>views</folder>
 		<folder>helpers</folder>
 		<folder>assets</folder>
