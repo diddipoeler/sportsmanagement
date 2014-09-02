@@ -855,12 +855,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		return JFactory::getDbo()->loadObjectList();
 	}
 
-	
-
-	
-
-	
-	
 
 	public function getNewClubList()
 	{
@@ -919,10 +913,18 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 
 
 	// Should be called as the last function in importData() to delete
+	/**
+	 * sportsmanagementModelJLXMLImport::_deleteImportFile()
+	 * 
+	 * @return
+	 */
 	private function _deleteImportFile()
 	{
-		$importFileName=JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-		if (JFile::exists($importFileName)){JFile::delete($importFileName);}
+		$importFileName = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+		if (JFile::exists($importFileName))
+        {
+            JFile::delete($importFileName);
+        }
 		return true;
 	}
 
