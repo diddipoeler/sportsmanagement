@@ -498,7 +498,7 @@ echo self::getFxInitJSCode('steps');
         $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo();
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
         
                 if ( count($param_array) > 0 ) 
                 {
@@ -507,15 +507,15 @@ echo self::getFxInitJSCode('steps');
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
                         
-                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
                         }
                         
-                        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         
                         // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $params );
