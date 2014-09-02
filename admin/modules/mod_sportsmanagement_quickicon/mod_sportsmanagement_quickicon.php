@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die('Restricted Access'); // Protect from unauthorized access
+<?php 
 /**
 * @package	 	Joomla
 * @subpackage  	Sports Management Quickicon
@@ -10,6 +10,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+
+defined('_JEXEC') or die('Restricted Access'); // Protect from unauthorized access
+
 // Make sure Sportsmanagement is enabled
 jimport( 'joomla.application.component.helper' );
 if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
@@ -17,6 +20,22 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
 	JError::raiseError( 'E_SMNOTENABLED', JText( 'SM_NOT_ENABLED' ) );
 	return;
 }
+
+// joomla eversionen
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+require_once __DIR__ . '/helper.php'; 
+$buttons = ModSportsmanagementQuickIconHelper::getButtons($params);   
+$html = JHtml::_('links.linksgroups', ModSportsmanagementQuickIconHelper::groupButtons($buttons));
+    
+if (!empty($html)) : ?>
+	<div class="sidebar-nav quick-icons">
+		<?php echo $html;?>
+	</div>
+<?php endif;
+}
+else
+{
 ?>
 <div id="cpanel">	     
   <div class="icon-wrapper">      
@@ -65,3 +84,6 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
     </div>    
   </div>	    
 </div>
+<?PHP
+}
+?>

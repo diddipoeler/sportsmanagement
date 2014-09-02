@@ -12,6 +12,8 @@
 	
 	<files>
 		<filename  module="mod_sportsmanagement_quickicon">mod_sportsmanagement_quickicon.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
 	</files>
 	
   
