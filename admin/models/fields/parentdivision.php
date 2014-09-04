@@ -76,7 +76,7 @@ class JFormFieldparentdivision extends JFormFieldList
         
         // Initialize variables.
 		$options = array();
-        $db = &JFactory::getDbo();
+        $db = JFactory::getDbo();
 		$query = $db->getQuery(true);
                             
         $query->select('dv.id AS value, dv.name AS text');

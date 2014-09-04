@@ -75,30 +75,56 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </a>
 
 <?php
+if ((isset($this->project->project_type)) &&
+								 (($this->project->project_type == 'PROJECT_DIVISIONS') ||
+								   ($this->project->project_type == 'DIVISIONS_LEAGUE')))
+{
+?>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $this->project->id; ?>">
+<img src="components/com_sportsmanagement/assets/icons/divisionen.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?>" /><br />
+<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?></span>
+</a>								
+<?php
+}
+                            
+if ((isset($this->project->project_type)) &&
+								(($this->project->project_type == 'TOURNAMENT_MODE') ||
+								($this->project->project_type == 'DIVISIONS_LEAGUE')))
+{
+
+?>
+<a class="btn" href="index.php?option=com_sportsmanagement&view=treetos&pid=<?PHP echo $this->project->id; ?>">
+<img src="components/com_sportsmanagement/assets/icons/turnierbaum.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?></span>
+</a>
+<?PHP
+
+}
+
 if ( $this->project->project_art_id != 3 )
 {
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectpositions&pid=<?PHP echo $this->project->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions) ?>" /><br />
+<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions) ?></span>
 </a>
 <?PHP
 }
 ?>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid=<?PHP echo $this->project->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees) ?>" /><br />
+<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees) ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectteams&pid=<?PHP echo $this->project->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/mannschaften.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/mannschaften.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $this->count_projectteams) ?>" /><br />
+<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $this->count_projectteams) ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=rounds&pid=<?PHP echo $this->project->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/spieltage.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/spieltage.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $this->count_matchdays) ?>" /><br />
+<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $this->count_matchdays) ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $this->project->id; ?>">

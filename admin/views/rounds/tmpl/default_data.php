@@ -46,9 +46,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 	<div id="editcell">
-		<fieldset class="adminform">
+	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="1%"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -202,7 +202,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['tournementround'],
 													'tournementround'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->tournement);
 									?>
@@ -217,6 +217,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 				</tbody>
 			</table>
-		</fieldset>
+	<!--	</fieldset> -->
 	</div>
 	

@@ -51,7 +51,7 @@ JHtml::_( 'behavior.mootools' );
 }
 ?>
 
-	<fieldset class="adminform">
+<!-- 	<fieldset class="adminform"> -->
 		<legend>
 			<?php
 			echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->project->name.'</i>');
@@ -59,7 +59,7 @@ JHtml::_( 'behavior.mootools' );
 		</legend>
 		
 		<div id="editcell">
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="5">
@@ -257,4 +257,4 @@ JHtml::_( 'behavior.mootools' );
 				</tbody>
 			</table>
 		</div>
-	</fieldset>
+<!--	</fieldset> -->

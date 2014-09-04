@@ -54,10 +54,10 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 
 ?>
 	<div id="editcell">
-		<fieldset class="adminform">
+	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<?php $cell_count=24; ?>
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -196,7 +196,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
                         
 						$checked=JHtml::_('grid.checkedout',$row,$i);
 						?>
-						<tr class="<?php echo "row$k"; ?>">
+						<tr class="">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked;?></td>
 							<?php
@@ -529,7 +529,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 				</tbody>
 
 			</table>
-		</fieldset>
+	<!--	</fieldset> -->
 	</div>
 	
 <?PHP

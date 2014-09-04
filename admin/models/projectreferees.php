@@ -289,16 +289,30 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function storeAssigned($cid,$project_id)
 	{
-		if (!count($cid)){
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
+		if (!count($cid))
+        {
 			return 0;
 		}
-		$query='	SELECT	pt.id
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id=pt.id
-				WHERE r.project_id='.JFactory::getDbo()->Quote($this->_project_id).'
-						AND pt.published = 1';
+        // Select some fields
+        $query->select('pt.id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id = pt.id');
+        $query->where('r.project_id = '.$project_id);  
+        $query->where('pt.published = 1');
+        
+//		$query='	SELECT	pt.id
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt
+//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id=pt.id
+//				WHERE r.project_id='.JFactory::getDbo()->Quote($this->_project_id).'
+//						AND pt.published = 1';
+                        
 		JFactory::getDbo()->setQuery($query);
-		$current=JFactory::getDbo()->loadResultArray();
+		$current = JFactory::getDbo()->loadResultArray();
 		$added=0;
 		foreach ($cid AS $pid)
 		{
@@ -313,12 +327,20 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					continue;
 				}
 				//Get data from person
-				$query="SELECT picture FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
+                // Select some fields
+                $query->clear();
+        $query->select('pl.picture');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
+        $query->where('pl.id = '.$pid);  
+        $query->where('pl.published = 1');
+        
+//				$query="SELECT picture FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
 				JFactory::getDbo()->setQuery($query);
-				$player=JFactory::getDbo()->loadObject();
+				$player = JFactory::getDbo()->loadObject();
 				if ($player)
 				{
-					$new->picture=$player->picture;
+					$new->picture = $player->picture;
 				}
 				if (!$new->store())
 				{
@@ -365,10 +387,21 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getProjectRefereesCount($project_id)
 	{
-		$query='SELECT count(*) AS count
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
-				JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id
-				WHERE p.id='.$project_id;
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
+        // Select some fields
+        $query->select('count(*) AS count');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id');
+        $query->where('p.id = '.$project_id);  
+        
+//		$query='SELECT count(*) AS count
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
+//				JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id
+//				WHERE p.id='.$project_id;
 		JFactory::getDbo()->setQuery($query);
 		return JFactory::getDbo()->loadResult();
 	}

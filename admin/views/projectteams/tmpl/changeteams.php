@@ -8,7 +8,7 @@
 		echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
 		?>
 		</legend>
-		<table class="adminlist">
+		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
 					<th class="title"><?PHP echo JText::_( '' ); ?>

@@ -454,8 +454,8 @@ class sportsmanagementModelperson extends JModelAdmin
        $post = JRequest::get('post');
        $address_parts = array();
        $person_double = array();
-       // Get a db connection.
-        $db = JFactory::getDbo();
+       //// Get a db connection.
+//        $db = JFactory::getDbo();
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -501,22 +501,22 @@ class sportsmanagementModelperson extends JModelAdmin
           {
           
         // Create a new query object.
-        $query = $db->getQuery(true);
+        $query = JFactory::getDBO()->getQuery(true);
         // Insert columns.
         $columns = array('person_id','season_id');
         // Insert values.
         $values = array($data['id'],$value);
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
-            ->columns($db->quoteName($columns))
+            ->insert(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+            ->columns(JFactory::getDBO()->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
+        JFactory::getDBO()->setQuery($query);
 
-		if (!$db->query())
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }

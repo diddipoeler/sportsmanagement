@@ -97,7 +97,7 @@ echo '</pre>';
   </table>
 
 			
-<table class="adminlist">
+<table class="<?php echo $this->table_data_class; ?>">
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">

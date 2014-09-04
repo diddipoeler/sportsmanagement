@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.controller' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextdfbkeyimport extends JController
+class sportsmanagementControllerjlextdfbkeyimport extends JControllerLegacy
 {
 
 /**

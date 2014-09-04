@@ -446,12 +446,21 @@ class sportsmanagementModelPositions extends JModelList
      */
     public function getPositionListSelect()
 	{
-		$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        // Select some fields
+        $query->select('id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
+        $query->order('name');
+        
+		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
 		JFactory::getDbo()->setQuery($query);
-		$result=JFactory::getDbo()->loadObjectList();
+		$result = JFactory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
-            $position->text=JText::_($position->text);
+            $position->text = JText::_($position->text);
         }
 		return $result;
 	}

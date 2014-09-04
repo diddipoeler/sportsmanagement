@@ -48,6 +48,12 @@ jimport('joomla.html.pane');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('jquery.framework');
+}
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
  

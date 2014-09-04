@@ -36,11 +36,15 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+
 $params = $this->form->getFieldsets('params');
 
 //echo 'sportsmanagementViewMatch _display project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
@@ -89,6 +93,41 @@ $params = $this->form->getFieldsets('params');
 		{
 			$startOffset = 4;
 		}
+        
+        // welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Define tabs options for version of Joomla! 3.1
+$tabsOptionsJ31 = array(
+            "active" => "panel1" // It is the ID of the active tab.
+        );
+
+echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'));
+echo $this->loadTemplate('matchpreview');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'));
+echo $this->loadTemplate('matchdetails');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'));
+echo $this->loadTemplate('scoredetails');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'));
+echo $this->loadTemplate('altdecision');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel5', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'));
+echo $this->loadTemplate('matchreport');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel6', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'));
+echo $this->loadTemplate('matchrelation');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel7', JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'));
+echo $this->loadTemplate('matchextended');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.endTabSet');    
+    }
+    else
+    {
 		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
 		echo $this->loadTemplate('matchpreview');
@@ -115,7 +154,7 @@ $params = $this->form->getFieldsets('params');
 // 		echo $this->loadTemplate('matchpicture');
 		
 		echo JHtml::_('tabs.end');
-		
+	}	
 		?>
 		<!-- Additional Details Table END -->
 		<div class="clr"></div>

@@ -59,7 +59,7 @@ JHtml::_('behavior.modal');
 ?>
         
 		<div id="editcell">
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="5">

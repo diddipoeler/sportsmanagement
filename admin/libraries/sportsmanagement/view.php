@@ -39,6 +39,12 @@
 
 defined('_JEXEC') or die();
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('jquery.framework');
+}
+        
 /**
  * sportsmanagementView
  * 
@@ -54,6 +60,8 @@ class sportsmanagementView extends JViewLegacy
 	protected $icon = '';
 	protected $title = '';
     protected $layout = '';
+    
+    protected $table_data_class = '';
 
 	/**
 	 * sportsmanagementView::display()
@@ -79,6 +87,7 @@ class sportsmanagementView extends JViewLegacy
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $this->setLayout($this->getLayout() . '_3');
+            $this->table_data_class = 'table table-striped';
         }
         else
         {
@@ -86,6 +95,7 @@ class sportsmanagementView extends JViewLegacy
             // nicht so viele dateien umbenannt werden
             //$this->setLayout($this->getLayout() . '_25');
             $this->setLayout($this->getLayout() );
+            $this->table_data_class = 'adminlist';
         }
         
         $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
@@ -120,6 +130,8 @@ class sportsmanagementView extends JViewLegacy
                 case 'templates';
                 case 'projectreferees';
                 case 'projectpositions';
+                case 'treetos';
+                case 'divisions';
                 sportsmanagementHelper::addSubmenu('projects');
                 break;
                 case 'predictions';
@@ -372,6 +384,8 @@ class sportsmanagementView extends JViewLegacy
 			JToolBarHelper::divider();
 		}
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        
+        
 	}
 
 	/**

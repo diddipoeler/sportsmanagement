@@ -69,7 +69,7 @@
 			</tr>
 		</table>
 		<div id="editcell">
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>

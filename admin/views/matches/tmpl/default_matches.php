@@ -71,7 +71,7 @@ fieldset button {
 			<?php
 			$colspan = ($this->projectws->allow_add_time) ? 19 : 18;
 			?>
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="5" ><?php echo count($this->matches).'/'.$this->pagination->total; ?></th>
@@ -179,7 +179,7 @@ fieldset button {
 								echo $checked;
 								?>
 							</td>
-							<td class="center" nowrap="nowrap">
+							<td class="center">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=<?php echo $row->id; ?>"
 									 class="modal">
@@ -506,6 +506,8 @@ fieldset button {
                             
                             <td class="center">
                             	<?php
+                                if ( $this->selectlist )
+                                {
                                 if (array_key_exists('result_type', $this->selectlist)) 
                                 {
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
@@ -513,9 +515,14 @@ fieldset button {
 													'result_type'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
 													$row->result_type);
     
-}
- else                               
-     {                           
+                                }
+                                else                               
+                                {                           
+								echo $row->result_type;
+                                }
+                                }
+                                else                               
+                                {                           
 								echo $row->result_type;
                                 }
 								?>
@@ -562,6 +569,7 @@ fieldset button {
 								?>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
+                                     class="modal open-editeventsbb"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'); ?>">
 									 <?php
 									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',

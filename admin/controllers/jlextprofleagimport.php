@@ -55,7 +55,7 @@ jimport('joomla.filesystem.archive');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextprofleagimport extends JController
+class sportsmanagementControllerjlextprofleagimport extends JControllerLegacy
 {
 	
 	/**

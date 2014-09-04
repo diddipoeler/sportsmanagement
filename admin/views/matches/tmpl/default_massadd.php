@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
 				<?php echo JHtml::_('form.token')."\n"; ?>
-				<table class="adminlist">
+				<table class="<?php echo $this->table_data_class; ?>">
 					<thead>
 						<tr>
 							<th class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MULTI'); ?></th>

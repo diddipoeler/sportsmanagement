@@ -58,7 +58,7 @@ JHtml::_('behavior.tooltip');
     
 		<fieldset class="adminform">
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_LEGEND','<i>'.$this->project->name.'</i>');?></legend>
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>

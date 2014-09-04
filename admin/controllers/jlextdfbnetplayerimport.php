@@ -56,7 +56,7 @@ jimport ( 'joomla.filesystem.archive' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdfbnetplayerimport extends JController 
+class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegacy 
 {
 
 	/**

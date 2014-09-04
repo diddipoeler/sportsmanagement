@@ -381,7 +381,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -514,8 +514,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 
 			if(!$tblMatch->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+				//$this->setError(JFactory::getDbo()->getErrorMsg());
+                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}
@@ -531,7 +531,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function delete($pk=array())
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -685,7 +685,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
-			//$this->_data=$this->_db->loadObject();
+			//$this->_data=JFactory::getDbo()->loadObject();
 			return $result;
 		
 	}
@@ -703,45 +703,41 @@ class sportsmanagementModelMatch extends JModelAdmin
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+
+        $query = JFactory::getDbo()->getQuery(true);
         
         // Select some fields
         $query->select('sp.id AS value');
         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
         $query->select('pos.name AS positionname');
-        $query->select('ppos.position_id,ppos.id AS pposid');
-//        $query->select('');
-//        $query->select('');
-//        $query->select('');
+        //$query->select('ppos.position_id,ppos.id AS pposid');
+
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
+        //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
         $query->where('sp.persontype = '.$persontype);
         $query->where('sp.season_id = '.$this->_season_id);
-//        $query->where('tpl.published = 1');
 
 		if (is_array($filter) && count($filter) > 0)
 		{
-			//$query .= " AND tpl.id NOT IN (".implode(',',$filter).")";
-            // Where
             $query->where("sp.id NOT IN (".implode(',',$filter).")");
 		}
-		//$query .= " ORDER BY pos.ordering, pl.lastname ASC ";
-        $query->order("pos.ordering, pl.lastname ASC");
-		$db->setQuery($query);
+
+        //$query->order("pos.ordering");
+        $query->order("pl.lastname ASC");
+		JFactory::getDbo()->setQuery($query);
 		
-        $result = $db->loadObjectList();
+        $result = JFactory::getDbo()->loadObjectList();
             if ( !$result )
 		    {
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 		    }
         
         
@@ -884,66 +880,66 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of player ids
 	 */
-	function getRoster($team_id, $project_position_id=0, $match_id)
+	function getRoster($team_id, $project_position_id=0, $match_id,$position_value)
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+
+        $query = JFactory::getDbo()->getQuery(true);
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' team_id'.'<pre>'.print_r($team_id,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_position_id'.'<pre>'.print_r($project_position_id,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($team_id,true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_position_id'.'<pre>'.print_r($project_position_id,true).'</pre>' ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');
         
         // Select some fields
-        $query->select('mp.id AS table_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number');
-        $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
-        $query->select('pos.name AS positionname');
-        $query->select('ppos.position_id,ppos.id AS pposid');
-//        $query->select('');
-//        $query->select('');
-//        $query->select('');
+        $query->select('mp.id AS table_id,mp.match_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number');
+        $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,pl.ordering,pl.position_id as person_position_id');
+        $query->select('pos.name AS positionname,pos.id as position_position_id');
+        $query->select('sp.jerseynumber,sp.project_position_id as stp_project_position_id');
+        //$query->select('ppos.position_id,ppos.id AS pposid');
+
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
         
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
-        //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = sp.project_position_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        
         $query->where('mp.match_id = '.$match_id);
         //$query->where('tpl.projectteam_id = '.$team_id);
         $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
         $query->where('pl.published = 1');
-        
-        
-/*        
-
-		
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.id=mp.teamplayer_id '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id=tpl.person_id '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id '
-
-
-		.' AND tpl.published = 1 '
-		.' AND tpl.published = 1 ';
-*/		
+	
         if ($project_position_id > 0)
 		{
-		  //$query->where('mp.project_position_id = '.$project_position_id);
-          $query->where('pl.position_id = '.$project_position_id);
+          //$query->where('pl.position_id = '.$project_position_id);
+          $query->where('sp.project_position_id = '.$project_position_id);
+          //$query->where('ppos.id = '.$project_position_id);
+		}
 
+        if ($team_id > 0)
+		{
+          $query->where('pt.id = '.$team_id);
 		}
         
-        $query->order('ppos.position_id, mp.ordering ASC');
-		$db->setQuery($query);
-		$result = $db->loadObjectList('value');
+        //$query->order('ppos.position_id');
+        $query->order('mp.ordering ASC');
+		JFactory::getDbo()->setQuery($query);
+		$result = JFactory::getDbo()->loadObjectList('value');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         
         if ( !$result )
 		    {
-			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		    $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',$position_value),'Error');  
+			//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 		    }
             
 		return $result;
@@ -960,9 +956,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
+       
+	   $query = JFactory::getDbo()->getQuery(true);
        
        // Select some fields
 		$query->select('m.*');
@@ -978,15 +973,15 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->where('m.published = 1');
         $query->order('m.match_date, t1.short_name');
                     
-		$db->setQuery($query);
+		JFactory::getDbo()->setQuery($query);
         
-        if ( !$db->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        if ( !JFactory::getDbo()->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
-		return $db->loadObject();
+		return JFactory::getDbo()->loadObject();
 	}
     
     /**
@@ -998,19 +993,38 @@ class sportsmanagementModelMatch extends JModelAdmin
 		*/
 	function getMatchTeams($match_id)
 	{
-		$query='	SELECT	mc.*,'
-		.' t1.name AS team1,'
-		.' t2.name AS team2,'
-		.' u.name AS editor '
-		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=mc.projectteam1_id '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=mc.projectteam2_id '
-		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id '
-		.' LEFT JOIN #__users u ON u.id=mc.checked_out '
-		.' WHERE mc.id='.(int) $match_id;
-		$this->_db->setQuery($query);
-		return	$this->_db->loadObject();
+	   $mainframe = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       
+	   $query = JFactory::getDbo()->getQuery(true);
+       // Select some fields
+		$query->select('mc.*');
+        $query->select('t1.name as team1,t2.name as team2');
+        $query->select('u.name AS editor');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->join('LEFT','#__users u ON u.id = mc.checked_out');
+        $query->where('mc.id = ' . $match_id );
+        
+        
+	//	$query='	SELECT	mc.*,'
+//		.' t1.name AS team1,'
+//		.' t2.name AS team2,'
+//		.' u.name AS editor '
+//		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc '
+//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=mc.projectteam1_id '
+//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id '
+//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=mc.projectteam2_id '
+//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id '
+//		.' LEFT JOIN #__users u ON u.id=mc.checked_out '
+//		.' WHERE mc.id='.(int) $match_id;
+		JFactory::getDbo()->setQuery($query);
+		return	JFactory::getDbo()->loadObject();
         
         /* diddi test
        	SELECT	mc.*,
@@ -1051,8 +1065,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$query .= ' AND mr.project_position_id='.$project_position_id;
 		}
 		$query .= ' ORDER BY mr.project_position_id, mr.ordering ASC';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('value');
+		JFactory::getDbo()->setQuery($query);
+		return JFactory::getDbo()->loadObjectList('value');
 	}
     
     /**
@@ -1082,8 +1096,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$query .= " AND pref.id NOT IN (".implode(',',$already_sel).")";
 		}
 		$query .= " ORDER BY pl.lastname ASC ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('value');
+		JFactory::getDbo()->setQuery($query);
+		return JFactory::getDbo()->loadObjectList('value');
 	}
     
     
@@ -1108,7 +1122,7 @@ class sportsmanagementModelMatch extends JModelAdmin
  * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pl.id
  * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
  * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
- * 					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam_id)
+ * 					WHERE ts.projectteam_id='.JFactory::getDbo()->Quote($projectteam_id)
  * 					.' AND pl.published = 1'
  * 					.' AND ts.published = 1';
  * 		if (is_array($filter) && count($filter) > 0)
@@ -1116,8 +1130,8 @@ class sportsmanagementModelMatch extends JModelAdmin
  * 			$query .= " AND ts.id NOT IN (".implode(',',$filter).")";
  * 		}
  * 		$query .= " ORDER BY pl.lastname ASC ";
- * 		$this->_db->setQuery($query);
- * 		return $this->_db->loadObjectList();
+ * 		JFactory::getDbo()->setQuery($query);
+ * 		return JFactory::getDbo()->loadObjectList();
  * 	}
  */
     
@@ -1133,11 +1147,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
         
-        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $query = JFactory::getDbo()->getQuery(true);
+        
+        $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
         
 //        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
 //        {
@@ -1157,7 +1170,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         }
         
         // Select some fields
-        $query->select('mp.'.$id.',mp.project_position_id');
+        $query->select('mp.'.$id.',mp.project_position_id,mp.match_id,mp.id as update_id');
         $query->select('sp.id AS value');
         $query->select('pl.firstname,pl.nickname,pl.lastname');
         $query->select('pos.name AS positionname');
@@ -1169,12 +1182,20 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
 
 		// Where
         $query->where('mp.match_id = '.$match_id);
         $query->where('pl.published = 1');
 //        $query->where('tpl.published = 1');
 //        $query->where('tpl.projectteam_id = '.$projectteam_id);
+        
+        if ($projectteam_id > 0)
+		{
+          $query->where('pt.id = '.$projectteam_id);
+		}
             
         if ( $project_position_id > 0 )
 		{
@@ -1186,18 +1207,18 @@ class sportsmanagementModelMatch extends JModelAdmin
 //					pl.lastname, pl.firstname ASC";
 		// Order
         $query->order('mp.project_position_id, mp.ordering,	pl.lastname, pl.firstname ASC');
-        $db->setQuery($query);
+        JFactory::getDbo()->setQuery($query);
         //}
         
-        $result = $db->loadObjectList($id);
+        $result = JFactory::getDbo()->loadObjectList($id);
         
         if ( !$result )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
         }
         
 		return $result;
-        //return $this->_db->loadObjectList();
+        //return JFactory::getDbo()->loadObjectList();
 	}
     
     /**
@@ -1236,9 +1257,9 @@ class sportsmanagementModelMatch extends JModelAdmin
 		}
 		$query .= " ORDER BY mp.project_position_id, mp.ordering,
 					pl.lastname, pl.firstname ASC";
-		$this->_db->setQuery($query);
-		//return $this->_db->loadObjectList('team_staff_id');
-        return $this->_db->loadObjectList();
+		JFactory::getDbo()->setQuery($query);
+		//return JFactory::getDbo()->loadObjectList('team_staff_id');
+        return JFactory::getDbo()->loadObjectList();
 	}
 */
     
@@ -1274,8 +1295,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		}
 		$query .= " ORDER BY mp.project_position_id, mp.ordering,
 					pl.lastname, pl.firstname ASC";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('team_staff_id');
+		JFactory::getDbo()->setQuery($query);
+		return JFactory::getDbo()->loadObjectList('team_staff_id');
 	}
 */    
     
@@ -1289,9 +1310,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        
+        $query = JFactory::getDbo()->getQuery(true);
         
         require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'statistics'.DS.'base.php');
         
@@ -1311,8 +1331,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 //		.' WHERE ppos.project_id='.  $project_id
 //		.' ORDER BY stat.ordering, ps.ordering ';
         
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
+		JFactory::getDbo()->setQuery($query);
+		$res = JFactory::getDbo()->loadObjectList();
 		$stats=array();
 		foreach ($res as $k => $row)
 		{
@@ -1337,9 +1357,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $starttime = microtime(); 
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        
+        $query = JFactory::getDbo()->getQuery(true);
         
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic ');
@@ -1348,7 +1367,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 //        //$match =& $this->getData();
 //		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic  WHERE match_id='.$match_id;
         
-		$db->setQuery($query);
+		JFactory::getDbo()->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1356,7 +1375,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$res = $db->loadObjectList();
+		$res = JFactory::getDbo()->loadObjectList();
 		$stats = array(	$projectteam1_id => array(),
 		$projectteam2_id => array());
 		foreach ($res as $stat)
@@ -1379,9 +1398,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $starttime = microtime(); 
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        
+        $query = JFactory::getDbo()->getQuery(true);
         
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic ');
@@ -1390,7 +1408,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 //        //$match =& $this->getData();
 //		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic WHERE match_id='.$match_id;
         
-		$db->setQuery($query);
+		JFactory::getDbo()->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1398,7 +1416,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$res = $db->loadObjectList();
+		$res = JFactory::getDbo()->loadObjectList();
 		$stats = array($projectteam1_id => array(),$projectteam2_id => array());
 		foreach ((array)$res as $stat)
 		{
@@ -1422,9 +1440,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $starttime = microtime(); 
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+       
+        $query = JFactory::getDbo()->getQuery(true);
         
         $query->select('ppos.id AS value,pos.name AS text,pos.id AS posid,pos.id AS pposid');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ');
@@ -1451,7 +1468,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		//$query .= ' ORDER BY pos.ordering';
         $query->order('pos.ordering');
         
-		$db->setQuery($query);
+		JFactory::getDbo()->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1459,9 +1476,9 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		if (!$result = $db->loadObjectList('value'))
+		if (!$result = JFactory::getDbo()->loadObjectList('value'))
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
@@ -1479,9 +1496,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $starttime = microtime(); 
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        
+        $query = JFactory::getDbo()->getQuery(true);
         
         $query->select('et.id AS value,et.name AS text,et.icon AS icon');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
@@ -1505,7 +1521,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 //                    AND et.published=1
 //					ORDER BY pet.ordering, et.ordering';
                     
-		$db->setQuery($query);
+		JFactory::getDbo()->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1513,12 +1529,17 @@ class sportsmanagementModelMatch extends JModelAdmin
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$result = $db->loadObjectList();
+		$result = JFactory::getDbo()->loadObjectList();
         if ( !$result )
         {
             $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
         }
-		foreach ($result as $event){$event->text=JText::_($event->text);}
+		
+        foreach ($result as $event)
+        {
+            $event->text = JText::_($event->text);
+        }
+        
 		return $result;
 	}
     
@@ -1531,33 +1552,47 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	function updateReferees($post)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $query = JFactory::getDBO()->getQuery(true);
         $mid = $post['id'];
 		$peid = array();
 		$result = true;
 		$positions = $post['positions'];
         
-        $mainframe->enqueueMessage('sportsmanagementModelMatch updateReferees<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
         
 		//$project_id=$post['project'];
 		foreach ($positions AS $key => $pos)
 		{
 			if (isset($post['position'.$key])) { $peid=array_merge((array) $post['position'.$key],$peid); }
 		}
+        
 		if ($peid == null)
-		{ // Delete all referees assigned to this match
-			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee WHERE match_id='.$post['id'];
-		}
+		{ 
+		  // Delete all referees assigned to this match
+          $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'));
+          $query->where('match_id = '.$post['id']);
+    	}
 		else
-		{ // Delete all referees which are not selected anymore from this match
+		{ 
+		  // Delete all referees which are not selected anymore from this match
 			JArrayHelper::toInteger($peid);
-			$peids=implode(',',$peid);
-			$query="	DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
-						WHERE match_id=".$post['id']." AND project_referee_id NOT IN (".$peids.")";
+			$peids = implode(',',$peid);
+            $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'));
+            $query->where('match_id = '.$post['id']);
+            $query->where('project_referee_id NOT IN ('.$peids.')');
+            
+//			$query="	DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
+//						WHERE match_id=".$post['id']." AND project_referee_id NOT IN (".$peids.")";
 		}
-		$this->_db->setQuery($query);
-		if (!$this->_db->query()) { $this->setError($this->_db->getErrorMsg()); $result=false; }
+		JFactory::getDbo()->setQuery($query);
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 
+        { 
+            $this->setError(JFactory::getDbo()->getErrorMsg()); 
+            $result=false; 
+        }
+        
 		foreach ($positions AS $key=>$pos)
 		{
 			if (isset($post['position'.$key]))
@@ -1569,8 +1604,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 								FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
 								WHERE match_id=$mid AND project_referee_id=$project_referee_id";
 
-					$this->_db->setQuery($query);
-					if ($result=$this->_db->loadResult())
+					JFactory::getDbo()->setQuery($query);
+					if ($result=JFactory::getDbo()->loadResult())
 					{
 						$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
 									SET project_position_id='$key',ordering= '$x'
@@ -1582,10 +1617,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 										(match_id,project_referee_id, project_position_id, ordering) VALUES
 										('$mid','$project_referee_id','$key','$x')";
 					}
-					$this->_db->setQuery($query);
-					if (!$this->_db->query())
+					JFactory::getDbo()->setQuery($query);
+					if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 					{
-						sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+						sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 						$result=false;
 					}
 				}
@@ -1594,7 +1629,59 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return true;
 	}
     
-    
+/**
+ * sportsmanagementModelMatch::getPlayerEventsbb()
+ * 
+ * @param integer $teamplayer_id
+ * @param integer $event_type_id
+ * @param integer $match_id
+ * @return
+ */
+function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
+	{
+	   $query = JFactory::getDBO()->getQuery(true);
+       
+		$ret=array();
+		$record = new stdClass();
+		$record->id='';
+		$record->event_sum=0;
+        $record->event_time="";
+        $record->notice="";
+		$record->teamplayer_id=$teamplayer_id;
+		$record->event_type_id=$event_type_id;
+		$ret[0]=$record;
+        
+        $query->select('me.projectteam_id,me.id,me.match_id,me.teamplayer_id,me.event_type_id,me.event_sum,me.event_time,me.notice');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
+        $query->where('me.match_id = '.$match_id);
+        $query->where('me.teamplayer_id = '.$teamplayer_id);
+        $query->where('me.event_type_id = '.$event_type_id);
+        $query->order('me.teamplayer_id ASC');
+        
+//		$query='	SELECT	me.projectteam_id,
+//							me.id,
+//							me.match_id,
+//							me.teamplayer_id,
+//							me.event_type_id,
+//							me.event_sum,
+//                            me.event_time,
+//                            me.notice
+//					FROM #__joomleague_match_event AS me
+//					WHERE me.match_id='.(int) $this->_id.'
+//					AND	  me.teamplayer_id='.(int) $teamplayer_id.'
+//					AND	  me.event_type_id=' .(int) $event_type_id.'
+//					ORDER BY me.teamplayer_id ASC ';
+		JFactory::getDBO()->setQuery($query);
+		$result = JFactory::getDBO()->loadObjectList();
+		if(count($result)>0)
+		{
+			return $result;
+		}
+		return $ret;
+	}
+        
+
+        
     /**
 	 * Method to update starting lineup list
 	 *
@@ -1602,40 +1689,61 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-	function updateRoster($data)
+	function updateRoster($post)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $result = true;
-		$positions = $data['positions'];
-		$mid = $data['id'];
-		$team = $data['team'];
+		$positions = $post['positions'];
+		$mid = $post['id'];
+		$team = $post['team'];
+        $trikotnumbers = $post['trikot_number']; 
         
-        //$mainframe->enqueueMessage('sportsmanagementModelMatch updateRoster<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data'.'<pre>'.print_r($post,true).'</pre>' ),'');
         
 		// we first remove the records of starter for this team and this game then add them again from updated data.
-		$query='	DELETE	mp
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.id=mp.teamplayer_id
-					WHERE	came_in='.self::MATCH_ROSTER_STARTER.' AND
-							mp.match_id='.$this->_db->Quote($mid).' AND
-							tp.projectteam_id='.$this->_db->Quote($team);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+        $query = JFactory::getDBO()->getQuery(true);
+
+        $query->clear();
+        $query->select('mp.id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
+        $query->where('mp.match_id = '.$mid);
+        $query->where('pt.id = '.$team);
+        
+        JFactory::getDBO()->setQuery($query);
+        $result = JFactory::getDbo()->loadColumn();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        
+        if ( $result )
+        {
+        $query->clear();
+        $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'));
+        $query->where('id IN ('.implode(",",$result).')');
+        JFactory::getDBO()->setQuery($query);
+        
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			$result=false;
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg'.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'');
+		sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+		$result = false;
 		}
+        }
 		foreach ($positions AS $project_position_id => $pos)
 		{
-			if (isset($data['position'.$project_position_id]))
+			if (isset($post['position'.$project_position_id]))
 			{
-				foreach ($data['position'.$project_position_id] AS $ordering => $player_id)
+				foreach ($post['position'.$project_position_id] AS $ordering => $player_id)
 				{
 					$record = JTable::getInstance('Matchplayer','sportsmanagementTable');
 					$record->match_id			= $mid;
 					$record->teamplayer_id		= $player_id;
 					$record->project_position_id= $pos->pposid;
+                    $record->trikot_number = $trikotnumbers[$player_id];
 					$record->came_in			= self::MATCH_ROSTER_STARTER;
 					$record->ordering			= $ordering;
 					/*
@@ -1663,34 +1771,60 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-	function updateStaff($data)
+	function updateStaff($post)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $result = true;
-		$positions = $data['staffpositions'];
-		$mid = $data['id'];
-		$team = $data['team'];
+		$positions = $post['staffpositions'];
+		$mid = $post['id'];
+		$team = $post['team'];
         
-        //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($data, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
-		// we first remove the records of starter for this team and this game,then add them again from updated data.
-		$query='	DELETE mp
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp ON tp.id=mp.team_staff_id
-					WHERE	mp.match_id='.$this->_db->Quote($mid).' AND
-							tp.projectteam_id='.$this->_db->Quote($team);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+//		// we first remove the records of starter for this team and this game,then add them again from updated data.
+//		$query='	DELETE mp
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp ON tp.id=mp.team_staff_id
+//					WHERE	mp.match_id='.JFactory::getDbo()->Quote($mid).' AND
+//							tp.projectteam_id='.JFactory::getDbo()->Quote($team);
+//		JFactory::getDbo()->setQuery($query);
+        
+        $query = JFactory::getDBO()->getQuery(true);
+
+        $query->clear();
+        $query->select('mp.id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.team_staff_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->where('mp.match_id = '.$mid);
+        $query->where('pt.id = '.$team);
+        
+        JFactory::getDBO()->setQuery($query);
+        $result = JFactory::getDbo()->loadColumn();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        
+        if ( $result )
+        {
+        $query->clear();
+        $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'));
+        $query->where('id IN ('.implode(",",$result).')');
+        JFactory::getDBO()->setQuery($query);
+        
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-			$this->setError($this->_db->getErrorMsg());
-			$result=false;
+			$this->setError(JFactory::getDbo()->getErrorMsg());
+			$result = false;
 		}
+        }
+        
 		foreach ($positions AS $project_position_id => $pos)
 		{
-			if (isset($data['staffposition'.$project_position_id]))
+			if (isset($post['staffposition'.$project_position_id]))
 			{
-				foreach ($data['staffposition'.$project_position_id] AS $ordering => $player_id)
+				foreach ($post['staffposition'.$project_position_id] AS $ordering => $player_id)
 				{
 					$record = JTable::getInstance('Matchstaff','sportsmanagementTable');
 					$record->match_id = $mid;
@@ -1781,10 +1915,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 			// retrieve normal position of player getting in
 			$query='	SELECT project_position_id '
 			.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS pt '
-			.' WHERE pt.player_id='.$this->_db->Quote($player_in)
+			.' WHERE pt.player_id='.JFactory::getDbo()->Quote($player_in)
 			;
-			$this->_db->setQuery($query);
-			$project_position_id = $this->_db->loadResult();
+			JFactory::getDbo()->setQuery($query);
+			$project_position_id = JFactory::getDbo()->loadResult();
 		}
 		if($player_in>0) {
 			$in_player_record = JTable::getInstance('Matchplayer','sportsmanagementTable');
@@ -1795,7 +1929,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$in_player_record->in_out_time			= $in_out_time;
 			$in_player_record->project_position_id	= $project_position_id;
 			if (!$in_player_record->store()) {
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				return false;
 			}
 		}
@@ -1808,7 +1942,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 			$out_player_record->project_position_id	= $project_position_id;
 			$out_player_record->out					= 1;
 			if (!$out_player_record->store()) {
-				$this->setError($this->_db->getErrorMsg());
+				$this->setError(JFactory::getDbo()->getErrorMsg());
 				return false;
 			}
 		}
@@ -1826,10 +1960,10 @@ class sportsmanagementModelMatch extends JModelAdmin
 		// the subsitute isn't getting in so we delete the substitution
 		$query="	DELETE
 					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_player
-					WHERE id=".$this->_db->Quote($substitution_id). "
-					 OR id=".$this->_db->Quote($substitution_id + 1);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+					WHERE id=".JFactory::getDbo()->Quote($substitution_id). "
+					 OR id=".JFactory::getDbo()->Quote($substitution_id + 1);
+		JFactory::getDbo()->setQuery($query);
+		if (!JFactory::getDbo()->query())
 		{
 			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETING_SUBST'));
 			return false;
@@ -1975,12 +2109,12 @@ if (!$db->query())
 		
         //if (!$object->store())
 //		{
-//			//$this->setError($this->_db->getErrorMsg());
+//			//$this->setError(JFactory::getDbo()->getErrorMsg());
 //			return false;
 //		}
 //        else
 //        {
-//            $object->id = $this->_db->insertid();
+//            $object->id = JFactory::getDbo()->insertid();
 //        }
         
 		return $object->id;
@@ -2022,12 +2156,12 @@ if (!$db->query())
 //		}
 		if (!$object->store())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError(JFactory::getDbo()->getErrorMsg());
 			return false;
 		}
         else
         {
-            $object->id = $this->_db->insertid();
+            $object->id = JFactory::getDbo()->insertid();
         }
 		return $object->id;
 	}
@@ -2164,7 +2298,7 @@ else
     $match_id = JRequest::getVar('match_id');
     $this->_id = $match_id;
     //$mainframe->enqueueMessage(JText::_('getPressebericht match_id<br><pre>'.print_r($match_id,true).'</pre>'   ),'');
-    $file = JPATH_SITE.DS.'media'.DS.'com_joomleague'.DS.'pressebericht'.DS.$match_id.'.jlg';   
+    $file = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';   
     //$file = JPATH_SITE.DS.'tmp'.DS.'pressebericht.jlg';
     $mainframe->enqueueMessage(JText::_('datei = '.$file),'');
     // Where the cache will be stored
@@ -2214,7 +2348,7 @@ $csv->auto($dcsv['cachefile']);
     $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();  
     $match_id = JRequest::getVar('match_id');  
-    $tblmatch = JTable::getInstance("match", "Table");
+    $tblmatch = JTable::getInstance("match", "sportsmanagementTable");
     $tblmatch->load($match_id);
     $match_number = $tblmatch->match_number;
     //$mainframe->enqueueMessage(JText::_('getPresseberichtMatchnumber match number<br><pre>'.print_r($match_number,true).'</pre>'   ),'');
@@ -2245,23 +2379,34 @@ $csv->auto($dcsv['cachefile']);
      */
     function getPresseberichtReadPlayers($csv_file)
     {
-    $csv_player_count = 40;    
     $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication(); 
-    $project_id = $mainframe->getUserState($option.'project'); 
+    $query = JFactory::getDbo()->getQuery(true);
+    
+    $csv_player_count = 40;
+    $project_id = $mainframe->getUserState( "$option.pid", '0' ); 
     $match_id = JRequest::getVar('match_id');    
-    $tblmatch = JTable::getInstance("match", "Table");
+    $tblmatch = JTable::getInstance("match", "sportsmanagementTable");
     $tblmatch->load($match_id);
-    $tblproject = JTable::getInstance("project", "Table");
+    $tblproject = JTable::getInstance("project", "sportsmanagementTable");
     $tblproject->load($project_id);
     $favteam = $tblproject->fav_team;
-    $tblteam = JTable::getInstance("team", "Table");
+    $tblteam = JTable::getInstance("team", "sportsmanagementTable");
     $tblteam->load($favteam);
-    $query="SELECT id
-			FROM #__joomleague_project_team
-			WHERE project_id=$project_id AND team_id=$favteam";
-			$this->_db->setQuery($query);
-			$projectteamid = $this->_db->loadResult();
+    
+    // Select some fields
+    $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+        $query->where('project_id = '.$project_id);  
+        $query->where('team_id = '.$favteam);   
+        
+    //$query="SELECT id
+//			FROM #__joomleague_project_team
+//			WHERE project_id=$project_id AND team_id=$favteam";
+			JFactory::getDbo()->setQuery($query);
+			$projectteamid = JFactory::getDbo()->loadResult();
     //$mainframe->enqueueMessage(JText::_('getPresseberichtReadPlayers projectteamid<br><pre>'.print_r($projectteamid,true).'</pre>'   ),'');    
     
     /*
@@ -2304,12 +2449,20 @@ $csv->auto($dcsv['cachefile']);
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = 0;
         
         // gibt es den spieler
-        $query="SELECT id
-				FROM #__joomleague_person 
-                WHERE firstname like '".trim($teile[1])."' 
-                AND lastname like '".trim($teile[0])."' ";
-		$this->_db->setQuery($query);
-		$person_id = $this->_db->loadResult();
+        // Select some fields
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        
+       // $query="SELECT id
+//				FROM #__joomleague_person 
+//                WHERE firstname like '".trim($teile[1])."' 
+//                AND lastname like '".trim($teile[0])."' ";
+		JFactory::getDbo()->setQuery($query);
+		$person_id = JFactory::getDbo()->loadResult();
         
         if ( $person_id )
         {
@@ -2317,8 +2470,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_player
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -2343,12 +2496,20 @@ $csv->auto($dcsv['cachefile']);
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = 0;
         
         // gibt es den spieler ?
-        $query="SELECT id
-				FROM #__joomleague_person 
-                WHERE firstname like '".trim($teile[1])."' 
-                AND lastname like '".trim($teile[0])."' ";
-		$this->_db->setQuery($query);
-		$person_id = $this->_db->loadResult();
+        // Select some fields
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        
+//        $query="SELECT id
+//				FROM #__joomleague_person 
+//                WHERE firstname like '".trim($teile[1])."' 
+//                AND lastname like '".trim($teile[0])."' ";
+		JFactory::getDbo()->setQuery($query);
+		$person_id = JFactory::getDbo()->loadResult();
         
         if ( $person_id )
         {
@@ -2356,8 +2517,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_player
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -2431,8 +2592,8 @@ $csv->auto($dcsv['cachefile']);
                 AND projectteam_id = ".$projectteamid." 
                 AND teamplayer_id = ".$project_person_id."
                 ";
-		$this->_db->setQuery($query);
-		$match_event_id = $this->_db->loadResult();
+		JFactory::getDbo()->setQuery($query);
+		$match_event_id = JFactory::getDbo()->loadResult();
         $this->csv_cards[$key]->event_type_id = $match_event_id;
     }    
     }
@@ -2455,12 +2616,20 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+    // Select some fields
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+        
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2468,8 +2637,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2485,12 +2654,19 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+        
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2498,8 +2674,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2515,12 +2691,18 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2528,8 +2710,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2545,12 +2727,18 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2558,8 +2746,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2575,12 +2763,18 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2588,8 +2782,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2605,12 +2799,18 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
-    $query="SELECT id
-	       	FROM #__joomleague_person 
-            WHERE firstname like '".trim($teile[0])."' 
-            AND lastname like '".trim($teile[1])."' ";
-    $this->_db->setQuery($query);
-	$person_id = $this->_db->loadResult();
+        $query->clear();
+        $query->select('id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
+//    $query="SELECT id
+//	       	FROM #__joomleague_person 
+//            WHERE firstname like '".trim($teile[0])."' 
+//            AND lastname like '".trim($teile[1])."' ";
+    JFactory::getDbo()->setQuery($query);
+	$person_id = JFactory::getDbo()->loadResult();
         
     if ( $person_id )
     {
@@ -2618,8 +2818,8 @@ $csv->auto($dcsv['cachefile']);
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$this->_db->setQuery($query);
-			$projectpersonid = $this->_db->loadObject();
+			JFactory::getDbo()->setQuery($query);
+			$projectpersonid = JFactory::getDbo()->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }

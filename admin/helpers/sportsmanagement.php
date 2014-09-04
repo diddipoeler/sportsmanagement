@@ -127,7 +127,15 @@ abstract class sportsmanagementHelper
 			$result[0]['exportRoutine']=$exportRoutine;
 			$result[0]['exportDate']=date('Y-m-d');
 			$result[0]['exportTime']=date('H:i:s');
+            // welche joomla version ?
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $result[0]['exportSystem']=JFactory::getConfig()->get('config.sitename');
+        }
+        else
+        {
 			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
+            }
 			$result[0]['object']='JoomLeagueVersion';
 			return $result;
 	}    

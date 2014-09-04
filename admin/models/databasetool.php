@@ -65,27 +65,57 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
+    static $db_num_rows = 0;
+    
     
     
     /**
      * sportsmanagementModeldatabasetool::runJoomlaQuery()
      * 
+     * @param string $setModelVar
      * @return
      */
-    function runJoomlaQuery()
+    function runJoomlaQuery($setModelVar='')
     {
-       // // Get a db connection.
-//        $db = JFactory::getDbo();
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $result = false;
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            return JFactory::getDbo()->execute();
+            $result = JFactory::getDbo()->execute();
+            if ( $setModelVar )
+            {
+            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
+            }
+            //if ( JFactory::getDbo()->getAffectedRows() )
+//            {
+//                $result = JFactory::getDbo()->getAffectedRows();
+//            }
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAffectedRows<br><pre>'.print_r(JFactory::getDbo()->getAffectedRows(),true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //try {
+//                }
+//            catch (Exception $e) {
+//    // catch any database errors.
+//    //$db->transactionRollback();
+//    JErrorPage::render($e);
+//}
         }
         else
         {
-            return JFactory::getDbo()->query();
-        }    
+            $result = JFactory::getDbo()->query();
+            if ( $setModelVar )
+            {
+            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
+            }
+            //if ( $this->db_num_rows )
+//            {
+//                $result = $this->db_num_rows;
+//            }
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db_num_rows<br><pre>'.print_r($this->db_num_rows,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+        } 
+        return $result;   
     }
 
 

@@ -53,7 +53,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		}
 	}
 </script>
-			<table class="adminlist">
+			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<?php 
         if ($this->projectws->master_template)

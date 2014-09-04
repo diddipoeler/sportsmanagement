@@ -55,7 +55,7 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelProject extends JModelAdmin
 {
-	
+	static $db_num_rows = 0;
   
 	
   /**
@@ -394,72 +394,209 @@ class sportsmanagementModelProject extends JModelAdmin
 	function deleteProjectsData($pk=array())
 	{
 	$mainframe = JFactory::getApplication();
-//    /* Ein Datenbankobjekt beziehen */
-//    $db = JFactory::getDbo();
-    /* Ein JDatabaseQuery Objekt beziehen */
+
     $query = JFactory::getDbo()->getQuery(true);
     
 	$result = false;
     if (count($pk))
 		{
-			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pk);
-            // wir l�schen mit join
+            // rounds 
+            $query->clear();
+            $query->select('r.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
+            $query->where('r.project_id IN ('.implode(",",$pk).')');
+            JFactory::getDBO()->setQuery($query);
+            $rounds = JFactory::getDbo()->loadColumn();
             
-            $query = 'DELETE t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as t1
-            ON t1.project_id = p.id   
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as t2
-            ON t2.project_id = p.id   
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as t3
-            ON t3.round_id = t1.id  
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary as t4
-            ON t4.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as t5
-            ON t5.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as t6
-            ON t6.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as t7
-            ON t7.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as t8
-            ON t8.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as t9
-            ON t9.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as t10
-            ON t10.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as t11
-            ON t11.project_id = p.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as t12
-            ON t12.project_id = p.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as t13
-            ON t13.project_id = p.id    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as t14
-            ON t14.projectteam_id = t13.id    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as t15
-            ON t15.projectteam_id = t13.id    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata as t16
-            ON t16.project_id = p.id    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t17
-            ON t17.project_id = p.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto as t18
-            ON t18.project_id = p.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_match as t19
-            ON t19.match_id = t3.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node as t20
-            ON t20.treeto_id = t18.id
-            WHERE p.id IN ('.$cids.')';
-            
-            
-            
-            JFactory::getDbo()->setQuery($query);
-            //JFactory::getDbo()->query();
-            if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 
+            // matches 
+            if ( $rounds )
             {
-                $mainframe->enqueueMessage(JText::_('deleteProjectsData getErrorMsg<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
-                return false; 
+            $query->clear();
+            $query->select('m.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+            $query->where('m.round_id IN ('.implode(",",$rounds).')');
+            JFactory::getDBO()->setQuery($query);
+            $matches = JFactory::getDbo()->loadColumn();
             }
             
+            // project_teams 
+            $query->clear();
+            $query->select('p.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as p');
+            $query->where('p.project_id IN ('.implode(",",$pk).')');
+            JFactory::getDBO()->setQuery($query);
+            $project_teams = JFactory::getDbo()->loadColumn();
+            
+            // project_referee 
+            $query->clear();
+            $query->select('p.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as p');
+            $query->where('p.project_id IN ('.implode(",",$pk).')');
+            JFactory::getDBO()->setQuery($query);
+            $project_referee = JFactory::getDbo()->loadColumn();
+            
+            // project_position 
+            $query->clear();
+            $query->select('p.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as p');
+            $query->where('p.project_id IN ('.implode(",",$pk).')');
+            JFactory::getDBO()->setQuery($query);
+            $project_position = JFactory::getDbo()->loadColumn();
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_position'.'<pre>'.print_r($project_position,true).'</pre>' ),'');
+//            $mainframe->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' project_position'.'<pre>'.print_r($project_position,true).'</pre>' ),'');
+            
+            // jetzt starten wir das löschen
+            // _project_position 
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position')->where('project_id IN ('.implode(",",$pk).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PROJECT_POSITION_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+                        
+            // _project_referee
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee')->where('project_id IN ('.implode(",",$pk).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PROJECT_REFEREE_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _project_team
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team')->where('project_id IN ('.implode(",",$pk).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PROJECT_TEAM_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            
+            // _match
+            if ( $rounds )
+            {
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('round_id IN ('.implode(",",$rounds).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            }
+                        
+            // _round
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round')->where('project_id IN ('.implode(",",$pk).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ROUND_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _division 
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division')->where('project_id IN ('.implode(",",$pk).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_DIVISIONS_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            if ( $matches )
+            {
+            // _match_commentary
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_COMMENTARY_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_event
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_EVENT_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_player
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_PLAYER_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_referee
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_REFEREE_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_single
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_SINGLE_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_staff
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_STAFF_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_staff_statistic
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_STAFF_STATISTIC_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // _match_statistic
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic')->where('match_id IN ('.implode(",",$matches).')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_MATCH_STATISTIC_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            }
+           
+           
         }    
    return true;     
    } 
