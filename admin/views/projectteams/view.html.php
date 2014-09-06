@@ -264,11 +264,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         // Set toolbar items for the page
         if ( $this->project_art_id != 3 )
         {
-            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE'),'projectteams');
+            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
         }
         else
         {
-            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE'),'projectpersons');
+            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
         }
         
         JToolBarHelper::custom('projectteams.setseasonid','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'),true);

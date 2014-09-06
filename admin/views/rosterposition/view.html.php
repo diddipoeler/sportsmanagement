@@ -40,6 +40,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// welche joomla version
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHtml::_('behavior.framework', true);
+jimport('joomla.html.html.bootstrap');
+}
+else
+{
+JHtml::_( 'behavior.mootools' );    
+}
 
 /**
  * sportsmanagementViewrosterposition
@@ -160,7 +170,16 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($this->item->extended, 'ini');
+        
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $jRegistry->loadString($this->item->extended);
+    }
+    else
+    {
         $jRegistry->loadJSON($this->item->extended);
+        }
     
     if ( !$this->item->extended )
     {
@@ -301,7 +320,9 @@ $javascript .= "\n";
         $this->assignRef('form', $this->form);
         $this->assignRef('option', $option);
         
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
+        $this->setLayout('edit');
 	}
 
 

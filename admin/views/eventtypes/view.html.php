@@ -127,7 +127,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //		// Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE'),'events');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
 
 // 		JToolBarHelper::publishList('eventtype.publish');
 // 		JToolBarHelper::unpublishList('eventtype.unpublish');

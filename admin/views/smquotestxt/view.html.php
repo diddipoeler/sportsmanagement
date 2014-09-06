@@ -68,10 +68,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
        
         $this->assignRef('option',$option);
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+       
         
 	}
     
@@ -88,7 +85,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS'),'txt-edits');
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolBarHelper::preferences(JRequest::getCmd('option'));
         

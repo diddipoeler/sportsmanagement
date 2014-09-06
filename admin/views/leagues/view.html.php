@@ -129,7 +129,7 @@ $starttime = microtime();
 //        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE'),'leagues');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
 		JToolBarHelper::addNew('league.add');
 		JToolBarHelper::editList('league.edit');
 		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

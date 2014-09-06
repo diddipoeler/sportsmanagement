@@ -36,7 +36,9 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */ 
+
 defined('_JEXEC') or die('Restricted access');
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -63,16 +65,6 @@ $options = array(
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-/*
-echo JHtml::_('tabs.start', 'tab_group_id', array('useCookie'=>1));
-echo JHtml::_('tabs.panel', JText::_('PANEL_1_TITLE'), 'panel_1_id');
-echo $this->loadTemplate('details');
-echo JHtml::_('tabs.panel', JText::_('PANEL_2_TITLE'), 'panel_2_id');
-echo $this->loadTemplate('playground_jquery');
-echo JHtml::_('tabs.panel', JText::_('PANEL_3_TITLE'), 'panel_3_id');
-echo $this->loadTemplate('extended');
-echo JHtml::_('tabs.end');
-*/
 
 ?>
 
@@ -81,8 +73,33 @@ echo JHtml::_('tabs.end');
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
 
 		
+<?PHP
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Define tabs options for version of Joomla! 3.1
+$tabsOptionsJ31 = array(
+            "active" => "panel1" // It is the ID of the active tab.
+        );
 
+echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+$panel = 1;
+foreach ($fieldsets as $fieldset) :
 
+//echo $fieldset->name.'<br>';
+//echo $panel.'<br>';
+
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel'.$panel, $fieldset->name );
+echo $this->loadTemplate($fieldset->name);
+echo JHtml::_('bootstrap.endTab');  
+$panel++;      
+endforeach;
+echo JHtml::_('bootstrap.endTabSet');  
+
+}
+else
+{
+?>    
 <div class="width-40 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_DETAILS'); ?></legend>
@@ -127,6 +144,9 @@ echo JHtml::_('tabs.end');
 	
 	</div>    
 
+<?PHP
+}
+?>
 
 
 

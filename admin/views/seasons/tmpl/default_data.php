@@ -68,17 +68,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
-					<th width="20">&nbsp;</th>
+					<th width="">&nbsp;</th>
 					<th>
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_SEASONS_NAME','s.name',$this->sortDirection,$this->sortColumn); ?>
 					</th>
-					<th width="10%">
+					<th width="">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->sortDirection,$this->sortColumn);
 						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'seasons.saveorder');
 						?>
 					</th>
-					<th width="20">
+					<th width="">
 						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','s.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>

@@ -125,7 +125,7 @@ $starttime = microtime();
         
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE'),'seasons');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
 			JToolBarHelper::addNew('season.add', 'JTOOLBAR_NEW');

@@ -87,8 +87,10 @@ class JFormFieldseasonteamperson extends JFormField
 		//$options = array();
     
     // teilnehmende saisons selektieren
-    $db = JFactory::getDbo();
-    $query = $db->getQuery(true);
+    if ( $select_id )
+    {
+    //$db = JFactory::getDbo();
+    $query = JFactory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('stp.season_id,stp.team_id, t.name as teamname, s.name as seasonname, c.logo_big as clublogo');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable.' as stp');
@@ -101,7 +103,7 @@ class JFormFieldseasonteamperson extends JFormField
             
             $starttime = microtime(); 
             
-			$db->setQuery($query);
+			JFactory::getDbo()->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -109,8 +111,12 @@ class JFormFieldseasonteamperson extends JFormField
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-            $options = $db->loadObjectList();
-			
+            $options = JFactory::getDbo()->loadObjectList();
+	}
+    else
+    {
+        $options = '';
+    }		
     
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasonteamperson getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
@@ -123,6 +129,8 @@ class JFormFieldseasonteamperson extends JFormField
             $attribs['width'] = '25px';
             $attribs['height'] = '25px';
             
+            if ( $options )
+            {
             $html .= '<table>';
             foreach ($options as $i => $option)
             {
@@ -137,7 +145,13 @@ class JFormFieldseasonteamperson extends JFormField
             }   
             
             $html .= '</table>';
-             
+            } 
+            else
+            {
+                $html .= '<div class="alert alert-no-items">';
+                $html .=JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+			$html .= '</div>';
+            }
     
             return $html;    
     

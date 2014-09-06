@@ -227,7 +227,7 @@ $mainframe = JFactory::getApplication();
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
 //		
-//        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' ), 'predmembers' );
+        $this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' );
         
         JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
 		JToolBarHelper::divider();

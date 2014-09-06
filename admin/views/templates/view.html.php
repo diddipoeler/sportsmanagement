@@ -140,7 +140,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE'),'templates');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 		JToolBarHelper::editList('template.edit');
 		JToolBarHelper::save('template.save');
 		if ($this->projectws->master_template)

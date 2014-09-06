@@ -125,7 +125,7 @@ $starttime = microtime();
 //        $document->addCustomTag($stylelink);
         
 	// Set toolbar items for the page
-		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'),'associations');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 // 		JToolBarHelper::addNewX();
 // 		JToolBarHelper::editListX();
 		JToolBarHelper::addNew('jlextassociation.add');

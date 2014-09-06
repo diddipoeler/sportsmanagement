@@ -79,8 +79,7 @@ function update_depend(element) {
 			}
 			combo.empty();
 			if (headingLine != null) {
-				//new Element('option', headingLine).injectInside(combo);
-				new Element('option', headingLine).inject(combo);
+				new Element('option', headingLine).injectInside(combo);
 			}
 			options.each(function(el) {
 				if (typeof el == "undefined") return;

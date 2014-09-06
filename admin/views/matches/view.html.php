@@ -265,7 +265,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         $massadd = JRequest::getInt('massadd',0);
 
 		// Set toolbar items for the page
-		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'),'matches');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE');
 
 		if (!$massadd)
 		{

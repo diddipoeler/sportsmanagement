@@ -131,7 +131,7 @@ class sportsmanagementModelrosterpositions extends JModelList
  $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
         return $query;
         

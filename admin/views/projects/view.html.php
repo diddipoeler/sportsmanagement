@@ -221,7 +221,9 @@ class sportsmanagementViewProjects extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'projects');
+$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
+$this->icon = 'projects';
+
 		JToolBarHelper::publishList('project.publish');
 		JToolBarHelper::unpublishList('project.unpublish');
 		JToolBarHelper::divider();

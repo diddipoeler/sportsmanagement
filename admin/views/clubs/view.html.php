@@ -151,7 +151,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE'),'clubs');
+$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
         JToolBarHelper::apply('clubs.saveshort');
         
         JToolBarHelper::divider();

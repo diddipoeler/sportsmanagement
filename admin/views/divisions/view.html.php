@@ -114,7 +114,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' ),'divisions' );
+		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
         
         JToolBarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);

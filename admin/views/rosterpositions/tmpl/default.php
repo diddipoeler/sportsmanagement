@@ -39,6 +39,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+$templatesToLoad = array('footer','listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 $user = JFactory::getUser();
 
 //Ordering allowed ?
@@ -47,24 +50,18 @@ $ordering=($this->sortColumn == 'obj.ordering');
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-	<table>
-		<tr>
-			<td align="left" width="100%">
-				<?php
-				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="search" id="search"
-								value="<?php echo $this->lists['search']; ?>"
-								class="text_area" onchange="document.adminForm.submit(); " />
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
-					<?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
-					?>
-				</button>
-			</td>
-		</tr>
-	</table>
+	
 <?PHP
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
 echo $this->loadTemplate('data');
 ?>
 	<input type="hidden" name="task" value="" />

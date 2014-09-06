@@ -280,7 +280,7 @@ $starttime = microtime();
 //        
 //		//$user		= JFactory::getUser();
 //        // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE'),'persons');
+$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
 // 		JToolBarHelper::publishList('person.publish');
 // 		JToolBarHelper::unpublishList('person.unpublish');

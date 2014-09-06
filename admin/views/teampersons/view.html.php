@@ -211,11 +211,11 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         // Set toolbar items for the page
         if ( $this->_persontype == 1 )
         {
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE' ),'teamplayers' );
+		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE' );
         }
         elseif ( $this->_persontype == 2 )
         {
-        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' ),'teamstaffs' );
+        $this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' );
         }
 
 		JToolBarHelper::publishList('teampersons.publish');

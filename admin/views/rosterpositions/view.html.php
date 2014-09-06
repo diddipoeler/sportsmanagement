@@ -103,7 +103,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 // Set toolbar items for the page
-		//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE'),'rosterpositions');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
         	JToolBarHelper::custom('rosterpositions.addhome','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'),false);
 		JToolBarHelper::custom('rosterpositions.addaway','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'),false);
 		JToolBarHelper::editList('rosterposition.edit');

@@ -113,7 +113,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE'),'extrafields');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
 		JToolBarHelper::addNew('extrafield.add');
 		JToolBarHelper::editList('extrafield.edit');
 		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

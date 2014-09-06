@@ -86,15 +86,15 @@ class JFormFieldseasoncheckbox extends JFormField
         // Initialize variables.
 		//$options = array();
     
-    $db = JFactory::getDbo();
-			$query = $db->getQuery(true);
+    //$db = JFactory::getDbo();
+			$query = JFactory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('id AS value, name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season');
 			$query->order('name');
             
             $starttime = microtime(); 
-			$db->setQuery($query);
+			JFactory::getDbo()->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -102,10 +102,12 @@ class JFormFieldseasoncheckbox extends JFormField
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$options = $db->loadObjectList();
+			$options = JFactory::getDbo()->loadObjectList();
     
     // teilnehmende saisons selektieren
-    $query = $db->getQuery(true);
+    if ( $select_id )
+    {
+    $query = JFactory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('season_id');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable);
@@ -113,7 +115,7 @@ class JFormFieldseasoncheckbox extends JFormField
             $query->group('season_id');
             
             $starttime = microtime(); 
-			$db->setQuery($query);
+			JFactory::getDbo()->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -121,7 +123,12 @@ class JFormFieldseasoncheckbox extends JFormField
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$this->value = $db->loadColumn();
+			$this->value = JFactory::getDbo()->loadColumn();
+    }
+    else
+    {
+        $this->value = '';
+    }
     
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
     //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');

@@ -213,7 +213,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE'),'matchdays');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
 
 		if (!$this->massadd)
 		{
@@ -254,7 +254,7 @@ parent::addToolbar();
 	*/
 	protected function addToolbar_Populate()
 	{ 	
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
 		JToolBarHelper::apply('round.startpopulate');
 		JToolBarHelper::back();
 		

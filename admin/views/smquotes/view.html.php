@@ -115,7 +115,7 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE'),'quotes');
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
 		JToolBarHelper::addNew('smquote.add');
 		JToolBarHelper::editList('smquote.edit');
 		JToolBarHelper::custom('smquote.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

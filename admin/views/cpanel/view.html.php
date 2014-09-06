@@ -280,9 +280,11 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
         $task = JRequest::getCmd('task');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+
         $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         
         if ( $mainframe->isAdmin() )
@@ -331,16 +333,16 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		}
 	}
     
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
-	}
+//	/**
+//	 * Method to set up the document properties
+//	 *
+//	 * @return void
+//	 */
+//	protected function setDocument() 
+//	{
+//		$document = JFactory::getDocument();
+//		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
+//	}
 	
 	/**
 	 * sportsmanagementViewcpanel::addIcon()

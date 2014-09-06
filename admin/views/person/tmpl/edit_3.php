@@ -44,7 +44,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 

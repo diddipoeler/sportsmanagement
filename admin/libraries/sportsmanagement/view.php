@@ -351,15 +351,19 @@ class sportsmanagementView extends JViewLegacy
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
+        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
         }
         else
         {    
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        }
         $document->addCustomTag($stylelink);
+        }
+        
         
 //		$document->addStyleDeclaration(
-//				'.icon-48-' . $this->icon . ' {background-image: url(../media/com_sportsmanagement/images/admin/48-' . $this->icon .
+//				'.icon-48-' . $this->icon . ' {background-image: url('.JURI::root().'administrator/components/com_sportsmanagement/assets/images/' . $this->icon .
 //						 '.png);background-repeat: no-repeat;}');
 
 		if ( $this->layout == 'edit')
@@ -375,7 +379,14 @@ class sportsmanagementView extends JViewLegacy
         }
         else
         {
-        JToolBarHelper::title(JText::_($this->title), $this->icon);    
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+            JToolBarHelper::title(JText::_($this->title) );    
+            }
+            else
+            {
+            JToolBarHelper::title(JText::_($this->title), $this->icon);
+            }    
         }
         
         if ($canDo->get('core.admin'))
