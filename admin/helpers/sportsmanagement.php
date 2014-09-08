@@ -39,7 +39,10 @@
 // No direct access to this file
 defined('_JEXEC') or die;
  
-
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+jimport('joomla.html.toolbar');            
+}            
 
 /**
  * sportsmanagementHelper
@@ -1773,6 +1776,16 @@ abstract class sportsmanagementHelper
 	}
     
     
+    /**
+     * sportsmanagementHelper::ToolbarButton()
+     * 
+     * @param mixed $layout
+     * @param string $icon_image
+     * @param string $alt_text
+     * @param string $view
+     * @param integer $type
+     * @return void
+     */
     static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
 	$option = JRequest::getCmd('option');
@@ -1785,6 +1798,7 @@ abstract class sportsmanagementHelper
     {
     $view = JRequest::getVar( "view") ;
     }
+    
     $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
@@ -1792,11 +1806,19 @@ abstract class sportsmanagementHelper
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
+//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
     
+
     
     }
     
     
+    /**
+     * sportsmanagementHelper::ToolbarButtonOnlineHelp()
+     * 
+     * @return void
+     */
     static function ToolbarButtonOnlineHelp()
 	{
 	$option = JRequest::getCmd('option');

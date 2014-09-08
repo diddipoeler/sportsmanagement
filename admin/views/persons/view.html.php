@@ -60,11 +60,12 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		if ($this->getLayout() == 'assignplayers')
+		if ( $this->getLayout() == 'assignplayers' || $this->getLayout() == 'assignplayers_3' )
 		{
 			$this->_displayAssignPlayers($tpl);
 			return;
 		}
+        
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $user	= JFactory::getUser();
@@ -230,8 +231,10 @@ $starttime = microtime();
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',JFactory::getURI()->toString());
 		$this->assignRef('type',$type);
+        
+        $this->setLayout('assignplayers');
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 	/**

@@ -182,6 +182,10 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('project_team',$project_team);
 		
+//        if ( $this->getLayout() == 'assignplayers' || $this->getLayout() == 'assignplayers_3')
+//		{
+//        $this->setLayout('assignplayers');
+//        }
         
         
 	}
