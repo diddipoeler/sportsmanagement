@@ -183,6 +183,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->initEdit();  
         }
         
+        // layout picture
+        if ( $this->getLayout() == 'picture' || $this->getLayout() == 'picture_3' )
+		{
+		$this->initPicture();  
+        }
+        
         // Set the toolbar
 		//$this->addToolBar();
 		
@@ -274,6 +280,18 @@ class sportsmanagementViewMatch extends sportsmanagementView
         
         $this->assignRef('lists',$lists);
         $this->setLayout('edit');
+    
+    }
+    
+    public function initPicture()
+	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+	$document = JFactory::getDocument();
+    $model = $this->getModel();
+    
+
+        $this->setLayout('picture');
     
     }
     

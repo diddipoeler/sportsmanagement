@@ -298,7 +298,8 @@ class sportsmanagementModelperson extends JModelAdmin
 			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
 			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
 			$tblPerson->birthday	= sportsmanagementHelper::convertDate($post['birthday'.$pks[$x]],0);
-			$tblPerson->deathday	= $post['deathday'.$pks[$x]];
+			//$tblPerson->deathday	= $post['deathday'.$pks[$x]];
+            $tblPerson->deathday	= sportsmanagementHelper::convertDate($post['deathday'.$pks[$x]],0);
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
 			if(!$tblPerson->store()) 
@@ -604,6 +605,17 @@ class sportsmanagementModelperson extends JModelAdmin
 			$data['extendeduser'] = (string)$parameter;
 		}
         
+        $data['birthday']	= sportsmanagementHelper::convertDate($data['birthday'],0);
+        $data['deathday']	= sportsmanagementHelper::convertDate($data['deathday'],0);
+        
+        $data['injury_date_start']	= sportsmanagementHelper::convertDate($data['injury_date_start'],0);
+        $data['injury_date_end']	= sportsmanagementHelper::convertDate($data['injury_date_end'],0);
+        $data['susp_date_start']	= sportsmanagementHelper::convertDate($data['susp_date_start'],0);
+        $data['susp_date_end']	= sportsmanagementHelper::convertDate($data['susp_date_end'],0);
+        $data['away_date_start']	= sportsmanagementHelper::convertDate($data['away_date_start'],0);
+        $data['away_date_end']	= sportsmanagementHelper::convertDate($data['away_date_end'],0);
+
+            
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//

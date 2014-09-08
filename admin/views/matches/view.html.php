@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
+jimport( 'joomla.filesystem.folder' );
 
 
 /**
@@ -112,7 +112,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         }
         
         $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
@@ -143,6 +143,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		unset($project_change_roundslist);
         
         //build the html options for teams
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' items<br><pre>'.print_r($items,true).'</pre>'),'');
 		foreach ($items as $row)
 		{
 			if ( $row->divhomeid == '' )
@@ -177,6 +178,21 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			}
 			$lists['teams_'+$divhomeid] = $teams;
 			unset($teams);
+            
+            // sind die verzeichnisse vorhanden ?
+            //$dest = JPATH_ROOT.'/media/com_sportsmanagement/database/matchreport/'.$row->id;
+            $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$row->id;
+            if(JFolder::exists($dest)) 
+            {
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
+            }
+            else
+            {
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad nicht vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
+            $result = JFolder::create($dest);
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            }
+            
 		}
 
 

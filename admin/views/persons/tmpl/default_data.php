@@ -198,30 +198,49 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="nowrap" class="center">
 								<?php
 								$append='';
-								if ($row->birthday == '0000-00-00')
+                                $date1 = sportsmanagementHelper::convertDate($row->birthday, 1); 
+                                if (($date1 == '00-00-0000') || ($date1 == ''))
 								{
-									$append=' style="background-color:#FFCCCC;"';
+									$append=' style="background-color:#FFCCCC;" ';
 								}
+								//if ($row->birthday == '0000-00-00')
+//								{
+//									$append=' style="background-color:#FFCCCC;"';
+//								}
 								if ($is_checked)
 								{
 									echo $row->birthday;
 								}
 								else
 								{
-									echo $this->calendar(	sportsmanagementHelper::convertDate($row->birthday),
+									/*
+                                    echo $this->calendar(	sportsmanagementHelper::convertDate($row->birthday),
 															'birthday'.$row->id,
 															'birthday'.$row->id,
 															'%d-%m-%Y',
 															'size="10" '.$append.' cb="cb'.$i.'"',
 															'onupdatebirthday',
 															$i);
+                                   */
+                                   //$date1 = sportsmanagementHelper::convertDate($row->birthday, 1);                         
+                                   echo JHtml::calendar(	$date1,
+														'birthday'.$row->id,
+														'birthday'.$row->id,
+														'%d-%m-%Y',
+														'size="10" '.$append .
+														'tabindex="3" '.
+														'class="center" '.
+														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');                         
 								}
 								?>
 							</td>
 							<td class="nowrap" class="center">
 								<?php
 								$append='';
-								if (empty($row->country)){$append=' background-color:#FFCCCC;';}
+								if (empty($row->country))
+                                {
+                                    $append=' background-color:#FFCCCC;';
+                                    }
 								echo JHtmlSelect::genericlist(	$this->lists['nation'],
 																'country'.$row->id,
 																$inputappend.' class="inputbox" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',

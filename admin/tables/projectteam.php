@@ -67,35 +67,35 @@ class sportsmanagementTableProjectteam extends JTable
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team', 'id', $db );
 	}
 
-	/**
-	 * Default delete method
-	 **
-	 * @access public
-	 * @return true if successful otherwise returns and error message
-	 */
-	function delete( $oid=null )
-	{
-		//TODO: check that there are no associated players / matches / events / trainingdata
-
-		$k = $this->_tbl_key;
-		if ($oid) {
-			$this->$k = intval( $oid );
-		}
-
-		$query = 'DELETE FROM '.$this->getDbo()->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->getDbo()->Quote($this->$k);
-		$this->getDbo()->setQuery( $query );
-
-		if ($this->getDbo()->query())
-		{
-			return true;
-		}
-		else
-		{
-			$this->setError($this->getDbo()->getErrorMsg());
-			return false;
-		}
-	}
+//	/**
+//	 * Default delete method
+//	 **
+//	 * @access public
+//	 * @return true if successful otherwise returns and error message
+//	 */
+//	function delete( $oid=null )
+//	{
+//		//TODO: check that there are no associated players / matches / events / trainingdata
+//
+//		$k = $this->_tbl_key;
+//		if ($oid) {
+//			$this->$k = intval( $oid );
+//		}
+//
+//		$query = 'DELETE FROM '.$this->getDbo()->nameQuote( $this->_tbl ).
+//				' WHERE '.$this->_tbl_key.' = '. $this->getDbo()->Quote($this->$k);
+//		$this->getDbo()->setQuery( $query );
+//
+//		if ($this->getDbo()->query())
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			$this->setError($this->getDbo()->getErrorMsg());
+//			return false;
+//		}
+//	}
 
 }
 ?>

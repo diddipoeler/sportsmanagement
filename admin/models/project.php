@@ -616,6 +616,8 @@ class sportsmanagementModelProject extends JModelAdmin
        $data['modified'] = date('Y-m-d H:i:s', $date);
        $post['modified'] = date('Y-m-d H:i:s', $date);
        
+       $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
+       
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        

@@ -40,14 +40,14 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>	
+			format="%d-%m-%Y"/>	
 		<field
 			name="round_date_last"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>		
+			format="%d-%m-%Y"/>		
       
       <field
 			name="tournement"

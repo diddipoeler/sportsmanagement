@@ -40,16 +40,49 @@
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
 
+
+$buttons = array(
+					array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=sportstypes'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						));
+
+$groupedButtons = array();
+
+//echo ' <br><pre>'.print_r($buttons,true).'</pre>';
+
+		foreach ($buttons as $button)
+		{
+			$groupedButtons[$button['group']][] = $button;
+		}
+        
+$html = JHtml::_('links.linksgroups', $groupedButtons);
+        
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
+
+    <div id="j-sidebar-container" class="span2">
+<div class="sidebar-nav quick-icons">
+		<?php echo $html;?>
+</div>
+        <?php echo $this->sidebar; ?>
+
+
+
+
+
 	</div>
 	<div id="j-main-container" class="span10">
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
 
+
+    
 <div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
 				<label for="filter_search" class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></label>

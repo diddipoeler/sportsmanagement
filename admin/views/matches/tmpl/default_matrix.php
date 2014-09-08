@@ -96,10 +96,13 @@ defined('_JEXEC') or die('Restricted access');
 <div class="clr"></div>
 <form method="post" name="matrixForm" id="matrixForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_TITLE'); ?></legend>
-<fieldset class="adminform">
+<!--<fieldset class="adminform">-->
+<legend>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_TITLE'); ?>
+</legend>
+<!--<fieldset class="adminform">-->
 	<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_HINT'); ?>
-</fieldset>
+<!--</fieldset>-->
 <?php
 
 $mdlProject = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
@@ -159,7 +162,8 @@ $matrix ='';
 
 //show the matrix
 echo $matrix;
-?></fieldset>
+?>
+<!--</fieldset>-->
 <?php $dValue=$this->roundws->round_date_first.' '.$this->projectws->start_time; ?>
 <input type='hidden' name='match_date' value='<?php echo $dValue; ?>' />
 <input type='hidden' name='projectteam1_id' value='' />

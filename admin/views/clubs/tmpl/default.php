@@ -76,6 +76,7 @@ echo $this->loadTemplate('joomla2');
 }
 
 echo $this->loadTemplate('data');
+echo "</div>";
 ?>
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />

@@ -1,7 +1,10 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+
+
+defined('_JEXEC') or die('Restricted access');
 
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<fieldset class="adminform">
 		<legend>
 		<?php

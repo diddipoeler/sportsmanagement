@@ -301,7 +301,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE_DESC"
 			class="inputbox"
 			required="true"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 			
 		<field
 			name="start_time"

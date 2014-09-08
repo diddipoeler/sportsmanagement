@@ -428,7 +428,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								?>
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="1" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="" class=""
 																	name="start_points<?php echo $row->id; ?>"
 																	value="<?php echo $row->start_points; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />

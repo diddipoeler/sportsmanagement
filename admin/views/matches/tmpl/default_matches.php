@@ -62,7 +62,7 @@ fieldset button {
 }
 </style>
 <div id="editcell">
-	<fieldset class="adminform">
+<!--	<fieldset class="adminform"> -->
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 		<?php echo $this->loadTemplate('roundselect'); ?>
         	 
@@ -189,8 +189,13 @@ fieldset button {
 													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS').'"');
 									?>
 								</a>
+                                <?PHP
+                                //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
+                                $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/'.$row->id;
+                                //$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';
+                                ?>
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id=<?php echo $row->id; ?>"
+									href="<?php echo $pcture_link; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
@@ -645,5 +650,5 @@ fieldset button {
 			<input type='hidden' name='task' value='' />
 			<?php echo JHtml::_('form.token')."\n"; ?>
 		</form>
-	</fieldset>
+<!--	</fieldset> -->
 </div>

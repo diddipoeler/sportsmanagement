@@ -473,6 +473,9 @@ class sportsmanagementModelround extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
+        $data['round_date_first']	= sportsmanagementHelper::convertDate($data['round_date_first'],0);
+        $data['round_date_last']	= sportsmanagementHelper::convertDate($data['round_date_last'],0);
+        
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save

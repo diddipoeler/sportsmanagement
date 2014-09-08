@@ -345,8 +345,8 @@ return $teamsofclub;
        $address_parts2 = array();
        $post = JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        
        // gibt es vereinsnamen zum ändern ?
        if (isset($post['team_id']) && is_array($post['team_id'])) 
@@ -366,41 +366,36 @@ return $teamsofclub;
         }
         
        }
-       
+ 
        // wurden jahre mitgegeben ?
-       if ( $data['founded'] != '0000-00-00' )
+       if ( !empty($data['founded']) )
+       {
+       $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
+       }
+       if ( !empty($data['dissolved']) )
+       {
+       $data['dissolved']	= sportsmanagementHelper::convertDate($data['dissolved'],0);
+       }
+        
+       if ( $data['founded'] != '00-00-0000' && $data['founded'] != '' )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
-        $post['founded_year'] = date('Y',strtotime($data['founded']));
+        //$post['founded_year'] = date('Y',strtotime($data['founded']));
         }
         else
         {
-            //$founded_year = $data['founded_year'];
+            $data['founded_year'] = $data['founded_year'];
         }
         
-        if ( $data['dissolved'] != '0000-00-00' )
+        if ( $data['dissolved'] != '00-00-0000' && $data['dissolved'] != '' )
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
-        $post['dissolved_year'] = date('Y',strtotime($data['dissolved']));
+        //$post['dissolved_year'] = date('Y',strtotime($data['dissolved']));
         }
         else
         {
-            //$dissolved_year = $data['dissolved_year'];
+            $data['dissolved_year'] = $data['dissolved_year'];
         }
-        
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' founded_year<br><pre>'.print_r($founded_year,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dissolved_year<br><pre>'.print_r($dissolved_year,true).'</pre>'),'');
-        
-//        if ( !$founded_year )
-//        {
-//            $data['founded_year'] = $founded_year;
-//            $post['founded_year'] = $founded_year;
-//        }
-//        if ( !$dissolved_year )
-//        {
-//            $data['dissolved_year'] = $dissolved_year;
-//            $post['dissolved_year'] = $dissolved_year;
-//        }
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         
@@ -500,7 +495,8 @@ return $teamsofclub;
 			$data['extendeduser'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelclub save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);

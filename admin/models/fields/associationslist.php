@@ -109,7 +109,10 @@ class JFormFieldAssociationsList extends JFormFieldList
 			//$options = $db->loadObjectList();
 			
 			$sections = $db->loadObjectList ();
-  $categoryparent = empty($sections) ? 0 : $sections[0]->id;
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+            
+  $categoryparent = empty($sections) ? 0 : $sections[0]->value;
   //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
   //$options = $this->JJ_categoryArray();
 $list = $this->JJ_categoryArray(0, $country);

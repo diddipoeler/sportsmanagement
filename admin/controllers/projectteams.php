@@ -71,7 +71,7 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
 
         $model = $this->getModel();
        $msg = $model->storeAssign($post);
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
   
   

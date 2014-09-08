@@ -350,13 +350,39 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $post = JRequest::get('post');
-        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        $_pro_teams_to_delete = array();
+        $query = JFactory::getDbo()->getQuery(true);
+        
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
+        $delete_team = $post['teamslist'];
+        
+
+        if ( $delete_team )
+        {
+        $mdlProjectTeams = JModelLegacy::getInstance("projectteams", "sportsmanagementModel");
+        $project_teams = $mdlProjectTeams->getAllProjectTeams($project_id,0,$delete_team);
+        foreach( $project_teams as $row )
+          {
+          $_pro_teams_to_delete[] = $row->projectteamid;  
+          }
+         } 
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_to_delete<br><pre>'.print_r($_pro_teams_to_delete , true).'</pre><br>','Notice');
+//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' delete_team<br><pre>'.print_r($delete_team , true).'</pre><br>','Notice');
         
         foreach ( $assign_id as $key => $value )
         {
+            $query->clear();
+            $query->select('id');		
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+		    $query->where('team_id = '.$value);
+            $query->where('project_id = '.$project_id);
+		    JFactory::getDbo()->setQuery($query);
+		    $team_id = JFactory::getDbo()->loadResult();
+            if ( !$team_id )
+            {
         // Create and populate an object.
         $profile = new stdClass();
         $profile->project_id = $project_id;
@@ -364,6 +390,14 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         // Insert the object into the user profile table.
         $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
         }
+        
+        }
+        
+        if ( $_pro_teams_to_delete )
+        {
+            self::delete($_pro_teams_to_delete);
+        }
+        
     }
     
     /**
@@ -431,7 +465,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
             $query = $db->getQuery(true);
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam1_id IN ('.$cids.')'  );
             $db->setQuery($query);
-            $result = $db->query();
+            $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
                 $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
@@ -449,7 +483,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
             $query = $db->getQuery(true);
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam2_id IN ('.$cids.')'  );
             $db->setQuery($query);
-            $result = $db->query();
+            $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
                 $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');

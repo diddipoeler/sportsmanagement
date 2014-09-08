@@ -170,11 +170,11 @@ JHtml::_('behavior.modal');
 								}
 								else
 								{
-									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP
 								}

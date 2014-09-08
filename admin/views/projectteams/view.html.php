@@ -118,7 +118,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         
         $divisionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-        if ($projectdivisions){ $projectdivisions=array_merge($divisionsList,$projectdivisions);}
+        if ($projectdivisions)
+        { 
+            $projectdivisions=array_merge($divisionsList,$projectdivisions);
+        }
         $lists['divisions'] = $projectdivisions;
         
         //build the html select list for project assigned teams
@@ -126,18 +129,18 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$res1 = array();
 		$notusedteams = array();
 
-		if ($ress = $model->getProjectTeams($this->project_id))
+		if ($ress = $model->getProjectTeams($this->project_id,FALSE))
 		{
 			$teamslist=array();
 			foreach($ress as $res)
 			{
 				if(empty($res1->info))
 				{
-					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text);
+					$project_teamslist[] = JHTMLSelect::option($res->season_team_id,$res->text);
 				}
 				else
 				{
-					$project_teamslist[] = JHTMLSelect::option($res->value,$res->text.' ('.$res->info.')');
+					$project_teamslist[] = JHTMLSelect::option($res->season_team_id,$res->text.' ('.$res->info.')');
 				}
 			}
 
@@ -153,14 +156,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		if ($ress1 = $model->getTeams())
 		{
-			if ($ress = $model->getProjectTeams($this->project_id))
+			if ($ress = $model->getProjectTeams($this->project_id,FALSE))
 			{
 				foreach ($ress1 as $res1)
 				{
 					$used=0;
 					foreach ($ress as $res)
 					{
-						if ($res1->value == $res->value){$used=1;}
+						if ($res1->value == $res->season_team_id)
+                        {
+                            $used=1;
+                        }
 					}
 
 					if ($used == 0 && !empty($res1->info)){
@@ -213,8 +219,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
         
         $myoptions = array();
@@ -234,7 +240,18 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('project_art_id',$this->project_art_id);
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
         
+        if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3')
+		{
+        $this->setLayout('editlist');
+        }
+        
+        if ( $this->getLayout() == 'changeteams' || $this->getLayout() == 'changeteams_3')
+		{
+        $this->setLayout('changeteams');
+        }
 		
 	}
 

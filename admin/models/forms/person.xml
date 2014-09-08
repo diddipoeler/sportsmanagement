@@ -76,7 +76,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 			
 		<field
 			name="deathday"
@@ -84,7 +84,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="height"
 			type="text"
@@ -411,14 +411,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="injury_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>		
+			format="%d-%m-%Y"/>		
 	</fieldset>
  
    <fieldset name="suspension" 
@@ -446,14 +446,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="susp_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>		
+			format="%d-%m-%Y"/>		
 
 	</fieldset>
   
@@ -482,14 +482,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="away_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END_DESC"
 			class="inputbox"
-			format="%Y-%m-%d"/>		
+			format="%d-%m-%Y"/>		
 
 	</fieldset>
   

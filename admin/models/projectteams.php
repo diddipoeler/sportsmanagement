@@ -58,7 +58,7 @@ class sportsmanagementModelProjectteams extends JModelList
 	var $_identifier = "pteams";
     var $_project_id = 0;
     var $_season_id = 0;
-    
+    static $_pro_teams_in_used = array();
     var $project_art_id  = 0;
     var $sports_type_id= 0;
     
@@ -223,6 +223,8 @@ class sportsmanagementModelProjectteams extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
+ //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+ 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -356,7 +358,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
        
         if ( $this->project_art_id == 3 )
         {
-            $query->clear();
+        $query->clear();
         // Select some fields
 		$query->select("st.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.info");
         // From table
@@ -368,7 +370,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         }
         else
         {
-            $query->clear();
+        $query->clear();
         // Select some fields
 		$query->select('st.id AS value,t.name AS text,t.info');
         // From table
@@ -385,7 +387,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 		$db->setQuery( $query );
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
         //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' loadObjectList<br><pre>'.print_r($db->loadObjectList(), true).'</pre><br>','Notice');
         
 		if ( !$result = $db->loadObjectList() )
@@ -470,8 +472,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getAllTeams($pid)
 	{
-		$db = JFactory::getDBO();
+	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
+        
+	   $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
+       
+		$db = JFactory::getDBO();
+
         $query = $db->getQuery(true);
         
 		if ( $pid[0] )
@@ -549,21 +556,22 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 
 
+	
 	/**
-	 * Method to return the project teams array (id, name)
-	 *
-	 * @param $project_id
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
+	 * sportsmanagementModelProjectteams::getProjectTeams()
+	 * 
+	 * @param integer $project_id
+	 * @param bool $in_used
+	 * @return
 	 */
-	function getProjectTeams($project_id=0)
+	function getProjectTeams($project_id=0,$in_used=FALSE)
 	{
 		 $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
+        unset($this->_pro_teams_in_used);
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         
@@ -586,23 +594,39 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         else
         {    
         // Select some fields
-		$query->select('pt.id AS value,t.name AS text,t.notes, pt.info');
+		$query->select('pt.id AS value,t.name AS text,t.notes, pt.info,st.id as season_team_id');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->where('pt.project_id = ' . $project_id);
+        if ( $in_used && isset($this->_pro_teams_in_used) )
+        {
+        $query->where('pt.team_id NOT IN (' . implode(",",$this->_pro_teams_in_used) .')');    
+        }
         $query->order('t.name ASC');
         }
 
 		$db->setQuery( $query );
-		if ( !$result = $db->loadObjectList() )
+		
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' in_used<br><pre>'.print_r($in_used, true).'</pre><br>','Error');
+        
+        if ( !$result = $db->loadObjectList() )
 		{
-            $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+//		  $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' in_used<br><pre>'.print_r($in_used, true).'</pre><br>','Error');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+//            $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(), true).'</pre><br>','Error');
 			return false;
 		}
 		else
 		{
+		  foreach( $result as $row )
+          {
+          $this->_pro_teams_in_used[] = $row->season_team_id;  
+          }
+          
+          //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_in_used<br><pre>'.print_r($this->_pro_teams_in_used, true).'</pre><br>','Error');
+          
 			return $result;
 		}
 	}
@@ -616,7 +640,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      * @param integer $divisionid
      * @return
      */
-    function getAllProjectTeams($projectid=0,$divisionid=0)
+    function getAllProjectTeams($projectid=0,$divisionid=0,$team_ids=NULL)
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
@@ -637,6 +661,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as plg ON plg.id = tl.standard_playground');
         
         $query->where('tl.project_id = ' . $projectid);
+        
+        if ( $team_ids )
+		{
+            $query->where('st.team_id IN (' . implode(',',$team_ids) .')');
+		}
 
 		if ( $divisionid > 0 )
 		{
