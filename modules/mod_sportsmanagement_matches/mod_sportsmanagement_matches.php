@@ -38,15 +38,25 @@
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
-if ( !defined('JSM_PATH') )	{	DEFINE( 'JSM_PATH','components/com_sportsmanagement' );}
+if ( !defined('JSM_PATH') )	
+{	
+    DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
 
 
-if (!defined('_JLMATCHLISTMODPATH')) { define('_JLMATCHLISTMODPATH', dirname( __FILE__ ));}
-if (!defined('_JLMATCHLISTMODURL')) { define('_JLMATCHLISTMODURL', JURI::base().'modules/mod_sportsmanagement_matches/');}
-require_once (_JLMATCHLISTMODPATH.DS.'helper.php');
-require_once (_JLMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
+if (!defined('_JSMMATCHLISTMODPATH')) 
+{ 
+    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
+}
+if (!defined('_JSMMATCHLISTMODURL')) 
+{ 
+    define('_JSMMATCHLISTMODURL', JURI::base().'modules/mod_sportsmanagement_matches/');
+}
+
+require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
+require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
 $ajax= JRequest::getVar('ajaxMListMod',0,'default','POST');
 $match_id = JRequest::getVar('match_id',0,'default','POST');
@@ -55,10 +65,10 @@ $ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
 $template = $params->get('template','default');
 JHTML::_('behavior.mootools');
 $doc = JFactory::getDocument();
-$doc->addScript( _JLMATCHLISTMODURL.'assets/js/mod_sportsmanagement_matches.js' );
-$doc->addStyleSheet(_JLMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matches.css');
-$cssimgurl = ($params->get('use_icons') != '-1') ? _JLMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
-: _JLMATCHLISTMODURL.'assets/images/';
+$doc->addScript( _JSMMATCHLISTMODURL.'assets/js/mod_sportsmanagement_matches.js' );
+$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matches.css');
+$cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
+: _JSMMATCHLISTMODURL.'assets/images/';
 $doc->addStyleDeclaration('
 div.tool-tip div.tool-title a.sticky_close{
 	display:block;
