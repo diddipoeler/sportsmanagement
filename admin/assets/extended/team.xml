@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
-		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" type="calendar"
-			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" description="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE_DESC">
+		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" 
+    type="calendar"
+    format="%d-%m-%Y"
+			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE" 
+      description="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_SINCE_DESC">
 		</field>
-		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" type="calendar"
-			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" description="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL_DESC">
+		<field name="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" 
+    type="calendar"
+    format="%d-%m-%Y"
+			label="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL" 
+      description="COM_SPORTSMANAGEMENT_EXT_TEAM_DATE_UNTIL_DESC">
 		</field>
 	</fieldset>
 </config>
