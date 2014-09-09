@@ -628,6 +628,12 @@ abstract class sportsmanagementHelper
 		}
 	}
 
+	/**
+	 * sportsmanagementHelper::getProjectFavTeams()
+	 * 
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getProjectFavTeams($project_id)
 	{
 		$db = JFactory::getDBO();
@@ -2453,9 +2459,28 @@ public function getOSMGeoCoords($address)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $db = JFactory::getDBO();
+       // $db = JFactory::getDBO();
+       
+       // wenn der user die k2 komponente
+       // in der konfiguration ausgewählt hat,
+       // kommt es zu einem fehler, wenn wir darüber selektieren
+       
+       // ist k2 installiert ?
+       if ( JComponentHelper::getParams($option)->get('which_article_component') == 'com_k2' )
+       {
+       $k2 = JComponentHelper::getComponent('com_k2');
+       
+       if( !$k2->option )
+       {
+       $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'),'Error');
+       return false; 
+       }
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' k2<br><pre>'.print_r($k2,true).'</pre>'),'');
+       
+       }
+       
     // Create a new query object.
-        $query = $db->getQuery(true);
+        $query = JFactory::getDBO()->getQuery(true);
         
         $query->select('c.id as value,c.title as text');
        
@@ -2469,8 +2494,8 @@ public function getOSMGeoCoords($address)
         break;
     }
     $query->where('catid ='. $project_category_id );
-       $db->setQuery($query); 
-        $result = $db->loadObjectList();
+       JFactory::getDBO()->setQuery($query); 
+        $result = JFactory::getDBO()->loadObjectList();
         return $result;
     }
         
