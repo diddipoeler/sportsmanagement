@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class modMatchesHelper {
+class modMatchesSportsmanagementHelper {
 
 	/**
 	 * modMatchesHelper::__construct()

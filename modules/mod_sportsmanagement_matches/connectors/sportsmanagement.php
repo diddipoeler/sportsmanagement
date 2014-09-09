@@ -46,7 +46,7 @@
  * @version 2014
  * @access public
  */
-class MatchesSportsmanagementConnector extends modMatchesHelper 
+class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper 
 {
 
 	/**
