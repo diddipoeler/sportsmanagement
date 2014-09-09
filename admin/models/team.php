@@ -217,6 +217,12 @@ class sportsmanagementModelteam extends JModelAdmin
 	}
     
     
+    /**
+     * sportsmanagementModelteam::getTeamLogo()
+     * 
+     * @param mixed $team_id
+     * @return
+     */
     function getTeamLogo($team_id)
     {
         $mainframe = JFactory::getApplication();
@@ -281,8 +287,10 @@ class sportsmanagementModelteam extends JModelAdmin
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe	= JFactory::getApplication();
-    // Get a db connection.
-        $db = JFactory::getDbo();
+    //// Get a db connection.
+//        $db = JFactory::getDbo();
+        
+        $query = JFactory::getDbo()->getQuery(true);
        $post=JRequest::get('post');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -293,29 +301,38 @@ class sportsmanagementModelteam extends JModelAdmin
 		  foreach( $data['season_ids'] as $key => $value )
           {
           
-        // Create a new query object.
-        $query = $db->getQuery(true);
+        $query->clear();  
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
+        $query->where('team_id ='. $data['id'] );
+        $query->where('season_id ='. $value );
+        JFactory::getDbo()->setQuery($query);
+		$res = JFactory::getDbo()->loadResult();
+        
+        if ( !$res )
+        {
+        $query->clear();
         // Insert columns.
         $columns = array('team_id','season_id');
         // Insert values.
         $values = array($data['id'],$value);
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
-            ->columns($db->quoteName($columns))
+            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->columns(JFactory::getDbo()->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
+        JFactory::getDbo()->setQuery($query);
 
-		if (!$db->query())
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
 		//$mdl = JModel::getInstance("seasonteam", "sportsmanagementModel");
 		}
-        
+        }
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
