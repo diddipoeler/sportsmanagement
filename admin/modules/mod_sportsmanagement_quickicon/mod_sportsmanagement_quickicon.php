@@ -21,10 +21,26 @@ if ( !JComponentHelper::isEnabled( 'com_sportsmanagement', true) )
 	return;
 }
 
-// joomla eversionen
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
 require_once __DIR__ . '/helper.php'; 
+$position = ModSportsmanagementQuickIconHelper::getModPosition(); 
+
+
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::base(true).'/modules/mod_sportsmanagement_quickicon/tmpl/css/style.css');
+
+if( version_compare(JVERSION,'1.6.0','ge') ) 
+{
+$jsm_version = '';    
+}    
+else
+{
+$jsm_version = '15';    
+}
+
+// joomla versionen
+if( version_compare(JVERSION,'3.0.0','ge') && $position == 'icon' ) 
+{
+//require_once __DIR__ . '/helper.php'; 
 $buttons = ModSportsmanagementQuickIconHelper::getButtons($params);   
 $html = JHtml::_('links.linksgroups', ModSportsmanagementQuickIconHelper::groupButtons($buttons));
     
@@ -37,7 +53,7 @@ if (!empty($html)) : ?>
 else
 {
 ?>
-<div id="cpanel">	     
+<div id="jsmQuickIcons<?php echo $jsm_version; ?>" class="jsmNoLogo">	     
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK')?>" href="index.php?option=com_sportsmanagement">               
