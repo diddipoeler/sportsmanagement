@@ -141,6 +141,10 @@ if (strpos($command, '.') !== false)
 	list ($type, $task) = explode('.', $command);
 }
 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($task,true).'</pre>'),'');
 
 for ($e = 0; $e < count($arrExtensions); $e++)
 {
@@ -269,7 +273,8 @@ foreach ($template_pathes as $path)
 
  
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+//$controller->execute(JRequest::getCmd('task'));
+$controller->execute($task);
  
 // Redirect if set by the controller
 $controller->redirect();

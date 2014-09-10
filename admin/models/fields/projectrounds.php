@@ -1,23 +1,11 @@
 <?php
-/**
- * @package     Joomla.Administrator
- * @subpackage  com_menus
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
+
 
 defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 
-/**
- * Form Field class for the Joomla Framework.
- *
- * @package     Joomla.Administrator
- * @subpackage  com_menus
- * @since       1.6
- */
+
 class JFormFieldprojectrounds extends JFormFieldList
 {
 	/**
@@ -36,7 +24,8 @@ class JFormFieldprojectrounds extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = array();
+		$mainframe = JFactory::getApplication();
+        $options = array();
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -44,7 +33,9 @@ class JFormFieldprojectrounds extends JFormFieldList
 			->from('#__sportsmanagement_round AS a')
 			;
 
-		if ($menuType = $this->form->getValue('p'))
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
+
+		if ($menuType = $this->form->getValue('project'))
 		{
 			$query->where('a.project_id = ' . $db->quote($menuType));
 		}
@@ -54,7 +45,8 @@ class JFormFieldprojectrounds extends JFormFieldList
 
 		// Get the options.
 		$db->setQuery($query);
-
+        $options = $db->loadObjectList();
+/*
 		try
 		{
 			$options = $db->loadObjectList();
@@ -67,9 +59,9 @@ class JFormFieldprojectrounds extends JFormFieldList
 		// Pad the option text with spaces using depth level as a multiplier.
 		for ($i = 0, $n = count($options); $i < $n; $i++)
 		{
-			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
+			$options[$i]->text = str_repeat('- ', $options[$i]->value) . $options[$i]->text;
 		}
-
+*/
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 

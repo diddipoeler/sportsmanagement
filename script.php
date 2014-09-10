@@ -109,7 +109,15 @@ class com_sportsmanagementInstallerScript
 	 */
 	function preflight($type, $parent) 
 	{
-	   if(version_compare(JVERSION,'3.0.0','ge')) 
+	   
+        switch ($type)        
+    {
+    case "update":
+    self::deleteFolders($parent);
+    break;
+    }
+       
+       if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             // Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
@@ -359,6 +367,37 @@ echo self::getFxInitJSCode('steps');
 
 	}
     
+    
+    public function deleteFolders($parent)
+    {
+    $mainframe = JFactory::getApplication();
+    $excludeExtension = array();
+    $excludeExtension[] = 'extensions';    
+    $excludeExtension[] = 'sisdata';
+    $folderAdmin  = JFolder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
+													'.', false, false, $excludeExtension);
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderAdmin<br><pre>'.print_r($folderAdmin,true).'</pre>'),'');                                                    
+    
+    foreach ($folderAdmin as $key => $value )
+    {
+        if( JFolder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+        {
+        //echo 'Der Ordner wurde gelöscht';
+        }
+    }
+    $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
+													'.', false, false, $excludeExtension);
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderSite<br><pre>'.print_r($folderSite,true).'</pre>'),'');
+    
+    foreach ($folderSite as $key => $value )
+    {
+        if( JFolder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+        {
+        //echo 'Der Ordner wurde gelöscht';
+        }
+    }
+    
+    }
     
     /**
      * com_sportsmanagementInstallerScript::getFxInitJSCode()
@@ -714,10 +753,17 @@ echo self::getFxInitJSCode('steps');
             $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$name : $src.DS.'modules'.DS.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);
+            $ordering = '99';
+            
+            if( $client == 'administrator' )
+			{
+				$position = version_compare(JVERSION, '3.0', '<') && $name == 'mod_sportsmanagement_quickicon' ? 'icon' : 'cpanel';
+                $ordering = '1';
+            }    
             
             if ( $position )
             {
-                $query = "UPDATE #__modules SET position='".$position."', ordering=99, published=".$published." WHERE module='".$name."' ";
+                $query = "UPDATE #__modules SET position='".$position."', ordering=".$ordering.", published=".$published." WHERE module='".$name."' ";
                 $db->setQuery($query);
                 $db->query();
                 if ( $client == 'administrator' )

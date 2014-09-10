@@ -1529,7 +1529,7 @@ abstract class sportsmanagementHelper
         $query->select('manifest_cache');
 		// From the table
 		$query->from('#__extensions');
-        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.''));
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
         JFactory::getDbo()->setQuery( $query );
         
 //	   $query->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
