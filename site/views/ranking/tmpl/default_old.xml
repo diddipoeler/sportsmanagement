@@ -6,27 +6,25 @@
 		</message>
 	</layout>
 	
-	 <fields name="request"
-   addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+	 <fields name="request">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					>
+					addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 
 			<field	name="p" 
-      type="projects"
-      
+      type="project"
+      sections="1"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="true">
 			</field>
-
-		
+			
 			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false">
 			</field>
-		
+			
 			<field	name="type" type="list" default="0" 
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_FILTER_LABEL" 
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_FILTER_DESCR">
@@ -52,7 +50,6 @@
 					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDTO_DESCR"
 					required="false">
 			</field>
-
 
 		</fieldset>
 	</fields>

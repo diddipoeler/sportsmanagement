@@ -592,106 +592,239 @@ class sportsmanagementModelResults extends JModelLegacy
 		return $showediticon;
 	}
 
-	/**
-	 * sportsmanagementModelResults::save_array()
-	 * 
-	 * @param mixed $cid
-	 * @param mixed $post
-	 * @param bool $zusatz
-	 * @param mixed $project_id
-	 * @return
-	 */
-	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
+//	/**
+//	 * sportsmanagementModelResults::save_array()
+//	 * 
+//	 * @param mixed $cid
+//	 * @param mixed $post
+//	 * @param bool $zusatz
+//	 * @param mixed $project_id
+//	 * @return
+//	 */
+//	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
+//	{
+//		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
+//		$fields=$this->_db->getTableFields($datatable);
+//
+//		foreach($fields as $field)
+//		{
+//			$query='';
+//			$datafield=array_keys($field);
+//			if ($zusatz){$fieldzusatz=$cid;}
+//
+//			foreach($datafield as $keys)
+//			{
+//				if (isset($post[$keys.$fieldzusatz]))
+//				{
+//					$result=$post[$keys.$fieldzusatz];
+//
+//					if ($keys=='match_date')
+//					{
+//						if(strpos($post['match_time'.$fieldzusatz],":")!==false)
+//						{
+//							$result .= ' '.$post['match_time'.$fieldzusatz];
+//						}
+//						// to support short time inputs
+//						// for example 2158 is used instead of 21:58
+//						else {
+//							$result .= ' '.substr($post['match_time'.$fieldzusatz], 0, -2) . ':' . substr($post['match_time'.$fieldzusatz], -2);
+//						}
+//					}
+//					if ($keys=='team1_result_split' || $keys=='team2_result_split' || $keys=='homeroster' || $keys=='awayroster')
+//					{
+//						$result=trim(join(';',$result));
+//					}
+//					if ($keys=='alt_decision' && $post[$keys.$fieldzusatz]==0)
+//					{
+//						$query.=",team1_result_decision=NULL,team2_result_decision=NULL,decision_info=''";
+//					}
+//					if ($keys=='team1_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
+//					{
+//						$result='';
+//					}
+//					if ($keys=='team2_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
+//					{
+//						$result='';
+//					}
+//					if (!is_numeric($result) || ($keys == 'match_number') || ($keys == 'time_present'))
+//					{
+//						$vorzeichen="'";
+//					}
+//					else
+//					{
+//						$vorzeichen='';
+//					}
+//					if (strstr("crowd,formation1,formation2,homeroster,awayroster,show_report,team1_result,team1_bonus,team1_legs,
+//									team2_result,team2_bonus,team2_legs,team1_result_decision,team2_result_decision,team1_result_split,
+//			 						team2_result_split,team1_result_ot,team2_result_ot,published,",$keys.',') &&
+//					$result=='' && isset($post[$keys.$fieldzusatz]))
+//					{
+//						$result='NULL';
+//						$vorzeichen='';
+//					}
+//					if ($keys=='crowd' && $post['crowd'.$fieldzusatz]==''){$result='0';}
+//
+//					if ($result!='' || $keys=='summary' || $keys=='match_result_detail')
+//					{
+//						if ($query){$query .= ',';}
+//						$query .= $keys.'='.$vorzeichen.$result.$vorzeichen;
+//					}
+//					if ($result=='' && $keys=='time_present')
+//					{
+//						if ($query){$query .= ',';}
+//						$query .= $keys.'=null';
+//					}
+//					if ($result=='' && $keys=='match_number')
+//					{
+//						if ($query){$query .= ',';}
+//						$query .= $keys.'=null';
+//					}
+//				}
+//			}
+//		}
+//
+//		$user 	= JFactory::getUser();
+//		$query	= 'UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_match SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
+////		echo '<br /><pre>'.print_r($query,true).'</pre><br />';
+//		$this->_db->setQuery($query);
+//
+//		return $this->_db->query($query);
+//	}
+
+	
+    
+    /**
+     * sportsmanagementModelResults::saveshort()
+     * 
+     * @return
+     */
+    function saveshort()
 	{
-		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
-		$fields=$this->_db->getTableFields($datatable);
-
-		foreach($fields as $field)
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        
+        
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
+        
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
 		{
-			$query='';
-			$datafield=array_keys($field);
-			if ($zusatz){$fieldzusatz=$cid;}
+			// änderungen im datum oder der uhrzeit
+            $tbl = $this->getTable();;
+            $tbl->load((int) $pks[$x]);
+            
+            list($date,$time) = explode(" ",$tbl->match_date);
+            $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
+            $this->_match_date_new = $post['match_date'.$pks[$x]];
+            $this->_match_time_old = $time;
+            $this->_match_date_old = sportsmanagementHelper::convertDate($date);
+            
+            $post['match_date'.$pks[$x]] = sportsmanagementHelper::convertDate($post['match_date'.$pks[$x]],0);
+            $post['match_date'.$pks[$x]] = $post['match_date'.$pks[$x]].' '.$post['match_time'.$pks[$x]].':00';
+            
+            
+              
+            //$mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
+            //$mainframe->enqueueMessage($tbl->match_date,'Notice');
+            
+            if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
+            {
+                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
+                self::sendEmailtoPlayers();
+                
+            }
+            
+            $tblMatch = & $this->getTable();
+			$tblMatch->id = $pks[$x];
+			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
+            $tblMatch->match_date = $post['match_date'.$pks[$x]];
+            $tblMatch->result_type = $post['result_type'.$pks[$x]];
+            $tblMatch->match_result_type = $post['match_result_type'.$pks[$x]];
+            $tblMatch->crowd = $post['crowd'.$pks[$x]];
+            $tblMatch->round_id	= $post['round_id'.$pks[$x]];
+            $tblMatch->division_id	= $post['division_id'.$pks[$x]];
+            $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
+            $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
+            
+            $tblMatch->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
+            $tblMatch->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
+            $tblMatch->team1_single_sets = $post['team1_single_sets'.$pks[$x]];
+            $tblMatch->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
+            $tblMatch->team1_single_games = $post['team1_single_games'.$pks[$x]];
+            $tblMatch->team2_single_games = $post['team2_single_games'.$pks[$x]];
+            $tblMatch->content_id = $post['content_id'.$pks[$x]];
+            
+            if ( $post['use_legs'] )
+            {
+                $tblMatch->team1_result	= '';
+                $tblMatch->team2_result	= '';   
+                foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
+                {
+                    if ( $post['team1_result_split'.$pks[$x]][$key] != '' )
+                    {
+                        if ( $post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 1;
+                            $tblMatch->team2_result	+= 0; 
+                        }
+                        if ( $post['team1_result_split'.$pks[$x]][$key] < $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 0;
+                            $tblMatch->team2_result	+= 1; 
+                        }
+                        if ( $post['team1_result_split'.$pks[$x]][$key] == $post['team2_result_split'.$pks[$x]][$key] )
+                        {
+                            $tblMatch->team1_result	+= 1;
+                            $tblMatch->team2_result	+= 1; 
+                        }
+                    }
+                }
+            }
+            else
+            {
+            
+            if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
+            {    
+            $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
+            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
+            }
+            
+            if ( $post['team1_result_ot'.$pks[$x]] != '' && $post['team2_result_ot'.$pks[$x]] != '' )    
+            {    
+            $tblMatch->team1_result_ot	= $post['team1_result_ot'.$pks[$x]];
+            $tblMatch->team2_result_ot	= $post['team2_result_ot'.$pks[$x]];
+            }
+            
+            if ( $post['team1_result_so'.$pks[$x]] != '' && $post['team2_result_so'.$pks[$x]] != '' )    
+            {    
+            $tblMatch->team1_result_so	= $post['team1_result_so'.$pks[$x]];
+            $tblMatch->team2_result_so	= $post['team2_result_so'.$pks[$x]];
+            }
+            
+                
+            }
+            
+            
+            $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
+            $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
-			foreach($datafield as $keys)
-			{
-				if (isset($post[$keys.$fieldzusatz]))
-				{
-					$result=$post[$keys.$fieldzusatz];
-
-					if ($keys=='match_date')
-					{
-						if(strpos($post['match_time'.$fieldzusatz],":")!==false)
-						{
-							$result .= ' '.$post['match_time'.$fieldzusatz];
-						}
-						// to support short time inputs
-						// for example 2158 is used instead of 21:58
-						else {
-							$result .= ' '.substr($post['match_time'.$fieldzusatz], 0, -2) . ':' . substr($post['match_time'.$fieldzusatz], -2);
-						}
-					}
-					if ($keys=='team1_result_split' || $keys=='team2_result_split' || $keys=='homeroster' || $keys=='awayroster')
-					{
-						$result=trim(join(';',$result));
-					}
-					if ($keys=='alt_decision' && $post[$keys.$fieldzusatz]==0)
-					{
-						$query.=",team1_result_decision=NULL,team2_result_decision=NULL,decision_info=''";
-					}
-					if ($keys=='team1_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
-					{
-						$result='';
-					}
-					if ($keys=='team2_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
-					{
-						$result='';
-					}
-					if (!is_numeric($result) || ($keys == 'match_number') || ($keys == 'time_present'))
-					{
-						$vorzeichen="'";
-					}
-					else
-					{
-						$vorzeichen='';
-					}
-					if (strstr("crowd,formation1,formation2,homeroster,awayroster,show_report,team1_result,team1_bonus,team1_legs,
-									team2_result,team2_bonus,team2_legs,team1_result_decision,team2_result_decision,team1_result_split,
-			 						team2_result_split,team1_result_ot,team2_result_ot,published,",$keys.',') &&
-					$result=='' && isset($post[$keys.$fieldzusatz]))
-					{
-						$result='NULL';
-						$vorzeichen='';
-					}
-					if ($keys=='crowd' && $post['crowd'.$fieldzusatz]==''){$result='0';}
-
-					if ($result!='' || $keys=='summary' || $keys=='match_result_detail')
-					{
-						if ($query){$query .= ',';}
-						$query .= $keys.'='.$vorzeichen.$result.$vorzeichen;
-					}
-					if ($result=='' && $keys=='time_present')
-					{
-						if ($query){$query .= ',';}
-						$query .= $keys.'=null';
-					}
-					if ($result=='' && $keys=='match_number')
-					{
-						if ($query){$query .= ',';}
-						$query .= $keys.'=null';
-					}
-				}
+			if(!$tblMatch->store()) 
+            {
+				//$this->setError(JFactory::getDbo()->getErrorMsg());
+                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
 			}
 		}
-
-		$user 	= JFactory::getUser();
-		$query	= 'UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_match SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
-//		echo '<br /><pre>'.print_r($query,true).'</pre><br />';
-		$this->_db->setQuery($query);
-
-		return $this->_db->query($query);
+		return $result;
 	}
-
-	/**
+    
+    /**
 	 * sportsmanagementModelResults::getFavTeams()
 	 * 
 	 * @param mixed $project
@@ -702,5 +835,21 @@ class sportsmanagementModelResults extends JModelLegacy
 		$favteams=explode(',',$project->fav_team);
 		return $favteams;
 	}
+    
+    
+    /**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	JTable	A database object
+	 * @since	1.6
+	 */
+	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array()) 
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+    
 }
 ?>
