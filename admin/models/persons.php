@@ -177,7 +177,9 @@ class sportsmanagementModelPersons extends JModelList
 		{
         $query->where('(LOWER(pl.lastname) LIKE ' . $db->Quote( '%' . $search . '%' ).
 						   'OR LOWER(pl.firstname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
-						   'OR LOWER(pl.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) . ')');
+						   'OR LOWER(pl.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
+                           'OR LOWER(pl.info) LIKE ' . $db->Quote( '%' . $search . '%' ) .
+                            ')');
         }
         if ($search_nation)
 		{
