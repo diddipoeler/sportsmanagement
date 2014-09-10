@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="site" method="upgrade">
-	<name>Sportsmanagement Zitate Modul</name>
+	<name>MOD_SPORTSMANAGEMENT_RQUOTES</name>
 	<author>diddipoeler</author>
 	<creationDate>Feb 2014</creationDate>
 	<copyright>(C) 2014</copyright>
@@ -34,12 +34,12 @@
 	</files>
 	
 
-<languages folder="languages">
-		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotes.ini</language>
-		<language tag="en-GB">en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
-		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotes.ini</language>
-		<language tag="de-DE">de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
-    </languages>
+<languages >
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
+  </languages>
 
 
 	<config>
