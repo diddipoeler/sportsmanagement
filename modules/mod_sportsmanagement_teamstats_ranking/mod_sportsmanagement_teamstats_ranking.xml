@@ -39,7 +39,9 @@
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_DESCR" />
 
 			<field name="sid" type="dependsql" depends="p"
-					task="projectstatsoptions" query="" required="1" 
+			key_field="project_id"
+			value_field="p"
+					task="projectstatsoptions" required="1" 
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_STAT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_STAT_DESCR" />
 

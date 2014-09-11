@@ -35,6 +35,8 @@
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL_DESC" />
 				<field name="team" type="dependsql" default="0" depends="p"
 					task="projectteamsoptions" 
+					key_field="project_id"
+			value_field="p"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL_DESC" />
 				<field name="show_project_name" type="radio" default="0"

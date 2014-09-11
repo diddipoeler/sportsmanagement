@@ -39,6 +39,8 @@
 						description="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_DESCR" />
 
 				<field 	name="division_id" type="dependsql" depends="p" 
+				key_field="project_id"
+			value_field="p"
 						task="projectdivisionsoptions" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_DIVISION_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_DIVISION_ID_DESCR" />
