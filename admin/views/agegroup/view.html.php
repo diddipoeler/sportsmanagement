@@ -93,7 +93,8 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 		
         
 		JRequest::setVar('hidemainmenu', true);
-		
+		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
+        $this->icon = 'agegroup';
         		
         parent::addToolbar();
 	}

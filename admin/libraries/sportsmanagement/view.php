@@ -280,6 +280,8 @@ class sportsmanagementView extends JViewLegacy
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
         $view = JRequest::getCmd('view', 'edit');
+            if (empty($this->title))
+		    {
             if ( $isNew )
             {
             $this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName()).'_NEW';    
@@ -288,7 +290,7 @@ class sportsmanagementView extends JViewLegacy
             {
             $this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName()).'_EDIT';    
             }
-            
+            }
         // Built the actions for new and existing records.
 		if ($isNew) 
 		{

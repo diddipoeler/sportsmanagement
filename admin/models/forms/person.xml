@@ -244,6 +244,10 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			depends="sports_type_id"
 			task="personpositionoptions" 
 			
+			key_field="sports_type_id"
+			value_field="sports_type_id"
+			query="getpersonpositionoptions"
+			
 			class="inputbox"
 			
 			size="10"
@@ -261,6 +265,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			depends="sports_type_id"
 			task="personagegroupoptions" 
       size="10"
+			key_field="sports_type_id"
+			value_field="sports_type_id"
 			
       varname="id"
       targettable="person"

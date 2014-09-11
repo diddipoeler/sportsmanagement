@@ -96,50 +96,19 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	
 	}
     
-    /**
-	 * Setting the toolbar
+    
+	/**
+	 * sportsmanagementViewPredictionGame::addToolBar()
+	 * 
+	 * @return void
 	 */
 	protected function addToolBar() 
 	{
 		JRequest::setVar('hidemainmenu', true);
-		//$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDGAME_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDGAME_EDIT'), 'helloworld');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('predictiongame.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('predictiongame.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('predictiongame.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('predictiongame.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('predictiongame.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('predictiongame.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('predictiongame.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('predictiongame.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('predictiongame.cancel', 'JTOOLBAR_CLOSE');
-//		}
-parent::addToolbar();  
+        
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDGAME_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDGAME_NEW');
+        $this->icon = 'pgame';
+        parent::addToolbar();  
 	}
     
     

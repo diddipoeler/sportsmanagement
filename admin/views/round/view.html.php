@@ -110,6 +110,10 @@ class sportsmanagementViewRound extends sportsmanagementView
 	
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->project_id);
+        
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW');
+        $this->icon = 'round';
+        
 	parent::addToolbar();
     
 

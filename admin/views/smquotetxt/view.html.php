@@ -78,34 +78,18 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
         
 	}
     
-    /**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
+   
+	/**
+	 * sportsmanagementViewsmquotetxt::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
-        
-//        // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//
-//        // Set toolbar items for the page
-//        JToolBarHelper::title($this->file_name,'txt-edit');
-//        
-//        JToolBarHelper::apply('smquotetxt.apply');
-//        JToolBarHelper::save('smquotetxt.save');
-//        JToolBarHelper::cancel('smquotetxt.cancel', 'JTOOLBAR_CANCEL');
-        
-        
-        
-        
-//        JToolBarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
-        
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SMQUOTE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
+        $this->icon = 'quote';
+
         parent::addToolbar();
     }    
     

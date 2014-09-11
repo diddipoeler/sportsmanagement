@@ -89,51 +89,7 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 		
 	}
 
-	/**
-	 * sportsmanagementViewpredictiongroup::_displayForm()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	function _displayForm($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$db = JFactory::getDBO();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-		
-		//get the season
-		$season =& $this->get('data');
-		$isNew=($season->id < 1);
 
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIOGROUP'),$season->name);
-			$mainframe->redirect('index.php?option='.$option,$msg);
-		}
-
-		// Edit or Create?
-		if (!$isNew)
-		{
-			$model->checkout($user->get('id'));
-		}
-		else
-		{
-			// initialise new record
-			$season->order=0;
-		}
-
-		$this->assignRef('season',$season);
-		$this->assignRef('form',  $this->get('form'));
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
-		//$extended = $this->getExtended($season->extended, 'season');
-		//$this->assignRef( 'extended', $extended );
-		//$this->addToolbar();			
-//		parent::display($tpl);
-	}
 
 	/**
 	* Add the page title and toolbar.
@@ -142,56 +98,12 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{	
-	   //// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-
+	   
 		JRequest::setVar('hidemainmenu', true);
         
-		//$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		//JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW') : JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'), 'helloworld');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//		  // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW'),'predgroup');
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('predictiongroup.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('predictiongroup.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('predictiongroup.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('predictiongroup.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//		    // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT'),'group-edit');
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('predictiongroup.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('predictiongroup.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('predictiongroup.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('predictiongroup.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('predictiongroup.cancel', 'JTOOLBAR_CLOSE');
-//		}
-          
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW');
+        $this->icon = 'pgame';
+  
           parent::addToolbar();  	      
 	}
     

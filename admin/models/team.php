@@ -291,7 +291,7 @@ class sportsmanagementModelteam extends JModelAdmin
 //        $db = JFactory::getDbo();
         
         $query = JFactory::getDbo()->getQuery(true);
-       $post=JRequest::get('post');
+       $post = JRequest::get('post');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

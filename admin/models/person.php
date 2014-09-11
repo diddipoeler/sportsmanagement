@@ -455,6 +455,9 @@ class sportsmanagementModelperson extends JModelAdmin
        $post = JRequest::get('post');
        $address_parts = array();
        $person_double = array();
+       // Create a new query object.
+        $query = JFactory::getDBO()->getQuery(true);
+        
        //// Get a db connection.
 //        $db = JFactory::getDbo();
        
@@ -501,8 +504,17 @@ class sportsmanagementModelperson extends JModelAdmin
 		  foreach( $data['season_ids'] as $key => $value )
           {
           
-        // Create a new query object.
-        $query = JFactory::getDBO()->getQuery(true);
+        $query->clear();  
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id');
+        $query->where('person_id ='. $data['id'] );
+        $query->where('season_id ='. $value );
+        JFactory::getDbo()->setQuery($query);
+		$res = JFactory::getDbo()->loadResult();
+        
+        if ( !$res )
+        {
+        $query->clear();
         // Insert columns.
         $columns = array('person_id','season_id');
         // Insert values.
@@ -519,6 +531,8 @@ class sportsmanagementModelperson extends JModelAdmin
 		{
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
+        
+        }
           
           }
 		//$mdl = JModel::getInstance("seasonperson", "sportsmanagementModel");

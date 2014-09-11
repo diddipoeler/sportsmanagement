@@ -71,6 +71,45 @@ class sportsmanagementModelAjax extends JModelLegacy
         
         
         /**
+         * sportsmanagementModelAjax::getProjectRoundOptions()
+         * 
+         * @param mixed $sports_type_id
+         * @param bool $required
+         * @return
+         */
+        function getProjectRoundOptions($project_id, $required = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $mainframe = JFactory::getApplication();
+       $query = JFactory::getDBO()->getQuery(true);
+        $query->select('id as value');
+        $query->select('name AS text');
+        $query->select('id, name, round_date_first, round_date_last, roundcode');
+        
+        $query->from('#__sportsmanagement_round');
+        
+        $query->where('project_id = '.$project_id);
+        $query->where('published = 1');
+        
+        if ( $round_ids )
+    {
+    $query->where('id IN (' . implode(',', $round_ids) . ')');   
+    }
+        
+        $query->order('roundcode '.$ordering);  
+       JFactory::getDBO()->setQuery($query);    
+            
+        $result = JFactory::getDBO()->loadObjectList();
+        
+//        foreach ($result as $row)
+//        {
+//            $row->name = JText::_($row->name);
+//        }
+        
+        return self::addGlobalSelectElement($result, $required);
+       }
+       
+        /**
          * sportsmanagementModelAjax::getpersonpositionoptions()
          * 
          * @param mixed $sports_type_id
@@ -98,7 +137,7 @@ class sportsmanagementModelAjax extends JModelLegacy
 //            $row->name = JText::_($row->name);
 //        }
         
-        return $this->addGlobalSelectElement($result, $required);
+        return self::addGlobalSelectElement($result, $required);
         }
         
         /**
@@ -125,12 +164,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         
         $result = $db->loadObjectList();
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        
 //        foreach ($result as $row)
 //        {
 //            $row->name = JText::_($row->name);
 //        }
            
-        return $this->addGlobalSelectElement($result, $required);
+        return self::addGlobalSelectElement($result, $required);
         }
         
         
@@ -157,7 +198,7 @@ class sportsmanagementModelAjax extends JModelLegacy
             
         }
         
-        return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
         
         /**
@@ -186,7 +227,7 @@ class sportsmanagementModelAjax extends JModelLegacy
 
                 $db->setQuery( $query );
                                                            
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
         
          /**
@@ -218,7 +259,7 @@ class sportsmanagementModelAjax extends JModelLegacy
 
                 $db->setQuery( $query );
                                                            
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -239,9 +280,9 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', d.id, d.alias) AS value,d.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = pt.division_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team pt');
+        $query->join('INNER',' #__sportsmanagement_division d ON d.id = pt.division_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
         // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id) );
         // group
@@ -252,7 +293,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 $db->setQuery( $query );
                 
                 
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -292,7 +333,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 
                 
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
         
         /**
@@ -313,7 +354,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 if($club_id == 0) 
                 {
                         $projects = (array) self::getProjects();
-                        return $this->addGlobalSelectElement($projects, $required);
+                        return self::addGlobalSelectElement($projects, $required);
                 } 
                 else 
                 {
@@ -333,7 +374,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                         
                         
                         $db->setQuery($query);
-                        return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                        return self::addGlobalSelectElement($db->loadObjectList(), $required);
                 }
         }
         
@@ -379,10 +420,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON t.id = st.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id) );
@@ -392,7 +433,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 
                 
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -424,7 +465,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         
                 
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -459,7 +500,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->order('text');        
                         
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -493,7 +534,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->order('text');
                  
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -527,7 +568,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->order('c.name');
                                                                 
 $db->setQuery($query);                                                                        
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -560,7 +601,7 @@ $db->setQuery($query);
         $query->order('et.ordering');
 
                 $db->setQuery( $query );
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
 
@@ -595,7 +636,7 @@ $db->setQuery($query);
         
         $db->setQuery($query);
 
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -635,7 +676,7 @@ $db->setQuery($query);
 
                                         
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -666,7 +707,7 @@ $db->setQuery($query);
                     
                 
                 $db->setQuery($query);
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
         /**
@@ -696,7 +737,7 @@ $db->setQuery($query);
         
         $db->setQuery($query);
 
-                return $this->addGlobalSelectElement($db->loadObjectList(), $required);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
 
 

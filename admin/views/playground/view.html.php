@@ -110,9 +110,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-  		        
 		JRequest::setVar('hidemainmenu', true);
-        
         parent::addToolbar();
 	}
     

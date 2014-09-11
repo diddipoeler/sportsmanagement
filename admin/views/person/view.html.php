@@ -156,24 +156,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
     $javascript .= '});' . "\n"; 
     $document->addScriptDeclaration( $javascript );
     
-    //$mainframe->enqueueMessage(JText::_(' person_art<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'');
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-    
-    //echo 'ext_fields<br><pre>'.print_r($this->ext_fields, true).'</pre><br>';
-    
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'Notice');
-
-    
-//		// Set the toolbar
-//		$this->addToolBar();
-// 
-//		// Display the template
-//		parent::display($tpl);
-// 
-//		// Set the document
-//		$this->setDocument();
 	}
  
 	
@@ -184,55 +167,11 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-  	//	// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
+  	        
 		JRequest::setVar('hidemainmenu', true);
 	
-//    	$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW') : JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'), 'person');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('person.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('person.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('person.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('person.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('person.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('person.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('person.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('person.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('person.cancel', 'JTOOLBAR_CLOSE');
-//		}
-//        
-//        JToolBarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
+        $this->icon = 'person';
     
         parent::addToolbar();
         

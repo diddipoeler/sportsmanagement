@@ -390,7 +390,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	}
     
     /**
-	 * Method to update checked project rounds
+	 * Method to update checked project match
 	 *
 	 * @access	public
 	 * @return	boolean	True on success

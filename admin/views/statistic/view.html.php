@@ -56,10 +56,10 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewstatistic extends sportsmanagementView
 {
 	
+	
 	/**
-	 * sportsmanagementViewstatistic::display()
+	 * sportsmanagementViewstatistic::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -117,82 +117,24 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 // 		$this->assignRef( 'extended', $extended );
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
  
-		// Set the toolbar
-		$this->addToolBar();
- 
-		// Display the template
-		parent::display($tpl);
- 
-		// Set the document
-		$this->setDocument();
+		
 	}
  
+	
 	/**
-	 * Setting the toolbar
+	 * sportsmanagementViewstatistic::addToolBar()
+	 * 
+	 * @return void
 	 */
 	protected function addToolBar() 
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	
 		JRequest::setVar('hidemainmenu', true);
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW') : JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT'), 'statistic');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('statistic.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('statistic.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('statistic.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('statistic.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('statistic.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('statistic.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('statistic.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('team.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			JToolBarHelper::cancel('statistic.cancel', 'JTOOLBAR_CLOSE');
-		}
         
-        JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
+        $this->icon = 'statistic';
+        
+		parent::addToolbar();
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
-	{
-		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW') : JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
+
 }

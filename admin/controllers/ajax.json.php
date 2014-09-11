@@ -311,9 +311,10 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function roundsoptions()
         {
+            $model = $this->getModel('ajax');
                 $req = JRequest::getVar('required', false);
                 $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) sportsmanagementHelper::getRoundsOptions(JRequest::getInt( 'p' ),'ASC', $required));
+                echo json_encode((array) $model->getProjectRoundOptions(JRequest::getInt( 'p' ), 'ASC', $req));
                 JFactory::getApplication()->close();
         }
 

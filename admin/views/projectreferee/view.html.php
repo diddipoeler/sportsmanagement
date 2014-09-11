@@ -122,88 +122,33 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 
 	}
 
+	
 	/**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
+	 * sportsmanagementViewProjectReferee::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar()
 	{
 	   $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         
-//	// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
 	
     	JRequest::setVar('hidemainmenu', true);
         
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
+        $this->icon = 'projectreferee';
 
         $mainframe->setUserState( "$option.pid", $this->item->project_id );
         $mainframe->setUserState( "$option.persontype", $this->_persontype );	
         
-		//$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW') : JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT'), 'projectreferee');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('projectreferee.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('projectreferee.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('projectreferee.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('projectreferee.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('projectreferee.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('projectreferee.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('projectreferee.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('projectreferee.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('projectreferee.cancel', 'JTOOLBAR_CLOSE');
-//		}
-//    JToolBarHelper::divider();
-//		
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences(JRequest::getCmd('option'));   
+	
         
         parent::addToolbar();
         
 	}
     
-   // /**
-//	 * Method to set up the document properties
-//	 *
-//	 * @return void
-//	 */
-//	protected function setDocument() 
-//	{
-//		$isNew = $this->item->id == 0;
-//		$document = JFactory::getDocument();
-//		$document->setTitle($isNew ? JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW') : JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT'));
-//		$document->addScript(JURI::root() . $this->script);
-//		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-//		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-//	}
+   
     	
 	
 }

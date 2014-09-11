@@ -88,55 +88,19 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	}
  
 	
+	/**
+	 * sportsmanagementViewLeague::addToolBar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolBar() 
 	{
-//  		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
         
 		JRequest::setVar('hidemainmenu', true);
         
-//		$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT'), 'league');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('league.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('league.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('league.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('league.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('league.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('league.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('league.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('league.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('league.cancel', 'JTOOLBAR_CLOSE');
-//		}
-//        JToolBarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
+        $this->icon = 'league';
+
         parent::addToolbar();
 	}
     

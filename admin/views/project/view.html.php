@@ -231,58 +231,15 @@ class sportsmanagementViewProject extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	//// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
+	
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
     
+    $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
+        $this->icon = 'project';
     
     //JRequest::setVar('hidemainmenu', true);
     
-		//$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT'), 'project');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			//$this->project->name = $this->item->name ;
-//            // For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('project.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('project.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('project.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			$mainframe->setUserState( "$option.pid", $this->item->id);
-//            
-//            if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('project.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('project.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('project.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('project.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('project.cancel', 'JTOOLBAR_CLOSE');
-//		}
-        
         $bar = JToolBar::getInstance('toolbar');
         switch ( JComponentHelper::getParams($option)->get('which_article_component') )
     {

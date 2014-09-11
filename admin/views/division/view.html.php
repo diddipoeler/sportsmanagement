@@ -106,78 +106,6 @@ class sportsmanagementViewDivision extends sportsmanagementView
 		
 	}
 
-	/**
-	 * sportsmanagementViewDivision::_displayForm()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	function _displayForm( $tpl )
-	{
-		$option = JRequest::getCmd('option');
-
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState( 'com_joomleagueproject' );
-		$db		= JFactory::getDBO();
-		$uri 	= JFactory::getURI();
-		$user 	= JFactory::getUser();
-		$model	= $this->getModel();
-
-		$lists = array();
-		//get the division
-		$division	=& $this->get( 'data' );
-		$isNew		= ( $division->id < 1 );
-
-		// fail if checked out not by 'me'
-		if ( $model->isCheckedOut( $user->get( 'id' ) ) )
-		{
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVISION_THE_DIVISION' ), $division->name );
-			$mainframe->redirect( 'index.php?option=' . $option, $msg );
-		}
-
-		// Edit or Create?
-		if ( !$isNew )
-		{
-			$model->checkout( $user->get( 'id' ) );
-		}
-		else
-		{
-			// initialise new record
-			$division->order	= 0;
-		}
-
-		/* build the html select list for ordering
-		$query = '	SELECT	ordering AS value,
-							name AS text
-					FROM #__joomleague_division
-					WHERE project_id = ' . $project_id . '
-					ORDER BY ordering';
-
-		$lists['ordering'] = JHtml::_( 'list.specificordering', $division, $division->id, $query, 1 );
-		*/
-		$projectws =& $this->get( 'Data', 'projectws' );
-
-		//build the html select list for parent divisions
-		$parents[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT' ) );
-		if ( $res =& $model->getParentsDivisions() )
-		{
-			$parents = array_merge( $parents, $res );
-		}
-		$lists['parents'] = JHtml::_(	'select.genericlist', $parents, 'parent_id', 'class="inputbox" size="1"', 'value', 'text',
-										$division->parent_id );
-		unset( $parents );
-
-		$this->assignRef( 'projectws',	$projectws );
-		$this->assignRef( 'lists',		$lists );
-		$this->assignRef( 'division',	$division );
-		$this->assignRef('form',  $this->get('form'));
-    $this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );		
-		//$extended = $this->getExtended($projectreferee->extended, 'division');
-		//$this->assignRef( 'extended', $extended );
-
-//		$this->addToolbar();		
-//		parent::display( $tpl );
-	}
 	
 	/**
 	* Add the page title and toolbar.
@@ -188,46 +116,10 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	{	
 		JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->project_id);
-//		$user = JFactory::getUser();
-//		$userId = $user->id;
-//		$isNew = $this->item->id == 0;
-//        
-//		$canDo = sportsmanagementHelper::getActions($this->item->id);
-//		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW') : JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT'), 'helloworld');
-//		// Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			$this->item->project_id = $this->project_id;
-//            // For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('division.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('division.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('division.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('division.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('division.cancel', 'JTOOLBAR_CLOSE');
-//		}
-//    sportsmanagementHelper::ToolbarButtonOnlineHelp();
+
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
+        $this->icon = 'division';
+        
     
     parent::addToolbar();
 	}	

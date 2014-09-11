@@ -112,6 +112,7 @@ $lang = JFactory::getLanguage();
 $app = JFactory::getApplication();
 $controller = '';
 $type = '';
+$task = '';
 $arrExtensions = sportsmanagementHelper::getExtensions();
 $model_pathes[]	= array();
 $view_pathes[]	= array();
