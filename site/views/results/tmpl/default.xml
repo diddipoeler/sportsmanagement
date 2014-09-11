@@ -19,15 +19,15 @@
 			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
 			key_field="project_id"
 			value_field="p"
-			query="getProjectDivisionsOptions"
+
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false">
 			</field>
-			<field	name="r" type="dependsql" depends="p" task="roundsoptions"
+			<field	name="r" type="dependsql" depends="p" task="projectroundoptions"
 			key_field="project_id"
 			value_field="p"
-			query="getProjectRoundOptions"
+
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_DESCR"
 					required="false">

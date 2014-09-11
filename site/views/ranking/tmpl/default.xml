@@ -37,7 +37,7 @@
 				<option value="2">COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_AWAY_RANKING</option>
 			</field>
 			
-			<field	name="r" type="dependsql" depends="p" task="roundsoptions" 
+			<field	name="r" type="dependsql" depends="p" task="projectroundoptions" 
 			key_field="project_id"
 			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_LABEL"
@@ -45,7 +45,7 @@
 					required="false">
 			</field>
 			
-			<field	name="from" type="dependsql" depends="p" task="roundsoptions" 
+			<field	name="from" type="dependsql" depends="p" task="projectroundoptions" 
 			key_field="project_id"
 			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDFROM_LABEL"
@@ -53,7 +53,7 @@
 					required="false">
 			</field>
 			
-			<field	name="to" type="dependsql" depends="p" task="roundsoptions" 
+			<field	name="to" type="dependsql" depends="p" task="projectroundoptions" 
 			key_field="project_id"
 			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUNDTO_LABEL"
