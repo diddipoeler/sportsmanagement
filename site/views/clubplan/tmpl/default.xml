@@ -5,11 +5,12 @@
 			<![CDATA[COM_SPORTSMANAGEMENT_XML_CLUBPLAN_LAYOUT_DESCR]]>
 		</message>
 	</layout>
-	<fields name="request">
+	<fields name="request"
+  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<!-- Basic options. -->
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+					>
 
 			<field	name="cid" type="club"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_CLUB_LABEL"

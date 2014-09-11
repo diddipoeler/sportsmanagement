@@ -6,10 +6,11 @@
         </message>
     </layout>
     
-    <fields name="request">
+    <fields name="request"
+    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+					>
 
           <field 	name="show_columns" 
           type="list" 

@@ -5,18 +5,21 @@
 			<![CDATA[COM_SPORTSMANAGEMENT_XML_CURVE_LAYOUT_DESCR]]>
 		</message>
 	</layout>
-	<fields name="request">
+	<fields name="request"
+  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<!-- Basic options. -->
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath="/administrator/components/com_sportsmanagement/elements">
+					>
 
-			<field	name="p" type="project"
+			<field	name="p" type="projects"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="false">
 			</field>
 			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
+			key_field="project_id"
+			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false">

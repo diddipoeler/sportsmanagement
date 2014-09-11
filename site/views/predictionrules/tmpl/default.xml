@@ -5,10 +5,11 @@
 			<![CDATA[COM_SPORTSMANAGEMENT_XML_TIPPRULES_LAYOUT_DESCR]]>
 		</message>
 	</layout>
-	<fields name="request">
+	<fields name="request"
+  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					addfieldpath ="/administrator/components/com_sportsmanagement/elements">
+					>
 			<field	type="sql" name="prediction_id"
 					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
           description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
