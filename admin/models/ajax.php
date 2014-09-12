@@ -61,8 +61,10 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public function addGlobalSelectElement($elements, $required=false) {
-                if(!$required) {
+        public function addGlobalSelectElement($elements, $required=false) 
+        {
+                if(!$required) 
+                {
                         $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                         return array_merge($mitems, $elements);
                 }

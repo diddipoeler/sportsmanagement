@@ -117,28 +117,7 @@ class JFormFieldDependSQL extends JFormField
 $script[] = "\n";       
 $script[] = "jQuery(document).ready(function ($){";
 
-//$script[] = "					$.ajax({";
-//$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&task=ajax.".$ajaxtask."&".$depends."=' + value,";
-//$script[] = "						dataType: 'json'";
-//$script[] = "					}).done(function(data) {";
-//$script[] = "						$('#".$this->id." option').each(function() {";
-////$script[] = "							if ($(this).val() != '1') {";
-////$script[] = "								$(this).remove();";
-//$script[] = "								jQuery('select#".$this->id." option').remove();";
-////$script[] = "							}";
-//$script[] = "						});";
-//$script[] = "";
-//$script[] = "						$.each(data, function (i, val) {";
-//$script[] = "							var option = $('<option>');";
-//$script[] = "							option.text(val.text).val(val.value);";
-//
-////$script[] = " alert(val.text);";
-//
-//$script[] = "							$('#".$this->id."').append(option);";
-//$script[] = "						});";
-
 $script[] = "				$('#jform_".$div."_".$depends."').change(function(){";
-//$script[] = "					var value = $(this).val();";
 $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 
 //$script[] = " alert(value);";
@@ -170,16 +149,10 @@ $script[] = "});";
        
        // Add the script to the document head.
     JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-    
-       
-        
-//        $mdlAjax = JModelLegacy::getInstance('Ajax', 'sportsmanagementModel');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mdlAjax<br><pre>'.print_r($mdlAjax,true).'</pre>'),'Notice');
         
         if ( $ajaxtask && $value )
         {
         $ajaxtask = 'get'.$ajaxtask;    
-        //$result = sportsmanagementModelAjax::$query($value,$required);
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required);
         }
 
@@ -201,78 +174,5 @@ $script[] = "});";
     return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
     }    
 
-//	/**
-//	 * JFormFieldDependSQL::getInput()
-//	 * 
-//	 * @return
-//	 */
-//	function getInput()
-//	{
-//		$required = $this->element['required'] == "true" ? 'true' : 'false';
-//		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-//		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-//		$task = $this->element['task'];
-//		$depends = $this->element['depends'];
-//
-//		$ctrl = $this->name;
-//		$id = $this->id;
-//        
-//        
-//		// Construct the various argument calls that are supported.
-//		$attribs	 = ' task="'.$task.'"';
-//        // muss ausgesternt werden, da es zu einem fehler in der
-//        // menü- oder modul erstellung kommt.
-//		//$attribs	.= ' required="'.$required.'"';
-//		if ($v = $this->element['size'])
-//		{
-//			$attribs .= ' size="'.$v.'"';
-//		}
-//		if ($depends)
-//		{
-//			$attribs	.= ' depends="'.$depends.'"';
-//		}
-//		$attribs	.= ' class="inputbox';
-//		// Optionally add "depend" to the class attribute
-//		if ($depends)
-//		{
-//			$attribs	.= ' depend"';
-//		}
-//		else
-//		{
-//			$attribs	.= '"';
-//		}
-//		$attribs	.= ' current="'.$this->value.'"';
-//		
-//		$lang = JFactory::getLanguage();
-//		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
-//		if ($required) {
-//			$options = array();
-//		}
-//		else {
-//			$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
-//		}
-//
-//		$query = $this->element['query'];
-//		if ($query!='')
-//		{
-//			$db = JFactory::getDBO();
-//			$db->setQuery($query);
-//			$options = array_merge($options, $db->loadObjectList());
-//		}
-//		
-//		if ($depends)
-//		{
-//			$doc = JFactory::getDocument();
-//            if(version_compare(JVERSION,'3.0.0','ge')) 
-//            {
-//            $doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend_3.js' );
-//            }
-//            else
-//            {
-//			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
-//            }
-//		}
-//
-//		return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
-//	}
+
 }

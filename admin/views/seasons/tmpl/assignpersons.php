@@ -77,7 +77,7 @@ if($close == 1) {
         </div>
         </fieldset>
         
-			<table class='adminlist' border='0'>
+			<table class="<?php echo $this->table_data_class; ?>" border='0'>
 				<thead>
 					<tr>
 						<th width="5" ><?php echo count($this->items).'/'.$this->pagination->total; ?></th>

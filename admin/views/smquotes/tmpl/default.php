@@ -58,7 +58,16 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 
+if ( $this->items )
+{
 echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
 ?>	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

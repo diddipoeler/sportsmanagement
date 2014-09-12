@@ -105,7 +105,15 @@ $starttime = microtime();
         
         $this->assignRef('season_id',$season_id);
         
+        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
+		{
+		$this->setLayout('assignteams');  
+        }  
         
+        if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
+		{
+		$this->setLayout('assignpersons');  
+        }
         
 		
 	}
