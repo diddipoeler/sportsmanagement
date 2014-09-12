@@ -539,7 +539,7 @@ class sportsmanagementModelRoster extends JModelLegacy
        $starttime = microtime(); 
        
        $query->select('max(round_date_last)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'__round '); 
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round '); 
         $query->where('project_id ='.$this->projectid);
                     
         $db->setQuery($query);

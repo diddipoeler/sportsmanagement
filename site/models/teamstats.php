@@ -204,7 +204,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( !$result )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
         return $result;
@@ -392,7 +392,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             if ( !$this->matchdaytotals )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             
             
@@ -450,7 +450,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             if ( !$this->matchdaytotals )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             
             
@@ -554,8 +554,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
     	         
         if ( !$this->attendanceranking )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
     	return $this->attendanceranking;
@@ -694,7 +694,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
     	         
         if ( !$matches )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
 		
 		$results = array(	'win' => array(), 'tie' => array(), 'loss' => array(), 'forfeit' => array(),

@@ -273,6 +273,8 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 			$db->setQuery( $query );
 			$teams = $db->loadObjectList();
             
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+            
             if ( !$teams )
             {
             $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');

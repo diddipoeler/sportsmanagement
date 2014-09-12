@@ -139,7 +139,12 @@ class sportsmanagementModelProject extends JModelLegacy
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
+        $starttime = microtime();
+        
+        if ( !self::$projectid )
+        {
+            self::$projectid = JRequest::getInt('p',0);
+        } 
 
       // $this->projectid = JRequest::getInt('p',0);
     
@@ -598,6 +603,11 @@ class sportsmanagementModelProject extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
+        if ( !self::$projectid )
+        {
+            self::$projectid = JRequest::getInt('p',0);
+        } 
+        
         if (empty($this->_rounds))
 		{
 			// Select some fields
@@ -648,6 +658,11 @@ class sportsmanagementModelProject extends JModelLegacy
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $starttime = microtime(); 
+        
+        if ( !self::$projectid )
+        {
+            self::$projectid = JRequest::getInt('p',0);
+        } 
         
         // Select some fields
         $query->select("id as value, CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
@@ -952,6 +967,12 @@ class sportsmanagementModelProject extends JModelLegacy
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
+    
+    if ( !self::$projectid )
+        {
+            self::$projectid = JRequest::getInt('p',0);
+        } 
+        
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);

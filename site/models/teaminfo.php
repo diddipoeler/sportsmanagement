@@ -55,7 +55,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	var $project = null;
 	var $projectid = 0;
 	var $projectteamid = 0;
-	var $teamid = 0;
+	static $teamid = 0;
 	var $team = null;
 	var $club = null;
 
@@ -87,10 +87,19 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   $db = JFactory::getDBO();
 	   $query = $db->getQuery(true);
        
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+       
 		$trainingData = array();
-		if($this->projectteamid <= 0) {
-			$projectTeamID  = sportsmanagementModelProject::getprojectteamID($this->teamid);
+		if($this->projectteamid == 0) 
+        {
+			$projectTeamID  = sportsmanagementModelProject::getprojectteamID(self::$teamid);
 		}
+        else
+        {
+            $projectTeamID = $this->projectteamid;
+        }
+        
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'); 
         $query->where('project_id = '. $projectid);  
@@ -333,15 +342,15 @@ $query->order('s.ordering '.$season_ordering);
        $starttime = microtime(); 
        
     $player = array();
-    $query->select('SUM(tp.market_value) AS market_value');
+    $query->select('SUM(stp.market_value) AS market_value');
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp'); 
     $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');
     $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
     
     $query->where('pt.project_id = ' . $projectid);
     $query->where('pt.id = ' . $projectteamid);
-    $query->where('tp.published = 1');
-    $query->where('ps.published = 1');
+    $query->where('stp.published = 1');
+    //$query->where('ps.published = 1');
 		       
                $db->setQuery($query);
                
