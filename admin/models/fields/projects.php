@@ -72,12 +72,12 @@ class JFormFieldProjects extends JFormFieldList
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
-//		$extension = "com_sportsmanagement";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+		$extension = "com_sportsmanagement";
+		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+		||	$lang->load($extension, $source, null, false, false)
+		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = 'SELECT p.id, concat(p.name, \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE').': \', l.name, \')\', \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON').': \', s.name, \' )\' ) as name 
 					FROM #__'.$database_table.'_project AS p 
@@ -90,7 +90,10 @@ class JFormFieldProjects extends JFormFieldList
 //		if($this->required == false) {
 //			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 //		}
-		foreach ( $projects as $project ) {
+
+		$options[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
+        
+        foreach ( $projects as $project ) {
 			$options[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
 		}
 //		

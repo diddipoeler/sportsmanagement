@@ -77,7 +77,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectRoundOptions($project_id, $required = false)
+        function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -125,7 +125,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query = $db->getQuery(true);
         
         $query->select('pos.id AS value, pos.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position as pos');
+			$query->from('#__sportsmanagement_position as pos');
 			$query->where('pos.sports_type_id = '.$sports_type_id);
             $query->order('pos.name');  
 			$db->setQuery($query);    
@@ -156,7 +156,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query = $db->getQuery(true);
         
          $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup as a');
+			$query->from('#__sportsmanagement_agegroup as a');
             $query->where('a.sportstype_id = '.$sports_type_id);
 			$query->order('a.name');    
                     
@@ -192,7 +192,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         if ( $person_art == 2 )
         {
         $query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person ');
+			$query->from('#__sportsmanagement_person ');
 			$query->order('lastname');
 			$db->setQuery($query);    
             
@@ -218,8 +218,8 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id ');
+		$query->from('#__sportsmanagement_project AS p');
+        $query->join('INNER',' #__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id ');
         // Where
         $query->where('p.sports_type_id = ' . $db->Quote($sports_type_id) );
         // order
@@ -250,8 +250,8 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,a.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS a');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = a.sportstype_id ');
+		$query->from('#__sportsmanagement_agegroup AS a');
+        $query->join('INNER',' #__sportsmanagement_sports_type AS st ON st.id = a.sportstype_id ');
         // Where
         $query->where('a.sports_type_id = ' . $db->Quote($sports_type_id) );
         // order
@@ -280,11 +280,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', d.id, d.alias) AS value,d.name AS text');
         // From 
-		$query->from('#__sportsmanagement_project_team pt');
-        $query->join('INNER',' #__sportsmanagement_division d ON d.id = pt.division_id ');
-        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_division AS d');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = d.project_id ');
         // Where
-        $query->where('pt.project_id = ' . $db->Quote($project_id) );
+        $query->where('d.project_id = ' . $db->Quote($project_id) );
         // group
         $query->group('d.id');
         // order
@@ -314,10 +313,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON t.id = st.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id) );
@@ -361,10 +360,10 @@ class sportsmanagementModelAjax extends JModelLegacy
                     // Select some fields
         $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON t.id = st.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
         $query->where('t.club_id = ' . $db->Quote($club_id) );
@@ -393,7 +392,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p');
+		$query->from('#__sportsmanagement_project as p');
                                 
                 // Where
         $query->order('p.name');
@@ -453,10 +452,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', pt.id, t.alias) AS value,t.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON t.id = st.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id) );
@@ -486,10 +485,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = p.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = st.id ');
+		$query->from('#__sportsmanagement_person AS p');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
         // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id));
         $query->where('p.published = 1');
@@ -520,10 +519,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = p.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = st.id ');
+		$query->from('#__sportsmanagement_person AS p');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
         // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id));
         $query->where('p.published = 1');
@@ -554,11 +553,11 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Select some fields
         $query->select('CONCAT_WS(\':\', c.id, c.alias) AS value,c.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON t.id = st.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_club AS c ON c.id = t.club_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
         $query->where('pt.project_id = ' . $db->Quote($project_id) );
@@ -589,10 +588,10 @@ $db->setQuery($query);
         // Select some fields
         $query->select('CONCAT_WS(\':\', et.id, et.alias) AS value,et.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id = me.match_id');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
+		$query->from('#__sportsmanagement_eventtype as et');
+        $query->join('INNER',' #__sportsmanagement_match_event as me ON et.id = me.event_type_id ');
+        $query->join('INNER',' #__sportsmanagement_match as m ON m.id = me.match_id');
+        $query->join('INNER',' #__sportsmanagement_round as r ON m.round_id = r.id ');
         // Where
         $query->where('r.project_id = ' . $db->Quote($project_id));
         // group
@@ -623,10 +622,10 @@ $db->setQuery($query);
         // Select some fields
         $query->select('CONCAT_WS(\':\', s.id, s.alias) AS value,s.name AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = ppos.position_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s ON s.id = ps.statistic_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = ppos.project_id ');
+		$query->from('#__sportsmanagement_project_position AS ppos');
+        $query->join('INNER',' #__sportsmanagement_position_statistic AS ps ON ps.position_id = ppos.position_id ');
+        $query->join('INNER',' #__sportsmanagement_statistic AS s ON s.id = ps.statistic_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = ppos.project_id ');
         // Where
         $query->where('ppos.project_id = ' . $db->Quote($project_id));
         // group
@@ -657,15 +656,15 @@ $db->setQuery($query);
         // Select some fields
         $query->select("m.id AS value,CONCAT('(', m.match_date, ') - ', t1.middle_name, ' - ', t2.middle_name) AS text");
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+		$query->from('#__sportsmanagement_match AS m');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
                                 
                 // Where
@@ -696,9 +695,9 @@ $db->setQuery($query);
         // Select some fields
         $query->select("p.id AS value,CONCAT(p.firstname, ' ', p.lastname) AS text");
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = p.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.person_id = sp.id ');
+		$query->from('#__sportsmanagement_person AS p');
+        $query->join('INNER',' #__sportsmanagement_season_person_id AS sp ON sp.person_id = p.id ');
+        $query->join('INNER',' #__sportsmanagement_project_referee AS pr ON pr.person_id = sp.id ');
         // Where
         $query->where('pr.project_id = ' . $db->Quote($project_id));
         $query->where('p.published = 1');
@@ -728,8 +727,8 @@ $db->setQuery($query);
         // Select some fields
         $query->select('tt.id AS value,tt.id AS text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto AS tt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON p.id = tt.project_id ');
+		$query->from('#__sportsmanagement_treeto AS tt');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = tt.project_id ');
         // Where
         $query->where('tt.project_id = ' . $db->Quote($project_id));
         // order

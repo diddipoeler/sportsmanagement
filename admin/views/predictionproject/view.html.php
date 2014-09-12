@@ -44,8 +44,22 @@ jimport('joomla.application.component.view');
 
 
 
+/**
+ * sportsmanagementViewpredictionproject
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewpredictionproject extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewpredictionproject::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
