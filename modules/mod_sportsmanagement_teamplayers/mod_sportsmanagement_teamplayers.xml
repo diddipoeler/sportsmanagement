@@ -28,10 +28,11 @@
 	</languages>
 
 	<config>
-		<fields name="params">
+		<fields name="params"
+    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 			<fieldset name="basic"
-				addfieldpath="/administrator/components/com_sportsmanagement/elements">
-				<field type="project" name="p" label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL"
+				>
+				<field type="projects" name="p" label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL_DESC" />
 				<field name="team" type="dependsql" default="0" depends="p"
 					task="projectteamsoptions" 

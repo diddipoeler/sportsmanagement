@@ -29,12 +29,13 @@
 	</languages>
 
 	<config>
-		<fields name="params">
+		<fields name="params"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields" >
 
 			<fieldset	name="basic"
-						addfieldpath="/administrator/components/com_sportsmanagement/models/fields" >
+						>
 
-				<field 	name="p" type="projectlist" required="true"
+				<field 	name="p" type="projects" required="true"
 						label="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_DESCR" />
 
