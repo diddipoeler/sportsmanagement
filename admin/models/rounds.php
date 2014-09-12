@@ -202,7 +202,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('count(*) AS count');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
  
         
 	//	$query='SELECT count(*) AS count
@@ -227,7 +227,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('id, roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
         $query->order('roundcode ASC, id ASC');  
         
 //		$query="	SELECT	id, roundcode
@@ -258,7 +258,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('id, roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
         $query->order('roundcode DESC, id DESC');  
         
 		//$query="	SELECT	id, roundcode
@@ -290,7 +290,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('id, roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
         $query->order('id ASC');  
         
 //		$query="	SELECT	id, roundcode
@@ -328,7 +328,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('id, roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
         $query->order('id ASC');  
         
 		//$query="	SELECT	id, roundcode
@@ -367,7 +367,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('id, roundcode, round_date_first , round_date_last');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$project_id);  
+        $query->where('project_id = '.$projectid);  
         $query->where('DATEDIFF(CURDATE(), DATE(round_date_first)) < 0');
         $query->order('round_date_first ASC'); 
         
