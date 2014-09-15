@@ -57,6 +57,12 @@ class sportsmanagementModelsmimageimports extends JModelList
     var $_identifier = "pictures";
 	
     
+    /**
+     * sportsmanagementModelsmimageimports::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -107,6 +113,11 @@ class sportsmanagementModelsmimageimports extends JModelList
     
     
     
+	/**
+	 * sportsmanagementModelsmimageimports::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$mainframe = JFactory::getApplication();
@@ -149,6 +160,11 @@ class sportsmanagementModelsmimageimports extends JModelList
         return $query;
 	}
     
+/**
+ * sportsmanagementModelsmimageimports::getXMLFolder()
+ * 
+ * @return
+ */
 function getXMLFolder()
 {
     $mainframe = JFactory::getApplication();
@@ -260,13 +276,60 @@ function getXMLFiles()
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $query = JFactory::getDbo()->getQuery(true);
         $files = array();
         $path = JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml';
-        $xml = JFactory::getXMLParser( 'Simple' );
-       $xml->loadFile($path); 
+//        $xml = JFactory::getXMLParser( 'Simple' );
+//       $xml->loadFile($path); 
+       
+       $xml = JFactory::getXML($path);
        
        $i = 0;
-       // schleife altersgruppen anfang
+       
+       foreach( $xml->children() as $picture ) 
+            {
+            $folder = (string)$picture->picture->attributes()->folder;    
+            $directory = (string)$picture->picture->attributes()->directory;
+            $file = (string)$picture->picture->attributes()->file;
+            
+            $picturedescription = (string)$picture->picture;
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
+                $temp = new stdClass();
+   $temp->id = $i;
+   $temp->picture = $picturedescription;
+   $temp->folder = $folder;
+   $temp->directory = $directory;
+   $temp->file = $file;
+   $export[] = $temp;
+   $files = array_merge($export);
+   $i++;
+   
+   $query->clear();
+   // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.$picturedescription.''));
+        JFactory::getDbo()->setQuery($query);
+        if ( !JFactory::getDbo()->loadResult() )
+            {
+   // Create and populate an object.
+              $temp = new stdClass();
+              $temp->name = $picturedescription;
+              $temp->file = $file;
+              $temp->directory = $directory;
+              $temp->folder = $folder;
+              $temp->published = 0;
+              // Insert the object
+              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $temp);
+             } 
+            }    
+  
+/*
        foreach( $xml->document->pictures as $picture ) 
 {
    $name = $picture->getElementByPath('picture');
@@ -300,6 +363,7 @@ function getXMLFiles()
    
    
    }
+*/
        
     //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
         

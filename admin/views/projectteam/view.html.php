@@ -60,6 +60,11 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 	 */
 	public function init ()
 	{
+	   $mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+        
+        $this->change_training_date	= $mainframe->getUserState( "$option.change_training_date", '0' );
+        
 		// get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');

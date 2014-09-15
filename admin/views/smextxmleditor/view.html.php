@@ -54,6 +54,11 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewsmextxmleditor::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -70,8 +75,8 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
         $this->assignRef('option',$option);
-        $this->addToolbar();
-		parent::display($tpl);
+        //$this->addToolbar();
+//		parent::display($tpl);
 	}
     
     /**
@@ -82,24 +87,32 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-
-        // Set toolbar items for the page
-        JToolBarHelper::title($this->file_name,'xml-edit');
-        
+        parent::addToolbar();
         JToolBarHelper::apply('smextxmleditor.apply');
         JToolBarHelper::save('smextxmleditor.save');
         JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
-        
-        
-        
-        
-        JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+
+//        // Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+//
+
+//        // Set toolbar items for the page
+        $this->title = $this->file_name;
+$this->icon = 'xml-edit';
+
+//        
+//        JToolBarHelper::apply('smextxmleditor.apply');
+//        JToolBarHelper::save('smextxmleditor.save');
+//        JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+//        
+//        
+//        
+//        
+//        JToolBarHelper::divider();
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
         
     }    
     

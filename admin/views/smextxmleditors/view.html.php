@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 
 /**
@@ -54,6 +54,11 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewsmextxmleditors::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -64,8 +69,8 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditors files<br><pre>'.print_r($this->files,true).'</pre>'   ),'');
        
         $this->assignRef('option',$option);
-        $this->addToolbar();
-		parent::display($tpl);
+        //$this->addToolbar();
+//		parent::display($tpl);
 	}
     
     /**
@@ -75,15 +80,20 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	//	// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS');
+        $this->icon = 'xml-edits';
+        
+//        //JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        
+        parent::addToolbar();
         
     }    
     

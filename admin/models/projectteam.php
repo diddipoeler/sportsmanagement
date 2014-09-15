@@ -426,12 +426,21 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         
         if ( $post['delete'] )
         {
-            $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->DeleteTrainigData($post['delete'][0]);
         }
+        
+        if ( $post['add_trainingData'] )
+        {
+            $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
+            $row->load( (int)$post['jform']['team_id'] );
+            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam->addNewTrainigData($row->team_id);
+        }
+        
         if ( $post['tdids'] )
         {
-        $mdlTeam = JModel::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
         $mdlTeam->UpdateTrainigData($post);
         }
         

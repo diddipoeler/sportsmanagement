@@ -45,7 +45,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 
-<fieldset class="adminform">
+<?PHP
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
+?>
+
+
+
+<!-- <fieldset class="adminform"> -->
 <legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
 
 <table class="<?php echo $this->table_data_class; ?>">
@@ -80,7 +95,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
 		</tr>
 	</table>
-<table class="adminlist">
+<table class="<?php echo $this->table_data_class; ?>">
 <thead>
 				<tr>
 					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -160,7 +175,7 @@ $k=1 - $k;
 
 </table>
 
-</fieldset>
+<!-- </fieldset> -->
 
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />

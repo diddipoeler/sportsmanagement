@@ -55,6 +55,8 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelteam extends JModelAdmin
 {
+    static $change_training_date = false;
+    
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -287,6 +289,11 @@ class sportsmanagementModelteam extends JModelAdmin
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe	= JFactory::getApplication();
+    
+    // store the variable that we would like to keep for next time
+    // function syntax is setUserState( $key, $value );
+    $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+    
     //// Get a db connection.
 //        $db = JFactory::getDbo();
         
@@ -367,6 +374,9 @@ class sportsmanagementModelteam extends JModelAdmin
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
+        
         // Proceed with the save
 		return parent::save($data);   
     }
@@ -382,6 +392,7 @@ class sportsmanagementModelteam extends JModelAdmin
     {
         $option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
+        
     $db = JFactory::getDbo();
  
 $query = $db->getQuery(true);
@@ -401,6 +412,12 @@ if (!$db->query())
             $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
+        
+        // store the variable that we would like to keep for next time
+        // function syntax is setUserState( $key, $value );
+        self::$change_training_date = true; 
+        $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+        
      return true;           
     }
         
@@ -415,40 +432,46 @@ if (!$db->query())
     {
         $option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        
         //$db		= $this->getDbo();
 		//$query	= $db->getQuery(true);
     
     for($a=0; $a < count($post['tdids']); $a++ )    
     {
-        $db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-    // Fields to update.
-    $fields = array(
-    $db->quoteName('time_start') .'=\''. $post['time_start'][$post['tdids'][$a]].'\'',
-    $db->quoteName('time_end') .'=\''. $post['time_end'][$post['tdids'][$a]].'\'',
-    $db->quoteName('place') .'=\''. $post['place'][$post['tdids'][$a]].'\'',
-    $db->quoteName('notes') .'=\''. $post['notes'][$post['tdids'][$a]].'\'',
-    $db->quoteName('dayofweek') .'=\''. $post['dayofweek'][$post['tdids'][$a]].'\''
-    );
- 
-    // Conditions for which records should be updated.
-    $conditions = array(
-    $db->quoteName('id') .'='. $post['tdids'][$a]
-    );
- 
-    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'))->set($fields)->where($conditions);
- 
-    $db->setQuery($query);
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam UpdateTrainigData<br><pre>'.print_r($query,true).'</pre>'),'');
- 
-    if (!$db->query())
-		{
-			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam UpdateTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			$result = false;
-		}
+        $rowtraining = JTable::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
+        $rowtraining->load( (int)$post['tdids'][$a] );
+  
+        // Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $post['tdids'][$a];
+            $object->time_start = sportsmanagementHelper::time_to_sec($post['time_start'][$post['tdids'][$a]].':00');
+            $object->time_end = sportsmanagementHelper::time_to_sec($post['time_end'][$post['tdids'][$a]].':00');
+            $object->place = $post['place'][$post['tdids'][$a]];
+            $object->notes = $post['notes'][$post['tdids'][$a]];
+            $object->dayofweek = $post['dayofweek'][$post['tdids'][$a]];
+                       
+        // Update their details in the table using id as the primary key.
+        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata', $object, 'id', true);
+        
+        if( $object->time_start <> $rowtraining->time_start ||
+        $object->time_end <> $rowtraining->time_end ||
+        $object->place <> $rowtraining->place ||
+        $object->notes <> $rowtraining->notes ||
+        $object->dayofweek <> $rowtraining->dayofweek 
+         )
+        {
+        self::$change_training_date = true;    
+        }
     
-    }   
+    }
+    
+    // store the variable that we would like to keep for next time
+    // function syntax is setUserState( $key, $value );
+    $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+       
     return true; 
     }
     
@@ -505,6 +528,7 @@ if (!$db->query())
 	{
 		$option = JRequest::getCmd('option');
 		$mainframe	= JFactory::getApplication();
+        
         // Get a db connection.
         $db = JFactory::getDbo();
         // Create a new query object.
@@ -524,10 +548,16 @@ if (!$db->query())
 		if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam addNewTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'),'Notice');
+        
+        // store the variable that we would like to keep for next time
+        // function syntax is setUserState( $key, $value );
+        self::$change_training_date = true; 
+        $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+    
 		return true;
 	}
     

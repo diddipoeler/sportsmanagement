@@ -53,7 +53,18 @@ $fieldsets = $this->form->getFieldsets();
 	
  
 <div class="form-horizontal">
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php 
+
+if ( $this->change_training_date )
+{
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
+}
+else
+{
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
+}
+
+?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 

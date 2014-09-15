@@ -41,10 +41,29 @@ defined('_JEXEC') or die('Restricted access');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+
+
+
 ?>
-<fieldset class="adminform">
+
+<?PHP
+
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
+//echo $this->loadTemplate('joomla3');
+//}
+//else
+//{
+//echo $this->loadTemplate('joomla2');    
+//}
+
+?>
+
+<!-- <fieldset class="adminform"> -->
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML'); ?></legend>
-<table>
+
+<table class="<?php echo $this->table_data_class; ?>">
 <?PHP
 foreach ( $this->files as $file )
 {
@@ -82,7 +101,7 @@ foreach ( $this->files as $file )
 
 ?>
 </table>
-</fieldset>
+<!-- </fieldset> -->
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

@@ -114,7 +114,17 @@ $fieldsets = $this->form->getFieldsets();
 
 <div class="width-40 fltrt">
 		<?php
-		echo JHtml::_('sliders.start');
+
+if ( $this->change_training_date )
+{
+$startoffset = 2;     
+}
+else
+{
+$startoffset = 0; 
+}    
+		
+        echo JHtml::_('sliders.start','adminteam',array('startOffset'=>$startoffset));
 		foreach ($fieldsets as $fieldset) :
 			if ($fieldset->name == 'details') :
 				continue;

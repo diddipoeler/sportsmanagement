@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewsmimageimports
@@ -100,8 +100,8 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        $this->addToolbar();
-		parent::display($tpl);
+//        $this->addToolbar();
+//		parent::display($tpl);
 	}
     
     /**
@@ -111,13 +111,14 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT'),'images-import');
+        $this->title =JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
+        $this->icon = 'images-import';
         JToolBarHelper::custom('smimageimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

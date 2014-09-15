@@ -41,13 +41,14 @@ defined('_JEXEC') or die('Restricted access');
 switch($this->fieldset)
 {
 case 'training':
+$view = JRequest::getCmd('view', 'cpanel');
 ?>                
                         <fieldset class="adminform">
                                 
                                 <table class='admintable'>
                                         <tr>
                                                 <td class='key' nowrap='nowrap'>
-                                                        <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("team.apply");' />
+                                                        <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                                                 </td>
                                                 <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
                                                 <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
@@ -72,7 +73,7 @@ case 'training':
                                                         ?>
                                                         <tr>
                                                                 <td class='key' nowrap='nowrap'>
-                                                                        <?php echo JText::_('JACTION_DELETE');?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("team.apply");' />
+                                                                        <?php echo JText::_('JACTION_DELETE');?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                                                                 </td>
                                                                 <td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
                                                                 <td nowrap='nowrap' width='5%'>

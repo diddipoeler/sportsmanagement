@@ -62,9 +62,14 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	{
 		$mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $model		= $this->getModel();
+        $model = $this->getModel();
         $starttime = microtime(); 
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        //$this->assignRef('change_training_date',$model::$change_training_date);
+        $this->change_training_date	= $mainframe->getUserState( "$option.change_training_date", '0' );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r($this->change_training_date,true).'</pre>'),'');
         
         // get the Data
 		$form = $this->get('Form');
@@ -113,7 +118,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_('sportsmanagementViewTeam club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         }
         
         //build the html select list for days of week
@@ -139,8 +144,10 @@ class sportsmanagementViewTeam extends sportsmanagementView
 			unset($daysOfWeek);
 			unset($dwOptions);
 		}
-        $this->assignRef('trainingData',	$trainingData);
-        $this->assignRef('lists',	$lists);
+        $this->assignRef('trainingData',$trainingData);
+        $this->assignRef('lists',$lists);
+        
+
  
 
 	}

@@ -55,7 +55,18 @@ $fieldsets = $this->form->getFieldsets();
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
 
 <div class="form-horizontal">
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php 
+
+if ( $this->change_training_date )
+{
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
+}
+else
+{
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
+} 
+
+?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 

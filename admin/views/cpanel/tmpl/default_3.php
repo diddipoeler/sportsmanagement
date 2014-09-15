@@ -146,6 +146,15 @@ jimport('joomla.html.html.bootstrap');
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
 </a>
 
+<a class="btn" href="index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default">
+<img src="components/com_sportsmanagement/assets/icons/xmleditor.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?></span>
+</a>
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=smimageimports&layout=default">
+<img src="components/com_sportsmanagement/assets/icons/imageimport.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_IMAGE_IMPORT') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_IMAGE_IMPORT') ?></span>
+</a>
 
 </div> 
 

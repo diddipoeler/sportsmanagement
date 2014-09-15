@@ -2498,5 +2498,37 @@ public function getOSMGeoCoords($address)
         $result = JFactory::getDBO()->loadObjectList();
         return $result;
     }
+    
+    
+    /**
+     * sportsmanagementHelper::time_to_sec()
+     * 
+     * @param mixed $time
+     * @return
+     */
+    function time_to_sec($time) 
+    { 
+    $hours = substr($time, 0, -6); 
+    $minutes = substr($time, -5, 2); 
+    $seconds = substr($time, -2); 
+
+    return $hours * 3600 + $minutes * 60 + $seconds; 
+} 
+
+/**
+ * sportsmanagementHelper::sec_to_time()
+ * 
+ * @param mixed $seconds
+ * @return
+ */
+function sec_to_time($seconds) 
+{ 
+    $hours = floor($seconds / 3600); 
+    $minutes = floor($seconds % 3600 / 60); 
+    $seconds = $seconds % 60; 
+
+    return sprintf("%d:%02d:%02d", $hours, $minutes, $seconds); 
+} 
+    
         
 }
