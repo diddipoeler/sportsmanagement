@@ -81,6 +81,9 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('smquote', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         
         //$this->state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');;
 //        $mainframe->enqueueMessage(JText::_('sportsmanagementViewsmquotes state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');

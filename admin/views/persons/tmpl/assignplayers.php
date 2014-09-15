@@ -157,7 +157,7 @@ $userId		= $user->get('id');
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
 						$checked    = JHtml::_('grid.checkedout',$row,$i);
                         $canCheckin	= $user->authorise('core.manage','com_checkin') || $row->checked_out == $userId || $row->checked_out == 0;
-						$is_checked = JTable::isCheckedOut($this->user->get('id'),$row->checked_out);
+						$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
                         $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">

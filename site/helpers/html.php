@@ -53,6 +53,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class sportsmanagementHelperHtml 
 {
     static $roundid = 0;
+    static $project = array(); 
 
 
 	/**
@@ -199,7 +200,7 @@ class sportsmanagementHelperHtml
 	 * @param int $mode
 	 * @return string html
 	 */
-	function showMatchdaysTitle($title,$current_round,&$config,$mode=0)
+	public static function showMatchdaysTitle($title,$current_round,&$config,$mode=0)
 	{
 		$projectid = JRequest::getInt('p',0);
 		$joomleague = JTable::getInstance('Project','sportsmanagementTable');
@@ -251,7 +252,7 @@ class sportsmanagementHelperHtml
 	 * @param mixed $form
 	 * @return
 	 */
-	function getRoundSelectNavigation($form)
+	public static function getRoundSelectNavigation($form)
 	{
 		$mainframe = JFactory::getApplication();
         $rounds = sportsmanagementModelProject::getRoundOptions();
@@ -259,21 +260,21 @@ class sportsmanagementHelperHtml
 
 		if($form)
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, self::$roundid, $division);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		} 
         else 
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, self::$roundid, $division);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug, $r->value, $division);
+				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		}

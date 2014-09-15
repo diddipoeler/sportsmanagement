@@ -57,7 +57,17 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 
+if ( $this->items )
+{
 echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+
 ?>   
 	
 	<input type="hidden" name="task"				value="" />
@@ -65,6 +75,7 @@ echo $this->loadTemplate('data');
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
 	<?php echo JHtml::_('form.token'); ?>
+    <?php echo $this->table_data_div; ?>
 </form>
 <?PHP
 echo "<div>";

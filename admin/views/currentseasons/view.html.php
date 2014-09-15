@@ -67,9 +67,9 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 		$uri		= JFactory::getUri();
         
         $items = $this->get('Items');
-        // Get data from the model
-		//$items		= $this->get('Data');
         $this->assignRef('items', $items);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
         
         foreach ($this->items as $item)
 	{
@@ -94,13 +94,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 		$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 	   
        }
-       
-       if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
-
-
+ 
 	}
 
 	/**
@@ -110,18 +104,11 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-//  		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//	// Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'),'currentseason');
-//		JToolBarHelper::divider();
-//		
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences(JRequest::getCmd('option'));
+
+	// Set toolbar items for the page
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
+$this->icon = 'currentseason';
+
         
         parent::addToolbar();
 	}

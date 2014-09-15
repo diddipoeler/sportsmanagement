@@ -571,7 +571,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
         $this->project_art_id = $mainframe->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $mainframe->getUserState( "$option.sports_type_id", '0' );
-        unset($this->_pro_teams_in_used);
+        
+        if ( isset(self::$_pro_teams_in_used) )
+        {
+        self::$_pro_teams_in_used = array();
+        }
+        
         $db	= $this->getDbo();
 		$query = $db->getQuery(true);
         
@@ -602,7 +607,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->where('pt.project_id = ' . $project_id);
         if ( $in_used && isset($this->_pro_teams_in_used) )
         {
-        $query->where('pt.team_id NOT IN (' . implode(",",$this->_pro_teams_in_used) .')');    
+        $query->where('pt.team_id NOT IN (' . implode(",",self::$_pro_teams_in_used) .')');    
         }
         $query->order('t.name ASC');
         }
@@ -622,7 +627,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		  foreach( $result as $row )
           {
-          $this->_pro_teams_in_used[] = $row->season_team_id;  
+          self::$_pro_teams_in_used[] = $row->season_team_id;  
           }
           
           //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_in_used<br><pre>'.print_r($this->_pro_teams_in_used, true).'</pre><br>','Error');

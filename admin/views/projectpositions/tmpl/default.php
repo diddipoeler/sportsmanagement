@@ -56,7 +56,17 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 
+if ( $this->positiontool )
+{
 echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+
 ?>	
 	
     <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />

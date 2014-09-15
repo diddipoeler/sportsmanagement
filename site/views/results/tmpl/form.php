@@ -44,8 +44,6 @@ if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
 }
-//load data for editor
-require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );
 
 // load javascripts
 $document = JFactory::getDocument();
@@ -53,10 +51,15 @@ $document = JFactory::getDocument();
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 JHtml::_('behavior.framework', true);
+//load data for editor
+//require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+JHtml::_( 'behavior.mootools' );  
+//load data for editor
+require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );    
+  
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
@@ -99,8 +102,10 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
 					<th width="20" style="vertical-align: top; ">&nbsp;</th>
+                    <th style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></th>
 					<?php 
-						if($this->project->project_type=='DIVISIONS_LEAGUE') {
+						if($this->project->project_type=='DIVISIONS_LEAGUE') 
+                        {
 							$colspan++;
 					?>
 					<th style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>

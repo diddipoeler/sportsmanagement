@@ -99,7 +99,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td style="text-align:center; "><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td style="text-align:center; "><?php echo $checked; ?></td>
 						<?php
-						if (JTable::isCheckedOut($this->user->get('id'),$row->checked_out))
+						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
 						{
 							$inputappend=' disabled="disabled"';
 							?><td style="text-align:center; ">&nbsp;</td><?php

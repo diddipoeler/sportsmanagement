@@ -67,6 +67,7 @@ class sportsmanagementModelcurrentseasons extends JModelList
 							st.name AS sportstype,
 							s.name AS season,
 							l.name AS league,
+                            l.country AS country,
 							u.name AS editor
 					FROM	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
 					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id

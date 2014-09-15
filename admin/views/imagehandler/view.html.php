@@ -43,14 +43,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 
-class sportsmanagementViewImagehandler extends sportsmanagementView  {
+/**
+ * sportsmanagementViewImagehandler
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewImagehandler extends sportsmanagementView  
+{
 
-	/**
-	 * Image selection List
-	 *
-	 * @since 0.9
-	 */
-	function display($tpl = null)
+	
+	//function display($tpl = null)
+    public function init ()
 	{
 		$mainframe	= JFactory::getApplication();
 		$document = JFactory::getDocument();
@@ -95,7 +102,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView  {
 			$this->assignRef('field',   $field);
 			$this->assignRef('fieldid',   $fieldid);
 			//$this->assign('form'      	, $this->get('form'));
-			parent::display($tpl);
+			//parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
 			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
@@ -150,7 +157,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView  {
 		$this->assignRef('field',   $field);
 		$this->assignRef('fieldid',   $fieldid);
 		$this->assignRef('menu',   $menu);
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 }
 ?>

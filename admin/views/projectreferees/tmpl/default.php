@@ -118,7 +118,17 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 
+if ( $this->items )
+{
 echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+
 ?>
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />

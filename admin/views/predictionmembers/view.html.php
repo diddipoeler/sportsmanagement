@@ -63,7 +63,8 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	{
 	   
        $mainframe = JFactory::getApplication();
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
     if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
@@ -177,6 +178,9 @@ $mainframe = JFactory::getApplication();
     $items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('predictionmember', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
         //build the html select list for prediction games
         $mdlPredGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");

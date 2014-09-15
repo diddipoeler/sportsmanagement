@@ -80,7 +80,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * data array for rounds
 	 * @var array
 	 */
-	var $_rounds = null;
+	static $_rounds = null;
 
 	/**
 	 * data project stats
@@ -99,7 +99,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 *
 	 * @var array
 	 */
-	var $_divisions = null;
+	static $_divisions = null;
 
 	/**
 	 * caching for current round
@@ -132,7 +132,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getProject()
+	public static function getProject()
 	{
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -199,7 +199,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param integer $id
 	 * @return void
 	 */
-	function setProjectID($id=0)
+	public static function setProjectID($id=0)
 	{
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -239,18 +239,18 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return int
 	 */
-	function getCurrentRound($view=NULL)
+	public static function getCurrentRound($view=NULL)
 	{
 	   $mainframe = JFactory::getApplication();
 		$round = self::increaseRound();
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view: '.$view.' round<br><pre>'.print_r($round,true).'</pre>'),'');
-        $this->_current_round = $round;
+        self::$_current_round = $round;
         
         switch ($view)
         {
             case 'result':
-            sportsmanagementModelResults::$roundid = $this->_current_round;
+            sportsmanagementModelResults::$roundid = self::$_current_round;
             break;
         }
         
@@ -278,7 +278,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * method to update and return the project current round
 	 * @return object
 	 */
-	function increaseRound()
+	public static function increaseRound()
 	{
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -432,7 +432,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $configcolors
 	 * @return
 	 */
-	function getColors($configcolors='')
+	public static function getColors($configcolors='')
 	{
 		$s=substr($configcolors,0,-1);
 
@@ -548,7 +548,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param integer $divLevel
 	 * @return
 	 */
-	function getDivisions($divLevel=0)
+	public static function getDivisions($divLevel=0)
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -559,7 +559,7 @@ class sportsmanagementModelProject extends JModelLegacy
         $project = self::getProject(); 
 		if ($project->project_type == 'DIVISIONS_LEAGUE')
 		{
-			if (empty($this->_divisions))
+			if (empty(self::$_divisions))
 			{
 				// Select some fields
                 $query->select('*');
@@ -569,7 +569,7 @@ class sportsmanagementModelProject extends JModelLegacy
                 $query->where('project_id = '.self::$projectid);
 
 				$db->setQuery($query);
-				$this->_divisions = $db->loadObjectList('id');
+				self::$_divisions = $db->loadObjectList('id');
 			}
 			if ($divLevel)
 			{
@@ -583,7 +583,7 @@ class sportsmanagementModelProject extends JModelLegacy
 				}
 				return $res;
 			}
-			return $this->_divisions;
+			return self::$_divisions;
 		}
 		return array();
 	}
@@ -594,7 +594,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string ordering 'ASC or 'DESC'
 	 * @return array
 	 */
-	function getRounds($ordering='ASC')
+	public static function getRounds($ordering='ASC')
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -608,7 +608,7 @@ class sportsmanagementModelProject extends JModelLegacy
             self::$projectid = JRequest::getInt('p',0);
         } 
         
-        if (empty($this->_rounds))
+        if (empty(self::$_rounds))
 		{
 			// Select some fields
                 $query->select('id,round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode	else name END as name,roundcode');
@@ -626,10 +626,10 @@ class sportsmanagementModelProject extends JModelLegacy
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$this->_rounds = $db->loadObjectList();
+			self::$_rounds = $db->loadObjectList();
 		}
 		
-        if ( !$this->_rounds && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        if ( !self::$_rounds && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 	    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
 		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
@@ -638,10 +638,10 @@ class sportsmanagementModelProject extends JModelLegacy
         
         if ($ordering == 'DESC') 
         {
-			return array_reverse($this->_rounds);
+			return array_reverse(self::$_rounds);
 		}
 		
-        return $this->_rounds;
+        return self::$_rounds;
 	}
 
 	/**
@@ -650,7 +650,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $ordering
 	 * @return array
 	 */
-	function getRoundOptions($ordering='ASC')
+	public static function getRoundOptions($ordering='ASC')
 	{
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -747,7 +747,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $teamname
 	 * @return
 	 */
-	function & _getTeams($teamname='name')
+	public static function & _getTeams($teamname='name')
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -814,7 +814,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $teamname
 	 * @return
 	 */
-	function getTeams($division=0,$teamname='name')
+	public static function getTeams($division=0,$teamname='name')
 	{
 		$teams = array();
 		if ($division != 0)
@@ -884,7 +884,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $teamname
 	 * @return
 	 */
-	function getTeamsIndexedByPtid($division=0,$teamname='name')
+	public static function getTeamsIndexedByPtid($division=0,$teamname='name')
 	{
 		$result = self::getTeams($division,$teamname);
 		$teams = array();
@@ -963,7 +963,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param mixed $teamid
 	 * @return
 	 */
-	function getprojectteamID($teamid)
+	public static function getprojectteamID($teamid)
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1093,7 +1093,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param mixed $template
 	 * @return
 	 */
-	function getTemplateConfig($template)
+	public static function getTemplateConfig($template)
 	{
 		$option = JRequest::getCmd('option');
         $mainframe	= JFactory::getApplication();
@@ -1233,7 +1233,7 @@ $starttime = microtime();
 	 * 
 	 * @return
 	 */
-	function getOverallConfig()
+	public static function getOverallConfig()
 	{
 		return self::getTemplateConfig('overall');
 	}
@@ -1276,7 +1276,7 @@ $starttime = microtime();
 	 * @param int position_id if specified,returns only events assigned to this position
 	 * @return array
 	 */
-	function getProjectEvents($position_id=0)
+	public static function getProjectEvents($position_id=0)
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1404,8 +1404,13 @@ $starttime = microtime();
 	 * @param integer $with_space
 	 * @return
 	 */
-	function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small')
+	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small')
 	{
+	   $option = JRequest::getCmd('option');
+	$mainframe = JFactory::getApplication();
+    
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
+    
 		$small_club_icon = $team->$club_icon;
         $title = $team->name;
 		if ( $type == 1 )
@@ -1525,7 +1530,7 @@ $starttime = microtime();
 	 * @param int match id
 	 * @return array
 	 */
-	function getMatchSubstitutions($match_id)
+	public static function getMatchSubstitutions($match_id)
 	{
 	  $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1597,7 +1602,7 @@ $starttime = microtime();
 	 * @param int match id
 	 * @return array
 	 */
-	function getMatchEvents($match_id,$showcomments=0,$sortdesc=0)
+	public static function getMatchEvents($match_id,$showcomments=0,$sortdesc=0)
 	{
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1699,29 +1704,39 @@ $starttime = microtime();
 	 * @param mixed $task
 	 * @return
 	 */
-	function hasEditPermission($task=null)
+	public static function hasEditPermission($task=null)
 	{
 		$option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
         $allowed = false;
 		$user = JFactory::getUser();
-		if($user->id > 0) {
-			if(!is_null($task)) {
-				if (!$user->authorise($task, $option)) {
+		if($user->id > 0) 
+        {
+			if(!is_null($task)) 
+            {
+				if (!$user->authorise($task, $option)) 
+                {
 					$allowed = false;
-					error_log("no ACL permission for task " . $task);
-				} else {
+					error_log(JText::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION',$task));
+				} 
+                else 
+                {
 					$allowed = true;
 				}
 			}
 			//if no ACL permission, check for overruling permission by project admin/editor (compatibility < 2.5)
-			if(!$allowed) {
+			if(!$allowed) 
+            {
 				// If not, then check if user is project admin or editor
 				$project = self::getProject();
 				if($this->isUserProjectAdminOrEditor($user->id, $project))
 				{
 					$allowed = true;
-				} else {
-					error_log("no isUserProjectAdminOrEditor");
+				} 
+                else 
+                {
+					error_log(Jtext::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'));
+                    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),'Error');
 				}
 			}
 		}

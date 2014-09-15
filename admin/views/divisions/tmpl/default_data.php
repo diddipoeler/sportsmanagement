@@ -146,7 +146,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								<?php echo $checked; ?>
 							</td>
 							<?php
-							if ( JTable::isCheckedOut( $this->user->get( 'id' ), $row->checked_out ) )
+							if ( $this->table->isCheckedOut( $this->user->get( 'id' ), $row->checked_out ) )
 							{
 								$inputappend = ' disabled="disabled"';
 								?>

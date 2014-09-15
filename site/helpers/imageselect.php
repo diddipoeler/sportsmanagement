@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 abstract class ImageSelectSM
 {
 
-var $_foldertype = '';
+static $_foldertype = '';
 
 	/**
 	 * ImageSelectSM::__construct()
@@ -62,7 +62,7 @@ var $_foldertype = '';
 	function __construct()
 	{
   $type	= JRequest::getVar( 'type' );
-  $this->_foldertype = $type;
+  self::$_foldertype = $type;
 	}
 
 	/**
@@ -77,11 +77,11 @@ var $_foldertype = '';
 	 * @param mixed $fieldid
 	 * @return
 	 */
-	function getSelector( $fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name='', $fieldid)
+	public static function getSelector( $fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name='', $fieldid)
 	{
 		$document = JFactory::getDocument();
     
-    $this->_foldertype = $type;
+    self::$_foldertype = $type;
     
 		JHtml::_( 'behavior.modal' );
 

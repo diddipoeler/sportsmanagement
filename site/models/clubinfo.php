@@ -648,7 +648,8 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   $script .= "d" .$root_catid. ".add(" . "0" . ", " . "-1" . ", ";
   $script .= "'" . $cat_name . "', ";
   $script .= "'" . $cat_link . "', ";
-  $script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
+  //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
+  $script .= "'" . 'true' . "');" ."\n";
           
   foreach ( $jgcat_rows_sorted as $key => $value )
   {

@@ -91,6 +91,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('projectposition', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
                 
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         

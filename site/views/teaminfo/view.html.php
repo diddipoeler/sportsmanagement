@@ -89,7 +89,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 			$this->assignRef('seasons', $seasons );
 			$this->assignRef('showediticon', $isEditor);
 			$this->assignRef('projectteamid', $model->projectteamid);
-            $this->assignRef('teamid', $model->teamid);
+            $this->assignRef('teamid', $model::$teamid);
             
             $trainingData = $model->getTrainigData($this->project->id);
 			$this->assignRef( 'trainingData', $trainingData );

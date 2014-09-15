@@ -81,6 +81,9 @@ $starttime = microtime();
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('league', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )

@@ -92,6 +92,9 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('match', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
         //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
@@ -216,7 +219,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
         //build the html options for divisions
 		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
-		if ($res = $mdlDivisions->getDivisions($this->project_id)){
+		if ($res = $mdlDivisions->getDivisions($this->project_id))
+        {
 			$divisions = array_merge($divisions,$res);
 		}
 		$lists['divisions'] = $divisions;

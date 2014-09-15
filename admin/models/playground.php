@@ -55,6 +55,8 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelPlayground extends JModelAdmin
 {
+    
+    var $playground = array();
 
   /**
 	 * Method override to check if you can edit an existing record.

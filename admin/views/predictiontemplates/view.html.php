@@ -122,6 +122,9 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('predictiontemplate', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
 //echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
      
 

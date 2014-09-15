@@ -100,6 +100,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('predictiongame', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         if ( !$items )
         {
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');
@@ -153,14 +156,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	protected function addToolbar()
 	{ 
 		
-        //// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//        // Set toolbar items for the page
-//        JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' ), 'pred-cpanel' );
+   
+        // Set toolbar items for the page
+        $this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' );
+$this->icon = 'pred-cpanel';
         JToolBarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();

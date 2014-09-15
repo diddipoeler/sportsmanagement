@@ -70,7 +70,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
         $this->sortColumn = $this->state->get('list.ordering');
 
 
-$starttime = microtime(); 
+        $starttime = microtime(); 
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -84,6 +84,9 @@ $starttime = microtime();
 		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 
+        
+        $table = JTable::getInstance('sportstype', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
         
         // sportart filter
 		$lists['sportart']=$myoptions;

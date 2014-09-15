@@ -234,7 +234,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      * @param mixed $playground_id
      * @return
      */
-    function getTeams($playground_id)
+    public static function getTeams($playground_id)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -309,7 +309,7 @@ $starttime = microtime();
      * @param mixed $games
      * @return
      */
-    public function getTeamsFromMatches( & $games )
+    public static function getTeamsFromMatches( & $games )
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');

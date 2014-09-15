@@ -74,6 +74,9 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('predictiongroup', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         if ( !$items )
         {
         $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    

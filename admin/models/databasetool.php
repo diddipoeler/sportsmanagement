@@ -67,6 +67,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	var $existingInDbColor = 'orange';
     static $db_num_rows = 0;
     
+    static $bar_value = 0;
+    
     
     
     /**
@@ -75,7 +77,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
      * @param string $setModelVar
      * @return
      */
-    function runJoomlaQuery($setModelVar='')
+    public static function runJoomlaQuery($setModelVar='')
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -1463,7 +1465,7 @@ function build_InsertQuery_PositionEventType($param1,$param2)
  * @param mixed $line
  * @return void
  */
-function writeErrorLog($class, $function, $file, $text, $line)
+public static function writeErrorLog($class, $function, $file, $text, $line)
 {
 $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');

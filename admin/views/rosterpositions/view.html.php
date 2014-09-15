@@ -76,6 +76,8 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('rosterposition', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
         
 
 		$this->assign('user',JFactory::getUser());
@@ -96,12 +98,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	//// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
+	
 // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
         	JToolBarHelper::custom('rosterpositions.addhome','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'),false);

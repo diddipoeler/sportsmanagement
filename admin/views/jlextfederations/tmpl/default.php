@@ -84,6 +84,7 @@ echo '<div class="alert alert-no-items">';
 echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
+
 ?>
 	
 	
@@ -92,6 +93,7 @@ echo '</div>';
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
+    <?php echo $this->table_data_div; ?>
 </form>
 <?PHP
 echo "<div>";

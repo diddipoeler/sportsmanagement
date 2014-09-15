@@ -89,6 +89,9 @@ $starttime = microtime();
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('person', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 		$mainframe->setUserState($option.'task','');
 

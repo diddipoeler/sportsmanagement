@@ -97,10 +97,11 @@ JHtml::_( 'behavior.mootools' );
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
         
-		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
+		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
+        $roundcode = sportsmanagementModelRound::getRoundcode($model::$roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 		
-			
+		$this->assign('roundsoption', $rounds);
 		$this->assignRef('project', $project);
 		$lists = array();
 		
@@ -112,7 +113,8 @@ JHtml::_( 'behavior.mootools' );
 			$this->assign('showediticon', $model->getShowEditIcon());
 			$this->assign('division', $model->getDivision());
 			$this->assignRef('matches',	$matches);
-			$this->assignRef('roundid',	$model->roundid);
+			//$this->assignRef('roundid',	$model->roundid);
+            $this->assignRef('roundid',	$model::$roundid);
 			$this->assignRef('roundcode', $roundcode);
 			$this->assign('rounds',	sportsmanagementModelProject::getRounds());
 			$this->assign('favteams', $model->getFavTeams($project));

@@ -72,6 +72,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('projectreferee', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         $this->_persontype = JRequest::getVar('persontype');
         if ( empty($this->_persontype) )
         {

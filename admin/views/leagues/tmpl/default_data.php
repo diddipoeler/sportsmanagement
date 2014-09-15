@@ -127,7 +127,7 @@ JHtml::_('behavior.modal');
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td class="center"><?php echo $checked; ?></td>
 						<?php
-						if (JTable::isCheckedOut($this->user->get('id'),$row->checked_out))
+						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
 						{
 							$inputappend=' disabled="disabled"';
 							?><td class="center">&nbsp;</td><?php

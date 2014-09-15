@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		<field name="show_project_heading" type="radio" default="1"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_NAME"
@@ -80,6 +81,7 @@
 	</fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 		<field name="seperator" type="text" default="-"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_WHICH_SEPARATOR"
@@ -131,6 +133,7 @@
 	</fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_DATA"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_DATA"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_DATA"
     addfieldpath ="/administrator/components/com_sportsmanagement/elements">
 		<field name="nospam_email" type="radio" default="1"
@@ -153,6 +156,7 @@
 
 	
 	<fieldset	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_RSSFEED_PRO_DATA"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_RSSFEED_PRO_DATA"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_RSSFEED_PRO_DATA">
 		
 	<field name="rsstitle" type="radio" default="1" label="Feed Title" description="Display news feed provider title">

@@ -62,6 +62,7 @@ class sportsmanagementView extends JViewLegacy
     protected $layout = '';
     
     protected $table_data_class = '';
+    protected $table_data_div = '';
 
 	/**
 	 * sportsmanagementView::display()
@@ -88,6 +89,7 @@ class sportsmanagementView extends JViewLegacy
         {
             $this->setLayout($this->getLayout() . '_3');
             $this->table_data_class = 'table table-striped';
+            $this->table_data_div = '</div>';
         }
         else
         {
@@ -96,6 +98,7 @@ class sportsmanagementView extends JViewLegacy
             //$this->setLayout($this->getLayout() . '_25');
             $this->setLayout($this->getLayout() );
             $this->table_data_class = 'adminlist';
+            $this->table_data_div = '';
         }
         
         $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');

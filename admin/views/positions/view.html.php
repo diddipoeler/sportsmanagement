@@ -79,6 +79,9 @@ $starttime = microtime();
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('position', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 
 

@@ -309,7 +309,7 @@ class sportsmanagementModelround extends JModelAdmin
     * @param mixed $round_id
     * @return
     */
-   function getRoundcode($round_id)
+   public static function getRoundcode($round_id)
    {
     // Get a db connection.
         $db = JFactory::getDbo();
@@ -332,7 +332,7 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @param $roundcode
 	 * @param $project_id
 	 */
-	function getRoundId($roundcode, $project_id)
+	public static function getRoundId($roundcode, $project_id)
 	{
 	   // Get a db connection.
         $db = JFactory::getDbo();

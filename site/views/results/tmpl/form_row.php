@@ -100,6 +100,8 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- Edit match details -->
 	<td valign="top">
 		<?php
+        
+        // über das backend/administrator bearbeiten
 		JHtml::_('behavior.modal','a.mymodal');
 		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
 		$imgTitle = JText::_('Edit match details');
@@ -107,8 +109,18 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
+    
+    <?PHP
+    $append=' class="inputbox" size="1" onchange="$(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
+    ?>
+    <td style="text-align:center; " >
+    <?PHP
+    echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
+    ?>
+    </td>
 		<?php 
-		if($this->project->project_type=='DIVISIONS_LEAGUE') {
+		if($this->project->project_type=='DIVISIONS_LEAGUE') 
+        {
 		?>
 	<td style="text-align:center; " >
 		<?php echo $match->divhome; ?>
@@ -116,7 +128,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php 
 		} 
 		?>
-	<td align='center' valign='top'><input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
+	<td align='center' valign='top'>
+    <input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
 		value="<?php echo $thismatch->match_number;?>" onchange="$('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 	<!-- Edit date -->
@@ -141,8 +154,10 @@ defined('_JEXEC') or die('Restricted access');
 	<td align="center" class="nowrap" valign="top">
 		<!-- Edit home line-up -->
 		<?php
-		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('Edit Home Team');
+        
+        // über das backend/administrator bearbeiten
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,null,$team1->projectteamid);
+		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
 		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
@@ -171,8 +186,10 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<!-- Edit away line-up -->
 		<?php
-		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit Away Team');
+        
+        // über das backend/administrator bearbeiten
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,null,$team2->projectteamid);
+		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
 		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
@@ -280,8 +297,10 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- Edit match events -->
 	<td valign="top">
 		<?php
+        
+        // über das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('Edit all Match Events');
+		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND');
 		$desc = JHtml::image(	JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
@@ -289,8 +308,10 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
-		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('Edit all Match Statistics');
+        
+        // über das backend/administrator bearbeiten
+		$url = sportsmanagementHelperRoute::getEditStatisticsRoute($this->project->id,$thismatch->id);
+		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND');
 		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
@@ -298,8 +319,10 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- Edit referee -->
 	<td valign="top">
 		<?php
-		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('Edit Referees');
+        
+        // über das backend/administrator bearbeiten
+		$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
+		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
 		$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>

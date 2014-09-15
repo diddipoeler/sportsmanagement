@@ -304,7 +304,7 @@ class JSMRanking
 	 *
 	 * @param int project id
 	 */
-	function _cachedGetData($pid,$division)
+	public static function _cachedGetData($pid,$division)
 	{
 		$data = new stdclass();
 
@@ -680,7 +680,7 @@ class JSMRanking
 	 *
 	 * @return array of JSMRankingTeam objects
 	 */
-	function _initTeams($pid,$division)
+	public static function _initTeams($pid,$division)
 	{
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
@@ -838,7 +838,7 @@ class JSMRanking
 	 *
 	 * @return array
 	 */
-	function _getMatches($pid,$division)
+	public static function _getMatches($pid,$division)
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();

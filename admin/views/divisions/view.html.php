@@ -85,6 +85,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('division', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 
 

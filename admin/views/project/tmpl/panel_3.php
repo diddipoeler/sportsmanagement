@@ -172,4 +172,5 @@ if ( $this->project->project_art_id != 3 )
 </div>
 </div>
 
+<?php echo $this->table_data_div; ?>
 

@@ -83,6 +83,9 @@ $starttime = microtime();
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('team', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
@@ -119,14 +122,10 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-	//// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//		// Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE'),'teams');
+
+		// Set toolbar items for the page
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
+$this->icon = 'teams';
 		
 		JToolBarHelper::addNew('team.add');
 		JToolBarHelper::editList('team.edit');

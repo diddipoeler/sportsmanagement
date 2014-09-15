@@ -90,7 +90,8 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-		
+		$this->item->name = $this->item->author;
+        
 		//$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
 		//$this->assignRef( 'extended', $extended );
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );

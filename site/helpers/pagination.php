@@ -83,7 +83,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 	 * @param object $project
 	 * @return string
 	 */
-	function pagenav($project)
+	public static function pagenav($project)
 	{
 	   $option = JRequest::getCmd('option');
        $mainframe = JFactory::getApplication();

@@ -61,7 +61,7 @@ JHtml::_('behavior.modal');
 			<?php
 		}
 		?>
-		<table width='100%' class='adminlist'>
+		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
 					<th width='10'><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -112,7 +112,7 @@ JHtml::_('behavior.modal');
 					<td style='text-align:right; '><?php echo $this->pagination->getRowOffset( $i ); ?></td>
 					<td><?php echo $checked; ?></td>
 					<td style='text-align:center; '><?php
-						if ( JTable::isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
+						if ( $this->table->isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
 						{
 							$inputappend = " disabled='disabled'";
 							?>&nbsp;<?php
@@ -130,7 +130,7 @@ JHtml::_('behavior.modal');
 					?></td>
 					<td>
 						<?php
-						if ( JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) )
+						if ( $this->table->isCheckedOut($this->user->get ('id'), $row->checked_out ) )
 						{
 							echo $row->name;
 						}

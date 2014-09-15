@@ -62,7 +62,7 @@ class sportsmanagementHelperRoute
    * @param mixed $query
    * @return
    */
-  function sportsmanagementBuildRoute(&$query)
+  public static function sportsmanagementBuildRoute(&$query)
 {
 	$mainframe = JFactory::getApplication();
     $segments = array();
@@ -1015,6 +1015,38 @@ class sportsmanagementHelperRoute
 
 		return $link;
 	}
+    
+    /**
+     * sportsmanagementHelperRoute::getEditLineupRoute()
+     * 
+     * @param mixed $projectid
+     * @param mixed $matchid
+     * @param mixed $task
+     * @param mixed $team
+     * @param mixed $projectTeam
+     * @param mixed $match_date
+     * @return
+     */
+    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null)
+	{
+	   $params = array(	"option" => "com_sportsmanagement",
+					"view" => "match",
+                    "layout" => "editlineup",
+					
+                    "match_date" => $match_date,
+                    "team" => $team,
+					"pid" => $projectid,
+					"id" => $matchid );
+
+		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
+		if ( ! is_null( $team ) ) { $params['team'] = $team; }
+		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
+
+		$query = self::buildQuery( $params );
+		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+
+		return $link;
+    }   
 
 	/**
 	 * sportsmanagementHelperRoute::getEditEventsRoute()
@@ -1026,20 +1058,23 @@ class sportsmanagementHelperRoute
 	 * @param mixed $projectTeam
 	 * @return
 	 */
-	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null )
+	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "editevents",
-					//"no_html" => 1,
-					"p" => $projectid,
-					"mid" => $matchid );
+					"view" => "match",
+                    "layout" => "editevents",
+					
+                    "match_date" => $match_date,
+                    "team" => $team,
+					"pid" => $projectid,
+					"id" => $matchid );
 
 		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
 		if ( ! is_null( $team ) ) { $params['team'] = $team; }
 		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
 
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query . '&tmpl=component', false );
+		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
 
 		return $link;
 	}
@@ -1083,12 +1118,42 @@ class sportsmanagementHelperRoute
 	public static function getEditMatchRoute($projectid, $matchid)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "editmatch",
-					"p" => $projectid,
-					"mid" => $matchid );
+					"view" => "match",
+                    "layout" => "edit",
+					"pid" => $projectid,
+					"id" => $matchid );
 
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query . '&tmpl=component', false );
+		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+
+		return $link;
+	}
+    
+    
+    public static function getEditStatisticsRoute($projectid, $matchid)
+	{
+		$params = array(	"option" => "com_sportsmanagement",
+					"view" => "match",
+                    "layout" => "editstats",
+					"pid" => $projectid,
+					"id" => $matchid );
+
+		$query = self::buildQuery( $params );
+		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+
+		return $link;
+	}
+    
+    public static function getEditRefereesRoute($projectid, $matchid)
+	{
+		$params = array(	"option" => "com_sportsmanagement",
+					"view" => "match",
+                    "layout" => "editreferees",
+					"pid" => $projectid,
+					"id" => $matchid );
+
+		$query = self::buildQuery( $params );
+		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
 
 		return $link;
 	}

@@ -71,10 +71,6 @@ $html = JHtml::_('links.linksgroups', $groupedButtons);
 </div>
         <?php echo $this->sidebar; ?>
 
-
-
-
-
 	</div>
 	<div id="j-main-container" class="span10">
 <?php else : ?>
@@ -103,10 +99,6 @@ $html = JHtml::_('links.linksgroups', $groupedButtons);
             //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
-				
-                
-                
-                
                 
 				?>
 			<div class="btn-group pull-right hidden-phone">

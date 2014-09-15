@@ -59,16 +59,37 @@ echo $this->loadTemplate('joomla2');
 
 if ( $this->project_art_id != 3 )
 {
+
+if ( $this->projectteam )
+{
 //Ordering allowed ?
 $ordering=($this->sortColumn == 't.name');
 echo $this->loadTemplate('teams');    
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
 
 }
 else
 {
+    
+if ( $this->projectteam )
+{    
 //Ordering allowed ?
 $ordering=($this->sortColumn == 't.lastname');    
-echo $this->loadTemplate('persons');    
+echo $this->loadTemplate('persons');  
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+  
 }
 
 ?>
@@ -83,11 +104,7 @@ echo $this->loadTemplate('persons');
 </form>
 <?PHP
 
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo "</div>";
-}
+
 
 echo "<div>";
 echo $this->loadTemplate('footer');

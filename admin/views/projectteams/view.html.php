@@ -102,6 +102,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('projectteam', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         if ( $this->project_art_id == 3 )
         {
             $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');

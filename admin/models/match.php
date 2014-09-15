@@ -406,18 +406,25 @@ class sportsmanagementModelMatch extends JModelAdmin
         $post = JRequest::get('post');
         
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			// änderungen im datum oder der uhrzeit
-            $tbl = $this->getTable();;
-            $tbl->load((int) $pks[$x]);
+            $tblMatch = $this->getTable();;
+            $tblMatch->load((int) $pks[$x]);
             
-            list($date,$time) = explode(" ",$tbl->match_date);
+            // Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $pks[$x];
+            $object->team1_result = NULL;
+            $object->team2_result = NULL;
+        
+            list($date,$time) = explode(" ",$tblMatch->match_date);
             $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
             $this->_match_date_new = $post['match_date'.$pks[$x]];
             $this->_match_time_old = $time;
@@ -426,100 +433,100 @@ class sportsmanagementModelMatch extends JModelAdmin
             $post['match_date'.$pks[$x]] = sportsmanagementHelper::convertDate($post['match_date'.$pks[$x]],0);
             $post['match_date'.$pks[$x]] = $post['match_date'.$pks[$x]].' '.$post['match_time'.$pks[$x]].':00';
             
-            
-              
-            //$mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
-            //$mainframe->enqueueMessage($tbl->match_date,'Notice');
-            
-            if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
+            if ( $post['match_date'.$pks[$x]] != $tblMatch->match_date )
             {
                 $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
                 self::sendEmailtoPlayers();
                 
             }
+
+			$object->match_number	= $post['match_number'.$pks[$x]];
+            $object->match_date = $post['match_date'.$pks[$x]];
+            $object->result_type = $post['result_type'.$pks[$x]];
+            $object->match_result_type = $post['match_result_type'.$pks[$x]];
+            $object->crowd = $post['crowd'.$pks[$x]];
+            $object->round_id	= $post['round_id'.$pks[$x]];
+            $object->division_id	= $post['division_id'.$pks[$x]];
+            $object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
+            $object->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             
-            $tblMatch = & $this->getTable();
-			$tblMatch->id = $pks[$x];
-			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
-            $tblMatch->match_date = $post['match_date'.$pks[$x]];
-            $tblMatch->result_type = $post['result_type'.$pks[$x]];
-            $tblMatch->match_result_type = $post['match_result_type'.$pks[$x]];
-            $tblMatch->crowd = $post['crowd'.$pks[$x]];
-            $tblMatch->round_id	= $post['round_id'.$pks[$x]];
-            $tblMatch->division_id	= $post['division_id'.$pks[$x]];
-            $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
-            $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
-            
-            $tblMatch->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
-            $tblMatch->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
-            $tblMatch->team1_single_sets = $post['team1_single_sets'.$pks[$x]];
-            $tblMatch->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
-            $tblMatch->team1_single_games = $post['team1_single_games'.$pks[$x]];
-            $tblMatch->team2_single_games = $post['team2_single_games'.$pks[$x]];
-            $tblMatch->content_id = $post['content_id'.$pks[$x]];
+            $object->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
+            $object->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
+            $object->team1_single_sets = $post['team1_single_sets'.$pks[$x]];
+            $object->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
+            $object->team1_single_games = $post['team1_single_games'.$pks[$x]];
+            $object->team2_single_games = $post['team2_single_games'.$pks[$x]];
+            $object->content_id = $post['content_id'.$pks[$x]];
             
             if ( $post['use_legs'] )
             {
-                $tblMatch->team1_result	= '';
-                $tblMatch->team2_result	= '';   
                 foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
                 {
-                    if ( $post['team1_result_split'.$pks[$x]][$key] != '' )
+                    if ( is_numeric($post['team1_result_split'.$pks[$x]][$key]) )
                     {
                         if ( $post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] )
                         {
-                            $tblMatch->team1_result	+= 1;
-                            $tblMatch->team2_result	+= 0; 
+                            $object->team1_result	+= 1;
+                            $object->team2_result	+= 0; 
                         }
                         if ( $post['team1_result_split'.$pks[$x]][$key] < $post['team2_result_split'.$pks[$x]][$key] )
                         {
-                            $tblMatch->team1_result	+= 0;
-                            $tblMatch->team2_result	+= 1; 
+                            $object->team1_result	+= 0;
+                            $object->team2_result	+= 1; 
                         }
                         if ( $post['team1_result_split'.$pks[$x]][$key] == $post['team2_result_split'.$pks[$x]][$key] )
                         {
-                            $tblMatch->team1_result	+= 1;
-                            $tblMatch->team2_result	+= 1; 
+                            $object->team1_result	+= 1;
+                            $object->team2_result	+= 1; 
                         }
                     }
                 }
             }
             else
             {
-            
-            if ( $post['team1_result'.$pks[$x]] != '' && $post['team2_result'.$pks[$x]] != '' )    
-            {    
-            $tblMatch->team1_result	= $post['team1_result'.$pks[$x]];
-            $tblMatch->team2_result	= $post['team2_result'.$pks[$x]];
-            }
-            
-            if ( $post['team1_result_ot'.$pks[$x]] != '' && $post['team2_result_ot'.$pks[$x]] != '' )    
-            {    
-            $tblMatch->team1_result_ot	= $post['team1_result_ot'.$pks[$x]];
-            $tblMatch->team2_result_ot	= $post['team2_result_ot'.$pks[$x]];
-            }
-            
-            if ( $post['team1_result_so'.$pks[$x]] != '' && $post['team2_result_so'.$pks[$x]] != '' )    
-            {    
-            $tblMatch->team1_result_so	= $post['team1_result_so'.$pks[$x]];
-            $tblMatch->team2_result_so	= $post['team2_result_so'.$pks[$x]];
-            }
-            
-                
-            }
-            
-            
-            $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
-            $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
-			if(!$tblMatch->store()) 
+            if ( is_numeric($post['team1_result'.$pks[$x]]) && is_numeric($post['team2_result'.$pks[$x]]) )    
+            {    
+            $object->team1_result	= $post['team1_result'.$pks[$x]];
+            $object->team2_result	= $post['team2_result'.$pks[$x]];
+            }
+             
+            if ( is_numeric($post['team1_result_ot'.$pks[$x]]) && is_numeric($post['team2_result_ot'.$pks[$x]]) )    
+            {    
+            $object->team1_result_ot	= $post['team1_result_ot'.$pks[$x]];
+            $object->team2_result_ot	= $post['team2_result_ot'.$pks[$x]];
+            }
+            
+            if ( is_numeric($post['team1_result_so'.$pks[$x]]) && is_numeric($post['team2_result_so'.$pks[$x]]) )    
+            {    
+            $object->team1_result_so	= $post['team1_result_so'.$pks[$x]];
+            $object->team2_result_so	= $post['team2_result_so'.$pks[$x]];
+            }
+                            
+            }
+            
+            
+            $object->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
+            $object->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
+
+        // Update their details in the table using id as the primary key.
+        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id', true);
+            if(!$result_update) 
             {
 				//$this->setError(JFactory::getDbo()->getErrorMsg());
                 $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
+            else
+            {
+
+                sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
+                $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
+            }
+            
 		}
 		return $result;
+
 	}
     
     /**
@@ -529,21 +536,21 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	0.1
 	 */
-	function delete($pk=array())
+	function delete(&$pks)
 	{
 	$mainframe = JFactory::getApplication();
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
-    $query = $db->getQuery(true);
+    $query = JFactory::getDbo()->getQuery(true);
     
-    //$mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pk,true).'</pre>'   ),'');
+    //$mainframe->enqueueMessage(JText::_('match delete pk<br><pre>'.print_r($pks,true).'</pre>'   ),'');
     
 	$result = false;
-    if (count($pk))
+    if (count($pks))
 		{
 			//JArrayHelper::toInteger($cid);
-			$cids = implode(',',$pk);
+			$cids = implode(',',$pks);
             // wir löschen mit join
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
@@ -560,16 +567,16 @@ class sportsmanagementModelMatch extends JModelAdmin
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
             ON mpl.match_id = m.id
             WHERE m.id IN ('.$cids.')';
-            $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            JFactory::getDbo()->setQuery($query);
+            JFactory::getDbo()->query();
+            if (!JFactory::getDbo()->query()) 
             {
-                $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $mainframe->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
             }
             
             //$mainframe->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
             
-            return parent::delete($pk);
+            return parent::delete($pks);
         }    
    return true;     
    }

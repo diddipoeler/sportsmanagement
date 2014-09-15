@@ -82,6 +82,9 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
          //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 		if ($res = $this->get('Federation') )

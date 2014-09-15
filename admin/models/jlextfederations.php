@@ -73,6 +73,8 @@ class sportsmanagementModeljlextfederations extends JModelList
                         'objassoc.short_name',
                         'objassoc.id',
                         'objassoc.ordering',
+                        'objassoc.picture',
+                        'objassoc.assocflag',
                         'objassoc.checked_out',
                         'objassoc.checked_out_time'
                         );

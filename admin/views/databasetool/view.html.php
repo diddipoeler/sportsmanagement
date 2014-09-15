@@ -92,12 +92,15 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
             {
             $successTable = $model->setSportsManagementTableQuery($this->sm_tables[$this->step], $this->task);    
             $this->work_table = $this->sm_tables[$this->step];
-            $this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
+            //$this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
+            $this->assign('bar_value',round( ( $this->step * 100 / $this->totals ), 0) );
+            //$model::$bar_value = round( ( $this->step * 100 / $this->totals ), 0) ;
             }
             else
             {
             $this->step = 0;    
-            $this->bar_value = 100;
+            //$this->bar_value = 100;
+            $this->assign('bar_value',100 );
             $this->work_table = '';
             }
             

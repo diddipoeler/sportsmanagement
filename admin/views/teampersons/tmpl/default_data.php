@@ -159,7 +159,7 @@ JHtml::_('behavior.modal');
 								?>
 							</td>
 							<?php
-							if ( JTable::isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
+							if ( $this->table->isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
 							{
 								$inputappend = ' disabled="disabled"';
 								?>

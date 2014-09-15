@@ -69,7 +69,8 @@ class sportsmanagementViewPlayground extends JViewLegacy
 
 		$model = $this->getModel();
         sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ));
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
@@ -81,7 +82,7 @@ class sportsmanagementViewPlayground extends JViewLegacy
 		$games = $model->getNextGames();
 		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
 		$this->assign( 'playground',  $model->getPlayground() );
-        $this->assignRef( 'address_string', $model->getAddressString() );
+        $this->assign( 'address_string', $model->getAddressString() );
 		$this->assign( 'teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
 		$this->assignRef( 'games', $games );
 		$this->assignRef( 'gamesteams', $gamesteams );

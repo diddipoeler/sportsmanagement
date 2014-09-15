@@ -45,7 +45,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 
-	<div id="editcell">
+<!--	<div id="editcell"> -->
 	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
@@ -218,5 +218,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				</tbody>
 			</table>
 	<!--	</fieldset> -->
-	</div>
+<!--	</div> -->
 	

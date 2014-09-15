@@ -7,7 +7,10 @@
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		
-		<!-- prediction-->
+		<!-- club -->
+		<action name="club.edit" title="COM_SPORTSMANAGEMENT_SETTINGS_CLUB_ACCESS_EDIT" description="COM_SPORTSMANAGEMENT_SETTINGS_CLUB_ACCESS_EDIT_DESC" />
+		
+		<!-- prediction -->
 		<action name="predictionentry.addtipp" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ENTRY_ACCESS_ADDTIP" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ENTRY_ACCESS_ADDTIP_DESC" />
 		<action name="predictionentry.selectprojectround" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ENTRY_SELECT_ROUNDS" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ENTRY_SELECT_ROUNDS_DESC" />
 		<action name="predictionranking.selectprojectround" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_RANKING_SELECT_ROUNDS" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_RANKING_SELECT_ROUNDS_DESC" />

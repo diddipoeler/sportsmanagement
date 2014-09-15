@@ -81,6 +81,9 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
         
 		$total		= $this->get('Total');
 		$pagination = $this->get('Pagination');
+        
+        $table = JTable::getInstance('eventtype', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 
 

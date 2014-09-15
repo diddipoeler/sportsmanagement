@@ -68,7 +68,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	{
 		$this->projectid = JRequest::getInt( "p", 0 );
 		$this->projectteamid = JRequest::getInt( "ptid", 0 );
-		$this->teamid = JRequest::getInt( "tid", 0 );
+		self::$teamid = JRequest::getInt( "tid", 0 );
         
         sportsmanagementModelProject::$projectid = $this->projectid; 
 		parent::__construct( );
@@ -142,7 +142,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 			} 
             else 
             {
-                $query->where('t.id = '. $db->Quote($this->teamid));
+                $query->where('t.id = '. $db->Quote(self::$teamid));
 			}		
 			
 			$db->setQuery($query);
@@ -256,7 +256,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
         
         if ( $history )
         {
-        $query->where('t.id = '. $db->Quote($this->teamid));    
+        $query->where('t.id = '. $db->Quote(self::$teamid));    
         }
         else
         {
@@ -266,7 +266,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 				} 
                 else 
                 {
-                    $query->where('t.id = '. $db->Quote($this->teamid));
+                    $query->where('t.id = '. $db->Quote(self::$teamid));
 				}
          }       
 
@@ -404,7 +404,7 @@ $query->order('s.ordering '.$season_ordering);
 				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
 				break;
 			} 
-			else if ($value->getTeamId() == $this->teamid)
+			else if ($value->getTeamId() == self::$teamid)
 			{
 				$rank['rank']   = $value->rank;
 				$rank['games']  = $value->cnt_matches;

@@ -129,6 +129,9 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         $model = $this->getModel();
         
+        $table = JTable::getInstance('round', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
+        
         //$project_id	= JRequest::getVar('pid');
         $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
         

@@ -634,7 +634,7 @@ abstract class sportsmanagementHelper
 	 * @param mixed $project_id
 	 * @return
 	 */
-	function getProjectFavTeams($project_id)
+	public static function getProjectFavTeams($project_id)
 	{
 		$db = JFactory::getDBO();
 
@@ -687,7 +687,7 @@ abstract class sportsmanagementHelper
 	 * @return	array project
 	 * @since	1.5
 	 */
-	function getSportsTypeName($sportsType)
+	public static function getSportsTypeName($sportsType)
 	{
 		$db = JFactory::getDBO();
 		$query='SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type WHERE id='.(int) $sportsType;
@@ -730,7 +730,7 @@ abstract class sportsmanagementHelper
 	 * @return	array project
 	 * @since	1.5
 	 */
-	function getPosPersonTypeName($personType)
+	public static function getPosPersonTypeName($personType)
 	{
 		switch ($personType)
 		{
@@ -876,7 +876,7 @@ abstract class sportsmanagementHelper
 	 * @param string $current_date date in YYYY-mm-dd format,default to today
 	 * @return int age
 	 */
-	function getAge($date, $seconddate)
+	public static function getAge($date, $seconddate)
 	{
 
 		if ( ($date != "0000-00-00") &&
@@ -1223,7 +1223,7 @@ abstract class sportsmanagementHelper
 	 * @param mixed $config
 	 * @return
 	 */
-	function showTeamIcons(&$team,&$config)
+	public static function showTeamIcons(&$team,&$config)
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -1323,7 +1323,7 @@ abstract class sportsmanagementHelper
 	 * @param mixed $link
 	 * @return
 	 */
-	function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null)
+	public static function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null)
 	{
 		$output			= '';
 		$desc			= '';
@@ -1459,12 +1459,12 @@ abstract class sportsmanagementHelper
 	 * @param mixed $colors
 	 * @return void
 	 */
-	function showColorsLegend($colors)
+	public static function showColorsLegend($colors)
 	{
 		$favshow=JRequest::getVar('func','');
-		if (($favshow!='showCurve') && ($this->project->fav_team))
+		if (($favshow!='showCurve') && (sportsmanagementModelProject::$_project->fav_team))
 		{
-			$fav=array('color'=>$this->project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
+			$fav=array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
 			array_push($colors,$fav);
 		}
 		foreach($colors as $color)
@@ -1519,7 +1519,7 @@ abstract class sportsmanagementHelper
 	 * 
 	 * @return
 	 */
-	public function getVersion() 
+	public static function getVersion() 
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
@@ -1883,7 +1883,7 @@ abstract class sportsmanagementHelper
 	* @param string $ordering
 	* @return array
 	*/
-	function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL)
+	public static function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL)
 	{
 		$mainframe = JFactory::getApplication();
         $db = JFactory::getDBO();
@@ -2178,7 +2178,7 @@ if (!$db->query())
 	* Fetch google map data refere to
 	* http://code.google.com/apis/maps/documentation/geocoding/#Geocoding	 
 	*/	 	
-	public function getAddressData($address)
+	public static function getAddressData($address)
 	{
 	   $mainframe = JFactory::getApplication();
 
@@ -2255,7 +2255,7 @@ public function getOSMGeoCoords($address)
      * @param mixed $address
      * @return
      */
-    public function resolveLocation($address)
+    public static function resolveLocation($address)
 	{
 		$mainframe = JFactory::getApplication();
     $coords = array();
@@ -2455,7 +2455,7 @@ public function getOSMGeoCoords($address)
      * @param mixed $project_category_id
      * @return
      */
-    function getArticleList($project_category_id)
+    public static function getArticleList($project_category_id)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');

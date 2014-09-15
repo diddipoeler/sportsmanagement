@@ -83,7 +83,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 	function __construct( )
 	{
 	   $mainframe = JFactory::getApplication();
-		$this->projectid = JRequest::getInt( "p", 0 );
+		self::$projectid = JRequest::getInt( "p", 0 );
 		$this->round = JRequest::getInt( "r", $this->current_round);
 		$this->part  = JRequest::getInt( "part", 0);
 		$this->from  = JRequest::getInt( 'from', 0 );
@@ -93,17 +93,17 @@ class sportsmanagementModelRanking extends JModelLegacy
         $this->viewName = JRequest::getVar( "view");
     	$this->selDivision = JRequest::getInt( 'division', 0 );
         
-        sportsmanagementModelProject::$projectid = $this->projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid; 
         
         if ( empty($this->from)  )
         {
-        $from	= sportsmanagementModelRounds::getFirstRound($this->projectid);
+        $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid);
         $this->from	= $from[id];
         }
         
         if ( empty($this->to)  )
         {
-		$to	= sportsmanagementModelRounds::getLastRound($this->projectid);
+		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid);
         $this->to	= $to[id];
         }
         else
@@ -268,7 +268,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
 
         
-        $query->where('r.project_id = ' . $db->Quote($this->projectid));
+        $query->where('r.project_id = ' . $db->Quote(self::$projectid));
         $query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
         $query->where('m.team1_result IS NOT NULL');
         $query->order('r.roundcode ASC ');
@@ -361,7 +361,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		$lastRound	= sportsmanagementModelRounds::getLastRound($project->id);
 
 		// url if no sef link comes along (ranking form)
-		$url = sportsmanagementHelperRoute::getRankingRoute( $this->projectid );
+		$url = sportsmanagementHelperRoute::getRankingRoute( self::$projectid );
 		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" );
 
 		$this->round = ($this->round == 0 || $this->round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName) : $this->round;
@@ -470,7 +470,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		*
 		*/
 		$ranking = JSMRanking::getInstance($project);
-		$ranking->setProjectId( $this->projectid );
+		$ranking->setProjectId( self::$projectid );
 		
 		foreach ( $divisions as $division )
 		{
