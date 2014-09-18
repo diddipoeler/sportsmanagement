@@ -56,7 +56,7 @@ jimport('joomla.application.component.modeladmin');
 class sportsmanagementModelPlayground extends JModelAdmin
 {
     
-    var $playground = array();
+    static $playground = array();
 
   /**
 	 * Method override to check if you can edit an existing record.
@@ -400,9 +400,9 @@ class sportsmanagementModelPlayground extends JModelAdmin
      * @param integer $pgid
      * @return
      */
-    function getPlayground( $pgid = 0 )
+    public static function getPlayground( $pgid = 0 )
     {
-        if ( is_null( $this->playground ) )
+        if ( is_null( self::$playground ) )
         {
             if ( $pgid < 1 )
             {
@@ -411,11 +411,11 @@ class sportsmanagementModelPlayground extends JModelAdmin
             
             if ( $pgid > 0 )
             {
-                $this->playground = self::getTable();
-                $this->playground->load( $pgid );
+                self::$playground = self::getTable();
+                self::$playground->load( $pgid );
             }
         }
-        return $this->playground;
+        return self::$playground;
     }
     
     

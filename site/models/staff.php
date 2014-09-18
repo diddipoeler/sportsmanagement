@@ -61,7 +61,9 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 * data array for staff history
 	 * @var array
 	 */
-	var $_history=null;
+	var $_history = null;
+    
+    var $_inproject = null;
 
 
  	/**

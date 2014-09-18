@@ -39,6 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
+//echo 'club config<pre>',print_r($this->config,true),'</pre><br>'; 
+
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'club config<pre>',print_r($this->config,true),'</pre><br>';    

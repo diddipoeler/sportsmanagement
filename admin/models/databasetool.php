@@ -65,8 +65,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
+
     static $db_num_rows = 0;
-    
+    static $jsmtables = null;
     static $bar_value = 0;
     
     
@@ -199,7 +200,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();
-        $jsmtables = array();
+        //$jsmtables = array();
         
         $result = $db->getTableList();
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
@@ -208,7 +209,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         {
         if ( preg_match("/sportsmanagement/i", $value ) )
         {
-        $jsmtables[] = $value;
+        self::$jsmtables[] = $value;
         }   
         }
         
@@ -224,7 +225,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 //        {
 //        $db->query();
 //        }
-		return $jsmtables;
+		return self::$jsmtables;
     }
     
     
@@ -397,10 +398,10 @@ $prefix.'joomleague_' => ''
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $query = strtoupper($command).' TABLE `'.$table.'`'; 
-            $this->_db->setQuery($query);
-            if (!$this->_db->query())
+            JFactory::getDbo()->setQuery($query);
+            if (!self::runJoomlaQuery())
 		{
-			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
         

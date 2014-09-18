@@ -183,13 +183,7 @@ class com_sportsmanagementInstallerScript
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_30.png"
 			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
-        <img
-			src="../media/com_sportsmanagement/jl_images/compat_31.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
-        <img
-			src="../media/com_sportsmanagement/jl_images/compat_32.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>        
-            <br />
+        
          <?php       
         echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
         

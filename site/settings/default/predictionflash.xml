@@ -39,7 +39,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_X_AXIS_COLOUR_INNER">
 		</field>
 
-		<field 	name="x_axis_legend" type="radio" default="1"
+		<field 	name="x_axis_legend" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_X_AXIS_LEGEND"
 				description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_X_AXIS_LEGEND">
 			<option value="0">JNO</option>

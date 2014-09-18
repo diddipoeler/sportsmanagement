@@ -395,7 +395,7 @@ class sportsmanagementHelperHtml
 	 * @param array attributes
 	 * @return string image html code
 	 */
-	public function getThumbUpDownImg($game, $projectteam_id, $attributes = null)
+	public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null)
 	{
 		$res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
 		if ($res === false) {
@@ -463,7 +463,7 @@ class sportsmanagementHelperHtml
 	* @param int $ptid
 	* @return string image html code
 	*/	
-	function getLastRankImg($team,$previous,$ptid,$attributes = null)
+	public static function getLastRankImg($team,$previous,$ptid,$attributes = null)
 	{
 		if ( isset( $previous[$ptid]->rank ) )
 		{

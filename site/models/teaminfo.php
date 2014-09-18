@@ -556,7 +556,16 @@ $query->order('s.ordering '.$season_ordering);
   
   foreach ($seasonsranking as $season)
 	{
+	
+    if ( isset($leaguesoverview[$season->league][(int) $season->rank]) )
+    {   
 	$leaguesoverview[$season->league][(int) $season->rank] += 1;
+    }
+    else
+    {
+    $leaguesoverview[$season->league][(int) $season->rank] = 0;    
+    }
+    
 	}
   
   ksort($leaguesoverview);

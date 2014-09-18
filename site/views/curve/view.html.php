@@ -152,9 +152,9 @@ class sportsmanagementViewCurve extends JViewLegacy
 			$this->assignRef( 'divisions',       $divisions );
 			$this->assign( 'division',        $model->getDivision($division) );
 			$this->assign( 'favteams',        sportsmanagementModelProject::getFavTeams() );
-			$this->assignRef( 'team1',           $model->getTeam1() );
-			$this->assignRef( 'team2',           $model->getTeam2() );
-			$this->assignRef( 'allteams',        sportsmanagementModelProject::getTeams($division) );
+			$this->assign( 'team1',           $model->getTeam1() );
+			$this->assign( 'team2',           $model->getTeam2() );
+			$this->assign( 'allteams',        sportsmanagementModelProject::getTeams($division) );
 			$this->assignRef( 'team1select',     $team1select );
 			$this->assignRef( 'team2select',     $team2select );
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
@@ -180,9 +180,10 @@ class sportsmanagementViewCurve extends JViewLegacy
         $mainframe = JFactory::getApplication();
         
 		$model 			= $this->getModel();
-		$rounds			= $this->get('Rounds');
+		$rounds			= sportsmanagementModelProject::getRounds();
 		$round_labels	= array();
-		foreach ($rounds as $r) {
+		foreach ($rounds as $r) 
+        {
 			$round_labels[] = $r->name;
 		}
 		//$data		= $this->get('Data');

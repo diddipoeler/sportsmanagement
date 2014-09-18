@@ -60,11 +60,11 @@ if (count($this->rows > 0))
 		$css .= ".jl_rp0 .jl_rosterperson_picture_column,.jl_rosterperson_pic > img, .jl_rosterperson_pic
 		{
 		width: ".$this->config['player_picture_width']."px;
-		/*height:".$this->config['player_picture_height']."px;*/
+		
 		}
 		.jl_rp1 .jl_rosterperson_detail_column
 		{
-		/*height:".$this->config['player_picture_height']."px;*/
+		
 		margin-right:".($this->config['player_picture_width']+10)."px;
 		}
 		";
@@ -123,11 +123,10 @@ if (count($this->stafflist) > 0 AND $this->config['show_staff_icon']==1)
 		$css .= ".jl_rp0 .jl_rosterperson_staffpicture_column,.jl_roster_staffperson_pic > img, .jl_roster_staffperson_pic
 		{
 		width: ".$this->config['staff_picture_width']."px;
-		/*height:".$this->config['staff_picture_height']."px;*/
+
 		}
 		.jl_rp1 .jl_roster_staffperson_detail_column
 		{
-		/*height:".$this->config['staff_picture_height']."px;*/
 		margin-right:".($this->config['staff_picture_width']+10)."px;
 		}
 		";

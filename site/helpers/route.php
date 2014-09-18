@@ -204,21 +204,33 @@ class sportsmanagementHelperRoute
 	{
 	   $mainframe = JFactory::getApplication();
        
-		$params = array(	"option" => "com_sportsmanagement",
+		$params = array("option" => "com_sportsmanagement",
 					"view" => "clubinfo",
 					"p" => $projectid,
 					"cid" => $clubid );
 
 		if ( ! is_null( $task ) ) 
         { 
-			if($task=='club.edit') {
-				$params["layout"] = 'form'; 
+			
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $layout = 'edit'; 
+    }
+    else
+    {
+        $layout = 'edit';
+    }
+            
+            if($task=='club.edit') 
+            {
+				$params["layout"] = $layout; 
 				$params["view"] = 'club'; 
+                $params["id"] = $clubid;
 			}
 			$query = self::buildQuery( $params );
             // diddipoeler
             // nicht im backend, sondern im frontend
-			$link = JRoute::_( "administrator/index.php?" . $query, false );
+			$link = JRoute::_( "administrator/index.php?" . $query. '&tmpl=component', false );
             //$link = JRoute::_( "index.php?" . $query, false );
 		} 
         else 
@@ -568,14 +580,15 @@ class sportsmanagementHelperRoute
 					"tid" => $teamid,
 					"pid" => $personid );
 
-		if(!is_null($task)) {
+		if(!is_null($task)) 
+        {
 			if($task=='person.edit') {
-				$params["layout"] = 'form'; 
+				$params["layout"] = 'edit'; 
 				$params["view"] = 'person';
-				$params["cid"] = $personid;
+				$params["id"] = $personid;
 			}
 			$query = self::buildQuery( $params );
-			$link = JRoute::_( "administrator/index.php?" . $query, false );
+			$link = JRoute::_( "administrator/index.php?" . $query. '&tmpl=component', false );
 		} else {
 			$query = self::buildQuery( $params );
 			$link = JRoute::_( "index.php?" . $query, false );
@@ -1157,6 +1170,22 @@ class sportsmanagementHelperRoute
 
 		return $link;
 	}
+    
+    
+//    function getEditClubRoute($club_id)
+//    {
+//    $params = array("option" => "com_sportsmanagement",
+//					"view" => "club",
+//                    "layout" => "edit",
+//					"id" => $club_id );
+//
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+//
+//		return $link;    
+//        
+//        
+//    }
 
 	/**
 	 * sportsmanagementHelperRoute::getContactRoute()

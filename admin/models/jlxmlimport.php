@@ -3314,20 +3314,23 @@ $this->dump_variable("import_team", $import_team);
 		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$project_id;
 
 		JFactory::getDbo()->setQuery($query);
-		$records=JFactory::getDbo()->loadResultArray();
-		if (empty($records)){$records=array();}
+		$records = JFactory::getDbo()->loadResultArray();
+		if (empty($records))
+        {
+            $records = array();
+        }
 
 		// first check extension template folder if template is not default
 		if ((isset($params->extension)) && ($params->extension!=''))
 		{
 			if (is_dir($extensiontpath.$params->extension.DS.'settings'))
 			{
-				$xmldirs[]=$extensiontpath.$params->extension.DS.'settings';
+				$xmldirs[] = $extensiontpath.$params->extension.DS.'settings';
 			}
 		}
 
 		// add default folder
-		$xmldirs[]=$defaultpath.DS.'default';
+		$xmldirs[] = $defaultpath.DS.'default';
 
 		// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
@@ -3346,7 +3349,7 @@ $this->dump_variable("import_team", $import_team);
 							strtolower(substr($file,0,strlen($predictionTemplatePrefix))) != $predictionTemplatePrefix
 						)
 					{
-						$template=substr($file,0,(strlen($file)-4));
+						$template = substr($file,0,(strlen($file)-4));
 
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
@@ -3544,7 +3547,7 @@ $this->dump_variable("import_team", $import_team);
 		if ( $this->_master_template == 0 )
 		{
 			// check and create missing templates if needed
-			$this->_checklist();
+			//$this->_checklist();
 			$my_text='<span style="color:green">';
 			$my_text .= JText::_('Checked and created missing template data if needed');
 			$my_text .= '</span><br />';
@@ -3700,10 +3703,13 @@ $this->dump_variable("import_team", $import_team);
 
 //$this->dump_variable(__FUNCTION__." _convertTeamID -> team_id", $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
 
-			if (count($this->_convertDivisionID) > 0)
+			if ( isset($this->_convertDivisionID) )
+            {
+            if (count($this->_convertDivisionID) > 0)
 			{
 				$p_projectteam->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($projectteam,'division_id')]);
 			}
+            }
 
 			$p_projectteam->set('start_points',$this->_getDataFromObject($projectteam,'start_points'));
 			$p_projectteam->set('points_finally',$this->_getDataFromObject($projectteam,'points_finally'));

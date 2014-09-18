@@ -1,5 +1,5 @@
 /**
- * @copyright Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
+ * @copyright Copyright (C) 2005-2014 joomleague.at. All rights reserved.
  * @license GNU/GPL, see LICENSE.php Joomla! is free software. This version may
  *          have been modified pursuant to the GNU General Public License, and
  *          as distributed it includes or is derivative of works licensed under
@@ -14,32 +14,24 @@ window.addEvent('domready', function() {
 
 		//ajax remove event
 		$$('input.button-delete').addEvent('click', deleteevent);
-        //ajax remove commentary
-		$$('input.button-delete-commentary').addEvent('click', deletecommentary);
 
-		// neues ereignis speichern
-        $('save-new').addEvent(
+		$('save-new').addEvent(
 				'click',
 				function() {
-				    // diddipoeler
-                    //var comment = 0;
-				    var rowid = this.id.substr(5);
-					var url = baseajaxurl + '&task=match.saveevent&';
+					var url = baseajaxurl + '&task=matches.saveevent&';
 					var player = $('teamplayer_id').value;
 					var event = $('event_type_id').value;
 					var team = $('team_id').value;
 					//var token = $('token').value;
 					var time = $('event_time').value;
-                    //var projecttime = $('projecttime').value;
-          var notice = encodeURIComponent($('notice').value);
+                    var notice = encodeURIComponent($('notice').value);
 					var querystring = 'teamplayer_id=' + player +
 					'&projectteam_id=' + team + 
 					'&event_type_id=' + event + 
 					'&event_time=' + time + 
-					'&match_id=' + matchid +
-          '&projecttime=' + projecttime + 
+					'&match_id=' + matchid + 
 					'&event_sum=' + $('event_sum').value +
-					'&notice=' + notice 
+					'&notice=' + notice
 					//+ '&'
 					//+ token
 					;
@@ -49,23 +41,17 @@ window.addEvent('domready', function() {
 							method : 'post',
 							onRequest : reqsent,
 							onFailure : reqfailed,
-							onSuccess : eventsaved,
-                            rowid: rowid
+							onSuccess : eventsaved
 						});
 						myXhr.post();
 					}
 				});
 	}
-    
-    // neuen kommentar speichern
     $('save-new-comment').addEvent(
 			'click',
 			function() {
-				var url = baseajaxurl + '&task=match.savecomment';
+				var url = baseajaxurl + '&task=matches.saveevent';
 				var player = 0;
-                // diddipoeler
-                //var comment = 1;
-                var rowid = this.id.substr(5);
 				var event = 0;
 				var team = 0;
 				var ctype = $('ctype').value;
@@ -76,17 +62,14 @@ window.addEvent('domready', function() {
 				+ event + '&event_time=' + time + '&match_id='
 				+ matchid + '&event_sum='
 				+ ctype + '&notes='
-				+ comnt +
-          '&projecttime=' + projecttime;
-				if (ctype != 0 ) {
+				+ comnt;
+				if (ctype != 0 && comnt != '') {
 					var myXhr = new Request.JSON( {
 						url: url + querystring,
 						method : 'post',
 						onRequest : reqsent,
 						onFailure : reqfailed,
-						onSuccess : commentsaved,
-                        rowid: rowid
-                        
+						onSuccess : commentsaved
 					});
 					myXhr.post();
 				}
@@ -95,7 +78,6 @@ window.addEvent('domready', function() {
 
 function reqsent() {
 	$('ajaxresponse').addClass('ajax-loading');
-    $('ajaxresponse').className = "";
 	$('ajaxresponse').set('text','');
 }
 
@@ -106,16 +88,8 @@ function reqfailed() {
 
 function eventsaved(response) {
 	$('ajaxresponse').removeClass('ajax-loading');
-    $('ajaxresponse').className = "";
 	// first line contains the status, second line contains the new row.
-	var resp = response.split("&");
-//    var showdebuginfo = $('showdebuginfo').value;
-//    if ( showdebuginfo == 1 )
-//    {
-//        alert(resp[0]);
-//        alert(resp[1]);
-//    }
-    
+	var resp = response.split("\n");
 	if (resp[0] != '0') {
 		// create new row in events table
 		var newrow = new Element('tr', {
@@ -141,10 +115,8 @@ function eventsaved(response) {
 		}).addClass('inputbox button-delete').addEvent('click', deleteevent);
 		new Element('td').appendChild(deletebutton).injectInside(newrow);
 		newrow.injectBefore($('row-new'));
-        $('ajaxresponse').className = "ajaxsuccess";
-		$('ajaxresponse').set('text',resp[1]);
+		$('ajaxresponse').set('text','Event saved');
 	} else {
-	   $('ajaxresponse').className = "ajaxerror";
 		$('ajaxresponse').set('text',resp[1]);
 	}
 }
@@ -152,42 +124,33 @@ function eventsaved(response) {
 function commentsaved(response) {
 	$('ajaxresponse').removeClass('ajax-loading');
 	// first line contains the status, second line contains the new row.
-	var resp = response.split("&");
+	var resp = response.split("\n");
 	if (resp[0] != '0') {
 		// create new row in comments table
 		var newrow = new Element('tr', {
-			id : 'rowcomment-' + resp[0]
+			id : 'row-' + resp[0]
 		});
-		//new Element('td').injectInside(newrow);
-        new Element('td').set('text', $('ctype').options[$('ctype').selectedIndex].text)
-				.injectInside(newrow);
+		new Element('td').injectInside(newrow);
 		new Element('td').set('text',$('c_event_time').value).injectInside(newrow);
 		new Element('td', {
 			title : $('notes').value
 		}).addClass("hasTip").set('text',$('notes').value).injectInside(newrow);
 		var deletebutton = new Element('input', {
-			id : 'deletecomment-' + resp[0],
+			id : 'delete-' + resp[0],
 			type : 'button',
 			value : str_delete
-		}).addClass('inputbox button-delete-commentary').addEvent('click', deleteevent);
+		}).addClass('inputbox button-delete').addEvent('click', deleteevent);
 		new Element('td').appendChild(deletebutton).injectInside(newrow);
-		newrow.injectBefore($('rowcomment-new'));
-		
-        $('ajaxresponse').className = "ajaxsuccess";
-		$('ajaxresponse').set('text',resp[1]);
+		newrow.injectBefore($('row-new-comment'));
+		$('ajaxresponse').set('text','Comment saved').style.color='green';
 	} else {
-		
-        $('ajaxresponse').className = "ajaxerror";
-		$('ajaxresponse').set('text',resp[1]);
+		$('ajaxresponse').set('text',resp[1]).style.color='red';
 	}
 }
 
 function deleteevent() {
 	var eventid = this.id.substr(7);
-    
-//    alert(eventid);
-    
-	var url = baseajaxurl + '&task=match.removeEvent';
+	var url = baseajaxurl + '&task=matches.removeEvent';
 	var querystring = '&event_id=' + eventid;
 	if (eventid) {
 		var myXhr = new Request.JSON( {
@@ -202,58 +165,14 @@ function deleteevent() {
 	}
 }
 
-
-function deletecommentary() {
-	var eventid = this.id.substr(14);
-    
-//    alert(eventid);
-    
-	var url = baseajaxurl + '&task=match.removeCommentary';
-	var querystring = '&event_id=' + eventid;
-	if (eventid) {
-		var myXhr = new Request.JSON( {
-			url: url + querystring,
-			method : 'post',
-			onRequest : reqsent,
-			onFailure : reqfailed,
-			onSuccess : commentarydeleted,
-			rowid : eventid
-		});
-		myXhr.post();
-	}
-}
-
 function eventdeleted(response) {
-	var resp = response.split("&");
-    
-//    alert(resp[0]);
-//    alert(resp[1]);
-//    alert(this.options.rowid);
-    
+	var resp = response.split("\n");
 	if (resp[0] != '0') {
 		var currentrow = $('row-' + this.options.rowid);
 		currentrow.dispose();
 	}
 
 	$('ajaxresponse').removeClass('ajax-loading');
-    $('ajaxresponse').className = "ajaxsuccess";
-	$('ajaxresponse').set('text',resp[1]);
-}
-
-function commentarydeleted(response) {
-	var resp = response.split("&");
-
-//    alert(resp[0]);
-//    alert(resp[1]);
-//    alert(this.options.rowid);
-
-	if (resp[0] != '0') {
-		var currentrow = $('rowcomment-' + this.options.rowid);
-		currentrow.dispose();
-	}
-
-	$('ajaxresponse').removeClass('ajax-loading');
-    $('ajaxresponse').className = "ajaxsuccess";
 	$('ajaxresponse').set('text',resp[1]);
 }
 

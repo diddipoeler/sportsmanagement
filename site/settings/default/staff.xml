@@ -1,51 +1,53 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field 	name="show_sectionheader" type="radio" default="1" 
+		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_info" type="radio" default="1" 
+		<field 	name="show_info" type="radio" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_INFO" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_INFO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_extended" type="radio" default="1" 
+		<field 	name="show_extended" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_EXTENDED"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 		
-		<field 	name="show_status" type="radio" default="1" 
+		<field 	name="show_status" type="radio" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_STATUS" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_STATUS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_description" type="radio" default="1" 
+		<field name="show_description" type="radio" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_DESCRIPTION" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_careerstats" type="radio" default="1" 
+		<field	name="show_careerstats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER_STATS"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_career" type="radio" default="1" 
+		<field	name="show_career" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER">
 			<option value="0">JNO</option>
@@ -54,7 +56,8 @@
 
 	</fieldset>
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
 			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
@@ -63,7 +66,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_NAME_FORMAT">
 		</field>
 
-		<field 	name="show_photo" type="radio" default="1" 
+		<field 	name="show_photo" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PHOTO" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PHOTO">
 			<option value="0">JNO</option>
@@ -74,13 +77,13 @@
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_WIDTH">
 		</field>
-		
+<!--		
 		<field 	name="picture_height" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_HEIGHT">
 		</field>
-		
-		<field 	name="show_nationality" type="radio" default="0" 
+-->		
+		<field 	name="show_nationality" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_NATIONALITY" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_NATIONALITY">
 			<option value="0">JNO</option>
@@ -97,63 +100,63 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION4_BIRTHDAY</option>
 		</field>
 
-		<field 	name="show_person_address" type="radio" default="0" 
+		<field 	name="show_person_address" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_ADDRESS" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_ADDRESS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_phone" type="radio" default="0" 
+		<field 	name="show_person_phone" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_PHONE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_PHONE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_person_mobile" type="radio" default="0" 
+		<field 	name="show_person_mobile" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_MOBILE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_MOBILE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_email" type="radio" default="0" 
+		<field 	name="show_person_email" type="radio" default="0"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_EMAIL" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_EMAIL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_person_website" type="radio" default="0" 
+		<field 	name="show_person_website" type="radio" default="0"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEBSITE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEBSITE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_height" type="radio" default="1" 
+		<field 	name="show_person_height" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_HEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 
-		<field 	name="show_person_weight" type="radio" default="1" 
+		<field 	name="show_person_weight" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 
-		<field 	name="show_person_regnr" type="radio" default="1" 
+		<field 	name="show_person_regnr" type="radio" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_REGNUMBER" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_REGNUMBER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 		
-		<field 	name="show_general_description" type="radio" default="0" 
+		<field 	name="show_general_description" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_GEN_DESCRIPTION" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_GEN_DESCRIPTION">
 			<option value="0">JNO</option>
@@ -174,7 +177,8 @@
 		</field>
 	</fieldset>
 	
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 			
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 

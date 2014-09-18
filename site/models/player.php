@@ -559,7 +559,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
      * @param mixed $cards
      * @return
      */
-    function getTimePlayed( $player_id, $game_regular_time, $match_id = NULL ,$cards = NULL )
+    public static function getTimePlayed( $player_id, $game_regular_time, $match_id = NULL ,$cards = NULL )
     {
         $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
@@ -698,7 +698,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 * @param mixed $teamplayer_id
 	 * @return
 	 */
-	function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0)
+	public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0)
 	{
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');

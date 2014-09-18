@@ -69,9 +69,14 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
         $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $document = JFactory::getDocument();
+        //$this->state = $this->get('State'); 
+        $command = JRequest::getCmd('task');
         
-        $this->task = JRequest::getCmd('task');
-        //$post = JRequest::get( 'post' );
+        // Explode the controller.task command.
+	   list ($this->controller, $this->task) = explode('.', $command);
+    
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($this->task,true).'</pre>'),'');
+        
         $this->step = $mainframe->getUserState( "$option.step", '0' );
         
         if ( !$this->step )
@@ -80,18 +85,23 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
         }
 
 		$this->assign('request_url',$uri->toString() );
+        $this->work_table = '';
+        $this->bar_value = 0;
         
         switch ($this->task)
         {
             case 'truncate':
             case 'optimize':
             case 'repair':
-            $this->assign('sm_tables',$model->getSportsManagementTables() );
-            $this->assign('totals',count($this->sm_tables) );
-            if ( $this->step < count($this->sm_tables) )
+            $jsm_tables = $model->getSportsManagementTables();
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');
+            
+            $this->assign('totals',count(sportsmanagementModeldatabasetool::$jsmtables) );
+            if ( $this->step < count(sportsmanagementModeldatabasetool::$jsmtables) )
             {
-            $successTable = $model->setSportsManagementTableQuery($this->sm_tables[$this->step], $this->task);    
-            $this->work_table = $this->sm_tables[$this->step];
+            $successTable = $model->setSportsManagementTableQuery(sportsmanagementModeldatabasetool::$jsmtables[$this->step], $this->task);    
+            $this->work_table = sportsmanagementModeldatabasetool::$jsmtables[$this->step];
             //$this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
             $this->assign('bar_value',round( ( $this->step * 100 / $this->totals ), 0) );
             //$model::$bar_value = round( ( $this->step * 100 / $this->totals ), 0) ;
@@ -106,44 +116,38 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
             
             
             
-            
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+}
+else
+{    
 $javascript = "\n";            
 $javascript .= '            jQuery(function() {' . "\n"; 
 $javascript .= '    var progressbar = jQuery( "#progressbar" ),' . "\n"; 
-
 $javascript .= '      progressLabel = jQuery( ".progress-label" );' . "\n"; 
-
-
-
 $javascript .= '     progressbar.progressbar({' . "\n"; 
-//$javascript .= '      value: false,' . "\n"; 
 $javascript .= '      value: '.$this->bar_value.',' . "\n";
-
 $javascript .= '      create: function() {' . "\n"; 
 $javascript .= '        progressLabel.text( "'.$this->task.' -> " + progressbar.progressbar( "value" ) + "%" );' . "\n"; 
 $javascript .= '      },' . "\n";
-
 $javascript .= '      change: function() {' . "\n"; 
 $javascript .= '        progressLabel.text( progressbar.progressbar( "value" ) + "%" );' . "\n"; 
 $javascript .= '      },' . "\n"; 
-
 $javascript .= '      complete: function() {' . "\n"; 
 $javascript .= '        progressLabel.text( "Complete!" );' . "\n"; 
 $javascript .= '      }' . "\n"; 
-
 $javascript .= '    });' . "\n"; 
 $javascript .= '     function progress() {' . "\n"; 
 $javascript .= '      var val = progressbar.progressbar( "value" ) || 0;' . "\n"; 
 $javascript .= '       progressbar.progressbar( "value", '.$this->bar_value.' );' . "\n";
 $javascript .= '       if ( val < 99 ) {' . "\n"; 
-
 $javascript .= '        setTimeout( progress, 100 );' . "\n"; 
 $javascript .= '      }' . "\n"; 
 $javascript .= '    }' . "\n"; 
 $javascript .= '     setTimeout( progress, 3000 );' . "\n"; 
 $javascript .= '  });' . "\n"; 
 $document->addScriptDeclaration( $javascript );            
-            
+}            
             $this->step++;
             $mainframe->setUserState( "$option.step", $this->step); 
             break;

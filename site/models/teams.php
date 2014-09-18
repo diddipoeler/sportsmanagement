@@ -41,8 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelTeams
  * 
@@ -54,8 +52,8 @@ jimport( 'joomla.application.component.model' );
  */
 class sportsmanagementModelTeams extends JModelLegacy
 {
-	var $projectid = 0;
-	var $divisionid = 0;
+	static $projectid = 0;
+	static $divisionid = 0;
 	var $teamid = 0;
 	var $team = null;
 	var $club = null;
@@ -67,10 +65,10 @@ class sportsmanagementModelTeams extends JModelLegacy
 	 */
 	function __construct( )
 	{
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->divisionid = JRequest::getInt( "division", 0 );
+		self::$projectid = JRequest::getInt( "p", 0 );
+		self::$divisionid = JRequest::getInt( "division", 0 );
         
-        sportsmanagementModelProject::$projectid = $this->projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid; 
 
 		parent::__construct( );
 	}
@@ -83,9 +81,9 @@ class sportsmanagementModelTeams extends JModelLegacy
 	function getDivision()
 	{
 		$division = null;
-		if ($this->divisionid != 0)
+		if (self::$divisionid != 0)
 		{
-			$division = parent::getDivision($this->divisionid);
+			$division = parent::getDivision(self::$divisionid);
 		}
 		return $division;
 	}

@@ -39,6 +39,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+jimport('joomla.html.html.bootstrap');
+}
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -77,8 +82,8 @@ if (isset($this->person))
 	{
 		$output[intval($this->config['show_order_plinfo'])] = 'info';
 	}
-	}
-    
+	
+    }
     else
     {
     if($this->config['show_players_layout'] == "player_standard")
@@ -105,31 +110,128 @@ if (isset($this->person))
 	{
 		$output[intval($this->config['show_order_extended'])] = 'extended';
 	}
+    
 	if ($this->config['show_plstatus'] == 1 && $this->hasStatus )
 	{
 		$output[intval($this->config['show_order_plstatus'])] = 'status';
 	}
+    
 	if ($this->config['show_description'] == 1 && !empty($this->hasDescription) )
 	{
 		$output[intval($this->config['show_order_description'])] = 'description';
 	}
+    
 	if ($this->config['show_gameshistory'] == 1 && count($this->games) )
 	{
 		$output[intval($this->config['show_order_gameshistory'])] = 'gameshistory';
 	}
+    
 	if ($this->config['show_plstats'] == 1 )
 	{
 		$output[intval($this->config['show_order_plstats'])] = 'playerstats';
 	}
+    
 	if ($this->config['show_plcareer'] == 1 && count($this->historyPlayer) > 0 )
 	{
 		$output[intval($this->config['show_order_plcareer'])] = 'playercareer';
 	}
+    
 	if ($this->config['show_stcareer'] == 1 && count($this->historyPlayerStaff) > 0 )
 	{
 		$output[intval($this->config['show_order_stcareer'])] = 'playerstaffcareer';
 	}
 
+    
+    
+    // welche joomla version ?
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+    {
+    $count = 0;
+    foreach ($output as $templ)
+    {
+    
+    if ( !$count )
+    {
+    // Define slides options
+        $slidesOptions = array(
+            "active" => "slide".$count."_id" // It is the ID of the active tab.
+        );    
+    // Define tabs options for version of Joomla! 3.0
+        $tabsOptions = array(
+            "active" => "tab".$count."_id" // It is the ID of the active tab.
+        );      
+    }    
+    $count++;	   
+    }
+           
+    if( $this->config['show_players_layout'] == "player_tabbed" ) 
+    {
+    $count = 0;    
+    ?>
+        <!-- This is a list with tabs names. -->
+    	<ul class="nav nav-tabs" id="ID-Tabs-Group">
+        <?PHP
+        foreach ($output as $templ)
+        {
+        $active = '';    
+        if ( $count == 0 )
+        {
+            $active = 'active';
+        }    
+        ?>
+        <li class="<?php echo $active; ?>">
+        <a data-toggle="tab" href="#tab<?php echo $count; ?>_id"><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)); ?>
+        </a>
+       	</li>
+        <?PHP
+        $count++;
+        }
+        ?>
+        </ul>
+            
+    <?PHP    
+    echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
+    $count = 0;  
+    foreach ($output as $templ)
+    {
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab'.$count.'_id');
+    echo $this->loadTemplate($templ);
+    echo JHtml::_('bootstrap.endPanel'); 
+    $count++;
+    }
+    echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');    
+    }
+    else if($this->config['show_players_layout'] == "player_slider" ) 
+    {
+    // This renders the beginning of the slides code.
+    echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);  
+    $count = 0;  
+    foreach ($output as $templ)
+    {
+        // Open the first slide
+        echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_('COM_SPORTSMANAGEMENT_PLAYER_TAB_LABEL_'.strtoupper($templ)), 'slide'.$count.'_id');
+        echo $this->loadTemplate($templ);
+        // This is the closing tag of the first slide
+        echo JHtml::_('bootstrap.endSlide');  
+        $count++;
+    } 
+    // This renders the end part of the slides code.	
+    echo JHtml::_('bootstrap.endAccordion');
+
+    }
+    else 
+    {
+
+	foreach ($output as $templ)
+	{
+	echo $this->loadTemplate($templ);
+	}
+	
+    }
+        
+    }
+    else
+    {    
     // diddipoeler
     // anzeige als tabs oder slider von joomlaworks
     // und die spielerinfo immer als erstes
@@ -163,16 +265,15 @@ if (isset($this->person))
     }    
     else 
     {
-//  if ($this->config['show_plinfo'] == 1)
-//	{
-//		$output[intval($this->config['show_order_plinfo'])] = 'info';
-//	}     
+
 	foreach ($output as $templ)
 	{
 	echo $this->loadTemplate($templ);
 	}
-	}
+	
+    }
     
+    }
      
     //}
 	// Person view END

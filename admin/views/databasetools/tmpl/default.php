@@ -42,7 +42,19 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<?PHP
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
+//echo $this->loadTemplate('joomla3');
+//}
+//else
+//{
+//echo $this->loadTemplate('joomla2');    
+//}
+?>
+
 	<div id="editcell">
 		<table class="adminlist">
 			<thead>

@@ -306,11 +306,22 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 
 		// Select some fields
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
+        $query->select('t1.id AS team1');
+        $query->select('t2.id AS team2');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // Join 
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
+        
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON st1.team_id = t1.id ');
+        
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON st2.team_id = t2.id ');
+        
         // Where
         $query->where('m.published=1');
 

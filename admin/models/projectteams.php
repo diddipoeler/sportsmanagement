@@ -605,7 +605,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->where('pt.project_id = ' . $project_id);
-        if ( $in_used && isset($this->_pro_teams_in_used) )
+        if ( $in_used && isset(self::$_pro_teams_in_used) )
         {
         $query->where('pt.team_id NOT IN (' . implode(",",self::$_pro_teams_in_used) .')');    
         }

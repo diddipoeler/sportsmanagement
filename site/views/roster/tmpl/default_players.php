@@ -480,6 +480,10 @@ if (!empty($this->rows))
             
             // spielzeit des spielers
             $timePlayed = 0;
+            if ( !isset($this->overallconfig['person_events']) )
+            {
+                $this->overallconfig['person_events'] = NULL;
+            }
             $this->assign('timePlayed',sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
             $timePlayed  = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])

@@ -143,7 +143,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->id, $this->match->playground_id);?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
-					<span><?php echo JHtml::link ($playground_link, $this->playground->name); ?></span>
+					<span>
+                    <?php
+                    if ( isset($this->playground->name) )
+                    { 
+                    echo JHtml::link ($playground_link, $this->playground->name);
+                    }
+                    else
+                    {
+                    echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
+                    } 
+                    ?>
+                    </span>
 				</td>
 			</tr>
 		<?php endif;

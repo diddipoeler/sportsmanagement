@@ -58,7 +58,7 @@ if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_co
 <?php
 if (!empty($this->matches))
 {
-$teamid=JRequest::getInt('tid');
+$teamid = JRequest::getInt('tid');
 $nbcols = 0;
 ?>
 
@@ -459,14 +459,7 @@ $nbcols = 0;
 		    </td>
 		<?php
 		}
-		/*
-		 echo JoomleagueModelTeamPlan::showPlayground(	$hometeam,
-		 $guestteam,
-		 $match,
-		 $this->config['show_playground_alert'],
-		 $this->config['show_playground'],
-		 $match->project_id);
-		 */
+		
 		?>
 
 		<?php
@@ -592,7 +585,7 @@ $nbcols = 0;
 					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture,
 										$hometeam->name,
 										$this->config['team_picture_width'],
-										$this->config['team_picture_height'],1);
+										'auto',1);
 
 					$teamA .= '</td>';
 
@@ -600,7 +593,7 @@ $nbcols = 0;
 					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture,
 										$guestteam->name,
 										$this->config['team_picture_width'],
-										$this->config['team_picture_height'],1);
+										'auto',1);
 					$teamB .= '</td>';
 				}
 				break;

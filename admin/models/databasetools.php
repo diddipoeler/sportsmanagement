@@ -59,7 +59,23 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementModelDatabaseTools extends JModelLegacy
 {
-	
+
+/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('administrator');
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+    }    	
 
 }
 ?>

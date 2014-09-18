@@ -44,16 +44,23 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewReferee extends JViewLegacy
 {
 
+	/**
+	 * sportsmanagementViewReferee::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        $mainframe = JFactory::getApplication();
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$person = sportsmanagementModelPerson::getPerson();
 
-		$this->assignRef('project',sportsmanagementModelProject::getProject());
+		$this->assign('project',sportsmanagementModelProject::getProject());
 		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
 		$this->assignRef('config',$config);
 		$this->assignRef('person',$person);
@@ -61,15 +68,15 @@ class sportsmanagementViewReferee extends JViewLegacy
 		$ref = sportsmanagementModelPerson::getReferee();
 		if ($ref)
 		{
-			$titleStr=JText::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
+			$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
 		}
 		else
 		{
-			$titleStr=JText::_('Unknown referee within project');
+			$titleStr = JText::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
 		}
 
 		$this->assignRef('referee',$ref);
-		$this->assignRef('history',$model->getHistory('ASC'));
+		$this->assign('history',$model->getHistory('ASC'));
 
 		$this->assign('title',$titleStr);
 
@@ -90,7 +97,7 @@ class sportsmanagementViewReferee extends JViewLegacy
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 
 		parent::display($tpl);
 	}

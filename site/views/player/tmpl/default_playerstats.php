@@ -141,6 +141,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			$career['started'] = 0;
 			$career['in'] = 0;
 			$career['out'] = 0;
+            $career['playedtime'] = 0;
 			$player = JModelLegacy::getInstance("Person","sportsmanagementModel");
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -160,6 +161,10 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
                     //$this->assign('inoutstat',$player->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
                     
                     // gespielte zeit
+                    if ( !isset($this->overallconfig['person_events']) )
+                    {
+                        $this->overallconfig['person_events'] = NULL;
+                    }
                     $timePlayed = 0;
                     $this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
                     $timePlayed  = $this->timePlayed;

@@ -42,8 +42,11 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //echo 'task -> '.$this->task.'<br>';
-//echo 'sm_tables -><pre>'.print_r($this->sm_tables,true).'</pre><br>';
+//echo 'sm_tables -><pre>'.print_r(sportsmanagementModeldatabasetool::$jsmtables,true).'</pre><br>';
 
+/*
+<div class="progress-label">
+*/
 ?>
 
 
@@ -53,20 +56,34 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <p class="nowarning"><?php echo JText::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
-
-
+<?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+?>
+<div class="progress progress-striped active">
+<div class="bar" style="width: <?php echo $this->bar_value; ?>%;"></div>
+</div>
+<?PHP
+}
+else 
+{
+?>
 <div id="progressbar">
 <div class="progress-label">
 <?php echo $this->task; ?>
 </div>
 </div>
+<?PHP
+echo 'step -> '.$this->work_table.'<br>';
+}
+?>
 
 <input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 <input type="hidden" name="totals" value="<?php echo $this->totals; ?>" />
 
 
 <?PHP
-echo 'step -> '.$this->work_table.'<br>';
+
 
 if ( $this->bar_value < 100)
 {

@@ -80,7 +80,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				$image = sportsmanagementHelper::getPictureThumb($picture,
 					$team->team_name,
 					$this->config['team_picture_width'],
-					$this->config['team_picture_height'],
+					'auto',
 					1);
 			}
 			$smallTeamLogoLink = JHTML::link( $teaminfo_link, $image );

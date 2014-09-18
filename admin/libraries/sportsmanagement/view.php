@@ -60,7 +60,7 @@ class sportsmanagementView extends JViewLegacy
 	protected $icon = '';
 	protected $title = '';
     protected $layout = '';
-    
+    protected $tmpl = '';
     protected $table_data_class = '';
     protected $table_data_div = '';
 
@@ -76,6 +76,7 @@ class sportsmanagementView extends JViewLegacy
 		$mainframe = JFactory::getApplication();
         
         $view = JRequest::getCmd('view', 'cpanel');
+        $this->tmpl = JRequest::getCmd('tmpl', '');
         
 		if (count($errors = $this->get('Errors')))
 		{

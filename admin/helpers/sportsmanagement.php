@@ -55,6 +55,8 @@ jimport('joomla.html.toolbar');
  */
 abstract class sportsmanagementHelper
 {
+    static $latitude = '';
+    static $longitude = '';
 	
     /**
      * sportsmanagementHelper::isJoomlaVersion()
@@ -565,68 +567,68 @@ abstract class sportsmanagementHelper
 		}
 	}
 
-	/**
-	 * Method to return the project teams array (id,name)
-	 *
-	 * @access	public
-	 * @return	array
-	 * @since	0.1
-	 */
-	function getProjectteams($project_id)
-	{
-		$db = JFactory::getDBO();
-		$query='	SELECT	pt.id AS value,
-							t.name AS text,
-							t.notes
+//	/**
+//	 * Method to return the project teams array (id,name)
+//	 *
+//	 * @access	public
+//	 * @return	array
+//	 * @since	0.1
+//	 */
+//	function getProjectteams($project_id)
+//	{
+//		$db = JFactory::getDBO();
+//		$query='	SELECT	pt.id AS value,
+//							t.name AS text,
+//							t.notes
+//
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
+//					WHERE pt.project_id='.$project_id.'
+//					ORDER BY name ASC ';
+//
+//		$db->setQuery($query);
+//		if (!$result=$db->loadObjectList())
+//		{
+//			$this->setError($db->getErrorMsg());
+//			return false;
+//		}
+//		else
+//		{
+//			return $result;
+//		}
+//	}
 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
-					WHERE pt.project_id='.$project_id.'
-					ORDER BY name ASC ';
-
-		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
-		{
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
-	}
-
-	/**
-	 * Method to return the project teams array (id,name)
-	 *
-	 * @access	public
-	 * @return	array
-	 * @since	1.5.03a
-	 */
-	function getProjectteamsNew($project_id)
-	{
-		$db = JFactory::getDBO();
-
-		$query='	SELECT	pt.team_id AS value,
-							t.name AS text,
-							t.notes
-
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
-					WHERE pt.project_id='.(int) $project_id.'
-					ORDER BY name ASC ';
-
-		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
-		{
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
-	}
+//	/**
+//	 * Method to return the project teams array (id,name)
+//	 *
+//	 * @access	public
+//	 * @return	array
+//	 * @since	1.5.03a
+//	 */
+//	function getProjectteamsNew($project_id)
+//	{
+//		$db = JFactory::getDBO();
+//
+//		$query='	SELECT	pt.team_id AS value,
+//							t.name AS text,
+//							t.notes
+//
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
+//					WHERE pt.project_id='.(int) $project_id.'
+//					ORDER BY name ASC ';
+//
+//		$db->setQuery($query);
+//		if (!$result=$db->loadObjectList())
+//		{
+//			$this->setError($db->getErrorMsg());
+//			return false;
+//		}
+//		else
+//		{
+//			return $result;
+//		}
+//	}
 
 	/**
 	 * sportsmanagementHelper::getProjectFavTeams()
@@ -636,27 +638,38 @@ abstract class sportsmanagementHelper
 	 */
 	public static function getProjectFavTeams($project_id)
 	{
-		$db = JFactory::getDBO();
-
-		$query='	SELECT fav_team,
-							fav_team_color,
-							fav_team_text_color,
-							fav_team_highlight_type,
-							fav_team_text_bold
-
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
-					WHERE id='.(int) $project_id;
-
-		$db->setQuery($query);
-		if (!$result=$db->loadObject())
-		{
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
+		
+        if ( $project_id )
+        {
+        $row = JTable::getInstance( 'project', 'sportsmanagementTable' );
+        $row->load( $project_id );
+        return $row;
+        }
+        else
+        {
+        return false;    
+        }
+//        $db = JFactory::getDBO();
+//
+//		$query='	SELECT fav_team,
+//							fav_team_color,
+//					fav_team_text_color,
+//							fav_team_highlight_type,
+//							fav_team_text_bold
+//
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
+//					WHERE id='.(int) $project_id;
+//
+//		$db->setQuery($query);
+//		if (!$result=$db->loadObject())
+//		{
+//			$this->setError($db->getErrorMsg());
+//			return false;
+//		}
+//		else
+//		{
+//			return $result;
+//		}
 	}
 
 	
@@ -1926,7 +1939,7 @@ abstract class sportsmanagementHelper
 	 * @param int $ptid project team id
 	 * @return false|int
 	 */
-	function getTeamMatchResult($game, $ptid)
+	public static function getTeamMatchResult($game, $ptid)
 	{
 		if (!isset($game->team1_result)) {
 			return false;
@@ -2269,9 +2282,9 @@ public function getOSMGeoCoords($address)
         {
 			if($data->status == 'OK')
 			{
-				$this->latitude  = $data->results[0]->geometry->location->lat;
+				self::$latitude  = $data->results[0]->geometry->location->lat;
 				$coords['latitude'] = $data->results[0]->geometry->location->lat; 
-				$this->longitude = $data->results[0]->geometry->location->lng;
+				self::$longitude = $data->results[0]->geometry->location->lng;
 				$coords['longitude'] = $data->results[0]->geometry->location->lng;
 				
 				for ($a=0; $a < sizeof($data->results[0]->address_components); $a++ )

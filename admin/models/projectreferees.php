@@ -59,6 +59,12 @@ class sportsmanagementModelProjectReferees extends JModelList
     var $_project_id = 0;
 
 
+/**
+ * sportsmanagementModelProjectReferees::__construct()
+ * 
+ * @param mixed $config
+ * @return void
+ */
 public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -186,9 +192,9 @@ public function __construct($config = array())
         
         if ($search)
 		{
-        $query->where('(LOWER(p.lastname) LIKE ' . $db->Quote( '%' . $search . '%' ).
-						   'OR LOWER(p.firstname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
-						   'OR LOWER(p.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) . ')');
+        $query->where('(LOWER(p.lastname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ).
+						   'OR LOWER(p.firstname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ) .
+						   'OR LOWER(p.nickname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ) . ')');
         }
         
 //        $query->select(array('p.firstname',

@@ -44,7 +44,11 @@ jimport('joomla.application.component.model');
 
 class sportsmanagementModelReferee extends JModelLegacy
 {
-	/**
+	static $projectid		= 0;
+	static $personid		  = 0;
+
+    
+    /**
 	 * cache for data query
 	 * @var object
 	 */
@@ -54,13 +58,22 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 * data array for history
 	 * @var array
 	 */
-	var $_history=null;
+	static $_history = null;
 
 	function __construct()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
 		parent::__construct();
-		$this->projectid=JRequest::getInt('p',0);
-		$this->personid=JRequest::getInt('pid',0);
+		self::$projectid = JRequest::getInt('p',0);
+		self::$personid = JRequest::getInt('pid',0);
+        
+        sportsmanagementModelPerson::$projectid = JRequest::getInt('p',0);
+		sportsmanagementModelPerson::$personid = JRequest::getInt('pid',0);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
 	}
 
 //	function &getReferee()
@@ -100,87 +113,157 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 * @param string $filter e.g. "s.name=2007/2008",default empty string
 	 * @return array of objects
 	 */
-	function &getHistory($order='ASC')
+	function getHistory($order='ASC')
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
+	   //$db = JFactory::getDBO();
        
-		if (empty($this->_history))
+	   $query = JFactory::getDBO()->getQuery(true);
+       
+		if (empty(self::$_history))
 		{
-			$personid=$this->personid;
-			$query='	SELECT	per.id AS pid,
-								pr.person_id,
-								pr.project_id,
-								pos.name AS position_name,
-								per.firstname,
-								per.lastname,
-								p.name AS project_name,
-								s.name AS season_name,
-								CASE WHEN CHAR_LENGTH(per.alias) THEN CONCAT_WS(\':\',per.id,per.alias) ELSE per.id END AS person_slug,
-								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS per
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.person_id=per.id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=pr.project_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id=p.season_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id=p.league_id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pr.project_position_id=ppos.id
-						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-						WHERE per.id='.$this->_db->Quote($personid).' AND per.published = 1 ORDER BY s.ordering ASC,l.ordering ASC,p.name ASC ';
-			$this->_db->setQuery($query);
-			$this->_history=$this->_db->loadObjectList();
+			//$personid = self::$personid;
+            
+            $query->select('per.id AS pid,per.firstname,per.lastname,CONCAT_WS(\':\',per.id,per.alias) AS person_slug');
+            $query->select('pr.person_id,pr.project_id');
+            $query->select('pos.name AS position_name');
+            $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+            $query->select('s.name AS season_name');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS per ');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS o ON per.id = o.person_id');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.person_id = o.id');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=pr.project_id');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id=p.season_id');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id=p.league_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pr.project_position_id=ppos.id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id');
+            $query->where('per.id = '.self::$personid);
+            $query->where('per.published = 1');
+            
+            $query->order('s.ordering ASC');
+            $query->order('l.ordering ASC');
+            $query->order('p.name '.$order);
+            
+			//$query='	SELECT	,
+//								,
+//								,
+//								,
+//								,
+//								,
+//								CASE WHEN CHAR_LENGTH(per.alias) THEN CONCAT_WS(\':\',per.id,per.alias) ELSE per.id END AS person_slug,
+//								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS project_slug
+//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS per
+//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.person_id=per.id
+//                        
+//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=pr.project_id
+//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id=p.season_id
+//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id=p.league_id
+//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pr.project_position_id=ppos.id
+//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
+//						WHERE per.id='.$this->_db->Quote($personid).' AND per.published = 1 ORDER BY s.ordering ASC,l.ordering ASC,p.name ASC ';
+			
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+            JFactory::getDBO()->setQuery($query);
+			self::$_history = JFactory::getDBO()->loadObjectList();
 		}
-		return $this->_history;
+		return self::$_history;
 	}
 
+	/**
+	 * sportsmanagementModelReferee::getPresenceStats()
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $person_id
+	 * @return
+	 */
 	function getPresenceStats($project_id,$person_id)
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
-       // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
+//       // Create a new query object.		
+//	   $db = JFactory::getDBO();
+	   $query = JFactory::getDBO()->getQuery(true);
        
-		$query='	SELECT	count(mr.id) AS present
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON mr.match_id=m.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id
-					WHERE pr.person_id='.$this->_db->Quote((int)$person_id).' AND pr.project_id='.$this->_db->Quote((int)$project_id);
-		$this->_db->setQuery($query,0,1);
-		$inoutstat=$this->_db->loadResult();
+       $query->select('count(mr.id) AS present');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON mr.match_id=m.id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id');
+       $query->where('pr.person_id = '.$personid);
+       $query->where('pr.project_id = '.$project_id);
+       
+//		$query='	SELECT	count(mr.id) AS present
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON mr.match_id=m.id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id
+//					WHERE pr.person_id='.$this->_db->Quote((int)$person_id).' AND pr.project_id='.$this->_db->Quote((int)$project_id);
+		
+        JFactory::getDBO()->setQuery($query,0,1);
+		$inoutstat = JFactory::getDBO()->loadResult();
 		return $inoutstat;
 	}
 
+	/**
+	 * sportsmanagementModelReferee::getGames()
+	 * 
+	 * @return
+	 */
 	function getGames()
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
-	   $query = $db->getQuery(true);
+	   //$db = JFactory::getDBO();
+	   $query = JFactory::getDBO()->getQuery(true);
        
-		$query='	SELECT	m.*,
-							t1.id AS team1,
-							t2.id AS team2,
-							r.roundcode,
-							r.project_id
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ON mr.match_id=m.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id=r.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=r.project_id
-					WHERE	pr.person_id='.$this->_db->Quote($this->personid).'
-							AND r.project_id='.$this->_db->Quote($this->projectid).'
-							AND m.published=1
-					ORDER BY m.match_date ';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+       $query->select('m.*');
+       $query->select('t1.id AS team1');
+       $query->select('t2.id AS team2');
+       $query->select('r.roundcode,r.project_id');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ON mr.match_id = m.id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id = mr.project_referee_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS o ON o.id = pr.person_id');
+       
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = pt1.team_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = pt2.team_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id');
+       
+       $query->where('o.person_id = '.self::$personid);
+       $query->where('r.project_id = '.self::$projectid);
+       $query->where('m.published = 1');
+       
+       $query->order('m.match_date');
+       
+//		$query='	SELECT	m.*,
+//							t1.id AS team1,
+//							t2.id AS team2,
+//							r.roundcode,
+//							r.project_id
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ON mr.match_id=m.id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id
+//                    
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id=r.id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
+//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=r.project_id
+//					WHERE	pr.person_id='.$this->_db->Quote(self::$personid).'
+//							AND r.project_id='.$this->_db->Quote(self::$projectid).'
+//							AND m.published=1
+//					ORDER BY m.match_date ';
+                    
+                    
+                    
+		JFactory::getDBO()->setQuery($query);
+		return JFactory::getDBO()->loadObjectList();
 	}
 
 }

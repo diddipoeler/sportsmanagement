@@ -163,8 +163,11 @@ $extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
 		//$rssfeedlink = $this->extended2->getValue('formation1');
     $this->assign( 'formation1', $this->extended2->getValue('formation1'));
     $this->assign( 'formation2', $this->extended2->getValue('formation2'));
-    $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
-    $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
+//    $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
+//    $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
+    
+    $schemahome = $this->assign('schemahome',$model->getPlaygroundSchema($this->formation1,'heim'));
+    $schemaaway = $this->assign('schemaaway',$model->getPlaygroundSchema($this->formation2,'gast'));
 
 //    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 //    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
@@ -749,7 +752,7 @@ if ( $this->config['show_pictures'] == 1 )
 		{
 			$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($picture,
 																		$this->config['player_picture_width'],
-																		$this->config['player_picture_height']);
+																		'auto');
 		}
 		$tiptext .= '&lt;br /&gt;'.sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$time=($matchEvent->event_time / $this->getTimelineMatchTime()) *100;

@@ -2,10 +2,10 @@
 jQuery(document).ready(function() {	
 
 updatePlayerSelect();
-//	if(jQuery('team_id')) 
-//  {
-//		jQuery('team_id').addEvent('change', updatePlayerSelect);
-//   }
+	if(jQuery("#team_id")) 
+  {
+		jQuery("#team_id").addEvent('change', updatePlayerSelect);
+   }
       
 //jQuery.ajaxSetup({
 //        // put your favorite error function here:
@@ -34,10 +34,10 @@ jQuery("#save-new-subst").click(function(){
           jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
           
-var playerin = jQuery('in').value;
-				var playerout = jQuery('out').val();
-				var position = jQuery('project_position_id').val();
-				var time = jQuery('in_out_time').val();
+var playerin = jQuery("#in").value;
+				var playerout = jQuery("#out").val();
+				var position = jQuery("#project_position_id").val();
+				var time = jQuery("#in_out_time").val();
 				var querystring = '&in=' + playerin + '&out=' + playerout
 						+ '&project_position_id=' + position + '&in_out_time='
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
@@ -62,18 +62,19 @@ var playerin = jQuery('in').value;
           jQuery("#ajaxresponse").addClass('ajax-loading');
           var rowid = this.id.substr(5);
 					var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
-					var player = jQuery('teamplayer_id').val();
-					var event = jQuery('event_type_id').val();
-					var team = jQuery('team_id').val();
-					var time = jQuery('event_time').val();
-          var notice = encodeURIComponent(jQuery('notice').val());
+					var player = jQuery("#teamplayer_id").val();
+					var event = jQuery("#event_type_id").val();
+					var team = jQuery("#team_id").val();
+					var time = jQuery("#event_time").val();
+          var notice = encodeURIComponent(jQuery("#notice").val());
+          var event_sum = jQuery("#event_sum").val();
 					var querystring = 'teamplayer_id=' + player +
 					'&projectteam_id=' + team + 
 					'&event_type_id=' + event + 
 					'&event_time=' + time + 
 					'&match_id=' + matchid +
           '&projecttime=' + projecttime + 
-					'&event_sum=' + jQuery('event_sum').value +
+					'&event_sum=' + event_sum +
 					'&notice=' + notice;
           jQuery("#ajaxresponse").html(querystring);
           
@@ -81,7 +82,8 @@ var playerin = jQuery('in').value;
         //jQuery("#ajaxresponse").html("hallo");
     });
     
-  jQuery("#save-new-comment").click(function(){
+  jQuery("#save-new-comment").click(function()
+  {
           jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
           var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
@@ -341,11 +343,12 @@ jQuery("#rowcomment-" + eventid).remove();
 
 function updatePlayerSelect() 
 {
-//	if(jQuery('cell-player'))
-//	jQuery('cell-player').empty().appendChild(
-//			getPlayerSelect(jQuery("#team_id").val())
-//      );
-getPlayerSelect(jQuery("#team_id").val());
+	if(jQuery("#cell-player"))
+	jQuery("#cell-player").empty().appendChild(
+			getPlayerSelect(jQuery("#team_id").val());
+      );
+
+//getPlayerSelect(jQuery("#team_id").val());
       
 }
 

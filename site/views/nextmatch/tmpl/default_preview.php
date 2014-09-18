@@ -83,11 +83,27 @@ if (!$commentsDisabled) {
 
 	// get joomleague comments plugin params
 	$plugin	= JPluginHelper::getPlugin('content', 'joomleague_comments');
-	if (is_object($plugin)) {
+	if (is_object($plugin)) 
+    {
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $pluginParams = new JInput($plugin->params);
+    }
+    else
+    {
 		$pluginParams = new JParameter($plugin->params);
+        }
 	}
-	else {
+	else 
+    {
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $pluginParams = new JInput('');
+    }
+    else
+    {
 		$pluginParams = new JParameter('');
+        }
 	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 

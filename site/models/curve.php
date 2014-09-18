@@ -141,8 +141,9 @@ class sportsmanagementModelCurve extends JModelLegacy
                 $query->where('pt1.division_id='.$db->Quote($this->division));
 			}
             
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+            
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
             $query->where('pt2.project_id='.$db->Quote($this->projectid));
             
@@ -156,8 +157,9 @@ class sportsmanagementModelCurve extends JModelLegacy
                 $query->where('pt2.division_id='.$db->Quote($this->division));
 			}
             
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+            
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt1.project_id = p.id AND pt2.project_id = p.id ');
             
 //			$query .= ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id=t2.id'

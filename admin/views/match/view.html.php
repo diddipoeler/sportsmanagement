@@ -414,9 +414,12 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
+    $params = JComponentHelper::getParams ( $option );
+    $default_name_dropdown_list_order = $params->get ( "cfg_be_name_dropdown_list_order", "lastname" );
+    $default_name_format = $params->get ( "name_format", 14 );
     
     $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_editevents.js');
+        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editevents.js');
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
@@ -476,7 +479,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $this->assignRef('teams',$teams);
         $this->assignRef('rosters',$rosters);
         $this->assignRef('lists',$lists);
-        
+        $this->assignRef('default_name_format', $default_name_format );
+        $this->assignRef('default_name_dropdown_list_order', $default_name_dropdown_list_order );
         $this->setLayout('editevents');
         
     

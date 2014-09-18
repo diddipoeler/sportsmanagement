@@ -61,7 +61,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public function addGlobalSelectElement($elements, $required=false) 
+        public static function addGlobalSelectElement($elements, $required=false) 
         {
                 if(!$required) 
                 {
@@ -79,7 +79,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL)
+        public static function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -271,7 +271,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectDivisionsOptions($project_id, $required = false)
+        public static function getProjectDivisionsOptions($project_id, $required = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();

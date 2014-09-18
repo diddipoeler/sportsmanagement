@@ -55,17 +55,18 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelPerson extends JModelLegacy
 {
 
-	var $projectid		= 0;
-	var $personid		  = 0;
+	static $projectid		= 0;
+	static $personid		  = 0;
 	var $teamplayerid	= 0;
-	var $person			  = null;
+	static $person			  = null;
 	var $teamplayer		= null;
+    
 
 	/**
 	 * store person info specific to the project
 	 * @var object
 	 */
-	var $_inproject   = null;
+	static $_inproject   = null;
 	/**
 	 * data array for player history
 	 * @var array
@@ -81,10 +82,16 @@ class sportsmanagementModelPerson extends JModelLegacy
  	 */
  	function __construct()
   	{
+  	    $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+        
  		parent::__construct();
-  		$this->projectid	= JRequest::getInt( 'p', 0 );
- 		$this->personid		= JRequest::getInt( 'pid', 0 );
+  		self::$projectid = JRequest::getInt( 'p', 0 );
+ 		self::$personid	= JRequest::getInt( 'pid', 0 );
  		$this->teamplayerid	= JRequest::getInt( 'pt', 0 );
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
  	}
 
 
@@ -95,11 +102,11 @@ class sportsmanagementModelPerson extends JModelLegacy
 	 * @param integer $personid
 	 * @return
 	 */
-	function getPerson($personid=0)
+	public static function getPerson($personid=0)
 	{
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $this->personid	= JRequest::getInt( 'pid', 0 );
+        self::$personid	= JRequest::getInt( 'pid', 0 );
         $starttime = microtime(); 
         
         //$mainframe->enqueueMessage(JText::_('getPerson personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
@@ -114,7 +121,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 		$query->select('p.*');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ');
-        $query->where('p.id = '.$db->Quote($this->personid));
+        $query->where('p.id = '.$db->Quote(self::$personid));
         
 
         
@@ -126,9 +133,9 @@ class sportsmanagementModelPerson extends JModelLegacy
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
                 
-		$this->person = $db->loadObject();
+		self::$person = $db->loadObject();
 		//}
-		return $this->person;
+		return self::$person;
 	}
 
 
@@ -137,11 +144,13 @@ class sportsmanagementModelPerson extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function &getReferee()
+	public static function getReferee()
 	{
+	   $option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
 	   // Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
+		//$db = JFactory::getDBO();
+		$query = JFactory::getDBO()->getQuery(true);
         
 		//if ( is_null( $this->_inproject ) )
 		//{
@@ -151,16 +160,20 @@ class sportsmanagementModelPerson extends JModelLegacy
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS o ON o.id = pr.person_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS o ON o.id = pr.person_id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = o.person_id');
         
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = pr.project_position_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
         
-        $query->where('pr.project_id = '.$db->Quote($this->projectid));
+        $query->where('pr.project_id = '.self::$projectid);
         $query->where('p.published = 1 ');
-        $query->where('o.person_id = '.$db->Quote($this->personid));
-          
+        $query->where('o.person_id = '.self::$personid);
+        JFactory::getDBO()->setQuery($query);
+		self::$_inproject = JFactory::getDBO()->loadObject();  
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 //        $query='	SELECT	p.*,
 //								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS slug,
 //								pr.id,
@@ -187,7 +200,7 @@ class sportsmanagementModelPerson extends JModelLegacy
         
         
         //}
-		return $this->_inproject;
+		return self::$_inproject;
 	}
 
 //	/**
@@ -397,7 +410,7 @@ class sportsmanagementModelPerson extends JModelLegacy
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st1.id = pt.team_id');
 
         $query->where('me.event_type_id =' . $db->Quote((int) $eventid));
-        $query->where('tp1.person_id = ' . $db->Quote((int) $this->personid));
+        $query->where('tp1.person_id = ' . $db->Quote((int) self::$personid));
                         
 				if ($projectteamid)
 				{
@@ -478,7 +491,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	 * @param mixed $config_editOwnPlayer
 	 * @return
 	 */
-	function getAllowed($config_editOwnPlayer)
+	public static function getAllowed($config_editOwnPlayer)
 	{
 	   $mainframe = JFactory::getApplication();
        
@@ -488,7 +501,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 			$allowed=true;
 		}
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
         
 		return $allowed;
 	}
@@ -499,7 +512,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	 * @param mixed $user
 	 * @return
 	 */
-	function _isAdmin($user)
+	public static function _isAdmin($user)
 	{
 	   
 	   // Get a refrence of the page instance in joomla
@@ -528,7 +541,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 			}
 		}
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
         
 		return $allowed;
 	}
@@ -636,7 +649,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	 * @param mixed $config_showContactDataOnlyTeamMembers
 	 * @return
 	 */
-	function isContactDataVisible($config_showContactDataOnlyTeamMembers)
+	public static function isContactDataVisible($config_showContactDataOnlyTeamMembers)
 	{
 		$user = JFactory::getUser();
 		$result = true;

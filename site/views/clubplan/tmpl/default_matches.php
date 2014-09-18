@@ -105,14 +105,14 @@ if ($this->config['type_matches'] != 0) {
 			}
 
 
-			$class=($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
-			$result_link=sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->match_id);
-			$teaminfo1_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
-			$teaminfo2_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
-			$teamstats1_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
-			$teamstats2_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
-			$playground_link =sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);
+			$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
+			$result_link = sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
+			$nextmatch_link = sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->match_id);
+			$teaminfo1_link = sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
+			$teaminfo2_link = sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
+			$teamstats1_link = sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
+			$teamstats2_link = sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
+			$playground_link = sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);
 			$favs = sportsmanagementHelper::getProjectFavTeams($game->project_id);
 			$favteams = explode(",",$favs->fav_team);
 

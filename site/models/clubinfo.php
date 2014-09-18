@@ -56,7 +56,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 {
 	var $projectid = 0;
 	var $clubid = 0;
-	var $club = null;
+	static $club = null;
     
     var $new_club_id = 0;
     var $historyhtml = '';
@@ -202,7 +202,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         
         $this->projectid = JRequest::getInt( "p", 0 );
 		$this->clubid = JRequest::getInt( "cid", 0 );
-        if ( is_null( $this->club ) )
+        if ( is_null( self::$club ) )
 		{
 			if ( $this->clubid > 0 )
 			{
@@ -214,10 +214,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy
              $query->where('c.id = '. $db->Quote($this->clubid) );
 
 				$db->setQuery($query);
-				$this->club = $db->loadObject();
+				self::$club = $db->loadObject();
 			}
 		}
-		return $this->club;
+		return self::$club;
 	}
 
 	/**

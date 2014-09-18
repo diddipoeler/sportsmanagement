@@ -4,6 +4,7 @@
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
     label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
 		<field name="show_sectionheader" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
@@ -19,6 +20,7 @@
 		</field>
 		
 		<field name="show_club_internetadress_picture" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
 			<option value="0">JNO</option>
@@ -26,6 +28,7 @@
 		</field>
     
 		<field name="show_club_info" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUBINFO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUBINFO">
 			<option value="0">JNO</option>
@@ -33,6 +36,7 @@
 		</field>
 		
 		<field name="show_club_rssfeed" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RSSFEED"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RSSFEED">
 			<option value="0">JNO</option>
@@ -40,6 +44,7 @@
 		</field>
 		
 		<field name="show_club_kunena_link" type="radio" default="0"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_CLUB_KUNENA_LINK"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_CLUB_KUNENA_LINK">
 			<option value="0">JNO</option>
@@ -47,6 +52,7 @@
 		</field>
 		
 		<field name="show_extra_fields" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTRA_FIELDS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTRA_FIELDS">
 			<option value="0">JNO</option>
@@ -54,6 +60,7 @@
 		</field>
 		
 		<field name="show_extended" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
@@ -61,6 +68,7 @@
 		</field>
 		
 		<field name="show_extended_geo_values" type="radio" default="0"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED_GEO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED_GEO">
 			<option value="0">JNO</option>
@@ -68,12 +76,14 @@
 		</field>
 		
 		<field name="show_maps" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_MAPS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_MAPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_teams_of_club" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
 			<option value="0">JNO</option>
@@ -81,6 +91,7 @@
 		</field>
 		
 		<field name="show_teams_description_of_club" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_DESC_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_DESC_CLUB">
 			<option value="0">JNO</option>
@@ -88,6 +99,7 @@
 		</field>
 		
 		<field name="show_teams_shortcut_of_club" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_SHORTCUT_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_SHORTCUT_CLUB">
 			<option value="0">JNO</option>
@@ -95,6 +107,7 @@
 		</field>
 		
 		<field name="show_teams_trikot_of_club" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_TRIKOT_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_TRIKOT_CLUB">
 			<option value="0">JNO</option>
@@ -107,6 +120,7 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 		<field name="show_club_logo" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_LOGO">
 			<option value="0">JNO</option>
@@ -125,24 +139,28 @@
 -->   
  
 		<field name="show_route" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_ROUTE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_playgrounds_of_club" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_VENUES_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_VENUES_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_club_season_calendar" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SEASON"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SEASON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="show_club_shirt" type="radio" default="0"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SHIRT">
 			<option value="0">JNO</option>

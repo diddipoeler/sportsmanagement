@@ -49,7 +49,7 @@ if(count($this->extended->getFieldsets()) > 0)
 	
 	foreach ($this->extended->getFieldsets() as $fieldset)
 	{
-		if ( $this->config['show_extended_geo_values'] )
+		if ( isset($this->config['show_extended_geo_values']) )
         {
             $fields = $this->extended->getFieldset($fieldset->name);
         }

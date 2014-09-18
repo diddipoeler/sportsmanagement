@@ -95,7 +95,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function removeEvent()
     {
         // Check for request forgeries
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
 
@@ -127,7 +127,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         
         // Check for request forgeries
         //JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
         //JRequest::checkToken('request') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
@@ -177,7 +177,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	{
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
 		$substid = JRequest::getInt('substid',0);
 		$model = $this->getModel();
@@ -205,7 +205,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 
 		//$mainframe = JFactory::getApplication();
 		$data = array();
@@ -242,7 +242,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     {
         //$option = JRequest::getCmd('option');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         //$mainframe = JFactory::getApplication();
         
         //$response = self::getAjaxResponse();
@@ -287,7 +287,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
         
 		$data = array();
 		$data['in'] 					= JRequest::getInt('in');

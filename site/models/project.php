@@ -220,7 +220,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getSportsType()
+	public static function getSportsType()
 	{
 		if (!$project = self::getProject())
 		{
@@ -530,7 +530,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param mixed $id
 	 * @return
 	 */
-	function getDivision($id)
+	public static function getDivision($id)
 	{
 		$divs = self::getDivisions();
 		if ($divs && isset($divs[$id])) {
@@ -694,7 +694,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param mixed $projectteamid
 	 * @return
 	 */
-	function getTeaminfo($projectteamid)
+	public static function getTeaminfo($projectteamid)
 	{
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -904,7 +904,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getFavTeams()
+	public static function getFavTeams()
 	{
 		$project = self::getProject();
 		if(!is_null($project))
@@ -1306,7 +1306,7 @@ $starttime = microtime();
 	 * @param int positionid 0 for all positions
 	 * @return array objects
 	 */
-	function getProjectStats($statid=0,$positionid=0)
+	public static function getProjectStats($statid=0,$positionid=0)
 	{
 	  $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1374,7 +1374,7 @@ $starttime = microtime();
 	 * 
 	 * @return
 	 */
-	function getProjectPositions()
+	public static function getProjectPositions()
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
@@ -1520,7 +1520,7 @@ $starttime = microtime();
 		$result = false;
 		if($userId > 0)
 		{
-			$result= ($userId==$project->admin || $userId==$project->editor);
+			$result = ( $userId==$project->admin || $userId==$project->editor );
 		}
 		return $result;
 	}
@@ -1724,12 +1724,15 @@ $starttime = microtime();
 					$allowed = true;
 				}
 			}
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($allowed,true).'</pre>' ),'');
+            
 			//if no ACL permission, check for overruling permission by project admin/editor (compatibility < 2.5)
 			if(!$allowed) 
             {
 				// If not, then check if user is project admin or editor
 				$project = self::getProject();
-				if($this->isUserProjectAdminOrEditor($user->id, $project))
+				if(self::$isUserProjectAdminOrEditor($user->id, $project))
 				{
 					$allowed = true;
 				} 
@@ -1739,6 +1742,9 @@ $starttime = microtime();
                     $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),'Error');
 				}
 			}
+            
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($allowed,true).'</pre>' ),'');
+            
 		}
 		return $allowed;
 	}

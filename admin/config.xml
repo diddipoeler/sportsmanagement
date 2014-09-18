@@ -70,6 +70,7 @@
     <field name="show_debug_info" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -79,6 +80,7 @@
 <field name="show_query_debug_info" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_QUERY_DEBUG_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_QUERY_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -101,6 +103,12 @@
                description="COM_SPORTSMANAGEMENT_SETTINGS_CHARACTER_FILTER_END_HEX_DESCR">
         </field>
 		
+		<field name="template_sort_orders" 
+    type="text" 
+    default="10"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_TEMPLATE_SORT_ORDERS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_TEMPLATE_SORT_ORDERS_DESC">
+		</field>
 		
 		<field name="max_import_jl_import_steps" 
     type="text" 
@@ -308,6 +316,7 @@
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
 <field name="force_ranking_cache" type="radio" default="0"
+class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE" description="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -362,8 +371,18 @@
 			
 			<option value="1000">alles importieren</option>
 		</field>
-    
-    
+
+<field name="name_format" type="nameformat" default="0"
+               label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_NAME_FORMAT" 
+               description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_NAME_FORMAT">
+        </field>
+            
+<field name="cfg_be_name_dropdown_list_order" type="list" default="lastname"
+               label="COM_SPORTSMANAGEMENT_SETTINGS_NAME_DROPDOWN_LIST_ORDER_TITLE" description="COM_SPORTSMANAGEMENT_SETTINGS_NAME_DROPDOWN_LIST_ORDER_DESCR">
+            <option value="lastname">COM_SPORTSMANAGEMENT_SETTINGS_NAME_DROPDOWN_LIST_ORDER_PARAM_OPTION0_LASTNAME</option>
+            <option value="firstname">COM_SPORTSMANAGEMENT_SETTINGS_NAME_DROPDOWN_LIST_ORDER_PARAM_OPTION1_FIRSTNAME</option>
+            <option value="position">COM_SPORTSMANAGEMENT_SETTINGS_NAME_DROPDOWN_LIST_ORDER_PARAM_OPTION2_POSITION</option>
+        </field>    
     	
 <field name="current_season" 
 type="actseason" 
@@ -390,6 +409,7 @@ multiple="true"
 <field name="show_team_community" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_TEAM_COMMUNITY" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_TEAM_COMMUNITY_DESC">
 			<option value="0">JNO</option>
@@ -401,6 +421,7 @@ multiple="true"
 <field name="show_debug_info_clubs" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_CLUBS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -409,6 +430,7 @@ multiple="true"
 <field name="show_debug_info_teams" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_TEAMS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -417,6 +439,7 @@ multiple="true"
     <field name="show_debug_info_leagues" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_LEAGUES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -425,6 +448,7 @@ multiple="true"
     <field name="show_debug_info_seasons" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SEASONS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -433,6 +457,7 @@ multiple="true"
     <field name="show_debug_info_playgrounds" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_PLAYGROUNDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -441,6 +466,7 @@ multiple="true"
     <field name="show_debug_info_positions" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_POSITIONS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -449,6 +475,7 @@ multiple="true"
     <field name="show_debug_info_statistics" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_STATISTICS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -457,6 +484,7 @@ multiple="true"
     <field name="show_debug_info_sportstypes" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SPORTSTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -465,6 +493,7 @@ multiple="true"
     <field name="show_debug_info_eventtypes" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_EVENTTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -474,6 +503,7 @@ multiple="true"
     <field name="show_debug_info_rounds" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_ROUNDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -483,6 +513,7 @@ multiple="true"
     <field name="show_debug_info_matches" 
     type="radio" 
     default="0"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_MATCHES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -585,11 +616,13 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 			<option value="6">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_SATURDAY</option>
 		</field>
 		<field name="weekend" type="radio" default="1" 
+		class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_DESC"> 
             <option value="1">JYES</option> 
             <option value="0">JNO</option> 
         </field>
 		<field name="week_numbers" type="radio" default="0" 
+		class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_DESC"> 
             <option value="1">JYES</option> 
             <option value="0">JNO</option> 
@@ -636,6 +669,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_DESC"
 			rows="5" cols="50" filter="raw"/>
 		<field name="show_event_as_popup" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_DESC">
 			<option value="1">JYES</option>
 			<option value="2">JNO</option>
@@ -656,6 +690,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 
 
 		<field name="event_description_format" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_LABEL"
 			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_DESC">
 			<option value="1">JYES</option>

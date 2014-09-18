@@ -189,6 +189,7 @@ class sportsmanagementModelLeagues extends JModelList
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $search_nation = '';
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($mainframe,true).'</pre>'),'Notice');
         

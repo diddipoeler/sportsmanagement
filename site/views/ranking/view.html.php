@@ -281,8 +281,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
         }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-        
 		if (($this->config['show_ranking_maps'])==1)
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();

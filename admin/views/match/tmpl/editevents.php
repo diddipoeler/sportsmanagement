@@ -1,4 +1,42 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -12,12 +50,65 @@ JHtml::_('behavior.formvalidation');
 
 #echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
-// JUtility::getToken()
-/*
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
-*/
+
 ?>
+<script type="text/javascript">
+<!--
+var homeroster = new Array;
+<?php
+$i = 0;
+foreach ($this->rosters['home'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($this->default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
+}
+?>
+var awayroster = new Array;
+<?php
+$i = 0;
+foreach ($this->rosters['away'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($this->default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
+}
+?>
+var rosters = Array(homeroster, awayroster);
+
+
+//-->
+</script>
+
+
 
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
@@ -25,7 +116,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 <div id="UserError" ></div>
 <div id="UserErrorWrapper" ></div>
 
-<div id="ajaxresponse" >ajax</div>
+<div id="ajaxresponse" ></div>
 	<fieldset>
 		<div class="fltrt">
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
@@ -102,7 +193,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
                         
                         
 						<td style='text-align:center; ' >
-							<?php echo JHtml::_('form.token'); ?>
+							
 							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
@@ -197,6 +288,18 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 <div style="clear: both"></div>
 <?php //echo JHtml::_('form.token')."\n"; ?>
 
-<input type="hidden" id="token" name="token" value="<?php echo JUtility::getToken(); ?>" />	
+<input type="hidden" id="token" name="token" value="
+<?php 
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo JSession::getFormToken();    
+}
+else
+{    
+echo JUtility::getToken(); 
+}
+
+
+?>" />	
 </form>
 
