@@ -88,7 +88,8 @@
 	</fieldset>
 
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 		<field name="show_club_info" type="radio" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_SHOW_CLUB_INFO" 
@@ -127,7 +128,8 @@
 		
 	</fieldset>
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS"  
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_HISTORY_OPTIONS">
 
 		<field name="ordering_teams_seasons" type="list" default="1"
@@ -189,6 +191,7 @@
 	</fieldset>
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 		
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 

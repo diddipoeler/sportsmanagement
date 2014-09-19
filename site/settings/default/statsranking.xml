@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field 	name="show_sectionheader" type="radio" default="1" class="radio btn-group btn-group-yesno"
@@ -12,7 +13,8 @@
 
 	</fieldset>
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
 			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 	
@@ -35,7 +37,8 @@
 		
 	</fieldset>
 	
-	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"
+  label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS">	
 
 		<field	name="name_format" type="nameformat" default="0"
@@ -77,6 +80,7 @@
 	</fieldset>	
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">
 
 		<field	name="highlight_fav" type="radio" default="1"  class="radio btn-group btn-group-yesno"
@@ -160,6 +164,7 @@
 	</fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 		
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 

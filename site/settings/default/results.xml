@@ -2,6 +2,7 @@
 <form>
 
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 	
 		<field name="show_sectionheader" type="radio" default="1"
@@ -20,7 +21,7 @@
 		</field>
 
 		<field	name="show_rounds_dates" type="radio" default="1"
-		v
+	                class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_ROUNDS_DATE"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_ROUNDS_DATE">
 			<option value="0">JNO</option>
@@ -70,6 +71,7 @@
 	</fieldset>
 
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
         <field	name="show_matchday_dateheader" type="radio" default="1"
@@ -194,6 +196,7 @@
 	</fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_DIV_OPTIONS">	
 			
 		<field	name="show_division" type="radio" default="0"
@@ -222,7 +225,8 @@
 			
 	</fieldset>
 	
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS" 
 			addfieldpath="/administrator/components/com_sportsmanagement/elements">
 			
@@ -282,6 +286,7 @@
 	</fieldset>			
 	
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_LIVE_MATCHES"
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_LIVE_MATCHES"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_LIVE_MATCHES">
 	
 		<field	name="mark_now_playing" type="radio" default="0"
@@ -344,6 +349,7 @@
 	</fieldset>
 
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">
 
 		<field	name="show_logo_small" type="list" default="6"
@@ -452,7 +458,8 @@
 
 	</fieldset>
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 			
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 

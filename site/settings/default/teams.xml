@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <form>
 <fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		
 		<field 	name="show_sectionheader" type="radio" default="1" 
@@ -22,6 +23,7 @@
 </fieldset>
 
 <fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
+label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 		<field 	name="show_small_logo" type="radio" default="1" 
@@ -98,6 +100,7 @@
 	</fieldset>
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 		
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 
