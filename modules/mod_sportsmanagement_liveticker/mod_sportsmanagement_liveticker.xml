@@ -37,7 +37,16 @@
 		<fields name="params">
 
 		<fieldset name="basic">
-		<field name="use_local_jquery" 
+		<field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="use_local_jquery"  class="radio btn-group btn-group-yesno"
 			type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY" description="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY_DESC" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -48,23 +57,27 @@
 			<option value="simple.css">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_SIMPLE</option>
 		</field>
 
-		<field name="allow_unregistered" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_ALLOW_UNREGISTERED_SHOUT" description="" >
+		<field name="allow_unregistered" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_ALLOW_UNREGISTERED_SHOUT" description="" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 
-		<field name="display_liganame" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
+		<field name="display_liganame" type="radio" default="0" class="radio btn-group btn-group-yesno" 
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
 		</field>
 
-		<field name="display_commentary" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY" >
+		<field name="display_commentary" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="display_ligaflagge" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
+		<field name="display_ligaflagge" type="radio" default="0" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
 		</field>
@@ -76,33 +89,40 @@
 			<option value="3">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_NO</option>
 		</field>
 
-		<field name="display_teamwappen" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
+		<field name="display_teamwappen" type="radio" default="0" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
 		</field>
-		<field name="display_anstoss" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS" >
+		<field name="display_anstoss" type="radio" default="0" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
 		</field>
-		<field name="display_abpfiff" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF" >
+		<field name="display_abpfiff" type="radio" default="0" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF" >
 			<option value="0">JYES</option>
 			<option value="1">JNO</option>
 		</field>
 
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="display_username" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USERNAME" >
+		<field name="display_username" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USERNAME" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="display_title" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TITLE" >
+		<field name="display_title" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TITLE" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="display_guests" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_GUESTS" >
+		<field name="display_guests" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_GUESTS" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="display_welcome" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_WELCOME" >
+		<field name="display_welcome" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_WELCOME" >
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>

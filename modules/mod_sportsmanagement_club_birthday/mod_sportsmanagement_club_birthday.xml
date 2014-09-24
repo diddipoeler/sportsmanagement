@@ -34,7 +34,15 @@
 
 			<fieldset	name="basic"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
-
+     <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
@@ -58,7 +66,7 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
 						description="" />
 
-				<field 	name="show_club_flag" type="radio" default="1"
+				<field 	name="show_club_flag" type="radio" default="1" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_DESCR">
 					<option value="0">JNO</option>
@@ -69,7 +77,7 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_DESCR" />
 
-				<field 	name="show_picture" type="radio" default="0"
+				<field 	name="show_picture" type="radio" default="0" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_DESCR">
 					<option value="0">JNO</option>
@@ -153,7 +161,7 @@
 				<field name="scrollspeed" type="text" default="2"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLSPEED" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLSPEED" />
-				<field name="scrollpause" type="radio" default="1"
+				<field name="scrollpause" type="radio" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLPAUSE" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLPAUSE">
 					<option value="0">JNO</option>

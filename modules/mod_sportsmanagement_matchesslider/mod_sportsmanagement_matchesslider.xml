@@ -35,7 +35,15 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
 
-
+    <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
  
 				<field	name="project" type="projects" default="" required="false"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"

@@ -35,7 +35,32 @@
 			<fieldset	name="basic"
 						>
 
-				<field 	name="p" type="projects" required="true"
+        <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="s" 
+      type="seasonlist"
+      
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+		
+		
+				<field 	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
 						label="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_DESCR" />
 
@@ -52,22 +77,24 @@
 
 				<field 	name="visible_team" type="dependsql" default="" 
 						depends="p"
-						task="projectteamsoptions" 
+						key_field="project_id"
+			value_field="p"
+						task="projectteamoptions" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_VISIBLE_TEAM_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_VISIBLE_TEAM_DESCR" />
 
-				<field 	name="show_project_name" type="list" default="0"
+				<field 	name="show_project_name" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_PROJECT_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_PROJECT_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="show_ranking_link" type="list" default="1"
+				<field 	name="show_ranking_link" type="radio" default="1" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKING_LINK_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKING_LINK_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 
@@ -75,11 +102,11 @@
 						label=""
 						description="" />
 
-				<field 	name="showRankColumn" type="radio" default="1"
+				<field 	name="showRankColumn" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="columns" type="text" default="PLAYED, POINTS"
@@ -122,11 +149,11 @@
 					<option value="2">MOD_SPORTSMANAGEMENT_RANKING_COUNTRY_FLAG</option>
 				</field>
 
-				<field 	name="show_rank_colors" type="radio" default="0"
+				<field 	name="show_rank_colors" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANK_COLOR_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANK_COLOR_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="fav_team_highlight_type" type="radio" default="1"
@@ -136,11 +163,11 @@
 					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_OPTION0</option>
 				</field>
 
-				<field 	name="fav_team_bold" type="radio" default="0"
+				<field 	name="fav_team_bold" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_BOLD_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_BOLD_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
 

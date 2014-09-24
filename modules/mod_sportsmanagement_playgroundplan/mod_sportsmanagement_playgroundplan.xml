@@ -33,32 +33,40 @@
 
 			<fieldset name="basic"
 				addfieldpath="/administrator/components/com_sportsmanagement/elements">
-
+     <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 				<field name="projects" type="projects" default="" required="true"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
 				<field name="playground" type="playgrounds" default=""
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL_DESC" />
-				<field name="show_project_name" type="list" default="0"
+				<field name="show_project_name" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field name="show_league_name" type="list" default="1"
+				<field name="show_league_name" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field name="show_playground_name" type="list" default="1"
+				<field name="show_playground_name" type="radio" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field name="show_playground_link" type="list" default="1"
+				<field name="show_playground_link" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK_DESC">
 					<option value="0">JNo</option>
@@ -71,7 +79,7 @@
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MIDDLE_NAME</option>
 					<option value="short_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHORT_NAME</option>
 				</field>
-				<field name="show_club_logo" type="list" default="1"
+				<field name="show_club_logo" type="radio" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO_DESC">
 					<option value="0">JNo</option>

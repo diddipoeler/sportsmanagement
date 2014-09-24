@@ -36,7 +36,15 @@
 			<fieldset	name="basic"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MODULE_TITLE"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
-
+      <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 				<field 	name="template" type="templatelist" default="default_tableless"
 						addfieldpath="/modules/mod_sportsmanagement_matches/fields/"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_TEMPLATE_TITLE" 
