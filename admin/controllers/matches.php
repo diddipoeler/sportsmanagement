@@ -107,7 +107,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		}
 		else
 		{
-			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS');
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -187,7 +187,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		}
 		else
 		{
-			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST');
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();

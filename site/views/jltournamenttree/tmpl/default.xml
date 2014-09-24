@@ -11,7 +11,15 @@
     <fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_JLTOURNAMENTTREE_STATE_NAME"
 					>
-    
+    <field name="cfg_which_database" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
         
 <field type="sql" name="p" label="COM_SPORTSMANAGEMENT_XML_JLTOURNAMENTTREE_SELECT_PROJECT_LABEL" description="COM_SPORTSMANAGEMENT_XML_JLTOURNAMENTTREE_SELECT_PROJECT_DESCR"
                 query="SELECT id AS value, name AS p FROM #__sportsmanagement_project ORDER BY name" />

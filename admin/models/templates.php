@@ -73,6 +73,7 @@ class sportsmanagementModelTemplates extends JModelList
                         'tmpl.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

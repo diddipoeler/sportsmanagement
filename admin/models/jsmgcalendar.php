@@ -63,6 +63,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	 */
 	public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
 

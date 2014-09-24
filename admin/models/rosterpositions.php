@@ -57,6 +57,12 @@ class sportsmanagementModelrosterpositions extends JModelList
 {
 	var $_identifier = "rosterpositions";
 	
+    /**
+     * sportsmanagementModelrosterpositions::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -67,6 +73,7 @@ class sportsmanagementModelrosterpositions extends JModelList
                         'obj.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

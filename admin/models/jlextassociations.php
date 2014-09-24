@@ -74,6 +74,7 @@ class sportsmanagementModeljlextassociations extends JModelList
                         'objassoc.picture'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

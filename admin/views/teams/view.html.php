@@ -132,8 +132,15 @@ $this->icon = 'teams';
 		JToolBarHelper::custom('team.copysave','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),true);
 		JToolBarHelper::custom('team.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('team.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');
 		
+		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('teams.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');    
+        }
         parent::addToolbar();
 	}
 }

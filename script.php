@@ -109,13 +109,15 @@ class com_sportsmanagementInstallerScript
 	 */
 	function preflight($type, $parent) 
 	{
-	   
-        switch ($type)        
+	
+    /*   
+    switch ($type)        
     {
     case "update":
     self::deleteFolders($parent);
     break;
     }
+    */
        
        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -214,17 +216,19 @@ $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'con
 $jRegistry = new JRegistry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
+$newparams = array();
+
+/*
 $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
 $form->bind($jRegistry);
-$newparams = array();
 foreach($form->getFieldset($fieldset->name) as $field)
         {
         $newparams[$field->name] = $field->value;
         }
+*/
 
 
-
-            switch ($type)        
+    switch ($type)        
     {
     case "install":
     self::setParams($newparams);

@@ -125,6 +125,9 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
+	   $app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -137,8 +140,16 @@ $starttime = microtime();
 		JToolBarHelper::editList('league.edit');
 		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');
-		
+        
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('leagues.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');    
+        }
+        
         parent::addToolbar();
 	}
 }

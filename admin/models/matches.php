@@ -74,6 +74,7 @@ class sportsmanagementModelMatches extends JModelList
                         'mc.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

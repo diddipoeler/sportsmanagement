@@ -129,7 +129,15 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
         $bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');
         
 		JToolBarHelper::archiveList('smquote.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'smquotes.delete', 'JTOOLBAR_DELETE');
+		
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('smquotes.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'smquotes.delete', 'JTOOLBAR_DELETE');    
+        }
         
 		parent::addToolbar();
 	}

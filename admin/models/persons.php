@@ -75,6 +75,7 @@ class sportsmanagementModelPersons extends JModelList
                         );
                    
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -510,6 +511,7 @@ class sportsmanagementModelPersons extends JModelList
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       $results = array();
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -539,7 +541,8 @@ class sportsmanagementModelPersons extends JModelList
 			}
 			return $results;
 		}
-		return false;
+		//return false;
+        return $results;
 	}
     
 

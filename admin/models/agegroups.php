@@ -80,6 +80,8 @@ class sportsmanagementModelagegroups extends JModelList
                         'obj.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                
         }
         
     /**

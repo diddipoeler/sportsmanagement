@@ -142,7 +142,15 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::editList('eventtype.edit');
 		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
+		//JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('eventtypes.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');    
+        }
 		
         parent::addToolbar();
 	}

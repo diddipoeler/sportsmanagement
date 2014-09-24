@@ -150,12 +150,14 @@ class sportsmanagementViewMatch extends sportsmanagementView
         // layout editreferees
         if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
 		{
+		  $this->setLayout('editreferees');
         $this->initEditReferees();
         }
         
         // layout editevents
         if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
 		{
+		$this->setLayout('editevents');
         $this->initEditEevents();
         }
         
@@ -168,12 +170,14 @@ class sportsmanagementViewMatch extends sportsmanagementView
         // layout editstats
         if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
 		{
+		$this->setLayout('editstats');  
 		$this->initEditStats();
         }
         
         // layout editlineup
         if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
 		{
+		  $this->setLayout('editlineup');
 		$this->initEditLineup();  
         }
         
@@ -481,6 +485,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $this->assignRef('lists',$lists);
         $this->assignRef('default_name_format', $default_name_format );
         $this->assignRef('default_name_dropdown_list_order', $default_name_dropdown_list_order );
+        
         $this->setLayout('editevents');
         
     
@@ -663,6 +668,15 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$this->assignRef('teamname',$teamname);
         $this->assignRef('starters',$starters);
         $this->assignRef('lists',$lists);
+        
+        
+        $javascript = "\n";
+        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JHtml::_('form.token')."=1';" . "\n";
+        $javascript .= "var matchid = ".$this->item->id.";" . "\n";
+        $javascript .= "var teamid = ".$this->tid.";" . "\n";
+        $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
+        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
+        $document->addScriptDeclaration( $javascript );
         
         $this->setLayout('editlineup');
     }

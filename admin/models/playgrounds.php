@@ -70,6 +70,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
                         'v.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -178,11 +179,18 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		*/
 	function getPlaygrounds()
 	{
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        $starttime = microtime(); 
+        $results = array();
+        
 		$query='SELECT id AS value, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY text ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+		$db->setQuery($query);
+		if (!$result=$db->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
@@ -190,13 +198,27 @@ class sportsmanagementModelPlaygrounds extends JModelList
     
     public function getPlaygroundListSelect()
 	{
-		$query='SELECT id,name,id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        $starttime = microtime(); 
+        $results = array();
+        
+         // Select some fields
+		$query->select('id,name,id AS value,name AS text,short_name,club_id');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+        $query->order('name');
+        
+		//$query='SELECT id,name,id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
+		$db->setQuery($query);
+		if ($results=$db->loadObjectList())
 		{
 			return $results;
 		}
-		return false;
+		//return false;
+        return $results;
 	}
     
     

@@ -56,22 +56,66 @@ class JFormFieldProjects extends JFormFieldList
 
 	protected $type = 'projects';
 
-	/**
-	 * JFormFieldProjects::getInput()
-	 * 
-	 * @return
-	 */
-	//protected function getInput()
+//	/**
+//	 * JFormFieldProjects::getInput()
+//	 * 
+//	 * @return
+//	 */
+//	protected function getInput()
+//    {
+//    $options = array();
+//    $mainframe = JFactory::getApplication();    
+//    $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+//        $value = $this->form->getValue($val,'request');
+//        
+//        if ( !$value )
+//        {
+//        $value = $this->form->getValue($val,'params');
+//        $div = 'params';
+//        }
+//        else
+//        {
+//        $div = 'request';
+//        }
+//        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
+//            
+//    }
+    
     protected function getOptions() 
     {
         $options = array();
-        
-		$db = JFactory::getDBO();
+        $mainframe = JFactory::getApplication();
+		//$db = JFactory::getDBO();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
+        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+        $value = $this->form->getValue($val,'request');
+        
+        if ( !$value )
+        {
+        $value = $this->form->getValue($val,'params');
+        $div = 'params';
+        }
+        else
+        {
+        $div = 'request';
+        }
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
+        
+        $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
+        if ( !$cfg_which_database )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,$cfg_which_database);
+        }
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)

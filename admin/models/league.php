@@ -48,7 +48,10 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelleague extends JModelAdmin
 {
-	/**
+	
+   
+    
+    /**
 	 * Method override to check if you can edit an existing record.
 	 *
 	 * @param	array	$data	An array of input data.
@@ -74,6 +77,7 @@ class sportsmanagementModelleague extends JModelAdmin
 	 */
 	public function getTable($type = 'league', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+       $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

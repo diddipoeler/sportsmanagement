@@ -102,6 +102,7 @@ class sportsmanagementView extends JViewLegacy
             $this->table_data_div = '';
         }
         
+        
         $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 //		if (sportsmanagementHelper::isJoomlaVersion('2.5'))

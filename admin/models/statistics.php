@@ -57,6 +57,12 @@ class sportsmanagementModelStatistics extends JModelList
 {
 	var $_identifier = "statistics";
 	
+    /**
+     * sportsmanagementModelStatistics::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -69,6 +75,7 @@ class sportsmanagementModelStatistics extends JModelList
                         'obj.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

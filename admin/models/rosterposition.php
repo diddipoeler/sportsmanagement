@@ -83,6 +83,7 @@ class sportsmanagementModelrosterposition extends JModelAdmin
 	 */
 	public function getTable($type = 'rosterposition', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

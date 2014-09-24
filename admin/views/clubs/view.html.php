@@ -147,6 +147,8 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
+	    $app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -162,7 +164,14 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
 		JToolBarHelper::editList('club.edit');
 		JToolBarHelper::custom('club.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');
+		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+            {
+		    JToolbarHelper::trash('clubs.trash');
+            }
+            else
+            {
+            JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');    
+            }
 		
         parent::addToolbar();
 		

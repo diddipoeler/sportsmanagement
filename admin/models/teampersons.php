@@ -82,6 +82,7 @@ class sportsmanagementModelTeamPersons extends JModelList
                         'tp.jerseynumber'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
     
     

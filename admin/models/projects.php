@@ -79,6 +79,7 @@ class sportsmanagementModelProjects extends JModelList
                         'ag.name',
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

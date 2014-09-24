@@ -67,6 +67,14 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'h
 // welche joomla version ?
 sportsmanagementHelper::isJoomlaVersion('2.5');
 
+//$command = JRequest::getVar('task');
+$command = JRequest::getVar('task', 'display');
+
+$view = JRequest::getVar('view');
+$lang = JFactory::getLanguage();
+$app = JFactory::getApplication();
+
+
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $params->get( 'cfg_which_database_table' ); 
@@ -77,6 +85,9 @@ $cfg_help_server = $params->get( 'cfg_help_server' );
 $modal_popup_width = $params->get( 'modal_popup_width' );
 $modal_popup_height = $params->get( 'modal_popup_height' );
 
+//$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$params->get( 'cfg_which_database' ) );
 DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$cfg_help_server );
 DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$modal_popup_width );
 DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
@@ -104,12 +115,9 @@ else
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
 
-//$command = JRequest::getVar('task');
-$command = JRequest::getVar('task', 'display');
 
-$view = JRequest::getVar('view');
-$lang = JFactory::getLanguage();
-$app = JFactory::getApplication();
+
+
 $controller = '';
 $type = '';
 $task = '';
@@ -117,8 +125,11 @@ $arrExtensions = sportsmanagementHelper::getExtensions();
 $model_pathes[]	= array();
 $view_pathes[]	= array();
 $template_pathes[]	= array();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
+
+//JFactory::$database = sportsmanagementHelper::getDBConnection();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r(JFactory::$database,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'');
 
 
 // Check for array format.

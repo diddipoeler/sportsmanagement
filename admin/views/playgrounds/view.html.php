@@ -122,7 +122,15 @@ $starttime = microtime();
 		JToolBarHelper::addNew('playground.add');
 		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','playgrounds.delete', 'JTOOLBAR_DELETE');
+		
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('playgrounds.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'playgrounds.delete', 'JTOOLBAR_DELETE');    
+        }
 		JToolBarHelper::divider();
 
         parent::addToolbar();

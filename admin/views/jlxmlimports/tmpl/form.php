@@ -759,7 +759,8 @@ if (isset($this->xml) && is_array($this->xml))
 							$matchingTeam_ID = 0;
 							$matchingTeam_ClubID = 0;
                             $matchingTeam_INFO = '';
-                            
+//echo ' count teams<br><pre>'.print_r(count($this->teams),true).'</pre>';
+//echo ' teams<br><pre>'.print_r($this->teams,true).'</pre>';                             
 							if (count($this->teams) > 0)
 							{
 								foreach ($this->teams AS $team)
@@ -1516,9 +1517,13 @@ if (isset($this->xml) && is_array($this->xml))
 			//===============================================================================================================
 			if (isset($positions) && (is_array($positions) && count($positions) > 0))
 			{
-				?>
+				
+echo ' positions<br><pre>'.print_r($positions,true).'</pre>';                             
+echo ' this - positions<br><pre>'.print_r($this->positions,true).'</pre>';
+                
+                ?>
 				<fieldset>
-					<legend><strong><?php echo JText::_('Position Assignment'); ?></strong></legend>
+					<legend><strong><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'); ?></strong></legend>
 					<table class='adminlist'>
 						<thead>
 							<tr>

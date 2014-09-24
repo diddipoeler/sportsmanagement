@@ -74,6 +74,7 @@ class sportsmanagementModelProjectpositions extends JModelList
                         'pt.id'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
     
      /**

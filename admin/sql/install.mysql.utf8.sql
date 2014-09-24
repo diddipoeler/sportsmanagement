@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `assocflag` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_flags.png' ,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `parent_id` int(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -38,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `assocflag` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_flags.png' ,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `parent_id` int(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -89,6 +91,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `extendeduser` TEXT NULL ,
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`)
@@ -116,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `ds` varchar(3) DEFAULT NULL,
   `wmo` varchar(3) DEFAULT NULL,
   `federation` int(11) NOT NULL DEFAULT '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
@@ -133,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_dfbkey` (
   `checked_out` int(11) NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `country` varchar(3) DEFAULT NULL,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -224,10 +229,11 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `associations` INT(11) NOT NULL DEFAULT '0',
   `extendeduser` TEXT NULL ,
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
-  
   `federation` int(11) NOT NULL DEFAULT '0',
   `website` VARCHAR(250) NOT NULL DEFAULT '' ,
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -325,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_commentary` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` datetime DEFAULT NULL,
   `modified_by` int(11) DEFAULT NULL,
-  
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -350,6 +356,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_event` (
   `modified_by` INT NULL ,
   `penalty_points` INT(11) NOT NULL DEFAULT '0' ,
   `game_part` INT(11) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `projectteam_id` (`projectteam_id`),
@@ -380,6 +387,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_player` (
   `modified_by` INT NULL ,
   `trikot_number` INT(11) NOT NULL DEFAULT '0' ,
   `game_part` INT(11) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `teamplayer_id` (`teamplayer_id`),
@@ -403,6 +411,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_statistic` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `projectteam_id` (`projectteam_id`),
@@ -427,6 +437,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_staff_statistic` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `projectteam_id` (`projectteam_id`),
@@ -450,6 +461,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_referee` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `project_referee_id` (`project_referee_id`),
@@ -472,6 +484,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match_staff` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
   KEY `team_staff_id` (`team_staff_id`),
@@ -589,6 +602,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `country` (`country`)
@@ -634,6 +648,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_position_eventtype` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `position_id` (`position_id`),
   KEY `eventtype_id` (`eventtype_id`),
@@ -654,6 +669,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_position_statistic` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `position_id` (`position_id`),
   KEY `statistic_id` (`statistic_id`),
@@ -749,6 +765,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_position` (
   `position_id` INT(11) NOT NULL ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `position_id` (`position_id`),
@@ -823,6 +840,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `extendeduser` TEXT NULL ,
   `penalty_points` INT(11) NOT NULL DEFAULT '0' ,
   `import` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
@@ -850,6 +868,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (
   `extended` text,
   `picture` varchar(255) NOT NULL DEFAULT 'spielfeld_578x1050.png',
   `players` int(11) NOT NULL default '11',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`short_name`),
   KEY `country` (`country`)
@@ -898,6 +917,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `extendeduser` TEXT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
@@ -918,6 +938,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `modified_by` INT NULL ,
   `picture` VARCHAR(250) NULL ,
   `logo_big` VARCHAR(250) NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
@@ -940,6 +961,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `modified_by` INT NULL ,
   `picture` VARCHAR(250) NULL ,
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
@@ -1006,6 +1028,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_sports_type` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `sportsart` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
@@ -1066,6 +1089,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `sports_type_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1189,6 +1213,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_trainingdata` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`)
@@ -1256,6 +1281,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_treeto_match` (
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `combi` (`node_id`,`match_id`)
   )
@@ -1284,6 +1310,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_treeto_node` (
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+
   PRIMARY KEY  (`id`)
   )
 ENGINE=MyISAM
@@ -1386,6 +1413,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_agegroup` (
   `modified_by` INT NULL ,
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `country` VARCHAR(3) NULL DEFAULT NULL,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `sportstype_id` (`sportstype_id`),
   INDEX `fk_sportstype` (`sportstype_id` ASC)
@@ -1472,6 +1500,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_admin` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `user_id` (`user_id`),
@@ -1521,6 +1550,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_groups` (
   `modified_by` INT NULL ,
   `extendeduser` TEXT NULL ,
   `countmembers` INT(11) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
@@ -1550,6 +1580,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_member` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `group_id` INT(11) NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `user_id` (`user_id`),
@@ -1618,6 +1649,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_result` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `user_id` (`user_id`),
@@ -1665,6 +1697,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_position_ringen` (
   `ordering` int(11) NOT NULL default '0',
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`country`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
@@ -1781,6 +1814,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
  `person_id` INT( 11 ) NOT NULL DEFAULT  '0',
  `clublink` VARCHAR( 250 ) NULL DEFAULT NULL ,
  `clubnummer` VARCHAR( 100 ) NULL DEFAULT NULL,
+ `published` TINYINT(1) NOT NULL DEFAULT '1' ,
 PRIMARY KEY (  `id` ),
   UNIQUE KEY `schluessel` (`name`(150),`link`(150)),
   UNIQUE KEY `schluessel2` (`name`(150),`nummer`(50)) 
@@ -1810,6 +1844,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_gazetteer` (
   `dem` int(11) NOT NULL,
   `timezone` varchar(40) DEFAULT NULL,
   `modified` date NOT NULL DEFAULT '0000-00-00',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -1830,5 +1865,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
   `longitude` float NOT NULL DEFAULT '255',
   `accuracy` int(1) DEFAULT NULL,
   `modified` date NOT NULL DEFAULT '0000-00-00',
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

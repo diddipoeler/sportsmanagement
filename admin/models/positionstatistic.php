@@ -36,6 +36,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	 */
 	public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

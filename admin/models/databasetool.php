@@ -71,7 +71,13 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     static $bar_value = 0;
     
     
-    
+    public function __construct($config = array())
+        {   
+
+                parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
+        }
+        
     /**
      * sportsmanagementModeldatabasetool::runJoomlaQuery()
      * 
@@ -201,13 +207,15 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();
         //$jsmtables = array();
+        $prefix = $mainframe->getCfg('dbprefix');
         
         $result = $db->getTableList();
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
         
         foreach ( $result as $key => $value )
         {
-        if ( preg_match("/sportsmanagement/i", $value ) )
+        if ( preg_match("/sportsmanagement/i", $value ) && preg_match("/".$prefix."/i", $value )  )
         {
         self::$jsmtables[] = $value;
         }   
@@ -1151,6 +1159,7 @@ foreach( $xml->events as $event )
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();
@@ -1165,8 +1174,8 @@ foreach( $xml->events as $event )
         }
         
        $query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
-       $this->_db->setQuery($query);
-       $result = $this->_db->loadResult();
+       $db->setQuery($query);
+       $result = $db->loadResult();
        if ( $result )
        {
        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
@@ -1178,8 +1187,8 @@ foreach( $xml->events as $event )
        }
        else
        { 
-        // Get a db connection.
-        $db = JFactory::getDbo();
+        //// Get a db connection.
+//        $db = JFactory::getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
         // Insert columns.

@@ -68,6 +68,7 @@ class JoomleagueModelTreetomatch extends JoomleagueModelItem
 	 */
 	public function getTable($type = 'treetomatch', $prefix = 'table', $config = array())
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
 	

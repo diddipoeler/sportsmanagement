@@ -312,6 +312,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 */
 	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

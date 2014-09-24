@@ -82,6 +82,7 @@ class sportsmanagementModeljlextcountries extends JModelList
                         'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

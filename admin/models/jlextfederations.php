@@ -79,6 +79,7 @@ class sportsmanagementModeljlextfederations extends JModelList
                         'objassoc.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

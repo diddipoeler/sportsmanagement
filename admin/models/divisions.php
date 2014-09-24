@@ -71,6 +71,7 @@ class sportsmanagementModelDivisions extends JModelList
                         'dv.picture'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

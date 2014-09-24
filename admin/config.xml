@@ -58,8 +58,70 @@
 			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
 		</field>
 		
+		<field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field
+			name="jsm_dbtype"
+			type="databaseconnection"
+			label="COM_CONFIG_FIELD_DATABASE_TYPE_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_TYPE_DESC"
+			supported="mysql,mysqli,postgresql,sqlsrv,sqlazure"
+			filter="string" />
+
+		<field
+			name="jsm_host"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_HOST_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_HOST_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jsm_user"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_USERNAME_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_USERNAME_DESC"
+			filter="string"
+			size="30" />
+			
+			<field
+			name="jsm_password"
+			type="password"
+			label="JGLOBAL_PASSWORD"
+			description="COM_ADMIN_USER_FIELD_PASSWORD_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jsm_db"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_NAME_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_NAME_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jsm_dbprefix"
+			type="text"
+			default="jos_"
+			label="COM_CONFIG_FIELD_DATABASE_PREFIX_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_PREFIX_DESC"
+			filter="string"
+			size="10" />
+		
+		
+		
+		
 		<field name="cfg_which_database_table" 
-    type="radio"
+    type="hidden"
 			default="sportsmanagement" 
       label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_TABLE_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_TABLE_DESC">

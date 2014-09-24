@@ -85,6 +85,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	 */
 	public function getTable($type = 'MatchSingle', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

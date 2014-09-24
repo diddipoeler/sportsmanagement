@@ -29,7 +29,7 @@
 			<fieldset name="advanced">
 			<field name="cfg_which_database" 
     type="radio" 
-    default="1"
+    default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">

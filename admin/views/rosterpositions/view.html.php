@@ -107,7 +107,15 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		//JToolBarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		//JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
 		
-		JToolBarHelper::deleteList('', 'rosterpositions.delete');
+		//JToolBarHelper::deleteList('', 'rosterpositions.delete');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('rosterpositions.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');    
+        }
         
 		parent::addToolbar();  
        

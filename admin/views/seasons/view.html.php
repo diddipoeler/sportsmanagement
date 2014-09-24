@@ -128,7 +128,9 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{ 
-		        
+		$app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+               
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
@@ -142,7 +144,15 @@ $starttime = microtime();
 		}
 		if ($canDo->get('core.delete')) 
 		{
-			JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');
+			if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+            {
+		    JToolbarHelper::trash('seasons.trash');
+            }
+            else
+            {
+            JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
+            }
+            
 		}
         
         parent::addToolbar();

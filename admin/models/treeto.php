@@ -182,6 +182,7 @@ class sportsmanagementModelTreeto extends JModelAdmin
 	 */
 	public function getTable($type = 'treeto', $prefix = 'table', $config = array())
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
 

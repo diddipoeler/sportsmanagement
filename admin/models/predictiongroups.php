@@ -71,6 +71,7 @@ class sportsmanagementModelpredictiongroups extends JModelList
                         's.id'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

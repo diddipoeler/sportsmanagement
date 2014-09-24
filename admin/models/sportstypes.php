@@ -54,6 +54,12 @@ class sportsmanagementModelSportsTypes extends JModelList
 	var $_identifier = "sportstypes";
     //var $setError = '';
     
+    /**
+     * sportsmanagementModelSportsTypes::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -66,6 +72,7 @@ class sportsmanagementModelSportsTypes extends JModelList
                         's.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

@@ -40,6 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'ajax.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php');  
 
 jimport('joomla.form.helper');
 //JFormHelper::loadFieldClass('list');
@@ -74,6 +75,11 @@ class JFormFieldDependSQL extends JFormField
 	 */
 	protected $type = 'dependsql';
     
+    /**
+     * JFormFieldDependSQL::getInput()
+     * 
+     * @return
+     */
     protected function getInput()
 	{
 	   $mainframe = JFactory::getApplication();
@@ -86,7 +92,7 @@ class JFormFieldDependSQL extends JFormField
 		$depends = $this->element['depends'];
         $query = (string)$this->element['query'];
         $value = $this->form->getValue($val,'request');
-        
+
 		if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="'.$v.'"';
@@ -99,11 +105,13 @@ class JFormFieldDependSQL extends JFormField
         }
         else
         {
-            $div = 'request';
+        $div = 'request';
         }
         
-
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Notice');
+        $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
+        
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($this->value,true).'</pre>'),'Notice');
 
 		$ctrl = $this->name;
 		$id = $this->id;
@@ -117,34 +125,54 @@ class JFormFieldDependSQL extends JFormField
 $script[] = "\n";       
 $script[] = "jQuery(document).ready(function ($){";
 
-$script[] = "				$('#jform_".$div."_".$depends."').change(function(){";
 $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
+//$script[] = "					var dbparam = $('#jform_".$div."_cfg_which_database').prop('checked');";
 
-//$script[] = " alert(value);";
+//$script[] = " alert('cfg_which_database ' + dbparam);";
 
 $script[] = "					$.ajax({";
-$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
 $script[] = "						dataType: 'json'";
 $script[] = "					}).done(function(data) {";
 $script[] = "						$('#".$this->id." option').each(function() {";
-//$script[] = "							if ($(this).val() != '1') {";
-//$script[] = "								$(this).remove();";
-$script[] = "								jQuery('select#".$this->id." option').remove();";
-//$script[] = "							}";
+//$script[] = "								jQuery('select#".$this->id." option').remove();";
 $script[] = "						});";
 $script[] = "";
 $script[] = "						$.each(data, function (i, val) {";
 $script[] = "							var option = $('<option>');";
 $script[] = "							option.text(val.text).val(val.value);";
-
-//$script[] = " alert(val.text);";
-
 $script[] = "							$('#".$this->id."').append(option);";
 $script[] = "						});";
 
 $script[] = "						$('#".$this->id."').trigger('liszt:updated');";
 $script[] = "					});";
+
+$script[] = "				$('#jform_".$div."_".$depends."').change(function(){";
+$script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
+//$script[] = "					var dbparam = $('#jform_params_cfg_which_database').val();";
+//$script[] = "					var dbparam = $('#jform_home').prop('checked');";
+//$script[] = "					var dbparam = $('input:radio[name=jform_home]:checked').val();";
+//$script[] = " alert('value -> ' + value);";
+
+$script[] = "					$.ajax({";
+$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+$script[] = "						dataType: 'json'";
+$script[] = "					}).done(function(data) {";
+$script[] = "						$('#".$this->id." option').each(function() {";
+$script[] = "								jQuery('select#".$this->id." option').remove();";
+$script[] = "						});";
+$script[] = "";
+$script[] = "						$.each(data, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							$('#".$this->id."').append(option);";
+$script[] = "						});";
+
+$script[] = "						$('#".$this->id."').trigger('liszt:updated');";
+$script[] = "					});";
+
 $script[] = "				});";
+
 $script[] = "});";       
        
        // Add the script to the document head.

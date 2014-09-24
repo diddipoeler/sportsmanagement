@@ -75,7 +75,9 @@ class sportsmanagementModelLeagues extends JModelList
                         'ag.name',
                         'fed.name'
                         );
+                //$config['dbo'] = sportsmanagementHelper::getDBConnection();  
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -133,7 +135,7 @@ class sportsmanagementModelLeagues extends JModelList
         $search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.name,obj.short_name,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time');
@@ -164,6 +166,9 @@ class sportsmanagementModelLeagues extends JModelList
 
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
+                
+                
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');        
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -198,7 +203,7 @@ class sportsmanagementModelLeagues extends JModelList
         $search_nation	= $this->getState('filter.search_nation');
         }
         // Get a db connection.
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select('id,name');

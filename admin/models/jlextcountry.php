@@ -80,6 +80,7 @@ class sportsmanagementModeljlextcountry extends JModelAdmin
 	 */
 	public function getTable($type = 'jlextcountry', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

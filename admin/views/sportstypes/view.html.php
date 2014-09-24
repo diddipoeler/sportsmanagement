@@ -108,6 +108,8 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
+	   $app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -120,7 +122,15 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		JToolBarHelper::editList('sportstype.edit');
 		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','sportstypes.delete', 'JTOOLBAR_DELETE');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('sportstypes.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'sportstypes.delete', 'JTOOLBAR_DELETE');    
+        }
+		
 		
         parent::addToolbar();
 	}

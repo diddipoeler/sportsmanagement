@@ -56,6 +56,8 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
+//jimport('joomla.application.component.modelform');
+
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'databasetool.php');
 
 /**
@@ -81,6 +83,17 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
     var $show_debug_info = false;
     var $_league_new_country = '';
     var $_import_project_id = 0;
+    
+//    public function __construct($config = array())
+//        {   
+////            $mainframe = JFactory::getApplication();
+////            
+////            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
+////            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'Notice');
+////            
+////                parent::__construct($config);
+////                parent::setDbo(sportsmanagementHelper::getDBConnection());
+//        }
 
 	/**
 	 * sportsmanagementModelJLXMLImport::_getXml()
@@ -1537,7 +1550,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	private function _checkProject()
 	{
 	   $mainframe = JFactory::getApplication();
-       $query = JFactory::getDbo()->getQuery(true);
+       $db = JFactory::getDbo();
+       //$db = sportsmanagementHelper::getDBConnection();
+       $query = $db->getQuery(true);
        
 		/*
 		TO BE FIXED again
@@ -1550,17 +1565,18 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         $query->select('id');
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
-        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_name)).''));
+        $query->where('name LIKE '.$db->Quote(''.addslashes(stripslashes($this->_name)).''));
         //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
-			JFactory::getDbo()->setQuery($query);
+			$db->setQuery($query);
             
-
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
         
 //		$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project WHERE name='".addslashes(stripslashes($this->_name))."'";
 //		JFactory::getDbo()->setQuery($query);
 //		sportsmanagementModeldatabasetool::runJoomlaQuery();
-		if (JFactory::getDbo()->getNumRows() > 0)
+		if ($db->getNumRows() > 0)
         {
             return false;
         }
@@ -2199,13 +2215,16 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$p_position->load(JFactory::getDbo()->loadResult());
 					// Prevent showing of using existing position twice (see the foreach JFactory::getDbo()positionsid loop)
-					if ($this->_convertPositionID[$oldID]!=$p_position->id)
+					if ( isset($this->_convertPositionID[$oldID]) )
+                    {
+                    if ( $this->_convertPositionID[$oldID] != $p_position->id )
 					{
 						$this->_convertPositionID[$oldID]=$p_position->id;
 						$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 						$my_text .= JText::sprintf('Using existing position data: %1$s','</span><strong>'.JText::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
 					}
+                    }
 				}
 				else
 				{
@@ -2749,7 +2768,14 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
                 //$mainframe->enqueueMessage(JText::_('result<br><pre>'.print_r($key,true).'</pre>'   ),'');
                 
                 $new_pg_id = $this->_convertPlaygroundID[$oldID];
+                if ( isset($this->_convertClubID[$club_id]) )
+                {
                 $new_club_id = $this->_convertClubID[$club_id];
+                }
+                else
+                {
+                    $new_club_id = 0;
+                }
                 $p_playground = $this->_getPlaygroundRecord($new_pg_id);
                 if ( $p_playground->club_id != $new_club_id )
                 {
@@ -3223,10 +3249,14 @@ $this->dump_variable("import_team", $import_team);
 	 */
 	private function _importProject()
 	{
-		$my_text='';
+		$mainframe = JFactory::getApplication();
+        $my_text='';
 		
         $mdl = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $p_project = $mdl->getTable();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mdl<br><pre>'.print_r($mdl,true).'</pre>'),'Notice');  
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' p_project<br><pre>'.print_r($p_project,true).'</pre>'),'Notice');  
         
 		$p_project->set('name',trim($this->_name));
 		$p_project->set('alias',JFilterOutput::stringURLSafe(trim($this->_name)));
@@ -3406,6 +3436,7 @@ $this->dump_variable("import_team", $import_team);
 	{
 	   $mainframe = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
+       $defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
        
 		$my_text='';
 		if ($this->_template_id > 0) // Uses a master template
@@ -3470,12 +3501,15 @@ $this->dump_variable("import_team", $import_team);
 			{
 				foreach ($this->_datas['template'] as $value)
 				{
+				    
 					
                     $mdl = JModelLegacy::getInstance("template", "sportsmanagementModel");
                     $p_template = $mdl->getTable();
                     
-					$template=$this->_getDataFromObject($value,'template');
+					$template = $this->_getDataFromObject($value,'template');
 					$p_template->set('template',$template);
+                    
+                    
 					//actually func is unused in 1.5.0
 					//$p_template->set('func',$this->_getDataFromObject($value,'func'));
 					$p_template->set('title',$this->_getDataFromObject($value,'title'));
@@ -3494,11 +3528,60 @@ $this->dump_variable("import_team", $import_team);
         {
             $ini = $parameter->loadINI($defaultvalues[0]);
         }
-			
-			$ini = $parameter->toArray($ini);
-			$t_params = json_encode( $ini );		
+			// beim import kann es vorkommen, das wir in der neuen komponente
+                    // zusätzliche felder haben, die mit abgespeichert werden müssen
+                    $xmlfile = $defaultpath.DS.$template.'.xml';
+
+                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile -> '.'<pre>'.print_r($xmlfile,true).'</pre>'),'');
+							
+                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'');
+                            
+                            //if( file_exists($xmlfile) && $template == 'ranking' ) 
+                            if( file_exists($xmlfile) )
+                            {
+
+$newparams = array();
+$xml = JFactory::getXML($xmlfile,true);
+foreach ($xml->fieldset as $paramGroup)
+		{
+		//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
+		foreach ($paramGroup->field as $param)
+			{
+				//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
+                $newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
+			}
+        } 
+
+foreach ( $newparams as $key => $value )
+{
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
+    
+    $value = $ini->get($key);
+    if ( isset($value) )
+    {
+    $newparams[$key] = $value;
+    }
+} 
+   
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ini -> '.$template.' <pre>'.print_r($ini,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newparams -> '.$template.' <pre>'.print_r($newparams,true).'</pre>'),'');
+
+$t_params = json_encode( $newparams ); 
+      
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' t_params -> '.$template.' <pre>'.print_r($t_params,true).'</pre>'),'');              
+                            
+                            }
+else
+{
+$ini = $parameter->toArray($ini);
+$t_params = json_encode( $ini ); 
+            }
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' import t_params -> '.'<pre>'.print_r($t_params,true).'</pre>'),'');
+					
 					$p_template->set('params',$t_params);
                     
+             unset($t_params);
                   
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
@@ -4413,7 +4496,7 @@ $this->dump_variable("import_team", $import_team);
                 // das ist falsch
                 //$p_match->set('division_id',$this->_getDataFromObject($match,'division_id'));
                 
-                if ( $this->_convertDivisionID )
+                if ( isset($this->_convertDivisionID) )
                 {
                 $p_match->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')]);
                 }

@@ -82,6 +82,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	 */
 	public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

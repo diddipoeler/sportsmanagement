@@ -210,11 +210,12 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//	// Get a refrence of the page instance in joomla
+//        $document = JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
 
@@ -236,7 +237,15 @@ class sportsmanagementViewRounds extends sportsmanagementView
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('','rounds.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
-			JToolBarHelper::deleteList('','rounds.delete');
+			//JToolBarHelper::deleteList('','rounds.delete');
+            if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('rounds.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'rounds.delete', 'JTOOLBAR_DELETE');    
+        }
 			JToolBarHelper::divider();
 		}
 		else

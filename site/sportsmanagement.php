@@ -107,6 +107,8 @@ $document = JFactory::getDocument();
 $mainframe = JFactory::getApplication();
 $config = JFactory::getConfig();
 
+//JFactory::$database = sportsmanagementHelper::getDBConnection();
+
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');

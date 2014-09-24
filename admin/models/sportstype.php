@@ -74,6 +74,7 @@ class sportsmanagementModelsportstype extends JModelAdmin
 	 */
 	public function getTable($type = 'sportstype', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

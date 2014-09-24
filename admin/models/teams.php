@@ -80,6 +80,7 @@ class sportsmanagementModelTeams extends JModelList
                         't.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -200,14 +201,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
-        
+        $results = array();
         // Select some fields
 		$query->select('id,id AS value,name,club_id,short_name, middle_name,info');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
         $query->order('name');
-        
-//		$query="SELECT id,id AS value,name,club_id,short_name, middle_name,info FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team ORDER BY name";
 
 		$db->setQuery($query);
         
@@ -224,7 +223,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 			}
 			return $results;
 		}
-		return false;
+		//return false;
+        return $results;
 	}
     
     

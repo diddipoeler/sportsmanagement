@@ -94,6 +94,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy
 	 */
 	public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

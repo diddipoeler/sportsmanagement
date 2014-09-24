@@ -277,6 +277,8 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
+	   $app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
   		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        $option = JRequest::getCmd('option');
@@ -300,7 +302,14 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 		JToolBarHelper::addNew('person.add');
 		JToolBarHelper::custom('person.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('person.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','persons.delete', 'JTOOLBAR_DELETE');
+		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+            {
+		    JToolbarHelper::trash('persons.trash');
+            }
+            else
+            {
+            JToolBarHelper::deleteList('', 'persons.delete', 'JTOOLBAR_DELETE');    
+            }
 		
         parent::addToolbar();
 	}

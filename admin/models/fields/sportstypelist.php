@@ -73,7 +73,7 @@ class JFormFieldsportstypelist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = JFactory::getDbo();
+    $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');

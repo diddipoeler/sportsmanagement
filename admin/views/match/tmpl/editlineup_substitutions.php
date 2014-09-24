@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
- * @license		GNU/GPL,see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License,and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -21,13 +13,13 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 <script type="text/javascript">
 <!--
 // url for ajax
-var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
-var teamid=<?php echo $this->tid; ?>;
-var matchid=<?php echo $this->item->id; ?>;
+//var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
+//var teamid=<?php echo $this->tid; ?>;
+//var matchid=<?php echo $this->item->id; ?>;
 
-var projecttime=<?php echo $this->eventsprojecttime; ?>;
+//var projecttime=<?php echo $this->eventsprojecttime; ?>;
 // We need to setup some text variables for translation
-var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
+//var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
 //-->
 </script>
 <!-- SUBSTITUTIONS START -->
@@ -36,7 +28,7 @@ var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
 	<div id="ajaxresponse" >ajax</div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
-			<table class='adminlist' id="substitutions">
+			<table class='adminlist' id="table-substitutions">
 				<thead>
 					<tr>
 						<th>

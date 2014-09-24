@@ -70,6 +70,7 @@ class sportsmanagementModelEventtypes extends JModelList
                         'obj.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

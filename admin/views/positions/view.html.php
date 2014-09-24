@@ -144,7 +144,15 @@ $starttime = microtime();
 		JToolBarHelper::addNew('position.add');
 		JToolBarHelper::custom('position.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('position.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','position.delete');
+		//JToolBarHelper::deleteList('','position.delete');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('position.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'position.delete', 'JTOOLBAR_DELETE');    
+        }
 
 		
         parent::addToolbar();

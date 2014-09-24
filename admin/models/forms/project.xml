@@ -134,7 +134,7 @@
 		<field 
 			name="project_live_update" 
 			type="radio" 
-			default="0"
+			default="0"   class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE_DESC">
 			<option value="0">JNO</option>
@@ -180,7 +180,7 @@
     <field 
 			name="enable_sb" 
 			type="radio" 
-			default="0"
+			default="0"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM_DESC">
 			<option value="0">JNO</option>
@@ -223,7 +223,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 <field 
 			name="approved_gcalendar" 
 			type="radio" 
-			default="0"
+			default="0"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_DESC">
 			<option value="0">JNO</option>
@@ -233,7 +233,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 <field 
 			name="gcalendar_use_fav_teams" 
 			type="radio" 
-			default="0"
+			default="0"    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS_DESC">
 			<option value="0">JNO</option>

@@ -79,11 +79,22 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public static function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL)
+        public static function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
-       $query = JFactory::getDBO()->getQuery(true);
+       
+       // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        
+       $query = $db->getQuery(true);
         $query->select('id as value');
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
@@ -99,9 +110,9 @@ class sportsmanagementModelAjax extends JModelLegacy
     }
         
         $query->order('roundcode '.$ordering);  
-       JFactory::getDBO()->setQuery($query);    
+       $db->setQuery($query);    
             
-        $result = JFactory::getDBO()->loadObjectList();
+        $result = $db->loadObjectList();
         
 //        foreach ($result as $row)
 //        {
@@ -149,12 +160,20 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getpersonagegroupoptions($sports_type_id, $required = false)
+        public static function getpersonagegroupoptions($sports_type_id, $required = false, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        // Get a db connection.
+        if ( $dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,FALSE);
+        }
         $query = $db->getQuery(true);
         
          $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
@@ -271,16 +290,30 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public static function getProjectDivisionsOptions($project_id, $required = false)
+        public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
-       // Get a db connection.
-        $db = JFactory::getDbo();
+        // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
         $query = $db->getQuery(true);
         
         // Select some fields
+        if ( $slug )
+        {
         $query->select('CONCAT_WS(\':\', d.id, d.alias) AS value,d.name AS text');
+        }
+        else
+        {
+        $query->select('d.id AS value,d.name AS text');    
+        }
         // From 
 		$query->from('#__sportsmanagement_division AS d');
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = d.project_id ');
@@ -305,7 +338,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false)
+        public static function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -384,23 +417,40 @@ class sportsmanagementModelAjax extends JModelLegacy
          * 
          * @return
          */
-        function getProjects()
+        public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        if ( !$dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        //$db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
+        if ( $slug )
+        {
         $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
+        }
+        else
+        {
+        $query->select('p.id AS value,p.name AS text');    
+        }
         // From 
 		$query->from('#__sportsmanagement_project as p');
-                                
+        // Where
+        $query->where('p.season_id = ' . $season_id );                        
                 // Where
         $query->order('p.name');
         
                 $db->setQuery($query);
-                return $db->loadObjectList();
+                //return $db->loadObjectList();
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
         
         /**
@@ -410,16 +460,30 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectTeamOptions($project_id, $required = false)
+        public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        if ( !$dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
         $query = $db->getQuery(true);
         
         // Select some fields
+        if ( $slug )
+        {
         $query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
+        }
+        else
+        {
+        $query->select('t.id AS value,t.name AS text');    
+        }
         // From 
 		$query->from('#__sportsmanagement_project_team as pt');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
@@ -444,7 +508,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectTeamPtidOptions($project_id, $required = false)
+        function getProjectTeamPtidOptions($project_id, $required = false, $slug = false)
         {
             $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
@@ -452,7 +516,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         // Select some fields
+        if ( $slug )
+        {
         $query->select('CONCAT_WS(\':\', pt.id, t.alias) AS value,t.name AS text');
+        }
+        else
+        {
+        $query->select('pt.id AS value,t.name AS text');    
+        }
         // From 
 		$query->from('#__sportsmanagement_project_team as pt');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');

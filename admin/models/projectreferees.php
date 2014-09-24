@@ -80,6 +80,7 @@ public function __construct($config = array())
 				'pref.picture'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
 
 

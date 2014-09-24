@@ -84,6 +84,7 @@ class sportsmanagementModelPlayground extends JModelAdmin
 	 */
 	public function getTable($type = 'playground', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
     

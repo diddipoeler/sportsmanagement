@@ -59,11 +59,23 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?PHP
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
+
+if ( $this->bar_value < 100 )
+{    
+$div_class = 'progress progress-info progress-striped'; 
+}
+else
+{
+$div_class = 'progress progress-success progress-striped';     
+}   
 ?>
-<div class="progress progress-striped active">
+<div class="<?php echo $div_class; ?>">
 <div class="bar" style="width: <?php echo $this->bar_value; ?>%;"></div>
+
 </div>
 <?PHP
+echo 'step -> '.$this->work_table.'<br>';
+
 }
 else 
 {

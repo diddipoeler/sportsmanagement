@@ -77,6 +77,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
                         'tmb.approved'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
     
     /**

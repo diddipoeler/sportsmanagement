@@ -136,7 +136,15 @@ $starttime = microtime();
 		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextassociation.export',JText::_('JTOOLBAR_EXPORT'));
 		//JToolBarHelper::deleteList();
-		JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
+		//JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('jlextassociations.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');    
+        }
 		
         parent::addToolbar();
 	}

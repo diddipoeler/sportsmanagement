@@ -57,7 +57,7 @@ abstract class sportsmanagementHelper
 {
     static $latitude = '';
     static $longitude = '';
-	
+	static $_jsm_db = '';
     /**
      * sportsmanagementHelper::isJoomlaVersion()
      * 
@@ -81,6 +81,55 @@ abstract class sportsmanagementHelper
         
 		return substr($j->RELEASE, 0, strlen($version)) == $version;
 	}
+    
+    
+    /**
+     * sportsmanagementHelper::getDBConnection()
+     * 
+     * @return
+     */
+    public static function getDBConnection($request = false, $value = false)
+    {
+    $app = JFactory::getApplication();
+    $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+    
+    if ( $request )
+    {
+        $cfg_which_database = $value;
+    }
+    else
+    {
+       $cfg_which_database = $params->get( 'cfg_which_database' ); 
+     }
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDbo<br><pre>'.print_r(JFactory::getDbo(),true).'</pre>'),'');
+       
+
+       
+       if ( !$cfg_which_database )
+       {
+       //self::$_jsm_db = JFactory::getDbo(); 
+       return JFactory::getDbo();
+       }
+       else
+       {
+       $option = array(); //prevent problems
+        $option['driver']   = $params->get( 'jsm_dbtype' );            // Database driver name
+        $option['host']     = $params->get( 'jsm_host' );    // Database host name
+        $option['user']     = $params->get( 'jsm_user' );       // User for database authentication
+        $option['password'] = $params->get( 'jsm_password' );   // Password for database authentication
+        $option['database'] = $params->get( 'jsm_db' );      // Database name
+        $option['prefix']   = $params->get( 'jsm_dbprefix' );             // Database prefix (may be empty)
+ 
+        //self::$_jsm_db = JDatabase::getInstance( $option );
+        return JDatabase::getInstance( $option ); 
+  
+       }    
+       
+       //return self::$_jsm_db; 
+        
+    }
     
     /**
 	 * Add data to the xml

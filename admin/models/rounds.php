@@ -79,6 +79,7 @@ class sportsmanagementModelRounds extends JModelList
                         'r.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

@@ -82,6 +82,7 @@ class sportsmanagementModelProjectteams extends JModelList
                         't.ordering'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**

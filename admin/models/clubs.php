@@ -84,6 +84,7 @@ class sportsmanagementModelClubs extends JModelList
                         'a.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -183,13 +184,26 @@ class sportsmanagementModelClubs extends JModelList
      */
     public function getClubListSelect()
 	{
-		$query='SELECT id,name,id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadObjectList())
+	   $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+        $starttime = microtime(); 
+        $results = array();
+        // Select some fields
+		$query->select('id,name,id AS value,name AS text,country,standard_playground');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+        $query->order('name');
+        
+		//$query='SELECT id,name,id AS value,name AS text,country,standard_playground FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
+		$db->setQuery($query);
+		if ( $results = $db->loadObjectList() )
 		{
 			return $results;
 		}
-		return false;
+		//return false;
+        return $results;
 	}
 
 	

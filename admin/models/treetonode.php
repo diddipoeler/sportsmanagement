@@ -138,6 +138,7 @@ class JoomleagueModelTreetonode extends JoomleagueModelItem
 	 */
 	public function getTable($type = 'treetonode', $prefix = 'table', $config = array())
 	{
+	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		return JTable::getInstance($type, $prefix, $config);
 	}
 	

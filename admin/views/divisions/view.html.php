@@ -109,12 +109,15 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$option = JRequest::getCmd('option');
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+	   $app = JFactory::getApplication();
+       $option = JRequest::getCmd('option');
+       
+		//$option = JRequest::getCmd('option');
+//        // Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
 		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
@@ -126,7 +129,14 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 		
 		JToolBarHelper::addNew('division.add');
 		JToolBarHelper::editList('division.edit');
-        JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+        {
+		JToolbarHelper::trash('divisions.trash');
+        }
+        else
+        {
+        JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');    
+        }
 		
         parent::addToolbar();
 	}

@@ -67,7 +67,9 @@ class sportsmanagementModelPositions extends JModelList
                         'po.id',
                         'po.ordering'
                         );
+                //$config['dbo'] = sportsmanagementHelper::getDBConnection();        
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
@@ -182,6 +184,7 @@ class sportsmanagementModelPositions extends JModelList
 		$option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
+        $results = array();
 		//$project_id=$mainframe->getUserState($option.'project');
         
 		//get positions already in project for parents list
@@ -206,7 +209,8 @@ class sportsmanagementModelPositions extends JModelList
 		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			return false;
+			//return false;
+            return $result;
 		}
 		return $result;
 	}
@@ -454,6 +458,8 @@ class sportsmanagementModelPositions extends JModelList
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
         $query->order('name');
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
 		JFactory::getDbo()->setQuery($query);

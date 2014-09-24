@@ -94,6 +94,7 @@ class sportsmanagementModelSeasons extends JModelList
                         's.checked_out_time'
                         );
                 parent::__construct($config);
+                parent::setDbo(sportsmanagementHelper::getDBConnection());
         }
         
     /**
