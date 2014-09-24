@@ -56,6 +56,17 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllertemplate extends JControllerForm
 {
 
+function __construct()
+	{
+		$mainframe	= JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+		parent::__construct();
+
+	
+		// Register Extra tasks
+		$this->registerTask('reset','remove');
+	}
+    
 /**
  * sportsmanagementControllertemplate::remove()
  * 

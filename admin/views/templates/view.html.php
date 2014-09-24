@@ -69,6 +69,12 @@ class sportsmanagementViewTemplates extends sportsmanagementView
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id);
+        
+        $allTemplates = $model->checklist($this->project_id);
 
         // das sind die eigenen templates
         $templates = $this->get('Items');
@@ -82,9 +88,9 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 //		$pagination = $this->get('Pagination');
         
 		//$projectws =& $this->get('Data','projectws');
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+        //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+//        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+//	    $project = $mdlProject->getProject($this->project_id);
 		
 		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($project,true).'</pre>'),'');
         
@@ -141,6 +147,12 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
+        
+        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+            {
+            }
+            else
+            {    
 		JToolBarHelper::editList('template.edit');
 		JToolBarHelper::save('template.save');
 		if ($this->projectws->master_template)
@@ -152,7 +164,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		{
 			JToolBarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
 		}
-		
+		}
         parent::addToolbar();
 	}	
 }

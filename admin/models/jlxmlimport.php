@@ -3334,10 +3334,13 @@ $this->dump_variable("import_team", $import_team);
 		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
 
 		JFactory::getDbo()->setQuery($query);
-		$params=JFactory::getDbo()->loadObject();
+		$params = JFactory::getDbo()->loadObject();
 
 		// if it's not a master template,do not create records.
-		if ($params->master_template){return true;}
+		if ($params->master_template)
+        {
+            return true;
+        }
 
 		// otherwise,compare the records with the files
 		// get records

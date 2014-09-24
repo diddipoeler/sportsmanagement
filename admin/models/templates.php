@@ -166,7 +166,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 	 * check that all templates in default location have a corresponding record,except if project has a master template
 	 *
 	 */
-	function checklist()
+	function checklist($project_id)
 	{
 	   $mainframe	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -174,15 +174,25 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
-      
-      
-		$project_id = $this->_project_id;
+        
+//        $this->_project_id = JRequest::getVar('pid');
+//        if ( !$this->_project_id )
+//        {
+//        $this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
+//        }
+//                 
+//		$project_id = $this->_project_id;
 		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
         // Get the views for this component.
         $path = JPATH_SITE.'/components/'.$option.'/views';
 		$predictionTemplatePrefix = 'prediction';
 
-		if (!$project_id){return;}
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+
+		if (!$project_id)
+        {
+            return;
+        }
 
 		// get info from project
         $query->select('master_template,extension');
@@ -200,7 +210,10 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 		$params = $db->loadObject();
 
 		// if it's not a master template,do not create records.
-		if ($params->master_template){return true;}
+		if ($params->master_template)
+        {
+            return true;
+        }
 
 		// otherwise,compare the records with the files
 		// get records
@@ -212,24 +225,65 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 
 		$db->setQuery($query);
 		$records = $db->loadResultArray();
-		if (empty($records)) { $records=array(); }
+		if (empty($records))
+         { 
+            $records=array(); 
+         }
 		
 		// add default folder
 		$xmldirs[] = $defaultpath.DS.'default';
 		
-		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions($this->_project_id);
 		foreach ($extensions as $e => $extension) {
 			$extensiontpath =  JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension;
 			if (is_dir($extensiontpath.DS.'settings'.DS.'default'))
 			{
-				$xmldirs[]=$extensiontpath.DS.'settings'.DS.'default';
+				$xmldirs[] = $extensiontpath.DS.'settings'.DS.'default';
 			}
 		}
 
-		// now check for all xml files in these folders
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmldirs<br><pre>'.print_r($xmldirs,true).'</pre>'),'Notice');
+
+// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
 		{
-			if ($handle=opendir($xmldir))
+			/*
+            $files = JFolder::files($xmldir, '.xml', false, false, array('predictionentry.xml','predictionflash.xml','predictionoverall.xml','predictionranking.xml','predictionresults.xml','predictionrules.xml','predictionusers.xml'), array());
+            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' files<br><pre>'.print_r($files,true).'</pre>'),'Notice');
+            
+            foreach ($files as $file)
+		{
+            $template = substr($file,0,(strlen($file)-4));
+            
+            
+            
+            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
+         
+                            $xmlfile = $xmldir.DS.$file;
+							$arrStandardSettings = array();
+							if(file_exists($xmlfile)) 
+                            {
+								$strXmlFile = $xmlfile;
+                                $form = JForm::getInstance($template, $strXmlFile,array('control'=> ''));
+                                $fieldsets = $form->getFieldsets();
+								foreach ($fieldsets as $fieldset) 
+                                {
+									foreach($form->getFieldset($fieldset->name) as $field) 
+                                    {
+										$arrStandardSettings[$field->name] = $field->value;
+									}
+								}
+                                
+							}
+							
+                            $defaultvalues = json_encode( $arrStandardSettings);
+         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'Notice');
+         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
+         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+         }   
+         */
+         
+            if ($handle=opendir($xmldir))
 			{
 				/* check that each xml template has a corresponding record in the
 				database for this project. If not,create the rows with default values
@@ -240,17 +294,25 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 							$file!='..' &&
 							$file!='do_tipsl' &&
 							strtolower(substr($file,-3))=='xml' &&
-							strtolower(substr($file,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix
+							strtolower(substr($file,0,strlen($predictionTemplatePrefix))) != $predictionTemplatePrefix
 						)
 					{
-						$template=substr($file,0,(strlen($file)-4));
+						$template = substr($file,0,(strlen($file)-4));
                         
                         // Determine if a metadata file exists for the view.
 				        //$metafile = $path.'/'.$template.'/metadata.xml';
                         $metafile = $path.'/'.$template.'/tmpl/default.xml';
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' metafile -> '.$metafile.''),'Notice');
+                        
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
+                        $xml = JFactory::getXML($metafile,true);
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($xml->layout,true).'</pre>'),'Notice');
+                        $attributetitle = (string)$xml->layout->attributes()->title;
+                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($attributetitle,true).'</pre>'),'Notice');
+                            
+                        /*    
                         // Attempt to load the xml file.
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
@@ -258,70 +320,91 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
                         // This will save the value of the attribute, and not the objet
                         //$attributetitle = (string)$metaxml->view->attributes()->title;
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        //$mainframe->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
+                        $mainframe->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
                             //$mainframe->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
                             }
                         }
+                        */
                         }
 
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
-							$jRegistry = new JRegistry();
-							$form = JForm::getInstance($file, $xmldir.DS.$file);
-							$fieldsets = $form->getFieldsets();
-							foreach ($fieldsets as $fieldset) 
-                            {
-								foreach($form->getFieldset($fieldset->name) as $field) 
+							$xmlfile = $xmldir.DS.$file;
+							$arrStandardSettings = array();
+							if(file_exists($xmlfile)) {
+								$strXmlFile = $xmlfile;
+                                $form = JForm::getInstance($template, $strXmlFile,array('control'=> ''));
+                                $fieldsets = $form->getFieldsets();
+								foreach ($fieldsets as $fieldset) 
                                 {
-									$jRegistry->set($field->name, $field->value);
-								}				
+									foreach($form->getFieldset($fieldset->name) as $field) 
+                                    {
+										$arrStandardSettings[$field->name] = $field->value;
+									}
+								}
+                                
 							}
-							$defaultvalues = $jRegistry->toString('ini');
 							
-                            $parameter = new JRegistry;
-			                $ini = $parameter->loadINI($defaultvalues);
-			                $ini = $parameter->toArray($ini);
-			                $defaultvalues = json_encode( $ini );
-                            	
-                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            $defaultvalues = json_encode( $arrStandardSettings);
                             
-							$tblTemplate_Config = JTable::getInstance('template', 'sportsmanagementtable');
-							$tblTemplate_Config->template = $template;
-                            if ( $attributetitle )
-                            {
-                                $tblTemplate_Config->title = $attributetitle;
+							//$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_template_config (template,title,params,project_id)
+//													VALUES ('$template','".$form->getName()."','$defaultvalues','$project_id')";
+//							JFactory::getDbo()->setQuery($query);
+                            
+          $query->clear();
+          // Select some fields
+        $query->select('id');
+		// From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->where('template LIKE '.$db->Quote(''.$template.''));
+        $query->where('project_id = '.(int)$project_id);
+			$db->setQuery($query);
+            if ( !JFactory::getDbo()->loadResult() )
+            {
+                // Create and populate an object.
+        $object_template = new stdClass();
+        $object_template->template = $template;
+        $object_template->title = $attributetitle;
+        $object_template->params = $defaultvalues;
+        $object_template->project_id = $project_id;
+        // Insert the object into the user profile table.
+        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_template_config', $object_template);
+        
+                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
+                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
                             }
-                            else
-                            {
-                                $tblTemplate_Config->title = $file;
-                            }
-							
-							$tblTemplate_Config->params = $defaultvalues;
-							$tblTemplate_Config->project_id = $project_id;
-							
-								// Make sure the item is valid
-							if (!$tblTemplate_Config->check())
-							{
-								sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-								return false;
-							}
-					
-							// Store the item to the database
-							if (!$tblTemplate_Config->store())
-							{
-								sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-								return false;
-							}
+                            
+                            //$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+//                            $my_text .= JText::sprintf('Created new template data for empty Projectdata: %1$s %2$s',"</span><strong>$template</strong>","<br><strong>".$defaultvalues."</strong>" );
+//			                $my_text .= '<br />';
+                            
+							////echo error,allows to check if there is a mistake in the template file
+//							if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+//							{
+//								$this->setError(JFactory::getDbo()->getErrorMsg());
+//								return false;
+//							}
 							array_push($records,$template);
 						}
 					}
 				}
+                
+                //$this->_success_text['Importing general template data:'] = $my_text;
+                                
 				closedir($handle);
 			}
-		}
+		}		
+        
+
+
+
+
+
+
+        
 	}
 
 	/**
