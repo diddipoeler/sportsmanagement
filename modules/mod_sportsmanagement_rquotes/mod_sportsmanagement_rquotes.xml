@@ -39,6 +39,8 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_rquotes.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_rquotes.sys.ini</language>
   </languages>
 
 
@@ -112,12 +114,14 @@
 	 
  <field 
  		name="category" 
- 		type="sql" 
+ 		type="category" 
+    extension="com_sportsmanagement"
+ 
  		default="" 
  		label="JCATEGORY" 
  		description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_CATEGORY_DESC"
  		multiple="true" 
- 		query=" SELECT id AS value , title AS category  FROM  #__categories WHERE published ='1' AND extension ='com_sportsmanagement'"
+
  		 /> 
 
 

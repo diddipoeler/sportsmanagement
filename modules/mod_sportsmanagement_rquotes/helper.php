@@ -1,48 +1,111 @@
 <?php 
-
-/**
- * Rquotes helper file
- * 
- * @package    Joomla.Rquotes
- * @subpackage Modules
- * @link www.mytidbits.us
- * @license		GNU/GPL-2
- */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
  
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 
 
 
+/**
+ * modRquotesHelper
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class modRquotesHelper
 { 
 
 //-----------------------------------------------------------------------------------------------------------------------------
+/**
+ * modRquotesHelper::renderRquote()
+ * 
+ * @param mixed $rquote
+ * @param mixed $params
+ * @return void
+ */
 function renderRquote(&$rquote, &$params)
 	{	
 	require(JModuleHelper::getLayoutPath('mod_sportsmanagement_rquotes','_rquote'));
 	}
 //---------------------------------------------------------------------------------------------------------------------------------------------------	
-function getRandomRquote($category)
-
-{ 
-		$db = JFactory::getDBO(); 
+/**
+ * modRquotesHelper::getRandomRquote()
+ * 
+ * @param mixed $category
+ * @return
+ */
+function getRandomRquote($category,$num_of_random, &$params)
+{
+    $x = 0;
+    $catid = 0;
+    $app = JFactory::getApplication();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
+    
+        
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') ); 
 		
-		$x = count($category);
-		
-	
-	if($x =='1') // get $catid when one category is selected 	
-	
+        if(is_array($category)) // get $catid when one category is selected 	
 		{
-			$catid =	$category[0];
+			$x = count($category);
 		}
-	
 
+        
+//		$x = count($category);
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' x<br><pre>'.print_r($x,true).'</pre>'),'Notice');
+	
+	if( $x == 1) // get $catid when one category is selected 	
+		{
+			$catid = $category[0];
+		}
 	else // get quote when more than one category is selected 	
 		{
-			$value= array($category);			
-			$rand_keys=array_rand($category,1);
+		  if(is_array($category)) // get $catid when one category is selected 	
+		{
+			$value = array($category);			
+			$rand_keys = array_rand($category,1);
 			$catid = $category[$rand_keys];
+            }
 		}	
 	
 		
@@ -55,7 +118,10 @@ function getRandomRquote($category)
         // Join over the users for the checked out user.
 		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
         $query->where('obj.published = 1');
+        if ( $catid )
+        {
         $query->where('obj.catid = '.$catid);
+        }
         	
 //$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
 		$db->setQuery( $query );
@@ -74,23 +140,35 @@ function getRandomRquote($category)
 	}
 	
 //----------------------------------------------------------------------------------------------------
-function getMultyRandomRquote($category,$num_of_random)
+/**
+ * modRquotesHelper::getMultyRandomRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $num_of_random
+ * @return
+ */
+function getMultyRandomRquote($category,$num_of_random, &$params)
 	{
-		$db = JFactory::getDBO();
-		$x= count($category);
+	   $x = 0;
+       $catid = 0;
+       $qrows = NULL;
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+		if(is_array($category)) // get $catid when one category is selected 	
+		{
+			$x = count($category);
+		}
 	if($x =='1')  // get multible quotes when one category is selected 	
 		{
-			$catid =	$category[0];
-	
+			$catid = $category[0];
 		}
-	
-
 	else  // get multible quotes when more than one category is selected 	
-	
 		{
-			$value= array($category);
-			$rand_keys=array_rand($category,1);
-			$catid=	$category[$rand_keys];
+		  if(is_array($category)) // get $catid when one category is selected 	
+		{
+			$value = array($category);
+			$rand_keys = array_rand($category,1);
+			$catid = $category[$rand_keys];
+            }
 		}	
 			
             $query = $db->getQuery(true);
@@ -101,12 +179,17 @@ function getMultyRandomRquote($category,$num_of_random)
         // Join over the users for the checked out user.
 		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
         $query->where('obj.published = 1');
+        if ( $catid )
+        {
         $query->where('obj.catid = '.$catid);
+        }
 			//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
 				
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
 
+if ( $rows )
+{
 			/**
 			* create array based on number of rows.
 			*/
@@ -125,10 +208,11 @@ function getMultyRandomRquote($category,$num_of_random)
 			*/
 			$qrows = array();
 
-			foreach ($rand_keys as $key => $value) {
-
+			foreach ($rand_keys as $key => $value) 
+            {
 			$qrows[] = $rows[$value];
 			}
+ }
             
 //echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
 //echo get_class($this).' '.__FUNCTION__.' qrows<pre>'.print_r($qrows,true).'</pre><br>';
@@ -142,8 +226,16 @@ function getMultyRandomRquote($category,$num_of_random)
 			
 	
 //--------------------------------------------------------------------------------------------------------------------------------
-function getSequentialRquote($category)
+/**
+ * modRquotesHelper::getSequentialRquote()
+ * 
+ * @param mixed $category
+ * @return
+ */
+function getSequentialRquote($category, &$params)
 	{
+	   $x = 0;
+       $row = NULL;
 
 	// by PD, not yet implemented
 
@@ -153,54 +245,63 @@ function getSequentialRquote($category)
 //$query = "SELECT * from	#__rquotes WHERE published='1' and catid = $category";
  
  
-	$db =& JFactory::getDBO();
-	 	$x= count($category);
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+	 	if(is_array($category)) // get $catid when one category is selected 	
+		{
+			$x = count($category);
+		}
 	if($x =='1') 
 		{
 			
-			$catid =	$category[0];
+			$catid = $category[0];
 			
 		}	
 		else
-		{ echo 'Please choose only one category';}
-$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
- 
+		{ 
+		  echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
+          }
+//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
+$query = $db->getQuery(true);
+		// Select some fields
+		$query->select('obj.*,p.picture as person_picture');
+		// From the hello table
+		$query->from('#__sportsmanagement_rquote as obj');
+        // Join over the users for the checked out user.
+		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
+        $query->where('obj.published = 1');
+        if ( $catid )
+        {
+        $query->where('obj.catid = '.$catid);
+        } 
 	$db->setQuery( $query );
 
 	$rows = $db->loadObjectList();
 
- 
+ if ( $rows )
+ {
 	$numRows = count($rows) - 1;
 
-	if (isset($_COOKIE['rquote'])){
-
+	if (isset($_COOKIE['rquote']))
+    {
 		$i = intval($_COOKIE['rquote']);
-
 		if ($i < $numRows)
-
 			$i++;
-
 		else 
-
 			$i = 0;
-
  
-		setcookie('rquote',$i,time()+3600);
-
-		$row = array( $rows[$i] );
-
-	} else {
-
-		// pick a random value
-
-		$i = rand(0, $numRows);
-
 		setcookie('rquote',$i,time()+3600);
 
 		$row = array( $rows[$i] );
 
 	}
-
+    else 
+    {
+		// pick a random value
+		$i = rand(0, $numRows);
+		setcookie('rquote',$i,time()+3600);
+		$row = array( $rows[$i] );
+	}
+}
  
 	return $row;
 
@@ -208,6 +309,13 @@ $query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid
 
 }
 //-------------------------------------------------------------------------------------------------------------
+/**
+ * getTextFile()
+ * 
+ * @param mixed $params
+ * @param mixed $filename
+ * @return
+ */
 function getTextFile(&$params,$filename)
 {
 jimport('joomla.filesystem.file');
@@ -226,6 +334,13 @@ jimport('joomla.filesystem.file');
  }
  
 //----------------------------------------------------------------------------------------------------------------------- 
+/**
+ * getTextFile2()
+ * 
+ * @param mixed $params
+ * @param mixed $filename
+ * @return void
+ */
 function getTextFile2(&$params,$filename)
 {
 	jimport('joomla.filesystem.file');
@@ -243,10 +358,17 @@ function getTextFile2(&$params,$filename)
 	}
 
 //------------------------------------------------------------------------------------------------	
-function getDailyRquote($category,$x)
+/**
+ * getDailyRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $x
+ * @return
+ */
+function getDailyRquote($category,$x, &$params)
 	{
 	
-	$db =& JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 	
 //	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
 $xx= count($category);
@@ -278,7 +400,7 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db =& JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -301,10 +423,17 @@ $xx= count($category);
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
-function getWeeklyRquote($category,$x)
+/**
+ * getWeeklyRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $x
+ * @return
+ */
+function getWeeklyRquote($category,$x, &$params)
 	{
 	
-	$db =& JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 	
 //	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
 $xx= count($category);
@@ -336,7 +465,7 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db =& JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='2' ";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -359,10 +488,17 @@ $xx= count($category);
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
-function getMonthlyRquote($category,$x)
+/**
+ * getMonthlyRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $x
+ * @return
+ */
+function getMonthlyRquote($category,$x, &$params)
 	{
 	
-	$db =& JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 	
 //	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
 $xx= count($category);
@@ -394,7 +530,7 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db =& JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -417,10 +553,17 @@ $xx= count($category);
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
-function getYearlyRquote($category,$x)
+/**
+ * getYearlyRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $x
+ * @return
+ */
+function getYearlyRquote($category,$x, &$params)
 	{
 	
-	$db =& JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 	
 //	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
 $xx= count($category);
@@ -452,7 +595,7 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db =& JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='4'";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -475,10 +618,17 @@ $xx= count($category);
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
-function getTodayRquote($category,$x)
+/**
+ * getTodayRquote()
+ * 
+ * @param mixed $category
+ * @param mixed $x
+ * @return
+ */
+function getTodayRquote($category,$x, &$params)
 {
 
-	$db =& JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 	$catid =	$category[0];
 	$day_today = date("z");
 
