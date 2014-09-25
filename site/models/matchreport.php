@@ -240,7 +240,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         // Select some fields
 		$query->select('pos.id, pos.name');
@@ -368,7 +368,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
        // Select some fields
@@ -612,8 +612,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
-        //$db = JFactory::getDbo();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
         $query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
         $query->select('ppos.position_id,ppos.id AS pposid');
@@ -647,8 +647,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 //		      .' WHERE mr.match_id='.(int)$this->matchid
 //		      .' AND p.published = 1';
               
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObjectList();
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 
@@ -663,7 +663,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         $query->select('et.id,et.name,et.icon');
@@ -718,7 +718,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $query->select('c.id,c.title');
        $query->select('c.introtext');
@@ -751,7 +751,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 		$match = sportsmanagementModelMatch::getMatchData($this->matchid);
@@ -797,7 +797,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 		if (!($this->_playersbasicstats))
@@ -848,7 +848,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 		if (!($this->_playersevents))
@@ -897,7 +897,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 		if (!($this->_staffsbasicstats))
@@ -982,8 +982,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
-        //$db = JFactory::getDbo();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
   $bildpositionen = array();
   $position = 1;
@@ -995,15 +995,15 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rosterposition');
         // Where
-        $query->where('name LIKE '.  JFactory::getDbo()->Quote( '' . $schema . '' ) );
+        $query->where('name LIKE '.  $db->Quote( '' . $schema . '' ) );
   
   switch ($which)
   {
     case 'heim':
-    $query->where('short_name LIKE '.  JFactory::getDbo()->Quote( '' . 'HOME_POS' . '' ) );
+    $query->where('short_name LIKE '.  $db->Quote( '' . 'HOME_POS' . '' ) );
     break;
     case 'gast':
-    $query->where('short_name LIKE '.  JFactory::getDbo()->Quote( '' . 'AWAY_POS' . '' ) );
+    $query->where('short_name LIKE '.  $db->Quote( '' . 'AWAY_POS' . '' ) );
     break;
     
   }
@@ -1012,8 +1012,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 //				. " WHERE name LIKE '" . $schemahome ."'"
 //				. " AND short_name = 'HOME_POS'";
 		
-        JFactory::getDbo()->setQuery($query);
-		$res = JFactory::getDbo()->loadResult();
+        $db->setQuery($query);
+		$res = $db->loadResult();
 		
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;

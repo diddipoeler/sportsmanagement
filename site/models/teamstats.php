@@ -115,7 +115,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
 		
@@ -224,7 +224,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -272,7 +272,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
 
@@ -354,7 +354,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		  $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         $query->select('rounds.id');
@@ -410,7 +410,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
     	if ( is_null( $this->matchdaytotals ) )
@@ -469,7 +469,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -517,7 +517,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -627,7 +627,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 		$query->select('logo_big');
@@ -650,7 +650,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 	    $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         

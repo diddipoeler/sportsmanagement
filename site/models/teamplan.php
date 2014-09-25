@@ -112,7 +112,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -155,7 +155,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -279,7 +279,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $query2 = $db->getQuery(true);
         $starttime = microtime(); 
@@ -419,7 +419,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime();
         
@@ -503,7 +503,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	   	$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime();
         
@@ -573,7 +573,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         // Select some fields
         $query->select('et.id as etid,me.event_type_id as id,et.*');

@@ -98,13 +98,13 @@ class sportsmanagementModelRanking extends JModelLegacy
         if ( empty($this->from)  )
         {
         $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid);
-        $this->from	= $from[id];
+        $this->from	= $from['id'];
         }
         
         if ( empty($this->to)  )
         {
 		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid);
-        $this->to	= $to[id];
+        $this->to	= $to['id'];
         }
         else
         {
@@ -121,6 +121,8 @@ class sportsmanagementModelRanking extends JModelLegacy
         sportsmanagementModelProject::$_round_from = $this->from; 
         sportsmanagementModelProject::$_round_to = $this->round;
         
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
 //        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round<br><pre>'.print_r($this->current_round,true).'</pre>'),'');
@@ -216,7 +218,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -533,14 +535,14 @@ class sportsmanagementModelRanking extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
         // Select some fields
 		$query->select('id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = ' . $this->projectid);
+        $query->where('project_id = ' . self::$projectid);
         $query->order('roundcode ASC');
 
 		$db->setQuery($query);

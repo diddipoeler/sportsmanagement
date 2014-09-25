@@ -685,7 +685,7 @@ class JSMRanking
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
 	$starttime = microtime(); 
 		
@@ -842,7 +842,7 @@ class JSMRanking
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
-        $db = Jfactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
     
@@ -927,7 +927,7 @@ class JSMRanking
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
-        $db = Jfactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
             $query = $db->getQuery(true);
             
 		if (!$this->_division) 
@@ -1027,7 +1027,7 @@ class JSMRanking
 	{
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
-        $db = Jfactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
             

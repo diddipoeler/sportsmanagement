@@ -84,7 +84,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 //       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
@@ -120,7 +120,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -180,7 +180,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	    $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -220,7 +220,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -337,7 +337,7 @@ $query->order('s.ordering '.$season_ordering);
         $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -375,7 +375,7 @@ $query->order('s.ordering '.$season_ordering);
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -437,7 +437,7 @@ $query->order('s.ordering '.$season_ordering);
     $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
@@ -469,7 +469,7 @@ $query->order('s.ordering '.$season_ordering);
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $query->select('l.name AS league');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p'); 
@@ -591,7 +591,7 @@ $query->order('s.ordering '.$season_ordering);
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		//$player = array();
@@ -655,7 +655,7 @@ $query->order('s.ordering '.$season_ordering);
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$player = array();

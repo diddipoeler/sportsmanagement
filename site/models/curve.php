@@ -108,7 +108,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 	$mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         

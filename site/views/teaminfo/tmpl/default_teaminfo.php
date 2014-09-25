@@ -176,7 +176,7 @@ else
 			<?php
 			}
 			
-			if ($this->merge_clubs)
+			if ( isset($this->merge_clubs) )
 			{
 			?>
 	<div class="jl_parentContainer">

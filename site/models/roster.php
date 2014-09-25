@@ -100,7 +100,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -177,7 +177,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -226,7 +226,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -323,7 +323,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
                 
@@ -422,7 +422,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		$mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -469,7 +469,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
@@ -535,7 +535,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        

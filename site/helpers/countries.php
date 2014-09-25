@@ -41,6 +41,9 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php'); 
+
 /**
  * JSMCountries
  * 
@@ -102,7 +105,7 @@ class JSMCountries
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
         // Get a db connection.
-$db = JFactory::getDbo();
+$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
  
 // Create a new query object.
 $query = $db->getQuery(true);
@@ -143,7 +146,7 @@ $query = $db->getQuery(true);
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
 	// Get a db connection.
-$db = JFactory::getDbo();
+$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 	  // Select some fields
@@ -176,7 +179,7 @@ $query = $db->getQuery(true);
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = JFactory::getDbo();
+$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields
@@ -232,7 +235,7 @@ $query = $db->getQuery(true);
 		$mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 
         $src = self::getIso3Flag($countrycode);
 		if (!$src)
@@ -269,7 +272,7 @@ $query = $db->getQuery(true);
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = JFactory::getDbo();
+$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields
