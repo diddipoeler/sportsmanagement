@@ -70,6 +70,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 		$mainframe = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
+        $tpl = '';
         $starttime = microtime(); 
         
         if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' )
@@ -154,7 +155,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$user = JFactory::getUser();
     $starttime = microtime(); 
            
-	$this->project = $this->get('Item');
+	$this->item = $this->get('Item');
     
     if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -165,26 +166,26 @@ class sportsmanagementViewProject extends sportsmanagementView
        
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
-	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->project->id);
+	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
 	
-    if ( $this->project->project_art_id != 3 )
+    if ( $this->item->project_art_id != 3 )
     {	
 	$iProjectPositionsCount = 0;
 	$mdlProjectPositions = JModelLegacy::getInstance("Projectpositions", "sportsmanagementModel");
-	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->project->id);
+	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
 	}
     	
 	$iProjectRefereesCount = 0;
 	$mdlProjectReferees = JModelLegacy::getInstance("Projectreferees", "sportsmanagementModel");
-	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->project->id);
+	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->item->id);
 		
 	$iProjectTeamsCount = 0;
 	$mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
-	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project->id);
+	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->item->id);
 		
 	$iMatchDaysCount = 0;
 	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
-	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->project->id);
+	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
 		
 	$this->assignRef('project',$this->project);
 	$this->assignRef('count_projectdivisions',$iProjectDivisionsCount);
@@ -195,10 +196,10 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $mainframe->setUserState( "$option.pid", $this->project->id);
-    $mainframe->setUserState( "$option.season_id", $this->project->season_id);  
-    $mainframe->setUserState( "$option.project_art_id", $this->project->project_art_id);
-    $mainframe->setUserState( "$option.sports_type_id", $this->project->sports_type_id);  
+    $mainframe->setUserState( "$option.pid", $this->item->id);
+    $mainframe->setUserState( "$option.season_id", $this->item->season_id);  
+    $mainframe->setUserState( "$option.project_art_id", $this->item->project_art_id);
+    $mainframe->setUserState( "$option.sports_type_id", $this->item->sports_type_id);  
     
     
     //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
@@ -244,7 +245,8 @@ class sportsmanagementViewProject extends sportsmanagementView
         switch ( JComponentHelper::getParams($option)->get('which_article_component') )
     {
         case 'com_content':
-        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
+        //$bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
+        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');
         break;
         case 'com_k2':
         $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');

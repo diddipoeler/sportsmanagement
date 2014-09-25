@@ -111,7 +111,8 @@ class JFormFieldDependSQL extends JFormField
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($this->value,true).'</pre>'),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
 
 		$ctrl = $this->name;
 		$id = $this->id;

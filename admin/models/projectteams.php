@@ -650,7 +650,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $db	= $this->getDbo();
+        $db	= sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         

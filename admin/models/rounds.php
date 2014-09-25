@@ -200,15 +200,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
 	  // Select some fields
         $query->select('count(*) AS count');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$project_id);  
 
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadResult();
+		$db->setQuery($query);
+		return $db->loadResult();
 	}
     
     /**
@@ -220,7 +221,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
     {
          $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
         // Select some fields
         $query->select('id, roundcode');
@@ -230,10 +232,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->order('roundcode ASC, id ASC');  
         
 
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadAssocList ())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList ())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -248,7 +250,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
     {
          $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
         // Select some fields
         $query->select('id, roundcode');
@@ -258,10 +261,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->order('roundcode DESC, id DESC');  
         
 		
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadAssocList())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -277,7 +280,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
     {
          $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
         // Select some fields
         $query->select('id, roundcode');
@@ -287,10 +291,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->order('id ASC');  
         
 
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadAssocList())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -312,7 +316,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
     {
          $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
        // Select some fields
         $query->select('id, roundcode');
@@ -322,10 +327,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->order('id ASC');  
         
 	
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadAssocList())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -348,7 +353,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 	    $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
 	  // Select some fields
         $query->select('id, roundcode, round_date_first , round_date_last');
@@ -359,10 +365,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->order('round_date_first ASC'); 
         
 	
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadAssocList())
+		$db->setQuery($query);
+		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;		
@@ -378,7 +384,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	{
 	    $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds getRoundsOptions project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
         
@@ -391,8 +398,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
 		
 
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObjectList();
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 	
 	
