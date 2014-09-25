@@ -236,6 +236,12 @@ function getSequentialRquote($category, &$params)
 	{
 	   $x = 0;
        $row = NULL;
+       $catid = 0;
+       
+       $app = JFactory::getApplication();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
+
 
 	// by PD, not yet implemented
 
@@ -250,13 +256,13 @@ function getSequentialRquote($category, &$params)
 		{
 			$x = count($category);
 		}
-	if($x =='1') 
+	if($x == 1) 
 		{
 			
 			$catid = $category[0];
 			
 		}	
-		else
+		elseif( $x > 1)
 		{ 
 		  echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
           }
