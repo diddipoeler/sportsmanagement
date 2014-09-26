@@ -381,7 +381,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->where('st.season_id = ' . $this->_season_id);
         $query->where('t.sports_type_id = ' . $this->sports_type_id);
         
+        if ( $result->country )
+        {
         $query->where('c.country LIKE '.$db->Quote(''.$result->country.''));
+        }
         
         $query->order('t.name ASC');
         }
