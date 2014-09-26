@@ -59,17 +59,20 @@ class modJSMRankingHelper
 	 * @param mixed $params
 	 * @return
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{
-		//global $mainframe;
+		$app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
-		if (!class_exists('sportsmanagementModelRanking')) {
+		if (!class_exists('sportsmanagementModelRanking')) 
+        {
 			//require_once(JLG_PATH_SITE.DS.'models'.DS.'ranking.php');
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
 		}
-		//$model = JModel::getInstance('project', 'sportsmanagementModel');
+		
+        $app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
 		sportsmanagementModelProject::setProjectId($params->get('p'));
 
 		$project = sportsmanagementModelProject::getProject();
@@ -82,12 +85,14 @@ class modJSMRankingHelper
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 
 		$list = array();
-		foreach ($res as $ptid => $t) {
+		foreach ($res as $ptid => $t) 
+        {
 			$t->team = $teams[$ptid];
 			$list[] = $t;
 		}
 
-		if( $params->get('visible_team') != '' ){
+		if( $params->get('visible_team') != '' )
+        {
 			$exParam=explode(':',$params->get('visible_team'));
 			$list = modJSMRankingHelper::getShrinkedDataAroundOneTeam($list,$exParam[0],$params->get('limit', 5));
 		}
@@ -145,7 +150,7 @@ class modJSMRankingHelper
 	 * @param object ranking item
 	 * @return value POINTS, RESULTS, DIFF, BONUS, START....see the cases here below :)
 	 */
-	function getColValue($column, $item)
+	public static function getColValue($column, $item)
 	{
 		$column = ucfirst(str_replace("jl_", "", strtolower(trim($column))));
 		$column = strtolower($column);
@@ -246,7 +251,7 @@ class modJSMRankingHelper
 	 * @param mixed $project
 	 * @return
 	 */
-	function getTeamLink($item, $params, $project)
+	public static function getTeamLink($item, $params, $project)
 	{
 		switch ($params->get('teamlink'))
 		{
