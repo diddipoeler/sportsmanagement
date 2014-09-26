@@ -59,6 +59,12 @@ $view = JRequest::getCmd('view', 'cpanel');
 			</td>
             
             <?PHP
+            
+            switch ($view)
+            {
+            case 'projectteams':
+            break;
+            default:    
             if ( isset($this->lists) )
             {
             foreach ( $this->lists as $key  => $value)
@@ -71,7 +77,8 @@ $view = JRequest::getCmd('view', 'cpanel');
             }
             }
             }
-            
+            break;
+            }
             switch ($view)
             {
             case 'projects':
