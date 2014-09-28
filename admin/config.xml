@@ -68,6 +68,31 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		 <field name="cfg_which_database_server" 
+  type="text" 
+  default="http://www.fussballineuropa.de/"
+		size="100"
+    label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_TITLE"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_DESC">
+		</field>
+		
+		<field
+			name="jsm_server_user"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_TITLE"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_DESC"
+			filter="string"
+			size="30" />
+<!--			
+			<field
+			name="jsm_server_password"
+			type="password"
+			label="JGLOBAL_PASSWORD"
+			description="JGLOBAL_PASSWORD"
+			filter="string"
+			size="30" />
+-->			
+			
 		<field
 			name="jsm_dbtype"
 			type="databaseconnection"

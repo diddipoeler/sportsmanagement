@@ -233,7 +233,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
 
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList ())
+		if ( !$result = $db->loadAssocList() )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;

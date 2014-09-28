@@ -58,6 +58,42 @@ abstract class sportsmanagementHelper
     static $latitude = '';
     static $longitude = '';
 	static $_jsm_db = '';
+    
+    
+    /**
+     * sportsmanagementHelper::get_IP_address()
+     * 
+     * @return
+     */
+    function get_IP_address()
+{
+    $mainframe	= JFactory::getApplication();
+  foreach (array('HTTP_CLIENT_IP',
+               'HTTP_X_FORWARDED_FOR',
+               'HTTP_X_FORWARDED',
+               'HTTP_X_CLUSTER_CLIENT_IP',
+               'HTTP_FORWARDED_FOR',
+               'HTTP_FORWARDED',
+               'REMOTE_ADDR') as $key){
+    if (array_key_exists($key, $_SERVER) === true){
+        foreach (explode(',', $_SERVER[$key]) as $IPaddress){
+            $IPaddress = trim($IPaddress); // Just to be safe
+
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'Notice');
+$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.print_r($IPaddress,true).'</pre>'),'Notice');
+
+            if (filter_var($IPaddress,
+                           FILTER_VALIDATE_IP,
+                           FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)
+                !== false) {
+
+                return $IPaddress;
+            }
+        }
+    }
+}
+}
+
     /**
      * sportsmanagementHelper::isJoomlaVersion()
      * 
@@ -93,6 +129,10 @@ abstract class sportsmanagementHelper
     $app = JFactory::getApplication();
     $params = JComponentHelper::getParams( 'com_sportsmanagement' );
     
+    $config = JFactory::getConfig();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' base<br><pre>'.print_r(JURI::base(),true).'</pre>'),'');
+    
     if ( $request )
     {
         $cfg_which_database = $value;
@@ -106,6 +146,7 @@ abstract class sportsmanagementHelper
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDbo<br><pre>'.print_r(JFactory::getDbo(),true).'</pre>'),'');
        
 
+      //self::get_IP_address();
        
        if ( !$cfg_which_database )
        {
@@ -122,8 +163,56 @@ abstract class sportsmanagementHelper
         $option['database'] = $params->get( 'jsm_db' );      // Database name
         $option['prefix']   = $params->get( 'jsm_dbprefix' );             // Database prefix (may be empty)
  
-        //self::$_jsm_db = JDatabase::getInstance( $option );
-        return JDatabase::getInstance( $option ); 
+        // zuerst noch überprüfen, ob der user
+        // überhaupt den zugriff auf die datenbank hat.
+        self::$_jsm_db = JDatabase::getInstance( $option );
+        $user_id = $params->get( 'jsm_server_user' );
+        //$user_password = $params->get( 'jsm_server_password' );
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_server_password<br><pre>'.print_r($user_password,true).'</pre>'),'');
+        
+        if ( $user_id )
+        {
+            
+        //echo "<strong>Password: </strong>" . JUserHelper::hashPassword($password);    
+        //$testcrypt = JUserHelper::getCryptedPassword($user_password);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . $testcrypt),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . JUserHelper::hashPassword($user_password)),'');
+        
+        // Load the profile data from the database.
+        $db = self::$_jsm_db;
+        $query = $db->getQuery(true);
+        $query->select('up.profile_key, up.profile_value');
+        $query->from('#__user_profiles as up');
+        $query->where('up.user_id = '.$user_id);
+        $query->where('up.profile_key LIKE '.$db->Quote(''.'jsmprofile.databaseaccess'.'') );
+        $query->where('up.profile_value = 1');
+        $db->setQuery($query);
+        $results = $db->loadResult();
+        $query->clear();
+        $query->select('up.profile_key, up.profile_value');
+        $query->from('#__user_profiles as up');
+        $query->where('up.user_id = '.$user_id);
+        $query->where('up.profile_key LIKE '.$db->Quote(''.'jsmprofile.website'.'') );
+        $query->where('up.profile_value LIKE '.$db->Quote(''.JURI::base().''));
+        $db->setQuery($query);
+        $results2 = $db->loadResult();
+        
+        if ( $results && $results2 )
+        {
+        return JDatabase::getInstance( $option );
+        }
+        else
+        {
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'),'Error');    
+        return JFactory::getDbo();    
+        }
+        }
+        else
+        {
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'),'Error');    
+        return JFactory::getDbo();     
+        } 
   
        }    
        
@@ -1198,7 +1287,7 @@ abstract class sportsmanagementHelper
 	function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
 		$date = $date ? $date : 'now';
-		$app = Jfactory::getApplication();
+		$app = JFactory::getApplication();
 		$res = JFactory::getDate(strtotime($date));
 
 		if ($use_offset)
@@ -1206,11 +1295,25 @@ abstract class sportsmanagementHelper
 			if ($offset)
 			{
 				$serveroffset=explode(':', $offset);
+                if(version_compare(JVERSION,'3.0.0','ge')) 
+                {
+                $res->setTimezone($serveroffset[0]);    
+                }
+                else
+                {
 				$res->setOffset($serveroffset[0]);
+                }
 			}
 			else
 			{
+			if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+                $res->setTimezone($app->getCfg('offset'));
+            }
+            else
+            {
 				$res->setOffset($app->getCfg('offset'));
+            }
 			}
 		}
 		return $res->toUnix('true');
@@ -1948,7 +2051,7 @@ abstract class sportsmanagementHelper
 	public static function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL)
 	{
 		$mainframe = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        $db = self::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $query->select('id as value');
         $query->select('name AS text');

@@ -461,6 +461,8 @@ class sportsmanagementModelround extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post=JRequest::get('post');
        
 //       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -477,6 +479,10 @@ class sportsmanagementModelround extends JModelAdmin
         $data['round_date_first']	= sportsmanagementHelper::convertDate($data['round_date_first'],0);
         $data['round_date_last']	= sportsmanagementHelper::convertDate($data['round_date_last'],0);
         
+        // Set the values
+		$data['modified'] = $date->toSql();
+		$data['modified_by'] = $user->get('id');
+            
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save

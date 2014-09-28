@@ -140,6 +140,16 @@ class sportsmanagementModelperson extends JModelAdmin
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('contact_id', 'type', 'modal_contact');
+        }
+        else
+        {
+        $form->setFieldAttribute('contact_id', 'type', 'modal_contacts');    
+        }
+
         $prefix = $mainframe->getCfg('dbprefix');
         
         //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
@@ -453,7 +463,13 @@ class sportsmanagementModelperson extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
+       
        $address_parts = array();
        $person_double = array();
        // Create a new query object.

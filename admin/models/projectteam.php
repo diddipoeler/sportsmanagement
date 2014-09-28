@@ -412,7 +412,12 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

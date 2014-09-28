@@ -59,9 +59,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	case 0 : // All matches
 		if (!empty($this->allmatches))
 		{
-			$tm=count ($this->allmatches);
+			$tm = count ($this->allmatches);
 			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
-			$this->matches=$this->allmatches;
+			$this->matches = $this->allmatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
@@ -72,9 +72,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	case 1 : // Home matches
 		if (!empty($this->homematches))
 		{
-			$tm=count ($this->homematches);
+			$tm = count ($this->homematches);
 			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
-			$this->matches=$this->homematches;
+			$this->matches = $this->homematches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
@@ -85,9 +85,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	case 2 : // Away matches
 		if (!empty($this->awaymatches))
 		{
-			$tm=count ($this->awaymatches);
+			$tm = count ($this->awaymatches);
 			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
-			$this->matches=$this->awaymatches;
+			$this->matches = $this->awaymatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
@@ -98,7 +98,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	case 4 : // matches sorted by date
 		if (!empty($this->allmatches))
 		{
-			$tm=count ($this->allmatches);
+			$tm = count ($this->allmatches);
 			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
 			$this->matches=$this->allmatches;
 			echo $this->loadTemplate('matches_sorted_by_date');//or use matches_sbd (sort by date)
@@ -111,13 +111,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	default : // Home+Away matches
 		if (!empty($this->homematches))
 		{
-			$tm=count ($this->homematches);
+			$tm = count ($this->homematches);
 			if(count($this->awaymatches)==0) {
 				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
 			} else {
 				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_HOME_MATCHES')."</h3>";
 			}
-			$this->matches=$this->homematches;
+			$this->matches = $this->homematches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
@@ -126,13 +126,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 		if (!empty($this->awaymatches))
 		{
-			$tm=count ($this->awaymatches);
+			$tm = count ($this->awaymatches);
 			if(count($this->homematches)==0) {
 				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
 			} else {
 				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_AWAY_MATCHES')."</h3>";
 			}
-			$this->matches=$this->awaymatches;
+			$this->matches = $this->awaymatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else

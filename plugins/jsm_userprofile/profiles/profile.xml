@@ -13,6 +13,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 			</field>
+			
+			<field
+				name="website"
+				type="url"
+				id="website"
+				description="PLG_USER_JSMPROFILE_FIELD_WEB_SITE_DESC"
+				filter="url"
+				label="PLG_USER_JSMPROFILE_FIELD_WEB_SITE_LABEL"
+				size="200"
+			/>
+			
     </fieldset>
   </fields>
 </form>

@@ -212,6 +212,8 @@ class sportsmanagementModeleventtype extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post=JRequest::get('post');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -227,6 +229,10 @@ class sportsmanagementModeleventtype extends JModelAdmin
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
+        // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
+       
         // Proceed with the save
 		return parent::save($data);   
     }

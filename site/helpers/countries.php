@@ -41,7 +41,11 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
-DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+if (! defined('JSM_PATH'))
+{
+	DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php'); 
 
 /**
@@ -213,11 +217,11 @@ $query = $db->getQuery(true);
 		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			$path = JURI::root().'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
-            if ( !JFile::exists(JPATH_SITE.DS.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
-			{
-                $path = JURI::root().'administrator/components/com_sportsmanagement/assets/images/delete.png';
-            }    
+			$path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+//            if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
+//			{
+//                $path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'administrator/components/com_sportsmanagement/assets/images/delete.png';
+//            }    
 			return $path;
 		}
 		return null;

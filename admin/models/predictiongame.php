@@ -154,7 +154,12 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	$mainframe	= JFactory::getApplication();
     // Get a db connection.
         $db = JFactory::getDbo();
-       $post=JRequest::get('post');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

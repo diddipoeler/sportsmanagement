@@ -52,6 +52,12 @@ jimport( 'joomla.application.component.view');
  */
 class sportsmanagementViewTeamStats extends JViewLegacy
 {
+	/**
+	 * sportsmanagementViewTeamStats::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl = null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -95,6 +101,7 @@ class sportsmanagementViewTeamStats extends JViewLegacy
             
             
             
+            
             $this->assign('matchdaytotals', $model->getMatchDayTotals( ) );
 			$this->assign('totalrounds', $model->getTotalRounds( ) );
 			$this->assign('totalattendance', $model->getTotalAttendance() );
@@ -107,6 +114,17 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 			$this->assign('results',  $model->getResults());
 
 			$this->_setChartdata(array_merge($flashconfig, $config));
+            
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($this->results,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalshome<br><pre>'.print_r($this->totalshome,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalsaway<br><pre>'.print_r($this->totalsaway,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_home<br><pre>'.print_r($this->highest_home,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_away<br><pre>'.print_r($this->highest_away,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_home<br><pre>'.print_r($this->highestdef_home,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_away<br><pre>'.print_r($this->highestdef_away,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_home<br><pre>'.print_r($this->highestdraw_home,true).'</pre>'),'');
+//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_away<br><pre>'.print_r($this->highestdraw_away,true).'</pre>'),'');
+            
 		}
 		
 		//$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );

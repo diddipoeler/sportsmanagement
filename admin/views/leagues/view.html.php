@@ -67,12 +67,14 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         $inputappend = '';
         $startmemory = memory_get_usage();
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' bilderpfad<br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+        
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
 
-$starttime = microtime(); 
+        $starttime = microtime(); 
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {

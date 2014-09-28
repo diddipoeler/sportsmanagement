@@ -76,6 +76,8 @@ window.addEvent('domready',function(){
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
+if (!$this->massadd)
+		{
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 echo $this->loadTemplate('joomla3');
@@ -95,7 +97,7 @@ echo '<div class="alert alert-no-items">';
 echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
-
+}
 ?>
 	<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="next_roundcode" value="<?php echo count($this->matchday) + 1; ?>" />

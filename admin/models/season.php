@@ -181,7 +181,12 @@ class sportsmanagementModelseason extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
-       $post=JRequest::get('post');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$mainframe->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_(' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -200,6 +205,11 @@ class sportsmanagementModelseason extends JModelAdmin
 		return parent::save($data);   
     }
     
+    /**
+     * sportsmanagementModelseason::saveshortpersons()
+     * 
+     * @return void
+     */
     function saveshortpersons()
     {
         $option = JRequest::getCmd('option');
@@ -237,6 +247,11 @@ class sportsmanagementModelseason extends JModelAdmin
         
     }
     
+    /**
+     * sportsmanagementModelseason::saveshortteams()
+     * 
+     * @return void
+     */
     function saveshortteams()
     {
         $option = JRequest::getCmd('option');

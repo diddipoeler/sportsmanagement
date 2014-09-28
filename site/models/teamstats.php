@@ -68,6 +68,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	var $matchdaytotals = null;
 	var $totalrounds = null;
 	var $attendanceranking = null;
+    var $team = null;
 
 	/**
 	 * sportsmanagementModelTeamStats::__construct()
@@ -82,7 +83,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		$this->teamid = JRequest::getInt( "tid", 0 );
 		sportsmanagementModelProject::$projectid = $this->projectid;
 		//preload the team;
-		$this->getTeam();
+		self::getTeam();
 	}
 
 	/**
@@ -92,16 +93,34 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	function getTeam( )
 	{
+	   $option = JRequest::getCmd('option');
+	    $mainframe = JFactory::getApplication();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamid<br><pre>'.print_r($this->teamid,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        
 		# it should be checked if any tid is given in the params of the url
 		# if ( is_null( $this->team ) )
 		if ( !isset( $this->team ) )
 		{
 			if ( $this->teamid > 0 )
 			{
-				$this->team = $this->getTable( 'Team', 'sportsmanagementTable' );
-				$this->team->load( $this->teamid );
+			 $query->select('*');
+             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+             $query->where('id = '. $this->teamid );
+             $db->setQuery($query);
+             $this->team = $db->loadObject();
+//				$this->team = $this->getTable( 'Team', 'sportsmanagementTable' );
+//				$this->team->load( $this->teamid );
 			}
 		}
+        
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        
 		return $this->team;
 	}
 
@@ -126,6 +145,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             $query->select('t1.id AS team1_id');
             $query->select('t2.id AS team2_id');
         
+        $query->select('pt1.id AS pt1_id');
+        $query->select('pt2.id AS pt2_id');
+        
+        $query->select('st1.id AS st1_id');
+        $query->select('st2.id AS st2_id');
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as matches ');
         
@@ -243,8 +267,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
         
            $query->where('pt1.project_id = '.$this->projectid);
-           $query->where('published=1 ');
-           $query->where('alt_decision=0');
+           $query->where('matches.published = 1 ');
+           $query->where('alt_decision = 0');
            $query->where('( (t1.id = '.$this->team->id.' AND team2_result=0 ) OR (t2.id = '.$this->team->id.' AND team1_result=0 ) ) ');
            $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
                    
@@ -654,10 +678,10 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        $query->select('m.id, m.projectteam1_id, m.projectteam2_id, pt1.team_id AS team1_id, pt2.team_id AS team2_id');
+        $query->select('m.id, m.projectteam1_id, m.projectteam2_id, pt1.team_id AS steam1_id, pt2.team_id AS steam2_id');
         $query->select('m.team1_result, m.team2_result');
         $query->select('m.alt_decision, m.team1_result_decision, m.team2_result_decision');
-
+        $query->select('t1.id AS team1_id, t2.id AS team2_id');
 
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');

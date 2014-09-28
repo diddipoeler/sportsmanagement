@@ -164,6 +164,11 @@ jimport('joomla.html.html.bootstrap');
 <hr class="hr-condensed">    
 <div id="dashboard-icons" class="btn-group">
 
+<a class="btn" href="index.php?option=com_sportsmanagement&view=updates">
+<img src="components/com_sportsmanagement/assets/icons/updates.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES') ?></span>
+</a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=databasetools">
 <img src="components/com_sportsmanagement/assets/icons/datenbanktools.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS') ?></span>

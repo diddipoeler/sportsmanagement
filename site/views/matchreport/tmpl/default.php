@@ -191,7 +191,7 @@ if (!empty($this->matchplayerpositions ))
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';
 	}
 	
-	if (($this->config['show_pictures'])==1 && $this->matchimages )
+	if (($this->config['show_pictures'])==1 && isset($this->matchimages) )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_PICTURES'] = 'pictures';
 	} 
@@ -200,7 +200,94 @@ if (!empty($this->matchplayerpositions ))
 }       
 
 
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $count = 0;
+    foreach ($output as $templ)
+    {
     
+    if ( !$count )
+    {
+    // Define slides options
+        $slidesOptions = array(
+            "active" => "slide".$count."_id" // It is the ID of the active tab.
+        );    
+    // Define tabs options for version of Joomla! 3.0
+        $tabsOptions = array(
+            "active" => "tab".$count."_id" // It is the ID of the active tab.
+        );      
+    }    
+    $count++;	   
+    }
+    
+    if( $this->config['show_result_tabs'] == "show_tabs" ) 
+    {
+    $count = 0;    
+    ?>
+        <!-- This is a list with tabs names. -->
+    	<ul class="nav nav-tabs" id="ID-Tabs-Group">
+        <?PHP
+        foreach ($output as $key => $templ)
+        {
+        $active = '';    
+        if ( $count == 0 )
+        {
+            $active = 'active';
+        }    
+        ?>
+        <li class="<?php echo $active; ?>">
+        <a data-toggle="tab" href="#tab<?php echo $count; ?>_id"><?php echo JText::_($key); ?>
+        </a>
+       	</li>
+        <?PHP
+        $count++;
+        }
+        ?>
+        </ul>
+            
+    <?PHP    
+    echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
+    $count = 0;  
+    foreach ($output as $templ)
+    {
+    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab'.$count.'_id');
+    echo $this->loadTemplate($templ);
+    echo JHtml::_('bootstrap.endPanel'); 
+    $count++;
+    }
+    echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');    
+    }
+    else if($this->config['show_result_tabs'] == "show_tabs" ) 
+    {
+    // This renders the beginning of the slides code.
+    echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);  
+    $count = 0;  
+    foreach ($output as $key => $templ)
+    {
+        // Open the first slide
+        echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide'.$count.'_id');
+        echo $this->loadTemplate($templ);
+        // This is the closing tag of the first slide
+        echo JHtml::_('bootstrap.endSlide');  
+        $count++;
+    } 
+    // This renders the end part of the slides code.	
+    echo JHtml::_('bootstrap.endAccordion');
+
+    }
+    else 
+    {
+
+	foreach ($output as $templ)
+	{
+	echo $this->loadTemplate($templ);
+	}
+	
+    }
+        
+            }
+            else
+            {
   // diddipoeler
   // anzeige als tabs oder slider von joomlaworks
   $startoutput = '';
@@ -232,7 +319,7 @@ if (!empty($this->matchplayerpositions ))
     }    
 
     echo JHtml::_('content.prepare', $params); 
-    
+    }
   //}
   
 	echo "<div>";

@@ -47,6 +47,12 @@
 			>
 		</field>		
 
+    <field name="contact_id"
+			addfieldpath="/administrator/components/com_contact/models/fields"
+			type="modal_contacts"
+			description="COM_CONTACT_SELECT_CONTACT_DESC"
+			label="COM_CONTACT_SELECT_CONTACT_LABEL"
+			required="false"/>
 
           
 
@@ -532,6 +538,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
   description="COM_SPORTSMANAGEMENT_TABS_FRONTEND_DESC">		
 			<field
 				name="show_pic"
+				class="radio btn-group btn-group-yesno"
 				type="radio"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE"
@@ -541,6 +548,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			</field>
 			<field
 				name="show_persdata"
+				class="radio btn-group btn-group-yesno"
 				type="radio"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA"
@@ -550,6 +558,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			</field>
 			<field
 				name="show_teamdata"
+				class="radio btn-group btn-group-yesno"
 				type="radio"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA"
@@ -559,6 +568,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			</field>
 			<field
 				name="show_on_frontend"
+				class="radio btn-group btn-group-yesno"
 				type="radio"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"

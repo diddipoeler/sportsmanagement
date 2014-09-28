@@ -342,6 +342,8 @@ return $teamsofclub;
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $address_parts = array();
        $address_parts2 = array();
        $post = JRequest::get('post');
@@ -501,6 +503,10 @@ return $teamsofclub;
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
+        
+        // Set the values
+		$data['modified'] = $date->toSql();
+		$data['modified_by'] = $user->get('id');
         
         // Proceed with the save
 		return parent::save($data);   

@@ -90,7 +90,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         if ($this->clubid > 0)
@@ -128,7 +128,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -181,7 +181,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         if ($this->clubid > 0)
@@ -226,7 +226,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         $teams = array(0);
@@ -371,18 +371,23 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        
+       $project = sportsmanagementModelProject::getProject();
+       $this->teamseasons = $project->season_id;
+       
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
+       
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
          }
         
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         
@@ -421,7 +426,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l ON p.league_id = l.id ');
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c1 ON c1.id = t1.club_id ');
 		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
+		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
 		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
         // Where
@@ -432,11 +437,14 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
         }
 
+        /*
+        // beim vereinsspielplan gehört die projekt_id nicht zur selektion
         if( $this->project_id > 0 ) 
         {
 			// Where
-            $query->where('p.id = '. $db->Quote($this->project_id));
+            $query->where('p.id = '. $this->project_id );
 		}
+        */
         
         if( $this->teamart != '' ) 
         {
@@ -447,7 +455,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         if( $this->teamseasons > 0 ) 
         {
 			// Where
-            $query->where('p.season_id = '. $db->Quote($this->teamseasons));
+            $query->where('p.season_id = '. $this->teamseasons );
 		}
 		
         if( $this->clubid > 0 ) 
@@ -458,15 +466,15 @@ class sportsmanagementModelClubPlan extends JModelLegacy
             case 3:  
             case 4: 
             // Where
-            $query->where('(t1.club_id = '.$db->Quote($this->clubid).' OR t2.club_id = '.$db->Quote($this->clubid) . ')' );
+            $query->where('(t1.club_id = '.$this->clubid.' OR t2.club_id = '.$this->clubid . ')' );
             break;
             case 1:
             // Where
-            $query->where('t1.club_id = '.$db->Quote($this->clubid) );
+            $query->where('t1.club_id = '.$this->clubid );
             break;
             case 2:
             // Where
-            $query->where('t2.club_id = '.$db->Quote($this->clubid) );
+            $query->where('t2.club_id = '.$this->clubid );
             break;
         }
             
@@ -476,15 +484,15 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->where('m.published = 1');
         // Order
         $query->order('m.match_date '.$orderBy);
-            
-		
-		
+
         $db->setQuery($query);
 		$this->allmatches = $db->loadObjectList();
         
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
         if ( !$this->allmatches )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
         
 		return $this->allmatches;
@@ -503,7 +511,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         // Select some fields
@@ -549,6 +557,8 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 			$params = array();
 			$params["align"] = "top";
 			$params["border"] = 0;
+            $params['width'] = 21;
+            $params['hight'] = 'auto';
 			if ($with_space == 1)
 			{
 				$params["style"] = "padding:1px;";
@@ -558,7 +568,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
-			return JHtml::image($logo_small,"",$params);
+			return JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$logo_small,"",$params);
 		}
 		elseif ($type==2 && isset($country))
 		{

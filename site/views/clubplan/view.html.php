@@ -52,6 +52,12 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
  */
 class sportsmanagementViewClubPlan extends JViewLegacy
 {
+	/**
+	 * sportsmanagementViewClubPlan::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
@@ -129,6 +135,12 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 
 				break;
 		}
+        
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allmatches <br><pre>'.print_r($this->allmatches,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homematches <br><pre>'.print_r($this->homematches,true).'</pre>'),'');
+//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
+        
+        
 		$this->assignRef('startdate',$model->getStartDate());
 		$this->assignRef('enddate',$model->getEndDate());
 		$this->assignRef('teams',$model->getTeams());

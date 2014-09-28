@@ -174,7 +174,7 @@ foreach( $current as $ptid => $team )
             echo sportsmanagementHelper::getPictureThumb($team->team->logo_small,
 					$team->team->name,
 					$config['team_picture_width'],
-					$config['team_picture_height'],3).' ';
+					'auto',3).' ';
                     sportsmanagementHelper::showClubIcon($team->team, 2);
         }
         elseif ( $config['show_logo_small_table'] == "country_flag_logo_small" ) 
@@ -183,7 +183,7 @@ foreach( $current as $ptid => $team )
             echo ' '.sportsmanagementHelper::getPictureThumb($team->team->logo_small,
 					$team->team->name,
 					$config['team_picture_width'],
-					$config['team_picture_height'],3);
+					'auto',3);
         }    
         else 
         {
@@ -194,8 +194,8 @@ foreach( $current as $ptid => $team )
 //					$config['team_picture_height'],3);
 		
 ?>                                    
-<a href="<?php echo JURI::root().$team->team->$pic;?>" title="<?php echo $team->team->name;?>" class="modal">
-<img src="<?php echo JURI::root().$team->team->$pic;?>" alt="<?php echo $team->team->name;?>" width="20" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" title="<?php echo $team->team->name;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" alt="<?php echo $team->team->name;?>" width="20" />
 </a>
 <?PHP        
         }

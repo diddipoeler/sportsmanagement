@@ -92,38 +92,6 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		parent::__construct();
 	}
 
-
-/**
- * 	// Functions (some specific for Matchreport) below to be replaced to project.php when recoded to general functions
- * 	function &getMatch()
- * 	{
- * 		if (is_null($this->match))
- * 		{
- * 			$query=' SELECT m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.project_id '
- * 			      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
- * 			      .' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on r.id=m.round_id '
- * 			      .' WHERE m.id='. $this->_db->Quote($this->matchid)
- * 			            ;
- * 			$this->_db->setQuery($query,0,1);
- * 			$this->match=$this->_db->loadObject();
- * 		}
- * 		return $this->match;
- * 	}
- */
-
-/**
- * 	function &getProject()
- * 	{
- * 		if (empty($this->_project))
- * 		{
- * 			$match=&$this->getMatch();
- * 			$this->setProjectID($match->project_id);
- * 			parent::getProject();
- * 		}
- * 		return $this->_project;
- * 	}
- */
-
 	/**
 	 * sportsmanagementModelMatchReport::getClubinfo()
 	 * 
@@ -278,84 +246,6 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         
     }    
     
-//    /**
-//	 * sportsmanagementModelMatchReport::getMatchPlayerPositions()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchPlayerPositions()
-//	{
-//	$option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//		$query='	SELECT	pos.id, pos.name, 
-//							ppos.position_id AS position_id, ppos.id as pposid
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON ppos.id=mp.project_position_id
-//					WHERE mp.match_id='.(int)$this->matchid.'
-//					GROUP BY pos.id
-//					ORDER BY pos.ordering ASC ';
-//                    
-//		$db->setQuery($query);
-//		return $db->loadObjectList();
-//	}
-
-//	/**
-//	 * sportsmanagementModelMatchReport::getMatchStaffPositions()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchStaffPositions()
-//	{
-//		$option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//		$query='	SELECT	pos.id, pos.name, 
-//							ppos.position_id AS position_id, ppos.id as pposid
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp ON ppos.id=mp.project_position_id
-//					WHERE mp.match_id='.(int)$this->matchid.'
-//					GROUP BY pos.id
-//					ORDER BY pos.ordering ASC ';
-//		$this->_db->setQuery($query);
-//		return $this->_db->loadObjectList();
-//	}
-
-//	/**
-//	 * sportsmanagementModelMatchReport::getMatchRefereePositions()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchRefereePositions()
-//	{
-//		$option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//		$query='	SELECT	pos.id, pos.name, 
-//							ppos.position_id AS position_id, ppos.id as pposid
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp ON ppos.id=mp.project_position_id
-//					WHERE mp.match_id='.(int)$this->matchid.'
-//					GROUP BY pos.id
-//					ORDER BY pos.ordering ASC ';
-//		$this->_db->setQuery($query);
-//		return $this->_db->loadObjectList();
-//	}
-
-	
-    
     /**
      * sportsmanagementModelMatchReport::getMatchPersons()
      * 
@@ -439,169 +329,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
    }    
     
     
-//    /**
-//	 * sportsmanagementModelMatchReport::getMatchPlayers()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchPlayers()
-//	{
-//	   $mainframe = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        // Create a new query object.		
-//	   $db = JFactory::getDBO();
-//	   $query = $db->getQuery(true);
-//       
-//		$query=' SELECT	pt.id,'
-//		      .' tp.person_id,'
-//		      .' p.firstname,'
-//		      .' p.nickname,'
-//		      .' p.lastname,'
-//		      .' tp.jerseynumber,'
-//              .' mp.trikot_number,'
-//		      .' ppos.position_id,'
-//		      .' ppos.id AS pposid,'
-//		      .' st.team_id,'
-//		      //.' pt.id as ptid,'
-//              .' st.id as ptid,'
-//		      .' mp.teamplayer_id,'
-//		      .' tp.picture,'
-//			  .' p.picture AS ppic,'
-//		      .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
-//		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-//		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id '
-//              .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id '
-//		      .' WHERE mp.match_id = '.(int)$this->matchid
-//		      .' AND mp.came_in = 0 '
-//		      .' AND p.published = 1 '
-//		      .' ORDER BY mp.ordering, tp.jerseynumber, p.lastname ';
-//              
-//		$db->setQuery($query);
-//        
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->loadObjectList(),true).'</pre>'),'Notice');
-//        }
-//        
-//        $result = $db->loadObjectList();
-//        if ( !$result )
-//	    {
-//	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//        }
-//        
-//	    }
-//        
-//		return $result;
-//	}
 
-//	/**
-//	 * sportsmanagementModelMatchReport::getMatchStaff()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchStaff()
-//	{
-//	   $mainframe = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        // Create a new query object.		
-//	   $db = JFactory::getDBO();
-//	   $query = $db->getQuery(true);
-//       
-//		$query=' SELECT	p.id,'
-//		      .' p.id AS person_id,'
-//		      .' ms.team_staff_id,'
-//		      .' p.firstname,'
-//		      .' p.nickname,'
-//		      .' p.lastname,'
-//		      .' ppos.position_id,'
-//		      .' ppos.id AS pposid,'
-//		      .' pt.team_id,'
-//		      //.' pt.id as ptid,'
-//              .' st.id as ptid,'
-//		      .' tp.picture,'
-//			  .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
-//			  .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-//		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS ms '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.team_staff_id '
-//              .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id '
-//		      .' INNER JOIN	#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ms.project_position_id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id '
-//		      .' WHERE ms.match_id='.(int)$this->matchid
-//		      .'  AND p.published = 1';
-//              
-//              
-//              
-//              
-//		       $db->setQuery($query);
-//               
-//               if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
-//               $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->loadObjectList(),true).'</pre>'),'Notice');
-//         }
-//               
-//		$result = $db->loadObjectList();
-//        if ( !$result )
-//	    {
-//	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//        }
-//        
-//	    }
-//        
-//        return $result;
-//	}
-
-//	/**
-//	 * sportsmanagementModelMatchReport::getMatchCommentary()
-//	 * 
-//	 * @return
-//	 */
-//	function getMatchCommentary()
-//    {
-//    	$option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//    $starttime = microtime(); 
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//        $query->select('*');
-//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
-//        $query->where('match_id = '.(int)$this->matchid);
-//        $query->order('event_time DESC');
-//        
-////        $query = "SELECT *  
-////    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
-////    WHERE match_id = ".(int)$this->matchid." 
-////    ORDER BY event_time DESC";
-//
-//
-//    $db->setQuery($query);
-//    
-//    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-//        {        
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-//        }
-//        
-//		return $db->loadObjectList();
-//    }
-    
-    
     /**
      * sportsmanagementModelMatchReport::getMatchReferees()
      * 
@@ -630,22 +358,6 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->where('tp.persontype = 3');
         
         // $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-//		$query=' SELECT	p.id,'
-//		      .' p.firstname,'
-//		      .' p.nickname,'
-//		      .' p.lastname,'
-//		      .' ppos.position_id,'
-//		      .' ppos.id AS pposid,'
-//		      .' pos.name AS position_name ,'
-//		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-//		      .' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id '
-//		      .' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mr.project_position_id '
-//		      .' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
-//		      .' WHERE mr.match_id='.(int)$this->matchid
-//		      .' AND p.published = 1';
               
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -673,38 +385,11 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->where('me.match_id = '.(int)$this->matchid);
         $query->group('et.id');
         $query->order('pet.ordering');
-        
-//		$query='	SELECT	et.id,
-//							et.name,
-//							et.icon
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id=et.id					
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id=me.event_type_id
-//					WHERE me.match_id='.(int)$this->matchid.'
-//					GROUP BY et.id
-//					ORDER BY pet.ordering ';
                     
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
 
-//	/**
-//	 * sportsmanagementModelMatchReport::getPlayground()
-//	 * 
-//	 * @param mixed $pgid
-//	 * @return
-//	 */
-//	function getPlayground($pgid)
-//	{
-//		//$this->playground =& $this->getTable('Playground','Table');
-//        $mdl = JModelLegacy::getInstance("Playground", "sportsmanagementModel");
-//        $this->playground = $mdl->getTable();
-//		$this->playground->load($pgid);
-//
-//		return $this->playground;
-//	}
-
-	
     
     /**
      * sportsmanagementModelMatchReport::getMatchArticle()
@@ -936,39 +621,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		}
 		return $this->_staffsbasicstats;
 	}
-
-//	/**
-//	 * sportsmanagementModelMatchReport::getMatchText()
-//	 * 
-//	 * @param mixed $match_id
-//	 * @return
-//	 */
-//	function getMatchText($match_id)
-//	{
-//		$option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//		$query="SELECT	m.*,
-//						t1.name t1name,
-//						t2.name t2name
-//				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match AS m
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt1 ON m.projectteam1_id=pt1.id
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_team AS pt2 ON m.projectteam2_id=pt2.id
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t1 ON pt1.team_id=t1.id
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team AS t2 ON pt2.team_id=t2.id
-//				WHERE m.id=".$match_id."
-//				AND m.published=1
-//				ORDER BY m.match_date,t1.short_name";
-//                
-//		$db->setQuery($query);
-//		return $db->loadObject();
-//	}
-	
-	
-    
+   
     
     	/**
     	 * sportsmanagementModelMatchReport::getPlaygroundSchema()
@@ -1007,11 +660,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
     break;
     
   }
-  //$query =" SELECT extended"
-//				. " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_rosterposition "
-//				. " WHERE name LIKE '" . $schemahome ."'"
-//				. " AND short_name = 'HOME_POS'";
-		
+  		
         $db->setQuery($query);
 		$res = $db->loadResult();
 		
@@ -1042,115 +691,6 @@ class sportsmanagementModelMatchReport extends JModelLegacy
   }
   
   }
-  
-    /**
-	 * sportsmanagementModelMatchReport::getSchemaHome()
-	 * 
-	 * @param mixed $schemahome
-	 * @return
-	 */
-//	function getSchemaHome($schemahome)
-//  {
-//  $option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//  $bildpositionen = array();
-//  $position = 1;
-//  
-//  if ( $schemahome )
-//  {
-//  $query =" SELECT extended"
-//				. " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_rosterposition "
-//				. " WHERE name LIKE '" . $schemahome ."'"
-//				. " AND short_name = 'HOME_POS'";
-//		$db->setQuery($query);
-//		$res = $db->loadResult();
-//		
-//		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-//		$jRegistry = new JRegistry;
-//		if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        $jRegistry->loadString($res); 
-//        }
-//        else
-//        {
-//		//$jRegistry->loadString($res, 'ini');
-//		$jRegistry->loadJSON($res);
-//		}
-//    
-//    for($a=0; $a < 11; $a++)
-//    {
-//    $bildpositionen[$schemahome][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
-//    $bildpositionen[$schemahome][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
-//    $position++;
-//    }
-//		
-//		return $bildpositionen;
-//  }
-//  else
-//  {
-//    return false;
-//  }
-//  
-//  }
-  
-  /**
-   * sportsmanagementModelMatchReport::getSchemaAway()
-   * 
-   * @param mixed $schemaaway
-   * @return
-   */
-//  function getSchemaAway($schemaaway)
-//  {
-//  $option = JRequest::getCmd('option');
-//	$mainframe = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//  $bildpositionen = array();
-//  $position = 1;
-//    
-//  if ( $schemaaway )
-//  {
-//  $query =" SELECT extended"
-//				. " FROM #__".COM_SPORTSMANAGEMENT_TABLE."_rosterposition "
-//				. " WHERE name LIKE '" . $schemaaway ."'"
-//				. " AND short_name = 'AWAY_POS'";
-//		$db->setQuery($query);
-//		$res = $db->loadResult();
-//
-//		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-//		$jRegistry = new JRegistry;
-//		if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        $jRegistry->loadString($res); 
-//        }
-//        else
-//        {
-//		//$jRegistry->loadString($res, 'ini');
-//		$jRegistry->loadJSON($res);
-//		}
-//    
-//    for($a=0; $a < 11; $a++)
-//    {
-//    $bildpositionen[$schemaaway][$a]['gast']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
-//    $bildpositionen[$schemaaway][$a]['gast']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
-//    $position++;
-//    }
-//		
-//		return $bildpositionen;
-//  }
-//  else
-//  {
-//    return false;
-//  }		
-//			
-//  }
-  
 
 }
 ?>

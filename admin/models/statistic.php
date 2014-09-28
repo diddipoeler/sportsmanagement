@@ -219,7 +219,12 @@ class sportsmanagementModelstatistic extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
-       $post=JRequest::get('post');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelstatistic save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelstatistic post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

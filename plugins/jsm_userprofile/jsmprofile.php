@@ -59,8 +59,10 @@ class plgUserjsmprofile extends JPlugin
      */
     function onContentPrepareData($context, $data)
     {
+        $app = JFactory::getApplication();
         // Check we are manipulating a valid form.
-        if (!in_array($context, array('com_users.profile','com_users.registration','com_users.user','com_admin.profile')))
+        //if (!in_array($context, array('com_users.profile','com_users.registration','com_users.user','com_admin.profile')))
+        if (!in_array($context, array('com_users.user','com_admin.profile')))
         {
             return true;
         }
@@ -76,6 +78,19 @@ class plgUserjsmprofile extends JPlugin
             ' ORDER BY ordering'
         );
         $results = $db->loadRowList();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
+        /*
+Array
+(
+    [0] => Array
+        (
+            [0] => jsmprofile.databaseaccess
+            [1] => 0
+        )
+
+)
+        */
  
         // Check for a database error.
         if ($db->getErrorNum()) {
@@ -102,6 +117,7 @@ class plgUserjsmprofile extends JPlugin
      */
     function onContentPrepareForm($form, $data)
     {
+        $app = JFactory::getApplication();
         // Load user_profile plugin language
         $lang = JFactory::getLanguage();
         $lang->load('plg_user_jsmprofile', JPATH_ADMINISTRATOR);
@@ -111,7 +127,8 @@ class plgUserjsmprofile extends JPlugin
             return false;
         }
         // Check we are manipulating a valid form.
-        if (!in_array($form->getName(), array('com_users.profile', 'com_users.registration','com_users.user','com_admin.profile'))) {
+        //if (!in_array($form->getName(), array('com_users.profile', 'com_users.registration','com_users.user','com_admin.profile'))) {
+            if (!in_array($form->getName(), array('com_users.user','com_admin.profile'))) {
             return true;
         }
 
@@ -131,6 +148,7 @@ class plgUserjsmprofile extends JPlugin
      */
     function onUserAfterSave($data, $isNew, $result, $error)
     {
+        $app = JFactory::getApplication();
         $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
  
         if ($userId && $result && isset($data['jsmprofile']) && (count($data['jsmprofile'])))
@@ -173,6 +191,7 @@ class plgUserjsmprofile extends JPlugin
      */
     function onUserAfterDelete($user, $success, $msg)
     {
+        $app = JFactory::getApplication();
         if (!$success) {
             return false;
         }

@@ -64,17 +64,20 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	public function init ()
 	{
 		$mainframe = JFactory::getApplication();
+        $this->massadd = 0;
+        $tpl = NULL;
+        
 		if ($this->getLayout()=='default' || $this->getLayout()=='default_3')
 		{
 			$this->_displayDefault($tpl);
 			return;
 		}
-		else if ($this->getLayout()=='populate')
+		else if ($this->getLayout()=='populate' || $this->getLayout()=='populate_3')
 		{
 			$this->_displayPopulate($tpl);
 			return;
 		}
-        else if ($this->getLayout()=='massadd')
+        else if ($this->getLayout()=='massadd' || $this->getLayout()=='massadd_3')
 		{
 			$this->_displayMassadd($tpl);
 			return;
@@ -247,7 +250,9 @@ class sportsmanagementViewRounds extends sportsmanagementView
         JToolBarHelper::deleteList('', 'rounds.delete', 'JTOOLBAR_DELETE');    
         }
 			JToolBarHelper::divider();
-		}
+		
+        parent::addToolbar();
+        }
 		else
 		{
 			JToolBarHelper::custom('round.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'),false);
@@ -256,7 +261,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //		JToolBarHelper::preferences(JRequest::getCmd('option'));
 
-parent::addToolbar();  
+//parent::addToolbar();  
 
 	}	
 	/**

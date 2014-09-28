@@ -86,7 +86,7 @@ class sportsmanagementViewRound extends sportsmanagementView
         
         
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'   ),'');
+        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
         
 		// Assign the Data
 		$this->form = $form;

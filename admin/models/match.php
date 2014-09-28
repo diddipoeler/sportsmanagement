@@ -594,8 +594,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
-       
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        $data['id'] = $post['id'];
 
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -664,7 +668,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		$option = JRequest::getCmd('option');
 	   $mainframe = JFactory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         // Select some fields
         $query->select('m.*,CASE m.time_present	when NULL then NULL	else DATE_FORMAT(m.time_present, "%H:%i") END AS time_present,m.extended as matchextended');
@@ -965,7 +969,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        
-	   $query = JFactory::getDbo()->getQuery(true);
+       $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $query = $db->getQuery(true);
        
        // Select some fields
 		$query->select('m.*');
@@ -981,15 +986,15 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->where('m.published = 1');
         $query->order('m.match_date, t1.short_name');
                     
-		JFactory::getDbo()->setQuery($query);
+		$db->setQuery($query);
         
-        if ( !JFactory::getDbo()->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        if ( !$db->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
+		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
-		return JFactory::getDbo()->loadObject();
+		return $db->loadObject();
 	}
     
     /**
@@ -2228,7 +2233,7 @@ if (!$db->query())
 	$mainframe = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
         $query->select('*');

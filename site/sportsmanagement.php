@@ -87,6 +87,10 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
 
+$document = JFactory::getDocument();
+$mainframe = JFactory::getApplication();
+$config = JFactory::getConfig();
+
 $lang = JFactory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
@@ -99,13 +103,23 @@ $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 
-$document = JFactory::getDocument();
-$mainframe = JFactory::getApplication();
-$config = JFactory::getConfig();
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+}
+
+
 
 //JFactory::$database = sportsmanagementHelper::getDBConnection();
 

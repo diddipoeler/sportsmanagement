@@ -109,8 +109,8 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
                         
                         ?>
 						<td>
-<a href="<?php echo $picture;?>" title="<?php echo $this->project->name;?>" class="modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $this->project->name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->project->name;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->project->name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
 </a>                        
 						<?php
                         // diddipoeler

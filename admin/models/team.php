@@ -299,7 +299,13 @@ class sportsmanagementModelteam extends JModelAdmin
 //        $db = JFactory::getDbo();
         
         $query = JFactory::getDbo()->getQuery(true);
+       
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

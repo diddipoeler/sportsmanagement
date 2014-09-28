@@ -52,7 +52,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerUpdate extends JController
+class sportsmanagementControllerUpdate extends JControllerLegacy
 {
 
 	/**

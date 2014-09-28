@@ -82,19 +82,36 @@ if (!empty($this->match->summary))
 }
 
 // Comments integration
-if (!$commentsDisabled) {
+if (!$commentsDisabled) 
+{
 
-	$dispatcher =& JDispatcher::getInstance();
-        JPluginHelper::importPlugin( 'content', 'joomleague_comments' );
-	$comments = '';
+$dispatcher = JDispatcher::getInstance();
+JPluginHelper::importPlugin( 'content', 'joomleague_comments' );
+$comments = '';
 
 	// get joomleague comments plugin params
-	$plugin= & JPluginHelper::getPlugin('content', 'joomleague_comments');
-	if (is_object($plugin)) {
+	$plugin= JPluginHelper::getPlugin('content', 'joomleague_comments');
+	if (is_object($plugin)) 
+    {
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $pluginParams = new JRegistry($plugin->params);
+        }
+        else
+        {
 		$pluginParams = new JParameter($plugin->params);
+        }
 	}
-	else {
+	else 
+    {
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $pluginParams = new JRegistry('');
+        }
+        else
+        {
 		$pluginParams = new JParameter('');
+        }
 	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 

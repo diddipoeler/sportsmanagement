@@ -58,7 +58,7 @@ else
 		if (( $this->config['show_club_logo']) && ( $this->club->logo_big != '' ))
 		{
 			$club_emblem_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE' ) );
-			$picture = $this->club->logo_big;
+			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_big;
       /*
 			echo sportsmanagementHelper::getPictureThumb($picture, 
 								$club_emblem_title,
@@ -80,7 +80,7 @@ else
 		if (( $this->config['show_club_shirt']) && ( $this->club->logo_small != '' ))
 		{
 			$club_trikot_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( "COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE" ) );
-			$picture = $this->club->logo_small;
+			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_small;
 			echo sportsmanagementHelper::getPictureThumb($picture, 
 								$club_emblem_title,
 								20,

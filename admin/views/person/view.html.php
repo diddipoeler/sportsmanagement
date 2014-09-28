@@ -156,6 +156,11 @@ class sportsmanagementViewPerson extends sportsmanagementView
     $javascript .= '});' . "\n"; 
     $document->addScriptDeclaration( $javascript );
     
+    // Load the language files for the contact integration
+		$jlang = JFactory::getLanguage();
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
     
 	}
  

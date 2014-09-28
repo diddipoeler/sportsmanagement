@@ -112,7 +112,7 @@ class sportsmanagementModelPerson extends JModelLegacy
         //$mainframe->enqueueMessage(JText::_('getPerson personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
         
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 		$query = $db->getQuery(true);
         
         //if ( is_null( $this->person ) )
@@ -149,8 +149,8 @@ class sportsmanagementModelPerson extends JModelLegacy
 	   $option = JRequest::getCmd('option');
 		$mainframe = JFactory::getApplication();
 	   // Create a new query object.		
-		//$db = JFactory::getDBO();
-		$query = JFactory::getDBO()->getQuery(true);
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$query = $db->getQuery(true);
         
 		//if ( is_null( $this->_inproject ) )
 		//{
@@ -169,8 +169,8 @@ class sportsmanagementModelPerson extends JModelLegacy
         $query->where('pr.project_id = '.self::$projectid);
         $query->where('p.published = 1 ');
         $query->where('o.person_id = '.self::$personid);
-        JFactory::getDBO()->setQuery($query);
-		self::$_inproject = JFactory::getDBO()->loadObject();  
+        $db->setQuery($query);
+		self::$_inproject = $db->loadObject();  
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
@@ -303,7 +303,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 		$mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
         
         $person = self::getPerson();
@@ -356,7 +356,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$history = sportsmanagementModelPlayer::getPlayerHistory();
@@ -400,7 +400,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
        $query->select('SUM(me.event_sum) as total');
@@ -452,7 +452,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	    $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	  $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
        $query->select('email');
@@ -602,7 +602,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
        // team_player

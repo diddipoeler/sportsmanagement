@@ -215,7 +215,12 @@ class sportsmanagementModelPlayground extends JModelAdmin
 	public function save($data)
 	{
 	   $mainframe = JFactory::getApplication();
-       $post=JRequest::get('post');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        $address_parts = array();
        
        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -403,6 +408,11 @@ class sportsmanagementModelPlayground extends JModelAdmin
      */
     public static function getPlayground( $pgid = 0 )
     {
+        $option = JRequest::getCmd('option');
+	    $mainframe = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $query = $db->getQuery(true);
+        
         if ( is_null( self::$playground ) )
         {
             if ( $pgid < 1 )
@@ -412,8 +422,13 @@ class sportsmanagementModelPlayground extends JModelAdmin
             
             if ( $pgid > 0 )
             {
-                self::$playground = self::getTable();
-                self::$playground->load( $pgid );
+                $query->select('*');
+                $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+                $query->where('id = '. $pgid);
+                $db->setQuery( $query );
+                self::$playground = $db->loadObject();
+                //self::$playground = self::getTable();
+                //self::$playground->load( $pgid );
             }
         }
         return self::$playground;

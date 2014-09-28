@@ -56,10 +56,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				{
 				$picture = $this->person->picture;
 				}
-				if ( !file_exists( $picture ) )
+				
+                /*
+                if ( !file_exists( $picture ) )
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
 				}
+                */
+                
 				/*
 				echo sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
 														$this->config['picture_width'],
@@ -67,8 +71,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				*/
         //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
         ?>
-        <a href="<?php echo $picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
+        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
 </a>
 <?PHP
         ?>

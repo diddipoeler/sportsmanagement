@@ -55,7 +55,7 @@ jimport('joomla.filesystem.folder');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelUpdates extends JModel
+class sportsmanagementModelUpdates extends JModelLegacy
 {
 
 	/**
@@ -310,7 +310,7 @@ class sportsmanagementModelUpdates extends JModel
 				$updateFiles[$i]['updateDescription']=$updateDescription;
 				$updateFiles[$i]['date']='';
 				$updateFiles[$i]['count']=0;
-				$query="SELECT date,count FROM #__joomleague_version where file=".$this->_db->Quote($updateFile);
+				$query="SELECT date,count FROM #__".COM_SPORTSMANAGEMENT_TABLE."_version where file=".$this->_db->Quote($updateFile);
 				$this->_db->setQuery($query);
 				if (!$result=$this->_db->loadObject())
 				{

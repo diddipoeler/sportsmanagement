@@ -87,6 +87,8 @@ $modal_popup_height = $params->get( 'modal_popup_height' );
 
 //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
 
+$cfg_which_database_server = $params->get( 'cfg_which_database_server' );
+
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$params->get( 'cfg_which_database' ) );
 DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$cfg_help_server );
 DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$modal_popup_width );
@@ -94,6 +96,15 @@ DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+}
 
 if ( $database_table )
 {

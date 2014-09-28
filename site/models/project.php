@@ -1420,6 +1420,7 @@ $starttime = microtime();
 			$params['align'] = "top";
 			$params['border'] = 0;
 			$params['width'] = 21;
+            $params['hight'] = 'auto';
 			if ( $with_space == 1 )
 			{
 				$params['style']='padding:1px;';
@@ -1443,7 +1444,7 @@ $starttime = microtime();
 //			}
 
 
-			$image = "<a href=\"".JURI::root().$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
+			$image = "<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
 			$image.=JHtml::image($team->$club_icon,$title,$params);
 			$image.="</a>";
                 

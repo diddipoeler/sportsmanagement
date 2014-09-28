@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
         <td><?php
                 echo "".JHtml::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
-                echo "".JHtml::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
+                //echo "".JHtml::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
                 echo "".JHtml::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
 				?>
             <td>
@@ -72,11 +72,11 @@ defined('_JEXEC') or die('Restricted access');
             
 			if ( $this->club )
 			{
-				$picture=$this->club->logo_big;
+				$picture = $this->club->logo_big;
 
 ?>                                    
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
 </a>
 <?PHP            
             }

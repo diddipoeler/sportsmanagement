@@ -190,7 +190,12 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        
        //$project_id = $mainframe->getUserState( "$option.pid", '0' );
        
@@ -218,16 +223,10 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
 		return parent::save($data);   
     }
     
-    /**
-	 * Method to remove division
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.1
-	 */
+    
 	public function delete(&$pks)
 	{
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
     //$mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);

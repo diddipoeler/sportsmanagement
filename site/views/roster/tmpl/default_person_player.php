@@ -52,14 +52,21 @@ if ($this->config['show_player_icon'])
 {
 	$imgTitle = JText::sprintf( $personName );
 	$picture = $this->row->picture;
-	if ((empty($picture)) || ($picture == 'images/com_sportsmanagement/database/laceholders/placeholder_150_2.png' ))
+	if ((empty($picture)) || ($picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png' ))
 	{
 		$picture = $this->row->ppic;
 	}
-	if ( !file_exists( $picture ) )
+	
+    //echo 'picture -> '.$this->row->picture.'<br>';
+    //echo 'ppic -> '.$this->row->ppic.'<br>';
+    
+    /*
+    if ( !file_exists( $picture ) )
 	{
 		$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 	}
+    */
+    
 	/*
   $thumbnail = sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
 		$this->config['player_picture_width'],
@@ -74,8 +81,8 @@ if ($this->config['show_player_icon'])
       ?>
 
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $personName;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
 
 
@@ -87,7 +94,8 @@ if ($this->config['show_player_icon'])
 				</div><!-- /.jl_rosterperson_pic -->
 			</div><!-- /.jl_rosterperson_picture_column -->
 <?php
-}//if ($this->config['show_player_icon']) ends
+}
+//if ($this->config['show_player_icon']) ends
 ?>
 		<div class="jl_rosterperson_detail_column">
 			<h3>

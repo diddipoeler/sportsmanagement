@@ -317,6 +317,8 @@ $query->order('s.ordering '.$season_ordering);
 	    		$seasons[$k]->series     = 0;
 	    		$seasons[$k]->goals      = 0;
 	    		$seasons[$k]->playercnt  = 0;
+                $seasons[$k]->playermeanage  = 0;
+                $seasons[$k]->market_value  = 0;
 	    	}
 		}
     	return $seasons;
@@ -504,6 +506,9 @@ $query->order('s.ordering '.$season_ordering);
      */
     function getLeagueRankOverviewDetail( $seasonsranking )
 	{
+	   $mainframe = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+    
   $leaguesoverviewdetail = array();
   
   foreach ($seasonsranking as $season)
@@ -518,6 +523,8 @@ $query->order('s.ordering '.$season_ordering);
 	$leaguesoverviewdetail[$season->league] = $temp;
 	}
  
+ //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' leaguesoverviewdetail<br><pre>'.print_r($leaguesoverviewdetail,true).'</pre>'),'');
+ 
   foreach ($seasonsranking as $season)
 	{
 	$leaguesoverviewdetail[$season->league]->match += $season->games;
@@ -530,6 +537,8 @@ $query->order('s.ordering '.$season_ordering);
 	$leaguesoverviewdetail[$season->league]->goalsagain += $teile[1];
 	
 	}
+ 
+ //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' leaguesoverviewdetail<br><pre>'.print_r($leaguesoverviewdetail,true).'</pre>'),'');
  
   return $leaguesoverviewdetail;
   

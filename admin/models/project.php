@@ -609,13 +609,18 @@ class sportsmanagementModelProject extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $address_parts = array();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
        $date = time();    // aktuelles Datum
        
        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
        
-       $data['modified'] = date('Y-m-d H:i:s', $date);
-       $post['modified'] = date('Y-m-d H:i:s', $date);
+       //$data['modified'] = date('Y-m-d H:i:s', $date);
+       //$post['modified'] = $date->toSql();
        
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        

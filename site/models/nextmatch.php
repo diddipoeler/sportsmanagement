@@ -105,7 +105,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
         
 		if (!$this->_match)
@@ -175,7 +175,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		if (empty($this->_match))
@@ -271,7 +271,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$match = self::getMatch();
@@ -360,7 +360,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		//$match = self::getMatch();
@@ -559,7 +559,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$result = array();
@@ -572,6 +572,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         // Select some fields
 		$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
+        $query->select('s.name as seasonname');
         $query->select('p.name AS project_name,p.id AS prid');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS mname');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
@@ -582,6 +583,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
         
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id  ');
         //$query->where('(pt1.team_id = '. $teams[0]->team_id .' AND pt2.team_id = '.$teams[1]->team_id .') OR (pt1.team_id = '.$teams[1]->team_id .' AND pt2.team_id = '.$teams[0]->team_id .')');
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .') OR (st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
@@ -589,7 +591,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->where('m.published = 1');
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->group('m.id');
-        $query->order('p.ordering, m.match_date ASC');
+        $query->order('s.name DESC, m.match_date ASC');
   
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
@@ -608,7 +610,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$teams = Array();
@@ -791,7 +793,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
        
 		$config = sportsmanagementModelProject::getTemplateConfig('nextmatch');

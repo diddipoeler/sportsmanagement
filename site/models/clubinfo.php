@@ -363,13 +363,14 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 
 		foreach ( $stadiums AS $stadium )
 		{
-		  // Select some fields
+		  $query->clear();
+          // Select some fields
           $query->select('id AS value, name AS text, pl.*');
           $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
           // From 
 		  $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl');
           // Where
-          $query->where('id = '. $db->Quote($stadium) );
+          $query->where('id = '. $stadium );
 
 			$db->setQuery($query, 0, 1);
 			$playgrounds[] = $db->loadObject();

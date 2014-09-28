@@ -149,10 +149,14 @@ if (count($this->stafflist) > 0)
 					{
 						$picture = $row->ppic;
 					}
+                    
+                    /*
 					if ( !file_exists( $picture ) )
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-					} ?>
+					} 
+                    */
+                    ?>
 				<td width="40" class="td_c" nowrap="nowrap">
                 <?php
                 
@@ -167,8 +171,8 @@ if (count($this->stafflist) > 0)
 
       ?>
                                     
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
       
         

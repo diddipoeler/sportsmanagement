@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -40,6 +42,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -120,6 +124,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `wmo` varchar(3) DEFAULT NULL,
   `federation` int(11) NOT NULL DEFAULT '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
@@ -565,6 +571,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `person_id2` INT( 11 ) NOT NULL DEFAULT  '0',
   `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `contact_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -869,6 +876,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (
   `picture` varchar(255) NOT NULL DEFAULT 'spielfeld_578x1050.png',
   `players` int(11) NOT NULL default '11',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`short_name`),
   KEY `country` (`country`)
@@ -1698,6 +1707,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_position_ringen` (
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`country`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
@@ -1720,6 +1731,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
   `createdate` datetime DEFAULT NULL,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150_3.png' ,
   `person_id` INT(11) NOT NULL DEFAULT '0' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -1845,6 +1858,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_gazetteer` (
   `timezone` varchar(40) DEFAULT NULL,
   `modified` date NOT NULL DEFAULT '0000-00-00',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -1866,5 +1880,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
   `accuracy` int(1) DEFAULT NULL,
   `modified` date NOT NULL DEFAULT '0000-00-00',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `modified_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

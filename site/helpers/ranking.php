@@ -1568,7 +1568,8 @@ class JSMRankingTeam
 	 * start point / penalty
 	 * @var int
 	 */
-	var $_startpoints = 0;
+	//static $_startpoints = 0;
+    var $_startpoints = 0;
 	/**
 	 * team name
 	 * @var string
@@ -1599,7 +1600,8 @@ class JSMRankingTeam
 	var $cnt_lot_away	= 0;
 	var $cnt_lso_away	= 0;	
 	
-	var $sum_points    	= 0;
+	//static $sum_points    	= 0;
+    var $sum_points    	= 0;
 	var $neg_points    	= 0;
 	var $bonus_points  	= 0;
 	var $sum_team1_result = 0;
@@ -1739,7 +1741,8 @@ class JSMRankingTeam
 	 */
 	function setStartpoints($val)
 	{
-		$this->_startpoints = $val;
+		//self::$_startpoints = $val;
+        $this->_startpoints = $val;
 	}
 	
 	/**
@@ -1875,11 +1878,15 @@ class JSMRankingTeam
 	 */
 	function getPoints($include_start = true)
 	{
-		if ($include_start) {
-			return $this->sum_points + $this->_startpoints;
+		if ($include_start) 
+        {
+			//return self::$sum_points + self::$_startpoints;
+            return $this->sum_points + $this->_startpoints;
 		}
-		else {
-			return $this->sum_points;
+		else 
+        {
+			//return self::$sum_points;
+            return $this->sum_points;
 		}
 	}
 	

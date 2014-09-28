@@ -314,10 +314,13 @@ if (!empty($this->rows))
 			{
 				$picture = $row->ppic;
 			}
+            /*
 			if ( !file_exists( $picture ) )
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-			} ?>
+			} 
+            */
+            ?>
 		<td width="40" class="td_c" nowrap="nowrap">
         <?php
 		
@@ -328,8 +331,8 @@ if (!empty($this->rows))
         */
         //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['player_picture_width'] ));
 ?>
-        <a href="<?php echo $picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
 <?PHP
         

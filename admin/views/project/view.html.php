@@ -187,7 +187,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
 		
-	$this->assignRef('project',$this->project);
+	$this->assignRef('project',$this->item);
 	$this->assignRef('count_projectdivisions',$iProjectDivisionsCount);
 	$this->assignRef('count_projectpositions',$iProjectPositionsCount);
 	$this->assignRef('count_projectreferees', $iProjectRefereesCount);

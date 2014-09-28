@@ -178,6 +178,8 @@ class sportsmanagementModeldivision extends JModelAdmin
 	{
 	   $mainframe = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
        $post = JRequest::get('post');
        $project_id = $mainframe->getUserState( "$option.pid", '0' );
        
@@ -200,6 +202,10 @@ class sportsmanagementModeldivision extends JModelAdmin
         
         //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldivision save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
+        // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
+       
         // Proceed with the save
 		return parent::save($data);   
     }

@@ -181,7 +181,7 @@ class sportsmanagementModelProjects extends JModelList
         $query->select('u.name AS editor');
         $query->select('ag.name AS agegroup');
         $query->select('(' . $subQuery . ') AS proteams');
-        $query->select('(' . $subQuery2 . ') AS user_field');  
+        //$query->select('(' . $subQuery2 . ') AS user_field');  
         
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
@@ -238,7 +238,46 @@ class sportsmanagementModelProjects extends JModelList
         }
                 
 		return $query;
-        
+
+/**
+SELECT p.id, p.ordering, p.published, p.project_type, p.name, p.checked_out, p.sports_type_id, p.current_round, p.picture, 
+st.name AS sportstype, s.name AS season, l.name AS league, l.country, u.name AS editor, 
+ag.name AS agegroup
+,
+(
+SELECT MAX( ef.name ) 
+FROM j25_sportsmanagement_user_extra_fields_values AS ev
+INNER JOIN j25_sportsmanagement_user_extra_fields AS ef ON ef.id = ev.field_id
+WHERE ev.jl_id = p.id
+AND ef.template_backend LIKE  'project'
+AND ev.fieldvalue !=  ''
+) AS user_field
+
+FROM j25_sportsmanagement_project AS p
+LEFT JOIN j25_sportsmanagement_season AS s ON s.id = p.season_id
+LEFT JOIN j25_sportsmanagement_league AS l ON l.id = p.league_id
+LEFT JOIN j25_sportsmanagement_sports_type AS st ON st.id = p.sports_type_id
+LEFT JOIN j25_sportsmanagement_agegroup AS ag ON ag.id = p.agegroup_id
+LEFT JOIN j25_users AS u ON u.id = p.checked_out
+ORDER BY p.name ASC
+
+
+(
+SELECT COUNT( pt.id ) 
+FROM j25_sportsmanagement_project_team AS pt
+WHERE pt.project_id = p.id
+) AS proteams, 
+
+(
+SELECT MAX( ef.name ) 
+FROM j25_sportsmanagement_user_extra_fields_values AS ev
+INNER JOIN j25_sportsmanagement_user_extra_fields AS ef ON ef.id = ev.field_id
+WHERE ev.jl_id = p.id
+AND ef.template_backend LIKE  'project'
+AND ev.fieldvalue !=  ''
+) AS user_field
+
+*/        
         
 	}
 	

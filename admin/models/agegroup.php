@@ -201,4 +201,26 @@ class sportsmanagementModelagegroup extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+	   $mainframe = JFactory::getApplication();
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $post = JRequest::get('post');
+       // Set the values
+	   $data['modified'] = $date->toSql();
+	   $data['modified_by'] = $user->get('id');
+        
+       // Proceed with the save
+	   return parent::save($data); 
+    }   
+    
 }
