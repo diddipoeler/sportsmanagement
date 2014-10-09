@@ -83,8 +83,9 @@ class sportsmanagementViewextrafields extends sportsmanagementView
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-
-
+        
+        $table = JTable::getInstance('club', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 		$this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
@@ -92,10 +93,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
         
-        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
-        {
-        sportsmanagementHelper::addSubmenu('menu');
-        }
+
 		
 	}
 	
@@ -106,11 +104,11 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        // Set toolbar items for the page
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
